@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Database1Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Approval">
+    <Key>
+      <PropertyRef Name="idApproval" />
+    </Key>
+    <Property Name="idApproval" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="tanggal" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="kodePkt" Type="String" MaxLength="7" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Cashpoint">
+    <Key>
+      <PropertyRef Name="idCashpoint" />
+    </Key>
+    <Property Name="idCashpoint" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="denom" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="kodePkt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Pkt" Relationship="Self.FK_Cashpoint_ToTable" FromRole="Cashpoint" ToRole="Pkts" />
+    <NavigationProperty Name="Optis" Relationship="Self.FK_Opti_ToTable" FromRole="Cashpoint" ToRole="Opti" />
+  </EntityType>
+  <EntityType Name="DetailApproval">
+    <Key>
+      <PropertyRef Name="idDetailApproval" />
+      <PropertyRef Name="idApproval" />
+    </Key>
+    <Property Name="idDetailApproval" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idApproval" Type="Int32" Nullable="false" />
+    <Property Name="saldoAwal20" Type="Int64" />
+    <Property Name="saldoAwal50" Type="Int64" />
+    <Property Name="saldoAwal100" Type="Int64" />
+    <Property Name="sislokCRM20" Type="Int64" />
+    <Property Name="sislokCRM50" Type="Int64" />
+    <Property Name="sislokCRM100" Type="Int64" />
+    <Property Name="sislokCDM20" Type="Int64" />
+    <Property Name="sislokCDM50" Type="Int64" />
+    <Property Name="sislokCDM100" Type="Int64" />
+    <Property Name="isiATM20" Type="Int64" />
+    <Property Name="isiATM50" Type="Int64" />
+    <Property Name="isiATM100" Type="Int64" />
+    <Property Name="isiCRM20" Type="Int64" />
+    <Property Name="isiCRM50" Type="Int64" />
+    <Property Name="isiCRM100" Type="Int64" />
+    <Property Name="bon20" Type="Int64" />
+    <Property Name="bon50" Type="Int64" />
+    <Property Name="bon100" Type="Int64" />
+    <Property Name="adhoc20" Type="Int64" />
+    <Property Name="adhoc50" Type="Int64" />
+    <Property Name="adhoc100" Type="Int64" />
+    <Property Name="setor20" Type="Int64" />
+    <Property Name="setor50" Type="Int64" />
+    <Property Name="setor100" Type="Int64" />
+  </EntityType>
+  <EntityType Name="Opti">
+    <Key>
+      <PropertyRef Name="idTransaksi" />
+    </Key>
+    <Property Name="idTransaksi" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idCashpoint" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="tanggal" Type="DateTime" Precision="0" />
+    <Property Name="prediksi" Type="Int64" />
+    <NavigationProperty Name="Cashpoint" Relationship="Self.FK_Opti_ToTable" FromRole="Opti" ToRole="Cashpoint" />
+  </EntityType>
+  <EntityType Name="Pkt">
+    <Key>
+      <PropertyRef Name="kodePkt" />
+    </Key>
+    <Property Name="kodePkt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="namaPkt" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="kanwil" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="koordinator" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="tipee2e" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="sentralisasi" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Cashpoints" Relationship="Self.FK_Cashpoint_ToTable" FromRole="Pkts" ToRole="Cashpoint" />
+    <NavigationProperty Name="TransaksiAtms" Relationship="Self.FK_TransaksiAtms_ToTable" FromRole="Pkts" ToRole="TransaksiAtms" />
+  </EntityType>
+  <EntityType Name="TransaksiAtm">
+    <Key>
+      <PropertyRef Name="idTransaksi" />
+    </Key>
+    <Property Name="idTransaksi" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="tanggal" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="kodePkt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="saldoAwal20" Type="Int64" />
+    <Property Name="saldoAwal50" Type="Int64" />
+    <Property Name="saldoAwal100" Type="Int64" />
+    <Property Name="sislokATM20" Type="Int64" />
+    <Property Name="sislokATM50" Type="Int64" />
+    <Property Name="sislokATM100" Type="Int64" />
+    <Property Name="sislokCRM20" Type="Int64" />
+    <Property Name="sislokCRM50" Type="Int64" />
+    <Property Name="sislokCRM100" Type="Int64" />
+    <Property Name="sislokCDM20" Type="Int64" />
+    <Property Name="sislokCDM50" Type="Int64" />
+    <Property Name="sislokCDM100" Type="Int64" />
+    <Property Name="isiATM20" Type="Int64" />
+    <Property Name="isiATM50" Type="Int64" />
+    <Property Name="isiATM100" Type="Int64" />
+    <Property Name="isiCRM20" Type="Int64" />
+    <Property Name="isiCRM50" Type="Int64" />
+    <Property Name="isiCRM100" Type="Int64" />
+    <Property Name="bon20" Type="Int64" />
+    <Property Name="bon50" Type="Int64" />
+    <Property Name="bon100" Type="Int64" />
+    <Property Name="adhoc20" Type="Int64" />
+    <Property Name="adhoc50" Type="Int64" />
+    <Property Name="adhoc100" Type="Int64" />
+    <Property Name="setor20" Type="Int64" />
+    <Property Name="setor50" Type="Int64" />
+    <Property Name="setor100" Type="Int64" />
+    <Property Name="saldoAkhir20" Type="Int64" />
+    <Property Name="saldoAkhir50" Type="Int64" />
+    <Property Name="saldoAkhir100" Type="Int64" />
+    <NavigationProperty Name="Pkt" Relationship="Self.FK_TransaksiAtms_ToTable" FromRole="TransaksiAtms" ToRole="Pkts" />
+  </EntityType>
+  <Association Name="FK_Cashpoint_ToTable">
+    <End Role="Pkts" Type="Self.Pkt" Multiplicity="0..1" />
+    <End Role="Cashpoint" Type="Self.Cashpoint" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Pkts">
+        <PropertyRef Name="kodePkt" />
+      </Principal>
+      <Dependent Role="Cashpoint">
+        <PropertyRef Name="kodePkt" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Opti_ToTable">
+    <End Role="Cashpoint" Type="Self.Cashpoint" Multiplicity="0..1" />
+    <End Role="Opti" Type="Self.Opti" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Cashpoint">
+        <PropertyRef Name="idCashpoint" />
+      </Principal>
+      <Dependent Role="Opti">
+        <PropertyRef Name="idCashpoint" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TransaksiAtms_ToTable">
+    <End Role="Pkts" Type="Self.Pkt" Multiplicity="1" />
+    <End Role="TransaksiAtms" Type="Self.TransaksiAtm" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Pkts">
+        <PropertyRef Name="kodePkt" />
+      </Principal>
+      <Dependent Role="TransaksiAtms">
+        <PropertyRef Name="kodePkt" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Database1Entities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Approvals" EntityType="Self.Approval" />
+    <EntitySet Name="Cashpoints" EntityType="Self.Cashpoint" />
+    <EntitySet Name="DetailApprovals" EntityType="Self.DetailApproval" />
+    <EntitySet Name="Optis" EntityType="Self.Opti" />
+    <EntitySet Name="Pkts" EntityType="Self.Pkt" />
+    <EntitySet Name="TransaksiAtms" EntityType="Self.TransaksiAtm" />
+    <AssociationSet Name="FK_Cashpoint_ToTable" Association="Self.FK_Cashpoint_ToTable">
+      <End Role="Pkts" EntitySet="Pkts" />
+      <End Role="Cashpoint" EntitySet="Cashpoints" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Opti_ToTable" Association="Self.FK_Opti_ToTable">
+      <End Role="Cashpoint" EntitySet="Cashpoints" />
+      <End Role="Opti" EntitySet="Optis" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TransaksiAtms_ToTable" Association="Self.FK_TransaksiAtms_ToTable">
+      <End Role="Pkts" EntitySet="Pkts" />
+      <End Role="TransaksiAtms" EntitySet="TransaksiAtms" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

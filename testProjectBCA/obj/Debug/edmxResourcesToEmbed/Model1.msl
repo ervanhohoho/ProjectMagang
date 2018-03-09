@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="Database1ModelStoreContainer" CdmEntityContainer="Database1Entities">
+    <EntitySetMapping Name="Approvals">
+      <EntityTypeMapping TypeName="Database1Model.Approval">
+        <MappingFragment StoreEntitySet="Approvals">
+          <ScalarProperty Name="idApproval" ColumnName="idApproval" />
+          <ScalarProperty Name="tanggal" ColumnName="tanggal" />
+          <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Cashpoints">
+      <EntityTypeMapping TypeName="Database1Model.Cashpoint">
+        <MappingFragment StoreEntitySet="Cashpoint">
+          <ScalarProperty Name="idCashpoint" ColumnName="idCashpoint" />
+          <ScalarProperty Name="denom" ColumnName="denom" />
+          <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DetailApprovals">
+      <EntityTypeMapping TypeName="Database1Model.DetailApproval">
+        <MappingFragment StoreEntitySet="DetailApprovals">
+          <ScalarProperty Name="idDetailApproval" ColumnName="idDetailApproval" />
+          <ScalarProperty Name="idApproval" ColumnName="idApproval" />
+          <ScalarProperty Name="saldoAwal20" ColumnName="saldoAwal20" />
+          <ScalarProperty Name="saldoAwal50" ColumnName="saldoAwal50" />
+          <ScalarProperty Name="saldoAwal100" ColumnName="saldoAwal100" />
+          <ScalarProperty Name="sislokCRM20" ColumnName="sislokCRM20" />
+          <ScalarProperty Name="sislokCRM50" ColumnName="sislokCRM50" />
+          <ScalarProperty Name="sislokCRM100" ColumnName="sislokCRM100" />
+          <ScalarProperty Name="sislokCDM20" ColumnName="sislokCDM20" />
+          <ScalarProperty Name="sislokCDM50" ColumnName="sislokCDM50" />
+          <ScalarProperty Name="sislokCDM100" ColumnName="sislokCDM100" />
+          <ScalarProperty Name="isiATM20" ColumnName="isiATM20" />
+          <ScalarProperty Name="isiATM50" ColumnName="isiATM50" />
+          <ScalarProperty Name="isiATM100" ColumnName="isiATM100" />
+          <ScalarProperty Name="isiCRM20" ColumnName="isiCRM20" />
+          <ScalarProperty Name="isiCRM50" ColumnName="isiCRM50" />
+          <ScalarProperty Name="isiCRM100" ColumnName="isiCRM100" />
+          <ScalarProperty Name="bon20" ColumnName="bon20" />
+          <ScalarProperty Name="bon50" ColumnName="bon50" />
+          <ScalarProperty Name="bon100" ColumnName="bon100" />
+          <ScalarProperty Name="adhoc20" ColumnName="adhoc20" />
+          <ScalarProperty Name="adhoc50" ColumnName="adhoc50" />
+          <ScalarProperty Name="adhoc100" ColumnName="adhoc100" />
+          <ScalarProperty Name="setor20" ColumnName="setor20" />
+          <ScalarProperty Name="setor50" ColumnName="setor50" />
+          <ScalarProperty Name="setor100" ColumnName="setor100" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Optis">
+      <EntityTypeMapping TypeName="Database1Model.Opti">
+        <MappingFragment StoreEntitySet="Opti">
+          <ScalarProperty Name="idTransaksi" ColumnName="idTransaksi" />
+          <ScalarProperty Name="idCashpoint" ColumnName="idCashpoint" />
+          <ScalarProperty Name="tanggal" ColumnName="tanggal" />
+          <ScalarProperty Name="prediksi" ColumnName="prediksi" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Pkts">
+      <EntityTypeMapping TypeName="Database1Model.Pkt">
+        <MappingFragment StoreEntitySet="Pkts">
+          <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
+          <ScalarProperty Name="namaPkt" ColumnName="namaPkt" />
+          <ScalarProperty Name="kanwil" ColumnName="kanwil" />
+          <ScalarProperty Name="koordinator" ColumnName="koordinator" />
+          <ScalarProperty Name="tipee2e" ColumnName="tipee2e" />
+          <ScalarProperty Name="sentralisasi" ColumnName="sentralisasi" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TransaksiAtms">
+      <EntityTypeMapping TypeName="Database1Model.TransaksiAtm">
+        <MappingFragment StoreEntitySet="TransaksiAtms">
+          <ScalarProperty Name="idTransaksi" ColumnName="idTransaksi" />
+          <ScalarProperty Name="tanggal" ColumnName="tanggal" />
+          <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
+          <ScalarProperty Name="saldoAwal20" ColumnName="saldoAwal20" />
+          <ScalarProperty Name="saldoAwal50" ColumnName="saldoAwal50" />
+          <ScalarProperty Name="saldoAwal100" ColumnName="saldoAwal100" />
+          <ScalarProperty Name="sislokATM20" ColumnName="sislokATM20" />
+          <ScalarProperty Name="sislokATM50" ColumnName="sislokATM50" />
+          <ScalarProperty Name="sislokATM100" ColumnName="sislokATM100" />
+          <ScalarProperty Name="sislokCRM20" ColumnName="sislokCRM20" />
+          <ScalarProperty Name="sislokCRM50" ColumnName="sislokCRM50" />
+          <ScalarProperty Name="sislokCRM100" ColumnName="sislokCRM100" />
+          <ScalarProperty Name="sislokCDM20" ColumnName="sislokCDM20" />
+          <ScalarProperty Name="sislokCDM50" ColumnName="sislokCDM50" />
+          <ScalarProperty Name="sislokCDM100" ColumnName="sislokCDM100" />
+          <ScalarProperty Name="isiATM20" ColumnName="isiATM20" />
+          <ScalarProperty Name="isiATM50" ColumnName="isiATM50" />
+          <ScalarProperty Name="isiATM100" ColumnName="isiATM100" />
+          <ScalarProperty Name="isiCRM20" ColumnName="isiCRM20" />
+          <ScalarProperty Name="isiCRM50" ColumnName="isiCRM50" />
+          <ScalarProperty Name="isiCRM100" ColumnName="isiCRM100" />
+          <ScalarProperty Name="bon20" ColumnName="bon20" />
+          <ScalarProperty Name="bon50" ColumnName="bon50" />
+          <ScalarProperty Name="bon100" ColumnName="bon100" />
+          <ScalarProperty Name="adhoc20" ColumnName="adhoc20" />
+          <ScalarProperty Name="adhoc50" ColumnName="adhoc50" />
+          <ScalarProperty Name="adhoc100" ColumnName="adhoc100" />
+          <ScalarProperty Name="setor20" ColumnName="setor20" />
+          <ScalarProperty Name="setor50" ColumnName="setor50" />
+          <ScalarProperty Name="setor100" ColumnName="setor100" />
+          <ScalarProperty Name="saldoAkhir20" ColumnName="saldoAkhir20" />
+          <ScalarProperty Name="saldoAkhir50" ColumnName="saldoAkhir50" />
+          <ScalarProperty Name="saldoAkhir100" ColumnName="saldoAkhir100" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
