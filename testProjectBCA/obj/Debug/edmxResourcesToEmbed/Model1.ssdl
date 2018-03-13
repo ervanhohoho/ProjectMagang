@@ -106,18 +106,6 @@
     <Property Name="saldoAkhir50" Type="bigint" />
     <Property Name="saldoAkhir100" Type="bigint" />
   </EntityType>
-  <Association Name="FK_Cashpoint_ToTable">
-    <End Role="Pkts" Type="Self.Pkts" Multiplicity="0..1" />
-    <End Role="Cashpoint" Type="Self.Cashpoint" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Pkts">
-        <PropertyRef Name="kodePkt" />
-      </Principal>
-      <Dependent Role="Cashpoint">
-        <PropertyRef Name="kodePkt" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_Opti_ToTable">
     <End Role="Cashpoint" Type="Self.Cashpoint" Multiplicity="0..1" />
     <End Role="Opti" Type="Self.Opti" Multiplicity="*" />
@@ -149,10 +137,6 @@
     <EntitySet Name="Opti" EntityType="Self.Opti" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Pkts" EntityType="Self.Pkts" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TransaksiAtms" EntityType="Self.TransaksiAtms" Schema="dbo" store:Type="Tables" />
-    <AssociationSet Name="FK_Cashpoint_ToTable" Association="Self.FK_Cashpoint_ToTable">
-      <End Role="Pkts" EntitySet="Pkts" />
-      <End Role="Cashpoint" EntitySet="Cashpoint" />
-    </AssociationSet>
     <AssociationSet Name="FK_Opti_ToTable" Association="Self.FK_Opti_ToTable">
       <End Role="Cashpoint" EntitySet="Cashpoint" />
       <End Role="Opti" EntitySet="Opti" />

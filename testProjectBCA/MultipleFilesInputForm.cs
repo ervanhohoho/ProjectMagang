@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Oracle.DataAccess.Client;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -94,7 +95,7 @@ namespace testProjectBCA
                     }
                     else
                     {
-                        MessageBox.Show("Data tidak akan dimasukkan karena record hari sebelumnya tidak ada");
+                        MessageBox.Show("Data "+table.TableName+" tidak akan dimasukkan karena record hari sebelumnya tidak ada");
                         continue;
                     }
                 }
@@ -182,12 +183,14 @@ namespace testProjectBCA
                 for (int i = 0; i < 7; i++)
                 {
                     List<Int64> tempList = new List<Int64>();
-                    if ((table.Rows[22 + i][6].ToString() == "" || table.Rows[22 + i][6].ToString() == "0") &&
-                        (table.Rows[22 + i][7].ToString() == "" || table.Rows[22 + i][7].ToString() == "0") &&
-                        (table.Rows[22 + i][8].ToString() == "" || table.Rows[22 + i][8].ToString() == "0"))
+                    if ((table.Rows[22 + i][6].ToString().Trim() == "" || table.Rows[22 + i][6].ToString().Trim() == "0") &&
+                        (table.Rows[22 + i][7].ToString().Trim() == "" || table.Rows[22 + i][7].ToString().Trim() == "0") &&
+                        (table.Rows[22 + i][8].ToString().Trim() == "" || table.Rows[22 + i][8].ToString().Trim() == "0"))
                         continue;
-                    for (int j = 0; j < 4; j++)
+                    for (int j = 0; j < 3; j++)
                     {
+                        Console.WriteLine(i + " " + j);
+                        Console.WriteLine(table.Rows[22 + i][6 + j].ToString());
                         if (table.Rows[22 + i][6 + j].ToString() != "0" && table.Rows[22 + i][6 + j].ToString() != "")
                             tempList.Add(Int64.Parse(table.Rows[22 + i][6 + j].ToString()));
                         else

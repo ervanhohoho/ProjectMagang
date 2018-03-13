@@ -4,14 +4,13 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="4e509a0b950844faa18968f0d1624ce2" Name="Diagram1" ZoomLevel="74">
-        <EntityTypeShape EntityType="Database1Model.Approval" Width="1.5" PointX="5.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Database1Model.Cashpoint" Width="1.5" PointX="3" PointY="1.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="Database1Model.DetailApproval" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Database1Model.Opti" Width="1.5" PointX="5.25" PointY="1.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="Database1Model.Pkt" Width="1.5" PointX="0.75" PointY="5.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="Database1Model.TransaksiAtm" Width="1.5" PointX="3" PointY="4.125" IsExpanded="true" />
-        <AssociationConnector Association="Database1Model.FK_Cashpoint_ToTable" ManuallyRouted="false" />
+      <Diagram DiagramId="fb3d4422ed604eb3803ec6d48173d6ab" Name="Diagram1" ZoomLevel="80">
+        <EntityTypeShape EntityType="Database1Model.Approval" Width="1.5" PointX="5.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Database1Model.Cashpoint" Width="1.5" PointX="5.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="Database1Model.DetailApproval" Width="1.5" PointX="5.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Database1Model.Opti" Width="1.5" PointX="8" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Database1Model.Pkt" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Database1Model.TransaksiAtm" Width="1.5" PointX="3" PointY="1.25" IsExpanded="true" />
         <AssociationConnector Association="Database1Model.FK_Opti_ToTable" ManuallyRouted="false" />
         <AssociationConnector Association="Database1Model.FK_TransaksiAtms_ToTable" ManuallyRouted="false" />
       </Diagram>

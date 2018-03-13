@@ -15,7 +15,6 @@
     <Property Name="idCashpoint" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="denom" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
     <Property Name="kodePkt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-    <NavigationProperty Name="Pkt" Relationship="Self.FK_Cashpoint_ToTable" FromRole="Cashpoint" ToRole="Pkts" />
     <NavigationProperty Name="Optis" Relationship="Self.FK_Opti_ToTable" FromRole="Cashpoint" ToRole="Opti" />
   </EntityType>
   <EntityType Name="DetailApproval">
@@ -70,7 +69,6 @@
     <Property Name="koordinator" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="tipee2e" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="sentralisasi" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
-    <NavigationProperty Name="Cashpoints" Relationship="Self.FK_Cashpoint_ToTable" FromRole="Pkts" ToRole="Cashpoint" />
     <NavigationProperty Name="TransaksiAtms" Relationship="Self.FK_TransaksiAtms_ToTable" FromRole="Pkts" ToRole="TransaksiAtms" />
   </EntityType>
   <EntityType Name="TransaksiAtm">
@@ -112,18 +110,6 @@
     <Property Name="saldoAkhir100" Type="Int64" />
     <NavigationProperty Name="Pkt" Relationship="Self.FK_TransaksiAtms_ToTable" FromRole="TransaksiAtms" ToRole="Pkts" />
   </EntityType>
-  <Association Name="FK_Cashpoint_ToTable">
-    <End Role="Pkts" Type="Self.Pkt" Multiplicity="0..1" />
-    <End Role="Cashpoint" Type="Self.Cashpoint" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Pkts">
-        <PropertyRef Name="kodePkt" />
-      </Principal>
-      <Dependent Role="Cashpoint">
-        <PropertyRef Name="kodePkt" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_Opti_ToTable">
     <End Role="Cashpoint" Type="Self.Cashpoint" Multiplicity="0..1" />
     <End Role="Opti" Type="Self.Opti" Multiplicity="*" />
@@ -155,10 +141,6 @@
     <EntitySet Name="Optis" EntityType="Self.Opti" />
     <EntitySet Name="Pkts" EntityType="Self.Pkt" />
     <EntitySet Name="TransaksiAtms" EntityType="Self.TransaksiAtm" />
-    <AssociationSet Name="FK_Cashpoint_ToTable" Association="Self.FK_Cashpoint_ToTable">
-      <End Role="Pkts" EntitySet="Pkts" />
-      <End Role="Cashpoint" EntitySet="Cashpoints" />
-    </AssociationSet>
     <AssociationSet Name="FK_Opti_ToTable" Association="Self.FK_Opti_ToTable">
       <End Role="Cashpoint" EntitySet="Cashpoints" />
       <End Role="Opti" EntitySet="Optis" />
