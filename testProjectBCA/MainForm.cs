@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -24,17 +25,49 @@ namespace testProjectBCA
 
         private void inputOptiToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            inputOpti();
+        }
+        private void inputDataToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MultipleFilesInputForm input = new MultipleFilesInputForm();
+            input.MdiParent = this;
+            input.Show();
+        }
+        private void revisiDataToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Revisi rev = new Revisi();
+            rev.MdiParent = this;
+            rev.Show();
+
+        }
+        private void inputDataPktToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            inputDataPkt();
+        }
+        private void inputDataDenomToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            inputDataDenom();
+        }
+        private void informationBoardToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            InformationBoard ib = new InformationBoard();
+            ib.MdiParent = this;
+            ib.Show();
+
+        }
+        private void inputOpti()
+        {
             OpenFileDialog of = new OpenFileDialog();
             of.Filter = Variables.csvFilter;
             String connectionString = Variables.connectionString;
             if (of.ShowDialog() == DialogResult.OK)
-            { 
+            {
                 try
                 {
                     using (SqlConnection con = new SqlConnection(connectionString))
                     {
                         con.Open();
-                        using (SqlCommand command = new SqlCommand("DELETE FROM Opti",con))
+                        using (SqlCommand command = new SqlCommand("DELETE FROM Opti", con))
                         {
                             command.ExecuteNonQuery();
                         }
@@ -63,22 +96,7 @@ namespace testProjectBCA
                 }
             }
         }
-        private void inputDataToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            MultipleFilesInputForm input = new MultipleFilesInputForm();
-            input.MdiParent = this;
-            input.Show();
-        }
-
-        private void revisiDataToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Revisi rev = new Revisi();
-            rev.MdiParent = this;
-            rev.Show();
-
-        }
-
-        private void inputDataPktToolStripMenuItem_Click(object sender, EventArgs e)
+        private void inputDataPkt()
         {
             OpenFileDialog of = new OpenFileDialog();
             of.Filter = Variables.excelFilter;
@@ -110,11 +128,15 @@ namespace testProjectBCA
                 //    db.SaveChanges();
                 //}
                 DataTable dt = ds.Tables[0];
-                UpdateDataCashpointPkt(ds.Tables[0]); 
+                DataRow[] rows = ds.Tables[0].Select("Column0 not like 'A%' OR LEN(Column0) > 5");
+                foreach (DataRow row in rows)
+                {
+                    dt.Rows.Remove(row);
+                }
+                UpdateDataCashpointPkt(dt);
             }
         }
-
-        private void inputDataDenomToolStripMenuItem_Click(object sender, EventArgs e)
+        private void inputDataDenom()
         {
             OpenFileDialog of = new OpenFileDialog();
             of.Filter = Variables.excelFilter;
@@ -151,14 +173,6 @@ namespace testProjectBCA
 
             }
         }
-
-        private void informationBoardToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            InformationBoard ib = new InformationBoard();
-            ib.MdiParent = this;
-            ib.Show();
-
-        }
         public static void UpdateDataCashpointPkt(DataTable dt)
         {
             using (SqlConnection conn = new SqlConnection(Variables.connectionString))
@@ -173,7 +187,6 @@ namespace testProjectBCA
                         command.CommandText = "CREATE TABLE #TempTable(idCashpoint VARCHAR(255), kodePkt VARCHAR(255))";
                         command.ExecuteNonQuery();
 
-                        dt.Rows.RemoveAt(0);
                         //Bulk insert into temp table
                         using (SqlBulkCopy bulkcopy = new SqlBulkCopy(conn))
                         {
@@ -247,6 +260,115 @@ namespace testProjectBCA
                 }
             }
         }
+
+        private void insertDataCabangToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog of = new OpenFileDialog();
+            if(of.ShowDialog() == DialogResult.OK)
+            {
+                insertDataPktCabang(of.FileName);
+            }
+        }
+
+        private void insertDataPktCabang(String filename)
+        {
+            using (var csv = new CsvReader(new StreamReader(filename), true))
+            {
+                using (var sbc = new SqlBulkCopy(Variables.connectionString))
+                {
+                    sbc.DestinationTableName = "dbo.Cabang";
+                    sbc.BatchSize = 1000;
+
+                    sbc.AddColumnMapping(0, 0);
+                    sbc.AddColumnMapping(4, 1);
+                    sbc.WriteToServer(csv);
+                }
+            }
+            using(SqlConnection sql = new SqlConnection(Variables.connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    sql.Open();
+                    cmd.Connection = sql;
+                    cmd.CommandText = "UPDATE CABANG SET kodeCabang = RIGHT(kodeCabang,4)";
+                    cmd.ExecuteNonQuery();
+                    cmd.CommandText = "UPDATE CABANG SET kodeCabang = IIF(kodeCabang like '000%',RIGHT(kodeCabang,1),IIF(kodeCabang like '00%', RIGHT(kodeCabang,2), IIF(kodeCabang like '0%', RIGHT(kodeCabang,3),kodeCabang)))";
+                    cmd.ExecuteNonQuery();
+                    sql.Close();
+                }
+            } 
+            
+        }
+
+        private void insertDataKanwilCabangToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog of = new OpenFileDialog();
+            if (of.ShowDialog() == DialogResult.OK)
+            {
+                insertDataKanwilCabang(of.FileName);
+            }
+        }
+        private void insertDataKanwilCabang(String filepath)
+        {
+
+            DataSet ds = Util.openExcel(filepath);
+            DataTable dt = ds.Tables[0];
+            DataRow[] rows = dt.Select("Column3 not like 'JABO%'");
+
+
+            foreach(var row in rows)
+            {
+                dt.Rows.Remove(row);
+            }
+            Console.WriteLine(dt.Rows[0][0].ToString());
+            Console.WriteLine(dt.Rows[0][1].ToString());
+            Console.WriteLine(dt.Rows[0][2].ToString());
+            using (SqlConnection conn = new SqlConnection(Variables.connectionString))
+            {
+                using (SqlCommand command = new SqlCommand("", conn))
+                {
+                    try
+                    {
+                        conn.Open();
+
+                        //Creating temp table on database
+                        command.CommandText = "CREATE TABLE #TempTable(kodeCabang VARCHAR(255), kanwil VARCHAR(255))";
+                        command.ExecuteNonQuery();
+
+                        //Bulk insert into temp table
+                        using (SqlBulkCopy bulkcopy = new SqlBulkCopy(conn))
+                        {
+                            //bulkcopy.BulkCopyTimeout = 660;
+                            bulkcopy.DestinationTableName = "#TempTable";
+                            bulkcopy.ColumnMappings.Add(0, 0);
+                            bulkcopy.ColumnMappings.Add(2, 1);
+                            bulkcopy.WriteToServer(dt);
+                            bulkcopy.Close();
+                        }
+
+                        // Updating destination table, and dropping temp table
+                        command.CommandTimeout = 300;
+                        command.CommandText = "INSERT INTO Cabang(kodeCabang, kanwil) SELECT TT.kodeCabang, TT.kanwil FROM #TempTable TT LEFT JOIN Cabang C ON TT.kodeCabang = C.kodeCabang WHERE C.kodeCabang IS  NULL";
+                        command.ExecuteNonQuery();
+                        command.CommandText = "UPDATE T SET T.kanwil = TT.kanwil FROM Cabang T INNER JOIN #TempTable TT ON TT.kodeCabang = T.kodeCabang; DROP TABLE #TempTable;";
+                        command.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        // Handle exception properly
+                    }
+                    finally
+                    {
+                        conn.Close();
+                    }
+                }
+            }
+        }
+
+        private void inputTransaksiCabangToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 public static class SqlBulkCopyExtensions
@@ -265,5 +387,19 @@ public static class SqlBulkCopyExtensions
         sbc.ColumnMappings.Add(map);
 
         return map;
+    }
+}
+static class DateTimeExtensions
+{
+    static GregorianCalendar _gc = new GregorianCalendar();
+    public static int GetWeekOfMonth(this DateTime time)
+    {
+        DateTime first = new DateTime(time.Year, time.Month, 1);
+        return time.GetWeekOfYear() - first.GetWeekOfYear() + 1;
+    }
+
+    static int GetWeekOfYear(this DateTime time)
+    {
+        return _gc.GetWeekOfYear(time, CalendarWeekRule.FirstDay, DayOfWeek.Sunday);
     }
 }

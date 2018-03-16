@@ -38,6 +38,11 @@
             this.cashpointToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inputDataPktToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inputDataDenomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.adminToolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.insertDataCabangToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.insertDataKanwilCabangToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cabangToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.inputTransaksiCabangToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -45,7 +50,9 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.aTMToolStripMenuItem,
-            this.cashpointToolStripMenuItem});
+            this.cashpointToolStripMenuItem,
+            this.cabangToolStripMenuItem,
+            this.adminToolsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1004, 24);
@@ -121,6 +128,44 @@
             this.inputDataDenomToolStripMenuItem.Text = "Input data denom";
             this.inputDataDenomToolStripMenuItem.Click += new System.EventHandler(this.inputDataDenomToolStripMenuItem_Click);
             // 
+            // adminToolsToolStripMenuItem
+            // 
+            this.adminToolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.insertDataCabangToolStripMenuItem,
+            this.insertDataKanwilCabangToolStripMenuItem});
+            this.adminToolsToolStripMenuItem.Name = "adminToolsToolStripMenuItem";
+            this.adminToolsToolStripMenuItem.Size = new System.Drawing.Size(86, 20);
+            this.adminToolsToolStripMenuItem.Text = "Admin Tools";
+            // 
+            // insertDataCabangToolStripMenuItem
+            // 
+            this.insertDataCabangToolStripMenuItem.Name = "insertDataCabangToolStripMenuItem";
+            this.insertDataCabangToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
+            this.insertDataCabangToolStripMenuItem.Text = "Insert Data PKT Cabang";
+            this.insertDataCabangToolStripMenuItem.Click += new System.EventHandler(this.insertDataCabangToolStripMenuItem_Click);
+            // 
+            // insertDataKanwilCabangToolStripMenuItem
+            // 
+            this.insertDataKanwilCabangToolStripMenuItem.Name = "insertDataKanwilCabangToolStripMenuItem";
+            this.insertDataKanwilCabangToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
+            this.insertDataKanwilCabangToolStripMenuItem.Text = "Insert Data Kanwil Cabang";
+            this.insertDataKanwilCabangToolStripMenuItem.Click += new System.EventHandler(this.insertDataKanwilCabangToolStripMenuItem_Click);
+            // 
+            // cabangToolStripMenuItem
+            // 
+            this.cabangToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.inputTransaksiCabangToolStripMenuItem});
+            this.cabangToolStripMenuItem.Name = "cabangToolStripMenuItem";
+            this.cabangToolStripMenuItem.Size = new System.Drawing.Size(60, 20);
+            this.cabangToolStripMenuItem.Text = "Cabang";
+            // 
+            // inputTransaksiCabangToolStripMenuItem
+            // 
+            this.inputTransaksiCabangToolStripMenuItem.Name = "inputTransaksiCabangToolStripMenuItem";
+            this.inputTransaksiCabangToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
+            this.inputTransaksiCabangToolStripMenuItem.Text = "Input Transaksi Cabang";
+            this.inputTransaksiCabangToolStripMenuItem.Click += new System.EventHandler(this.inputTransaksiCabangToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -151,5 +196,10 @@
         private System.Windows.Forms.ToolStripMenuItem cashpointToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem inputDataPktToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem inputDataDenomToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem adminToolsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem insertDataCabangToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem insertDataKanwilCabangToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cabangToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem inputTransaksiCabangToolStripMenuItem;
     }
 }

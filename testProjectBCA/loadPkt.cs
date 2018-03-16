@@ -64,7 +64,7 @@ namespace testProjectBCA
                     Console.Write(row[1].ToString() + " ");
                     newPkt.namaPkt = row[2].ToString();
                     Console.Write(row[2].ToString());
-                    newPkt.tipee2e = row[3].ToString();
+                    newPkt.e2e = row[3].ToString();
                     Console.Write(row[3].ToString());
                     newPkt.koordinator = row[4].ToString();
                     Console.Write(row[4].ToString());

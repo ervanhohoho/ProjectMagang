@@ -63,12 +63,12 @@
     </EntitySetMapping>
     <EntitySetMapping Name="Pkts">
       <EntityTypeMapping TypeName="Database1Model.Pkt">
-        <MappingFragment StoreEntitySet="Pkts">
+        <MappingFragment StoreEntitySet="Pkt">
           <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
           <ScalarProperty Name="namaPkt" ColumnName="namaPkt" />
-          <ScalarProperty Name="kanwil" ColumnName="kanwil" />
+          <ScalarProperty Name="e2e" ColumnName="e2e" />
           <ScalarProperty Name="koordinator" ColumnName="koordinator" />
-          <ScalarProperty Name="tipee2e" ColumnName="tipee2e" />
+          <ScalarProperty Name="kanwil" ColumnName="kanwil" />
           <ScalarProperty Name="sentralisasi" ColumnName="sentralisasi" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -109,6 +109,18 @@
           <ScalarProperty Name="saldoAkhir20" ColumnName="saldoAkhir20" />
           <ScalarProperty Name="saldoAkhir50" ColumnName="saldoAkhir50" />
           <ScalarProperty Name="saldoAkhir100" ColumnName="saldoAkhir100" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="laporanBons">
+      <EntityTypeMapping TypeName="Database1Model.laporanBon">
+        <MappingFragment StoreEntitySet="laporanBon">
+          <ScalarProperty Name="C20" ColumnName="20" />
+          <ScalarProperty Name="C50" ColumnName="50" />
+          <ScalarProperty Name="C100" ColumnName="100" />
+          <ScalarProperty Name="tanggal" ColumnName="tanggal" />
+          <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
+          <ScalarProperty Name="idLaporan" ColumnName="idLaporan" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

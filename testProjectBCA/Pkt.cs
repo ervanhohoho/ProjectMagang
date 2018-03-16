@@ -18,16 +18,19 @@ namespace testProjectBCA
         public Pkt()
         {
             this.TransaksiAtms = new HashSet<TransaksiAtm>();
+            this.laporanBons = new HashSet<laporanBon>();
         }
     
         public string kodePkt { get; set; }
         public string namaPkt { get; set; }
-        public string kanwil { get; set; }
+        public string e2e { get; set; }
         public string koordinator { get; set; }
-        public string tipee2e { get; set; }
+        public string kanwil { get; set; }
         public string sentralisasi { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TransaksiAtm> TransaksiAtms { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<laporanBon> laporanBons { get; set; }
     }
 }

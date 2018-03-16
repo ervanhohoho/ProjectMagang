@@ -64,12 +64,13 @@
       <PropertyRef Name="kodePkt" />
     </Key>
     <Property Name="kodePkt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="namaPkt" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="kanwil" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="koordinator" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="tipee2e" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="sentralisasi" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
-    <NavigationProperty Name="TransaksiAtms" Relationship="Self.FK_TransaksiAtms_ToTable" FromRole="Pkts" ToRole="TransaksiAtms" />
+    <Property Name="namaPkt" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="e2e" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="koordinator" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="kanwil" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="sentralisasi" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="TransaksiAtms" Relationship="Self.FK_TransaksiAtms_Pkt" FromRole="Pkt" ToRole="TransaksiAtms" />
+    <NavigationProperty Name="laporanBons" Relationship="Database1Model.FK_laporanBon_Pkt" FromRole="Pkt" ToRole="laporanBon" />
   </EntityType>
   <EntityType Name="TransaksiAtm">
     <Key>
@@ -108,7 +109,7 @@
     <Property Name="saldoAkhir20" Type="Int64" />
     <Property Name="saldoAkhir50" Type="Int64" />
     <Property Name="saldoAkhir100" Type="Int64" />
-    <NavigationProperty Name="Pkt" Relationship="Self.FK_TransaksiAtms_ToTable" FromRole="TransaksiAtms" ToRole="Pkts" />
+    <NavigationProperty Name="Pkt" Relationship="Self.FK_TransaksiAtms_Pkt" FromRole="TransaksiAtms" ToRole="Pkt" />
   </EntityType>
   <Association Name="FK_Opti_ToTable">
     <End Role="Cashpoint" Type="Self.Cashpoint" Multiplicity="0..1" />
@@ -122,11 +123,11 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_TransaksiAtms_ToTable">
-    <End Role="Pkts" Type="Self.Pkt" Multiplicity="1" />
+  <Association Name="FK_TransaksiAtms_Pkt">
+    <End Role="Pkt" Type="Self.Pkt" Multiplicity="1" />
     <End Role="TransaksiAtms" Type="Self.TransaksiAtm" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="Pkts">
+      <Principal Role="Pkt">
         <PropertyRef Name="kodePkt" />
       </Principal>
       <Dependent Role="TransaksiAtms">
@@ -145,9 +146,38 @@
       <End Role="Cashpoint" EntitySet="Cashpoints" />
       <End Role="Opti" EntitySet="Optis" />
     </AssociationSet>
-    <AssociationSet Name="FK_TransaksiAtms_ToTable" Association="Self.FK_TransaksiAtms_ToTable">
-      <End Role="Pkts" EntitySet="Pkts" />
+    <AssociationSet Name="FK_TransaksiAtms_Pkt" Association="Self.FK_TransaksiAtms_Pkt">
+      <End Role="Pkt" EntitySet="Pkts" />
       <End Role="TransaksiAtms" EntitySet="TransaksiAtms" />
     </AssociationSet>
+    <EntitySet Name="laporanBons" EntityType="Database1Model.laporanBon" />
+    <AssociationSet Name="FK_laporanBon_Pkt" Association="Database1Model.FK_laporanBon_Pkt">
+      <End Role="Pkt" EntitySet="Pkts" />
+      <End Role="laporanBon" EntitySet="laporanBons" />
+    </AssociationSet>
   </EntityContainer>
+  <EntityType Name="laporanBon">
+    <Key>
+      <PropertyRef Name="idLaporan" />
+    </Key>
+    <Property Name="idLaporan" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="kodePkt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="tanggal" Type="DateTime" Precision="0" />
+    <Property Name="C100" Type="Int64" />
+    <Property Name="C50" Type="Int64" />
+    <Property Name="C20" Type="Int64" />
+    <NavigationProperty Name="Pkt" Relationship="Database1Model.FK_laporanBon_Pkt" FromRole="laporanBon" ToRole="Pkt" />
+  </EntityType>
+  <Association Name="FK_laporanBon_Pkt">
+    <End Type="Database1Model.Pkt" Role="Pkt" Multiplicity="0..1" />
+    <End Type="Database1Model.laporanBon" Role="laporanBon" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Pkt">
+        <PropertyRef Name="kodePkt" />
+      </Principal>
+      <Dependent Role="laporanBon">
+        <PropertyRef Name="kodePkt" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

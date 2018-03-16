@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ExcelDataReader;
 using System.IO;
 using System.Data;
+using System.Globalization;
 
 namespace testProjectBCA
 {
@@ -13,6 +14,20 @@ namespace testProjectBCA
     {
         public static FileStream stream;
         static IExcelDataReader reader;
+        public static int GetIso8601WeekOfYear(DateTime time)
+        {
+            // Seriously cheat.  If its Monday, Tuesday or Wednesday, then it'll 
+            // be the same week# as whatever Thursday, Friday or Saturday are,
+            // and we always get those right
+            DayOfWeek day = CultureInfo.InvariantCulture.Calendar.GetDayOfWeek(time);
+            if (day >= DayOfWeek.Monday && day <= DayOfWeek.Wednesday)
+            {
+                time = time.AddDays(3);
+            }
+
+            // Return the week of our adjusted day
+            return CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(time, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+        }
 
         public static DataSet openExcel(string filePath)
         {
@@ -84,6 +99,20 @@ namespace testProjectBCA
             newT.saldoAkhir20 = temp.saldoAkhirHitungan[2];
             db.TransaksiAtms.Add(newT);
             db.SaveChanges();
+            int counter = 1;
+            foreach (var temp2 in temp.bonAtmYangDisetujui)
+            {
+                laporanBon newL = new laporanBon();
+                newL.kodePkt = temp.kodePkt;
+                newL.tanggal = temp.tanggalPengajuan.AddDays(counter++);
+                newL.C100 = temp2[0];
+                newL.C50 = temp2[1];
+                newL.C20 = temp2[2];
+                db.laporanBons.Add(newL);
+                db.SaveChanges();
+            }
+            
+            
         }
         public static void closeExcel()
         {

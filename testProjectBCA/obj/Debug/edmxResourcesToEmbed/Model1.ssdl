@@ -48,6 +48,17 @@
     <Property Name="setor50" Type="bigint" />
     <Property Name="setor100" Type="bigint" />
   </EntityType>
+  <EntityType Name="laporanBon">
+    <Key>
+      <PropertyRef Name="idLaporan" />
+    </Key>
+    <Property Name="idLaporan" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="kodePkt" Type="varchar" MaxLength="10" />
+    <Property Name="tanggal" Type="date" />
+    <Property Name="100" Type="bigint" />
+    <Property Name="50" Type="bigint" />
+    <Property Name="20" Type="bigint" />
+  </EntityType>
   <EntityType Name="Opti">
     <Key>
       <PropertyRef Name="idTransaksi" />
@@ -57,16 +68,16 @@
     <Property Name="tanggal" Type="date" />
     <Property Name="prediksi" Type="bigint" />
   </EntityType>
-  <EntityType Name="Pkts">
+  <EntityType Name="Pkt">
     <Key>
       <PropertyRef Name="kodePkt" />
     </Key>
     <Property Name="kodePkt" Type="varchar" MaxLength="10" Nullable="false" />
-    <Property Name="namaPkt" Type="varchar" MaxLength="100" Nullable="false" />
-    <Property Name="kanwil" Type="varchar" MaxLength="50" Nullable="false" />
-    <Property Name="koordinator" Type="varchar" MaxLength="100" Nullable="false" />
-    <Property Name="tipee2e" Type="varchar" MaxLength="10" Nullable="false" />
-    <Property Name="sentralisasi" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="namaPkt" Type="varchar" MaxLength="50" />
+    <Property Name="e2e" Type="varchar" MaxLength="10" />
+    <Property Name="koordinator" Type="varchar" MaxLength="50" />
+    <Property Name="kanwil" Type="varchar" MaxLength="50" />
+    <Property Name="sentralisasi" Type="varchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="TransaksiAtms">
     <Key>
@@ -106,6 +117,18 @@
     <Property Name="saldoAkhir50" Type="bigint" />
     <Property Name="saldoAkhir100" Type="bigint" />
   </EntityType>
+  <Association Name="FK_laporanBon_Pkt">
+    <End Role="Pkt" Type="Self.Pkt" Multiplicity="0..1" />
+    <End Role="laporanBon" Type="Self.laporanBon" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Pkt">
+        <PropertyRef Name="kodePkt" />
+      </Principal>
+      <Dependent Role="laporanBon">
+        <PropertyRef Name="kodePkt" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Opti_ToTable">
     <End Role="Cashpoint" Type="Self.Cashpoint" Multiplicity="0..1" />
     <End Role="Opti" Type="Self.Opti" Multiplicity="*" />
@@ -118,11 +141,11 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_TransaksiAtms_ToTable">
-    <End Role="Pkts" Type="Self.Pkts" Multiplicity="1" />
+  <Association Name="FK_TransaksiAtms_Pkt">
+    <End Role="Pkt" Type="Self.Pkt" Multiplicity="1" />
     <End Role="TransaksiAtms" Type="Self.TransaksiAtms" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="Pkts">
+      <Principal Role="Pkt">
         <PropertyRef Name="kodePkt" />
       </Principal>
       <Dependent Role="TransaksiAtms">
@@ -134,15 +157,20 @@
     <EntitySet Name="Approvals" EntityType="Self.Approvals" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Cashpoint" EntityType="Self.Cashpoint" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DetailApprovals" EntityType="Self.DetailApprovals" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="laporanBon" EntityType="Self.laporanBon" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Opti" EntityType="Self.Opti" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Pkts" EntityType="Self.Pkts" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Pkt" EntityType="Self.Pkt" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TransaksiAtms" EntityType="Self.TransaksiAtms" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_laporanBon_Pkt" Association="Self.FK_laporanBon_Pkt">
+      <End Role="Pkt" EntitySet="Pkt" />
+      <End Role="laporanBon" EntitySet="laporanBon" />
+    </AssociationSet>
     <AssociationSet Name="FK_Opti_ToTable" Association="Self.FK_Opti_ToTable">
       <End Role="Cashpoint" EntitySet="Cashpoint" />
       <End Role="Opti" EntitySet="Opti" />
     </AssociationSet>
-    <AssociationSet Name="FK_TransaksiAtms_ToTable" Association="Self.FK_TransaksiAtms_ToTable">
-      <End Role="Pkts" EntitySet="Pkts" />
+    <AssociationSet Name="FK_TransaksiAtms_Pkt" Association="Self.FK_TransaksiAtms_Pkt">
+      <End Role="Pkt" EntitySet="Pkt" />
       <End Role="TransaksiAtms" EntitySet="TransaksiAtms" />
     </AssociationSet>
   </EntityContainer>

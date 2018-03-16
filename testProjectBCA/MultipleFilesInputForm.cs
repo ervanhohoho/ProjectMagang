@@ -26,6 +26,7 @@ namespace testProjectBCA
             OpenFileDialog of = new OpenFileDialog();
             of.Multiselect = true;
             of.Filter = "Microsoft Excel | *.xls; *xlsx; *xlsm";
+            filesList.Items.Clear();
             if(of.ShowDialog() == DialogResult.OK)
             {
                 files = of.FileNames;
@@ -197,6 +198,7 @@ namespace testProjectBCA
                             tempList.Add(0);
                     }
                     pkt.bonAtmYangDisetujui.Add(tempList);
+                    //MessageBox.Show(pkt.bonAtmYangDisetujui[0][0].ToString());
                 }
                 //Pengambilan saldo akhir dari excel
                 for (int a = 0; a < 4; a++)
@@ -210,18 +212,20 @@ namespace testProjectBCA
                 for (int i = 0; i < 7; i++)
                 {
                     List<Int64> tempList = new List<Int64>();
-                    if ((table.Rows[34 + i][6].ToString() == "" || table.Rows[34 + i][6].ToString() == "0") &&
-                        (table.Rows[34 + i][7].ToString() == "" || table.Rows[34 + i][7].ToString() == "0") &&
-                        (table.Rows[34 + i][8].ToString() == "" || table.Rows[34 + i][8].ToString() == "0"))
+                    if ((table.Rows[34 + i][6].ToString() == "" || table.Rows[34 + i][6].ToString() == "0" || table.Rows[34 + i][6].ToString() == ".") &&
+                        (table.Rows[34 + i][7].ToString() == "" || table.Rows[34 + i][7].ToString() == "0" || table.Rows[34 + i][7].ToString() == ".") &&
+                        (table.Rows[34 + i][8].ToString() == "" || table.Rows[34 + i][8].ToString() == "0" || table.Rows[34 + i][8].ToString() == "."))
                         continue;
+
                     for (int j = 0; j < 4; j++)
                     {
-                        if (table.Rows[34 + i][6 + j].ToString() != "0" && table.Rows[34 + i][6 + j].ToString() != "")
+                        if (table.Rows[34 + i][6 + j].ToString() != "0" && table.Rows[34 + i][6 + j].ToString() != "" && table.Rows[34 + i][6+j].ToString() != ".")
                             tempList.Add(Int64.Parse(table.Rows[34 + i][6 + j].ToString()));
                         else
                             tempList.Add(0);
                     }
                     pkt.permintaanBon.Add(tempList);
+
                 }
 
                 pkt.hitungSaldoAkhir();
