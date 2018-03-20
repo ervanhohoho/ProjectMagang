@@ -40,5 +40,9 @@ namespace testProjectBCA
         public Nullable<long> setor20 { get; set; }
         public Nullable<long> setor50 { get; set; }
         public Nullable<long> setor100 { get; set; }
+        public Nullable<System.DateTime> tanggal { get; set; }
+        public Nullable<long> sislokATM20 { get; set; }
+        public Nullable<long> sislokATM50 { get; set; }
+        public Nullable<long> sislokATM100 { get; set; }
     }
 }

@@ -204,6 +204,10 @@ namespace testProjectBCA
                         command.ExecuteNonQuery();
                         command.CommandText = "UPDATE T SET T.kodePkt = TT.kodePkt FROM Cashpoint T INNER JOIN #TempTable TT ON TT.idCashpoint = T.idCashpoint; DROP TABLE #TempTable;";
                         command.ExecuteNonQuery();
+                        command.CommandText = "DELETE FROM Cashpoint WHERE kodePkt = 'AMRT'";
+                        command.ExecuteNonQuery();
+                        command.CommandText = "UPDATE Cashpoint SET kodePkt = 'AMRT' WHERE kodePkt = 'AMRT2'";
+                        command.ExecuteNonQuery();
                     }
                     catch (Exception ex)
                     {
@@ -367,7 +371,9 @@ namespace testProjectBCA
 
         private void inputTransaksiCabangToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            InputTransaksiCabangForm itcf = new InputTransaksiCabangForm();
+            itcf.MdiParent = this;
+            itcf.Show();
         }
     }
 }

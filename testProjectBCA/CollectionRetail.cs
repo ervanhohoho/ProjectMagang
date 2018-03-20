@@ -33,5 +33,6 @@ namespace testProjectBCA
         public Nullable<long> c50 { get; set; }
         public Nullable<long> c25 { get; set; }
         public string kodePkt { get; set; }
+        public Nullable<System.DateTime> tanggal { get; set; }
     }
 }

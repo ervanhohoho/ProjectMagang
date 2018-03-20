@@ -15,8 +15,10 @@ namespace testProjectBCA
     public partial class InformationBoard : Form
     {
         List<String> KodePkt;
-        Denom saldoAwal = new Denom();
+        int jumlahBonLaporan;
 
+        Denom saldoAwal = new Denom();
+        
         List<Denom> sislokCrm = new List<Denom>();
         List<Denom> sislokCdm = new List<Denom>();
         List<Rasio> rasioSislokAtm = new List<Rasio>();
@@ -37,7 +39,7 @@ namespace testProjectBCA
         int pktIndex;
         DateTime tanggalOptiMin ,tanggalOptiMax; 
         /**
-            Opti itu datanya pasti selalu H+1, H+2,...
+            Opti itu datanya pasti selalu H, H+1,...
             Belom tentu semua pkt ada data opti
         **/
         public InformationBoard()
@@ -50,14 +52,15 @@ namespace testProjectBCA
                                                 select x.kodePkt).ToList();
 
                 KodePkt = new List<String>();
-
+                var query = (from x in db.Optis
+                             select x.Cashpoint.kodePkt).ToList();
                 foreach (String temp2 in tempListKodePkt)
                 {
-                    var query = (from x in db.Optis
-                                 where x.Cashpoint.kodePkt == temp2
-                                 select x).ToList();
-                    if (query.Count > 0)
-                        KodePkt.Add(temp2);
+                    foreach(var temp3 in query)
+                    {
+                        if (temp2 == temp3)
+                        { KodePkt.Add(temp2); break; }
+                    }
                 }
                 pktComboBox.DataSource = KodePkt;
             }
@@ -111,6 +114,8 @@ namespace testProjectBCA
         {
             pktIndex = pktComboBox.SelectedIndex;
             loadPrediksiOpti();
+            Database1Entities db = new Database1Entities();
+            
         }
         private void loadPrediksiOpti()
         {
@@ -213,8 +218,13 @@ namespace testProjectBCA
                             dataGridView1.Rows.Add(row);
                         }
                     }
+                    cmd.CommandText = "SELECT e2e FROM Pkt WHERE kodePkt = '" + KodePkt[pktIndex]+"'";
+                    reader = cmd.ExecuteReader();
+                    reader.Read();
+                    e2eTxt.Text = "Jenis E2E: " + reader[0];
                     sqlConnection1.Close();
                 }
+                
             }
             // Data is accessible through the DataReader object here.
 
@@ -233,16 +243,14 @@ namespace testProjectBCA
                 loadSislokCdm();
                 loadRasioSislokAtm();
 
-                loadIsiCrm();
-
                 loadSaldoAwal();
-
                 loadBon();
 
+                loadIsiCrm();
                 loadSislokCrm();
-                Console.WriteLine(sislokCrm[0].d100);
+                //Console.WriteLine(sislokCrm[0].d100);
                 loadRekomendasiBon();
-
+                
                 loadTableRekomendasiBon();
 
                 loadTableBon();
@@ -274,7 +282,10 @@ namespace testProjectBCA
         }
         void loadIsiCrm()
         {
-            sislokCrm = new List<Denom>();
+            Console.WriteLine();
+            Console.WriteLine("Load Isi CRM");
+            Console.WriteLine("======================");
+            isiCrm = new List<Denom>();
             int rowCount = dataGridView1.Rows.Count;
             //dataGridView1.Hide();
             DateTime startDate = Convert.ToDateTime(dataGridView1.Rows[0].Cells[0].Value);
@@ -326,7 +337,8 @@ namespace testProjectBCA
                 }
                 sql.Close();
                 Console.WriteLine("Isi CRM");
-                foreach (var temp in sislokCrm)
+                Console.WriteLine(isiCrm.Count);
+                foreach (var temp in isiCrm)
                 {
                     Console.WriteLine(temp.tgl + " " + temp.d100 + " ");
                 }
@@ -334,6 +346,9 @@ namespace testProjectBCA
         }
         private void loadSislokCrm()
         {
+            Console.WriteLine();
+            Console.WriteLine("Load Sislok CRM");
+            Console.WriteLine("======================");
             sislokCrm = new List<Denom>();
             int rowCount = dataGridView1.Rows.Count;
             //dataGridView1.Hide();
@@ -395,6 +410,9 @@ namespace testProjectBCA
         }
         void loadSislokCdm()
         {
+            Console.WriteLine();
+            Console.WriteLine("Load sislok cdm");
+            Console.WriteLine("======================");
             sislokCdm = new List<Denom>();
             int rowCount = dataGridView1.Rows.Count;
             //dataGridView1.Hide();
@@ -455,6 +473,9 @@ namespace testProjectBCA
         }
         void loadRasioSislokAtm()
         {
+            Console.WriteLine();
+            Console.WriteLine("Load rasio sislok atm");
+            Console.WriteLine("======================");
             rasioSislokAtm = new List<Rasio>();
             int rowCount = dataGridView1.Rows.Count;
             //dataGridView1.Hide();
@@ -555,8 +576,12 @@ namespace testProjectBCA
         }
         void loadRekomendasiBon()
         {
+            Console.WriteLine();
+            Console.WriteLine("Load rekomendasi bon");
+            Console.WriteLine("======================");
             rekomendasiBon = new List<Denom>();
             saldoAwalIdeal = new List<Denom>();
+            rekomendasiAdhoc = new Denom();
             Double targetRasio100 = Double.Parse(rasio100Txt.Text);
             Double targetRasio50 = Double.Parse(rasio50Txt.Text);
             Double targetRasio20 = Double.Parse(rasio20Txt.Text);
@@ -574,6 +599,10 @@ namespace testProjectBCA
             saldoAkhirH.d50 = saldoAwal.d50 + (Int64)Math.Round((rasioSislokAtm[0].d50 * prediksiIsiAtm[0].d50)) + sislokCdm[0].d50 + sislokCrm[0].d50 - prediksiIsiAtm[0].d50 - isiCrm[0].d50 + bon[0].d50;
             saldoAkhirH.d20 = saldoAwal.d20 + (Int64)Math.Round((rasioSislokAtm[0].d20 * prediksiIsiAtm[0].d20)) + sislokCdm[0].d20 + sislokCrm[0].d20 - prediksiIsiAtm[0].d20 - isiCrm[0].d20 + bon[0].d20;
 
+            rekomendasiAdhoc.d100 = 0;
+            rekomendasiAdhoc.d50 = 0;
+            rekomendasiAdhoc.d20 = 0;
+
             if (saldoAkhirH.d100 < 0)
                 rekomendasiAdhoc.d100 = -saldoAkhirH.d100;
             if (saldoAkhirH.d50 < 0)
@@ -581,7 +610,7 @@ namespace testProjectBCA
             if (saldoAkhirH.d20 < 0)
                 rekomendasiAdhoc.d20 = -saldoAkhirH.d20;
 
-            //Hitung saldo ideal h+2
+            //Hitung saldo ideal h+2, h+3, ..
             for (int a = 2 ; a<prediksiIsiAtm.Count;a++)
             {
                 Denom temp = new Denom();
@@ -592,16 +621,16 @@ namespace testProjectBCA
                 saldoAwalIdeal.Add(temp);
             }
 
-            //Ambil saldo akhir ideal h+1 dari saldo ideal h+2
+            //Ambil saldo akhir ideal h+1 dari saldo awal ideal h+2
             Denom saldoAkhirH1Ideal = new Denom();
             saldoAkhirH1Ideal.d100 = saldoAwalIdeal[0].d100;
             saldoAkhirH1Ideal.d50 = saldoAwalIdeal[0].d50;
             saldoAkhirH1Ideal.d20 = saldoAwalIdeal[0].d20;
 
-            //Hitung rekomendasiBon (Belom ada setor dan adhoc)
+            //Hitung rekomendasiBon untuk h+1 (Belom ada setor dan adhoc)
             Denom tempRekomendasiBon = new Denom();
             tempRekomendasiBon.d100 = saldoAkhirH1Ideal.d100
-                - saldoAkhirH.d100                                                      //Ambil saldo akhir di hari h
+                - saldoAkhirH.d100                                                      //Ambil saldo akhir di hari h (jadi saldo awal h+1)
                 - (Int64)Math.Round((rasioSislokAtm[0].d100 * prediksiIsiAtm[0].d100))
                 - sislokCrm[0].d100
                 - sislokCdm[0].d100
@@ -712,15 +741,23 @@ namespace testProjectBCA
                 bonGridView.Columns[i].DefaultCellStyle.Format = "c";
                 bonGridView.Columns[i].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
             }
-            DateTime tempDate = tanggalOptiMin;
-            while (tempDate < tanggalOptiMax.AddDays(-1))
+            DateTime tempDate = tanggalOptiMin.AddDays(1);
+            while (tempDate <= tanggalOptiMax.AddDays(-1))
             {
                 DataGridViewRow row = new DataGridViewRow();
 
                 DataGridViewTextBoxCell cell = new DataGridViewTextBoxCell();
                 cell.Value = tempDate.ToShortDateString();
                 row.Cells.Add(cell);
-
+                cell = new DataGridViewTextBoxCell();
+                cell.Value = "0";
+                row.Cells.Add(cell);
+                cell = new DataGridViewTextBoxCell();
+                cell.Value = "0";
+                row.Cells.Add(cell);
+                cell = new DataGridViewTextBoxCell();
+                cell.Value = "0";
+                row.Cells.Add(cell);
                 bonGridView.Rows.Add(row);
                 tempDate = tempDate.AddDays(1);
             }
@@ -753,52 +790,123 @@ namespace testProjectBCA
             Database1Entities db = new Database1Entities();
             if(MessageBox.Show("Approve Bon?", "Approve Bon", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
-                List<Denom> bonYangDisetujui = new List<Denom>();
-                Denom bonAdhoc = new Denom();
-                Denom setorAdhoc = new Denom();
-                Denom setor = new Denom();
-                for (int i=0;i<bonGridView.Rows.Count;i++)
-                {
-                    Denom temp = new Denom();
-                    temp.tgl = Convert.ToDateTime(bonGridView.Rows[i].Cells[0].Value.ToString());
-                    temp.d100 = Int64.Parse(bonGridView.Rows[i].Cells[1].Value.ToString());
-                    temp.d50 = Int64.Parse(bonGridView.Rows[i].Cells[2].Value.ToString());
-                    temp.d20 = Int64.Parse(bonGridView.Rows[i].Cells[3].Value.ToString());
-                    bonYangDisetujui.Add(temp);
-                }
-                //Bon Adhoc
-                bonAdhoc.d100 = Int64.Parse(bonAdhoc100Txt.Text);
-                bonAdhoc.d50 = Int64.Parse(bonAdhoc50Txt.Text);
-                bonAdhoc.d20 = Int64.Parse(bonAdhoc20Txt.Text);
-                //Setor Adhoc
-                setorAdhoc.d100 = Int64.Parse(setorAdhoc100Txt.Text);
-                setorAdhoc.d50 = Int64.Parse(setorAdhoc50Txt.Text);
-                setorAdhoc.d20 = Int64.Parse(setorAdhoc20Txt.Text);
-                //Setor
-                setor.d100 = Int64.Parse(setor100Txt.Text);
-                setor.d50 = Int64.Parse(setor50Txt.Text);
-                setor.d20 = Int64.Parse(setor20Txt.Text);
-
+                List<Denom> bonYangDisetujui = loadBonYangDisetujuiFromTable();
+                Denom bonAdhoc = loadBonAdhocFromTxt();
+                Denom setorAdhoc = loadSetorAdhocFromTxt();
+                Denom setor = loadSetorFromTxt();
+                
                 Approval newA = new Approval();
                 newA.tanggal = tanggalOptiMin;
                 newA.kodePkt = KodePkt[pktIndex];
                 db.Approvals.Add(newA);
+                db.SaveChanges();
+                var lastApproval = (from x in db.Approvals select x).ToList();
+                DateTime tempTanggal = tanggalOptiMin;
+                int count = 0;
 
-                var lastApproval = (from x in db.Approvals select x).LastOrDefault();
-                
-                for(int i=0;i<bonYangDisetujui.Count;i++)
+                for (int i=0;i<bon.Count;i++)
                 {
                     DetailApproval newDetailA = new DetailApproval();
-                    newDetailA.idApproval = lastApproval.idApproval;
+                    newDetailA.idApproval = lastApproval[lastApproval.Count - 1].idApproval;
+                    newDetailA.tanggal = tempTanggal;
+
                     if (i == 0)
                     {
+                        //Adhoc
                         newDetailA.adhoc100 = bonAdhoc.d100;
                         newDetailA.adhoc50 = bonAdhoc.d50;
                         newDetailA.adhoc20 = bonAdhoc.d20;
                         newDetailA.setor100 = setorAdhoc.d100;
-                        newDetailA.adhoc50 = setorAdhoc.d50;
-                        newDetailA.adhoc20 = setorAdhoc.d20;
+                        newDetailA.setor50 = setorAdhoc.d50;
+                        newDetailA.setor20 = setorAdhoc.d20;
+
                     }
+                    if (i == 1)
+                    {
+                        newDetailA.setor100 = setor.d100;
+                        newDetailA.setor50 = setor.d50;
+                        newDetailA.setor20 = setor.d20;
+                    }
+                    //Bon
+                    newDetailA.bon100 = bon[i].d100;
+                    newDetailA.bon50 = bon[i].d50;
+                    newDetailA.bon20 = bon[i].d20;
+                    //Sislok
+                    newDetailA.sislokCRM100 = sislokCrm[i].d100;
+                    newDetailA.sislokCRM50 = sislokCrm[i].d50;
+                    newDetailA.sislokCRM20 = sislokCrm[i].d20;
+                    newDetailA.sislokCDM100 = sislokCrm[i].d100;
+                    newDetailA.sislokCDM50 = sislokCrm[i].d50;
+                    newDetailA.sislokCDM20 = sislokCrm[i].d20;
+                    newDetailA.sislokATM100 = (Int64)(rasioSislokAtm[i].d100 * prediksiIsiAtm[i].d100);
+                    newDetailA.sislokATM50 = (Int64)(rasioSislokAtm[i].d50 * prediksiIsiAtm[i].d50);
+                    newDetailA.sislokATM20 = (Int64)(rasioSislokAtm[i].d20 * prediksiIsiAtm[i].d20);
+
+                    //Isi
+                    newDetailA.isiATM100 = prediksiIsiAtm[i].d100;
+                    newDetailA.isiATM50 = prediksiIsiAtm[i].d50;
+                    newDetailA.isiATM20 = prediksiIsiAtm[i].d20;
+                    newDetailA.isiCRM100 = isiCrm[i].d100;
+                    newDetailA.isiCRM50 = isiCrm[i].d50;
+                    newDetailA.isiCRM20 = isiCrm[i].d20;
+
+                    tempTanggal = tempTanggal.AddDays(1);
+
+                    db.DetailApprovals.Add(newDetailA);
+                    db.SaveChanges();
+                    count++;
+                }
+
+                for (int i=0;i<bonYangDisetujui.Count + 1 ;i++)
+                {
+                    DetailApproval newDetailA = new DetailApproval();
+                    newDetailA.idApproval = lastApproval[lastApproval.Count-1].idApproval;
+                    newDetailA.tanggal = tempTanggal;
+
+                    if(count==1)
+                    {
+                        newDetailA.setor100 = setor.d100;
+                        newDetailA.setor50 = setor.d50;
+                        newDetailA.setor20 = setor.d20;
+                    }
+                    
+                    if(i<bonYangDisetujui.Count)
+                    {
+                        //Bon
+                        newDetailA.bon100 = bonYangDisetujui[i].d100;
+                        newDetailA.bon50 = bonYangDisetujui[i].d50;
+                        newDetailA.bon20 = bonYangDisetujui[i].d20;
+                    }                              
+                    else
+                    {
+                        newDetailA.bon100 = 0;
+                        newDetailA.bon50 = 0;
+                        newDetailA.bon20 = 0;
+                    }
+                    //Sislok
+                    newDetailA.sislokCRM100 = sislokCrm[count].d100;
+                    newDetailA.sislokCRM50 = sislokCrm[count].d50;
+                    newDetailA.sislokCRM20 = sislokCrm[count].d20;
+                    newDetailA.sislokCDM100 = sislokCrm[count].d100;
+                    newDetailA.sislokCDM50 = sislokCrm[count].d50;
+                    newDetailA.sislokCDM20 = sislokCrm[count].d20;
+                    newDetailA.sislokATM100 =(Int64)(rasioSislokAtm[count].d100 * prediksiIsiAtm[count].d100);
+                    newDetailA.sislokATM50 = (Int64)(rasioSislokAtm[count].d50 * prediksiIsiAtm[count].d50);
+                    newDetailA.sislokATM20 = (Int64)(rasioSislokAtm[count].d20 * prediksiIsiAtm[count].d20);
+
+                    //Isi
+                    newDetailA.isiATM100 = prediksiIsiAtm[count].d100;
+                    newDetailA.isiATM50 = prediksiIsiAtm[count].d50;
+                    newDetailA.isiATM20 = prediksiIsiAtm[count].d20;
+                    newDetailA.isiCRM100 = isiCrm[count].d100;
+                    newDetailA.isiCRM50 = isiCrm[count].d50;
+                    newDetailA.isiCRM20 = isiCrm[count].d20;
+
+                    tempTanggal = tempTanggal.AddDays(1);
+
+                    db.DetailApprovals.Add(newDetailA);
+                    db.SaveChanges();
+                    count++;
                 }
                 MessageBox.Show("Approved!");
             }
@@ -808,6 +916,79 @@ namespace testProjectBCA
             }
         }
 
+        private Denom loadBonAdhocFromTxt()
+        {
+            Denom bonAdhoc = new Denom();
+            //Bon Adhoc
+            if (bonAdhoc100Txt.Text == "")
+                bonAdhoc.d100 = 0;
+            else
+                bonAdhoc.d100 = Int64.Parse(bonAdhoc100Txt.Text);
+
+            if (bonAdhoc50Txt.Text == "")
+                bonAdhoc.d50 = 0;
+            else
+                bonAdhoc.d50 = Int64.Parse(bonAdhoc50Txt.Text);
+
+            if (bonAdhoc20Txt.Text == "")
+                bonAdhoc.d20 = 0;
+            else
+                bonAdhoc.d20 = Int64.Parse(bonAdhoc20Txt.Text);
+
+            return bonAdhoc;
+        }
+        private Denom loadSetorAdhocFromTxt()
+        {
+            Denom setorAdhoc = new Denom();
+            //Setor Adhoc
+            if (setorAdhoc100Txt.Text == "")
+                setorAdhoc.d100 = 0;
+            else
+                setorAdhoc.d100 = Int64.Parse(setorAdhoc100Txt.Text);
+
+            if (setorAdhoc50Txt.Text == "")
+                setorAdhoc.d50 = 0;
+            else
+                setorAdhoc.d50 = Int64.Parse(setorAdhoc50Txt.Text);
+
+            if (setorAdhoc20Txt.Text == "")
+                setorAdhoc.d20 = 0;
+            else
+                setorAdhoc.d20 = Int64.Parse(setorAdhoc20Txt.Text);
+            return setorAdhoc;
+        }
+        private Denom loadSetorFromTxt()
+        {
+            Denom setor = new Denom();
+            //Setor
+            if (setor100Txt.Text == "")
+                setor.d100 = 0;
+            else
+                setor.d100 = Int64.Parse(setor100Txt.Text);
+            if (setor50Txt.Text == "")
+                setor.d50 = 0;
+            else
+                setor.d50 = Int64.Parse(setor50Txt.Text);
+            if (setor20Txt.Text == "")
+                setor.d20 = 0;
+            else
+                setor.d20 = Int64.Parse(setor20Txt.Text);
+            return setor;
+        }
+        private List<Denom> loadBonYangDisetujuiFromTable()
+        {
+            List<Denom> bonYangDisetujui = new List<Denom>();
+            for (int i = 0; i < bonGridView.Rows.Count; i++)
+            {
+                Denom temp = new Denom();
+                temp.tgl = Convert.ToDateTime(bonGridView.Rows[i].Cells[0].Value.ToString());
+                temp.d100 = Int64.Parse(bonGridView.Rows[i].Cells[1].Value.ToString());
+                temp.d50 = Int64.Parse(bonGridView.Rows[i].Cells[2].Value.ToString());
+                temp.d20 = Int64.Parse(bonGridView.Rows[i].Cells[3].Value.ToString());
+                bonYangDisetujui.Add(temp);
+            }
+            return bonYangDisetujui;
+        }
         SqlDataReader query(String q)
         {
             using (SqlConnection sql = new SqlConnection(Variables.connectionString))

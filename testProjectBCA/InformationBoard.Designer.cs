@@ -32,7 +32,7 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.rasio100Txt = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.e2eTxt = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.loadPrediksiBtn = new System.Windows.Forms.Button();
@@ -116,14 +116,14 @@
             this.label1.TabIndex = 3;
             this.label1.Text = "Target Rasio 100";
             // 
-            // label2
+            // e2eTxt
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(14, 9);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(60, 13);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "Jenis E2E: ";
+            this.e2eTxt.AutoSize = true;
+            this.e2eTxt.Location = new System.Drawing.Point(14, 9);
+            this.e2eTxt.Name = "e2eTxt";
+            this.e2eTxt.Size = new System.Drawing.Size(60, 13);
+            this.e2eTxt.TabIndex = 0;
+            this.e2eTxt.Text = "Jenis E2E: ";
             // 
             // label3
             // 
@@ -466,7 +466,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1198, 714);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.e2eTxt);
             this.Controls.Add(this.bonGridView);
             this.Controls.Add(this.rekomendasiAdhoc20Lbl);
             this.Controls.Add(this.rekomendasiAdhoc50Lbl);
@@ -509,7 +509,7 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.TextBox rasio100Txt;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label e2eTxt;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TreeView treeView1;
         private System.Windows.Forms.Button loadPrediksiBtn;

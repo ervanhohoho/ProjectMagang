@@ -48,6 +48,10 @@
     <Property Name="setor20" Type="Int64" />
     <Property Name="setor50" Type="Int64" />
     <Property Name="setor100" Type="Int64" />
+    <Property Name="tanggal" Type="DateTime" Precision="0" />
+    <Property Name="sislokATM20" Type="Int64" />
+    <Property Name="sislokATM50" Type="Int64" />
+    <Property Name="sislokATM100" Type="Int64" />
   </EntityType>
   <EntityType Name="Opti">
     <Key>
@@ -155,6 +159,13 @@
       <End Role="Pkt" EntitySet="Pkts" />
       <End Role="laporanBon" EntitySet="laporanBons" />
     </AssociationSet>
+    <EntitySet Name="Cabangs" EntityType="Database1Model.Cabang" />
+    <EntitySet Name="CollectionLainnyas" EntityType="Database1Model.CollectionLainnya" />
+    <EntitySet Name="CollectionRetails" EntityType="Database1Model.CollectionRetail" />
+    <EntitySet Name="DeliveryCabangs" EntityType="Database1Model.DeliveryCabang" />
+    <EntitySet Name="DeliveryLainnyas" EntityType="Database1Model.DeliveryLainnya" />
+    <EntitySet Name="DeliveryRetails" EntityType="Database1Model.DeliveryRetail" />
+    <EntitySet Name="CollectionCabangs" EntityType="Database1Model.CollectionCabang" />
   </EntityContainer>
   <EntityType Name="laporanBon">
     <Key>
@@ -180,4 +191,163 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <EntityType Name="Cabang">
+    <Key>
+      <PropertyRef Name="kodeCabang" />
+    </Key>
+    <Property Name="kodeCabang" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="kodePkt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="kanwil" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="CollectionLainnya">
+    <Key>
+      <PropertyRef Name="idTransaksi" />
+    </Key>
+    <Property Name="idTransaksi" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="keterangan" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="bn100000" Type="Int64" />
+    <Property Name="bn50000" Type="Int64" />
+    <Property Name="bn20000" Type="Int64" />
+    <Property Name="bn10000" Type="Int64" />
+    <Property Name="bn5000" Type="Int64" />
+    <Property Name="bn2000" Type="Int64" />
+    <Property Name="bn1000" Type="Int64" />
+    <Property Name="bn500" Type="Int64" />
+    <Property Name="bn200" Type="Int64" />
+    <Property Name="bn100" Type="Int64" />
+    <Property Name="c1000" Type="Int64" />
+    <Property Name="c500" Type="Int64" />
+    <Property Name="c200" Type="Int64" />
+    <Property Name="c100" Type="Int64" />
+    <Property Name="c50" Type="Int64" />
+    <Property Name="c25" Type="Int64" />
+    <Property Name="kodePkt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="tanggal" Type="DateTime" Precision="0" />
+  </EntityType>
+  <EntityType Name="CollectionRetail">
+    <Key>
+      <PropertyRef Name="idTransaksi" />
+    </Key>
+    <Property Name="idTransaksi" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="kodeNasabah" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="bn100000" Type="Int64" />
+    <Property Name="bn50000" Type="Int64" />
+    <Property Name="bn20000" Type="Int64" />
+    <Property Name="bn10000" Type="Int64" />
+    <Property Name="bn5000" Type="Int64" />
+    <Property Name="bn2000" Type="Int64" />
+    <Property Name="bn1000" Type="Int64" />
+    <Property Name="bn500" Type="Int64" />
+    <Property Name="bn200" Type="Int64" />
+    <Property Name="bn100" Type="Int64" />
+    <Property Name="c1000" Type="Int64" />
+    <Property Name="c500" Type="Int64" />
+    <Property Name="c200" Type="Int64" />
+    <Property Name="c100" Type="Int64" />
+    <Property Name="c50" Type="Int64" />
+    <Property Name="c25" Type="Int64" />
+    <Property Name="kodePkt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="tanggal" Type="DateTime" Precision="0" />
+  </EntityType>
+  <EntityType Name="DeliveryCabang">
+    <Key>
+      <PropertyRef Name="idTransaksi" />
+    </Key>
+    <Property Name="idTransaksi" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="kodeCabang" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="tipeLayanan" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="bn100000" Type="Int64" />
+    <Property Name="bn50000" Type="Int64" />
+    <Property Name="bn20000" Type="Int64" />
+    <Property Name="bn10000" Type="Int64" />
+    <Property Name="bn5000" Type="Int64" />
+    <Property Name="bn2000" Type="Int64" />
+    <Property Name="bn1000" Type="Int64" />
+    <Property Name="bn500" Type="Int64" />
+    <Property Name="bn200" Type="Int64" />
+    <Property Name="bn100" Type="Int64" />
+    <Property Name="c1000" Type="Int64" />
+    <Property Name="c500" Type="Int64" />
+    <Property Name="c200" Type="Int64" />
+    <Property Name="c100" Type="Int64" />
+    <Property Name="c50" Type="Int64" />
+    <Property Name="c25" Type="Int64" />
+    <Property Name="kodePkt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="tanggal" Type="DateTime" Precision="0" />
+  </EntityType>
+  <EntityType Name="DeliveryLainnya">
+    <Key>
+      <PropertyRef Name="idTransaksi" />
+    </Key>
+    <Property Name="idTransaksi" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="keterangan" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="bn100000" Type="Int64" />
+    <Property Name="bn50000" Type="Int64" />
+    <Property Name="bn20000" Type="Int64" />
+    <Property Name="bn10000" Type="Int64" />
+    <Property Name="bn5000" Type="Int64" />
+    <Property Name="bn2000" Type="Int64" />
+    <Property Name="bn1000" Type="Int64" />
+    <Property Name="bn500" Type="Int64" />
+    <Property Name="bn200" Type="Int64" />
+    <Property Name="bn100" Type="Int64" />
+    <Property Name="c1000" Type="Int64" />
+    <Property Name="c500" Type="Int64" />
+    <Property Name="c200" Type="Int64" />
+    <Property Name="c100" Type="Int64" />
+    <Property Name="c50" Type="Int64" />
+    <Property Name="c25" Type="Int64" />
+    <Property Name="kodePkt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="tanggal" Type="DateTime" Precision="0" />
+  </EntityType>
+  <EntityType Name="DeliveryRetail">
+    <Key>
+      <PropertyRef Name="idTransaksi" />
+    </Key>
+    <Property Name="idTransaksi" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="kodeNasabah" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="bn100000" Type="Int64" />
+    <Property Name="bn50000" Type="Int64" />
+    <Property Name="bn20000" Type="Int64" />
+    <Property Name="bn10000" Type="Int64" />
+    <Property Name="bn5000" Type="Int64" />
+    <Property Name="bn2000" Type="Int64" />
+    <Property Name="bn1000" Type="Int64" />
+    <Property Name="bn500" Type="Int64" />
+    <Property Name="bn200" Type="Int64" />
+    <Property Name="bn100" Type="Int64" />
+    <Property Name="c1000" Type="Int64" />
+    <Property Name="c500" Type="Int64" />
+    <Property Name="c200" Type="Int64" />
+    <Property Name="c100" Type="Int64" />
+    <Property Name="c50" Type="Int64" />
+    <Property Name="c25" Type="Int64" />
+    <Property Name="kodePkt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="tanggal" Type="DateTime" Precision="0" />
+  </EntityType>
+  <EntityType Name="CollectionCabang">
+    <Key>
+      <PropertyRef Name="idTransaksi" />
+    </Key>
+    <Property Name="idTransaksi" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="kodePkt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="kodeCabang" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="bn100000" Type="Int64" />
+    <Property Name="bn50000" Type="Int64" />
+    <Property Name="bn20000" Type="Int64" />
+    <Property Name="bn10000" Type="Int64" />
+    <Property Name="bn5000" Type="Int64" />
+    <Property Name="bn2000" Type="Int64" />
+    <Property Name="bn1000" Type="Int64" />
+    <Property Name="bn500" Type="Int64" />
+    <Property Name="bn200" Type="Int64" />
+    <Property Name="bn100" Type="Int64" />
+    <Property Name="c1000" Type="Int64" />
+    <Property Name="c500" Type="Int64" />
+    <Property Name="c200" Type="Int64" />
+    <Property Name="c100" Type="Int64" />
+    <Property Name="c50" Type="Int64" />
+    <Property Name="c25" Type="Int64" />
+    <Property Name="tanggal" Type="DateTime" Precision="0" />
+  </EntityType>
 </Schema>

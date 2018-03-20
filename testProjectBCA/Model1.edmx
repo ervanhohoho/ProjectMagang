@@ -29,11 +29,37 @@
           <Property Name="denom" Type="varchar" MaxLength="10" />
           <Property Name="kodePkt" Type="varchar" MaxLength="10" />
         </EntityType>
+        <EntityType Name="CollectionCabang">
+          <Key>
+            <PropertyRef Name="idTransaksi" />
+          </Key>
+          <Property Name="idTransaksi" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tanggal" Type="date" />
+          <Property Name="kodePkt" Type="varchar" MaxLength="10" />
+          <Property Name="kodeCabang" Type="varchar" MaxLength="20" />
+          <Property Name="bn100000" Type="bigint" />
+          <Property Name="bn50000" Type="bigint" />
+          <Property Name="bn20000" Type="bigint" />
+          <Property Name="bn10000" Type="bigint" />
+          <Property Name="bn5000" Type="bigint" />
+          <Property Name="bn2000" Type="bigint" />
+          <Property Name="bn1000" Type="bigint" />
+          <Property Name="bn500" Type="bigint" />
+          <Property Name="bn200" Type="bigint" />
+          <Property Name="bn100" Type="bigint" />
+          <Property Name="c1000" Type="bigint" />
+          <Property Name="c500" Type="bigint" />
+          <Property Name="c200" Type="bigint" />
+          <Property Name="c100" Type="bigint" />
+          <Property Name="c50" Type="bigint" />
+          <Property Name="c25" Type="bigint" />
+        </EntityType>
         <EntityType Name="CollectionLainnya">
           <Key>
             <PropertyRef Name="idTransaksi" />
           </Key>
           <Property Name="idTransaksi" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tanggal" Type="date" />
           <Property Name="kodePkt" Type="varchar" MaxLength="10" />
           <Property Name="keterangan" Type="varchar" MaxLength="20" />
           <Property Name="bn100000" Type="bigint" />
@@ -58,6 +84,7 @@
             <PropertyRef Name="idTransaksi" />
           </Key>
           <Property Name="idTransaksi" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tanggal" Type="date" />
           <Property Name="kodePkt" Type="varchar" MaxLength="10" />
           <Property Name="kodeNasabah" Type="varchar" MaxLength="20" />
           <Property Name="bn100000" Type="bigint" />
@@ -82,6 +109,7 @@
             <PropertyRef Name="idTransaksi" />
           </Key>
           <Property Name="idTransaksi" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tanggal" Type="date" />
           <Property Name="kodeCabang" Type="varchar" MaxLength="20" />
           <Property Name="kodePkt" Type="varchar" MaxLength="10" />
           <Property Name="tipeLayanan" Type="varchar" MaxLength="20" />
@@ -107,6 +135,7 @@
             <PropertyRef Name="idTransaksi" />
           </Key>
           <Property Name="idTransaksi" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tanggal" Type="date" />
           <Property Name="kodePkt" Type="varchar" MaxLength="10" />
           <Property Name="keterangan" Type="varchar" MaxLength="20" />
           <Property Name="bn100000" Type="bigint" />
@@ -131,6 +160,7 @@
             <PropertyRef Name="idTransaksi" />
           </Key>
           <Property Name="idTransaksi" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tanggal" Type="date" />
           <Property Name="kodePkt" Type="varchar" MaxLength="10" />
           <Property Name="kodeNasabah" Type="varchar" MaxLength="20" />
           <Property Name="bn100000" Type="bigint" />
@@ -157,6 +187,7 @@
           </Key>
           <Property Name="idDetailApproval" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="idApproval" Type="int" Nullable="false" />
+          <Property Name="tanggal" Type="date" />
           <Property Name="saldoAwal20" Type="bigint" />
           <Property Name="saldoAwal50" Type="bigint" />
           <Property Name="saldoAwal100" Type="bigint" />
@@ -166,6 +197,9 @@
           <Property Name="sislokCDM20" Type="bigint" />
           <Property Name="sislokCDM50" Type="bigint" />
           <Property Name="sislokCDM100" Type="bigint" />
+          <Property Name="sislokATM20" Type="bigint" />
+          <Property Name="sislokATM50" Type="bigint" />
+          <Property Name="sislokATM100" Type="bigint" />
           <Property Name="isiATM20" Type="bigint" />
           <Property Name="isiATM50" Type="bigint" />
           <Property Name="isiATM100" Type="bigint" />
@@ -291,6 +325,7 @@
           <EntitySet Name="Approvals" EntityType="Self.Approvals" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cabang" EntityType="Self.Cabang" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cashpoint" EntityType="Self.Cashpoint" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CollectionCabang" EntityType="Self.CollectionCabang" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CollectionLainnya" EntityType="Self.CollectionLainnya" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CollectionRetail" EntityType="Self.CollectionRetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DeliveryCabang" EntityType="Self.DeliveryCabang" Schema="dbo" store:Type="Tables" />
@@ -366,6 +401,10 @@
           <Property Name="setor20" Type="Int64" />
           <Property Name="setor50" Type="Int64" />
           <Property Name="setor100" Type="Int64" />
+          <Property Name="tanggal" Type="DateTime" Precision="0" />
+          <Property Name="sislokATM20" Type="Int64" />
+          <Property Name="sislokATM50" Type="Int64" />
+          <Property Name="sislokATM100" Type="Int64" />
         </EntityType>
         <EntityType Name="Opti">
           <Key>
@@ -479,6 +518,7 @@
           <EntitySet Name="DeliveryCabangs" EntityType="Database1Model.DeliveryCabang" />
           <EntitySet Name="DeliveryLainnyas" EntityType="Database1Model.DeliveryLainnya" />
           <EntitySet Name="DeliveryRetails" EntityType="Database1Model.DeliveryRetail" />
+          <EntitySet Name="CollectionCabangs" EntityType="Database1Model.CollectionCabang" />
         </EntityContainer>
         <EntityType Name="laporanBon">
           <Key>
@@ -535,6 +575,7 @@
           <Property Name="c50" Type="Int64" />
           <Property Name="c25" Type="Int64" />
           <Property Name="kodePkt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="tanggal" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="CollectionRetail">
           <Key>
@@ -559,6 +600,7 @@
           <Property Name="c50" Type="Int64" />
           <Property Name="c25" Type="Int64" />
           <Property Name="kodePkt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="tanggal" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="DeliveryCabang">
           <Key>
@@ -584,6 +626,7 @@
           <Property Name="c50" Type="Int64" />
           <Property Name="c25" Type="Int64" />
           <Property Name="kodePkt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="tanggal" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="DeliveryLainnya">
           <Key>
@@ -608,6 +651,7 @@
           <Property Name="c50" Type="Int64" />
           <Property Name="c25" Type="Int64" />
           <Property Name="kodePkt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="tanggal" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="DeliveryRetail">
           <Key>
@@ -632,6 +676,32 @@
           <Property Name="c50" Type="Int64" />
           <Property Name="c25" Type="Int64" />
           <Property Name="kodePkt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="tanggal" Type="DateTime" Precision="0" />
+        </EntityType>
+        <EntityType Name="CollectionCabang">
+          <Key>
+            <PropertyRef Name="idTransaksi" />
+          </Key>
+          <Property Name="idTransaksi" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="kodePkt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="kodeCabang" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="bn100000" Type="Int64" />
+          <Property Name="bn50000" Type="Int64" />
+          <Property Name="bn20000" Type="Int64" />
+          <Property Name="bn10000" Type="Int64" />
+          <Property Name="bn5000" Type="Int64" />
+          <Property Name="bn2000" Type="Int64" />
+          <Property Name="bn1000" Type="Int64" />
+          <Property Name="bn500" Type="Int64" />
+          <Property Name="bn200" Type="Int64" />
+          <Property Name="bn100" Type="Int64" />
+          <Property Name="c1000" Type="Int64" />
+          <Property Name="c500" Type="Int64" />
+          <Property Name="c200" Type="Int64" />
+          <Property Name="c100" Type="Int64" />
+          <Property Name="c50" Type="Int64" />
+          <Property Name="c25" Type="Int64" />
+          <Property Name="tanggal" Type="DateTime" Precision="0" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -660,6 +730,10 @@
           <EntitySetMapping Name="DetailApprovals">
             <EntityTypeMapping TypeName="Database1Model.DetailApproval">
               <MappingFragment StoreEntitySet="DetailApprovals">
+                <ScalarProperty Name="sislokATM100" ColumnName="sislokATM100" />
+                <ScalarProperty Name="sislokATM50" ColumnName="sislokATM50" />
+                <ScalarProperty Name="sislokATM20" ColumnName="sislokATM20" />
+                <ScalarProperty Name="tanggal" ColumnName="tanggal" />
                 <ScalarProperty Name="idDetailApproval" ColumnName="idDetailApproval" />
                 <ScalarProperty Name="idApproval" ColumnName="idApproval" />
                 <ScalarProperty Name="saldoAwal20" ColumnName="saldoAwal20" />
@@ -774,6 +848,7 @@
           <EntitySetMapping Name="CollectionLainnyas">
             <EntityTypeMapping TypeName="Database1Model.CollectionLainnya">
               <MappingFragment StoreEntitySet="CollectionLainnya">
+                <ScalarProperty Name="tanggal" ColumnName="tanggal" />
                 <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
                 <ScalarProperty Name="c25" ColumnName="c25" />
                 <ScalarProperty Name="c50" ColumnName="c50" />
@@ -799,6 +874,7 @@
           <EntitySetMapping Name="CollectionRetails">
             <EntityTypeMapping TypeName="Database1Model.CollectionRetail">
               <MappingFragment StoreEntitySet="CollectionRetail">
+                <ScalarProperty Name="tanggal" ColumnName="tanggal" />
                 <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
                 <ScalarProperty Name="c25" ColumnName="c25" />
                 <ScalarProperty Name="c50" ColumnName="c50" />
@@ -824,6 +900,7 @@
           <EntitySetMapping Name="DeliveryCabangs">
             <EntityTypeMapping TypeName="Database1Model.DeliveryCabang">
               <MappingFragment StoreEntitySet="DeliveryCabang">
+                <ScalarProperty Name="tanggal" ColumnName="tanggal" />
                 <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
                 <ScalarProperty Name="c25" ColumnName="c25" />
                 <ScalarProperty Name="c50" ColumnName="c50" />
@@ -850,6 +927,7 @@
           <EntitySetMapping Name="DeliveryLainnyas">
             <EntityTypeMapping TypeName="Database1Model.DeliveryLainnya">
               <MappingFragment StoreEntitySet="DeliveryLainnya">
+                <ScalarProperty Name="tanggal" ColumnName="tanggal" />
                 <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
                 <ScalarProperty Name="c25" ColumnName="c25" />
                 <ScalarProperty Name="c50" ColumnName="c50" />
@@ -875,6 +953,7 @@
           <EntitySetMapping Name="DeliveryRetails">
             <EntityTypeMapping TypeName="Database1Model.DeliveryRetail">
               <MappingFragment StoreEntitySet="DeliveryRetail">
+                <ScalarProperty Name="tanggal" ColumnName="tanggal" />
                 <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
                 <ScalarProperty Name="c25" ColumnName="c25" />
                 <ScalarProperty Name="c50" ColumnName="c50" />
@@ -893,6 +972,32 @@
                 <ScalarProperty Name="bn50000" ColumnName="bn50000" />
                 <ScalarProperty Name="bn100000" ColumnName="bn100000" />
                 <ScalarProperty Name="kodeNasabah" ColumnName="kodeNasabah" />
+                <ScalarProperty Name="idTransaksi" ColumnName="idTransaksi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CollectionCabangs">
+            <EntityTypeMapping TypeName="Database1Model.CollectionCabang">
+              <MappingFragment StoreEntitySet="CollectionCabang">
+                <ScalarProperty Name="tanggal" ColumnName="tanggal" />
+                <ScalarProperty Name="c25" ColumnName="c25" />
+                <ScalarProperty Name="c50" ColumnName="c50" />
+                <ScalarProperty Name="c100" ColumnName="c100" />
+                <ScalarProperty Name="c200" ColumnName="c200" />
+                <ScalarProperty Name="c500" ColumnName="c500" />
+                <ScalarProperty Name="c1000" ColumnName="c1000" />
+                <ScalarProperty Name="bn100" ColumnName="bn100" />
+                <ScalarProperty Name="bn200" ColumnName="bn200" />
+                <ScalarProperty Name="bn500" ColumnName="bn500" />
+                <ScalarProperty Name="bn1000" ColumnName="bn1000" />
+                <ScalarProperty Name="bn2000" ColumnName="bn2000" />
+                <ScalarProperty Name="bn5000" ColumnName="bn5000" />
+                <ScalarProperty Name="bn10000" ColumnName="bn10000" />
+                <ScalarProperty Name="bn20000" ColumnName="bn20000" />
+                <ScalarProperty Name="bn50000" ColumnName="bn50000" />
+                <ScalarProperty Name="bn100000" ColumnName="bn100000" />
+                <ScalarProperty Name="kodeCabang" ColumnName="kodeCabang" />
+                <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
                 <ScalarProperty Name="idTransaksi" ColumnName="idTransaksi" />
               </MappingFragment>
             </EntityTypeMapping>
