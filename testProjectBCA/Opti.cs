@@ -18,7 +18,5 @@ namespace testProjectBCA
         public string idCashpoint { get; set; }
         public Nullable<System.DateTime> tanggal { get; set; }
         public Nullable<long> prediksi { get; set; }
-    
-        public virtual Cashpoint Cashpoint { get; set; }
     }
 }

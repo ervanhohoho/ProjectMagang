@@ -54,3 +54,15 @@ C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA\testProjectB
 C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA\testProjectBCA\bin\Debug\LumenWorks.Framework.IO.xml
 C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA\testProjectBCA\obj\Debug\testProjectBCA.InformationBoard.resources
 C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA\testProjectBCA\obj\Debug\testProjectBCA.InputTransaksiCabangForm.resources
+C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA\testProjectBCA\bin\Debug\FastMember.dll
+C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA\testProjectBCA\obj\Debug\testProjectBCA.RekapApproval.resources
+C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA\testProjectBCA\bin\Debug\LiveCharts.dll
+C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA\testProjectBCA\bin\Debug\LiveCharts.WinForms.dll
+C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA\testProjectBCA\bin\Debug\LiveCharts.Wpf.dll
+C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA\testProjectBCA\bin\Debug\LiveCharts.pdb
+C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA\testProjectBCA\bin\Debug\LiveCharts.xml
+C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA\testProjectBCA\bin\Debug\LiveCharts.WinForms.pdb
+C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA\testProjectBCA\bin\Debug\LiveCharts.WinForms.xml
+C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA\testProjectBCA\bin\Debug\LiveCharts.Wpf.pdb
+C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA\testProjectBCA\bin\Debug\LiveCharts.Wpf.xml
+C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA\testProjectBCA\obj\Debug\testProjectBCA.dasbor.resources

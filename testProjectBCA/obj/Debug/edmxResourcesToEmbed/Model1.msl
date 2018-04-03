@@ -294,5 +294,26 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="LaporanPermintaanBons">
+      <EntityTypeMapping TypeName="Database1Model.LaporanPermintaanBon">
+        <MappingFragment StoreEntitySet="LaporanPermintaanBon">
+          <ScalarProperty Name="C20" ColumnName="20" />
+          <ScalarProperty Name="C50" ColumnName="50" />
+          <ScalarProperty Name="C100" ColumnName="100" />
+          <ScalarProperty Name="tanggal" ColumnName="tanggal" />
+          <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
+          <ScalarProperty Name="idLaporan" ColumnName="idLaporan" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="EventTanggals">
+      <EntityTypeMapping TypeName="Database1Model.EventTanggal">
+        <MappingFragment StoreEntitySet="EventTanggal">
+          <ScalarProperty Name="event" ColumnName="event" />
+          <ScalarProperty Name="workDay" ColumnName="workDay" />
+          <ScalarProperty Name="tanggal" ColumnName="tanggal" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

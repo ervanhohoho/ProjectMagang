@@ -39,5 +39,7 @@ namespace testProjectBCA
         public virtual DbSet<DeliveryLainnya> DeliveryLainnyas { get; set; }
         public virtual DbSet<DeliveryRetail> DeliveryRetails { get; set; }
         public virtual DbSet<CollectionCabang> CollectionCabangs { get; set; }
+        public virtual DbSet<LaporanPermintaanBon> LaporanPermintaanBons { get; set; }
+        public virtual DbSet<EventTanggal> EventTanggals { get; set; }
     }
 }

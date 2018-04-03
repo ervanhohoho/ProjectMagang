@@ -15,7 +15,6 @@
     <Property Name="idCashpoint" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="denom" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
     <Property Name="kodePkt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-    <NavigationProperty Name="Optis" Relationship="Self.FK_Opti_ToTable" FromRole="Cashpoint" ToRole="Opti" />
   </EntityType>
   <EntityType Name="DetailApproval">
     <Key>
@@ -61,7 +60,6 @@
     <Property Name="idCashpoint" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
     <Property Name="tanggal" Type="DateTime" Precision="0" />
     <Property Name="prediksi" Type="Int64" />
-    <NavigationProperty Name="Cashpoint" Relationship="Self.FK_Opti_ToTable" FromRole="Opti" ToRole="Cashpoint" />
   </EntityType>
   <EntityType Name="Pkt">
     <Key>
@@ -115,18 +113,6 @@
     <Property Name="saldoAkhir100" Type="Int64" />
     <NavigationProperty Name="Pkt" Relationship="Self.FK_TransaksiAtms_Pkt" FromRole="TransaksiAtms" ToRole="Pkt" />
   </EntityType>
-  <Association Name="FK_Opti_ToTable">
-    <End Role="Cashpoint" Type="Self.Cashpoint" Multiplicity="0..1" />
-    <End Role="Opti" Type="Self.Opti" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Cashpoint">
-        <PropertyRef Name="idCashpoint" />
-      </Principal>
-      <Dependent Role="Opti">
-        <PropertyRef Name="idCashpoint" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_TransaksiAtms_Pkt">
     <End Role="Pkt" Type="Self.Pkt" Multiplicity="1" />
     <End Role="TransaksiAtms" Type="Self.TransaksiAtm" Multiplicity="*" />
@@ -146,10 +132,6 @@
     <EntitySet Name="Optis" EntityType="Self.Opti" />
     <EntitySet Name="Pkts" EntityType="Self.Pkt" />
     <EntitySet Name="TransaksiAtms" EntityType="Self.TransaksiAtm" />
-    <AssociationSet Name="FK_Opti_ToTable" Association="Self.FK_Opti_ToTable">
-      <End Role="Cashpoint" EntitySet="Cashpoints" />
-      <End Role="Opti" EntitySet="Optis" />
-    </AssociationSet>
     <AssociationSet Name="FK_TransaksiAtms_Pkt" Association="Self.FK_TransaksiAtms_Pkt">
       <End Role="Pkt" EntitySet="Pkts" />
       <End Role="TransaksiAtms" EntitySet="TransaksiAtms" />
@@ -166,6 +148,8 @@
     <EntitySet Name="DeliveryLainnyas" EntityType="Database1Model.DeliveryLainnya" />
     <EntitySet Name="DeliveryRetails" EntityType="Database1Model.DeliveryRetail" />
     <EntitySet Name="CollectionCabangs" EntityType="Database1Model.CollectionCabang" />
+    <EntitySet Name="LaporanPermintaanBons" EntityType="Database1Model.LaporanPermintaanBon" />
+    <EntitySet Name="EventTanggals" EntityType="Database1Model.EventTanggal" />
   </EntityContainer>
   <EntityType Name="laporanBon">
     <Key>
@@ -349,5 +333,24 @@
     <Property Name="c50" Type="Int64" />
     <Property Name="c25" Type="Int64" />
     <Property Name="tanggal" Type="DateTime" Precision="0" />
+  </EntityType>
+  <EntityType Name="LaporanPermintaanBon">
+    <Key>
+      <PropertyRef Name="idLaporan" />
+    </Key>
+    <Property Name="idLaporan" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="kodePkt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="tanggal" Type="DateTime" Precision="0" />
+    <Property Name="C100" Type="Int64" />
+    <Property Name="C50" Type="Int64" />
+    <Property Name="C20" Type="Int64" />
+  </EntityType>
+  <EntityType Name="EventTanggal">
+    <Key>
+      <PropertyRef Name="tanggal" />
+    </Key>
+    <Property Name="tanggal" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="workDay" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="event" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
   </EntityType>
 </Schema>

@@ -19,21 +19,96 @@ namespace testProjectBCA
         public MultipleFilesInputForm()
         {
             InitializeComponent();
+
+            loadListDataYangSudahAda();
+            loadDataYangBelumAda();
+
+        }
+        void loadListDataYangSudahAda()
+        {
+            dataYangSudahAdaList.Items.Clear();
+            DateTime hariKemarin = DateTime.Now.AddDays(-1);
+            String simpleDate = hariKemarin.ToShortDateString();
+            DateTime tempTgl = Convert.ToDateTime(simpleDate);
+            Console.WriteLine(tempTgl);
+            var list = (from x in db.TransaksiAtms where x.tanggal == tempTgl select x).ToList();
+            foreach(var temp in list)
+            {
+                dataYangSudahAdaList.Items.Add(temp.kodePkt);
+            }
+           
         }
 
+        void loadDataYangBelumAda()
+        {
+            List<String> yangSudahAda=new List<String>();
+            List<String> semuaPkt = new List<String>();
+
+            filesListBelumMasuk.Items.Clear();
+
+            var query = (from x in db.Pkts select x.kodePkt).ToList();
+            semuaPkt = query;
+
+            foreach(var item in dataYangSudahAdaList.Items)
+            {
+                yangSudahAda.Add(item.ToString());
+            }
+            //Console.WriteLine(yangSudahAda[0]);
+            foreach (var temp in semuaPkt)
+            {
+                bool flag = false;
+                foreach(var temp2 in yangSudahAda)
+                {
+                    if(temp2==temp)
+                    {
+                        flag = true;break;
+                    }
+                }
+                if(!flag)
+                {
+                    filesListBelumMasuk.Items.Add(temp);
+                }
+            }
+            
+        }
         private void SelectFilesButton_Click(object sender, EventArgs e)
         {
             OpenFileDialog of = new OpenFileDialog();
             of.Multiselect = true;
             of.Filter = "Microsoft Excel | *.xls; *xlsx; *xlsm";
-            filesList.Items.Clear();
+            
             if(of.ShowDialog() == DialogResult.OK)
             {
                 files = of.FileNames;
+                filesList.Items.Clear();
                 foreach (String temp in files)
                 {
                     filesList.Items.Add(temp.Substring(temp.LastIndexOf("\\")+1, temp.LastIndexOf(".xls") - temp.LastIndexOf("\\")-1));
                 }
+                Database1Entities db = new Database1Entities();
+                var q = (from x in db.Pkts select x).ToList();
+                int counter = 0;
+                List<Pkt> tempP = new List<Pkt>();
+                foreach(string temp in filesList.Items)
+                {
+                    Console.WriteLine(counter++);
+                    foreach (var temp2 in q)
+                    {
+                        if (temp2.kodePkt == temp)
+                        {
+                            tempP.Add(temp2);
+                        }
+                    }
+                }
+                foreach (var temp in tempP)
+                {
+                    q.Remove(temp);
+                }
+
+                //foreach(var temp in q)
+                //{
+                //    filesListBelumMasuk.Items.Add(temp.kodePkt);
+                //}
                 inputIntoCollection();
                 MessageBox.Show("Done!");
             }
@@ -42,6 +117,7 @@ namespace testProjectBCA
         {
             foreach(String path in files)
             {
+                DataSet ds = Util.openExcel(path);
                 collectionTransaksiPkt.Add(loadSheetsIntoClassList(Util.openExcel(path)));
                 GC.Collect();
             }
@@ -59,8 +135,11 @@ namespace testProjectBCA
         private List<transaksiPkt> loadSheetsIntoClassList(DataSet data)
         {
             List<transaksiPkt> list = new List<transaksiPkt>();
+            int counter = 0;
+            int counterList = 0;
             for (int x = 0; x < data.Tables.Count; x++)
             {
+                
                 var table = data.Tables[x];
                 //Validasi Sheet Kosong
                 if (table.Rows.Count < 10)
@@ -79,12 +158,19 @@ namespace testProjectBCA
                 transaksiPkt pkt = new transaksiPkt();
                 //Kode Pkt
                 pkt.kodePkt = table.Rows[5][5].ToString();
-
                 //tanggal pengajuan
                 pkt.tanggalPengajuan = (DateTime)table.Rows[12][5];
 
+                //Check record di db
+                var checkRecord = (from q in db.TransaksiAtms where q.kodePkt == pkt.kodePkt && q.tanggal == pkt.tanggalPengajuan select q).FirstOrDefault();
+                if (checkRecord != null)
+                {
+                    //MessageBox.Show("Data " + pkt.kodePkt + " Tanggal " + pkt.tanggalPengajuan.ToShortDateString() + " Sudah ada\nData tidak akan diinput", "Duplicate data");
+                    continue;
+                }
+
                 //Pengambilan data hitungan dari db
-                if (x == 0 && (from q in db.TransaksiAtms where q.kodePkt == pkt.kodePkt select q).FirstOrDefault() != null)
+                if (counter == 0 && (from q in db.TransaksiAtms where q.kodePkt == pkt.kodePkt select q).FirstOrDefault() != null)
                 {
                     DateTime hariSebelomnya = pkt.tanggalPengajuan.AddDays(-1);
                     var query = (from q in db.TransaksiAtms where q.kodePkt == pkt.kodePkt && q.tanggal == hariSebelomnya select q).FirstOrDefault();
@@ -99,12 +185,13 @@ namespace testProjectBCA
                         MessageBox.Show("Data "+table.TableName+" tidak akan dimasukkan karena record hari sebelumnya tidak ada");
                         continue;
                     }
+                    counter++;
                 }
                 else
                 {
-                    if (x == 0)
+                    if (counterList == 0)
                         pkt.saldoAwalHitungan = pkt.saldoAwal;
-                    pkt.saldoAwalHitungan = list[x - 1].saldoAkhirHitungan;
+                    pkt.saldoAwalHitungan = list[counterList-1].saldoAkhirHitungan;
                 }
 
 
@@ -184,7 +271,7 @@ namespace testProjectBCA
                 for (int i = 0; i < 7; i++)
                 {
                     List<Int64> tempList = new List<Int64>();
-                    if ((table.Rows[22 + i][6].ToString().Trim() == "" || table.Rows[22 + i][6].ToString().Trim() == "0") &&
+                    if (table.Rows[22+i][5].ToString().Trim() == "" && (table.Rows[22 + i][6].ToString().Trim() == "" || table.Rows[22 + i][6].ToString().Trim() == "0") &&
                         (table.Rows[22 + i][7].ToString().Trim() == "" || table.Rows[22 + i][7].ToString().Trim() == "0") &&
                         (table.Rows[22 + i][8].ToString().Trim() == "" || table.Rows[22 + i][8].ToString().Trim() == "0"))
                         continue;
@@ -212,9 +299,10 @@ namespace testProjectBCA
                 for (int i = 0; i < 7; i++)
                 {
                     List<Int64> tempList = new List<Int64>();
-                    if ((table.Rows[34 + i][6].ToString() == "" || table.Rows[34 + i][6].ToString() == "0" || table.Rows[34 + i][6].ToString() == ".") &&
-                        (table.Rows[34 + i][7].ToString() == "" || table.Rows[34 + i][7].ToString() == "0" || table.Rows[34 + i][7].ToString() == ".") &&
-                        (table.Rows[34 + i][8].ToString() == "" || table.Rows[34 + i][8].ToString() == "0" || table.Rows[34 + i][8].ToString() == "."))
+                    if (table.Rows[34 + i][5].ToString().Trim() == "" && 
+                        (table.Rows[34 + i][6].ToString().Trim() == "" || table.Rows[34 + i][6].ToString().Trim() == "0" || table.Rows[34 + i][6].ToString().Trim() == ".") &&
+                        (table.Rows[34 + i][7].ToString().Trim() == "" || table.Rows[34 + i][7].ToString().Trim() == "0" || table.Rows[34 + i][7].ToString().Trim() == ".") &&
+                        (table.Rows[34 + i][8].ToString().Trim() == "" || table.Rows[34 + i][8].ToString().Trim() == "0" || table.Rows[34 + i][8].ToString().Trim() == "."))
                         continue;
 
                     for (int j = 0; j < 4; j++)
@@ -230,25 +318,55 @@ namespace testProjectBCA
 
                 pkt.hitungSaldoAkhir();
 
+
+
+                //Bagian Checking 
+                String errMsg = "";
+                bool isError = false;
                 if (pkt.saldoAwalHitungan[0] != pkt.saldoAwal[0] || pkt.saldoAwalHitungan[1] != pkt.saldoAwal[1] || pkt.saldoAwalHitungan[2] != pkt.saldoAwal[2])
                 {
-                    MessageBox.Show("Laporan " + pkt.kodePkt + " Tanggal: " + pkt.tanggalPengajuan.ToShortDateString() + " Tidak sesuai"+
-                        "\nSaldo awal hitungan 100: Rp. " + pkt.saldoAwalHitungan[0] + "\nSaldo awal laporan 100: Rp. " + pkt.saldoAwal[0] +
-                        "\nSaldo awal hitungan 50: Rp. " + pkt.saldoAwalHitungan[1] + "\nSaldo awal laporan 50: Rp. " + pkt.saldoAwal[1] +
-                        "\nSaldo awal hitungan 20: Rp. " + pkt.saldoAwalHitungan[2] + "\nSaldo awal laporan 20: Rp." + pkt.saldoAwal[2] +
-                        "\nSaldo akhir hitungan 100: Rp. " + pkt.saldoAkhirHitungan[0] + "\nSaldo akhir laporan 100: Rp. " + pkt.saldoAkhir[0] +
-                        "\nSaldo akhir hitungan 50: Rp. " + pkt.saldoAkhirHitungan[1] + "\nSaldo akhir laporan 50: Rp. " + pkt.saldoAkhir[1] +
-                        "\nSaldo akhir hitungan 20: Rp. " + pkt.saldoAkhirHitungan[2] + "\nSaldo akhir laporan 20: Rp." + pkt.saldoAkhir[2], "Warning!");
+                    isError = true;
+                    errMsg+="Saldo awal tidak sesuai\n=====================\n"+
+                        "\nHitungan 100: Rp. " + pkt.saldoAwalHitungan[0].ToString("n0") + "\nLaporan 100: Rp. " + pkt.saldoAwal[0].ToString("n0") +
+                        "\nHitungan 50: Rp. " + pkt.saldoAwalHitungan[1].ToString("n0") + "\nLaporan 50: Rp. " + pkt.saldoAwal[1].ToString("n0") +
+                        "\nHitungan 20: Rp. " + pkt.saldoAwalHitungan[2].ToString("n0") + "\nLaporan 20: Rp." + pkt.saldoAwal[2].ToString("n0");
                 }
 
+                var queryApproval = (from a in db.Approvals
+                                     join da in db.DetailApprovals on a.idApproval equals da.idApproval
+                                     where a.kodePkt == pkt.kodePkt && pkt.tanggalPengajuan == da.tanggal
+                                     select new { Approval = a, DetailApproval = da }).FirstOrDefault();
+                if (queryApproval != null)
+                {
+                    if(queryApproval.DetailApproval.bon100 != pkt.penerimaanBon[0] || queryApproval.DetailApproval.bon50 != pkt.penerimaanBon[1] || queryApproval.DetailApproval.bon20 != pkt.penerimaanBon[2])
+                    {
+                        isError = true;
+                        errMsg += "\nBon menurut approval : \n=====================\n" +
+                            "\nHitungan 100: Rp. " + ((Int64)queryApproval.DetailApproval.bon100).ToString("n0") + "\nLaporan 100: Rp. " + pkt.penerimaanBon[0].ToString("n0") +
+                            "\nHitungan 50: Rp. " + ((Int64)queryApproval.DetailApproval.bon50).ToString("n0") + "\nLaporan 50: Rp. " + pkt.penerimaanBon[1].ToString("n0") +
+                            "\nHitungan 20: Rp. " + ((Int64)queryApproval.DetailApproval.bon20).ToString("n0") + "\nLaporan 20: Rp." + pkt.penerimaanBon[2].ToString("n0"); 
+                    }
+                }
+
+                if(isError)
+                {
+                    String errMsg2 = "Laporan " + pkt.kodePkt + " Tanggal: " + pkt.tanggalPengajuan.ToShortDateString() + " Tidak sesuai\n";
+                    errMsg2 += errMsg;
+                    MessageBox.Show(errMsg2, "Warning!");
+                }
                 list.Add(pkt);
+                counterList++;
             }
             return list;
         }
 
         private void inputBtn_Click(object sender, EventArgs e)
         {
+            loadForm.ShowSplashScreen();
             inputDataToDB();
+            loadListDataYangSudahAda();
+            loadDataYangBelumAda();
+            loadForm.CloseForm();
         }
     }
 }

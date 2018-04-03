@@ -14,17 +14,8 @@ namespace testProjectBCA
     
     public partial class Cashpoint
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Cashpoint()
-        {
-            this.Optis = new HashSet<Opti>();
-        }
-    
         public string idCashpoint { get; set; }
         public string denom { get; set; }
         public string kodePkt { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Opti> Optis { get; set; }
     }
 }

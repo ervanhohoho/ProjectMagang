@@ -64,6 +64,11 @@ namespace testProjectBCA
         public static void inputDataTransaksiATMToDB(transaksiPkt temp)
         {
             Database1Entities db = new Database1Entities();
+            //Skip data yang udah ada
+            var check = (from x in db.TransaksiAtms where x.kodePkt == temp.kodePkt && x.tanggal == temp.tanggalPengajuan select x).FirstOrDefault();
+            if (check != null)
+                return;
+
             TransaksiAtm newT = new TransaksiAtm();
             newT.kodePkt = temp.kodePkt;
             newT.tanggal = temp.tanggalPengajuan;
@@ -111,7 +116,17 @@ namespace testProjectBCA
                 db.laporanBons.Add(newL);
                 db.SaveChanges();
             }
-            
+            foreach(var temp2 in temp.permintaanBon)
+            {
+                LaporanPermintaanBon newL = new LaporanPermintaanBon();
+                newL.kodePkt = temp.kodePkt;
+                newL.tanggal = temp.tanggalPengajuan.AddDays(counter++);
+                newL.C100 = temp2[0];
+                newL.C50 = temp2[1];
+                newL.C20 = temp2[2];
+                db.LaporanPermintaanBons.Add(newL);
+                db.SaveChanges();
+            }
             
         }
         public static void closeExcel()

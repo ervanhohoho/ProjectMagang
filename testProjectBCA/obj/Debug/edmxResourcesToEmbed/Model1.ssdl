@@ -211,7 +211,26 @@
     <Property Name="setor50" Type="bigint" />
     <Property Name="setor100" Type="bigint" />
   </EntityType>
+  <EntityType Name="EventTanggal">
+    <Key>
+      <PropertyRef Name="tanggal" />
+    </Key>
+    <Property Name="tanggal" Type="date" Nullable="false" />
+    <Property Name="workDay" Type="varchar" MaxLength="100" />
+    <Property Name="event" Type="varchar" MaxLength="100" />
+  </EntityType>
   <EntityType Name="laporanBon">
+    <Key>
+      <PropertyRef Name="idLaporan" />
+    </Key>
+    <Property Name="idLaporan" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="kodePkt" Type="varchar" MaxLength="10" />
+    <Property Name="tanggal" Type="date" />
+    <Property Name="100" Type="bigint" />
+    <Property Name="50" Type="bigint" />
+    <Property Name="20" Type="bigint" />
+  </EntityType>
+  <EntityType Name="LaporanPermintaanBon">
     <Key>
       <PropertyRef Name="idLaporan" />
     </Key>
@@ -292,18 +311,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_Opti_ToTable">
-    <End Role="Cashpoint" Type="Self.Cashpoint" Multiplicity="0..1" />
-    <End Role="Opti" Type="Self.Opti" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Cashpoint">
-        <PropertyRef Name="idCashpoint" />
-      </Principal>
-      <Dependent Role="Opti">
-        <PropertyRef Name="idCashpoint" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_TransaksiAtms_Pkt">
     <End Role="Pkt" Type="Self.Pkt" Multiplicity="1" />
     <End Role="TransaksiAtms" Type="Self.TransaksiAtms" Multiplicity="*" />
@@ -327,17 +334,15 @@
     <EntitySet Name="DeliveryLainnya" EntityType="Self.DeliveryLainnya" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DeliveryRetail" EntityType="Self.DeliveryRetail" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DetailApprovals" EntityType="Self.DetailApprovals" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EventTanggal" EntityType="Self.EventTanggal" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="laporanBon" EntityType="Self.laporanBon" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="LaporanPermintaanBon" EntityType="Self.LaporanPermintaanBon" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Opti" EntityType="Self.Opti" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Pkt" EntityType="Self.Pkt" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TransaksiAtms" EntityType="Self.TransaksiAtms" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK_laporanBon_Pkt" Association="Self.FK_laporanBon_Pkt">
       <End Role="Pkt" EntitySet="Pkt" />
       <End Role="laporanBon" EntitySet="laporanBon" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Opti_ToTable" Association="Self.FK_Opti_ToTable">
-      <End Role="Cashpoint" EntitySet="Cashpoint" />
-      <End Role="Opti" EntitySet="Opti" />
     </AssociationSet>
     <AssociationSet Name="FK_TransaksiAtms_Pkt" Association="Self.FK_TransaksiAtms_Pkt">
       <End Role="Pkt" EntitySet="Pkt" />

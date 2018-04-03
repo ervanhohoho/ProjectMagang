@@ -50,7 +50,9 @@ namespace testProjectBCA
         }
         private void informationBoardToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            loadForm.ShowSplashScreen();
             InformationBoard ib = new InformationBoard();
+            loadForm.CloseForm();
             ib.MdiParent = this;
             ib.Show();
 
@@ -60,8 +62,11 @@ namespace testProjectBCA
             OpenFileDialog of = new OpenFileDialog();
             of.Filter = Variables.csvFilter;
             String connectionString = Variables.connectionString;
+            
+            
             if (of.ShowDialog() == DialogResult.OK)
             {
+                loadForm.ShowSplashScreen();
                 try
                 {
                     using (SqlConnection con = new SqlConnection(connectionString))
@@ -79,21 +84,75 @@ namespace testProjectBCA
                     MessageBox.Show(string.Format("An error occurred: {0}", ex.Message));
                 }
 
-                using (var csv = new CsvReader(new StreamReader(of.FileName), true))
+                using (SqlConnection con = new SqlConnection(connectionString))
                 {
-                    // Field headers will automatically be used as column names
-                    //dataGridView1.DataSource = csv;
-                    using (var sbc = new SqlBulkCopy(connectionString))
+                    con.Open();
+                    using (SqlCommand cmd = new SqlCommand("CREATE TABLE #TEMP ([idCashpoint] VARCHAR(255), [tanggal] VARCHAR(30), [prediksi] BIGINT)", con))
                     {
-                        sbc.DestinationTableName = "dbo.Opti";
-                        sbc.BatchSize = 1000;
-
-                        sbc.AddColumnMapping(0, 1);
-                        sbc.AddColumnMapping(12, 3);
-                        sbc.AddColumnMapping(2, 2);
-                        sbc.WriteToServer(csv);
+                        cmd.ExecuteNonQuery();
                     }
+                    using (var csv = new CachedCsvReader(new StreamReader(of.FileName), true))
+                    {
+                        // Field headers will automatically be used as column names
+                        
+                        try
+                        {
+                            using (var sbc = new SqlBulkCopy(con))
+                            {
+                                sbc.DestinationTableName = "dbo.#TEMP";
+                                sbc.BatchSize = 1000;
+
+                                sbc.AddColumnMapping(0, 0);
+                                sbc.AddColumnMapping(12, 2);
+                                sbc.AddColumnMapping(2, 1);
+                                sbc.WriteToServer(csv);
+                            }
+                        }
+                        catch (Exception err)
+                        {
+                            MessageBox.Show(err.ToString());
+                        }
+                    }
+                    SqlCommand command = new SqlCommand();
+                    command.Connection = con;
+                    command.CommandText = "UPDATE #TEMP SET tanggal = REPLACE(tanggal,'   M', '   ') WHERE tanggal like '%M%'";
+                    command.ExecuteNonQuery();
+                    command.CommandText = "UPDATE #TEMP SET tanggal = REPLACE(tanggal,'   S', '   ') WHERE tanggal like '%S%'";
+                    command.ExecuteNonQuery();
+                    command.CommandText = "UPDATE #TEMP SET tanggal = REPLACE(tanggal,'   U', '') WHERE tanggal like '%U%'";
+                    command.ExecuteNonQuery();
+                    command.CommandText = "UPDATE #TEMP SET tanggal = REPLACE(tanggal,'   H', '') WHERE tanggal like '%H%'";
+                    command.ExecuteNonQuery();
+
+                    command.CommandText = "DELETE FROM #TEMP WHERE [idCashpoint] IN('AVERAGE','SUMMARY','ATM Horizons - Detail','Cashpoint')";
+                    command.ExecuteNonQuery();
+
+                    command.CommandText = "UPDATE #TEMP SET tanggal = RTRIM(tanggal)";
+                    command.ExecuteNonQuery();
+                    //SqlDataReader reader;
+                    //command.CommandText = "SELECT * FROM #TEMP";
+                    //reader = command.ExecuteReader();
+                    //while (reader.Read())
+                    //{
+                    //    Console.WriteLine(reader[0] + " " + reader[1] + " " + reader[2]);
+                    //}
+                    //reader.Close();
+                    //command.CommandText = "DBCC CHECKIDENT(\"dbo.Opti\", RESEED, 0)";
+                    //command.ExecuteNonQuery();
+                    try
+                    {
+                        command.CommandText = "INSERT INTO Opti(idCashpoint, tanggal, prediksi) SELECT idCashpoint, CAST(tanggal AS DATE), prediksi FROM #TEMP TT";
+                        command.ExecuteNonQuery();
+                        command.CommandText = "DROP TABLE #TEMP";
+                        command.ExecuteNonQuery();
+                    }
+                    catch(Exception er)
+                    {
+                        MessageBox.Show("File opti belum sesuai template");
+                    }
+                    con.Close();
                 }
+                loadForm.CloseForm();
             }
         }
         private void inputDataPkt()
@@ -102,7 +161,7 @@ namespace testProjectBCA
             of.Filter = Variables.excelFilter;
             if (of.ShowDialog() == DialogResult.OK)
             {
-
+                loadForm.ShowSplashScreen();
                 DataSet ds = Util.openExcel(of.FileName);
                 //for (int i = 1; i < ds.Tables[0].Rows.Count; i++)
                 //{
@@ -133,7 +192,21 @@ namespace testProjectBCA
                 {
                     dt.Rows.Remove(row);
                 }
+                List<DataRow> listRow = new List<DataRow>();
+                for(int a=0;a<dt.Rows.Count;a++)
+                {
+                    int buf;
+                    if(Int32.TryParse(dt.Rows[a][4].ToString(), out buf))
+                    {
+                        listRow.Add(dt.Rows[a]);
+                    }
+                }
+                foreach(DataRow row in listRow)
+                {
+                    dt.Rows.Remove(row);
+                }
                 UpdateDataCashpointPkt(dt);
+                loadForm.CloseForm();
             }
         }
         private void inputDataDenom()
@@ -144,7 +217,7 @@ namespace testProjectBCA
             {
                 //Database1Entities db = new Database1Entities();
                 DataSet ds = Util.openExcel(of.FileName);
-
+                loadForm.ShowSplashScreen();
 
                 //for (int i = 1; i < ds.Tables[0].Rows.Count; i++)
                 //{
@@ -167,6 +240,7 @@ namespace testProjectBCA
                 //    db.SaveChanges();
                 //}
                 UpdateDataCashpointDenom(ds.Tables[0]);
+                loadForm.CloseForm();
             }
             else
             {
@@ -193,21 +267,38 @@ namespace testProjectBCA
                             //bulkcopy.BulkCopyTimeout = 660;
                             bulkcopy.DestinationTableName = "#TempTable";
                             bulkcopy.ColumnMappings.Add(0, 0);
-                            bulkcopy.ColumnMappings.Add(5, 1);
+                            bulkcopy.ColumnMappings.Add(4, 1);
                             bulkcopy.WriteToServer(dt);
                             bulkcopy.Close();
                         }
 
                         // Updating destination table, and dropping temp table
                         command.CommandTimeout = 300;
+                        //Filtering data di temptable
+                        command.CommandText = "DELETE FROM #TempTable WHERE kodePkt = 'AMRT' OR kodePkt = 'TAGT'";
+                        command.ExecuteNonQuery();
+                        command.CommandText = "UPDATE #TempTable SET kodePkt = 'AMRT' WHERE kodePkt = 'AMRT2'";
+                        command.ExecuteNonQuery();
+                        command.CommandText = "UPDATE #TempTable SET kodePkt = 'TAGT' WHERE kodePkt = 'TAGT2'";
+                        command.ExecuteNonQuery();
+                        command.CommandText = "UPDATE #TempTable SET kodePkt = 'ACBB' WHERE kodePkt = 'ACBD'";
+                        command.ExecuteNonQuery();
+                        command.CommandText = "UPDATE #TempTable SET kodePkt = 'ACMS' WHERE kodePkt = 'ACCM'";
+                        command.ExecuteNonQuery();
+                        command.CommandText = "UPDATE #TempTable SET kodePkt = 'ACKI' WHERE kodePkt = 'ACKD'";
+                        command.ExecuteNonQuery();
+                        command.CommandText = "UPDATE #TempTable SET kodePkt = 'ACMG' WHERE kodePkt = 'ACML'";
+                        command.ExecuteNonQuery();
+                        command.CommandText = "UPDATE #TempTable SET kodePkt = 'ANDB' WHERE kodePkt = 'ANBD'";
+                        command.ExecuteNonQuery();
+                        command.CommandText = "UPDATE #TempTable SET kodePkt = 'ANDJ' WHERE kodePkt = 'ANJK'";
+                        command.ExecuteNonQuery();
+
                         command.CommandText = "INSERT INTO Cashpoint(idCashpoint, kodePkt) SELECT TT.idCashpoint, TT.kodePkt FROM #TempTable TT LEFT JOIN Cashpoint C ON TT.idCashpoint = C.idCashpoint WHERE C.idCashpoint IS  NULL";
                         command.ExecuteNonQuery();
                         command.CommandText = "UPDATE T SET T.kodePkt = TT.kodePkt FROM Cashpoint T INNER JOIN #TempTable TT ON TT.idCashpoint = T.idCashpoint; DROP TABLE #TempTable;";
                         command.ExecuteNonQuery();
-                        command.CommandText = "DELETE FROM Cashpoint WHERE kodePkt = 'AMRT'";
-                        command.ExecuteNonQuery();
-                        command.CommandText = "UPDATE Cashpoint SET kodePkt = 'AMRT' WHERE kodePkt = 'AMRT2'";
-                        command.ExecuteNonQuery();
+                        
                     }
                     catch (Exception ex)
                     {
@@ -374,6 +465,73 @@ namespace testProjectBCA
             InputTransaksiCabangForm itcf = new InputTransaksiCabangForm();
             itcf.MdiParent = this;
             itcf.Show();
+        }
+
+        private void initTransToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            initTransaksi it = new initTransaksi();
+            it.MdiParent = this;
+            it.Show();
+            
+        }
+
+        private void inputDataKalenderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog of = new OpenFileDialog();
+            of.Filter = Variables.excelFilter;
+            if(of.ShowDialog() == DialogResult.OK)
+            {
+                DataSet ds = Util.openExcel(of.FileName);
+                DataTable dt = ds.Tables[1];
+                dt.Rows.RemoveAt(0);
+                using (SqlConnection sql = new SqlConnection(Variables.connectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        sql.Open();
+                        cmd.Connection = sql;
+                        cmd.CommandText = "DELETE FROM dbo.EventTanggal";
+                        cmd.ExecuteNonQuery();
+
+                        sql.Close();
+                        using (SqlBulkCopy sbc = new SqlBulkCopy(sql))
+                        {
+                            sbc.DestinationTableName = "dbo.EventTanggal";
+                            sbc.ColumnMappings.Add(0, 0);
+                            sbc.ColumnMappings.Add(1, 1);
+                            sbc.ColumnMappings.Add(2, 2);
+                            sbc.WriteToServer(dt);
+                            sbc.Close();
+                        }
+                        
+                    }
+                }
+               
+            }
+        }
+
+        private void loadMasterPKTToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            loadPkt idp = new loadPkt();
+            idp.MdiParent = this;
+            idp.Show();
+        }
+
+        private void rekapApprovalToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RekapApproval ra = new RekapApproval();
+            ra.MdiParent = this;
+            ra.Show();
+        }
+
+        private void dashboardToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            loadForm.ShowSplashScreen();
+            dasbor d = new dasbor();
+            loadForm.CloseForm();
+            d.MdiParent = this;
+            d.WindowState = FormWindowState.Maximized;
+            d.Show();
         }
     }
 }
