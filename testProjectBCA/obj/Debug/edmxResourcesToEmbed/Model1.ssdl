@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Schema Namespace="Database1Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+<Schema Namespace="CACModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
   <EntityType Name="Approvals">
     <Key>
       <PropertyRef Name="idApproval" />
@@ -24,156 +24,33 @@
     <Property Name="denom" Type="varchar" MaxLength="10" />
     <Property Name="kodePkt" Type="varchar" MaxLength="10" />
   </EntityType>
-  <EntityType Name="CollectionCabang">
+  <EntityType Name="DailyStock">
     <Key>
       <PropertyRef Name="idTransaksi" />
     </Key>
     <Property Name="idTransaksi" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="tanggal" Type="date" />
-    <Property Name="kodePkt" Type="varchar" MaxLength="10" />
-    <Property Name="kodeCabang" Type="varchar" MaxLength="20" />
-    <Property Name="bn100000" Type="bigint" />
-    <Property Name="bn50000" Type="bigint" />
-    <Property Name="bn20000" Type="bigint" />
-    <Property Name="bn10000" Type="bigint" />
-    <Property Name="bn5000" Type="bigint" />
-    <Property Name="bn2000" Type="bigint" />
-    <Property Name="bn1000" Type="bigint" />
-    <Property Name="bn500" Type="bigint" />
-    <Property Name="bn200" Type="bigint" />
-    <Property Name="bn100" Type="bigint" />
-    <Property Name="c1000" Type="bigint" />
-    <Property Name="c500" Type="bigint" />
-    <Property Name="c200" Type="bigint" />
-    <Property Name="c100" Type="bigint" />
-    <Property Name="c50" Type="bigint" />
-    <Property Name="c25" Type="bigint" />
-  </EntityType>
-  <EntityType Name="CollectionLainnya">
-    <Key>
-      <PropertyRef Name="idTransaksi" />
-    </Key>
-    <Property Name="idTransaksi" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="tanggal" Type="date" />
-    <Property Name="kodePkt" Type="varchar" MaxLength="10" />
-    <Property Name="keterangan" Type="varchar" MaxLength="20" />
-    <Property Name="bn100000" Type="bigint" />
-    <Property Name="bn50000" Type="bigint" />
-    <Property Name="bn20000" Type="bigint" />
-    <Property Name="bn10000" Type="bigint" />
-    <Property Name="bn5000" Type="bigint" />
-    <Property Name="bn2000" Type="bigint" />
-    <Property Name="bn1000" Type="bigint" />
-    <Property Name="bn500" Type="bigint" />
-    <Property Name="bn200" Type="bigint" />
-    <Property Name="bn100" Type="bigint" />
-    <Property Name="c1000" Type="bigint" />
-    <Property Name="c500" Type="bigint" />
-    <Property Name="c200" Type="bigint" />
-    <Property Name="c100" Type="bigint" />
-    <Property Name="c50" Type="bigint" />
-    <Property Name="c25" Type="bigint" />
-  </EntityType>
-  <EntityType Name="CollectionRetail">
-    <Key>
-      <PropertyRef Name="idTransaksi" />
-    </Key>
-    <Property Name="idTransaksi" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="tanggal" Type="date" />
-    <Property Name="kodePkt" Type="varchar" MaxLength="10" />
-    <Property Name="kodeNasabah" Type="varchar" MaxLength="20" />
-    <Property Name="bn100000" Type="bigint" />
-    <Property Name="bn50000" Type="bigint" />
-    <Property Name="bn20000" Type="bigint" />
-    <Property Name="bn10000" Type="bigint" />
-    <Property Name="bn5000" Type="bigint" />
-    <Property Name="bn2000" Type="bigint" />
-    <Property Name="bn1000" Type="bigint" />
-    <Property Name="bn500" Type="bigint" />
-    <Property Name="bn200" Type="bigint" />
-    <Property Name="bn100" Type="bigint" />
-    <Property Name="c1000" Type="bigint" />
-    <Property Name="c500" Type="bigint" />
-    <Property Name="c200" Type="bigint" />
-    <Property Name="c100" Type="bigint" />
-    <Property Name="c50" Type="bigint" />
-    <Property Name="c25" Type="bigint" />
-  </EntityType>
-  <EntityType Name="DeliveryCabang">
-    <Key>
-      <PropertyRef Name="idTransaksi" />
-    </Key>
-    <Property Name="idTransaksi" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="tanggal" Type="date" />
-    <Property Name="kodeCabang" Type="varchar" MaxLength="20" />
-    <Property Name="kodePkt" Type="varchar" MaxLength="10" />
-    <Property Name="tipeLayanan" Type="varchar" MaxLength="20" />
-    <Property Name="bn100000" Type="bigint" />
-    <Property Name="bn50000" Type="bigint" />
-    <Property Name="bn20000" Type="bigint" />
-    <Property Name="bn10000" Type="bigint" />
-    <Property Name="bn5000" Type="bigint" />
-    <Property Name="bn2000" Type="bigint" />
-    <Property Name="bn1000" Type="bigint" />
-    <Property Name="bn500" Type="bigint" />
-    <Property Name="bn200" Type="bigint" />
-    <Property Name="bn100" Type="bigint" />
-    <Property Name="c1000" Type="bigint" />
-    <Property Name="c500" Type="bigint" />
-    <Property Name="c200" Type="bigint" />
-    <Property Name="c100" Type="bigint" />
-    <Property Name="c50" Type="bigint" />
-    <Property Name="c25" Type="bigint" />
-  </EntityType>
-  <EntityType Name="DeliveryLainnya">
-    <Key>
-      <PropertyRef Name="idTransaksi" />
-    </Key>
-    <Property Name="idTransaksi" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="tanggal" Type="date" />
-    <Property Name="kodePkt" Type="varchar" MaxLength="10" />
-    <Property Name="keterangan" Type="varchar" MaxLength="20" />
-    <Property Name="bn100000" Type="bigint" />
-    <Property Name="bn50000" Type="bigint" />
-    <Property Name="bn20000" Type="bigint" />
-    <Property Name="bn10000" Type="bigint" />
-    <Property Name="bn5000" Type="bigint" />
-    <Property Name="bn2000" Type="bigint" />
-    <Property Name="bn1000" Type="bigint" />
-    <Property Name="bn500" Type="bigint" />
-    <Property Name="bn200" Type="bigint" />
-    <Property Name="bn100" Type="bigint" />
-    <Property Name="c1000" Type="bigint" />
-    <Property Name="c500" Type="bigint" />
-    <Property Name="c200" Type="bigint" />
-    <Property Name="c100" Type="bigint" />
-    <Property Name="c50" Type="bigint" />
-    <Property Name="c25" Type="bigint" />
-  </EntityType>
-  <EntityType Name="DeliveryRetail">
-    <Key>
-      <PropertyRef Name="idTransaksi" />
-    </Key>
-    <Property Name="idTransaksi" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="tanggal" Type="date" />
-    <Property Name="kodePkt" Type="varchar" MaxLength="10" />
-    <Property Name="kodeNasabah" Type="varchar" MaxLength="20" />
-    <Property Name="bn100000" Type="bigint" />
-    <Property Name="bn50000" Type="bigint" />
-    <Property Name="bn20000" Type="bigint" />
-    <Property Name="bn10000" Type="bigint" />
-    <Property Name="bn5000" Type="bigint" />
-    <Property Name="bn2000" Type="bigint" />
-    <Property Name="bn1000" Type="bigint" />
-    <Property Name="bn500" Type="bigint" />
-    <Property Name="bn200" Type="bigint" />
-    <Property Name="bn100" Type="bigint" />
-    <Property Name="c1000" Type="bigint" />
-    <Property Name="c500" Type="bigint" />
-    <Property Name="c200" Type="bigint" />
-    <Property Name="c100" Type="bigint" />
-    <Property Name="c50" Type="bigint" />
-    <Property Name="c25" Type="bigint" />
+    <Property Name="tanggal" Type="datetime" />
+    <Property Name="kodePkt" Type="varchar" MaxLength="50" />
+    <Property Name="in/out" Type="varchar" MaxLength="50" />
+    <Property Name="jenisTransaksi" Type="varchar" MaxLength="100" />
+    <Property Name="kode" Type="varchar" MaxLength="100" />
+    <Property Name="nama" Type="varchar" MaxLength="100" />
+    <Property Name="keterangan" Type="varchar" MaxLength="100" />
+    <Property Name="BN100K" Type="bigint" />
+    <Property Name="BN50K" Type="bigint" />
+    <Property Name="BN20K" Type="bigint" />
+    <Property Name="BN10K" Type="bigint" />
+    <Property Name="BN5K" Type="bigint" />
+    <Property Name="BN2K" Type="bigint" />
+    <Property Name="BN1K" Type="bigint" />
+    <Property Name="BN500" Type="bigint" />
+    <Property Name="BN100" Type="bigint" />
+    <Property Name="CN1K" Type="bigint" />
+    <Property Name="CN500" Type="bigint" />
+    <Property Name="CN200" Type="bigint" />
+    <Property Name="CN100" Type="bigint" />
+    <Property Name="CN50" Type="bigint" />
+    <Property Name="CN25" Type="bigint" />
   </EntityType>
   <EntityType Name="DetailApprovals">
     <Key>
@@ -260,6 +137,7 @@
     <Property Name="koordinator" Type="varchar" MaxLength="50" />
     <Property Name="kanwil" Type="varchar" MaxLength="50" />
     <Property Name="sentralisasi" Type="varchar" MaxLength="50" />
+    <Property Name="vendor" Type="varchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="TransaksiAtms">
     <Key>
@@ -323,16 +201,11 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <EntityContainer Name="Database1ModelStoreContainer">
+  <EntityContainer Name="CACModelStoreContainer">
     <EntitySet Name="Approvals" EntityType="Self.Approvals" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Cabang" EntityType="Self.Cabang" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Cashpoint" EntityType="Self.Cashpoint" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="CollectionCabang" EntityType="Self.CollectionCabang" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="CollectionLainnya" EntityType="Self.CollectionLainnya" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="CollectionRetail" EntityType="Self.CollectionRetail" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="DeliveryCabang" EntityType="Self.DeliveryCabang" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="DeliveryLainnya" EntityType="Self.DeliveryLainnya" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="DeliveryRetail" EntityType="Self.DeliveryRetail" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DailyStock" EntityType="Self.DailyStock" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DetailApprovals" EntityType="Self.DetailApprovals" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="EventTanggal" EntityType="Self.EventTanggal" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="laporanBon" EntityType="Self.laporanBon" Schema="dbo" store:Type="Tables" />

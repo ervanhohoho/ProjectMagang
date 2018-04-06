@@ -26,20 +26,15 @@ namespace testProjectBCA
         }
     
         public virtual DbSet<Approval> Approvals { get; set; }
+        public virtual DbSet<Cabang> Cabangs { get; set; }
         public virtual DbSet<Cashpoint> Cashpoints { get; set; }
+        public virtual DbSet<DailyStock> DailyStocks { get; set; }
         public virtual DbSet<DetailApproval> DetailApprovals { get; set; }
+        public virtual DbSet<EventTanggal> EventTanggals { get; set; }
+        public virtual DbSet<laporanBon> laporanBons { get; set; }
+        public virtual DbSet<LaporanPermintaanBon> LaporanPermintaanBons { get; set; }
         public virtual DbSet<Opti> Optis { get; set; }
         public virtual DbSet<Pkt> Pkts { get; set; }
         public virtual DbSet<TransaksiAtm> TransaksiAtms { get; set; }
-        public virtual DbSet<laporanBon> laporanBons { get; set; }
-        public virtual DbSet<Cabang> Cabangs { get; set; }
-        public virtual DbSet<CollectionLainnya> CollectionLainnyas { get; set; }
-        public virtual DbSet<CollectionRetail> CollectionRetails { get; set; }
-        public virtual DbSet<DeliveryCabang> DeliveryCabangs { get; set; }
-        public virtual DbSet<DeliveryLainnya> DeliveryLainnyas { get; set; }
-        public virtual DbSet<DeliveryRetail> DeliveryRetails { get; set; }
-        public virtual DbSet<CollectionCabang> CollectionCabangs { get; set; }
-        public virtual DbSet<LaporanPermintaanBon> LaporanPermintaanBons { get; set; }
-        public virtual DbSet<EventTanggal> EventTanggals { get; set; }
     }
 }

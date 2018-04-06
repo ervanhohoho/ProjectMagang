@@ -67,15 +67,31 @@ namespace testProjectBCA
             {
                 dt.Rows[a]["kodePkt"] = kodePkt;
             }
+
+            dt.Columns.Add("jenisTransaksi", typeof(String));
+            for (int a = 0; a < dt.Rows.Count; a++)
+            {
+                dt.Rows[a]["jenisTransaksi"] = "Collection Cabang - " + dt.Rows[a][1].ToString();
+            }
+
+            dt.Columns.Add("inout", typeof(String));
+            for (int a = 0; a < dt.Rows.Count; a++)
+            {
+                dt.Rows[a]["inout"] = "IN";
+            }
             //Console.WriteLine(dt.Rows[dt.Rows.Count - 1][dt.Columns.Count - 1].ToString());
             using (SqlBulkCopy sbc = new SqlBulkCopy(Variables.connectionString))
             {
-                sbc.DestinationTableName = "dbo.CollectionCabang";
-                sbc.ColumnMappings.Add(2, 3);
-                sbc.ColumnMappings.Add(dt.Columns.Count - 1, 2);
-                sbc.ColumnMappings.Add(0, 1);
+                sbc.DestinationTableName = "dbo.DailyStock";
+                sbc.ColumnMappings.Add(2, 5); //Kode Cabang
+                sbc.ColumnMappings.Add(3, 6); //Nama Cabang
+                sbc.ColumnMappings.Add(4, 7); //Keterangan Cabang
+                sbc.ColumnMappings.Add(dt.Columns.Count - 3, 2); //kodePkt
+                sbc.ColumnMappings.Add(dt.Columns.Count - 2, 4); //Jenis Transaksi
+                sbc.ColumnMappings.Add(dt.Columns.Count - 1, 3); //IN-OUT
+                sbc.ColumnMappings.Add(0, 1); //Tanggal
                 for (int a = 0; a < 15; a++)
-                    sbc.ColumnMappings.Add(6 + a, 4 + a);
+                    sbc.ColumnMappings.Add(6 + a, 8 + a); //BN + Coin
                 sbc.WriteToServer(dt);
                 sbc.Close();
             }
@@ -102,19 +118,38 @@ namespace testProjectBCA
             {
                 dt.Rows[a]["kodePkt"] = kodePkt;
             }
+
+            dt.Columns.Add("jenisTransaksi", typeof(String));
+            for (int a = 0; a < dt.Rows.Count; a++)
+            {
+                dt.Rows[a]["jenisTransaksi"] = "Collection Retail";
+            }
+
+            dt.Columns.Add("inout", typeof(String));
+            for (int a = 0; a < dt.Rows.Count; a++)
+            {
+                dt.Rows[a]["inout"] = "IN";
+            }
+
             //Console.WriteLine(dt.Rows[dt.Rows.Count - 1][dt.Columns.Count - 1].ToString());
             using (SqlBulkCopy sbc = new SqlBulkCopy(Variables.connectionString))
             {
-                sbc.DestinationTableName = "dbo.CollectionRetail";
+                sbc.DestinationTableName = "dbo.DailyStock";
                 //Kode Nasabah
-                sbc.ColumnMappings.Add(1, 3);
+                sbc.ColumnMappings.Add(1, 5);
+                //Nama Nasabah
+                sbc.ColumnMappings.Add(2, 6);
                 //Kode Pkt
-                sbc.ColumnMappings.Add(dt.Columns.Count - 1, 2);
+                sbc.ColumnMappings.Add(dt.Columns.Count - 3, 2);
+                //Jenis Transaksi
+                sbc.ColumnMappings.Add(dt.Columns.Count - 2, 4);
+                //IN - OUT
+                sbc.ColumnMappings.Add(dt.Columns.Count - 1, 3);
                 //Tanggal
                 sbc.ColumnMappings.Add(0, 1);
                 //Uang
                 for (int a = 0; a < 15; a++)
-                    sbc.ColumnMappings.Add(4 + a, 4 + a);
+                    sbc.ColumnMappings.Add(4 + a, 8 + a);
                 sbc.WriteToServer(dt);
                 sbc.Close();
             }
@@ -141,19 +176,36 @@ namespace testProjectBCA
             {
                 dt.Rows[a]["kodePkt"] = kodePkt;
             }
+
+            dt.Columns.Add("jenisTransaksi", typeof(String));
+            for (int a = 0; a < dt.Rows.Count; a++)
+            {
+                dt.Rows[a]["jenisTransaksi"] = "Collection Lainnya - "+dt.Rows[a][1].ToString();
+            }
+
+            dt.Columns.Add("inout", typeof(String));
+            for (int a = 0; a < dt.Rows.Count; a++)
+            {
+                dt.Rows[a]["inout"] = "IN";
+            }
+
             //Console.WriteLine(dt.Rows[dt.Rows.Count - 1][dt.Columns.Count - 1].ToString());
             using (SqlBulkCopy sbc = new SqlBulkCopy(Variables.connectionString))
             {
-                sbc.DestinationTableName = "dbo.CollectionLainnya";
-                //Kode Nasabah
-                sbc.ColumnMappings.Add(1, 3);
+                sbc.DestinationTableName = "dbo.DailyStock";
                 //Kode Pkt
-                sbc.ColumnMappings.Add(dt.Columns.Count - 1, 2);
+                sbc.ColumnMappings.Add(dt.Columns.Count - 3, 2);
+                //Jenis Transaksi
+                sbc.ColumnMappings.Add(dt.Columns.Count - 2, 4);
+                //IN-OUT
+                sbc.ColumnMappings.Add(dt.Columns.Count - 1, 3);
                 //Tanggal
                 sbc.ColumnMappings.Add(0, 1);
+                //Keterangan Sumber Dana
+                sbc.ColumnMappings.Add(2, 7);
                 //Uang
                 for (int a = 0; a < 15; a++)
-                    sbc.ColumnMappings.Add(4 + a, 4 + a);
+                    sbc.ColumnMappings.Add(4 + a, 8 + a);
                 sbc.WriteToServer(dt);
                 sbc.Close();
             }
@@ -175,15 +227,31 @@ namespace testProjectBCA
             {
                 dt.Rows[a]["kodePkt"] = kodePkt;
             }
+
+            dt.Columns.Add("jenisTransaksi", typeof(String));
+            for (int a = 0; a < dt.Rows.Count; a++)
+            {
+                dt.Rows[a]["jenisTransaksi"] = "Delivery Cabang - " + dt.Rows[a][1].ToString();
+            }
+
+            dt.Columns.Add("inout", typeof(String));
+            for (int a = 0; a < dt.Rows.Count; a++)
+            {
+                dt.Rows[a]["inout"] = "OUT";
+            }
+
             using (SqlBulkCopy sbc = new SqlBulkCopy(Variables.connectionString))
             {
-                sbc.DestinationTableName = "dbo.DeliveryCabang";
-                sbc.ColumnMappings.Add(2, 2);
-                sbc.ColumnMappings.Add(dt.Columns.Count - 1, 3);
-                sbc.ColumnMappings.Add(0, 1);
-                sbc.ColumnMappings.Add(1, 4);
+                sbc.DestinationTableName = "dbo.DailyStock";
+                sbc.ColumnMappings.Add(2, 5); //Kode Cabang
+                sbc.ColumnMappings.Add(3, 6); //Nama Cabang
+                sbc.ColumnMappings.Add(4, 7); //Keterangan Cabang
+                sbc.ColumnMappings.Add(dt.Columns.Count - 3, 2); //kodePkt
+                sbc.ColumnMappings.Add(dt.Columns.Count - 2, 4); //Jenis Transaksi
+                sbc.ColumnMappings.Add(dt.Columns.Count - 1, 3); //IN-OUT
+                sbc.ColumnMappings.Add(0, 1); //Tanggal
                 for (int a = 0; a < 15; a++)
-                    sbc.ColumnMappings.Add(5 + a, 5 + a);
+                    sbc.ColumnMappings.Add(5 + a, 8 + a); //BN + Coin
                 sbc.WriteToServer(dt);
                 sbc.Close();
             }
@@ -211,19 +279,38 @@ namespace testProjectBCA
             {
                 dt.Rows[a]["kodePkt"] = kodePkt;
             }
+
+            dt.Columns.Add("jenisTransaksi", typeof(String));
+            for (int a = 0; a < dt.Rows.Count; a++)
+            {
+                dt.Rows[a]["jenisTransaksi"] = "Delivery Retail";
+            }
+
+            dt.Columns.Add("inout", typeof(String));
+            for (int a = 0; a < dt.Rows.Count; a++)
+            {
+                dt.Rows[a]["inout"] = "OUT";
+            }
+
             //Console.WriteLine(dt.Rows[dt.Rows.Count - 1][dt.Columns.Count - 1].ToString());
             using (SqlBulkCopy sbc = new SqlBulkCopy(Variables.connectionString))
             {
-                sbc.DestinationTableName = "dbo.DeliveryRetail";
+                sbc.DestinationTableName = "dbo.DailyStock";
                 //Kode Nasabah
-                sbc.ColumnMappings.Add(1, 3);
+                sbc.ColumnMappings.Add(1, 5);
+                //Nama Nasabah
+                sbc.ColumnMappings.Add(2, 6);
                 //Kode Pkt
-                sbc.ColumnMappings.Add(dt.Columns.Count - 1, 2);
+                sbc.ColumnMappings.Add(dt.Columns.Count - 3, 2);
+                //Jenis Transaksi
+                sbc.ColumnMappings.Add(dt.Columns.Count - 2, 4);
+                //IN - OUT
+                sbc.ColumnMappings.Add(dt.Columns.Count - 1, 3);
                 //Tanggal
                 sbc.ColumnMappings.Add(0, 1);
                 //Uang
                 for (int a = 0; a < 15; a++)
-                    sbc.ColumnMappings.Add(4 + a, 4 + a);
+                    sbc.ColumnMappings.Add(4 + a, 8 + a);
                 sbc.WriteToServer(dt);
                 sbc.Close();
             }
@@ -252,19 +339,35 @@ namespace testProjectBCA
             {
                 dt.Rows[a]["kodePkt"] = kodePkt;
             }
+            dt.Columns.Add("jenisTransaksi", typeof(String));
+            for (int a = 0; a < dt.Rows.Count; a++)
+            {
+                dt.Rows[a]["jenisTransaksi"] = "Delivery Lainnya - " + dt.Rows[a][1].ToString();
+            }
+
+            dt.Columns.Add("inout", typeof(String));
+            for (int a = 0; a < dt.Rows.Count; a++)
+            {
+                dt.Rows[a]["inout"] = "OUT";
+            }
+
             //Console.WriteLine(dt.Rows[dt.Rows.Count - 1][dt.Columns.Count - 1].ToString());
             using (SqlBulkCopy sbc = new SqlBulkCopy(Variables.connectionString))
             {
-                sbc.DestinationTableName = "dbo.DeliveryLainnya";
-                //Kode Nasabah
-                sbc.ColumnMappings.Add(1, 3);
+                sbc.DestinationTableName = "dbo.DailyStock";
                 //Kode Pkt
-                sbc.ColumnMappings.Add(dt.Columns.Count - 1, 2);
+                sbc.ColumnMappings.Add(dt.Columns.Count - 3, 2);
+                //Jenis Transaksi
+                sbc.ColumnMappings.Add(dt.Columns.Count - 2, 4);
+                //IN-OUT
+                sbc.ColumnMappings.Add(dt.Columns.Count - 1, 3);
                 //Tanggal
                 sbc.ColumnMappings.Add(0, 1);
+                //Keterangan Sumber Dana
+                sbc.ColumnMappings.Add(2, 7);
                 //Uang
                 for (int a = 0; a < 15; a++)
-                    sbc.ColumnMappings.Add(4 + a, 4 + a);
+                    sbc.ColumnMappings.Add(4 + a, 8 + a);
                 sbc.WriteToServer(dt);
                 sbc.Close();
             }

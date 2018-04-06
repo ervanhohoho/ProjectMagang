@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-  <EntityContainerMapping StorageEntityContainer="Database1ModelStoreContainer" CdmEntityContainer="Database1Entities">
+  <EntityContainerMapping StorageEntityContainer="CACModelStoreContainer" CdmEntityContainer="Database1Entities">
     <EntitySetMapping Name="Approvals">
-      <EntityTypeMapping TypeName="Database1Model.Approval">
+      <EntityTypeMapping TypeName="CACModel.Approval">
         <MappingFragment StoreEntitySet="Approvals">
           <ScalarProperty Name="idApproval" ColumnName="idApproval" />
           <ScalarProperty Name="tanggal" ColumnName="tanggal" />
@@ -10,8 +10,17 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="Cabangs">
+      <EntityTypeMapping TypeName="CACModel.Cabang">
+        <MappingFragment StoreEntitySet="Cabang">
+          <ScalarProperty Name="kodeCabang" ColumnName="kodeCabang" />
+          <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
+          <ScalarProperty Name="kanwil" ColumnName="kanwil" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="Cashpoints">
-      <EntityTypeMapping TypeName="Database1Model.Cashpoint">
+      <EntityTypeMapping TypeName="CACModel.Cashpoint">
         <MappingFragment StoreEntitySet="Cashpoint">
           <ScalarProperty Name="idCashpoint" ColumnName="idCashpoint" />
           <ScalarProperty Name="denom" ColumnName="denom" />
@@ -19,15 +28,41 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="DetailApprovals">
-      <EntityTypeMapping TypeName="Database1Model.DetailApproval">
-        <MappingFragment StoreEntitySet="DetailApprovals">
-          <ScalarProperty Name="sislokATM100" ColumnName="sislokATM100" />
-          <ScalarProperty Name="sislokATM50" ColumnName="sislokATM50" />
-          <ScalarProperty Name="sislokATM20" ColumnName="sislokATM20" />
+    <EntitySetMapping Name="DailyStocks">
+      <EntityTypeMapping TypeName="CACModel.DailyStock">
+        <MappingFragment StoreEntitySet="DailyStock">
+          <ScalarProperty Name="idTransaksi" ColumnName="idTransaksi" />
           <ScalarProperty Name="tanggal" ColumnName="tanggal" />
+          <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
+          <ScalarProperty Name="in_out" ColumnName="in/out" />
+          <ScalarProperty Name="jenisTransaksi" ColumnName="jenisTransaksi" />
+          <ScalarProperty Name="kode" ColumnName="kode" />
+          <ScalarProperty Name="nama" ColumnName="nama" />
+          <ScalarProperty Name="keterangan" ColumnName="keterangan" />
+          <ScalarProperty Name="BN100K" ColumnName="BN100K" />
+          <ScalarProperty Name="BN50K" ColumnName="BN50K" />
+          <ScalarProperty Name="BN20K" ColumnName="BN20K" />
+          <ScalarProperty Name="BN10K" ColumnName="BN10K" />
+          <ScalarProperty Name="BN5K" ColumnName="BN5K" />
+          <ScalarProperty Name="BN2K" ColumnName="BN2K" />
+          <ScalarProperty Name="BN1K" ColumnName="BN1K" />
+          <ScalarProperty Name="BN500" ColumnName="BN500" />
+          <ScalarProperty Name="BN100" ColumnName="BN100" />
+          <ScalarProperty Name="CN1K" ColumnName="CN1K" />
+          <ScalarProperty Name="CN500" ColumnName="CN500" />
+          <ScalarProperty Name="CN200" ColumnName="CN200" />
+          <ScalarProperty Name="CN100" ColumnName="CN100" />
+          <ScalarProperty Name="CN50" ColumnName="CN50" />
+          <ScalarProperty Name="CN25" ColumnName="CN25" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DetailApprovals">
+      <EntityTypeMapping TypeName="CACModel.DetailApproval">
+        <MappingFragment StoreEntitySet="DetailApprovals">
           <ScalarProperty Name="idDetailApproval" ColumnName="idDetailApproval" />
           <ScalarProperty Name="idApproval" ColumnName="idApproval" />
+          <ScalarProperty Name="tanggal" ColumnName="tanggal" />
           <ScalarProperty Name="saldoAwal20" ColumnName="saldoAwal20" />
           <ScalarProperty Name="saldoAwal50" ColumnName="saldoAwal50" />
           <ScalarProperty Name="saldoAwal100" ColumnName="saldoAwal100" />
@@ -37,6 +72,9 @@
           <ScalarProperty Name="sislokCDM20" ColumnName="sislokCDM20" />
           <ScalarProperty Name="sislokCDM50" ColumnName="sislokCDM50" />
           <ScalarProperty Name="sislokCDM100" ColumnName="sislokCDM100" />
+          <ScalarProperty Name="sislokATM20" ColumnName="sislokATM20" />
+          <ScalarProperty Name="sislokATM50" ColumnName="sislokATM50" />
+          <ScalarProperty Name="sislokATM100" ColumnName="sislokATM100" />
           <ScalarProperty Name="isiATM20" ColumnName="isiATM20" />
           <ScalarProperty Name="isiATM50" ColumnName="isiATM50" />
           <ScalarProperty Name="isiATM100" ColumnName="isiATM100" />
@@ -55,8 +93,41 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="EventTanggals">
+      <EntityTypeMapping TypeName="CACModel.EventTanggal">
+        <MappingFragment StoreEntitySet="EventTanggal">
+          <ScalarProperty Name="tanggal" ColumnName="tanggal" />
+          <ScalarProperty Name="workDay" ColumnName="workDay" />
+          <ScalarProperty Name="event" ColumnName="event" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="laporanBons">
+      <EntityTypeMapping TypeName="CACModel.laporanBon">
+        <MappingFragment StoreEntitySet="laporanBon">
+          <ScalarProperty Name="idLaporan" ColumnName="idLaporan" />
+          <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
+          <ScalarProperty Name="tanggal" ColumnName="tanggal" />
+          <ScalarProperty Name="C100" ColumnName="100" />
+          <ScalarProperty Name="C50" ColumnName="50" />
+          <ScalarProperty Name="C20" ColumnName="20" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LaporanPermintaanBons">
+      <EntityTypeMapping TypeName="CACModel.LaporanPermintaanBon">
+        <MappingFragment StoreEntitySet="LaporanPermintaanBon">
+          <ScalarProperty Name="idLaporan" ColumnName="idLaporan" />
+          <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
+          <ScalarProperty Name="tanggal" ColumnName="tanggal" />
+          <ScalarProperty Name="C100" ColumnName="100" />
+          <ScalarProperty Name="C50" ColumnName="50" />
+          <ScalarProperty Name="C20" ColumnName="20" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="Optis">
-      <EntityTypeMapping TypeName="Database1Model.Opti">
+      <EntityTypeMapping TypeName="CACModel.Opti">
         <MappingFragment StoreEntitySet="Opti">
           <ScalarProperty Name="idTransaksi" ColumnName="idTransaksi" />
           <ScalarProperty Name="idCashpoint" ColumnName="idCashpoint" />
@@ -66,7 +137,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Pkts">
-      <EntityTypeMapping TypeName="Database1Model.Pkt">
+      <EntityTypeMapping TypeName="CACModel.Pkt">
         <MappingFragment StoreEntitySet="Pkt">
           <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
           <ScalarProperty Name="namaPkt" ColumnName="namaPkt" />
@@ -74,11 +145,12 @@
           <ScalarProperty Name="koordinator" ColumnName="koordinator" />
           <ScalarProperty Name="kanwil" ColumnName="kanwil" />
           <ScalarProperty Name="sentralisasi" ColumnName="sentralisasi" />
+          <ScalarProperty Name="vendor" ColumnName="vendor" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="TransaksiAtms">
-      <EntityTypeMapping TypeName="Database1Model.TransaksiAtm">
+      <EntityTypeMapping TypeName="CACModel.TransaksiAtm">
         <MappingFragment StoreEntitySet="TransaksiAtms">
           <ScalarProperty Name="idTransaksi" ColumnName="idTransaksi" />
           <ScalarProperty Name="tanggal" ColumnName="tanggal" />
@@ -113,205 +185,6 @@
           <ScalarProperty Name="saldoAkhir20" ColumnName="saldoAkhir20" />
           <ScalarProperty Name="saldoAkhir50" ColumnName="saldoAkhir50" />
           <ScalarProperty Name="saldoAkhir100" ColumnName="saldoAkhir100" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="laporanBons">
-      <EntityTypeMapping TypeName="Database1Model.laporanBon">
-        <MappingFragment StoreEntitySet="laporanBon">
-          <ScalarProperty Name="C20" ColumnName="20" />
-          <ScalarProperty Name="C50" ColumnName="50" />
-          <ScalarProperty Name="C100" ColumnName="100" />
-          <ScalarProperty Name="tanggal" ColumnName="tanggal" />
-          <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
-          <ScalarProperty Name="idLaporan" ColumnName="idLaporan" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="Cabangs">
-      <EntityTypeMapping TypeName="Database1Model.Cabang">
-        <MappingFragment StoreEntitySet="Cabang">
-          <ScalarProperty Name="kanwil" ColumnName="kanwil" />
-          <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
-          <ScalarProperty Name="kodeCabang" ColumnName="kodeCabang" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="CollectionLainnyas">
-      <EntityTypeMapping TypeName="Database1Model.CollectionLainnya">
-        <MappingFragment StoreEntitySet="CollectionLainnya">
-          <ScalarProperty Name="tanggal" ColumnName="tanggal" />
-          <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
-          <ScalarProperty Name="c25" ColumnName="c25" />
-          <ScalarProperty Name="c50" ColumnName="c50" />
-          <ScalarProperty Name="c100" ColumnName="c100" />
-          <ScalarProperty Name="c200" ColumnName="c200" />
-          <ScalarProperty Name="c500" ColumnName="c500" />
-          <ScalarProperty Name="c1000" ColumnName="c1000" />
-          <ScalarProperty Name="bn100" ColumnName="bn100" />
-          <ScalarProperty Name="bn200" ColumnName="bn200" />
-          <ScalarProperty Name="bn500" ColumnName="bn500" />
-          <ScalarProperty Name="bn1000" ColumnName="bn1000" />
-          <ScalarProperty Name="bn2000" ColumnName="bn2000" />
-          <ScalarProperty Name="bn5000" ColumnName="bn5000" />
-          <ScalarProperty Name="bn10000" ColumnName="bn10000" />
-          <ScalarProperty Name="bn20000" ColumnName="bn20000" />
-          <ScalarProperty Name="bn50000" ColumnName="bn50000" />
-          <ScalarProperty Name="bn100000" ColumnName="bn100000" />
-          <ScalarProperty Name="keterangan" ColumnName="keterangan" />
-          <ScalarProperty Name="idTransaksi" ColumnName="idTransaksi" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="CollectionRetails">
-      <EntityTypeMapping TypeName="Database1Model.CollectionRetail">
-        <MappingFragment StoreEntitySet="CollectionRetail">
-          <ScalarProperty Name="tanggal" ColumnName="tanggal" />
-          <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
-          <ScalarProperty Name="c25" ColumnName="c25" />
-          <ScalarProperty Name="c50" ColumnName="c50" />
-          <ScalarProperty Name="c100" ColumnName="c100" />
-          <ScalarProperty Name="c200" ColumnName="c200" />
-          <ScalarProperty Name="c500" ColumnName="c500" />
-          <ScalarProperty Name="c1000" ColumnName="c1000" />
-          <ScalarProperty Name="bn100" ColumnName="bn100" />
-          <ScalarProperty Name="bn200" ColumnName="bn200" />
-          <ScalarProperty Name="bn500" ColumnName="bn500" />
-          <ScalarProperty Name="bn1000" ColumnName="bn1000" />
-          <ScalarProperty Name="bn2000" ColumnName="bn2000" />
-          <ScalarProperty Name="bn5000" ColumnName="bn5000" />
-          <ScalarProperty Name="bn10000" ColumnName="bn10000" />
-          <ScalarProperty Name="bn20000" ColumnName="bn20000" />
-          <ScalarProperty Name="bn50000" ColumnName="bn50000" />
-          <ScalarProperty Name="bn100000" ColumnName="bn100000" />
-          <ScalarProperty Name="kodeNasabah" ColumnName="kodeNasabah" />
-          <ScalarProperty Name="idTransaksi" ColumnName="idTransaksi" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="DeliveryCabangs">
-      <EntityTypeMapping TypeName="Database1Model.DeliveryCabang">
-        <MappingFragment StoreEntitySet="DeliveryCabang">
-          <ScalarProperty Name="tanggal" ColumnName="tanggal" />
-          <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
-          <ScalarProperty Name="c25" ColumnName="c25" />
-          <ScalarProperty Name="c50" ColumnName="c50" />
-          <ScalarProperty Name="c100" ColumnName="c100" />
-          <ScalarProperty Name="c200" ColumnName="c200" />
-          <ScalarProperty Name="c500" ColumnName="c500" />
-          <ScalarProperty Name="c1000" ColumnName="c1000" />
-          <ScalarProperty Name="bn100" ColumnName="bn100" />
-          <ScalarProperty Name="bn200" ColumnName="bn200" />
-          <ScalarProperty Name="bn500" ColumnName="bn500" />
-          <ScalarProperty Name="bn1000" ColumnName="bn1000" />
-          <ScalarProperty Name="bn2000" ColumnName="bn2000" />
-          <ScalarProperty Name="bn5000" ColumnName="bn5000" />
-          <ScalarProperty Name="bn10000" ColumnName="bn10000" />
-          <ScalarProperty Name="bn20000" ColumnName="bn20000" />
-          <ScalarProperty Name="bn50000" ColumnName="bn50000" />
-          <ScalarProperty Name="bn100000" ColumnName="bn100000" />
-          <ScalarProperty Name="tipeLayanan" ColumnName="tipeLayanan" />
-          <ScalarProperty Name="kodeCabang" ColumnName="kodeCabang" />
-          <ScalarProperty Name="idTransaksi" ColumnName="idTransaksi" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="DeliveryLainnyas">
-      <EntityTypeMapping TypeName="Database1Model.DeliveryLainnya">
-        <MappingFragment StoreEntitySet="DeliveryLainnya">
-          <ScalarProperty Name="tanggal" ColumnName="tanggal" />
-          <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
-          <ScalarProperty Name="c25" ColumnName="c25" />
-          <ScalarProperty Name="c50" ColumnName="c50" />
-          <ScalarProperty Name="c100" ColumnName="c100" />
-          <ScalarProperty Name="c200" ColumnName="c200" />
-          <ScalarProperty Name="c500" ColumnName="c500" />
-          <ScalarProperty Name="c1000" ColumnName="c1000" />
-          <ScalarProperty Name="bn100" ColumnName="bn100" />
-          <ScalarProperty Name="bn200" ColumnName="bn200" />
-          <ScalarProperty Name="bn500" ColumnName="bn500" />
-          <ScalarProperty Name="bn1000" ColumnName="bn1000" />
-          <ScalarProperty Name="bn2000" ColumnName="bn2000" />
-          <ScalarProperty Name="bn5000" ColumnName="bn5000" />
-          <ScalarProperty Name="bn10000" ColumnName="bn10000" />
-          <ScalarProperty Name="bn20000" ColumnName="bn20000" />
-          <ScalarProperty Name="bn50000" ColumnName="bn50000" />
-          <ScalarProperty Name="bn100000" ColumnName="bn100000" />
-          <ScalarProperty Name="keterangan" ColumnName="keterangan" />
-          <ScalarProperty Name="idTransaksi" ColumnName="idTransaksi" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="DeliveryRetails">
-      <EntityTypeMapping TypeName="Database1Model.DeliveryRetail">
-        <MappingFragment StoreEntitySet="DeliveryRetail">
-          <ScalarProperty Name="tanggal" ColumnName="tanggal" />
-          <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
-          <ScalarProperty Name="c25" ColumnName="c25" />
-          <ScalarProperty Name="c50" ColumnName="c50" />
-          <ScalarProperty Name="c100" ColumnName="c100" />
-          <ScalarProperty Name="c200" ColumnName="c200" />
-          <ScalarProperty Name="c500" ColumnName="c500" />
-          <ScalarProperty Name="c1000" ColumnName="c1000" />
-          <ScalarProperty Name="bn100" ColumnName="bn100" />
-          <ScalarProperty Name="bn200" ColumnName="bn200" />
-          <ScalarProperty Name="bn500" ColumnName="bn500" />
-          <ScalarProperty Name="bn1000" ColumnName="bn1000" />
-          <ScalarProperty Name="bn2000" ColumnName="bn2000" />
-          <ScalarProperty Name="bn5000" ColumnName="bn5000" />
-          <ScalarProperty Name="bn10000" ColumnName="bn10000" />
-          <ScalarProperty Name="bn20000" ColumnName="bn20000" />
-          <ScalarProperty Name="bn50000" ColumnName="bn50000" />
-          <ScalarProperty Name="bn100000" ColumnName="bn100000" />
-          <ScalarProperty Name="kodeNasabah" ColumnName="kodeNasabah" />
-          <ScalarProperty Name="idTransaksi" ColumnName="idTransaksi" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="CollectionCabangs">
-      <EntityTypeMapping TypeName="Database1Model.CollectionCabang">
-        <MappingFragment StoreEntitySet="CollectionCabang">
-          <ScalarProperty Name="tanggal" ColumnName="tanggal" />
-          <ScalarProperty Name="c25" ColumnName="c25" />
-          <ScalarProperty Name="c50" ColumnName="c50" />
-          <ScalarProperty Name="c100" ColumnName="c100" />
-          <ScalarProperty Name="c200" ColumnName="c200" />
-          <ScalarProperty Name="c500" ColumnName="c500" />
-          <ScalarProperty Name="c1000" ColumnName="c1000" />
-          <ScalarProperty Name="bn100" ColumnName="bn100" />
-          <ScalarProperty Name="bn200" ColumnName="bn200" />
-          <ScalarProperty Name="bn500" ColumnName="bn500" />
-          <ScalarProperty Name="bn1000" ColumnName="bn1000" />
-          <ScalarProperty Name="bn2000" ColumnName="bn2000" />
-          <ScalarProperty Name="bn5000" ColumnName="bn5000" />
-          <ScalarProperty Name="bn10000" ColumnName="bn10000" />
-          <ScalarProperty Name="bn20000" ColumnName="bn20000" />
-          <ScalarProperty Name="bn50000" ColumnName="bn50000" />
-          <ScalarProperty Name="bn100000" ColumnName="bn100000" />
-          <ScalarProperty Name="kodeCabang" ColumnName="kodeCabang" />
-          <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
-          <ScalarProperty Name="idTransaksi" ColumnName="idTransaksi" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="LaporanPermintaanBons">
-      <EntityTypeMapping TypeName="Database1Model.LaporanPermintaanBon">
-        <MappingFragment StoreEntitySet="LaporanPermintaanBon">
-          <ScalarProperty Name="C20" ColumnName="20" />
-          <ScalarProperty Name="C50" ColumnName="50" />
-          <ScalarProperty Name="C100" ColumnName="100" />
-          <ScalarProperty Name="tanggal" ColumnName="tanggal" />
-          <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
-          <ScalarProperty Name="idLaporan" ColumnName="idLaporan" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="EventTanggals">
-      <EntityTypeMapping TypeName="Database1Model.EventTanggal">
-        <MappingFragment StoreEntitySet="EventTanggal">
-          <ScalarProperty Name="event" ColumnName="event" />
-          <ScalarProperty Name="workDay" ColumnName="workDay" />
-          <ScalarProperty Name="tanggal" ColumnName="tanggal" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

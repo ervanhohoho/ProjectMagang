@@ -26,6 +26,7 @@ namespace testProjectBCA
         List<Denom> sislokCdm = new List<Denom>();
         List<Denom> sislokCdmDenganStdDeviasi = new List<Denom>();
         List<Rasio> rasioSislokAtm = new List<Rasio>();
+        List<Rasio> rasioSislokATMDenganStdDeviasi = new List<Rasio>();
 
         List<Denom> isiCrm = new List<Denom>();
         List<Denom> isiCrmDenganStdDeviasi = new List<Denom>();
@@ -1055,6 +1056,104 @@ namespace testProjectBCA
                 {
                     Console.WriteLine(temp.tgl + " " + temp.d100 + " " + temp.d20 + " " + temp.d50);
                 }
+            }
+        }
+        void loadRasioSislokAtmDenganStdDeviasi()
+        {
+            Console.WriteLine();
+            Console.WriteLine("Load Deviasi Sislok ATM");
+            Console.WriteLine("======================");
+
+            int rowcount = prediksiIsiAtmOpti.Count;//dataGridView1.Rows.Count;
+
+            //dataGridView1.Hide();
+            DateTime startDate = prediksiIsiAtmOpti[0].tgl;//Convert.ToDateTime(dataGridView1.Rows[0].Cells[0].Value);
+            DateTime endDate = prediksiIsiAtmOpti[prediksiIsiAtmOpti.Count - 1].tgl;//Convert.ToDateTime(dataGridView1.Rows[rowCount - 1].Cells[0].Value);
+            DateTime tempDate = startDate;
+            Console.WriteLine(startDate.DayOfWeek.ToString());
+            Console.WriteLine(endDate);
+
+            //Load Std Deviasi
+            List<Rasio> stdDeviasi = new List<Rasio>();
+            using (SqlConnection sql = new SqlConnection(Variables.connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = sql;
+                    sql.Open();
+                    while (tempDate <= endDate)
+                    {
+                        //SislokATM
+                        SqlDataReader reader;
+                        Rasio tempStdDeviasi = new Rasio();
+
+                        String kondisi = " WHERE kodePkt = '" + KodePkt[pktIndex] + "' AND DATENAME(WEEKDAY, TA.Tanggal) = '" + tempDate.DayOfWeek.ToString() + "'";
+                        int count = 0;
+
+                        for (int i = 0; i < treeView1.Nodes.Count; i++)
+                        {
+                            for (int j = 0; j < treeView1.Nodes[i].Nodes.Count; j++)
+                            {
+                                if (treeView1.Nodes[i].Nodes[j].Checked)
+                                {
+                                    //MessageBox.Show("A");
+                                    //Kalo cari minggu (DATEPART(WEEK, tanggal) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM, 0, tanggal), 0)) + 1 ) = (minggu keberapa)
+                                    if (count++ == 0)
+                                        kondisi += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                    else
+                                        kondisi += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                }
+                            }
+                        }
+                        kondisi += ")";
+
+                        String subqueryTblAverage = "(SELECT AVG(CAST(sislokAtm100 AS FLOAT)/NULLIF(isiAtm100,0)) AS Average100 ,AVG(CAST(sislokAtm50 AS FLOAT)/NULLIF(isiAtm50,0)) AS Average50 , AVG(CAST(sislokAtm20 AS FLOAT)/NULLIF(isiAtm20,0)) AS Average20 FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal";
+                        subqueryTblAverage += kondisi;
+                        subqueryTblAverage += ") avt";
+
+                        String query = "SELECT "
+                                    + "[AverageStdDeviasi100] = ISNULL(AVG(CAST(ABS(CAST(sislokAtm100 AS FLOAT)/NULLIF(isiAtm100,0) - [Average100]) AS FLOAT) / IIF([Average100] = 0, 1, [Average100])),0), "
+                                    + "[AverageStdDeviasi50] = ISNULL(AVG(CAST(ABS(CAST(sislokAtm50 AS FLOAT)/NULLIF(isiAtm50,0) - [Average50])AS FLOAT) / IIF([Average50] = 0, 1, [Average50])),0), "
+                                    + "[AverageStdDeviasi20] = ISNULL(AVG(CAST(ABS(CAST(sislokAtm20 AS FLOAT)/NULLIF(isiAtm20,0) - [Average20])AS FLOAT) / IIF([Average20] = 0, 1, [Average20])),0) "
+                                    + "FROM TransaksiAtms TA JOIN EventTanggal ET ON Ta.tanggal = ET.tanggal, " + subqueryTblAverage + kondisi;
+
+                        cmd.CommandText = query;
+                        reader = cmd.ExecuteReader();
+                        reader.Read();
+                        tempStdDeviasi.d100 = (Double)reader[0];
+                        tempStdDeviasi.d50 = (Double)reader[1];
+                        tempStdDeviasi.d20 = (Double)reader[2];
+                        tempStdDeviasi.tgl = tempDate;
+                        reader.Close();
+                        //Console.WriteLine(tempSislokATM.d100.ToString());
+                        stdDeviasi.Add(tempStdDeviasi);
+                        tempDate = tempDate.AddDays(1);
+                    }
+                }
+                sql.Close();
+                Console.WriteLine("Deviasi Sislok ATM");
+                Console.WriteLine(rasioSislokATMDenganStdDeviasi.Count);
+                foreach (var temp in stdDeviasi)
+                {
+                    Console.WriteLine(temp.tgl + " " + temp.d100 + " " + temp.d50 + " " + temp.d20 + " ");
+                }
+            }
+            rasioSislokATMDenganStdDeviasi = new List<Rasio>();
+            for (int a = 0; a < rasioSislokAtm.Count; a++)
+            {
+                Rasio temp = new Rasio();
+                temp.d100 = rasioSislokAtm[a].d100 + (Int64)Math.Round(stdDeviasi[a].d100 * rasioSislokAtm[a].d100);
+                temp.d50 = rasioSislokAtm[a].d50 + (Int64)Math.Round(stdDeviasi[a].d50 * rasioSislokAtm[a].d50);
+                temp.d20 = rasioSislokAtm[a].d20 + (Int64)Math.Round(stdDeviasi[a].d20 * rasioSislokAtm[a].d20);
+                temp.tgl = rasioSislokAtm[a].tgl;
+                rasioSislokATMDenganStdDeviasi.Add(temp);
+            }
+
+            Console.WriteLine("Sislok ATM Dengan Std Deviasi");
+            Console.WriteLine("===========================");
+            foreach (var temp in rasioSislokATMDenganStdDeviasi)
+            {
+                Console.WriteLine(temp.tgl.ToShortDateString() + " " + temp.d100 + " " + temp.d50 + " " + temp.d20);
             }
         }
         void loadBon()
@@ -2218,6 +2317,7 @@ namespace testProjectBCA
              
                     
                     loadRasioSislokAtm();
+                    loadRasioSislokAtmDenganStdDeviasi();
 
                     loadSaldoAwal();
                     loadBon();
@@ -2236,9 +2336,37 @@ namespace testProjectBCA
                         loadSislokCdmDenganStdDeviasi();
                         loadIsiCrmDenganStdDeviasi();
                         loadSislokCrmDenganStdDeviasi();
+                        loadRasioSislokAtmDenganStdDeviasi();
                         sislokCdm = sislokCdmDenganStdDeviasi;
                         isiCrm = isiCrmDenganStdDeviasi;
                         sislokCrm = sislokCrmDenganStdDeviasi;
+                        rasioSislokAtm = rasioSislokATMDenganStdDeviasi;
+                    }
+                    //Hitungan dengan metode ketiga
+                    if(MetodeHitungLainnyaComboBox.SelectedIndex == 2)
+                    {
+                        loadSislokCdmDenganStdDeviasi();
+                        loadIsiCrmDenganStdDeviasi();
+                        loadSislokCrmDenganStdDeviasi();
+                        loadRasioSislokAtmDenganStdDeviasi();
+                        for (int a = 0; a < sislokCdm.Count; a++)
+                        {
+                            sislokCdm[a].d100 = (sislokCdm[a].d100 + sislokCdmDenganStdDeviasi[a].d100) / 2;
+                            sislokCdm[a].d50 = (sislokCdm[a].d50 + sislokCdmDenganStdDeviasi[a].d50) / 2;
+                            sislokCdm[a].d20 = (sislokCdm[a].d20 + sislokCdmDenganStdDeviasi[a].d20) / 2;
+
+                            isiCrm[a].d100 = (isiCrm[a].d100 + isiCrmDenganStdDeviasi[a].d100) / 2;
+                            isiCrm[a].d50 = (isiCrm[a].d50 + isiCrmDenganStdDeviasi[a].d50) / 2;
+                            isiCrm[a].d20 = (isiCrm[a].d20 + isiCrmDenganStdDeviasi[a].d20) / 2;
+
+                            sislokCrm[a].d100 = (sislokCrm[a].d100 + sislokCrmDenganStdDeviasi[a].d100) / 2;
+                            sislokCrm[a].d50 = (sislokCrm[a].d50 + sislokCrmDenganStdDeviasi[a].d50) / 2;
+                            sislokCrm[a].d20 = (sislokCrm[a].d20 + sislokCrmDenganStdDeviasi[a].d20) / 2;
+
+                            rasioSislokAtm[a].d100 = (rasioSislokAtm[a].d100 + rasioSislokATMDenganStdDeviasi[a].d100) / 2;
+                            rasioSislokAtm[a].d50 = (rasioSislokAtm[a].d50 + rasioSislokATMDenganStdDeviasi[a].d50) / 2;
+                            rasioSislokAtm[a].d20 = (rasioSislokAtm[a].d20 + rasioSislokATMDenganStdDeviasi[a].d20) / 2;
+                        }
                     }
                     //Console.WriteLine(sislokCrm[0].d100);
                     if (e2eComboBox.SelectedIndex == 1)

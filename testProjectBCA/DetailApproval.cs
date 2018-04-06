@@ -16,6 +16,7 @@ namespace testProjectBCA
     {
         public int idDetailApproval { get; set; }
         public int idApproval { get; set; }
+        public Nullable<System.DateTime> tanggal { get; set; }
         public Nullable<long> saldoAwal20 { get; set; }
         public Nullable<long> saldoAwal50 { get; set; }
         public Nullable<long> saldoAwal100 { get; set; }
@@ -25,6 +26,9 @@ namespace testProjectBCA
         public Nullable<long> sislokCDM20 { get; set; }
         public Nullable<long> sislokCDM50 { get; set; }
         public Nullable<long> sislokCDM100 { get; set; }
+        public Nullable<long> sislokATM20 { get; set; }
+        public Nullable<long> sislokATM50 { get; set; }
+        public Nullable<long> sislokATM100 { get; set; }
         public Nullable<long> isiATM20 { get; set; }
         public Nullable<long> isiATM50 { get; set; }
         public Nullable<long> isiATM100 { get; set; }
@@ -40,9 +44,5 @@ namespace testProjectBCA
         public Nullable<long> setor20 { get; set; }
         public Nullable<long> setor50 { get; set; }
         public Nullable<long> setor100 { get; set; }
-        public Nullable<System.DateTime> tanggal { get; set; }
-        public Nullable<long> sislokATM20 { get; set; }
-        public Nullable<long> sislokATM50 { get; set; }
-        public Nullable<long> sislokATM100 { get; set; }
     }
 }

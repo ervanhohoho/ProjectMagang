@@ -17,8 +17,8 @@ namespace testProjectBCA
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Pkt()
         {
-            this.TransaksiAtms = new HashSet<TransaksiAtm>();
             this.laporanBons = new HashSet<laporanBon>();
+            this.TransaksiAtms = new HashSet<TransaksiAtm>();
         }
     
         public string kodePkt { get; set; }
@@ -27,10 +27,11 @@ namespace testProjectBCA
         public string koordinator { get; set; }
         public string kanwil { get; set; }
         public string sentralisasi { get; set; }
+        public string vendor { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TransaksiAtm> TransaksiAtms { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<laporanBon> laporanBons { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TransaksiAtm> TransaksiAtms { get; set; }
     }
 }

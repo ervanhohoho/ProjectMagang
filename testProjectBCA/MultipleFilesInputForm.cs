@@ -335,16 +335,16 @@ namespace testProjectBCA
                 var queryApproval = (from a in db.Approvals
                                      join da in db.DetailApprovals on a.idApproval equals da.idApproval
                                      where a.kodePkt == pkt.kodePkt && pkt.tanggalPengajuan == da.tanggal
-                                     select new { Approval = a, DetailApproval = da }).FirstOrDefault();
-                if (queryApproval != null)
+                                     select new { Approval = a, DetailApproval = da }).ToList();
+                if (queryApproval.Count>0 && queryApproval != null)
                 {
-                    if(queryApproval.DetailApproval.bon100 != pkt.penerimaanBon[0] || queryApproval.DetailApproval.bon50 != pkt.penerimaanBon[1] || queryApproval.DetailApproval.bon20 != pkt.penerimaanBon[2])
+                    if(queryApproval[queryApproval.Count-1].DetailApproval.bon100 != pkt.penerimaanBon[0] || queryApproval[queryApproval.Count - 1].DetailApproval.bon50 != pkt.penerimaanBon[1] || queryApproval[queryApproval.Count - 1].DetailApproval.bon20 != pkt.penerimaanBon[2])
                     {
                         isError = true;
                         errMsg += "\nBon menurut approval : \n=====================\n" +
-                            "\nHitungan 100: Rp. " + ((Int64)queryApproval.DetailApproval.bon100).ToString("n0") + "\nLaporan 100: Rp. " + pkt.penerimaanBon[0].ToString("n0") +
-                            "\nHitungan 50: Rp. " + ((Int64)queryApproval.DetailApproval.bon50).ToString("n0") + "\nLaporan 50: Rp. " + pkt.penerimaanBon[1].ToString("n0") +
-                            "\nHitungan 20: Rp. " + ((Int64)queryApproval.DetailApproval.bon20).ToString("n0") + "\nLaporan 20: Rp." + pkt.penerimaanBon[2].ToString("n0"); 
+                            "\nHitungan 100: Rp. " + ((Int64)queryApproval[queryApproval.Count - 1].DetailApproval.bon100).ToString("n0") + "\nLaporan 100: Rp. " + pkt.penerimaanBon[0].ToString("n0") +
+                            "\nHitungan 50: Rp. " + ((Int64)queryApproval[queryApproval.Count - 1].DetailApproval.bon50).ToString("n0") + "\nLaporan 50: Rp. " + pkt.penerimaanBon[1].ToString("n0") +
+                            "\nHitungan 20: Rp. " + ((Int64)queryApproval[queryApproval.Count - 1].DetailApproval.bon20).ToString("n0") + "\nLaporan 20: Rp." + pkt.penerimaanBon[2].ToString("n0"); 
                     }
                 }
 

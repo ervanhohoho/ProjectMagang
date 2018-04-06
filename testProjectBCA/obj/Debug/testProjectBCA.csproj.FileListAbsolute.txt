@@ -66,3 +66,6 @@ C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA\testProjectB
 C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA\testProjectBCA\bin\Debug\LiveCharts.Wpf.pdb
 C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA\testProjectBCA\bin\Debug\LiveCharts.Wpf.xml
 C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA\testProjectBCA\obj\Debug\testProjectBCA.dasbor.resources
+C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Debug\testProjectBCA.exe.config
+C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.exe
+C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.pdb

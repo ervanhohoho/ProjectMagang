@@ -4,25 +4,20 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="11670eb4a2bb4c3aa36a8c30dee2b0ba" Name="Diagram1" ZoomLevel="71" ShowGrid="true">
-        <EntityTypeShape EntityType="Database1Model.Approval" Width="1.5" PointX="5.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Database1Model.Cashpoint" Width="1.5" PointX="5.75" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="Database1Model.DetailApproval" Width="1.5" PointX="9" PointY="3.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="Database1Model.Opti" Width="1.5" PointX="8" PointY="0.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Database1Model.Pkt" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Database1Model.TransaksiAtm" Width="1.5" PointX="3" PointY="1.25" IsExpanded="true" />
-        <AssociationConnector Association="Database1Model.FK_TransaksiAtms_Pkt" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="Database1Model.laporanBon" Width="1.5" PointX="3" PointY="9.875" />
-        <AssociationConnector Association="Database1Model.FK_laporanBon_Pkt" />
-        <EntityTypeShape EntityType="Database1Model.Cabang" Width="1.5" PointX="5.375" PointY="6.75" />
-        <EntityTypeShape EntityType="Database1Model.CollectionLainnya" Width="1.5" PointX="11.25" PointY="6.125" />
-        <EntityTypeShape EntityType="Database1Model.CollectionRetail" Width="1.5" PointX="16.125" PointY="6.75" />
-        <EntityTypeShape EntityType="Database1Model.DeliveryCabang" Width="1.5" PointX="13.625" PointY="3.875" />
-        <EntityTypeShape EntityType="Database1Model.DeliveryLainnya" Width="1.5" PointX="11.375" PointY="0.75" />
-        <EntityTypeShape EntityType="Database1Model.DeliveryRetail" Width="1.5" PointX="16" PointY="1" />
-        <EntityTypeShape EntityType="Database1Model.CollectionCabang" Width="1.5" PointX="7" PointY="8.25" />
-        <EntityTypeShape EntityType="Database1Model.LaporanPermintaanBon" Width="1.5" PointX="13.375" PointY="0.75" />
-        <EntityTypeShape EntityType="Database1Model.EventTanggal" Width="1.5" PointX="9.375" PointY="11.75" />
+      <Diagram DiagramId="2ba38ec93a624964bf045252de0c3252" Name="Diagram1">
+        <EntityTypeShape EntityType="CACModel.Approval" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CACModel.Cabang" Width="1.5" PointX="5.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CACModel.Cashpoint" Width="1.5" PointX="5.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CACModel.DailyStock" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CACModel.DetailApproval" Width="1.5" PointX="7.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CACModel.EventTanggal" Width="1.5" PointX="9.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CACModel.laporanBon" Width="1.5" PointX="3" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CACModel.LaporanPermintaanBon" Width="1.5" PointX="9.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CACModel.Opti" Width="1.5" PointX="9.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CACModel.Pkt" Width="1.5" PointX="0.75" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CACModel.TransaksiAtm" Width="1.5" PointX="3" PointY="4.5" IsExpanded="true" />
+        <AssociationConnector Association="CACModel.FK_laporanBon_Pkt" ManuallyRouted="false" />
+        <AssociationConnector Association="CACModel.FK_TransaksiAtms_Pkt" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
