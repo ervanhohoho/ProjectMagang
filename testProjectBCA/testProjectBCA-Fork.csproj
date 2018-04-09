@@ -147,6 +147,12 @@
     <Compile Include="DailyStock.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="DailyStockForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DailyStockForm.designer.cs">
+      <DependentUpon>DailyStockForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="dasbor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -260,6 +266,9 @@
     <Compile Include="transaksiPkt.cs" />
     <Compile Include="Util.cs" />
     <Compile Include="Variables.cs" />
+    <EmbeddedResource Include="DailyStockForm.resx">
+      <DependentUpon>DailyStockForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="dasbor.resx">
       <DependentUpon>dasbor.cs</DependentUpon>
     </EmbeddedResource>

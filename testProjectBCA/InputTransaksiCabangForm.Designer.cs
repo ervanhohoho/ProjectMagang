@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.SelectFileButton = new System.Windows.Forms.Button();
-            this.InputButton = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -40,18 +39,9 @@
             this.SelectFileButton.Name = "SelectFileButton";
             this.SelectFileButton.Size = new System.Drawing.Size(75, 23);
             this.SelectFileButton.TabIndex = 0;
-            this.SelectFileButton.Text = "Select File";
+            this.SelectFileButton.Text = "Input";
             this.SelectFileButton.UseVisualStyleBackColor = true;
             this.SelectFileButton.Click += new System.EventHandler(this.SelectFileButton_Click);
-            // 
-            // InputButton
-            // 
-            this.InputButton.Location = new System.Drawing.Point(241, 12);
-            this.InputButton.Name = "InputButton";
-            this.InputButton.Size = new System.Drawing.Size(75, 23);
-            this.InputButton.TabIndex = 1;
-            this.InputButton.Text = "Input";
-            this.InputButton.UseVisualStyleBackColor = true;
             // 
             // dataGridView1
             // 
@@ -67,7 +57,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(576, 394);
             this.Controls.Add(this.dataGridView1);
-            this.Controls.Add(this.InputButton);
             this.Controls.Add(this.SelectFileButton);
             this.Name = "InputTransaksiCabangForm";
             this.Text = "InputTransaksiCabangForm";
@@ -79,7 +68,6 @@
         #endregion
 
         private System.Windows.Forms.Button SelectFileButton;
-        private System.Windows.Forms.Button InputButton;
         private System.Windows.Forms.DataGridView dataGridView1;
     }
 }

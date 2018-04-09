@@ -47,6 +47,7 @@
             this.inputDataKalenderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadMasterPKTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dashboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dailyStockToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -137,7 +138,8 @@
             // cabangToolStripMenuItem
             // 
             this.cabangToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.inputTransaksiCabangToolStripMenuItem});
+            this.inputTransaksiCabangToolStripMenuItem,
+            this.dailyStockToolStripMenuItem});
             this.cabangToolStripMenuItem.Name = "cabangToolStripMenuItem";
             this.cabangToolStripMenuItem.Size = new System.Drawing.Size(60, 20);
             this.cabangToolStripMenuItem.Text = "Cabang";
@@ -203,6 +205,13 @@
             this.dashboardToolStripMenuItem.Text = "Dashboard";
             this.dashboardToolStripMenuItem.Click += new System.EventHandler(this.dashboardToolStripMenuItem_Click);
             // 
+            // dailyStockToolStripMenuItem
+            // 
+            this.dailyStockToolStripMenuItem.Name = "dailyStockToolStripMenuItem";
+            this.dailyStockToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
+            this.dailyStockToolStripMenuItem.Text = "Daily Stock";
+            this.dailyStockToolStripMenuItem.Click += new System.EventHandler(this.dailyStockToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -242,5 +251,6 @@
         private System.Windows.Forms.ToolStripMenuItem inputDataKalenderToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadMasterPKTToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dashboardToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dailyStockToolStripMenuItem;
     }
 }

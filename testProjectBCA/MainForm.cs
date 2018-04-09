@@ -533,6 +533,14 @@ namespace testProjectBCA
             d.WindowState = FormWindowState.Maximized;
             d.Show();
         }
+
+        private void dailyStockToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DailyStockForm dsf = new DailyStockForm();
+            dsf.MdiParent = this;
+            dsf.Show();
+
+        }
     }
 }
 public static class SqlBulkCopyExtensions

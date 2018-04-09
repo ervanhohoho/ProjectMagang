@@ -30,6 +30,7 @@ namespace testProjectBCA
         public Nullable<long> BN2K { get; set; }
         public Nullable<long> BN1K { get; set; }
         public Nullable<long> BN500 { get; set; }
+        public Nullable<long> BN200 { get; set; }
         public Nullable<long> BN100 { get; set; }
         public Nullable<long> CN1K { get; set; }
         public Nullable<long> CN500 { get; set; }

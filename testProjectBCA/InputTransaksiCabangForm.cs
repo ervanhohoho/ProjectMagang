@@ -28,26 +28,33 @@ namespace testProjectBCA
         private void SelectFileButton_Click(object sender, EventArgs e)
         {
             OpenFileDialog of = new OpenFileDialog();
+            of.Multiselect = true;
             of.Filter = Variables.excelFilter;
             if(of.ShowDialog() == DialogResult.OK)
             {
-                String filename = of.FileName;
-                kodePkt = of.FileName.ToString().Substring(filename.LastIndexOf(" ")+1, 4);
-                //Console.WriteLine(kodePkt);
-                DataSet ds = Util.openExcel(of.FileName);
+                String [] filenames = of.FileNames;
 
-                collectionCabang = ds.Tables[0];
-                readCollectionCabang(ds);
-                collectionRetail = ds.Tables[1];
-                readCollectionRetail(ds);
-                collectionLainnya = ds.Tables[2];
-                readCollectionLainnya(ds);
-                deliveryCabang = ds.Tables[3];
-                readDeliveryCabang(ds);
-                deliveryRetail = ds.Tables[5];
-                readDeliveryRetail(ds);
-                deliveryLainnya = ds.Tables[6];
-                readDeliveryLainnya(ds);
+                foreach (String filename in filenames)
+                {
+                    kodePkt = of.FileName.ToString().Substring(filename.LastIndexOf(" ") + 1, 4);
+
+
+                    //Console.WriteLine(kodePkt);
+                    DataSet ds = Util.openExcel(of.FileName);
+
+                    collectionCabang = ds.Tables[0];
+                    readCollectionCabang(ds);
+                    collectionRetail = ds.Tables[1];
+                    readCollectionRetail(ds);
+                    collectionLainnya = ds.Tables[2];
+                    readCollectionLainnya(ds);
+                    deliveryCabang = ds.Tables[3];
+                    readDeliveryCabang(ds);
+                    deliveryRetail = ds.Tables[5];
+                    readDeliveryRetail(ds);
+                    deliveryLainnya = ds.Tables[6];
+                    readDeliveryLainnya(ds);
+                }
             }
         }
         private void readCollectionCabang(DataSet ds)
@@ -371,6 +378,11 @@ namespace testProjectBCA
                 sbc.WriteToServer(dt);
                 sbc.Close();
             }
+        }
+
+        private void InputButton_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

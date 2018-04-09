@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="2ba38ec93a624964bf045252de0c3252" Name="Diagram1">
+      <Diagram DiagramId="606f4d1f4202428fbdce71ba311fa9ae" Name="Diagram1">
         <EntityTypeShape EntityType="CACModel.Approval" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CACModel.Cabang" Width="1.5" PointX="5.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CACModel.Cashpoint" Width="1.5" PointX="5.75" PointY="6.75" IsExpanded="true" />

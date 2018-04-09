@@ -874,6 +874,7 @@ namespace testProjectBCA
                         //Console.WriteLine(tempSislokCdm.d100.ToString());
                         sislokCdm.Add(tempSislokCdm);
                         tempDate = tempDate.AddDays(1);
+                        reader.Close();
                     }
                 }
                 sql.Close();

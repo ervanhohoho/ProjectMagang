@@ -15,6 +15,6 @@ namespace testProjectBCA
         public static string parentFolder = "C:\\";
         public static string excelFilter = "Microsoft Excel | *.xls; *.xlsx; *.xlsm;";
         public static string csvFilter = "CSV | *.csv";
-        public static string connectionString = "Data Source=MSI;Initial Catalog=CAC;Integrated Security=True";
+        public static string connectionString = "Data Source=MSI;Initial Catalog=CAC;Persist Security Info=True;User ID=TEST;Password=1234;";
     }
 }

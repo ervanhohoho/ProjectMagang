@@ -44,6 +44,7 @@
     <Property Name="BN2K" Type="Int64" />
     <Property Name="BN1K" Type="Int64" />
     <Property Name="BN500" Type="Int64" />
+    <Property Name="BN200" Type="Int64" />
     <Property Name="BN100" Type="Int64" />
     <Property Name="CN1K" Type="Int64" />
     <Property Name="CN500" Type="Int64" />

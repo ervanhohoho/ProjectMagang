@@ -49,6 +49,7 @@
           <Property Name="BN2K" Type="bigint" />
           <Property Name="BN1K" Type="bigint" />
           <Property Name="BN500" Type="bigint" />
+          <Property Name="BN200" Type="bigint" />
           <Property Name="BN100" Type="bigint" />
           <Property Name="CN1K" Type="bigint" />
           <Property Name="CN500" Type="bigint" />
@@ -276,6 +277,7 @@
           <Property Name="BN2K" Type="Int64" />
           <Property Name="BN1K" Type="Int64" />
           <Property Name="BN500" Type="Int64" />
+          <Property Name="BN200" Type="Int64" />
           <Property Name="BN100" Type="Int64" />
           <Property Name="CN1K" Type="Int64" />
           <Property Name="CN500" Type="Int64" />
@@ -510,6 +512,7 @@
                 <ScalarProperty Name="BN2K" ColumnName="BN2K" />
                 <ScalarProperty Name="BN1K" ColumnName="BN1K" />
                 <ScalarProperty Name="BN500" ColumnName="BN500" />
+                <ScalarProperty Name="BN200" ColumnName="BN200" />
                 <ScalarProperty Name="BN100" ColumnName="BN100" />
                 <ScalarProperty Name="CN1K" ColumnName="CN1K" />
                 <ScalarProperty Name="CN500" ColumnName="CN500" />

@@ -47,6 +47,7 @@
           <ScalarProperty Name="BN2K" ColumnName="BN2K" />
           <ScalarProperty Name="BN1K" ColumnName="BN1K" />
           <ScalarProperty Name="BN500" ColumnName="BN500" />
+          <ScalarProperty Name="BN200" ColumnName="BN200" />
           <ScalarProperty Name="BN100" ColumnName="BN100" />
           <ScalarProperty Name="CN1K" ColumnName="CN1K" />
           <ScalarProperty Name="CN500" ColumnName="CN500" />
