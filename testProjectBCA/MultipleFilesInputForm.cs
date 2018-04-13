@@ -79,6 +79,7 @@ namespace testProjectBCA
             
             if(of.ShowDialog() == DialogResult.OK)
             {
+                loadForm.ShowSplashScreen();
                 files = of.FileNames;
                 filesList.Items.Clear();
                 foreach (String temp in files)
@@ -110,6 +111,7 @@ namespace testProjectBCA
                 //    filesListBelumMasuk.Items.Add(temp.kodePkt);
                 //}
                 inputIntoCollection();
+                loadForm.CloseForm();
                 MessageBox.Show("Done!");
             }
         }
@@ -191,7 +193,8 @@ namespace testProjectBCA
                 {
                     if (counterList == 0)
                         pkt.saldoAwalHitungan = pkt.saldoAwal;
-                    pkt.saldoAwalHitungan = list[counterList-1].saldoAkhirHitungan;
+                    else
+                        pkt.saldoAwalHitungan = list[counterList-1].saldoAkhirHitungan;
                 }
 
 

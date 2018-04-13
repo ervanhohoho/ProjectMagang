@@ -23,6 +23,16 @@ namespace testProjectBCA
             Thread.CurrentThread.CurrentCulture = ci;
             Thread.CurrentThread.CurrentUICulture = ci;
             CultureInfo.DefaultThreadCurrentCulture = ci;
+            try
+            {
+                string text = System.IO.File.ReadAllText(@"connectionString.txt");
+                Variables.connectionString = text;
+            }
+            catch (Exception exception)
+            {
+                
+            }
+           
             Application.Run(new MainForm());
            
         }

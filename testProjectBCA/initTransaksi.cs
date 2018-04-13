@@ -31,11 +31,8 @@ namespace testProjectBCA
         {
             
             DataSet ds = Util.openExcel(filepath);
-            DataTable tb = ds.Tables[1];
-            DataTable dt = ds.Tables[1];
-            dt.Rows.RemoveAt(0);
-            dt.Rows.RemoveAt(0);
-            dt.Rows.RemoveAt(0);
+            DataTable tb = ds.Tables[0];
+            DataTable dt = ds.Tables[0];
             dt.Rows.RemoveAt(0);
 
             DataRow[] dr = dt.Select("Column0 IS null");

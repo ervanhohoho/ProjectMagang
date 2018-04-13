@@ -23,7 +23,7 @@ namespace testProjectBCA
 
         public DailyStockForm()
         {
-            
+
             InitializeComponent();
             checkedListBox1.Visible = false;
             checkedListBox2.Visible = false;
@@ -45,7 +45,7 @@ namespace testProjectBCA
 
             int bulan = minTanggal.Month;
             int tahun = minTanggal.Year;
-            while (tempTanggal.Year<=maxTanggal.Year)
+            while (tempTanggal.Year <= maxTanggal.Year)
             {
                 listTahun.Add(tempTanggal.Year);
                 tempTanggal = tempTanggal.AddYears(1);
@@ -63,7 +63,7 @@ namespace testProjectBCA
             List<int> bulan = new List<int>();
             List<int> bulan2 = new List<int>();
 
-            for(int a = minBulan; a<=maxBulan ;a++)
+            for (int a = minBulan; a <= maxBulan; a++)
             {
                 bulan.Add(a);
                 bulan2.Add(a);
@@ -76,23 +76,191 @@ namespace testProjectBCA
             List<String> tempListPkt = (from x in db.Pkts select x.vendor).Distinct().ToList();
             tempListPkt.Remove("ABACUS DANA PENSIUN");
             listPkt = new List<string>();
-            foreach(var temp in tempListPkt)
+            foreach (var temp in tempListPkt)
             {
-                if(temp.Contains(" "))
+                if (temp.Contains(" "))
                 {
-                    listPkt.Add(temp.Substring(0,temp.IndexOf(" ")));
+                    listPkt.Add(temp.Substring(0, temp.IndexOf(" ")));
                 }
                 else
                 {
                     listPkt.Add(temp);
                 }
             }
+            listPkt.Add("All Vendor");
             comboPkt.DataSource = listPkt;
         }
         private void loadTable()
         {
             dataGridView1.DataSource = listTb;
         }
+
+        private void loadAllin()
+        {
+            String pkt = listPkt[comboPkt.SelectedIndex];
+            int tahun = (int)comboTahun.SelectedItem;
+            int bulanAwal = (int)comboBulan.SelectedItem;
+            int bulanAkhir = (int)comboBulan2.SelectedItem;
+            listTb = new List<DailyStockDisplay>();
+            String query = "SELECT tanggal"
+                           + ", ISNULL(SUM(BN100K),0)"
+                           + ", ISNULL(SUM(BN50K),0)"
+                           + ", ISNULL(SUM(BN20K),0)"
+                           + ", ISNULL(SUM(BN10K),0)"
+                           + ", ISNULL(SUM(BN5K),0)"
+                           + ", ISNULL(SUM(BN2K),0)"
+                           + ", ISNULL(SUM(BN1K),0)"
+                           + ", ISNULL(SUM(BN500),0)"
+                           + ", ISNULL(SUM(BN200),0)"
+                           + ", ISNULL(SUM(BN100),0)"
+                           + ", ISNULL(SUM(CN1K),0)"
+                           + ", ISNULL(SUM(CN500),0)"
+                           + ", ISNULL(SUM(CN200),0)"
+                           + ", ISNULL(SUM(CN100),0)"
+                           + ", ISNULL(SUM(CN50),0)"
+                           + ", ISNULL(SUM(CN25),0)"
+                           + " FROM DailyStock d"
+                           + " JOIN Pkt p ON p.kodePkt = d.kodePkt"
+                           + " AND [in/out] LIKE 'IN'"
+                           + " AND YEAR(tanggal) = " + tahun
+                           + " AND MONTH(tanggal) BETWEEN " + bulanAwal + " AND " + bulanAkhir
+                           + " GROUP BY tanggal";
+            using (SqlConnection sql = new SqlConnection(Variables.connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = sql;
+                    cmd.CommandText = query;
+                    sql.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        listTb.Add(new DailyStockDisplay
+                        {
+                            TANGGAL = (DateTime)reader[0],
+                            BN100K = (Int64)reader[1],
+                            BN50K = (Int64)reader[2],
+                            BN20K = (Int64)reader[3],
+                            BN10K = (Int64)reader[4],
+                            BN5K = (Int64)reader[5],
+                            BN2K = (Int64)reader[6],
+                            BN1K = (Int64)reader[7],
+                            BN500 = (Int64)reader[8],
+                            BN200 = (Int64)reader[9],
+                            BN100 = (Int64)reader[10],
+                            CN1K = (Int64)reader[11],
+                            CN500 = (Int64)reader[12],
+                            CN200 = (Int64)reader[13],
+                            CN100 = (Int64)reader[14],
+                            CN50 = (Int64)reader[15],
+                            CN25 = (Int64)reader[16],
+                            INOUT = "IN",
+                            KETERANGAN = "TOTAL"
+
+                        });
+                    }
+                }
+            }
+        }
+
+        private void loadAllout()
+        {
+
+            String pkt = listPkt[comboPkt.SelectedIndex];
+            int tahun = (int)comboTahun.SelectedItem;
+            int bulanAwal = (int)comboBulan.SelectedItem;
+            int bulanAkhir = (int)comboBulan2.SelectedItem;
+            listTb = new List<DailyStockDisplay>();
+            String query = "SELECT tanggal"
+                           + ", ISNULL(SUM(BN100K),0)"
+                           + ", ISNULL(SUM(BN50K),0)"
+                           + ", ISNULL(SUM(BN20K),0)"
+                           + ", ISNULL(SUM(BN10K),0)"
+                           + ", ISNULL(SUM(BN5K),0)"
+                           + ", ISNULL(SUM(BN2K),0)"
+                           + ", ISNULL(SUM(BN1K),0)"
+                           + ", ISNULL(SUM(BN500),0)"
+                           + ", ISNULL(SUM(BN200),0)"
+                           + ", ISNULL(SUM(BN100),0)"
+                           + ", ISNULL(SUM(CN1K),0)"
+                           + ", ISNULL(SUM(CN500),0)"
+                           + ", ISNULL(SUM(CN200),0)"
+                           + ", ISNULL(SUM(CN100),0)"
+                           + ", ISNULL(SUM(CN50),0)"
+                           + ", ISNULL(SUM(CN25),0)"
+                           + " FROM DailyStock d"
+                           + " JOIN Pkt p ON p.kodePkt = d.kodePkt"
+                           + " AND [in/out] LIKE 'OUT'"
+                           + " AND YEAR(tanggal) = " + tahun
+                           + " AND MONTH(tanggal) BETWEEN " + bulanAwal + " AND " + bulanAkhir
+                           + " GROUP BY tanggal";
+
+            using (SqlConnection sql = new SqlConnection(Variables.connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = sql;
+                    cmd.CommandText = query;
+                    sql.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        listTb.Add(new DailyStockDisplay
+                        {
+                            TANGGAL = (DateTime)reader[0],
+                            BN100K = (Int64)reader[1],
+                            BN50K = (Int64)reader[2],
+                            BN20K = (Int64)reader[3],
+                            BN10K = (Int64)reader[4],
+                            BN5K = (Int64)reader[5],
+                            BN2K = (Int64)reader[6],
+                            BN1K = (Int64)reader[7],
+                            BN500 = (Int64)reader[8],
+                            BN200 = (Int64)reader[9],
+                            BN100 = (Int64)reader[10],
+                            CN1K = (Int64)reader[11],
+                            CN500 = (Int64)reader[12],
+                            CN200 = (Int64)reader[13],
+                            CN100 = (Int64)reader[14],
+                            CN50 = (Int64)reader[15],
+                            CN25 = (Int64)reader[16],
+                            INOUT = "OUT",
+                            KETERANGAN = "TOTAL"
+
+                        });
+                    }
+                }
+            }
+        }
+
+        private String queryBuilderForCustomALL(int bulanAwal, int bulanAkhir, int tahun, String jenisTransaksi)
+        {
+            String query = "SELECT tanggal"
+                           + ", ISNULL(SUM(BN100K),0)"
+                           + ", ISNULL(SUM(BN50K),0)"
+                           + ", ISNULL(SUM(BN20K),0)"
+                           + ", ISNULL(SUM(BN10K),0)"
+                           + ", ISNULL(SUM(BN5K),0)"
+                           + ", ISNULL(SUM(BN2K),0)"
+                           + ", ISNULL(SUM(BN1K),0)"
+                           + ", ISNULL(SUM(BN500),0)"
+                           + ", ISNULL(SUM(BN200),0)"
+                           + ", ISNULL(SUM(BN100),0)"
+                           + ", ISNULL(SUM(CN1K),0)"
+                           + ", ISNULL(SUM(CN500),0)"
+                           + ", ISNULL(SUM(CN200),0)"
+                           + ", ISNULL(SUM(CN100),0)"
+                           + ", ISNULL(SUM(CN50),0)"
+                           + ", ISNULL(SUM(CN25),0)"
+                           + " FROM DailyStock d"
+                           + " JOIN Pkt p ON p.kodePkt = d.kodePkt"
+                           + " AND jenisTransaksi like '%" + jenisTransaksi + "'"
+                           + " AND YEAR(tanggal) = " + tahun
+                           + " AND MONTH(tanggal) BETWEEN " + bulanAwal + " AND " + bulanAkhir
+                           + " GROUP BY tanggal";
+            return query;
+        }
+
         private void loadOut()
         {
             String pkt = listPkt[comboPkt.SelectedIndex];
@@ -120,7 +288,7 @@ namespace testProjectBCA
                            + " FROM DailyStock d"
                            + " JOIN Pkt p ON p.kodePkt = d.kodePkt"
                            + " WHERE vendor = '" + listPkt[comboPkt.SelectedIndex] + "'"
-                           + " AND [in/out] LIKE 'IN'"
+                           + " AND [in/out] LIKE 'OUT'"
                            + " AND YEAR(tanggal) = " + tahun
                            + " AND MONTH(tanggal) BETWEEN " + bulanAwal + " AND " + bulanAkhir
                            + " GROUP BY tanggal";
@@ -188,7 +356,7 @@ namespace testProjectBCA
                            + ", ISNULL(SUM(CN25),0)"
                            + " FROM DailyStock d"
                            + " JOIN Pkt p ON p.kodePkt = d.kodePkt"
-                           + " WHERE vendor = '"+ listPkt[comboPkt.SelectedIndex]+"'"
+                           + " WHERE vendor = '" + listPkt[comboPkt.SelectedIndex] + "'"
                            + " AND [in/out] LIKE 'IN'"
                            + " AND YEAR(tanggal) = " + tahun
                            + " AND MONTH(tanggal) BETWEEN " + bulanAwal + " AND " + bulanAkhir
@@ -201,33 +369,221 @@ namespace testProjectBCA
                     cmd.CommandText = query;
                     sql.Open();
                     SqlDataReader reader = cmd.ExecuteReader();
-                    while(reader.Read())
+                    while (reader.Read())
                     {
                         listTb.Add(new DailyStockDisplay
                         {
-                            TANGGAL = (DateTime) reader[0],
-                            BN100K  = (Int64) reader[1],
-                            BN50K   = (Int64) reader[2],
-                            BN20K   = (Int64) reader[3],
-                            BN10K   = (Int64) reader[4],
-                            BN5K    = (Int64) reader[5],
-                            BN2K    = (Int64) reader[6],
-                            BN1K    = (Int64) reader[7],
-                            BN500   = (Int64) reader[8],
-                            BN200   = (Int64) reader[9],
-                            BN100   = (Int64) reader[10],
-                            CN1K    = (Int64) reader[11],
-                            CN500   = (Int64) reader[12],
-                            CN200   = (Int64) reader[13],
-                            CN100   = (Int64) reader[14],
-                            CN50    = (Int64) reader[15],
-                            CN25    = (Int64) reader[16],
-                            INOUT   = "IN",
+                            TANGGAL = (DateTime)reader[0],
+                            BN100K = (Int64)reader[1],
+                            BN50K = (Int64)reader[2],
+                            BN20K = (Int64)reader[3],
+                            BN10K = (Int64)reader[4],
+                            BN5K = (Int64)reader[5],
+                            BN2K = (Int64)reader[6],
+                            BN1K = (Int64)reader[7],
+                            BN500 = (Int64)reader[8],
+                            BN200 = (Int64)reader[9],
+                            BN100 = (Int64)reader[10],
+                            CN1K = (Int64)reader[11],
+                            CN500 = (Int64)reader[12],
+                            CN200 = (Int64)reader[13],
+                            CN100 = (Int64)reader[14],
+                            CN50 = (Int64)reader[15],
+                            CN25 = (Int64)reader[16],
+                            INOUT = "IN",
                             KETERANGAN = "TOTAL"
 
                         });
                     }
                 }
+            }
+        }
+        private void loadCustomALL()
+        {
+            listTb = new List<DailyStockDisplay>();
+            int tahun = (int)comboTahun.SelectedItem;
+            int bulanAwal = (int)comboBulan.SelectedItem;
+            int bulanAkhir = (int)comboBulan2.SelectedItem;
+
+            foreach (var item in checkedListBox1.CheckedItems)
+            {
+
+                String query = "";
+                if (item.ToString() == "Coll. Cabang Process")
+                {
+                    query = queryBuilderForCustomALL(bulanAwal, bulanAkhir, tahun, "Collection Cabang - Full - Process");
+
+                }
+                else if (item.ToString() == "Coll. Cabang Pass Trough")
+                {
+                    query = queryBuilderForCustomALL(bulanAwal, bulanAkhir, tahun, "Collection Cabang - Passtrough");
+
+                }
+                else if (item.ToString() == "Coll. Retail")
+                {
+                    query = queryBuilderForCustomALL(bulanAwal, bulanAkhir, tahun, "Collection Retail");
+
+                }
+                else if (item.ToString() == "Coll. Curex")
+                {
+                    query = queryBuilderForCustomALL(bulanAwal, bulanAkhir, tahun, "Collection Lainnya - Tukaran");
+
+                }
+                else if (item.ToString() == "Coll. ATM Reguler")
+                {
+                    query = queryBuilderForCustomALL(bulanAwal, bulanAkhir, tahun, "Collection Lainnya - ATM Reguler");
+
+                }
+                else if (item.ToString() == "Coll. ATM Adhoc")
+                {
+                    query = queryBuilderForCustomALL(bulanAwal, bulanAkhir, tahun, "Collection Lainnya - ATM Adhoc");
+
+                }
+                else if (item.ToString() == "Coll. BI")
+                {
+                    query = queryBuilderForCustomALL(bulanAwal, bulanAkhir, tahun, "Collection Lainnya - BI");
+
+                }
+                else if (item.ToString() == "Coll. Interbank")
+                {
+                    query = queryBuilderForCustomALL(bulanAwal, bulanAkhir, tahun, "Collection Lainnya - Interbank");
+
+                }
+                else if (item.ToString() == "Coll. Antar CPC")
+                {
+                    query = queryBuilderForCustomALL(bulanAwal, bulanAkhir, tahun, "Collection Lainnya - Antar CPC");
+
+                }
+
+
+                using (SqlConnection sql = new SqlConnection(Variables.connectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.Connection = sql;
+                        cmd.CommandText = query;
+                        sql.Open();
+                        SqlDataReader reader = cmd.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            listTb.Add(new DailyStockDisplay
+                            {
+                                TANGGAL = (DateTime)reader[0],
+                                BN100K = (Int64)reader[1],
+                                BN50K = (Int64)reader[2],
+                                BN20K = (Int64)reader[3],
+                                BN10K = (Int64)reader[4],
+                                BN5K = (Int64)reader[5],
+                                BN2K = (Int64)reader[6],
+                                BN1K = (Int64)reader[7],
+                                BN500 = (Int64)reader[8],
+                                BN200 = (Int64)reader[9],
+                                BN100 = (Int64)reader[10],
+                                CN1K = (Int64)reader[11],
+                                CN500 = (Int64)reader[12],
+                                CN200 = (Int64)reader[13],
+                                CN100 = (Int64)reader[14],
+                                CN50 = (Int64)reader[15],
+                                CN25 = (Int64)reader[16],
+                                INOUT = "IN",
+                                KETERANGAN = item.ToString()
+                            });
+                        }
+                    }
+                }
+
+            }
+
+            foreach (var item in checkedListBox2.CheckedItems)
+            {
+
+                String query = "";
+
+                if (item.ToString() == "Del. Cabang Reguler")
+                {
+
+                    query = queryBuilderForCustomALL(bulanAwal, bulanAkhir, tahun, "Delivery Cabang - Reguler");
+
+                }
+                else if (item.ToString() == "Del. Cabang Adhoc")
+                {
+                    query = queryBuilderForCustomALL(bulanAwal, bulanAkhir, tahun, "Delivery Cabang - Adhoc");
+
+                }
+                else if (item.ToString() == "Del. Retail")
+                {
+                    query = queryBuilderForCustomALL(bulanAwal, bulanAkhir, tahun, "Delivery Retail");
+
+                }
+                else if (item.ToString() == "Del. Curex")
+                {
+                    query = queryBuilderForCustomALL(bulanAwal, bulanAkhir, tahun, "Delivery Lainnya - Tukaran");
+
+                }
+                else if (item.ToString() == "Del. ATM Reguler")
+                {
+                    query = queryBuilderForCustomALL(bulanAwal, bulanAkhir, tahun, "Delivery Lainnya - ATM Reguler");
+
+                }
+                else if (item.ToString() == "Del. ATM Adhoc")
+                {
+                    query = queryBuilderForCustomALL(bulanAwal, bulanAkhir, tahun, "Delivery Lainnya - ATM Adhoc");
+
+                }
+                else if (item.ToString() == "Del. BI")
+                {
+                    query = queryBuilderForCustomALL(bulanAwal, bulanAkhir, tahun, "Delivery Lainnya - BI");
+
+                }
+                else if (item.ToString() == "Del. Interbank")
+                {
+                    query = queryBuilderForCustomALL(bulanAwal, bulanAkhir, tahun, "Delivery Lainnya - Interbank");
+
+                }
+                else if (item.ToString() == "Del. Antar CPC")
+                {
+                    query = queryBuilderForCustomALL(bulanAwal, bulanAkhir, tahun, "Delivery Lainnya - Antar CPC");
+
+                }
+
+
+                using (SqlConnection sql = new SqlConnection(Variables.connectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+
+                        cmd.Connection = sql;
+                        cmd.CommandText = query;
+                        sql.Open();
+                        SqlDataReader reader = cmd.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            listTb.Add(new DailyStockDisplay
+                            {
+                                TANGGAL = (DateTime)reader[0],
+                                BN100K = (Int64)reader[1],
+                                BN50K = (Int64)reader[2],
+                                BN20K = (Int64)reader[3],
+                                BN10K = (Int64)reader[4],
+                                BN5K = (Int64)reader[5],
+                                BN2K = (Int64)reader[6],
+                                BN1K = (Int64)reader[7],
+                                BN500 = (Int64)reader[8],
+                                BN200 = (Int64)reader[9],
+                                BN100 = (Int64)reader[10],
+                                CN1K = (Int64)reader[11],
+                                CN500 = (Int64)reader[12],
+                                CN200 = (Int64)reader[13],
+                                CN100 = (Int64)reader[14],
+                                CN50 = (Int64)reader[15],
+                                CN25 = (Int64)reader[16],
+                                INOUT = "OUT",
+                                KETERANGAN = item.ToString()
+                            });
+                        }
+                    }
+                }
+
             }
         }
         private void loadCustom()
@@ -239,17 +595,17 @@ namespace testProjectBCA
 
             foreach (var item in checkedListBox1.CheckedItems)
             {
-                
-                String query="";
+
+                String query = "";
                 if (item.ToString() == "Coll. Cabang Process")
                 {
                     query = queryBuilderForCustom(bulanAwal, bulanAkhir, tahun, "Collection Cabang - Full - Process");
-                    
+
                 }
                 else if (item.ToString() == "Coll. Cabang Pass Trough")
                 {
                     query = queryBuilderForCustom(bulanAwal, bulanAkhir, tahun, "Collection Cabang - Passtrough");
-                    
+
                 }
                 else if (item.ToString() == "Coll. Retail")
                 {
@@ -330,10 +686,10 @@ namespace testProjectBCA
             {
 
                 String query = "";
-               
+
                 if (item.ToString() == "Del. Cabang Reguler")
                 {
-                   
+
                     query = queryBuilderForCustom(bulanAwal, bulanAkhir, tahun, "Delivery Cabang - Reguler");
 
                 }
@@ -383,7 +739,7 @@ namespace testProjectBCA
                 {
                     using (SqlCommand cmd = new SqlCommand())
                     {
-                       
+
                         cmd.Connection = sql;
                         cmd.CommandText = query;
                         sql.Open();
@@ -479,19 +835,48 @@ namespace testProjectBCA
         private void buttonShow_Click(object sender, EventArgs e)
         {
             if (comboJenisTampilan.SelectedIndex == 0)
-                loadInflow();
-            if (comboJenisTampilan.SelectedIndex == 1)
-                loadOut();
-            if(comboJenisTampilan.SelectedIndex == 2)
             {
-                loadCustom();
+                if (comboPkt.SelectedIndex == 5)
+                {
+                    loadAllin();
+                }
+                else
+                {
+                    loadInflow();
+                }
+
             }
 
-            
+            if (comboJenisTampilan.SelectedIndex == 1)
 
-            if(comboOption.SelectedIndex == 1)
             {
-                foreach(var temp in listTb)
+                if (comboPkt.SelectedIndex == 5)
+                {
+                    loadAllout();
+                }
+                else
+                {
+                    loadOut();
+                }
+            }
+            if (comboJenisTampilan.SelectedIndex == 2)
+            {
+                if (comboPkt.SelectedIndex == 5)
+                {
+                    loadCustomALL();
+                }
+                else
+                {
+                    loadCustom();
+                }
+
+            }
+
+
+
+            if (comboOption.SelectedIndex == 1)
+            {
+                foreach (var temp in listTb)
                 {
                     temp.BN100K /= 1000000;
                     temp.BN50K /= 50000;
@@ -510,7 +895,7 @@ namespace testProjectBCA
                     temp.CN50 /= 50;
                     temp.CN25 /= 25;
                 }
-               
+
             }
             loadTable();
             if (comboOption.SelectedIndex == 0)
@@ -533,7 +918,7 @@ namespace testProjectBCA
 
         private void DailyStockForm_Load(object sender, EventArgs e)
         {
-            
+
 
         }
 
@@ -563,7 +948,7 @@ namespace testProjectBCA
         {
             SaveFileDialog sv = new SaveFileDialog();
             sv.Filter = Variables.csvFilter;
-            if(sv.ShowDialog() == DialogResult.OK)
+            if (sv.ShowDialog() == DialogResult.OK)
             {
                 SaveDataGridViewToCSV(sv.FileName);
             }
