@@ -282,7 +282,7 @@ namespace testProjectBCA
                     {
                         Console.WriteLine(i + " " + j);
                         Console.WriteLine(table.Rows[22 + i][6 + j].ToString());
-                        if (table.Rows[22 + i][6 + j].ToString() != "0" && table.Rows[22 + i][6 + j].ToString() != "")
+                        if (table.Rows[22 + i][6 + j].ToString().Trim() != "0" && table.Rows[22 + i][6 + j].ToString().Trim() != "" && table.Rows[22 + i][6 + j].ToString().Trim() != "-")
                             tempList.Add(Int64.Parse(table.Rows[22 + i][6 + j].ToString()));
                         else
                             tempList.Add(0);
@@ -310,7 +310,7 @@ namespace testProjectBCA
 
                     for (int j = 0; j < 4; j++)
                     {
-                        if (table.Rows[34 + i][6 + j].ToString() != "0" && table.Rows[34 + i][6 + j].ToString() != "" && table.Rows[34 + i][6+j].ToString() != ".")
+                        if (table.Rows[34 + i][6 + j].ToString().Trim() != "0" && table.Rows[34 + i][6 + j].ToString().Trim() != "" && table.Rows[34 + i][6+j].ToString() != ".")
                             tempList.Add(Int64.Parse(table.Rows[34 + i][6 + j].ToString()));
                         else
                             tempList.Add(0);
