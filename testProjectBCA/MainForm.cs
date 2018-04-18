@@ -482,7 +482,7 @@ namespace testProjectBCA
             if(of.ShowDialog() == DialogResult.OK)
             {
                 DataSet ds = Util.openExcel(of.FileName);
-                DataTable dt = ds.Tables[1];
+                DataTable dt = ds.Tables[2];
                 dt.Rows.RemoveAt(0);
                 using (SqlConnection sql = new SqlConnection(Variables.connectionString))
                 {
@@ -493,7 +493,7 @@ namespace testProjectBCA
                         cmd.CommandText = "DELETE FROM dbo.EventTanggal";
                         cmd.ExecuteNonQuery();
 
-                        sql.Close();
+                        
                         using (SqlBulkCopy sbc = new SqlBulkCopy(sql))
                         {
                             sbc.DestinationTableName = "dbo.EventTanggal";
@@ -503,7 +503,7 @@ namespace testProjectBCA
                             sbc.WriteToServer(dt);
                             sbc.Close();
                         }
-                        
+                        sql.Close();
                     }
                 }
                
