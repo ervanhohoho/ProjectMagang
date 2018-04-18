@@ -149,6 +149,31 @@
     <Property Name="sentralisasi" Type="varchar" MaxLength="50" />
     <Property Name="vendor" Type="varchar" MaxLength="50" />
   </EntityType>
+  <EntityType Name="StokPosisi">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="unprocessed" Type="bigint" />
+    <Property Name="newBaru" Type="bigint" />
+    <Property Name="newLama" Type="bigint" />
+    <Property Name="fitBaru" Type="bigint" />
+    <Property Name="fitNKRI" Type="bigint" />
+    <Property Name="fitLama" Type="bigint" />
+    <Property Name="passThrough" Type="bigint" />
+    <Property Name="unfitBaru" Type="bigint" />
+    <Property Name="unfitNKRI" Type="bigint" />
+    <Property Name="unfitLama" Type="bigint" />
+    <Property Name="RRMBaru" Type="bigint" />
+    <Property Name="RRMNKRI" Type="bigint" />
+    <Property Name="RRMLama" Type="bigint" />
+    <Property Name="RupiahRusakMayor" Type="bigint" />
+    <Property Name="cekLaporan" Type="bigint" />
+    <Property Name="jenis" Type="varchar" MaxLength="50" />
+    <Property Name="denom" Type="varchar" MaxLength="50" />
+    <Property Name="tanggal" Type="date" />
+    <Property Name="namaPkt" Type="varchar" MaxLength="50" />
+  </EntityType>
   <EntityType Name="TransaksiAtms">
     <Key>
       <PropertyRef Name="idTransaksi" />
@@ -222,6 +247,7 @@
     <EntitySet Name="LaporanPermintaanBon" EntityType="Self.LaporanPermintaanBon" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Opti" EntityType="Self.Opti" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Pkt" EntityType="Self.Pkt" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="StokPosisi" EntityType="Self.StokPosisi" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TransaksiAtms" EntityType="Self.TransaksiAtms" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK_laporanBon_Pkt" Association="Self.FK_laporanBon_Pkt">
       <End Role="Pkt" EntitySet="Pkt" />

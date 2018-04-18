@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "testProjectBCA-Fork", "testProjectBCA\testProjectBCA-Fork.csproj", "{FE582C92-70D4-4DF2-880A-B947F2B8B088}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectBCA-Fork", "testProjectBCA\ProjectBCA-Fork.csproj", "{FE582C92-70D4-4DF2-880A-B947F2B8B088}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

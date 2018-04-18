@@ -152,6 +152,31 @@
     <NavigationProperty Name="laporanBons" Relationship="Self.FK_laporanBon_Pkt" FromRole="Pkt" ToRole="laporanBon" />
     <NavigationProperty Name="TransaksiAtms" Relationship="Self.FK_TransaksiAtms_Pkt" FromRole="Pkt" ToRole="TransaksiAtms" />
   </EntityType>
+  <EntityType Name="StokPosisi">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="unprocessed" Type="Int64" />
+    <Property Name="newBaru" Type="Int64" />
+    <Property Name="newLama" Type="Int64" />
+    <Property Name="fitBaru" Type="Int64" />
+    <Property Name="fitNKRI" Type="Int64" />
+    <Property Name="fitLama" Type="Int64" />
+    <Property Name="passThrough" Type="Int64" />
+    <Property Name="unfitBaru" Type="Int64" />
+    <Property Name="unfitNKRI" Type="Int64" />
+    <Property Name="unfitLama" Type="Int64" />
+    <Property Name="RRMBaru" Type="Int64" />
+    <Property Name="RRMNKRI" Type="Int64" />
+    <Property Name="RRMLama" Type="Int64" />
+    <Property Name="RupiahRusakMayor" Type="Int64" />
+    <Property Name="cekLaporan" Type="Int64" />
+    <Property Name="jenis" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="denom" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="tanggal" Type="DateTime" Precision="0" />
+    <Property Name="namaPkt" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
   <EntityType Name="TransaksiAtm">
     <Key>
       <PropertyRef Name="idTransaksi" />
@@ -226,6 +251,7 @@
     <EntitySet Name="LaporanPermintaanBons" EntityType="Self.LaporanPermintaanBon" />
     <EntitySet Name="Optis" EntityType="Self.Opti" />
     <EntitySet Name="Pkts" EntityType="Self.Pkt" />
+    <EntitySet Name="StokPosisis" EntityType="Self.StokPosisi" />
     <EntitySet Name="TransaksiAtms" EntityType="Self.TransaksiAtm" />
     <AssociationSet Name="FK_laporanBon_Pkt" Association="Self.FK_laporanBon_Pkt">
       <End Role="Pkt" EntitySet="Pkts" />

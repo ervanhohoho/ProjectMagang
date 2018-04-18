@@ -4,15 +4,15 @@
     <EntitySetMapping Name="Approvals">
       <EntityTypeMapping TypeName="CACModel.Approval">
         <MappingFragment StoreEntitySet="Approvals">
-          <ScalarProperty Name="validasiNoTxn" ColumnName="validasiNoTxn" />
-          <ScalarProperty Name="validasiSpv" ColumnName="validasiSpv" />
-          <ScalarProperty Name="validasiOpr" ColumnName="validasiOpr" />
-          <ScalarProperty Name="inputNoTxn" ColumnName="inputNoTxn" />
-          <ScalarProperty Name="inputSpv" ColumnName="inputSpv" />
-          <ScalarProperty Name="inputOpr" ColumnName="inputOpr" />
           <ScalarProperty Name="idApproval" ColumnName="idApproval" />
           <ScalarProperty Name="tanggal" ColumnName="tanggal" />
           <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
+          <ScalarProperty Name="inputOpr" ColumnName="inputOpr" />
+          <ScalarProperty Name="inputSpv" ColumnName="inputSpv" />
+          <ScalarProperty Name="inputNoTxn" ColumnName="inputNoTxn" />
+          <ScalarProperty Name="validasiOpr" ColumnName="validasiOpr" />
+          <ScalarProperty Name="validasiSpv" ColumnName="validasiSpv" />
+          <ScalarProperty Name="validasiNoTxn" ColumnName="validasiNoTxn" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -67,9 +67,6 @@
     <EntitySetMapping Name="DetailApprovals">
       <EntityTypeMapping TypeName="CACModel.DetailApproval">
         <MappingFragment StoreEntitySet="DetailApprovals">
-          <ScalarProperty Name="setorAdhoc20" ColumnName="setorAdhoc20" />
-          <ScalarProperty Name="setorAdhoc50" ColumnName="setorAdhoc50" />
-          <ScalarProperty Name="setorAdhoc100" ColumnName="setorAdhoc100" />
           <ScalarProperty Name="idDetailApproval" ColumnName="idDetailApproval" />
           <ScalarProperty Name="idApproval" ColumnName="idApproval" />
           <ScalarProperty Name="tanggal" ColumnName="tanggal" />
@@ -100,6 +97,9 @@
           <ScalarProperty Name="setor20" ColumnName="setor20" />
           <ScalarProperty Name="setor50" ColumnName="setor50" />
           <ScalarProperty Name="setor100" ColumnName="setor100" />
+          <ScalarProperty Name="setorAdhoc100" ColumnName="setorAdhoc100" />
+          <ScalarProperty Name="setorAdhoc50" ColumnName="setorAdhoc50" />
+          <ScalarProperty Name="setorAdhoc20" ColumnName="setorAdhoc20" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -156,6 +156,32 @@
           <ScalarProperty Name="kanwil" ColumnName="kanwil" />
           <ScalarProperty Name="sentralisasi" ColumnName="sentralisasi" />
           <ScalarProperty Name="vendor" ColumnName="vendor" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="StokPosisis">
+      <EntityTypeMapping TypeName="CACModel.StokPosisi">
+        <MappingFragment StoreEntitySet="StokPosisi">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="unprocessed" ColumnName="unprocessed" />
+          <ScalarProperty Name="newBaru" ColumnName="newBaru" />
+          <ScalarProperty Name="newLama" ColumnName="newLama" />
+          <ScalarProperty Name="fitBaru" ColumnName="fitBaru" />
+          <ScalarProperty Name="fitNKRI" ColumnName="fitNKRI" />
+          <ScalarProperty Name="fitLama" ColumnName="fitLama" />
+          <ScalarProperty Name="passThrough" ColumnName="passThrough" />
+          <ScalarProperty Name="unfitBaru" ColumnName="unfitBaru" />
+          <ScalarProperty Name="unfitNKRI" ColumnName="unfitNKRI" />
+          <ScalarProperty Name="unfitLama" ColumnName="unfitLama" />
+          <ScalarProperty Name="RRMBaru" ColumnName="RRMBaru" />
+          <ScalarProperty Name="RRMNKRI" ColumnName="RRMNKRI" />
+          <ScalarProperty Name="RRMLama" ColumnName="RRMLama" />
+          <ScalarProperty Name="RupiahRusakMayor" ColumnName="RupiahRusakMayor" />
+          <ScalarProperty Name="cekLaporan" ColumnName="cekLaporan" />
+          <ScalarProperty Name="jenis" ColumnName="jenis" />
+          <ScalarProperty Name="denom" ColumnName="denom" />
+          <ScalarProperty Name="tanggal" ColumnName="tanggal" />
+          <ScalarProperty Name="namaPkt" ColumnName="namaPkt" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
