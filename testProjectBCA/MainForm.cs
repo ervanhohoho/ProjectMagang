@@ -519,7 +519,7 @@ namespace testProjectBCA
 
         private void rekapApprovalToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            RekapApproval ra = new RekapApproval();
+            AkurasiPrediksiForm ra = new AkurasiPrediksiForm();
             ra.MdiParent = this;
             ra.Show();
         }
@@ -540,6 +540,20 @@ namespace testProjectBCA
             dsf.MdiParent = this;
             dsf.Show();
 
+        }
+
+        private void rekapApprovalToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            RekapApprovalForm raf = new RekapApprovalForm();
+            raf.MdiParent = this;
+            raf.Show();
+        }
+
+        private void stokPosisiToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            StokPosisiForm spf = new StokPosisiForm();
+            spf.MdiParent = this;
+            spf.Show();
         }
     }
 }

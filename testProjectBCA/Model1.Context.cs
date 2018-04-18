@@ -35,6 +35,7 @@ namespace testProjectBCA
         public virtual DbSet<LaporanPermintaanBon> LaporanPermintaanBons { get; set; }
         public virtual DbSet<Opti> Optis { get; set; }
         public virtual DbSet<Pkt> Pkts { get; set; }
+        public virtual DbSet<StokPosisi> StokPosisis { get; set; }
         public virtual DbSet<TransaksiAtm> TransaksiAtms { get; set; }
     }
 }

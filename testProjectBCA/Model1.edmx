@@ -12,6 +12,12 @@
           <Property Name="idApproval" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="tanggal" Type="date" Nullable="false" />
           <Property Name="kodePkt" Type="varchar" MaxLength="7" Nullable="false" />
+          <Property Name="inputOpr" Type="varchar" MaxLength="50" />
+          <Property Name="inputSpv" Type="varchar" MaxLength="50" />
+          <Property Name="inputNoTxn" Type="varchar" MaxLength="20" />
+          <Property Name="validasiOpr" Type="varchar" MaxLength="50" />
+          <Property Name="validasiSpv" Type="varchar" MaxLength="50" />
+          <Property Name="validasiNoTxn" Type="varchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="Cabang">
           <Key>
@@ -93,6 +99,9 @@
           <Property Name="setor20" Type="bigint" />
           <Property Name="setor50" Type="bigint" />
           <Property Name="setor100" Type="bigint" />
+          <Property Name="setorAdhoc100" Type="bigint" />
+          <Property Name="setorAdhoc50" Type="bigint" />
+          <Property Name="setorAdhoc20" Type="bigint" />
         </EntityType>
         <EntityType Name="EventTanggal">
           <Key>
@@ -144,6 +153,31 @@
           <Property Name="kanwil" Type="varchar" MaxLength="50" />
           <Property Name="sentralisasi" Type="varchar" MaxLength="50" />
           <Property Name="vendor" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="StokPosisi">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="unprocessed" Type="bigint" />
+          <Property Name="newBaru" Type="bigint" />
+          <Property Name="newLama" Type="bigint" />
+          <Property Name="fitBaru" Type="bigint" />
+          <Property Name="fitNKRI" Type="bigint" />
+          <Property Name="fitLama" Type="bigint" />
+          <Property Name="passThrough" Type="bigint" />
+          <Property Name="unfitBaru" Type="bigint" />
+          <Property Name="unfitNKRI" Type="bigint" />
+          <Property Name="unfitLama" Type="bigint" />
+          <Property Name="RRMBaru" Type="bigint" />
+          <Property Name="RRMNKRI" Type="bigint" />
+          <Property Name="RRMLama" Type="bigint" />
+          <Property Name="RupiahRusakMayor" Type="bigint" />
+          <Property Name="cekLaporan" Type="bigint" />
+          <Property Name="jenis" Type="varchar" MaxLength="50" />
+          <Property Name="denom" Type="varchar" MaxLength="50" />
+          <Property Name="tanggal" Type="date" />
+          <Property Name="namaPkt" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="TransaksiAtms">
           <Key>
@@ -218,6 +252,7 @@
           <EntitySet Name="LaporanPermintaanBon" EntityType="Self.LaporanPermintaanBon" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Opti" EntityType="Self.Opti" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pkt" EntityType="Self.Pkt" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StokPosisi" EntityType="Self.StokPosisi" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TransaksiAtms" EntityType="Self.TransaksiAtms" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_laporanBon_Pkt" Association="Self.FK_laporanBon_Pkt">
             <End Role="Pkt" EntitySet="Pkt" />
@@ -240,6 +275,12 @@
           <Property Name="idApproval" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="tanggal" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="kodePkt" Type="String" MaxLength="7" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="inputOpr" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="inputSpv" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="inputNoTxn" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="validasiOpr" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="validasiSpv" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="validasiNoTxn" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Cabang">
           <Key>
@@ -321,6 +362,9 @@
           <Property Name="setor20" Type="Int64" />
           <Property Name="setor50" Type="Int64" />
           <Property Name="setor100" Type="Int64" />
+          <Property Name="setorAdhoc100" Type="Int64" />
+          <Property Name="setorAdhoc50" Type="Int64" />
+          <Property Name="setorAdhoc20" Type="Int64" />
         </EntityType>
         <EntityType Name="EventTanggal">
           <Key>
@@ -375,6 +419,31 @@
           <Property Name="vendor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="laporanBons" Relationship="Self.FK_laporanBon_Pkt" FromRole="Pkt" ToRole="laporanBon" />
           <NavigationProperty Name="TransaksiAtms" Relationship="Self.FK_TransaksiAtms_Pkt" FromRole="Pkt" ToRole="TransaksiAtms" />
+        </EntityType>
+        <EntityType Name="StokPosisi">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="unprocessed" Type="Int64" />
+          <Property Name="newBaru" Type="Int64" />
+          <Property Name="newLama" Type="Int64" />
+          <Property Name="fitBaru" Type="Int64" />
+          <Property Name="fitNKRI" Type="Int64" />
+          <Property Name="fitLama" Type="Int64" />
+          <Property Name="passThrough" Type="Int64" />
+          <Property Name="unfitBaru" Type="Int64" />
+          <Property Name="unfitNKRI" Type="Int64" />
+          <Property Name="unfitLama" Type="Int64" />
+          <Property Name="RRMBaru" Type="Int64" />
+          <Property Name="RRMNKRI" Type="Int64" />
+          <Property Name="RRMLama" Type="Int64" />
+          <Property Name="RupiahRusakMayor" Type="Int64" />
+          <Property Name="cekLaporan" Type="Int64" />
+          <Property Name="jenis" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="denom" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="tanggal" Type="DateTime" Precision="0" />
+          <Property Name="namaPkt" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="TransaksiAtm">
           <Key>
@@ -450,6 +519,7 @@
           <EntitySet Name="LaporanPermintaanBons" EntityType="Self.LaporanPermintaanBon" />
           <EntitySet Name="Optis" EntityType="Self.Opti" />
           <EntitySet Name="Pkts" EntityType="Self.Pkt" />
+          <EntitySet Name="StokPosisis" EntityType="Self.StokPosisi" />
           <EntitySet Name="TransaksiAtms" EntityType="Self.TransaksiAtm" />
           <AssociationSet Name="FK_laporanBon_Pkt" Association="Self.FK_laporanBon_Pkt">
             <End Role="Pkt" EntitySet="Pkts" />
@@ -472,6 +542,12 @@
                 <ScalarProperty Name="idApproval" ColumnName="idApproval" />
                 <ScalarProperty Name="tanggal" ColumnName="tanggal" />
                 <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
+                <ScalarProperty Name="inputOpr" ColumnName="inputOpr" />
+                <ScalarProperty Name="inputSpv" ColumnName="inputSpv" />
+                <ScalarProperty Name="inputNoTxn" ColumnName="inputNoTxn" />
+                <ScalarProperty Name="validasiOpr" ColumnName="validasiOpr" />
+                <ScalarProperty Name="validasiSpv" ColumnName="validasiSpv" />
+                <ScalarProperty Name="validasiNoTxn" ColumnName="validasiNoTxn" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -556,6 +632,9 @@
                 <ScalarProperty Name="setor20" ColumnName="setor20" />
                 <ScalarProperty Name="setor50" ColumnName="setor50" />
                 <ScalarProperty Name="setor100" ColumnName="setor100" />
+                <ScalarProperty Name="setorAdhoc100" ColumnName="setorAdhoc100" />
+                <ScalarProperty Name="setorAdhoc50" ColumnName="setorAdhoc50" />
+                <ScalarProperty Name="setorAdhoc20" ColumnName="setorAdhoc20" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -612,6 +691,32 @@
                 <ScalarProperty Name="kanwil" ColumnName="kanwil" />
                 <ScalarProperty Name="sentralisasi" ColumnName="sentralisasi" />
                 <ScalarProperty Name="vendor" ColumnName="vendor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StokPosisis">
+            <EntityTypeMapping TypeName="CACModel.StokPosisi">
+              <MappingFragment StoreEntitySet="StokPosisi">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="unprocessed" ColumnName="unprocessed" />
+                <ScalarProperty Name="newBaru" ColumnName="newBaru" />
+                <ScalarProperty Name="newLama" ColumnName="newLama" />
+                <ScalarProperty Name="fitBaru" ColumnName="fitBaru" />
+                <ScalarProperty Name="fitNKRI" ColumnName="fitNKRI" />
+                <ScalarProperty Name="fitLama" ColumnName="fitLama" />
+                <ScalarProperty Name="passThrough" ColumnName="passThrough" />
+                <ScalarProperty Name="unfitBaru" ColumnName="unfitBaru" />
+                <ScalarProperty Name="unfitNKRI" ColumnName="unfitNKRI" />
+                <ScalarProperty Name="unfitLama" ColumnName="unfitLama" />
+                <ScalarProperty Name="RRMBaru" ColumnName="RRMBaru" />
+                <ScalarProperty Name="RRMNKRI" ColumnName="RRMNKRI" />
+                <ScalarProperty Name="RRMLama" ColumnName="RRMLama" />
+                <ScalarProperty Name="RupiahRusakMayor" ColumnName="RupiahRusakMayor" />
+                <ScalarProperty Name="cekLaporan" ColumnName="cekLaporan" />
+                <ScalarProperty Name="jenis" ColumnName="jenis" />
+                <ScalarProperty Name="denom" ColumnName="denom" />
+                <ScalarProperty Name="tanggal" ColumnName="tanggal" />
+                <ScalarProperty Name="namaPkt" ColumnName="namaPkt" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

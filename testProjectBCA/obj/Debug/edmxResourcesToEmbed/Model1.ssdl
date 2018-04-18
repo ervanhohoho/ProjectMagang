@@ -7,6 +7,12 @@
     <Property Name="idApproval" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="tanggal" Type="date" Nullable="false" />
     <Property Name="kodePkt" Type="varchar" MaxLength="7" Nullable="false" />
+    <Property Name="inputOpr" Type="varchar" MaxLength="50" />
+    <Property Name="inputSpv" Type="varchar" MaxLength="50" />
+    <Property Name="inputNoTxn" Type="varchar" MaxLength="20" />
+    <Property Name="validasiOpr" Type="varchar" MaxLength="50" />
+    <Property Name="validasiSpv" Type="varchar" MaxLength="50" />
+    <Property Name="validasiNoTxn" Type="varchar" MaxLength="20" />
   </EntityType>
   <EntityType Name="Cabang">
     <Key>
@@ -88,6 +94,9 @@
     <Property Name="setor20" Type="bigint" />
     <Property Name="setor50" Type="bigint" />
     <Property Name="setor100" Type="bigint" />
+    <Property Name="setorAdhoc100" Type="bigint" />
+    <Property Name="setorAdhoc50" Type="bigint" />
+    <Property Name="setorAdhoc20" Type="bigint" />
   </EntityType>
   <EntityType Name="EventTanggal">
     <Key>

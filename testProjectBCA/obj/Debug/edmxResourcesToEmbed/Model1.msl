@@ -4,6 +4,12 @@
     <EntitySetMapping Name="Approvals">
       <EntityTypeMapping TypeName="CACModel.Approval">
         <MappingFragment StoreEntitySet="Approvals">
+          <ScalarProperty Name="validasiNoTxn" ColumnName="validasiNoTxn" />
+          <ScalarProperty Name="validasiSpv" ColumnName="validasiSpv" />
+          <ScalarProperty Name="validasiOpr" ColumnName="validasiOpr" />
+          <ScalarProperty Name="inputNoTxn" ColumnName="inputNoTxn" />
+          <ScalarProperty Name="inputSpv" ColumnName="inputSpv" />
+          <ScalarProperty Name="inputOpr" ColumnName="inputOpr" />
           <ScalarProperty Name="idApproval" ColumnName="idApproval" />
           <ScalarProperty Name="tanggal" ColumnName="tanggal" />
           <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
@@ -61,6 +67,9 @@
     <EntitySetMapping Name="DetailApprovals">
       <EntityTypeMapping TypeName="CACModel.DetailApproval">
         <MappingFragment StoreEntitySet="DetailApprovals">
+          <ScalarProperty Name="setorAdhoc20" ColumnName="setorAdhoc20" />
+          <ScalarProperty Name="setorAdhoc50" ColumnName="setorAdhoc50" />
+          <ScalarProperty Name="setorAdhoc100" ColumnName="setorAdhoc100" />
           <ScalarProperty Name="idDetailApproval" ColumnName="idDetailApproval" />
           <ScalarProperty Name="idApproval" ColumnName="idApproval" />
           <ScalarProperty Name="tanggal" ColumnName="tanggal" />

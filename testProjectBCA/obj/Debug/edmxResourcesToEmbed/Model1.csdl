@@ -7,6 +7,12 @@
     <Property Name="idApproval" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="tanggal" Type="DateTime" Nullable="false" Precision="0" />
     <Property Name="kodePkt" Type="String" MaxLength="7" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="inputOpr" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="inputSpv" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="inputNoTxn" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="validasiOpr" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="validasiSpv" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="validasiNoTxn" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="Cabang">
     <Key>
@@ -88,6 +94,9 @@
     <Property Name="setor20" Type="Int64" />
     <Property Name="setor50" Type="Int64" />
     <Property Name="setor100" Type="Int64" />
+    <Property Name="setorAdhoc100" Type="Int64" />
+    <Property Name="setorAdhoc50" Type="Int64" />
+    <Property Name="setorAdhoc20" Type="Int64" />
   </EntityType>
   <EntityType Name="EventTanggal">
     <Key>

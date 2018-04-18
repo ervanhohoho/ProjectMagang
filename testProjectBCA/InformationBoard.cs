@@ -449,9 +449,9 @@ namespace testProjectBCA
                         subqueryTblAverage += ") avt";
 
                         String query = "SELECT "
-                                    + "[AverageStdDeviasi100] = AVG(CAST(ABS(isiAtm100 - [Average100]) AS FLOAT) / IIF([Average100] = 0, 1, [Average100])), "
-                                    + "[AverageStdDeviasi50] = AVG(CAST(ABS(isiAtm50 - [Average50])AS FLOAT) / IIF([Average50] = 0, 1, [Average50])), "
-                                    + "[AverageStdDeviasi20] = AVG(CAST(ABS(isiAtm20 - [Average20])AS FLOAT) / IIF([Average20] = 0, 1, [Average20])) "
+                                    + "[AverageStdDeviasi100] = AVG(CAST(ABS(isiAtm100 - [Average100]) AS FLOAT) / (CASE WHEN [Average100] = 0 THEN 1 ELSE [Average100] END)), "
+                                    + "[AverageStdDeviasi50] = AVG(CAST(ABS(isiAtm50 - [Average50])AS FLOAT) / (CASE WHEN [Average50] = 0 THEN 1 ELSE [Average50] END)), "
+                                    + "[AverageStdDeviasi20] = AVG(CAST(ABS(isiAtm20 - [Average20])AS FLOAT) / (CASE WHEN [Average20] = 0 THEN 1 ELSE [Average20] END)) "
                                     + "FROM TransaksiAtms TA JOIN EventTanggal ET ON Ta.tanggal = ET.tanggal, " + subqueryTblAverage + kondisi;
 
                         cmd.CommandText = query;
@@ -612,9 +612,9 @@ namespace testProjectBCA
                         subqueryTblAverage += ") avt";
 
                         String query = "SELECT "
-                                    + "[AverageStdDeviasi100] = AVG(CAST(ABS(isiCrm100 - [Average100]) AS FLOAT) / IIF([Average100] = 0, 1, [Average100])), "
-                                    + "[AverageStdDeviasi50] = AVG(CAST(ABS(isiCrm50 - [Average50])AS FLOAT) / IIF([Average50] = 0, 1, [Average50])), "
-                                    + "[AverageStdDeviasi20] = AVG(CAST(ABS(isiCrm20 - [Average20])AS FLOAT) / IIF([Average20] = 0, 1, [Average20])) "
+                                    + "[AverageStdDeviasi100] = AVG(CAST(ABS(isiCrm100 - [Average100]) AS FLOAT) / (CASE WHEN [Average100] = 0 THEN 1 ELSE [Average100] END)), "
+                                    + "[AverageStdDeviasi50] = AVG(CAST(ABS(isiCrm50 - [Average50])AS FLOAT) / (CASE WHEN [Average50] = 0 THEN 1 ELSE [Average50] END)), "
+                                    + "[AverageStdDeviasi20] = AVG(CAST(ABS(isiCrm20 - [Average20])AS FLOAT) / (CASE WHEN [Average20] = 0 THEN 1 ELSE [Average20] END)) "
                                     + "FROM TransaksiAtms TA JOIN EventTanggal ET ON Ta.tanggal = ET.tanggal, " + subqueryTblAverage + kondisi;
 
                         cmd.CommandText = query;
@@ -776,9 +776,9 @@ namespace testProjectBCA
                         subqueryTblAverage += ") avt";
 
                         String query = "SELECT "
-                                    + "[AverageStdDeviasi100] = AVG(CAST(ABS(sislokCrm100 - [Average100]) AS FLOAT) / IIF([Average100] = 0, 1, [Average100])), "
-                                    + "[AverageStdDeviasi50] = AVG(CAST(ABS(sislokCrm50 - [Average50])AS FLOAT) / IIF([Average50] = 0, 1, [Average50])), "
-                                    + "[AverageStdDeviasi20] = AVG(CAST(ABS(sislokCrm20 - [Average20])AS FLOAT) / IIF([Average20] = 0, 1, [Average20])) "
+                                    + "[AverageStdDeviasi100] = AVG(CAST(ABS(sislokCrm100 - [Average100]) AS FLOAT) / (CASE WHEN [Average100] = 0 THEN 1 ELSE [Average100] END)), "
+                                    + "[AverageStdDeviasi50] = AVG(CAST(ABS(sislokCrm50 - [Average50])AS FLOAT) / (CASE WHEN [Average50] = 0 THEN 1 ELSE [Average50] END)), "
+                                    + "[AverageStdDeviasi20] = AVG(CAST(ABS(sislokCrm20 - [Average20])AS FLOAT) / (CASE WHEN [Average20] = 0 THEN 1 ELSE [Average20] END)) "
                                     + "FROM TransaksiAtms TA JOIN EventTanggal ET ON Ta.tanggal = ET.tanggal, " + subqueryTblAverage + kondisi;
 
                         cmd.CommandText = query;
@@ -939,9 +939,9 @@ namespace testProjectBCA
                         subqueryTblAverage += ") avt";
 
                         String query = "SELECT "
-                                    + "[AverageStdDeviasi100] = AVG(CAST(ABS(sislokCdm100 - [Average100]) AS FLOAT) / IIF([Average100] = 0, 1, [Average100])), "
-                                    + "[AverageStdDeviasi50] = AVG(CAST(ABS(sislokCdm50 - [Average50])AS FLOAT) / IIF([Average50] = 0, 1, [Average50])), "
-                                    + "[AverageStdDeviasi20] = AVG(CAST(ABS(sislokCdm20 - [Average20])AS FLOAT) / IIF([Average20] = 0, 1, [Average20])) "
+                                    + "[AverageStdDeviasi100] = AVG(CAST(ABS(sislokCdm100 - [Average100]) AS FLOAT) / (CASE WHEN [Average100] = 0 THEN 1 ELSE [Average100] END)), "
+                                    + "[AverageStdDeviasi50] = AVG(CAST(ABS(sislokCdm50 - [Average50])AS FLOAT) / (CASE WHEN [Average50] = 0 THEN 1 ELSE [Average50] END)), "
+                                    + "[AverageStdDeviasi20] = AVG(CAST(ABS(sislokCdm20 - [Average20])AS FLOAT) / (CASE WHEN [Average20] = 0 THEN 1 ELSE [Average20] END)) "
                                     + "FROM TransaksiAtms TA JOIN EventTanggal ET ON Ta.tanggal = ET.tanggal, " + subqueryTblAverage + kondisi;
 
                         cmd.CommandText = query;
@@ -1113,9 +1113,9 @@ namespace testProjectBCA
                         subqueryTblAverage += ") avt";
 
                         String query = "SELECT "
-                                    + "[AverageStdDeviasi100] = ISNULL(AVG(CAST(ABS(CAST(sislokAtm100 AS FLOAT)/NULLIF(isiAtm100,0) - [Average100]) AS FLOAT) / IIF([Average100] = 0, 1, [Average100])),0), "
-                                    + "[AverageStdDeviasi50] = ISNULL(AVG(CAST(ABS(CAST(sislokAtm50 AS FLOAT)/NULLIF(isiAtm50,0) - [Average50])AS FLOAT) / IIF([Average50] = 0, 1, [Average50])),0), "
-                                    + "[AverageStdDeviasi20] = ISNULL(AVG(CAST(ABS(CAST(sislokAtm20 AS FLOAT)/NULLIF(isiAtm20,0) - [Average20])AS FLOAT) / IIF([Average20] = 0, 1, [Average20])),0) "
+                                    + "[AverageStdDeviasi100] = ISNULL(AVG(CAST(ABS(CAST(sislokAtm100 AS FLOAT)/NULLIF(isiAtm100,0) - [Average100]) AS FLOAT) / (CASE WHEN [Average100] = 0 THEN 1 ELSE [Average100] END)),0), "
+                                    + "[AverageStdDeviasi50] = ISNULL(AVG(CAST(ABS(CAST(sislokAtm50 AS FLOAT)/NULLIF(isiAtm50,0) - [Average50])AS FLOAT) / (CASE WHEN [Average50] = 0 THEN 1 ELSE [Average50] END)),0), "
+                                    + "[AverageStdDeviasi20] = ISNULL(AVG(CAST(ABS(CAST(sislokAtm20 AS FLOAT)/NULLIF(isiAtm20,0) - [Average20])AS FLOAT) / (CASE WHEN [Average20] = 0 THEN 1 ELSE [Average20] END)),0) "
                                     + "FROM TransaksiAtms TA JOIN EventTanggal ET ON Ta.tanggal = ET.tanggal, " + subqueryTblAverage + kondisi;
 
                         cmd.CommandText = query;
@@ -2442,9 +2442,9 @@ namespace testProjectBCA
                         newDetailA.adhoc100 = bonAdhoc.d100;
                         newDetailA.adhoc50 = bonAdhoc.d50;
                         newDetailA.adhoc20 = bonAdhoc.d20;
-                        newDetailA.setor100 = setorAdhoc.d100;
-                        newDetailA.setor50 = setorAdhoc.d50;
-                        newDetailA.setor20 = setorAdhoc.d20;
+                        newDetailA.setorAdhoc100 = setorAdhoc.d100;
+                        newDetailA.setorAdhoc50 = setorAdhoc.d50;
+                        newDetailA.setorAdhoc20 = setorAdhoc.d20;
 
                     }
                     if (((DateTime)newDetailA.tanggal).ToShortDateString() == tglSetor.Value.ToShortDateString())
@@ -2489,7 +2489,7 @@ namespace testProjectBCA
                     count++;
                 }
 
-                for (int i=0;i<bonYangDisetujui.Count + 1 ;i++)
+                for (int i=0;i<bonYangDisetujui.Count ;i++)
                 {
                     DetailApproval newDetailA = new DetailApproval();
                     newDetailA.idApproval = lastApproval[lastApproval.Count-1].idApproval;

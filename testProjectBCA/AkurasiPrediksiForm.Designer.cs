@@ -1,6 +1,6 @@
 ﻿namespace testProjectBCA
 {
-    partial class RekapApproval
+    partial class AkurasiPrediksiForm
     {
         /// <summary>
         /// Required designer variable.

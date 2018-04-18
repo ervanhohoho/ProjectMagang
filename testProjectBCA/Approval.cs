@@ -17,5 +17,11 @@ namespace testProjectBCA
         public int idApproval { get; set; }
         public System.DateTime tanggal { get; set; }
         public string kodePkt { get; set; }
+        public string inputOpr { get; set; }
+        public string inputSpv { get; set; }
+        public string inputNoTxn { get; set; }
+        public string validasiOpr { get; set; }
+        public string validasiSpv { get; set; }
+        public string validasiNoTxn { get; set; }
     }
 }

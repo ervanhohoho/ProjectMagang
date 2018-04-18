@@ -1,6 +1,6 @@
 ﻿namespace testProjectBCA
 {
-    partial class Revisi
+    partial class StokPosisiForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,33 +28,33 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.selectFileBtn = new System.Windows.Forms.Button();
+            this.buttonSelectFIles = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // selectFileBtn
+            // buttonSelectFIles
             // 
-            this.selectFileBtn.Location = new System.Drawing.Point(12, 12);
-            this.selectFileBtn.Name = "selectFileBtn";
-            this.selectFileBtn.Size = new System.Drawing.Size(75, 23);
-            this.selectFileBtn.TabIndex = 0;
-            this.selectFileBtn.Text = "Revisi Data";
-            this.selectFileBtn.UseVisualStyleBackColor = true;
-            this.selectFileBtn.Click += new System.EventHandler(this.selectFileBtn_Click);
+            this.buttonSelectFIles.Location = new System.Drawing.Point(12, 12);
+            this.buttonSelectFIles.Name = "buttonSelectFIles";
+            this.buttonSelectFIles.Size = new System.Drawing.Size(310, 23);
+            this.buttonSelectFIles.TabIndex = 0;
+            this.buttonSelectFIles.Text = "Select Files";
+            this.buttonSelectFIles.UseVisualStyleBackColor = true;
+            this.buttonSelectFIles.Click += new System.EventHandler(this.buttonSelectFiles_Click);
             // 
-            // Revisi
+            // StokPosisiForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(334, 47);
-            this.Controls.Add(this.selectFileBtn);
-            this.Name = "Revisi";
-            this.Text = "Revisi";
+            this.ClientSize = new System.Drawing.Size(334, 51);
+            this.Controls.Add(this.buttonSelectFIles);
+            this.Name = "StokPosisiForm";
+            this.Text = "StokPosisiForm";
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Button selectFileBtn;
+        private System.Windows.Forms.Button buttonSelectFIles;
     }
 }

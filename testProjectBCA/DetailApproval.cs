@@ -44,5 +44,8 @@ namespace testProjectBCA
         public Nullable<long> setor20 { get; set; }
         public Nullable<long> setor50 { get; set; }
         public Nullable<long> setor100 { get; set; }
+        public Nullable<long> setorAdhoc100 { get; set; }
+        public Nullable<long> setorAdhoc50 { get; set; }
+        public Nullable<long> setorAdhoc20 { get; set; }
     }
 }

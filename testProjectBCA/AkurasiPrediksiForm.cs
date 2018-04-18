@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace testProjectBCA
 {
-    public partial class RekapApproval : Form
+    public partial class AkurasiPrediksiForm : Form
     {
         Database1Entities db = new Database1Entities();
         DateTime tanggalAwal, tanggalAkhir;
@@ -19,7 +19,7 @@ namespace testProjectBCA
         List<String> listPkt;
         IEnumerable<Object> realisasi;
         List<TableApproval> listApproval = new List<TableApproval>();
-        public RekapApproval()
+        public AkurasiPrediksiForm()
         {
             InitializeComponent();
             loadPktCombo();
