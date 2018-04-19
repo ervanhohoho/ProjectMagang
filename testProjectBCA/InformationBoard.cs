@@ -94,12 +94,11 @@ namespace testProjectBCA
             //    dataGridView1.Columns[i].DefaultCellStyle.Format = "c";
             //    dataGridView1.Columns[i].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
             //}
-            if(KodePkt.Count>0)
-                loadPrediksiOpti();
-            else
-            {
-                MessageBox.Show("Data opti belum ada");
-            }
+            if(KodePkt.Count<=0)
+                MessageBox.Show("Data Laporan Kemarin Belum Ada");
+
+            pktIndex = 0;
+            loadE2E();
             MetodePrediksiComboBox.SelectedIndex = 0;
             MetodeHitungLainnyaComboBox.SelectedIndex = 0;
             /*tanggalOpti = (DateTime) query[0].tanggal*/;
@@ -110,12 +109,11 @@ namespace testProjectBCA
         {
             using (Database1Entities db = new Database1Entities())
             {
-                DateTime tgl = (DateTime)(from x in db.Optis select x).Min(x => x.tanggal);
-                DateTime harikemarin = tgl.AddDays(-1);
+                DateTime harikemarin = DateTime.Today.Date.AddDays(-1);
                 List<String> tempListKodePkt = (from x in db.TransaksiAtms
                                                 where x.tanggal == harikemarin
                                                 select x.kodePkt).ToList();
-                List<String> dataYangAdaDiApproval = (from x in db.Approvals where x.tanggal == tgl select x.kodePkt).ToList();
+                List<String> dataYangAdaDiApproval = (from x in db.Approvals where x.tanggal == DateTime.Today.Date select x.kodePkt).ToList();
 
                 KodePkt = new List<String>();
                 var query = (from x in db.Optis
@@ -140,9 +138,8 @@ namespace testProjectBCA
         private void pktComboBox_SelectionChangeCommitted(object sender, EventArgs e)
         {
             pktIndex = pktComboBox.SelectedIndex;
-            loadPrediksiOpti();
+            loadE2E();
             Database1Entities db = new Database1Entities();
-            
         }
         
         private void loadPrediksiOpti()
@@ -181,8 +178,6 @@ namespace testProjectBCA
                         reader.Read();
                         DateTime minDate = (DateTime)reader[0];
                         DateTime maxDate = (DateTime)reader[1];
-                        tanggalOptiMin = minDate;
-                        tanggalOptiMax = maxDate;
                         reader.Close();
                         while(minDate<=maxDate)
                         {
@@ -245,14 +240,7 @@ namespace testProjectBCA
                             //dataGridView1.Rows.Add(row);
                         }
                     }
-                    cmd.CommandText = "SELECT e2e FROM Pkt WHERE kodePkt = '" + KodePkt[pktIndex]+"'";
-                    reader = cmd.ExecuteReader();
-                    reader.Read();
-                    e2eTxt.Text = "Jenis E2E: " + reader[0];
-                    if (reader[0].ToString() == "E2E")
-                        e2eComboBox.SelectedIndex = 0;
-                    else
-                        e2eComboBox.SelectedIndex = 1;
+                   
                     sqlConnection1.Close();
                 }
                 
@@ -264,8 +252,18 @@ namespace testProjectBCA
             {
                 Console.WriteLine(temp.tgl + " " + temp.d100 + " " + temp.d50 + " " + temp.d20);
             }
-
-
+        }
+        void loadE2E()
+        {
+            Database1Entities db = new Database1Entities();
+            if (KodePkt.Count <= 0)
+                return;
+            String tipe = (from x in db.Pkts.AsEnumerable() where x.kodePkt == KodePkt[pktIndex] select x.e2e).FirstOrDefault();
+            e2eTxt.Text = "Jenis E2E: " + tipe;
+            if (tipe == "E2E")
+                e2eComboBox.SelectedIndex = 0;
+            else
+                e2eComboBox.SelectedIndex = 1;
         }
         void loadTablePermintaanBon()
         {
@@ -334,15 +332,13 @@ namespace testProjectBCA
         }
         void loadIsiAtmHistoris()
         {
-
             Console.WriteLine();
             Console.WriteLine("Load Isi ATM");
             Console.WriteLine("======================");
             isiCrm = new List<Denom>();
-            int rowcount = prediksiIsiAtmOpti.Count;//dataGridView1.Rows.Count;
             //dataGridView1.Hide();
-            DateTime startDate = prediksiIsiAtmOpti[0].tgl;//Convert.ToDateTime(dataGridView1.Rows[0].Cells[0].Value);
-            DateTime endDate = prediksiIsiAtmOpti[prediksiIsiAtmOpti.Count - 1].tgl;//Convert.ToDateTime(dataGridView1.Rows[rowCount - 1].Cells[0].Value);
+            DateTime startDate = tanggalOptiMin;//Convert.ToDateTime(dataGridView1.Rows[0].Cells[0].Value);
+            DateTime endDate = tanggalOptiMax;//Convert.ToDateTime(dataGridView1.Rows[rowCount - 1].Cells[0].Value);
             DateTime tempDate = startDate;
             Console.WriteLine(startDate.DayOfWeek.ToString());
             Console.WriteLine(endDate);
@@ -442,8 +438,8 @@ namespace testProjectBCA
             int rowcount = prediksiIsiAtmOpti.Count;//dataGridView1.Rows.Count;
 
             //dataGridView1.Hide();
-            DateTime startDate = prediksiIsiAtmOpti[0].tgl;//Convert.ToDateTime(dataGridView1.Rows[0].Cells[0].Value);
-            DateTime endDate = prediksiIsiAtmOpti[prediksiIsiAtmOpti.Count - 1].tgl;//Convert.ToDateTime(dataGridView1.Rows[rowCount - 1].Cells[0].Value);
+            DateTime startDate = tanggalOptiMin;//Convert.ToDateTime(dataGridView1.Rows[0].Cells[0].Value);
+            DateTime endDate = tanggalOptiMax;
             DateTime tempDate = startDate;
             Console.WriteLine(startDate.DayOfWeek.ToString());
             Console.WriteLine(endDate);
@@ -584,9 +580,9 @@ namespace testProjectBCA
             Console.WriteLine("======================");
             isiCrm = new List<Denom>();
             int rowcount = prediksiIsiAtmOpti.Count;//dataGridView1.Rows.Count;
-            //dataGridView1.Hide();
-            DateTime startDate = prediksiIsiAtmOpti[0].tgl;//Convert.ToDateTime(dataGridView1.Rows[0].Cells[0].Value);
-            DateTime endDate = prediksiIsiAtmOpti[prediksiIsiAtmOpti.Count - 1].tgl;//Convert.ToDateTime(dataGridView1.Rows[rowCount - 1].Cells[0].Value);
+                                                    //dataGridView1.Hide();
+            DateTime startDate = tanggalOptiMin;//Convert.ToDateTime(dataGridView1.Rows[0].Cells[0].Value);
+            DateTime endDate = tanggalOptiMax;
             DateTime tempDate = startDate;
             Console.WriteLine(startDate.DayOfWeek.ToString());
             Console.WriteLine(endDate);
@@ -683,10 +679,10 @@ namespace testProjectBCA
             Console.WriteLine("======================");
 
             int rowcount = prediksiIsiAtmOpti.Count;//dataGridView1.Rows.Count;
-            
+
             //dataGridView1.Hide();
-            DateTime startDate = prediksiIsiAtmOpti[0].tgl;//Convert.ToDateTime(dataGridView1.Rows[0].Cells[0].Value);
-            DateTime endDate = prediksiIsiAtmOpti[prediksiIsiAtmOpti.Count - 1].tgl;//Convert.ToDateTime(dataGridView1.Rows[rowCount - 1].Cells[0].Value);
+            DateTime startDate = tanggalOptiMin;//Convert.ToDateTime(dataGridView1.Rows[0].Cells[0].Value);
+            DateTime endDate = tanggalOptiMax;
             DateTime tempDate = startDate;
             Console.WriteLine(startDate.DayOfWeek.ToString());
             Console.WriteLine(endDate);
@@ -828,9 +824,9 @@ namespace testProjectBCA
             Console.WriteLine("======================");
             sislokCrm = new List<Denom>();
             int rowcount = prediksiIsiAtmOpti.Count;//dataGridView1.Rows.Count;
-            //dataGridView1.Hide();
-            DateTime startDate = prediksiIsiAtmOpti[0].tgl;//Convert.ToDateTime(dataGridView1.Rows[0].Cells[0].Value);
-            DateTime endDate = prediksiIsiAtmOpti[prediksiIsiAtmOpti.Count - 1].tgl;//Convert.ToDateTime(dataGridView1.Rows[rowCount - 1].Cells[0].Value);
+                                                    //dataGridView1.Hide();
+            DateTime startDate = tanggalOptiMin;//Convert.ToDateTime(dataGridView1.Rows[0].Cells[0].Value);
+            DateTime endDate = tanggalOptiMax;
             DateTime tempDate = startDate;
             Console.WriteLine(startDate.DayOfWeek.ToString());
             Console.WriteLine(endDate);
@@ -932,8 +928,8 @@ namespace testProjectBCA
             int rowcount = prediksiIsiAtmOpti.Count;//dataGridView1.Rows.Count;
 
             //dataGridView1.Hide();
-            DateTime startDate = prediksiIsiAtmOpti[0].tgl;//Convert.ToDateTime(dataGridView1.Rows[0].Cells[0].Value);
-            DateTime endDate = prediksiIsiAtmOpti[prediksiIsiAtmOpti.Count - 1].tgl;//Convert.ToDateTime(dataGridView1.Rows[rowCount - 1].Cells[0].Value);
+            DateTime startDate = tanggalOptiMin;//Convert.ToDateTime(dataGridView1.Rows[0].Cells[0].Value);
+            DateTime endDate = tanggalOptiMax;
             DateTime tempDate = startDate;
             Console.WriteLine(startDate.DayOfWeek.ToString());
             Console.WriteLine(endDate);
@@ -1074,9 +1070,9 @@ namespace testProjectBCA
             Console.WriteLine("======================");
             sislokCdm = new List<Denom>();
             int rowcount = prediksiIsiAtmOpti.Count; //dataGridView1.Rows.Count;
-            //dataGridView1.Hide();
-            DateTime startDate = prediksiIsiAtmOpti[0].tgl;//Convert.ToDateTime(dataGridView1.Rows[0].Cells[0].Value);
-            DateTime endDate = prediksiIsiAtmOpti[prediksiIsiAtmOpti.Count - 1].tgl;//Convert.ToDateTime(dataGridView1.Rows[rowCount - 1].Cells[0].Value);
+                                                     //dataGridView1.Hide();
+            DateTime startDate = tanggalOptiMin;//Convert.ToDateTime(dataGridView1.Rows[0].Cells[0].Value);
+            DateTime endDate = tanggalOptiMax;
             DateTime tempDate = startDate;
             Console.WriteLine(startDate.DayOfWeek.ToString());
             Console.WriteLine(endDate);
@@ -1180,8 +1176,8 @@ namespace testProjectBCA
             int rowcount = prediksiIsiAtmOpti.Count;//dataGridView1.Rows.Count;
 
             //dataGridView1.Hide();
-            DateTime startDate = prediksiIsiAtmOpti[0].tgl;//Convert.ToDateTime(dataGridView1.Rows[0].Cells[0].Value);
-            DateTime endDate = prediksiIsiAtmOpti[prediksiIsiAtmOpti.Count - 1].tgl;//Convert.ToDateTime(dataGridView1.Rows[rowCount - 1].Cells[0].Value);
+            DateTime startDate = tanggalOptiMin;//Convert.ToDateTime(dataGridView1.Rows[0].Cells[0].Value);
+            DateTime endDate = tanggalOptiMax;
             DateTime tempDate = startDate;
             Console.WriteLine(startDate.DayOfWeek.ToString());
             Console.WriteLine(endDate);
@@ -1323,8 +1319,8 @@ namespace testProjectBCA
             rasioSislokAtm = new List<Rasio>();
             int rowcount = prediksiIsiAtmOpti.Count; //dataGridView1.Rows.Count;
             //dataGridView1.Hide();
-            DateTime startDate = prediksiIsiAtmOpti[0].tgl;//Convert.ToDateTime(dataGridView1.Rows[0].Cells[0].Value);
-            DateTime endDate = prediksiIsiAtmOpti[prediksiIsiAtmOpti.Count - 1].tgl;//Convert.ToDateTime(dataGridView1.Rows[rowCount - 1].Cells[0].Value);
+            DateTime startDate = tanggalOptiMin;//Convert.ToDateTime(dataGridView1.Rows[0].Cells[0].Value);
+            DateTime endDate = tanggalOptiMax;
             DateTime tempDate = startDate;
             Console.WriteLine(startDate.DayOfWeek.ToString());
             Console.WriteLine(endDate);
@@ -1445,8 +1441,8 @@ namespace testProjectBCA
             int rowcount = prediksiIsiAtmOpti.Count;//dataGridView1.Rows.Count;
 
             //dataGridView1.Hide();
-            DateTime startDate = prediksiIsiAtmOpti[0].tgl;//Convert.ToDateTime(dataGridView1.Rows[0].Cells[0].Value);
-            DateTime endDate = prediksiIsiAtmOpti[prediksiIsiAtmOpti.Count - 1].tgl;//Convert.ToDateTime(dataGridView1.Rows[rowCount - 1].Cells[0].Value);
+            DateTime startDate = tanggalOptiMin;//Convert.ToDateTime(dataGridView1.Rows[0].Cells[0].Value);
+            DateTime endDate = tanggalOptiMax;
             DateTime tempDate = startDate;
             Console.WriteLine(startDate.DayOfWeek.ToString());
             Console.WriteLine(endDate);
@@ -2112,20 +2108,20 @@ namespace testProjectBCA
 
             //Cek rasio hari terakhir
             bool flag100rasiounder = false, flag50rasiounder = false, flag20rasiounder = false;
-            if (Math.Round((Double)saldoAkhirH.d100 / (prediksiIsiAtm[prediksiIsiAtmOpti.Count - 1].d100 + isiCrm[prediksiIsiAtm.Count - 1].d100),2) <= targetRasio100)
+            if (Math.Round((Double)saldoAkhirH.d100 / (prediksiIsiAtm[prediksiIsiAtm.Count - 1].d100 + isiCrm[prediksiIsiAtm.Count - 1].d100),2) <= targetRasio100)
             {
                 Console.WriteLine();
-                Console.WriteLine((Double)saldoAkhirH.d100 / (prediksiIsiAtm[prediksiIsiAtmOpti.Count - 1].d100 + isiCrm[prediksiIsiAtm.Count - 1].d100));
+                Console.WriteLine((Double)saldoAkhirH.d100 / (prediksiIsiAtm[prediksiIsiAtm.Count - 1].d100 + isiCrm[prediksiIsiAtm.Count - 1].d100));
                 flag100rasiounder = true;
             }
-            if (Math.Round((Double)saldoAkhirH.d50 / (prediksiIsiAtm[prediksiIsiAtmOpti.Count - 1].d50 + isiCrm[prediksiIsiAtm.Count - 1].d50),2) <= targetRasio50)
+            if (Math.Round((Double)saldoAkhirH.d50 / (prediksiIsiAtm[prediksiIsiAtm.Count - 1].d50 + isiCrm[prediksiIsiAtm.Count - 1].d50),2) <= targetRasio50)
             {
-                Console.WriteLine((Double)saldoAkhirH.d50 / (prediksiIsiAtm[prediksiIsiAtmOpti.Count - 1].d50 + isiCrm[prediksiIsiAtm.Count - 1].d50));
+                Console.WriteLine((Double)saldoAkhirH.d50 / (prediksiIsiAtm[prediksiIsiAtm.Count - 1].d50 + isiCrm[prediksiIsiAtm.Count - 1].d50));
                 flag50rasiounder = true;
             }
-            if (Math.Round((Double)saldoAkhirH.d20 / (prediksiIsiAtm[prediksiIsiAtmOpti.Count - 1].d20 + isiCrm[prediksiIsiAtm.Count - 1].d20),2) <= targetRasio20)
+            if (Math.Round((Double)saldoAkhirH.d20 / (prediksiIsiAtm[prediksiIsiAtm.Count - 1].d20 + isiCrm[prediksiIsiAtm.Count - 1].d20),2) <= targetRasio20)
             {
-                Console.WriteLine((Double)saldoAkhirH.d20 / (prediksiIsiAtm[prediksiIsiAtmOpti.Count - 1].d20 + isiCrm[prediksiIsiAtm.Count - 1].d20));
+                Console.WriteLine((Double)saldoAkhirH.d20 / (prediksiIsiAtm[prediksiIsiAtm.Count - 1].d20 + isiCrm[prediksiIsiAtm.Count - 1].d20));
                 flag20rasiounder = true;
             }
 
@@ -2686,6 +2682,9 @@ namespace testProjectBCA
         private void loadPrediksiBtn_Click(object sender, EventArgs e)
         {
             Double buf;
+            loadPrediksiOpti();
+            tanggalOptiMax = tanggalPrediksiMaxPicker.Value.Date;
+            tanggalOptiMin = DateTime.Today.Date;
             if (tanggalKalenderMax < tanggalOptiMax)
             {
                 MessageBox.Show("Data tanggal di table kalender kurang");

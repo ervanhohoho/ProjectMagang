@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pktComboBox = new System.Windows.Forms.ComboBox();
             this.rasio100Txt = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -96,6 +96,8 @@
             this.MetodePrediksiComboBox = new System.Windows.Forms.ComboBox();
             this.MetodeHitungLainnyaComboBox = new System.Windows.Forms.ComboBox();
             this.label25 = new System.Windows.Forms.Label();
+            this.label27 = new System.Windows.Forms.Label();
+            this.tanggalPrediksiMaxPicker = new System.Windows.Forms.DateTimePicker();
             ((System.ComponentModel.ISupportInitialize)(this.rekomendasiBonGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bonGridView)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -293,15 +295,15 @@
             this.bonGridView.AllowUserToAddRows = false;
             this.bonGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.bonGridView.BackgroundColor = System.Drawing.Color.DarkSeaGreen;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.NullValue = "0";
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.bonGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.NullValue = "0";
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.bonGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.bonGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.bonGridView.Location = new System.Drawing.Point(10, 35);
             this.bonGridView.Name = "bonGridView";
@@ -783,7 +785,7 @@
             this.e2eComboBox.Items.AddRange(new object[] {
             "E2E",
             "NON-E2E"});
-            this.e2eComboBox.Location = new System.Drawing.Point(316, 5);
+            this.e2eComboBox.Location = new System.Drawing.Point(234, 2);
             this.e2eComboBox.Name = "e2eComboBox";
             this.e2eComboBox.Size = new System.Drawing.Size(121, 21);
             this.e2eComboBox.TabIndex = 100;
@@ -791,7 +793,7 @@
             // label23
             // 
             this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(198, 9);
+            this.label23.Location = new System.Drawing.Point(116, 6);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(112, 13);
             this.label23.TabIndex = 101;
@@ -810,7 +812,7 @@
             // label26
             // 
             this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(502, 9);
+            this.label26.Location = new System.Drawing.Point(377, 6);
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(122, 13);
             this.label26.TabIndex = 104;
@@ -825,7 +827,7 @@
             "Opti + Historis",
             "Historis + Std Deviasi",
             "Opti + Historis + Std Deviasi"});
-            this.MetodePrediksiComboBox.Location = new System.Drawing.Point(630, 6);
+            this.MetodePrediksiComboBox.Location = new System.Drawing.Point(505, 3);
             this.MetodePrediksiComboBox.Name = "MetodePrediksiComboBox";
             this.MetodePrediksiComboBox.Size = new System.Drawing.Size(121, 21);
             this.MetodePrediksiComboBox.TabIndex = 105;
@@ -836,7 +838,7 @@
             this.MetodeHitungLainnyaComboBox.Items.AddRange(new object[] {
             "Historis",
             "Historis + Std Deviasi"});
-            this.MetodeHitungLainnyaComboBox.Location = new System.Drawing.Point(963, 5);
+            this.MetodeHitungLainnyaComboBox.Location = new System.Drawing.Point(766, 5);
             this.MetodeHitungLainnyaComboBox.Name = "MetodeHitungLainnyaComboBox";
             this.MetodeHitungLainnyaComboBox.Size = new System.Drawing.Size(121, 21);
             this.MetodeHitungLainnyaComboBox.TabIndex = 102;
@@ -844,11 +846,27 @@
             // label25
             // 
             this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(840, 9);
+            this.label25.Location = new System.Drawing.Point(643, 7);
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(117, 13);
             this.label25.TabIndex = 106;
             this.label25.Text = "Metode Hitung Lainnya";
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Location = new System.Drawing.Point(893, 8);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(109, 13);
+            this.label27.TabIndex = 107;
+            this.label27.Text = "Tanggal Prediksi Max";
+            // 
+            // tanggalPrediksiMaxPicker
+            // 
+            this.tanggalPrediksiMaxPicker.Location = new System.Drawing.Point(1008, 5);
+            this.tanggalPrediksiMaxPicker.Name = "tanggalPrediksiMaxPicker";
+            this.tanggalPrediksiMaxPicker.Size = new System.Drawing.Size(169, 20);
+            this.tanggalPrediksiMaxPicker.TabIndex = 110;
             // 
             // InformationBoard
             // 
@@ -856,6 +874,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1391, 761);
+            this.Controls.Add(this.tanggalPrediksiMaxPicker);
+            this.Controls.Add(this.label27);
             this.Controls.Add(this.label25);
             this.Controls.Add(this.MetodeHitungLainnyaComboBox);
             this.Controls.Add(this.MetodePrediksiComboBox);
@@ -962,5 +982,7 @@
         private System.Windows.Forms.ComboBox MetodePrediksiComboBox;
         private System.Windows.Forms.ComboBox MetodeHitungLainnyaComboBox;
         private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.DateTimePicker tanggalPrediksiMaxPicker;
     }
 }
