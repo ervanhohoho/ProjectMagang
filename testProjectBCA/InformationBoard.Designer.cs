@@ -855,7 +855,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(1399, 761);
+            this.ClientSize = new System.Drawing.Size(1391, 761);
             this.Controls.Add(this.label25);
             this.Controls.Add(this.MetodeHitungLainnyaComboBox);
             this.Controls.Add(this.MetodePrediksiComboBox);
