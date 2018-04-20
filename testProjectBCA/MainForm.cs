@@ -358,11 +358,7 @@ namespace testProjectBCA
 
         private void insertDataCabangToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenFileDialog of = new OpenFileDialog();
-            if(of.ShowDialog() == DialogResult.OK)
-            {
-                insertDataPktCabang(of.FileName);
-            }
+            
         }
 
         private void insertDataPktCabang(String filename)
@@ -397,11 +393,7 @@ namespace testProjectBCA
 
         private void insertDataKanwilCabangToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenFileDialog of = new OpenFileDialog();
-            if (of.ShowDialog() == DialogResult.OK)
-            {
-                insertDataKanwilCabang(of.FileName);
-            }
+            
         }
         private void insertDataKanwilCabang(String filepath)
         {
@@ -550,6 +542,30 @@ namespace testProjectBCA
         }
 
         private void stokPosisiToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+
+        private void inputDataPktCabangToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog of = new OpenFileDialog();
+            if (of.ShowDialog() == DialogResult.OK)
+            {
+                insertDataPktCabang(of.FileName);
+            }
+        }
+
+        private void inputDataKanwilCabangToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog of = new OpenFileDialog();
+            if (of.ShowDialog() == DialogResult.OK)
+            {
+                insertDataKanwilCabang(of.FileName);
+            }
+        }
+
+        private void stokPosisiToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             StokPosisiForm spf = new StokPosisiForm();
             spf.MdiParent = this;

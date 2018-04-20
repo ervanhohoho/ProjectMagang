@@ -113,20 +113,11 @@ namespace testProjectBCA
                 List<String> tempListKodePkt = (from x in db.TransaksiAtms
                                                 where x.tanggal == harikemarin
                                                 select x.kodePkt).ToList();
+
                 List<String> dataYangAdaDiApproval = (from x in db.Approvals where x.tanggal == DateTime.Today.Date select x.kodePkt).ToList();
 
-                KodePkt = new List<String>();
-                var query = (from x in db.Optis
-                             join y in db.Cashpoints on x.idCashpoint equals y.idCashpoint
-                             select y.kodePkt).ToList();
-                foreach (String temp2 in tempListKodePkt)
-                {
-                    foreach (var temp3 in query)
-                    {
-                        if (temp2 == temp3)
-                        { KodePkt.Add(temp2); break; }
-                    }
-                }
+                KodePkt = tempListKodePkt;
+
                 foreach (var temp in dataYangAdaDiApproval)
                 {
                     KodePkt.Remove(temp);

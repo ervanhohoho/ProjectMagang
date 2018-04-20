@@ -446,8 +446,9 @@ namespace testProjectBCA
                         }
                     }
                 }
+                loadForm.CloseForm();
             }
-            loadForm.CloseForm();
+          
         }
 
 
