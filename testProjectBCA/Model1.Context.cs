@@ -25,6 +25,7 @@ namespace testProjectBCA
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Abaca> Abacas { get; set; }
         public virtual DbSet<Approval> Approvals { get; set; }
         public virtual DbSet<Cabang> Cabangs { get; set; }
         public virtual DbSet<Cashpoint> Cashpoints { get; set; }

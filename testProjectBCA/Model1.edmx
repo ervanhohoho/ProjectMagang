@@ -5,6 +5,19 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
       <Schema Namespace="CACModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Abacas">
+          <Key>
+            <PropertyRef Name="idTransaksi" />
+          </Key>
+          <Property Name="idTransaksi" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tanggal" Type="date" />
+          <Property Name="vendorCardNo" Type="varchar" MaxLength="20" />
+          <Property Name="vendorName" Type="varchar" MaxLength="50" />
+          <Property Name="jobId" Type="varchar" MaxLength="20" />
+          <Property Name="totalAmount" Type="bigint" />
+          <Property Name="CustomerCode" Type="varchar" MaxLength="15" />
+          <Property Name="CustomerName" Type="varchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="Approvals">
           <Key>
             <PropertyRef Name="idApproval" />
@@ -242,6 +255,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="CACModelStoreContainer">
+          <EntitySet Name="Abacas" EntityType="Self.Abacas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Approvals" EntityType="Self.Approvals" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cabang" EntityType="Self.Cabang" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cashpoint" EntityType="Self.Cashpoint" Schema="dbo" store:Type="Tables" />
@@ -268,6 +282,19 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="CACModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Abaca">
+          <Key>
+            <PropertyRef Name="idTransaksi" />
+          </Key>
+          <Property Name="idTransaksi" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="tanggal" Type="DateTime" Precision="0" />
+          <Property Name="vendorCardNo" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="vendorName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="jobId" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="totalAmount" Type="Int64" />
+          <Property Name="CustomerCode" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="CustomerName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
         <EntityType Name="Approval">
           <Key>
             <PropertyRef Name="idApproval" />
@@ -509,6 +536,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="Database1Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Abacas" EntityType="Self.Abaca" />
           <EntitySet Name="Approvals" EntityType="Self.Approval" />
           <EntitySet Name="Cabangs" EntityType="Self.Cabang" />
           <EntitySet Name="Cashpoints" EntityType="Self.Cashpoint" />
@@ -536,6 +564,20 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="CACModelStoreContainer" CdmEntityContainer="Database1Entities">
+          <EntitySetMapping Name="Abacas">
+            <EntityTypeMapping TypeName="CACModel.Abaca">
+              <MappingFragment StoreEntitySet="Abacas">
+                <ScalarProperty Name="idTransaksi" ColumnName="idTransaksi" />
+                <ScalarProperty Name="tanggal" ColumnName="tanggal" />
+                <ScalarProperty Name="vendorCardNo" ColumnName="vendorCardNo" />
+                <ScalarProperty Name="vendorName" ColumnName="vendorName" />
+                <ScalarProperty Name="jobId" ColumnName="jobId" />
+                <ScalarProperty Name="totalAmount" ColumnName="totalAmount" />
+                <ScalarProperty Name="CustomerCode" ColumnName="CustomerCode" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Approvals">
             <EntityTypeMapping TypeName="CACModel.Approval">
               <MappingFragment StoreEntitySet="Approvals">

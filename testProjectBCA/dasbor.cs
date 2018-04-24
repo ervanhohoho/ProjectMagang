@@ -19,12 +19,12 @@ namespace testProjectBCA
 {
     public partial class dasbor : Form
     {
-        String [] bulan = {"Jan","Feb","Mar","Apr","Mei","Jun","Jul","Ags","Sep","Okt","Nov","Des"};
+        String[] bulan = { "Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Ags", "Sep", "Okt", "Nov", "Des" };
         public dasbor()
         {
             InitializeComponent();
             Database1Entities en = new Database1Entities();
-           
+
         }
 
         private void dasbor_Load(object sender, EventArgs e)
@@ -46,6 +46,8 @@ namespace testProjectBCA
             comboArea.SelectedIndex = 0;
             combomode.Add("Rasio");
             combomode.Add("Frekuensi AdHoc");
+            combomode.Add("Nominal");
+            groupBox7.Text = "Rasio";
             comboMode7.DataSource = combomode;
             comboMode7.SelectedIndex = 0;
 
@@ -67,7 +69,7 @@ namespace testProjectBCA
             List<String> combo16 = new List<String>();
             List<String> combo17 = new List<String>();
             List<String> combo18 = new List<String>();
-            List<String> combo19= new List<String>();
+            List<String> combo19 = new List<String>();
 
 
 
@@ -85,7 +87,7 @@ namespace testProjectBCA
                     }
                     comboAvg1.DataSource = combo1;
                 }
-            } 
+            }
 
             using (SqlConnection sql = new SqlConnection(Variables.connectionString))
             {
@@ -117,7 +119,7 @@ namespace testProjectBCA
                     }
                     comboTahun2.DataSource = combo3;
                 }
-            } 
+            }
 
             using (SqlConnection sql = new SqlConnection(Variables.connectionString))
             {
@@ -532,11 +534,11 @@ namespace testProjectBCA
 
             if (a.Equals("Nasional"))
             {
-                c = "SELECT  distinct vendor , [Rasio] = CAST(SUM(saldoAwal100 + saldoAwal50 + saldoAwal20) AS FLOAT)/(SUM(isiATM100+isiATM50+isiATM20+isiCRM100+isiCRM50+isiCRM20)) FROM TransaksiAtms ta join Pkt p on ta.kodePkt = p.kodePkt WHERE YEAR(tanggal) = "+ b +" group by  vendor order by vendor";
+                c = "SELECT  distinct vendor , [Rasio] = CAST(SUM(saldoAwal100 + saldoAwal50 + saldoAwal20) AS FLOAT)/(SUM(isiATM100+isiATM50+isiATM20+isiCRM100+isiCRM50+isiCRM20)) FROM TransaksiAtms ta join Pkt p on ta.kodePkt = p.kodePkt WHERE YEAR(tanggal) = " + b + " group by  vendor order by vendor";
             }
-            else 
+            else
             {
-                c = "SELECT p.kodePkt , [Rasio] = CAST(SUM(saldoAwal100 + saldoAwal50 + saldoAwal20) AS FLOAT)/(SUM(isiATM100+isiATM50+isiATM20+isiCRM100+isiCRM50+isiCRM20)) FROM TransaksiAtms ta join Pkt p on ta.kodePkt = p.kodePkt WHERE YEAR(tanggal) = " + b + "and kanwil like '"+ a +"' group by p.kodePkt order by p.kodePkt";
+                c = "SELECT p.kodePkt , [Rasio] = CAST(SUM(saldoAwal100 + saldoAwal50 + saldoAwal20) AS FLOAT)/(SUM(isiATM100+isiATM50+isiATM20+isiCRM100+isiCRM50+isiCRM20)) FROM TransaksiAtms ta join Pkt p on ta.kodePkt = p.kodePkt WHERE YEAR(tanggal) = " + b + "and kanwil like '" + a + "' group by p.kodePkt order by p.kodePkt";
             }
 
             return c;
@@ -551,25 +553,58 @@ namespace testProjectBCA
             if (a.Equals("Nasional"))
             {
                 c = "SELECT DISTINCT pkt.vendor, ISNULL([Jumlah adhoc],0)	                            "
-                    +"FROM Pkt LEFT JOIN                                                                 "
-                    +"(                                                                                  "
-                    +"	select distinct vendor, [Jumlah adhoc] = count (adhoc100+adhoc50+adhoc20)       "
-                    +"	from TransaksiAtms t join Pkt p on t.kodePkt = p.kodePkt                        "
-                    +"	where ((adhoc100 + adhoc50 + adhoc20) != 0)  and YEAR(tanggal) = "+b+"           "
-                    +"	group by  vendor                                                                "
-                    +")t ON pkt.vendor = t.vendor";
+                    + "FROM Pkt LEFT JOIN                                                                 "
+                    + "(                                                                                  "
+                    + "	select distinct vendor, [Jumlah adhoc] = count (adhoc100+adhoc50+adhoc20)       "
+                    + "	from TransaksiAtms t join Pkt p on t.kodePkt = p.kodePkt                        "
+                    + "	where ((adhoc100 + adhoc50 + adhoc20) != 0)  and YEAR(tanggal) = " + b + "           "
+                    + "	group by  vendor                                                                "
+                    + ")t ON pkt.vendor = t.vendor";
             }
             else
             {
                 c = "SELECT DISTINCT pkt.kodePkt, ISNULL([Jumlah adhoc],0)                                                      "
-                    +"FROM Pkt LEFT JOIN                                                                                         "
-                    +"(                                                                                                          "
-                    +"	select distinct p.kodePkt, [Jumlah adhoc] = count (adhoc100+adhoc50+adhoc20)                            "
-                    +"	from TransaksiAtms t join Pkt p on t.kodePkt = p.kodePkt                                                "
-                    +"	where ((adhoc100 + adhoc50 + adhoc20) != 0)  and YEAR(tanggal) = "+b+" and p.kanwil like '"+a+"'     "
-                    +"	group by  p.kodePkt                                                                                     "
-                    +")t ON pkt.kodePkt = t.kodePkt                                                                              "
-                    +"where pkt.kanwil like '"+a+"'";                                                                        
+                    + "FROM Pkt LEFT JOIN                                                                                         "
+                    + "(                                                                                                          "
+                    + "	select distinct p.kodePkt, [Jumlah adhoc] = count (adhoc100+adhoc50+adhoc20)                            "
+                    + "	from TransaksiAtms t join Pkt p on t.kodePkt = p.kodePkt                                                "
+                    + "	where ((adhoc100 + adhoc50 + adhoc20) != 0)  and YEAR(tanggal) = " + b + " and p.kanwil like '" + a + "'     "
+                    + "	group by  p.kodePkt                                                                                     "
+                    + ")t ON pkt.kodePkt = t.kodePkt                                                                              "
+                    + "where pkt.kanwil like '" + a + "'";
+            }
+
+            return c;
+        }
+
+        public String tahunPlusKanwilChoose_3(String kanwilMasuk, String tahunMasuk)
+        {
+            String a = kanwilMasuk;
+            String b = tahunMasuk;
+            String c = "";
+
+            if (a.Equals("Nasional"))
+            {
+                c = "SELECT DISTINCT pkt.vendor, ISNULL([Jumlah adhoc],0)	                            "
+                    + "FROM Pkt LEFT JOIN                                                                 "
+                    + "(                                                                                  "
+                    + "	select distinct vendor, [Jumlah adhoc] = avg (adhoc100+adhoc50+adhoc20)       "
+                    + "	from TransaksiAtms t join Pkt p on t.kodePkt = p.kodePkt                        "
+                    + "	where ((adhoc100 + adhoc50 + adhoc20) != 0)  and YEAR(tanggal) = " + b + "           "
+                    + "	group by  vendor                                                                "
+                    + ")t ON pkt.vendor = t.vendor";
+            }
+            else
+            {
+                c = "SELECT DISTINCT pkt.kodePkt, ISNULL([Jumlah adhoc],0)                                                      "
+                    + "FROM Pkt LEFT JOIN                                                                                         "
+                    + "(                                                                                                          "
+                    + "	select distinct p.kodePkt, [Jumlah adhoc] = avg (adhoc100+adhoc50+adhoc20)                            "
+                    + "	from TransaksiAtms t join Pkt p on t.kodePkt = p.kodePkt                                                "
+                    + "	where ((adhoc100 + adhoc50 + adhoc20) != 0)  and YEAR(tanggal) = " + b + " and p.kanwil like '" + a + "'     "
+                    + "	group by  p.kodePkt                                                                                     "
+                    + ")t ON pkt.kodePkt = t.kodePkt                                                                              "
+                    + "where pkt.kanwil like '" + a + "'";
             }
 
             return c;
@@ -601,7 +636,7 @@ namespace testProjectBCA
             cartesianChart1.AxisX.Clear();
             cartesianChart1.AxisY.Clear();
             cartesianChart1.Series.Clear();
-            
+
             List<Double> rasio = new List<Double>();
             List<String> bulan = new List<String>();
             using (SqlConnection sql = new SqlConnection(Variables.connectionString))
@@ -621,7 +656,7 @@ namespace testProjectBCA
                     ChartValues<Double> cv = new ChartValues<Double>();
                     foreach (Double temp in rasio)
                     {
-                        cv.Add(Math.Round(temp,2));
+                        cv.Add(Math.Round(temp, 2));
                     }
                     cartesianChart1.Series = new SeriesCollection
                     {
@@ -669,7 +704,7 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "select [bulan] = month(tanggal),[persen] = cast(sum(adhoc100+adhoc50+adhoc20)as float)/ cast(sum(adhoc100+adhoc50+adhoc20+bon100+bon50+bon20) as float) from TransaksiAtms ta join Pkt p on ta.kodePkt = p.kodePkt where year(tanggal) = " + comboTahun2.SelectedValue.ToString()  +areaChoose(comboArea.SelectedValue.ToString()) + " group by MONTH(tanggal) order by[bulan]";
+                    cmd.CommandText = "select [bulan] = month(tanggal),[persen] = cast(sum(adhoc100+adhoc50+adhoc20)as float)/ cast(sum(adhoc100+adhoc50+adhoc20+bon100+bon50+bon20) as float) from TransaksiAtms ta join Pkt p on ta.kodePkt = p.kodePkt where year(tanggal) = " + comboTahun2.SelectedValue.ToString() + areaChoose(comboArea.SelectedValue.ToString()) + " group by MONTH(tanggal) order by[bulan]";
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
@@ -689,7 +724,7 @@ namespace testProjectBCA
                             Title = comboTahun2.Text,
                             Values = cv,
                             LineSmoothness = 0
-                          
+
                         }
                     };
                     cartesianChart2.AxisX.Add(new Axis
@@ -729,7 +764,7 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "select saldo = sum(saldoAwal20 + saldoAwal50 + saldoAwal100), bon = SUM(bon20 + bon50 + bon100), adhoc = SUM(adhoc100+ adhoc50+adhoc20), isi = SUM(isiATM100 + isiATM50 + isiATM20 + isiCRM100+ isiCRM50+ isiCRM20) ,hari= DAY(tanggal) from TransaksiAtms ta join Pkt p on ta.kodePkt = p.kodePkt where year(tanggal) = " + comboTahun3.SelectedValue.ToString() + areaChoose(comboArea.SelectedValue.ToString()) + " and month(tanggal) = " + comboBulan3.SelectedValue.ToString()+" group by DAY(tanggal) order by day(tanggal)";
+                    cmd.CommandText = "select saldo = sum(saldoAwal20 + saldoAwal50 + saldoAwal100), bon = SUM(bon20 + bon50 + bon100), adhoc = SUM(adhoc100+ adhoc50+adhoc20), isi = SUM(isiATM100 + isiATM50 + isiATM20 + isiCRM100+ isiCRM50+ isiCRM20) ,hari= DAY(tanggal) from TransaksiAtms ta join Pkt p on ta.kodePkt = p.kodePkt where year(tanggal) = " + comboTahun3.SelectedValue.ToString() + areaChoose(comboArea.SelectedValue.ToString()) + " and month(tanggal) = " + comboBulan3.SelectedValue.ToString() + " group by DAY(tanggal) order by day(tanggal)";
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
@@ -804,7 +839,7 @@ namespace testProjectBCA
                         },
 
                     };
-                    
+
 
                     cartesianChart3.AxisX.Add(new Axis
                     {
@@ -816,7 +851,7 @@ namespace testProjectBCA
                     cartesianChart3.AxisY.Add(new Axis
                     {
                         Title = "Jumlah",
-                        LabelFormatter = value => (value/1000000000000).ToString() + "T",
+                        LabelFormatter = value => (value / 1000000000000).ToString() + "T",
                         MinValue = 0
                     });
 
@@ -843,7 +878,7 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "SELECT [Hari] = day(tanggal),[Rasio] = CAST(SUM(saldoAwal100 + saldoAwal50 + saldoAwal20) AS FLOAT)/(SUM(isiATM100+isiATM50+isiATM20+isiCRM100+isiCRM50+isiCRM20)) FROM TransaksiAtms ta join Pkt p on ta.kodePkt = p.kodePkt WHERE YEAR(tanggal) = " + comboTahun4.SelectedValue.ToString() + areaChoose(comboArea.SelectedValue.ToString()) + "and Month(tanggal) = "+comboBulan4.SelectedValue.ToString()+" GROUP BY day(tanggal) ORDER BY Hari ";
+                    cmd.CommandText = "SELECT [Hari] = day(tanggal),[Rasio] = CAST(SUM(saldoAwal100 + saldoAwal50 + saldoAwal20) AS FLOAT)/(SUM(isiATM100+isiATM50+isiATM20+isiCRM100+isiCRM50+isiCRM20)) FROM TransaksiAtms ta join Pkt p on ta.kodePkt = p.kodePkt WHERE YEAR(tanggal) = " + comboTahun4.SelectedValue.ToString() + areaChoose(comboArea.SelectedValue.ToString()) + "and Month(tanggal) = " + comboBulan4.SelectedValue.ToString() + " GROUP BY day(tanggal) ORDER BY Hari ";
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
@@ -932,7 +967,7 @@ namespace testProjectBCA
                             Title = "Persen "+comboTahun5.Text,
                             Values = cv2,
                             LineSmoothness = 0
-                            
+
                         }
                     };
                     cartesianChart5.AxisX.Add(new Axis
@@ -964,7 +999,7 @@ namespace testProjectBCA
             using (SqlConnection sql = new SqlConnection(Variables.connectionString))
             {
                 using (SqlCommand cmd = new SqlCommand())
-                { 
+                {
                     cmd.Connection = sql;
                     sql.Open();
                     cmd.CommandText = kanwilChooseGridView(comboKanwil6.SelectedValue.ToString());
@@ -981,16 +1016,16 @@ namespace testProjectBCA
                     DataGridViewTextBoxCell tbcell = new DataGridViewTextBoxCell();
                     foreach (var item in kanwil)
                     {
-                       // Console.WriteLine(item);
+                        // Console.WriteLine(item);
                         rows = new DataGridViewRow();
                         tbcell = new DataGridViewTextBoxCell();
                         tbcell.Value = item;
                         rows.Cells.Add(tbcell);
                         dataGridView1.Rows.Add(rows);
                     }
-                    
+
                 }
-            }  
+            }
         }
 
         public void reload7()
@@ -1006,14 +1041,14 @@ namespace testProjectBCA
                     cmd.Connection = sql;
                     sql.Open();
                     cmd.CommandText = tahunPlusKanwilChoose_1(comboKanwil6.SelectedValue.ToString(), comboTahun6_1.SelectedValue.ToString());
-                        //kanwilChooseGridView(comboKanwil6.SelectedValue.ToString());
+                    //kanwilChooseGridView(comboKanwil6.SelectedValue.ToString());
 
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
                         rasio.Add(reader[1].ToString());
                     }
-                    dataGridView2.Columns.Add("Aktual "+comboTahun6_1.SelectedValue.ToString(), "Aktual "+comboTahun6_1.SelectedValue.ToString());
+                    dataGridView2.Columns.Add("Aktual " + comboTahun6_1.SelectedValue.ToString(), "Aktual " + comboTahun6_1.SelectedValue.ToString());
                     DataGridViewRow rows = new DataGridViewRow();
                     DataGridViewTextBoxCell tbcell = new DataGridViewTextBoxCell();
                     foreach (var item in rasio)
@@ -1040,9 +1075,9 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    
 
-                        if (comboKanwil6.SelectedValue.ToString().Equals("Nasional"))
+
+                    if (comboKanwil6.SelectedValue.ToString().Equals("Nasional"))
                     {
                         cmd.CommandText = "SELECT  [Jan] = ISNULL([1],0), [Feb] = ISNULL([2],0), [Mar] = ISNULL([3],0), [Apr] = ISNULL([4],0), [Mei] = ISNULL([5],0), [Jun] = ISNULL([6],0), [Jul] = ISNULL([7],0), [Agt] = ISNULL([8],0), [Sep] = ISNULL([9],0), [Okt] = ISNULL([10],0), [Nov] = ISNULL([11],0), [Des] = ISNULL([12],0) "
                         + " FROM (SELECT distinct [Bulan] = month(tanggal), vendor , [Rasio] = CAST(SUM(saldoAwal100 + saldoAwal50 + saldoAwal20) AS FLOAT) / (SUM(isiATM100 + isiATM50 + isiATM20 + isiCRM100 + isiCRM50 + isiCRM20))"
@@ -1058,7 +1093,7 @@ namespace testProjectBCA
                         + " [5], [6], [7], [8], [9], [10], [11], [12])"
                         + " )AS pvt";
                     }
-                        else
+                    else
                     {
                         cmd.CommandText = "SELECT  [Jan] = ISNULL([1],0), [Feb] = ISNULL([2],0), [Mar] = ISNULL([3],0), [Apr] = ISNULL([4],0), [Mei] = ISNULL([5],0), [Jun] = ISNULL([6],0), [Jul] = ISNULL([7],0), [Agt] = ISNULL([8],0), [Sep] = ISNULL([9],0), [Okt] = ISNULL([10],0), [Nov] = ISNULL([11],0), [Des] = ISNULL([12],0) "
                         + " FROM (SELECT[Bulan] = month(tanggal), p.kodePkt , [Rasio] = CAST(SUM(saldoAwal100 + saldoAwal50 + saldoAwal20) AS FLOAT) / (SUM(isiATM100 + isiATM50 + isiATM20 + isiCRM100 + isiCRM50 + isiCRM20))"
@@ -1075,12 +1110,12 @@ namespace testProjectBCA
                         + " )AS pvt";
                     }
 
-                        
+
 
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
-                       
+
                         Bulan bul = new Bulan();
                         bul.Jan = reader[0].ToString();
                         bul.Feb = reader[1].ToString();
@@ -1097,7 +1132,7 @@ namespace testProjectBCA
                         rasio.Add(bul);
                     }
                     DataTable tb = new DataTable();
-                    using (var reader1 = ObjectReader.Create(rasio,"Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agt","Sep","Okt","Nov","Des"))
+                    using (var reader1 = ObjectReader.Create(rasio, "Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agt", "Sep", "Okt", "Nov", "Des"))
                     {
                         tb.Load(reader1);
                     }
@@ -1121,12 +1156,12 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "SELECT day(tanggal), DATENAME(dw,Tanggal),[Rasio] = CAST(SUM(saldoAwal100 + saldoAwal50 + saldoAwal20) AS FLOAT)/(SUM(isiATM100+isiATM50+isiATM20+isiCRM100+isiCRM50+isiCRM20))  FROM TransaksiAtms ta join Pkt p on ta.kodePkt = p.kodePkt WHERE YEAR(tanggal) = " +comboTahun7.SelectedValue.ToString() +" and p.kodePkt = '"+comboPkt7.SelectedValue.ToString()+"' and MONTH(tanggal) = "+ comboBulan7.SelectedValue.ToString() +" GROUP BY DATENAME(dw, tanggal), DATENAME(WEEK, tanggal), day(tanggal) order by day(tanggal)";
+                    cmd.CommandText = "SELECT day(tanggal), DATENAME(dw,Tanggal),[Rasio] = CAST(SUM(saldoAwal100 + saldoAwal50 + saldoAwal20) AS FLOAT)/(SUM(isiATM100+isiATM50+isiATM20+isiCRM100+isiCRM50+isiCRM20))  FROM TransaksiAtms ta join Pkt p on ta.kodePkt = p.kodePkt WHERE YEAR(tanggal) = " + comboTahun7.SelectedValue.ToString() + " and p.kodePkt = '" + comboPkt7.SelectedValue.ToString() + "' and MONTH(tanggal) = " + comboBulan7.SelectedValue.ToString() + " GROUP BY DATENAME(dw, tanggal), DATENAME(WEEK, tanggal), day(tanggal) order by day(tanggal)";
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
                         tanggal.Add(reader[0].ToString());
-                        hari.Add(reader[1].ToString() + " ("+reader[0].ToString()+")");
+                        hari.Add(reader[1].ToString() + " (" + reader[0].ToString() + ")");
                         rasio.Add((Double)reader[2]);
 
                     }
@@ -1140,7 +1175,7 @@ namespace testProjectBCA
                     {
                         new LineSeries
                         {
-                            
+
                             Title = comboPkt7.Text,
                             Values = cv,
                             LineSmoothness = 0
@@ -1159,19 +1194,19 @@ namespace testProjectBCA
                         },
                         LabelsRotation = 30,
                         //Labels = new[] { "Jan", "Feb", "Mar", "Apr", "May" }
-                    }   
+                    }
                     );
-                   
+
                     cartesianChart6.AxisY.Add(new Axis
                     {
                         Title = "Rasio",
                         LabelFormatter = value => value.ToString(),
                         MinValue = 0
-                        
+
                     });
 
                     cartesianChart6.LegendLocation = LegendLocation.Right;
-                    
+
                 }
             }
         }
@@ -1191,12 +1226,12 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "select [Jumlah adhoc] = count (adhoc100+adhoc50+adhoc20), [tanggal]  = day(tanggal), [Minggu] = (DATEPART(WEEK, tanggal) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM, 0, tanggal), 0)) + 1 ) from TransaksiAtms t join Pkt p on t.kodePkt = p.kodePkt where ((adhoc100 + adhoc50 + adhoc20) != 0) AND MONTH(tanggal) =  " + comboBulan8.SelectedValue.ToString()+" and YEAR(tanggal) = "+ comboTahun8.SelectedValue.ToString()+ "  group by day(tanggal), (DATEPART(WEEK, tanggal) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM, 0, tanggal), 0)) + 1 ) order by day(tanggal)";
+                    cmd.CommandText = "select [Jumlah adhoc] = count (adhoc100+adhoc50+adhoc20), [tanggal]  = day(tanggal), [Minggu] = (DATEPART(WEEK, tanggal) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM, 0, tanggal), 0)) + 1 ) from TransaksiAtms t join Pkt p on t.kodePkt = p.kodePkt where ((adhoc100 + adhoc50 + adhoc20) != 0) AND MONTH(tanggal) =  " + comboBulan8.SelectedValue.ToString() + " and YEAR(tanggal) = " + comboTahun8.SelectedValue.ToString() + "  group by day(tanggal), (DATEPART(WEEK, tanggal) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM, 0, tanggal), 0)) + 1 ) order by day(tanggal)";
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
                         rasio.Add((int)reader[0]);
-                        tanggal.Add(reader[1].ToString() +" (" +  reader[2].ToString()+")");
+                        tanggal.Add(reader[1].ToString() + " (" + reader[2].ToString() + ")");
 
                     }
                     ChartValues<Double> cv = new ChartValues<Double>();
@@ -1215,19 +1250,19 @@ namespace testProjectBCA
                             LineSmoothness = 0
                         }
                     };
-            
+
                     cartesianChart7.AxisX.Add(new Axis
                     {
                         Title = "Tanggal (Minggu)",
                         Labels = tanggal,
-                        
+
                         Separator = new Separator // force the separator step to 1, so it always display all labels
                         {
                             Step = 1,
                             IsEnabled = false //disable it to make it invisible.
                         },
                         //LabelsRotation = 30,
-                        
+
                         //Labels = new[] { "Jan", "Feb", "Mar", "Apr", "May" }
                     }
 
@@ -1299,34 +1334,34 @@ namespace testProjectBCA
                     if (comboKanwil6.SelectedValue.ToString().Equals("Nasional"))
                     {
                         cmd.CommandText = "SELECT DISTINCT pkt.vendor, "
-                                          +"    [Jan] = ISNULL([Jan],0),"
-                                          +"    [Feb] = ISNULL([Feb],0),"
-                                          +"	[Mar] = ISNULL([Mar],0),"
-                                          +"	[Apr] = ISNULL([Apr],0),"
-                                          +"	[Mei] = ISNULL([Mei],0),"
-                                          +"	[Jun] = ISNULL([Jun],0),"
-                                          +"	[Jul] = ISNULL([Jul],0),"
-                                          +"	[Agt] = ISNULL([Agt],0),"
-                                          +"	[Sep] = ISNULL([Sep],0),"
-                                          +"	[Okt] = ISNULL([Okt],0),"
-                                          +"	[Nov] = ISNULL([Nov],0),"
-                                          +"	[Des] = ISNULL([Des],0)"
-                                          +" FROM pkt"
-                                          +" LEFT JOIN("
-                                          +" SELECT[Vendor] = vendor, [Jan] = ISNULL([1],0), [Feb] = ISNULL([2],0), [Mar] = ISNULL([3],0), [Apr] = ISNULL([4],0), [Mei] = ISNULL([5],0), [Jun] = ISNULL([6],0), [Jul] = ISNULL([7],0), [Agt] = ISNULL([8],0), [Sep] = ISNULL([9],0), [Okt] = ISNULL([10],0), [Nov] = ISNULL([11],0), [Des] = ISNULL([12],0)"
-                                          +" FROM"
-                                          +" (SELECT distinct [Bulan] = month(tanggal), vendor, [Jumlah adhoc] = count(adhoc100 + adhoc50 + adhoc20) "
-                                          +" FROM TransaksiAtms ta join Pkt p on ta.kodePkt = p.kodePkt "
-                                          +" WHERE YEAR(tanggal) = "+comboTahun6_2.SelectedValue.ToString()+" and((adhoc100 + adhoc50 + adhoc20) != 0) "
-                                          +" group by vendor, MONTH(tanggal) "
-                                          +" ) AS T "
-                                          +" PIVOT "
-                                          +" ( "
-                                          +"     Max([Jumlah adhoc]) "
-                                          +"     FOR[Bulan] IN([1], [2], [3], [4], "
-                                          +"     [5], [6], [7], [8], [9], [10], [11], [12]) "
-                                          +" )AS pvt "
-                                          +" ) AS T2 ON pkt.vendor = T2.vendor ";
+                                          + "    [Jan] = ISNULL([Jan],0),"
+                                          + "    [Feb] = ISNULL([Feb],0),"
+                                          + "	[Mar] = ISNULL([Mar],0),"
+                                          + "	[Apr] = ISNULL([Apr],0),"
+                                          + "	[Mei] = ISNULL([Mei],0),"
+                                          + "	[Jun] = ISNULL([Jun],0),"
+                                          + "	[Jul] = ISNULL([Jul],0),"
+                                          + "	[Agt] = ISNULL([Agt],0),"
+                                          + "	[Sep] = ISNULL([Sep],0),"
+                                          + "	[Okt] = ISNULL([Okt],0),"
+                                          + "	[Nov] = ISNULL([Nov],0),"
+                                          + "	[Des] = ISNULL([Des],0)"
+                                          + " FROM pkt"
+                                          + " LEFT JOIN("
+                                          + " SELECT[Vendor] = vendor, [Jan] = ISNULL([1],0), [Feb] = ISNULL([2],0), [Mar] = ISNULL([3],0), [Apr] = ISNULL([4],0), [Mei] = ISNULL([5],0), [Jun] = ISNULL([6],0), [Jul] = ISNULL([7],0), [Agt] = ISNULL([8],0), [Sep] = ISNULL([9],0), [Okt] = ISNULL([10],0), [Nov] = ISNULL([11],0), [Des] = ISNULL([12],0)"
+                                          + " FROM"
+                                          + " (SELECT distinct [Bulan] = month(tanggal), vendor, [Jumlah adhoc] = count(adhoc100 + adhoc50 + adhoc20) "
+                                          + " FROM TransaksiAtms ta join Pkt p on ta.kodePkt = p.kodePkt "
+                                          + " WHERE YEAR(tanggal) = " + comboTahun6_2.SelectedValue.ToString() + " and((adhoc100 + adhoc50 + adhoc20) != 0) "
+                                          + " group by vendor, MONTH(tanggal) "
+                                          + " ) AS T "
+                                          + " PIVOT "
+                                          + " ( "
+                                          + "     Max([Jumlah adhoc]) "
+                                          + "     FOR[Bulan] IN([1], [2], [3], [4], "
+                                          + "     [5], [6], [7], [8], [9], [10], [11], [12]) "
+                                          + " )AS pvt "
+                                          + " ) AS T2 ON pkt.vendor = T2.vendor ";
                     }
                     else
                     {
@@ -1351,18 +1386,18 @@ namespace testProjectBCA
                                            + " ("
                                            + " SELECT[Bulan] = month(tanggal), p.kodePkt , [Jumlah adhoc] = count(adhoc100 + adhoc50 + adhoc20) "
                                            + " FROM TransaksiAtms ta join Pkt p on ta.kodePkt = p.kodePkt "
-                                           + " WHERE YEAR(tanggal) = "+comboTahun6_2.SelectedValue.ToString()+" and((adhoc100 + adhoc50 + adhoc20) != 0) "
-	                                       + " and kanwil like '"+comboKanwil6.SelectedValue.ToString()+"'"
-	                                       +" group by p.kodePkt, MONTH(tanggal)"
-	                                       +" ) AS T"
-                                           +" PIVOT"
-                                           +" ("
-                                           +"     Max([Jumlah Adhoc])"
-                                           +"     FOR[Bulan] IN([1], [2], [3], [4],"
-                                           +"     [5], [6], [7], [8], [9], [10], [11], [12])"
-	                                       +" )AS pvt"
-                                           +" ) AS T2 ON pkt.kodePkt = T2.kodePkt"
-                                           +" WHERE kanwil ='"+comboKanwil6.SelectedValue.ToString()+"'";
+                                           + " WHERE YEAR(tanggal) = " + comboTahun6_2.SelectedValue.ToString() + " and((adhoc100 + adhoc50 + adhoc20) != 0) "
+                                           + " and kanwil like '" + comboKanwil6.SelectedValue.ToString() + "'"
+                                           + " group by p.kodePkt, MONTH(tanggal)"
+                                           + " ) AS T"
+                                           + " PIVOT"
+                                           + " ("
+                                           + "     Max([Jumlah Adhoc])"
+                                           + "     FOR[Bulan] IN([1], [2], [3], [4],"
+                                           + "     [5], [6], [7], [8], [9], [10], [11], [12])"
+                                           + " )AS pvt"
+                                           + " ) AS T2 ON pkt.kodePkt = T2.kodePkt"
+                                           + " WHERE kanwil ='" + comboKanwil6.SelectedValue.ToString() + "'";
                     }
 
 
@@ -1394,6 +1429,157 @@ namespace testProjectBCA
                     dataGridView3.DataSource = tb;
                 }
             }
+        }
+
+        public void reload13()
+        {
+            List<Bulan> rasio = new List<Bulan>();
+
+            using (SqlConnection sql = new SqlConnection(Variables.connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = sql;
+                    sql.Open();
+
+
+                    if (comboKanwil6.SelectedValue.ToString().Equals("Nasional"))
+                    {
+                        cmd.CommandText = "SELECT DISTINCT pkt.vendor, "
+                                          + "    [Jan] = ISNULL([Jan],0),"
+                                          + "    [Feb] = ISNULL([Feb],0),"
+                                          + "	[Mar] = ISNULL([Mar],0),"
+                                          + "	[Apr] = ISNULL([Apr],0),"
+                                          + "	[Mei] = ISNULL([Mei],0),"
+                                          + "	[Jun] = ISNULL([Jun],0),"
+                                          + "	[Jul] = ISNULL([Jul],0),"
+                                          + "	[Agt] = ISNULL([Agt],0),"
+                                          + "	[Sep] = ISNULL([Sep],0),"
+                                          + "	[Okt] = ISNULL([Okt],0),"
+                                          + "	[Nov] = ISNULL([Nov],0),"
+                                          + "	[Des] = ISNULL([Des],0)"
+                                          + " FROM pkt"
+                                          + " LEFT JOIN("
+                                          + " SELECT[Vendor] = vendor, [Jan] = ISNULL([1],0), [Feb] = ISNULL([2],0), [Mar] = ISNULL([3],0), [Apr] = ISNULL([4],0), [Mei] = ISNULL([5],0), [Jun] = ISNULL([6],0), [Jul] = ISNULL([7],0), [Agt] = ISNULL([8],0), [Sep] = ISNULL([9],0), [Okt] = ISNULL([10],0), [Nov] = ISNULL([11],0), [Des] = ISNULL([12],0)"
+                                          + " FROM"
+                                          + " (SELECT distinct [Bulan] = month(tanggal), vendor, [Jumlah adhoc] = avg(adhoc100 + adhoc50 + adhoc20) "
+                                          + " FROM TransaksiAtms ta join Pkt p on ta.kodePkt = p.kodePkt "
+                                          + " WHERE YEAR(tanggal) = " + comboTahun6_2.SelectedValue.ToString() + " and((adhoc100 + adhoc50 + adhoc20) != 0) "
+                                          + " group by vendor, MONTH(tanggal) "
+                                          + " ) AS T "
+                                          + " PIVOT "
+                                          + " ( "
+                                          + "     Max([Jumlah adhoc]) "
+                                          + "     FOR[Bulan] IN([1], [2], [3], [4], "
+                                          + "     [5], [6], [7], [8], [9], [10], [11], [12]) "
+                                          + " )AS pvt "
+                                          + " ) AS T2 ON pkt.vendor = T2.vendor ";
+                    }
+                    else
+                    {
+                        cmd.CommandText = "SELECT DISTINCT pkt.kodePkt,"
+                                           + " [Jan] = ISNULL([Jan],0),"
+                                           + " [Feb] = ISNULL([Feb],0),"
+                                           + " [Mar] = ISNULL([Mar],0),"
+                                           + " [Apr] = ISNULL([Apr],0),"
+                                           + " [Mei] = ISNULL([Mei],0),"
+                                           + " [Jun] = ISNULL([Jun],0),"
+                                           + " [Jul] = ISNULL([Jul],0),"
+                                           + " [Agt] = ISNULL([Agt],0),"
+                                           + " [Sep] = ISNULL([Sep],0),"
+                                           + " [Okt] = ISNULL([Okt],0),"
+                                           + " [Nov] = ISNULL([Nov],0),"
+                                           + " [Des] = ISNULL([Des],0)"
+                                           + " FROM pkt"
+                                           + " LEFT JOIN"
+                                           + " ("
+                                           + " SELECT[kodePkt]= kodePkt, [Jan] = ISNULL([1],0), [Feb] = ISNULL([2],0), [Mar] = ISNULL([3],0), [Apr] = ISNULL([4],0), [Mei] = ISNULL([5],0), [Jun] = ISNULL([6],0), [Jul] = ISNULL([7],0), [Agt] = ISNULL([8],0), [Sep] = ISNULL([9],0), [Okt] = ISNULL([10],0), [Nov] = ISNULL([11],0), [Des] = ISNULL([12],0)"
+                                           + " FROM"
+                                           + " ("
+                                           + " SELECT[Bulan] = month(tanggal), p.kodePkt , [Jumlah adhoc] = avg(adhoc100 + adhoc50 + adhoc20) "
+                                           + " FROM TransaksiAtms ta join Pkt p on ta.kodePkt = p.kodePkt "
+                                           + " WHERE YEAR(tanggal) = " + comboTahun6_2.SelectedValue.ToString() + " and((adhoc100 + adhoc50 + adhoc20) != 0) "
+                                           + " and kanwil like '" + comboKanwil6.SelectedValue.ToString() + "'"
+                                           + " group by p.kodePkt, MONTH(tanggal)"
+                                           + " ) AS T"
+                                           + " PIVOT"
+                                           + " ("
+                                           + "     Max([Jumlah Adhoc])"
+                                           + "     FOR[Bulan] IN([1], [2], [3], [4],"
+                                           + "     [5], [6], [7], [8], [9], [10], [11], [12])"
+                                           + " )AS pvt"
+                                           + " ) AS T2 ON pkt.kodePkt = T2.kodePkt"
+                                           + " WHERE kanwil ='" + comboKanwil6.SelectedValue.ToString() + "'";
+                    }
+
+
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+
+                        Bulan bul = new Bulan();
+                        bul.Jan = reader[1].ToString();
+                        bul.Feb = reader[2].ToString();
+                        bul.Mar = reader[3].ToString();
+                        bul.Apr = reader[4].ToString();
+                        bul.Mei = reader[5].ToString();
+                        bul.Jun = reader[6].ToString();
+                        bul.Jul = reader[7].ToString();
+                        bul.Agt = reader[8].ToString();
+                        bul.Sep = reader[9].ToString();
+                        bul.Okt = reader[10].ToString();
+                        bul.Nov = reader[11].ToString();
+                        bul.Des = reader[12].ToString();
+                        rasio.Add(bul);
+                    }
+                    DataTable tb = new DataTable();
+                    using (var reader1 = ObjectReader.Create(rasio, "Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agt", "Sep", "Okt", "Nov", "Des"))
+                    {
+                        tb.Load(reader1);
+                    }
+                    dataGridView3.DataSource = tb;
+                }
+            }
+        }
+
+        public void reload14()
+        {
+
+            dataGridView2.Columns.Clear();
+            dataGridView2.Rows.Clear();
+
+            List<String> rasio = new List<String>();
+            using (SqlConnection sql = new SqlConnection(Variables.connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = sql;
+                    sql.Open();
+                    cmd.CommandText = tahunPlusKanwilChoose_3(comboKanwil6.SelectedValue.ToString(), comboTahun6_1.SelectedValue.ToString());
+                    //kanwilChooseGridView(comboKanwil6.SelectedValue.ToString());
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        rasio.Add(reader[1].ToString());
+                    }
+                    dataGridView2.Columns.Add("Aktual " + comboTahun6_1.SelectedValue.ToString(), "Aktual " + comboTahun6_1.SelectedValue.ToString());
+                    DataGridViewRow rows = new DataGridViewRow();
+                    DataGridViewTextBoxCell tbcell = new DataGridViewTextBoxCell();
+                    foreach (var item in rasio)
+                    {
+                        // Console.WriteLine(item);
+                        rows = new DataGridViewRow();
+                        tbcell = new DataGridViewTextBoxCell();
+                        tbcell.Value = item;
+                        rows.Cells.Add(tbcell);
+                        dataGridView2.Rows.Add(rows);
+                    }
+
+                }
+            }
+
         }
 
         private void comboTahun1_SelectedIndexChanged(object sender, EventArgs e)
@@ -1468,15 +1654,27 @@ namespace testProjectBCA
             //cari apa disini hayo ehehehe
             if (comboMode7.SelectedValue.ToString().Equals("Rasio"))
             {
+                groupBox7.Text = "Rasio";
                 reload6();
                 reload7();
                 reload8();
             }
-            else
+            else if (comboMode7.SelectedValue.ToString().Equals("Frekuensi AdHoc"))
             {
+                groupBox7.Text = "Frekuensi AdHoc";
                 reload6();
                 reload11();
                 reload12();
+            }
+
+            else if (comboMode7.SelectedValue.ToString().Equals("Nominal"))
+            {
+                groupBox7.Text = "Nominal";
+                reload6();
+                reload14();
+                reload13();
+
+
             }
 
         }
@@ -1490,15 +1688,27 @@ namespace testProjectBCA
         {
             if (comboMode7.SelectedValue.ToString().Equals("Rasio"))
             {
+                groupBox7.Text = "Rasio";
                 reload6();
                 reload7();
                 reload8();
             }
-            else
+            else if (comboMode7.SelectedValue.ToString().Equals("Frekuensi AdHoc"))
             {
+                groupBox7.Text = "Frekuensi AdHoc";
                 reload6();
                 reload11();
                 reload12();
+            }
+
+            else if (comboMode7.SelectedValue.ToString().Equals("Nominal"))
+            {
+                groupBox7.Text = "Nominal";
+                reload6();
+                reload14();
+                reload13();
+
+
             }
         }
 
@@ -1524,7 +1734,7 @@ namespace testProjectBCA
                     ChartValues<Double> cv = new ChartValues<Double>();
                     foreach (Double temp in rasio)
                     {
-                        cv.Add(Math.Round(temp,2));
+                        cv.Add(Math.Round(temp, 2));
                     }
 
 
@@ -1532,13 +1742,13 @@ namespace testProjectBCA
                         new LineSeries()
                         {
                             Title = comboTambah1.Text,
-                            Values=cv
+                            Values = cv
                         }
                     );
                 }
             }
 
-         }
+        }
 
         private void buttonTambah2_Click(object sender, EventArgs e)
         {
@@ -1562,7 +1772,7 @@ namespace testProjectBCA
                     ChartValues<Double> cv = new ChartValues<Double>();
                     foreach (Double temp in persen)
                     {
-                        cv.Add(Math.Round(temp, 4)*100);
+                        cv.Add(Math.Round(temp, 4) * 100);
                     }
 
 
@@ -1606,7 +1816,7 @@ namespace testProjectBCA
             //    reload11();
             //    reload12();
             //}
-            
+
         }
 
         private void buttonRefresh7_Click(object sender, EventArgs e)
@@ -1658,7 +1868,7 @@ namespace testProjectBCA
             }
         }
 
-        
+
         class Bulan
         {
             public String Jan { set; get; }
@@ -1681,15 +1891,27 @@ namespace testProjectBCA
         {
             if (comboMode7.SelectedValue.ToString().Equals("Rasio"))
             {
+                groupBox7.Text = "Rasio";
                 reload6();
                 reload7();
                 reload8();
             }
-            else
+            else if (comboMode7.SelectedValue.ToString().Equals("Frekuensi AdHoc"))
             {
+                groupBox7.Text = "Frekuensi AdHoc";
                 reload6();
                 reload11();
                 reload12();
+            }
+
+            else if (comboMode7.SelectedValue.ToString().Equals("Nominal"))
+            {
+                groupBox7.Text = "Nominal";
+                reload6();
+                reload14();
+                reload13();
+
+
             }
         }
 
@@ -1697,15 +1919,27 @@ namespace testProjectBCA
         {
             if (comboMode7.SelectedValue.ToString().Equals("Rasio"))
             {
+                groupBox7.Text = "Rasio";
                 reload6();
                 reload7();
                 reload8();
             }
-            else
+            else if (comboMode7.SelectedValue.ToString().Equals("Frekuensi AdHoc"))
             {
+                groupBox7.Text = "Frekuensi AdHoc";
                 reload6();
                 reload11();
                 reload12();
+            }
+
+            else if (comboMode7.SelectedValue.ToString().Equals("Nominal"))
+            {
+                groupBox7.Text = "Nominal";
+                reload6();
+                reload14();
+                reload13();
+
+
             }
         }
 
@@ -1745,4 +1979,3 @@ namespace testProjectBCA
         }
     }
 }
-

@@ -13,6 +13,7 @@ namespace testProjectBCA
 {
     public partial class InputTransaksiCabangForm : Form
     {
+        Database1Entities db = new Database1Entities();
         String kodePkt = "";
         DataTable collectionLainnya;
         DataTable collectionCabang;
@@ -34,13 +35,20 @@ namespace testProjectBCA
             {
                 String [] filenames = of.FileNames;
 
+
+               
                 foreach (String filename in filenames)
                 {
-                    kodePkt = of.FileName.ToString().Substring(filename.LastIndexOf(" ") + 1, 4);
+                    //List<Pkt> listPkt = (from x in db.Pkts select x).ToList(); 
+                    
+                    kodePkt = of.FileName.ToString().Substring(filename.LastIndexOf(".") - 4, 4);
 
+                    
+                   //Console.WriteLine(kodePkt);
+                    DataSet ds = Util.openExcel(filename);
 
-                    //Console.WriteLine(kodePkt);
-                    DataSet ds = Util.openExcel(of.FileName);
+                    DateTime date = (DateTime)ds.Tables[0].Rows[2][0];
+                    deleteFromDB(date, kodePkt);
 
                     collectionCabang = ds.Tables[0];
                     readCollectionCabang(ds);
@@ -54,6 +62,66 @@ namespace testProjectBCA
                     readDeliveryRetail(ds);
                     deliveryLainnya = ds.Tables[6];
                     readDeliveryLainnya(ds);
+                }
+                hilangkanNull();
+            }
+        }
+        private void deleteFromDB(DateTime date, string kodePkt)
+        {
+            using (SqlConnection sql = new SqlConnection(Variables.connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = sql;
+                    sql.Open();
+                    cmd.CommandText = "DELETE FROM DailyStock WHERE kodePkt = '" + kodePkt + "' AND tanggal = '" + date.ToShortDateString()+"'";
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        private void hilangkanNull()
+        {
+            using (SqlConnection sql = new SqlConnection(Variables.connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = sql;
+                    sql.Open();
+
+                    cmd.CommandText = "UPDATE DailyStock SET BN100K = 0 WHERE BN100K is NULL";
+                    cmd.ExecuteNonQuery();
+                    cmd.CommandText = "UPDATE DailyStock SET BN50K = 0 WHERE BN50K is NULL";
+                    cmd.ExecuteNonQuery();
+                    cmd.CommandText = "UPDATE DailyStock SET BN20K = 0 WHERE BN20K is NULL";
+                    cmd.ExecuteNonQuery();
+                    cmd.CommandText = "UPDATE DailyStock SET BN10K = 0 WHERE BN10K is NULL";
+                    cmd.ExecuteNonQuery();
+                    cmd.CommandText = "UPDATE DailyStock SET BN5K = 0 WHERE BN5K is NULL";
+                    cmd.ExecuteNonQuery();
+                    cmd.CommandText = "UPDATE DailyStock SET BN2K = 0 WHERE BN2K is NULL";
+                    cmd.ExecuteNonQuery();
+                    cmd.CommandText = "UPDATE DailyStock SET BN1K = 0 WHERE BN1K is NULL";
+                    cmd.ExecuteNonQuery();
+                    cmd.CommandText = "UPDATE DailyStock SET BN500 = 0 WHERE BN500 is NULL";
+                    cmd.ExecuteNonQuery();
+                    cmd.CommandText = "UPDATE DailyStock SET BN200 = 0 WHERE BN200 is NULL";
+                    cmd.ExecuteNonQuery();
+                    cmd.CommandText = "UPDATE DailyStock SET BN100 = 0 WHERE BN100 is NULL";
+                    cmd.ExecuteNonQuery();
+
+                    cmd.CommandText = "UPDATE DailyStock SET CN1K = 0 WHERE CN1K is NULL";
+                    cmd.ExecuteNonQuery();
+                    cmd.CommandText = "UPDATE DailyStock SET CN500 = 0 WHERE CN500 is NULL";
+                    cmd.ExecuteNonQuery();
+                    cmd.CommandText = "UPDATE DailyStock SET CN200 = 0 WHERE CN200 is NULL";
+                    cmd.ExecuteNonQuery();
+                    cmd.CommandText = "UPDATE DailyStock SET CN100 = 0 WHERE CN100 is NULL";
+                    cmd.ExecuteNonQuery();
+                    cmd.CommandText = "UPDATE DailyStock SET CN50 = 0 WHERE CN50 is NULL";
+                    cmd.ExecuteNonQuery();
+                    cmd.CommandText = "UPDATE DailyStock SET CN25 = 0 WHERE CN25 is NULL";
+                    cmd.ExecuteNonQuery();
                 }
             }
         }

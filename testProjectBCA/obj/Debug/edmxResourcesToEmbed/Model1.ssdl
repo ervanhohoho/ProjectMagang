@@ -1,5 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="CACModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Abacas">
+    <Key>
+      <PropertyRef Name="idTransaksi" />
+    </Key>
+    <Property Name="idTransaksi" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="tanggal" Type="date" />
+    <Property Name="vendorCardNo" Type="varchar" MaxLength="20" />
+    <Property Name="vendorName" Type="varchar" MaxLength="50" />
+    <Property Name="jobId" Type="varchar" MaxLength="20" />
+    <Property Name="totalAmount" Type="bigint" />
+    <Property Name="CustomerCode" Type="varchar" MaxLength="15" />
+    <Property Name="CustomerName" Type="varchar" MaxLength="50" />
+  </EntityType>
   <EntityType Name="Approvals">
     <Key>
       <PropertyRef Name="idApproval" />
@@ -237,6 +250,7 @@
     </ReferentialConstraint>
   </Association>
   <EntityContainer Name="CACModelStoreContainer">
+    <EntitySet Name="Abacas" EntityType="Self.Abacas" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Approvals" EntityType="Self.Approvals" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Cabang" EntityType="Self.Cabang" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Cashpoint" EntityType="Self.Cashpoint" Schema="dbo" store:Type="Tables" />

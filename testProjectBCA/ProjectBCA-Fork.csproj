@@ -162,6 +162,9 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abaca.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Approval.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -209,6 +212,12 @@
     </Compile>
     <Compile Include="initTransaksi.Designer.cs">
       <DependentUpon>initTransaksi.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InputAbacasForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InputAbacasForm.Designer.cs">
+      <DependentUpon>InputAbacasForm.cs</DependentUpon>
     </Compile>
     <Compile Include="InputForm.cs">
       <SubType>Form</SubType>
@@ -293,6 +302,12 @@
     <Compile Include="Revisi.Designer.cs">
       <DependentUpon>Revisi.cs</DependentUpon>
     </Compile>
+    <Compile Include="SLAProsesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SLAProsesForm.designer.cs">
+      <DependentUpon>SLAProsesForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="StokPosisi.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -322,6 +337,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="initTransaksi.resx">
       <DependentUpon>initTransaksi.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InputAbacasForm.resx">
+      <DependentUpon>InputAbacasForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InputForm.resx">
       <DependentUpon>InputForm.cs</DependentUpon>
@@ -358,6 +376,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Revisi.resx">
       <DependentUpon>Revisi.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SLAProsesForm.resx">
+      <DependentUpon>SLAProsesForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="StokPosisiForm.resx">
       <DependentUpon>StokPosisiForm.cs</DependentUpon>

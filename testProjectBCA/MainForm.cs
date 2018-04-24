@@ -464,7 +464,6 @@ namespace testProjectBCA
             initTransaksi it = new initTransaksi();
             it.MdiParent = this;
             it.Show();
-            
         }
 
         private void inputDataKalenderToolStripMenuItem_Click(object sender, EventArgs e)
@@ -474,7 +473,7 @@ namespace testProjectBCA
             if(of.ShowDialog() == DialogResult.OK)
             {
                 DataSet ds = Util.openExcel(of.FileName);
-                DataTable dt = ds.Tables[2];
+                DataTable dt = ds.Tables[0];
                 dt.Rows.RemoveAt(0);
                 using (SqlConnection sql = new SqlConnection(Variables.connectionString))
                 {
@@ -522,7 +521,7 @@ namespace testProjectBCA
             dasbor d = new dasbor();
             loadForm.CloseForm();
             d.MdiParent = this;
-            d.WindowState = FormWindowState.Maximized;
+            //d.WindowState = FormWindowState.Maximized;
             d.Show();
         }
 
@@ -570,6 +569,20 @@ namespace testProjectBCA
             StokPosisiForm spf = new StokPosisiForm();
             spf.MdiParent = this;
             spf.Show();
+        }
+
+        private void sLAProsesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SLAProsesForm sla = new SLAProsesForm();
+            sla.MdiParent = this;
+            sla.Show();
+        }
+
+        private void abacasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            InputAbacasForm iab = new InputAbacasForm();
+            iab.MdiParent = this;
+            iab.Show();
         }
     }
 }

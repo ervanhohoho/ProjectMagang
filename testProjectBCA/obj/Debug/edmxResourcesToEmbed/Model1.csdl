@@ -1,5 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="CACModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Abaca">
+    <Key>
+      <PropertyRef Name="idTransaksi" />
+    </Key>
+    <Property Name="idTransaksi" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="tanggal" Type="DateTime" Precision="0" />
+    <Property Name="vendorCardNo" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="vendorName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="jobId" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="totalAmount" Type="Int64" />
+    <Property Name="CustomerCode" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+    <Property Name="CustomerName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
   <EntityType Name="Approval">
     <Key>
       <PropertyRef Name="idApproval" />
@@ -241,6 +254,7 @@
     </ReferentialConstraint>
   </Association>
   <EntityContainer Name="Database1Entities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Abacas" EntityType="Self.Abaca" />
     <EntitySet Name="Approvals" EntityType="Self.Approval" />
     <EntitySet Name="Cabangs" EntityType="Self.Cabang" />
     <EntitySet Name="Cashpoints" EntityType="Self.Cashpoint" />

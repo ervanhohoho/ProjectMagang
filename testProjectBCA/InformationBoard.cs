@@ -104,6 +104,7 @@ namespace testProjectBCA
             /*tanggalOpti = (DateTime) query[0].tanggal*/;
             //Console.WriteLine(query[0]);
             //MessageBox.Show(tanggalOpti.ToShortDateString());
+            tanggalPrediksiMaxPicker.MinDate = DateTime.Today.AddDays(3);
         }
         void loadComboBox()
         {
@@ -346,7 +347,7 @@ namespace testProjectBCA
                         //SislokCrm
                         SqlDataReader reader;
                         Denom tempIsiAtm = new Denom();
-                        String cText = "SELECT AVG(isiAtm100), AVG(isiAtm50), AVG(isiAtm20) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' AND DATENAME(WEEKDAY, TA.Tanggal) = '" + tempDate.DayOfWeek.ToString() + "'";
+                        String cText = "SELECT ISNULL(AVG(isiAtm100),0), ISNULL(AVG(isiAtm50),0), ISNULL(AVG(isiAtm20),0) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' AND DATENAME(WEEKDAY, TA.Tanggal) = '" + tempDate.DayOfWeek.ToString() + "'";
                         int count = 0;
                         for (int i = 0; i < treeView1.Nodes.Count; i++)
                         {
@@ -377,7 +378,7 @@ namespace testProjectBCA
                         else
                         {
                             reader.Close();
-                            cText = "SELECT AVG(isiAtm100), AVG(isiAtm50), AVG(isiAtm20) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' ";
+                            cText = "SELECT ISNULL(AVG(isiAtm100),0), ISNULL(AVG(isiAtm50),0), ISNULL(AVG(isiAtm20),0) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' ";
                             count = 0;
                             for (int i = 0; i < treeView1.Nodes.Count; i++)
                             {
@@ -469,7 +470,7 @@ namespace testProjectBCA
                         }
                         kondisi += ")";
 
-                        String subqueryTblAverage = "(SELECT AVG(isiAtm100) AS Average100 , AVG(isiAtm50) AS Average50 , AVG(isiAtm20) AS Average20 FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal";
+                        String subqueryTblAverage = "(SELECT ISNULL(AVG(isiAtm100),0) AS Average100 , ISNULL(AVG(isiAtm50),0) AS Average50 , ISNULL(AVG(isiAtm20),0) AS Average20 FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal";
                         subqueryTblAverage += kondisi;
                         subqueryTblAverage += ") avt";
 
@@ -512,7 +513,7 @@ namespace testProjectBCA
                             }
                             kondisi += ")";
 
-                            subqueryTblAverage = "(SELECT AVG(isiAtm100) AS Average100 , AVG(isiAtm50) AS Average50 , AVG(isiAtm20) AS Average20 FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal";
+                            subqueryTblAverage = "(SELECT ISNULL(AVG(isiAtm100),0) AS Average100 , ISNULL(AVG(isiAtm50),0) AS Average50 , ISNULL(AVG(isiAtm20),0) AS Average20 FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal";
                             subqueryTblAverage += kondisi;
                             subqueryTblAverage += ") avt";
 
@@ -589,7 +590,7 @@ namespace testProjectBCA
                         //SislokCrm
                         SqlDataReader reader;
                         Denom tempIsiCrm = new Denom();
-                        String cText = "SELECT AVG(isiCrm100), AVG(isiCrm50), AVG(isiCrm20) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' AND DATENAME(WEEKDAY, TA.Tanggal) = '" + tempDate.DayOfWeek.ToString() + "'";
+                        String cText = "SELECT ISNULL(AVG(isiCrm100),0), ISNULL(AVG(isiCrm50),0), ISNULL(AVG(isiCrm20),0) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' AND DATENAME(WEEKDAY, TA.Tanggal) = '" + tempDate.DayOfWeek.ToString() + "'";
                         int count = 0;
                         for (int i = 0; i < treeView1.Nodes.Count; i++)
                         {
@@ -620,7 +621,7 @@ namespace testProjectBCA
                         else
                         {
                             reader.Close();
-                            cText = "SELECT AVG(isiCrm100), AVG(isiCrm50), AVG(isiCrm20) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' ";
+                            cText = "SELECT ISNULL(AVG(isiCrm100),0), ISNULL(AVG(isiCrm50),0), ISNULL(AVG(isiCrm20),0) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' ";
                             count = 0;
                             for (int i = 0; i < treeView1.Nodes.Count; i++)
                             {
@@ -712,7 +713,7 @@ namespace testProjectBCA
                         }
                         kondisi += ")";
 
-                        String subqueryTblAverage = "(SELECT AVG(isiCrm100) AS Average100 , AVG(isiCrm50) AS Average50 , AVG(isiCrm20) AS Average20 FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal";
+                        String subqueryTblAverage = "(SELECT ISNULL(AVG(isiCrm100),0) AS Average100 , ISNULL(AVG(isiCrm50),0) AS Average50 , ISNULL(AVG(isiCrm20),0) AS Average20 FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal";
                         subqueryTblAverage += kondisi;
                         subqueryTblAverage += ") avt";
 
@@ -755,7 +756,7 @@ namespace testProjectBCA
                             }
                             kondisi += ")";
 
-                            subqueryTblAverage = "(SELECT AVG(isiCrm100) AS Average100 , AVG(isiCrm50) AS Average50 , AVG(isiCrm20) AS Average20 FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal";
+                            subqueryTblAverage = "(SELECT ISNULL(AVG(isiCrm100),0) AS Average100 , ISNULL(AVG(isiCrm50),0) AS Average50 , ISNULL(AVG(isiCrm20),0) AS Average20 FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal";
                             subqueryTblAverage += kondisi;
                             subqueryTblAverage += ") avt";
 
@@ -833,7 +834,7 @@ namespace testProjectBCA
                         //SislokCrm
                         SqlDataReader reader;
                         Denom tempSislokCrm = new Denom();
-                        String cText = "SELECT AVG(sislokCrm100), AVG(sislokCrm50), AVG(sislokCrm20) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' AND DATENAME(WEEKDAY, TA.Tanggal) = '" + tempDate.DayOfWeek.ToString() + "'";
+                        String cText = "SELECT ISNULL(AVG(sislokCrm100),0), ISNULL(AVG(sislokCrm50),0), ISNULL(AVG(sislokCrm20),0) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' AND DATENAME(WEEKDAY, TA.Tanggal) = '" + tempDate.DayOfWeek.ToString() + "'";
                         int count = 0;
                         for (int i = 0; i < treeView1.Nodes.Count; i++)
                         {
@@ -867,7 +868,7 @@ namespace testProjectBCA
                         {
                             reader.Close();
                             //QUERY UNTUK CONDITION TANPA HARI
-                            cText = "SELECT AVG(sislokCrm100), AVG(sislokCrm50), AVG(sislokCrm20) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' ";
+                            cText = "SELECT ISNULL(AVG(sislokCrm100)0), ISNULL(AVG(sislokCrm50),0), ISNULL(AVG(sislokCrm20),0) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' ";
                             count = 0;
                             for (int i = 0; i < treeView1.Nodes.Count; i++)
                             {
@@ -959,7 +960,7 @@ namespace testProjectBCA
                         }
                         kondisi += ")";
 
-                        String subqueryTblAverage = "(SELECT AVG(sislokCrm100) AS Average100 , AVG(sislokCrm50) AS Average50 , AVG(sislokCrm20) AS Average20 FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal";
+                        String subqueryTblAverage = "(SELECT ISNULL(AVG(sislokCrm100),0) AS Average100 , ISNULL(AVG(sislokCrm50),0) AS Average50 , ISNULL(AVG(sislokCrm20),0) AS Average20 FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal";
                         subqueryTblAverage += kondisi;
                         subqueryTblAverage += ") avt";
 
@@ -1002,7 +1003,7 @@ namespace testProjectBCA
                             }
                             kondisi += ")";
 
-                            subqueryTblAverage = "(SELECT AVG(sislokCrm100) AS Average100 , AVG(sislokCrm50) AS Average50 , AVG(sislokCrm20) AS Average20 FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal";
+                            subqueryTblAverage = "(SELECT ISNULL(AVG(sislokCrm100),0) AS Average100 , ISNULL(AVG(sislokCrm50),0) AS Average50 , ISNULL(AVG(sislokCrm20),0) AS Average20 FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal";
                             subqueryTblAverage += kondisi;
                             subqueryTblAverage += ") avt";
 
@@ -1079,7 +1080,7 @@ namespace testProjectBCA
                         //SislokCdm
                         SqlDataReader reader;
                         Denom tempSislokCdm = new Denom();
-                        String cText = "SELECT AVG(sislokCdm100), AVG(sislokCdm50), AVG(sislokCdm20) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' AND DATENAME(WEEKDAY, TA.Tanggal) = '" + tempDate.DayOfWeek.ToString() + "'";
+                        String cText = "SELECT ISNULL(AVG(sislokCdm100),0), ISNULL(AVG(sislokCdm50),0), ISNULL(AVG(sislokCdm20),0) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' AND DATENAME(WEEKDAY, TA.Tanggal) = '" + tempDate.DayOfWeek.ToString() + "'";
                         int count = 0;
                         for (int i = 0; i < treeView1.Nodes.Count; i++)
                         {
@@ -1111,7 +1112,7 @@ namespace testProjectBCA
                         {
                             reader.Close();
                             MessageBox.Show("Prediksi Tanggal " + tempDate.ToShortDateString() + " Tanpa Hari");
-                            cText = "SELECT AVG(sislokCdm100), AVG(sislokCdm50), AVG(sislokCdm20) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' ";
+                            cText = "SELECT ISNULL(AVG(sislokCdm100),0), ISNULL(AVG(sislokCdm50),0), ISNULL(AVG(sislokCdm20),0) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' ";
                             count = 0;
                             for (int i = 0; i < treeView1.Nodes.Count; i++)
                             {
@@ -1207,7 +1208,7 @@ namespace testProjectBCA
                         }
                         kondisi += ")";
 
-                        String subqueryTblAverage = "(SELECT AVG(sislokcdm100) AS Average100 , AVG(sislokCdm50) AS Average50 , AVG(sislokCdm20) AS Average20 FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal";
+                        String subqueryTblAverage = "(SELECT ISNULL(AVG(sislokcdm100),0) AS Average100 , ISNULL(AVG(sislokCdm50),0) AS Average50 , ISNULL(AVG(sislokCdm20),0) AS Average20 FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal";
                         subqueryTblAverage += kondisi;
                         subqueryTblAverage += ") avt";
 
@@ -1842,11 +1843,11 @@ namespace testProjectBCA
             else
                 targetRasio100 = Double.Parse(rasio100Txt.Text);
 
-            if (rasio100Txt.Text.Trim().Length == 0)
+            if (rasio50Txt.Text.Trim().Length == 0)
                 targetRasio50 = 0;
             else
                 targetRasio50 = Double.Parse(rasio50Txt.Text);
-            if (rasio100Txt.Text.Trim().Length == 0)
+            if (rasio20Txt.Text.Trim().Length == 0 )
                 targetRasio20 = 0;
             else
                 targetRasio20 = Double.Parse(rasio20Txt.Text);
@@ -2680,15 +2681,15 @@ namespace testProjectBCA
             {
                 MessageBox.Show("Data tanggal di table kalender kurang");
             }
-            else if ((!Double.TryParse(rasio100Txt.Text, out buf) || !Double.TryParse(rasio50Txt.Text, out buf) || !Double.TryParse(rasio20Txt.Text,out buf)) && (!String.IsNullOrEmpty(rasio100Txt.Text) || !String.IsNullOrEmpty(rasio50Txt.Text) || !String.IsNullOrEmpty(rasio20Txt.Text) ))
+            else if ((!Double.TryParse(rasio100Txt.Text, out buf) || !Double.TryParse(rasio50Txt.Text, out buf) || !Double.TryParse(rasio20Txt.Text,out buf)) && (!String.IsNullOrEmpty(rasio100Txt.Text) && !String.IsNullOrEmpty(rasio50Txt.Text) && !String.IsNullOrEmpty(rasio20Txt.Text) ))
             {
                 MessageBox.Show("Target rasio harus berupa angka!");
             }
             else
             {
                 //loadSislokCrm();
-                try
-                {
+                //try
+                //{
                     if(MetodePrediksiComboBox.SelectedIndex == 0)
                     {
                         prediksiIsiAtm = prediksiIsiAtmOpti;
@@ -2797,10 +2798,10 @@ namespace testProjectBCA
                     loadTableTotalIsi();
                     loadTableTotalSislok();
                     loadTableBonYangDisetujui();
-                }catch(Exception err)
-                {
-                    MessageBox.Show(err.ToString());
-                }
+                //}catch(Exception err)
+                //{
+                //    MessageBox.Show(err.ToString());
+                //}
             }
         }
         private void treeView1_AfterCheck(object sender, TreeViewEventArgs e)
