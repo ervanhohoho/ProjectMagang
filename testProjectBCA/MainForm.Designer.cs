@@ -46,15 +46,20 @@
             this.inputDataToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.inputTransaksiCabangToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.stokPosisiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.abacasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.masterDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inputDataPktCabangToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inputDataKanwilCabangToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dailyStockToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sLAProsesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.nasabahToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.inputDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hargaRingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.masterNasabahToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dashboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.adminToolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.initTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.abacasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.invoiceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -63,6 +68,7 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.aTMToolStripMenuItem,
             this.cabangToolStripMenuItem,
+            this.nasabahToolStripMenuItem,
             this.dashboardToolStripMenuItem,
             this.adminToolsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
@@ -209,6 +215,13 @@
             this.stokPosisiToolStripMenuItem.Text = "Stok Posisi";
             this.stokPosisiToolStripMenuItem.Click += new System.EventHandler(this.stokPosisiToolStripMenuItem1_Click);
             // 
+            // abacasToolStripMenuItem
+            // 
+            this.abacasToolStripMenuItem.Name = "abacasToolStripMenuItem";
+            this.abacasToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
+            this.abacasToolStripMenuItem.Text = "Abacas";
+            this.abacasToolStripMenuItem.Click += new System.EventHandler(this.abacasToolStripMenuItem_Click);
+            // 
             // masterDataToolStripMenuItem
             // 
             this.masterDataToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -221,15 +234,15 @@
             // inputDataPktCabangToolStripMenuItem
             // 
             this.inputDataPktCabangToolStripMenuItem.Name = "inputDataPktCabangToolStripMenuItem";
-            this.inputDataPktCabangToolStripMenuItem.Size = new System.Drawing.Size(211, 22);
+            this.inputDataPktCabangToolStripMenuItem.Size = new System.Drawing.Size(278, 22);
             this.inputDataPktCabangToolStripMenuItem.Text = "Input Data Pkt Cabang";
             this.inputDataPktCabangToolStripMenuItem.Click += new System.EventHandler(this.inputDataPktCabangToolStripMenuItem_Click);
             // 
             // inputDataKanwilCabangToolStripMenuItem
             // 
             this.inputDataKanwilCabangToolStripMenuItem.Name = "inputDataKanwilCabangToolStripMenuItem";
-            this.inputDataKanwilCabangToolStripMenuItem.Size = new System.Drawing.Size(211, 22);
-            this.inputDataKanwilCabangToolStripMenuItem.Text = "Input Data Kanwil Cabang";
+            this.inputDataKanwilCabangToolStripMenuItem.Size = new System.Drawing.Size(278, 22);
+            this.inputDataKanwilCabangToolStripMenuItem.Text = "Input Data Kanwil dan Lainnya Cabang";
             this.inputDataKanwilCabangToolStripMenuItem.Click += new System.EventHandler(this.inputDataKanwilCabangToolStripMenuItem_Click);
             // 
             // dailyStockToolStripMenuItem
@@ -245,6 +258,38 @@
             this.sLAProsesToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
             this.sLAProsesToolStripMenuItem.Text = "SLA Proses";
             this.sLAProsesToolStripMenuItem.Click += new System.EventHandler(this.sLAProsesToolStripMenuItem_Click);
+            // 
+            // nasabahToolStripMenuItem
+            // 
+            this.nasabahToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.inputDataToolStripMenuItem,
+            this.invoiceToolStripMenuItem});
+            this.nasabahToolStripMenuItem.Name = "nasabahToolStripMenuItem";
+            this.nasabahToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
+            this.nasabahToolStripMenuItem.Text = "Nasabah";
+            // 
+            // inputDataToolStripMenuItem
+            // 
+            this.inputDataToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.hargaRingToolStripMenuItem,
+            this.masterNasabahToolStripMenuItem});
+            this.inputDataToolStripMenuItem.Name = "inputDataToolStripMenuItem";
+            this.inputDataToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.inputDataToolStripMenuItem.Text = "Input Data";
+            // 
+            // hargaRingToolStripMenuItem
+            // 
+            this.hargaRingToolStripMenuItem.Name = "hargaRingToolStripMenuItem";
+            this.hargaRingToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.hargaRingToolStripMenuItem.Text = "Harga Layanan";
+            this.hargaRingToolStripMenuItem.Click += new System.EventHandler(this.hargaRingToolStripMenuItem_Click);
+            // 
+            // masterNasabahToolStripMenuItem
+            // 
+            this.masterNasabahToolStripMenuItem.Name = "masterNasabahToolStripMenuItem";
+            this.masterNasabahToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.masterNasabahToolStripMenuItem.Text = "Master Nasabah";
+            this.masterNasabahToolStripMenuItem.Click += new System.EventHandler(this.masterNasabahToolStripMenuItem_Click);
             // 
             // dashboardToolStripMenuItem
             // 
@@ -268,12 +313,12 @@
             this.initTransToolStripMenuItem.Text = "Init Trans";
             this.initTransToolStripMenuItem.Click += new System.EventHandler(this.initTransToolStripMenuItem_Click);
             // 
-            // abacasToolStripMenuItem
+            // invoiceToolStripMenuItem
             // 
-            this.abacasToolStripMenuItem.Name = "abacasToolStripMenuItem";
-            this.abacasToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
-            this.abacasToolStripMenuItem.Text = "Abacas";
-            this.abacasToolStripMenuItem.Click += new System.EventHandler(this.abacasToolStripMenuItem_Click);
+            this.invoiceToolStripMenuItem.Name = "invoiceToolStripMenuItem";
+            this.invoiceToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.invoiceToolStripMenuItem.Text = "Invoice";
+            this.invoiceToolStripMenuItem.Click += new System.EventHandler(this.invoiceToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -322,5 +367,10 @@
         private System.Windows.Forms.ToolStripMenuItem loadMasterPKTToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem sLAProsesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem abacasToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem nasabahToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem inputDataToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem hargaRingToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem masterNasabahToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem invoiceToolStripMenuItem;
     }
 }

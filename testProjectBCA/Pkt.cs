@@ -28,6 +28,7 @@ namespace testProjectBCA
         public string kanwil { get; set; }
         public string sentralisasi { get; set; }
         public string vendor { get; set; }
+        public string kodePktCabang { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<laporanBon> laporanBons { get; set; }

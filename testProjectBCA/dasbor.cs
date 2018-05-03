@@ -14,6 +14,10 @@ using System.Data.SqlClient;
 using FastMember;
 using System.Windows.Forms.VisualStyles;
 using System.Windows;
+using System.Globalization;
+using System.IO;
+using System.Drawing.Imaging;
+using System.Windows.Media.Imaging;
 
 namespace testProjectBCA
 {
@@ -25,10 +29,16 @@ namespace testProjectBCA
             InitializeComponent();
             Database1Entities en = new Database1Entities();
 
+
         }
 
         private void dasbor_Load(object sender, EventArgs e)
         {
+            buttonRefresh3.Visible = false;
+            buttonRefresh4.Visible = false;
+            buttonRefresh5.Visible = false;
+            buttonRefresh8.Visible = false;
+            button1.Visible = false;
 
             List<String> comboarea = new List<String>();
             List<String> combomode = new List<String>();
@@ -46,7 +56,7 @@ namespace testProjectBCA
             comboArea.SelectedIndex = 0;
             combomode.Add("Rasio");
             combomode.Add("Frekuensi AdHoc");
-            combomode.Add("Nominal");
+            combomode.Add("Nominal Adhoc");
             groupBox7.Text = "Rasio";
             comboMode7.DataSource = combomode;
             comboMode7.SelectedIndex = 0;
@@ -664,7 +674,8 @@ namespace testProjectBCA
                         {
                             Title = comboTahun1.Text,
                             Values = cv,
-                            LineSmoothness = 0
+                            LineSmoothness = 0,
+                            DataLabels = true
                         }
                     };
                     cartesianChart1.AxisX.Add(new Axis
@@ -672,6 +683,7 @@ namespace testProjectBCA
                         Title = "Bulan",
                         Labels = bulan,
                         Separator = new Separator
+
                         {
                             Step = 1
                         }
@@ -688,6 +700,7 @@ namespace testProjectBCA
 
                 }
             }
+
         }
 
         public void reload2()
@@ -723,14 +736,20 @@ namespace testProjectBCA
                         {
                             Title = comboTahun2.Text,
                             Values = cv,
-                            LineSmoothness = 0
+                            LineSmoothness = 0,
+                            DataLabels = true
 
                         }
                     };
                     cartesianChart2.AxisX.Add(new Axis
                     {
                         Title = "Bulan",
-                        Labels = bulan
+                        Labels = bulan,
+                        Separator = new Separator // force the separator step to 1, so it always display all labels
+                        {
+                            Step = 1,
+                            IsEnabled = false //disable it to make it invisible.
+                        }
                         //Labels = new[] { "Jan", "Feb", "Mar", "Apr", "May" }
                     });
 
@@ -845,7 +864,14 @@ namespace testProjectBCA
                     {
                         Title = "Saldo ATM Nasional",
                         Labels = hari,
-                        Separator = DefaultAxes.CleanSeparator
+                        //Separator = DefaultAxes.CleanSeparator,
+                        Separator = new Separator // force the separator step to 1, so it always display all labels
+                        {
+
+                            Step = 1,
+                            IsEnabled = false //disable it to make it invisible.
+                        }
+
                     });
 
                     cartesianChart3.AxisY.Add(new Axis
@@ -854,6 +880,14 @@ namespace testProjectBCA
                         LabelFormatter = value => (value / 1000000000000).ToString() + "T",
                         MinValue = 0
                     });
+
+                    //cartesianChart3.AxisY.Add(new Axis
+                    //{
+                    //    Title = "Jumlah",
+                    //    LabelFormatter = value => value.ToString(),
+                    //    MinValue = 0,
+                    //    Position =AxisPosition.RightTop
+                    //});
 
                     cartesianChart3.LegendLocation = LegendLocation.Right;
 
@@ -895,15 +929,21 @@ namespace testProjectBCA
                     {
                         new LineSeries
                         {
-                            Title = comboTahun4.Text,
+                            Title = comboTahun4.SelectedValue.ToString(),
                             Values = cv,
-                            LineSmoothness = 0
+                            LineSmoothness = 0,
+                            DataLabels = true
                         }
                     };
                     cartesianChart4.AxisX.Add(new Axis
                     {
                         Title = "Tanggal",
-                        Labels = tanggal
+                        Labels = tanggal,
+                        Separator = new Separator // force the separator step to 1, so it always display all labels
+                        {
+                            Step = 1,
+                            IsEnabled = false //disable it to make it invisible.
+                        }
                         //Labels = new[] { "Jan", "Feb", "Mar", "Apr", "May" }
                     });
 
@@ -959,27 +999,42 @@ namespace testProjectBCA
                     {
                         new ColumnSeries
                         {
-                            Title = "Rasio "+ comboTahun5.Text,
-                            Values = cv
+                            Title = "Rasio "+ comboTahun5.SelectedValue.ToString(),
+                            Values = cv,
+                            DataLabels = true,
+                            ScalesYAt =1
                         },
                         new LineSeries
                         {
-                            Title = "Persen "+comboTahun5.Text,
+                            Title = "Persen "+comboTahun5.SelectedValue.ToString(),
                             Values = cv2,
-                            LineSmoothness = 0
-
+                            LineSmoothness = 0,
+                            DataLabels = true,
+                            ScalesYAt = 0
                         }
                     };
                     cartesianChart5.AxisX.Add(new Axis
                     {
                         Title = "Bulan",
-                        Labels = bulan
+                        Labels = bulan,
+                        Separator = new Separator // force the separator step to 1, so it always display all labels
+                        {
+                            Step = 1,
+                            IsEnabled = false //disable it to make it invisible.
+                        }
                         //Labels = new[] { "Jan", "Feb", "Mar", "Apr", "May" }
                     });
-
                     cartesianChart5.AxisY.Add(new Axis
                     {
-                        Title = "Rasio dan Persen",
+                        Title = "Persen",
+                        LabelFormatter = value => value.ToString() + " %",
+                        MinValue = 0,
+                        Position = AxisPosition.RightTop
+
+                    });
+                    cartesianChart5.AxisY.Add(new Axis
+                    {
+                        Title = "Rasio",
                         LabelFormatter = value => value.ToString(),
                         MinValue = 0
                     });
@@ -1056,13 +1111,15 @@ namespace testProjectBCA
                         // Console.WriteLine(item);
                         rows = new DataGridViewRow();
                         tbcell = new DataGridViewTextBoxCell();
-                        tbcell.Value = item;
+                        tbcell.Value = Math.Round(double.Parse(item), 2);
                         rows.Cells.Add(tbcell);
                         dataGridView2.Rows.Add(rows);
+
                     }
 
                 }
             }
+            dataGridView2.Columns[0].DefaultCellStyle.Format = "n2";
         }
 
         public void reload8()
@@ -1117,19 +1174,20 @@ namespace testProjectBCA
                     {
 
                         Bulan bul = new Bulan();
-                        bul.Jan = reader[0].ToString();
-                        bul.Feb = reader[1].ToString();
-                        bul.Mar = reader[2].ToString();
-                        bul.Apr = reader[3].ToString();
-                        bul.Mei = reader[4].ToString();
-                        bul.Jun = reader[5].ToString();
-                        bul.Jul = reader[6].ToString();
-                        bul.Agt = reader[7].ToString();
-                        bul.Sep = reader[8].ToString();
-                        bul.Okt = reader[9].ToString();
-                        bul.Nov = reader[10].ToString();
-                        bul.Des = reader[11].ToString();
+                        bul.Jan = Math.Round(double.Parse(reader[0].ToString()), 2).ToString();
+                        bul.Feb = Math.Round(double.Parse(reader[1].ToString()), 2).ToString();
+                        bul.Mar = Math.Round(double.Parse(reader[2].ToString()), 2).ToString();
+                        bul.Apr = Math.Round(double.Parse(reader[3].ToString()), 2).ToString();
+                        bul.Mei = Math.Round(double.Parse(reader[4].ToString()), 2).ToString();
+                        bul.Jun = Math.Round(double.Parse(reader[5].ToString()), 2).ToString();
+                        bul.Jul = Math.Round(double.Parse(reader[6].ToString()), 2).ToString();
+                        bul.Agt = Math.Round(double.Parse(reader[7].ToString()), 2).ToString();
+                        bul.Sep = Math.Round(double.Parse(reader[8].ToString()), 2).ToString();
+                        bul.Okt = Math.Round(double.Parse(reader[9].ToString()), 2).ToString();
+                        bul.Nov = Math.Round(double.Parse(reader[10].ToString()), 2).ToString();
+                        bul.Des = Math.Round(double.Parse(reader[11].ToString()), 2).ToString();
                         rasio.Add(bul);
+
                     }
                     DataTable tb = new DataTable();
                     using (var reader1 = ObjectReader.Create(rasio, "Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agt", "Sep", "Okt", "Nov", "Des"))
@@ -1137,8 +1195,10 @@ namespace testProjectBCA
                         tb.Load(reader1);
                     }
                     dataGridView3.DataSource = tb;
+                    dataGridView3.Columns[2].DefaultCellStyle.Format = "n2";
                 }
             }
+
         }
 
         public void reload9()
@@ -1156,13 +1216,13 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "SELECT day(tanggal), DATENAME(dw,Tanggal),[Rasio] = CAST(SUM(saldoAwal100 + saldoAwal50 + saldoAwal20) AS FLOAT)/(SUM(isiATM100+isiATM50+isiATM20+isiCRM100+isiCRM50+isiCRM20))  FROM TransaksiAtms ta join Pkt p on ta.kodePkt = p.kodePkt WHERE YEAR(tanggal) = " + comboTahun7.SelectedValue.ToString() + " and p.kodePkt = '" + comboPkt7.SelectedValue.ToString() + "' and MONTH(tanggal) = " + comboBulan7.SelectedValue.ToString() + " GROUP BY DATENAME(dw, tanggal), DATENAME(WEEK, tanggal), day(tanggal) order by day(tanggal)";
+                    cmd.CommandText = "SELECT day(tanggal), (DATEPART(WEEK, tanggal) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM, 0, tanggal), 0)) + 1 ), DATENAME(dw,Tanggal),[Rasio] = CAST(SUM(saldoAwal100 + saldoAwal50 + saldoAwal20) AS FLOAT)/(SUM(isiATM100+isiATM50+isiATM20+isiCRM100+isiCRM50+isiCRM20))  FROM TransaksiAtms ta join Pkt p on ta.kodePkt = p.kodePkt WHERE YEAR(tanggal) = " + comboTahun7.SelectedValue.ToString() + " and p.kodePkt = '" + comboPkt7.SelectedValue.ToString() + "' and MONTH(tanggal) = " + comboBulan7.SelectedValue.ToString() + " GROUP BY DATENAME(dw, tanggal), DATENAME(WEEK, tanggal), day(tanggal), (DATEPART(WEEK, tanggal) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM, 0, tanggal), 0)) + 1 ) order by day(tanggal)";
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
                         tanggal.Add(reader[0].ToString());
-                        hari.Add(reader[1].ToString() + " (" + reader[0].ToString() + ")");
-                        rasio.Add((Double)reader[2]);
+                        hari.Add(reader[2].ToString() + " (" + reader[1].ToString() + ") - " + reader[0].ToString() + "");
+                        rasio.Add((Double)reader[3]);
 
                     }
                     Console.WriteLine(tanggal.Count);
@@ -1178,14 +1238,15 @@ namespace testProjectBCA
 
                             Title = comboPkt7.Text,
                             Values = cv,
-                            LineSmoothness = 0
+                            LineSmoothness = 0,
+                            DataLabels = true
 
                         }
                     };
 
                     cartesianChart6.AxisX.Add(new Axis
                     {
-                        Title = "Hari",
+                        Title = "Hari (Minggu) - Tanggal",
                         Labels = hari,
                         Separator = new Separator // force the separator step to 1, so it always display all labels
                         {
@@ -1226,12 +1287,12 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "select [Jumlah adhoc] = count (adhoc100+adhoc50+adhoc20), [tanggal]  = day(tanggal), [Minggu] = (DATEPART(WEEK, tanggal) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM, 0, tanggal), 0)) + 1 ) from TransaksiAtms t join Pkt p on t.kodePkt = p.kodePkt where ((adhoc100 + adhoc50 + adhoc20) != 0) AND MONTH(tanggal) =  " + comboBulan8.SelectedValue.ToString() + " and YEAR(tanggal) = " + comboTahun8.SelectedValue.ToString() + "  group by day(tanggal), (DATEPART(WEEK, tanggal) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM, 0, tanggal), 0)) + 1 ) order by day(tanggal)";
+                    cmd.CommandText = "select [Jumlah adhoc] = count (adhoc100+adhoc50+adhoc20), [hari]  = datename(weekday,tanggal), [tanggal] = day(tanggal), [Minggu] = (DATEPART(WEEK, tanggal) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM, 0, tanggal), 0)) + 1 ) from TransaksiAtms t join Pkt p on t.kodePkt = p.kodePkt where ((adhoc100 + adhoc50 + adhoc20) != 0) AND MONTH(tanggal) =  " + comboBulan8.SelectedValue.ToString() + " and YEAR(tanggal) = " + comboTahun8.SelectedValue.ToString() + "  group by datename(weekday,tanggal), (DATEPART(WEEK, tanggal) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM, 0, tanggal), 0)) + 1 ), day(tanggal) order by [Minggu], day(tanggal)";
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
                         rasio.Add((int)reader[0]);
-                        tanggal.Add(reader[1].ToString() + " (" + reader[2].ToString() + ")");
+                        tanggal.Add(reader[1].ToString() + " (" + reader[3].ToString() + ")  - " + reader[2].ToString() + "");
 
                     }
                     ChartValues<Double> cv = new ChartValues<Double>();
@@ -1245,15 +1306,16 @@ namespace testProjectBCA
                         new LineSeries
                         {
 
-                            Title = comboTahun8.Text + " - " + bulan[(Int32)comboBulan8.SelectedIndex],
+                            Title = comboTahun8.SelectedValue.ToString() + " - " + bulan[(Int32)comboBulan8.SelectedIndex],
                             Values = cv,
-                            LineSmoothness = 0
+                            LineSmoothness = 0,
+                            DataLabels = true
                         }
                     };
 
                     cartesianChart7.AxisX.Add(new Axis
                     {
-                        Title = "Tanggal (Minggu)",
+                        Title = "Hari (Minggu)- Tanggal",
                         Labels = tanggal,
 
                         Separator = new Separator // force the separator step to 1, so it always display all labels
@@ -1261,7 +1323,7 @@ namespace testProjectBCA
                             Step = 1,
                             IsEnabled = false //disable it to make it invisible.
                         },
-                        //LabelsRotation = 30,
+                        LabelsRotation = 30,
 
                         //Labels = new[] { "Jan", "Feb", "Mar", "Apr", "May" }
                     }
@@ -1519,18 +1581,18 @@ namespace testProjectBCA
                     {
 
                         Bulan bul = new Bulan();
-                        bul.Jan = reader[1].ToString();
-                        bul.Feb = reader[2].ToString();
-                        bul.Mar = reader[3].ToString();
-                        bul.Apr = reader[4].ToString();
-                        bul.Mei = reader[5].ToString();
-                        bul.Jun = reader[6].ToString();
-                        bul.Jul = reader[7].ToString();
-                        bul.Agt = reader[8].ToString();
-                        bul.Sep = reader[9].ToString();
-                        bul.Okt = reader[10].ToString();
-                        bul.Nov = reader[11].ToString();
-                        bul.Des = reader[12].ToString();
+                        bul.Jan = Int64.Parse(reader[1].ToString()).ToString("#,##0,, M", CultureInfo.InvariantCulture);
+                        bul.Feb = Int64.Parse(reader[2].ToString()).ToString("#,##0,, M", CultureInfo.InvariantCulture);
+                        bul.Mar = Int64.Parse(reader[3].ToString()).ToString("#,##0,, M", CultureInfo.InvariantCulture);
+                        bul.Apr = Int64.Parse(reader[4].ToString()).ToString("#,##0,, M", CultureInfo.InvariantCulture);
+                        bul.Mei = Int64.Parse(reader[5].ToString()).ToString("#,##0,, M", CultureInfo.InvariantCulture);
+                        bul.Jun = Int64.Parse(reader[6].ToString()).ToString("#,##0,, M", CultureInfo.InvariantCulture);
+                        bul.Jul = Int64.Parse(reader[7].ToString()).ToString("#,##0,, M", CultureInfo.InvariantCulture);
+                        bul.Agt = Int64.Parse(reader[8].ToString()).ToString("#,##0,, M", CultureInfo.InvariantCulture);
+                        bul.Sep = Int64.Parse(reader[9].ToString()).ToString("#,##0,, M", CultureInfo.InvariantCulture);
+                        bul.Okt = Int64.Parse(reader[10].ToString()).ToString("#,##0,, M", CultureInfo.InvariantCulture);
+                        bul.Nov = Int64.Parse(reader[11].ToString()).ToString("#,##0,, M", CultureInfo.InvariantCulture);
+                        bul.Des = Int64.Parse(reader[12].ToString()).ToString("#,##0,, M", CultureInfo.InvariantCulture);
                         rasio.Add(bul);
                     }
                     DataTable tb = new DataTable();
@@ -1572,7 +1634,7 @@ namespace testProjectBCA
                         // Console.WriteLine(item);
                         rows = new DataGridViewRow();
                         tbcell = new DataGridViewTextBoxCell();
-                        tbcell.Value = item;
+                        tbcell.Value = Int64.Parse(item.ToString()).ToString("#,##0,, M", CultureInfo.InvariantCulture);
                         rows.Cells.Add(tbcell);
                         dataGridView2.Rows.Add(rows);
                     }
@@ -1584,7 +1646,57 @@ namespace testProjectBCA
 
         private void comboTahun1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            reload();
+
+            if (checkAvg1.Checked == true)
+            {
+                reload();
+                List<Double> rasio = new List<Double>();
+                List<String> tahun = new List<String>();
+                using (SqlConnection sql = new SqlConnection(Variables.connectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.Connection = sql;
+                        sql.Open();
+                        cmd.CommandText = "SELECT [Tahun] = YEAR(tanggal),[Rasio] = CAST(SUM(saldoAwal100 + saldoAwal50 + saldoAwal20) AS FLOAT)/(SUM(isiATM100+isiATM50+isiATM20+isiCRM100+isiCRM50+isiCRM20)) FROM TransaksiAtms WHERE YEAR(tanggal) = " + comboAvg1.SelectedValue.ToString() + " GROUP BY  YEAR(tanggal)";
+                        SqlDataReader reader = cmd.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            tahun.Add(reader[0].ToString());
+                            rasio.Add((Double)reader[1]);
+
+                        }
+
+                        ChartValues<Double> cv = new ChartValues<Double>();
+                        for (int i = 0; i < 12; i++)
+                        {
+                            cv.Add(Math.Round(rasio[0], 2));
+                        }
+
+                        /* foreach (Double temp in rasio)
+                         {
+                             cv.Add(Math.Round(temp, 2));
+                         }*/
+
+
+                        cartesianChart1.Series.Add(
+                            new LineSeries()
+                            {
+                                Title = comboAvg1.Text + " Average",
+                                Values = cv,
+                                DataLabels = true,
+                                LineSmoothness = 0
+                            }
+                        );
+                    }
+                }
+
+            }
+
+            else
+            {
+                reload();
+            }
         }
 
         private void comboTahun2_SelectedIndexChanged(object sender, EventArgs e)
@@ -1631,7 +1743,9 @@ namespace testProjectBCA
                             new LineSeries()
                             {
                                 Title = comboAvg1.Text + " Average",
-                                Values = cv
+                                Values = cv,
+                                DataLabels = true,
+                                LineSmoothness = 0
                             }
                         );
                     }
@@ -1667,9 +1781,9 @@ namespace testProjectBCA
                 reload12();
             }
 
-            else if (comboMode7.SelectedValue.ToString().Equals("Nominal"))
+            else if (comboMode7.SelectedValue.ToString().Equals("Nominal Adhoc"))
             {
-                groupBox7.Text = "Nominal";
+                groupBox7.Text = "Nominal Adhoc";
                 reload6();
                 reload14();
                 reload13();
@@ -1701,9 +1815,9 @@ namespace testProjectBCA
                 reload12();
             }
 
-            else if (comboMode7.SelectedValue.ToString().Equals("Nominal"))
+            else if (comboMode7.SelectedValue.ToString().Equals("Nominal Adhoc"))
             {
-                groupBox7.Text = "Nominal";
+                groupBox7.Text = "Nominal Adhoc";
                 reload6();
                 reload14();
                 reload13();
@@ -1742,7 +1856,9 @@ namespace testProjectBCA
                         new LineSeries()
                         {
                             Title = comboTambah1.Text,
-                            Values = cv
+                            Values = cv,
+                            DataLabels = true,
+                            LineSmoothness = 0
                         }
                     );
                 }
@@ -1780,7 +1896,9 @@ namespace testProjectBCA
                         new LineSeries()
                         {
                             Title = comboTambah2.Text,
-                            Values = cv
+                            Values = cv,
+                            DataLabels = true,
+                            LineSmoothness = 0
                         }
                     );
                 }
@@ -1861,7 +1979,8 @@ namespace testProjectBCA
 
                             Title = comboPkt7.Text,
                             Values = cv,
-                            LineSmoothness = 0
+                            LineSmoothness = 0,
+                            DataLabels = true
                         }
                     );
                 }
@@ -1904,9 +2023,9 @@ namespace testProjectBCA
                 reload12();
             }
 
-            else if (comboMode7.SelectedValue.ToString().Equals("Nominal"))
+            else if (comboMode7.SelectedValue.ToString().Equals("Nominal Adhoc"))
             {
-                groupBox7.Text = "Nominal";
+                groupBox7.Text = "Nominal Adhoc";
                 reload6();
                 reload14();
                 reload13();
@@ -1932,9 +2051,9 @@ namespace testProjectBCA
                 reload12();
             }
 
-            else if (comboMode7.SelectedValue.ToString().Equals("Nominal"))
+            else if (comboMode7.SelectedValue.ToString().Equals("Nominal Adhoc"))
             {
-                groupBox7.Text = "Nominal";
+                groupBox7.Text = "Nominal Adhoc";
                 reload6();
                 reload14();
                 reload13();
@@ -1977,5 +2096,133 @@ namespace testProjectBCA
         {
             reload10();
         }
+
+        private void checkAvg1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkAvg1.Checked == true)
+            {
+                Console.WriteLine("ceked");
+
+                // reload();
+                List<Double> rasio = new List<Double>();
+                List<String> tahun = new List<String>();
+                using (SqlConnection sql = new SqlConnection(Variables.connectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.Connection = sql;
+                        sql.Open();
+                        cmd.CommandText = "SELECT [Tahun] = YEAR(tanggal),[Rasio] = CAST(SUM(saldoAwal100 + saldoAwal50 + saldoAwal20) AS FLOAT)/(SUM(isiATM100+isiATM50+isiATM20+isiCRM100+isiCRM50+isiCRM20)) FROM TransaksiAtms WHERE YEAR(tanggal) = " + comboAvg1.SelectedValue.ToString() + " GROUP BY  YEAR(tanggal)";
+                        SqlDataReader reader = cmd.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            tahun.Add(reader[0].ToString());
+                            rasio.Add((Double)reader[1]);
+
+                        }
+
+                        ChartValues<Double> cv = new ChartValues<Double>();
+                        for (int i = 0; i < 12; i++)
+                        {
+                            cv.Add(Math.Round(rasio[0], 2));
+                        }
+
+                        /* foreach (Double temp in rasio)
+                         {
+                             cv.Add(Math.Round(temp, 2));
+                         }*/
+
+
+                        cartesianChart1.Series.Add(
+                            new LineSeries()
+                            {
+                                Title = comboAvg1.Text + " Average",
+                                Values = cv,
+                                DataLabels = true,
+                                LineSmoothness = 0
+                            }
+                        );
+                    }
+
+
+                }
+
+            }
+            else
+            {
+                reload();
+                Console.WriteLine("notceked");
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            //dasbor d = new dasbor();
+
+            //using (Graphics gfx = d.CreateGraphics())
+            //{
+            //    using (Bitmap bmp = new Bitmap(d.Width, d.Height, gfx))
+            //    {
+            //        d.DrawToBitmap(bmp, new Rectangle(0, 0, d.Width, d.Height));
+            //        bmp.Save("C:\\Users\\Christian\\Desktop\\image23.jpeg");
+            //        //string outputFileName = "C:\\Users\\Christian\\Desktop\\image\\asd.jpeg";
+            //        //using (MemoryStream memory = new MemoryStream())
+            //        //{
+            //        //    using (FileStream fs = new FileStream(outputFileName, FileMode.Create, FileAccess.ReadWrite))
+            //        //    {
+            //        //        bmp.Save(memory, ImageFormat.Jpeg);
+            //        //        byte[] bytes = memory.ToArray();
+            //        //        fs.Write(bytes, 0, bytes.Length);
+            //        //    }
+            //        //}
+            //        ControlToImage(, 100, 100);
+            //    }
+        }
+
+        private void comboTahun6_1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cartesianChart5_ChildChanged(object sender, System.Windows.Forms.Integration.ChildChangedEventArgs e)
+        {
+
+        }
+
+        private void comboTahun8_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
+
+    //    public static Bitmap ControlToImage(Visual target, double dpiX, double dpiY)
+    //    {
+    //        if (target == null)
+    //        {
+    //            return null;
+    //        }
+    //        // render control content
+    //        Rect bounds = VisualTreeHelper.GetDescendantBounds(target);
+    //        RenderTargetBitmap rtb = new RenderTargetBitmap((int)(bounds.Width * dpiX / 96.0),
+    //                                                        (int)(bounds.Height * dpiY / 96.0),
+    //                                                        dpiX,
+    //                                                        dpiY,
+    //                                                        PixelFormats.Pbgra32);
+    //        DrawingVisual dv = new DrawingVisual();
+    //        using (DrawingContext ctx = dv.RenderOpen())
+    //        {
+    //            VisualBrush vb = new VisualBrush(target);
+    //            ctx.DrawRectangle(vb, null, new Rect(new System.Windows.Point(), bounds.Size));
+    //        }
+    //        rtb.Render(dv);
+
+    //        //convert image format
+    //        MemoryStream stream = new MemoryStream();
+    //        BitmapEncoder encoder = new BmpBitmapEncoder();
+    //        encoder.Frames.Add(BitmapFrame.Create(rtb));
+    //        encoder.Save(stream);
+
+    //        return new Bitmap(stream);
+    //    }
+    //}
 }

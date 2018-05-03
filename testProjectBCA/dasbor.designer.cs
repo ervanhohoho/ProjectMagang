@@ -64,6 +64,7 @@
             this.comboTahun3 = new System.Windows.Forms.ComboBox();
             this.buttonRefresh3 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.cartesianChart1 = new LiveCharts.WinForms.CartesianChart();
             this.comboAvg1 = new System.Windows.Forms.ComboBox();
             this.comboTambah1 = new System.Windows.Forms.ComboBox();
@@ -113,7 +114,7 @@
             // comboTahun5
             // 
             this.comboTahun5.FormattingEnabled = true;
-            this.comboTahun5.Location = new System.Drawing.Point(192, 347);
+            this.comboTahun5.Location = new System.Drawing.Point(168, 347);
             this.comboTahun5.Name = "comboTahun5";
             this.comboTahun5.Size = new System.Drawing.Size(121, 21);
             this.comboTahun5.TabIndex = 24;
@@ -138,7 +139,7 @@
             this.dataGridView1.AllowUserToResizeRows = false;
             this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(14, 58);
+            this.dataGridView1.Location = new System.Drawing.Point(14, 77);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersVisible = false;
@@ -153,7 +154,7 @@
             this.dataGridView2.AllowUserToResizeRows = false;
             this.dataGridView2.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Location = new System.Drawing.Point(192, 58);
+            this.dataGridView2.Location = new System.Drawing.Point(192, 77);
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.ReadOnly = true;
             this.dataGridView2.RowHeadersVisible = false;
@@ -168,7 +169,7 @@
             this.dataGridView3.AllowUserToResizeRows = false;
             this.dataGridView3.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView3.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView3.Location = new System.Drawing.Point(368, 58);
+            this.dataGridView3.Location = new System.Drawing.Point(368, 77);
             this.dataGridView3.Name = "dataGridView3";
             this.dataGridView3.ReadOnly = true;
             this.dataGridView3.RowHeadersVisible = false;
@@ -178,7 +179,7 @@
             // comboKanwil6
             // 
             this.comboKanwil6.FormattingEnabled = true;
-            this.comboKanwil6.Location = new System.Drawing.Point(14, 31);
+            this.comboKanwil6.Location = new System.Drawing.Point(14, 50);
             this.comboKanwil6.Name = "comboKanwil6";
             this.comboKanwil6.Size = new System.Drawing.Size(162, 21);
             this.comboKanwil6.TabIndex = 29;
@@ -188,7 +189,7 @@
             // comboTahun6_2
             // 
             this.comboTahun6_2.FormattingEnabled = true;
-            this.comboTahun6_2.Location = new System.Drawing.Point(368, 31);
+            this.comboTahun6_2.Location = new System.Drawing.Point(368, 50);
             this.comboTahun6_2.Name = "comboTahun6_2";
             this.comboTahun6_2.Size = new System.Drawing.Size(652, 21);
             this.comboTahun6_2.TabIndex = 30;
@@ -198,11 +199,12 @@
             // comboTahun6_1
             // 
             this.comboTahun6_1.FormattingEnabled = true;
-            this.comboTahun6_1.Location = new System.Drawing.Point(192, 31);
+            this.comboTahun6_1.Location = new System.Drawing.Point(192, 50);
             this.comboTahun6_1.Name = "comboTahun6_1";
             this.comboTahun6_1.Size = new System.Drawing.Size(161, 21);
             this.comboTahun6_1.TabIndex = 31;
             this.comboTahun6_1.Text = "Tahun";
+            this.comboTahun6_1.SelectedIndexChanged += new System.EventHandler(this.comboTahun6_1_SelectedIndexChanged);
             this.comboTahun6_1.SelectionChangeCommitted += new System.EventHandler(this.comboTahun6_1_SelectionChangeCommitted);
             // 
             // cartesianChart6
@@ -296,6 +298,7 @@
             this.comboTahun8.Size = new System.Drawing.Size(121, 21);
             this.comboTahun8.TabIndex = 42;
             this.comboTahun8.Text = "Tahun";
+            this.comboTahun8.SelectedIndexChanged += new System.EventHandler(this.comboTahun8_SelectedIndexChanged);
             this.comboTahun8.SelectionChangeCommitted += new System.EventHandler(this.comboTahun8_SelectionChangeCommitted);
             // 
             // buttonRefresh8
@@ -311,7 +314,7 @@
             // comboMode7
             // 
             this.comboMode7.FormattingEnabled = true;
-            this.comboMode7.Location = new System.Drawing.Point(878, 1634);
+            this.comboMode7.Location = new System.Drawing.Point(896, 19);
             this.comboMode7.Name = "comboMode7";
             this.comboMode7.Size = new System.Drawing.Size(121, 21);
             this.comboMode7.TabIndex = 45;
@@ -338,10 +341,11 @@
             this.groupBox7.Controls.Add(this.comboTahun6_2);
             this.groupBox7.Controls.Add(this.dataGridView1);
             this.groupBox7.Controls.Add(this.dataGridView2);
+            this.groupBox7.Controls.Add(this.comboMode7);
             this.groupBox7.Controls.Add(this.dataGridView3);
-            this.groupBox7.Location = new System.Drawing.Point(15, 1661);
+            this.groupBox7.Location = new System.Drawing.Point(15, 1634);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(1032, 513);
+            this.groupBox7.Size = new System.Drawing.Size(1032, 540);
             this.groupBox7.TabIndex = 55;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Frekuensi Adhoc";
@@ -465,6 +469,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.cartesianChart1);
             this.groupBox1.Controls.Add(this.comboAvg1);
             this.groupBox1.Controls.Add(this.comboTambah1);
@@ -478,8 +483,19 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Rasio Bulanan";
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(213, 338);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 10;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // cartesianChart1
             // 
+            this.cartesianChart1.BackColor = System.Drawing.SystemColors.Window;
             this.cartesianChart1.Location = new System.Drawing.Point(6, 19);
             this.cartesianChart1.Name = "cartesianChart1";
             this.cartesianChart1.Size = new System.Drawing.Size(498, 269);
@@ -489,7 +505,7 @@
             // comboAvg1
             // 
             this.comboAvg1.FormattingEnabled = true;
-            this.comboAvg1.Location = new System.Drawing.Point(22, 315);
+            this.comboAvg1.Location = new System.Drawing.Point(305, 312);
             this.comboAvg1.Name = "comboAvg1";
             this.comboAvg1.Size = new System.Drawing.Size(99, 21);
             this.comboAvg1.TabIndex = 8;
@@ -528,12 +544,13 @@
             // checkAvg1
             // 
             this.checkAvg1.AutoSize = true;
-            this.checkAvg1.Location = new System.Drawing.Point(127, 319);
+            this.checkAvg1.Location = new System.Drawing.Point(419, 316);
             this.checkAvg1.Name = "checkAvg1";
             this.checkAvg1.Size = new System.Drawing.Size(75, 17);
             this.checkAvg1.TabIndex = 9;
             this.checkAvg1.Text = "Show Avg";
             this.checkAvg1.UseVisualStyleBackColor = true;
+            this.checkAvg1.CheckedChanged += new System.EventHandler(this.checkAvg1_CheckedChanged);
             // 
             // groupBox4
             // 
@@ -621,20 +638,20 @@
             this.groupBox9.Size = new System.Drawing.Size(1032, 389);
             this.groupBox9.TabIndex = 57;
             this.groupBox9.TabStop = false;
-            this.groupBox9.Text = "groupBox9";
+            this.groupBox9.Text = "Jumlah Adhoc";
             // 
             // dasbor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
+            this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.ClientSize = new System.Drawing.Size(1105, 781);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox9);
             this.Controls.Add(this.groupBox8);
             this.Controls.Add(this.groupBox7);
             this.Controls.Add(this.groupBox6);
-            this.Controls.Add(this.comboMode7);
             this.Name = "dasbor";
             this.Text = "Dashboard";
             this.Load += new System.EventHandler(this.dasbor_Load);
@@ -706,5 +723,6 @@
         private System.Windows.Forms.ComboBox comboTahun2;
         private System.Windows.Forms.Button buttonTambah2;
         private System.Windows.Forms.GroupBox groupBox9;
+        private System.Windows.Forms.Button button1;
     }
 }

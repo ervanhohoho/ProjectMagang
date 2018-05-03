@@ -66,17 +66,18 @@ namespace testProjectBCA
                     {
                         toEdit.kodePkt = row[1].ToString();
                         Console.Write(row[1].ToString() + " ");
-                        toEdit.namaPkt = row[2].ToString();
-                        Console.Write(row[2].ToString());
-                        toEdit.e2e = row[3].ToString();
+                        toEdit.namaPkt = row[3].ToString();
                         Console.Write(row[3].ToString());
-                        toEdit.koordinator = row[4].ToString();
+                        toEdit.e2e = row[4].ToString();
                         Console.Write(row[4].ToString());
-                        toEdit.kanwil = row[5].ToString().Replace(" -", "");
+                        toEdit.koordinator = row[5].ToString();
                         Console.Write(row[5].ToString());
-                        toEdit.sentralisasi = row[6].ToString().Replace(" -", "");
-                        Console.WriteLine(row[6].ToString());
+                        toEdit.kanwil = row[6].ToString().Replace(" -", "");
+                        Console.Write(row[6].ToString());
+                        toEdit.sentralisasi = row[7].ToString().Replace(" -", "");
+                        Console.WriteLine(row[7].ToString());
                         toEdit.vendor = row[9].ToString();
+                        toEdit.kodePktCabang = row[2].ToString();
                         counter++;
                     }
                     else
@@ -84,17 +85,18 @@ namespace testProjectBCA
                         Pkt newPkt = new Pkt();
                         newPkt.kodePkt = row[1].ToString();
                         Console.Write(row[1].ToString() + " ");
-                        newPkt.namaPkt = row[2].ToString();
-                        Console.Write(row[2].ToString());
-                        newPkt.e2e = row[3].ToString();
+                        newPkt.namaPkt = row[3].ToString();
                         Console.Write(row[3].ToString());
-                        newPkt.koordinator = row[4].ToString();
+                        newPkt.e2e = row[4].ToString();
                         Console.Write(row[4].ToString());
-                        newPkt.kanwil = row[5].ToString().Replace(" -", "");
+                        newPkt.koordinator = row[5].ToString();
                         Console.Write(row[5].ToString());
-                        newPkt.sentralisasi = row[6].ToString().Replace(" -", "");
-                        Console.WriteLine(row[6].ToString());
+                        newPkt.kanwil = row[6].ToString().Replace(" -", "");
+                        Console.Write(row[6].ToString());
+                        newPkt.sentralisasi = row[7].ToString().Replace(" -", "");
+                        Console.WriteLine(row[7].ToString());
                         newPkt.vendor = row[9].ToString();
+                        newPkt.kodePktCabang = row[2].ToString();
                         db.Pkts.Add(newPkt);
                         counter++;
                     }

@@ -74,7 +74,7 @@ namespace testProjectBCA
                                 vendorCardNo = vendorCardNo,
                                 vendorName = vendorName,
                                 totalAmount = totalAmount,
-                                CustomerCode = kodeNasabah,
+                                CustomerCode = kodeNasabah.TrimStart('0'),
                                 CustomerName = namaNasabah
                             };
                             db.Abacas.Add(newItem);

@@ -419,14 +419,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="testProjectBCA.exe" size="440320">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="testProjectBCA.exe" size="489472">
       <assemblyIdentity name="testProjectBCA" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>NfuimdqB5iAxEPmp89tL22BJYoCPZNeKKfuHNZG+XjY=</dsig:DigestValue>
+        <dsig:DigestValue>lxY6tyzkDNTawiZssWY1sycyk1Ip+oSZQE1YsVttiZE=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -466,13 +466,13 @@
       <dsig:DigestValue>CabSpKm6yYNT6twBZzKHKM3v3aBYMgNzK0uSDYpHoWw=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="testProjectBCA.exe.config" size="3080">
+  <file name="testProjectBCA.exe.config" size="3093">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>0UdHVYqNq8WCPtgNtSrjQ/yyCJMyekDBwSRXVFo9Tb8=</dsig:DigestValue>
+      <dsig:DigestValue>eGHzEJJVSPCYB8jrVZyB4aF3IYbY874tUnOMMcrmffw=</dsig:DigestValue>
     </hash>
   </file>
 </asmv1:assembly>

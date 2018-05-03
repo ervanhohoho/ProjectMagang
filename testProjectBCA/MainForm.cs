@@ -76,6 +76,10 @@ namespace testProjectBCA
                         {
                             command.ExecuteNonQuery();
                         }
+                        using (SqlCommand command = new SqlCommand("DBCC CHECKIDENT('Opti',RESEED,1)", con))
+                        {
+                            command.ExecuteNonQuery();
+                        }
                         con.Close();
                     }
                 }
@@ -187,11 +191,24 @@ namespace testProjectBCA
                 //    db.SaveChanges();
                 //}
                 DataTable dt = ds.Tables[0];
-                DataRow[] rows = ds.Tables[0].Select("Column0 not like 'A%' OR LEN(Column0) > 5");
+                DataTable branch = new DataTable();
+                for (int i = 0; i < dt.Columns.Count; i++)
+                {
+                    branch.Columns.Add();
+                }
+                DataRow[] rows = dt.Select("Column0 like 'B%' AND Column2 like 'CAC'");
                 foreach (DataRow row in rows)
                 {
-                    dt.Rows.Remove(row);
+                    branch.Rows.Add(row.ItemArray);
                 }
+                rows = ds.Tables[0].Select("Column0 not like 'A%' OR LEN(Column0) > 5");
+                foreach (DataRow row in rows)
+                {
+                    
+                    dt.Rows.Remove(row);
+                   
+                }
+                
                 List<DataRow> listRow = new List<DataRow>();
                 for(int a=0;a<dt.Rows.Count;a++)
                 {
@@ -205,7 +222,9 @@ namespace testProjectBCA
                 {
                     dt.Rows.Remove(row);
                 }
+
                 UpdateDataCashpointPkt(dt);
+                UpdateDataBranchPkt(branch);
                 loadForm.CloseForm();
             }
         }
@@ -219,26 +238,7 @@ namespace testProjectBCA
                 DataSet ds = Util.openExcel(of.FileName);
                 loadForm.ShowSplashScreen();
 
-                //for (int i = 1; i < ds.Tables[0].Rows.Count; i++)
-                //{
-                //    Console.WriteLine(i);
-                //    String idCashpoint = ds.Tables[0].Rows[i][0].ToString();
-                //    Cashpoint newC = (from x in db.Cashpoints where x.idCashpoint == idCashpoint select x).FirstOrDefault();
-                //    if(newC!=null)
-                //    {
-                //        Console.WriteLine(ds.Tables[0].Rows[i][6]);
-                //        String denom = ds.Tables[0].Rows[i][6].ToString();
-                //        newC.denom = denom;
-                //    }
-                //    else
-                //    {
-                //        MessageBox.Show("Data PKT Cashpoint " + ds.Tables[0].Rows[i][0].ToString() + " Tidak ada");
-                //        newC = new Cashpoint();
-                //        newC.idCashpoint = ds.Tables[0].Rows[i][0].ToString();
-                //        db.Cashpoints.Add(newC);
-                //    }
-                //    db.SaveChanges();
-                //}
+               
                 UpdateDataCashpointDenom(ds.Tables[0]);
                 loadForm.CloseForm();
             }
@@ -355,7 +355,54 @@ namespace testProjectBCA
                 }
             }
         }
+        public static void UpdateDataBranchPkt(DataTable dt)
+        {
+            using (SqlConnection sql = new SqlConnection(Variables.connectionString))
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandText = "CREATE TABLE #TEMP (idCashpoint VARCHAR(10), kodePkt VARCHAR(10))";
+                cmd.Connection = sql;
+                sql.Open();
+                cmd.ExecuteNonQuery();
 
+                using (var sbc = new SqlBulkCopy(sql))
+                {
+                    sbc.DestinationTableName = "#TEMP";
+                    sbc.BatchSize = 1000;
+
+                    sbc.ColumnMappings.Add(0, 0);
+                    sbc.ColumnMappings.Add(4, 1);
+                    sbc.WriteToServer(dt);
+                }
+
+                cmd.CommandText = "INSERT INTO Cabang(kodeCabang, kodePkt) SELECT TT.idCashpoint, TT.kodePkt FROM #TEMP TT LEFT JOIN Cabang C ON substring(RIGHT(TT.idCashpoint,4), patindex('%[^0]%',RIGHT(TT.idCashpoint,4)), 10) = C.kodeCabang WHERE C.kodeCabang IS  NULL";
+                cmd.ExecuteNonQuery();
+                cmd.CommandText = "UPDATE T SET T.kodePkt = TT.kodePkt FROM Cabang T INNER JOIN #TEMP TT ON substring(RIGHT(TT.idCashpoint,4), patindex('%[^0]%',RIGHT(TT.idCashpoint,4)), 10) = T.kodeCabang; DROP TABLE #TEMP;";
+                cmd.ExecuteNonQuery();
+
+               
+                cmd.CommandText = "UPDATE CABANG SET kodeCabang = RIGHT(kodeCabang,4)";
+                cmd.ExecuteNonQuery();
+                cmd.CommandText = "UPDATE CABANG SET kodeCabang = substring(kodeCabang, patindex('%[^0]%',kodeCabang), 10)";
+                cmd.ExecuteNonQuery();
+                sql.Close();
+            }
+            
+
+            using (SqlConnection sql = new SqlConnection(Variables.connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    sql.Open();
+                    cmd.Connection = sql;
+                    cmd.CommandText = "UPDATE CABANG SET kodeCabang = RIGHT(kodeCabang,4)";
+                    cmd.ExecuteNonQuery();
+                    cmd.CommandText = "UPDATE CABANG SET kodeCabang = IIF(kodeCabang like '000%',RIGHT(kodeCabang,1),IIF(kodeCabang like '00%', RIGHT(kodeCabang,2), IIF(kodeCabang like '0%', RIGHT(kodeCabang,3),kodeCabang)))";
+                    cmd.ExecuteNonQuery();
+                    sql.Close();
+                }
+            }
+        }
         private void insertDataCabangToolStripMenuItem_Click(object sender, EventArgs e)
         {
             
@@ -391,10 +438,7 @@ namespace testProjectBCA
             
         }
 
-        private void insertDataKanwilCabangToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            
-        }
+      
         private void insertDataKanwilCabang(String filepath)
         {
 
@@ -419,7 +463,7 @@ namespace testProjectBCA
                         conn.Open();
 
                         //Creating temp table on database
-                        command.CommandText = "CREATE TABLE #TempTable(kodeCabang VARCHAR(255), kanwil VARCHAR(255))";
+                        command.CommandText = "CREATE TABLE #TempTable(kodeCabang VARCHAR(255), kanwil VARCHAR(255), kcu VARCHAR(10), area VARCHAR(50), namaCabang VARCHAR(100), tipe VARCHAR(5))";
                         command.ExecuteNonQuery();
 
                         //Bulk insert into temp table
@@ -429,15 +473,19 @@ namespace testProjectBCA
                             bulkcopy.DestinationTableName = "#TempTable";
                             bulkcopy.ColumnMappings.Add(0, 0);
                             bulkcopy.ColumnMappings.Add(2, 1);
+                            bulkcopy.ColumnMappings.Add(1, 2);
+                            bulkcopy.ColumnMappings.Add(3, 3);
+                            bulkcopy.ColumnMappings.Add(4, 4);
+                            bulkcopy.ColumnMappings.Add(5, 5);
                             bulkcopy.WriteToServer(dt);
                             bulkcopy.Close();
                         }
 
                         // Updating destination table, and dropping temp table
                         command.CommandTimeout = 300;
-                        command.CommandText = "INSERT INTO Cabang(kodeCabang, kanwil) SELECT TT.kodeCabang, TT.kanwil FROM #TempTable TT LEFT JOIN Cabang C ON TT.kodeCabang = C.kodeCabang WHERE C.kodeCabang IS  NULL";
+                        command.CommandText = "INSERT INTO Cabang(kodeCabang, kanwil, kcu, area, namaCabang, tipe) SELECT TT.kodeCabang, TT.kanwil, TT.kcu, TT.area, TT.namaCabang, TT.tipe FROM #TempTable TT LEFT JOIN Cabang C ON TT.kodeCabang = C.kodeCabang WHERE C.kodeCabang IS  NULL";
                         command.ExecuteNonQuery();
-                        command.CommandText = "UPDATE T SET T.kanwil = TT.kanwil FROM Cabang T INNER JOIN #TempTable TT ON TT.kodeCabang = T.kodeCabang; DROP TABLE #TempTable;";
+                        command.CommandText = "UPDATE T SET T.kanwil = TT.kanwil, T.kcu = TT.kcu, T.area = TT.area, T.namaCabang = TT.namaCabang, T.tipe = TT.tipe FROM Cabang T INNER JOIN #TempTable TT ON TT.kodeCabang = T.kodeCabang; DROP TABLE #TempTable;";
                         command.ExecuteNonQuery();
                     }
                     catch (Exception ex)
@@ -549,6 +597,7 @@ namespace testProjectBCA
         private void inputDataPktCabangToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog of = new OpenFileDialog();
+            of.Filter = Variables.csvFilter;
             if (of.ShowDialog() == DialogResult.OK)
             {
                 insertDataPktCabang(of.FileName);
@@ -558,6 +607,7 @@ namespace testProjectBCA
         private void inputDataKanwilCabangToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog of = new OpenFileDialog();
+            of.Filter = Variables.excelFilter;
             if (of.ShowDialog() == DialogResult.OK)
             {
                 insertDataKanwilCabang(of.FileName);
@@ -583,6 +633,27 @@ namespace testProjectBCA
             InputAbacasForm iab = new InputAbacasForm();
             iab.MdiParent = this;
             iab.Show();
+        }
+
+        private void hargaRingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            InputHargaLayananForm ihlf = new InputHargaLayananForm();
+            ihlf.MdiParent = this;
+            ihlf.Show();
+        }
+
+        private void masterNasabahToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            InputMasterNasabahForm imnf = new InputMasterNasabahForm();
+            imnf.MdiParent = this;
+            imnf.Show();
+        }
+
+        private void invoiceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            InvoiceNasabahForm inf = new InvoiceNasabahForm();
+            inf.MdiParent = this;
+            inf.Show();
         }
     }
 }

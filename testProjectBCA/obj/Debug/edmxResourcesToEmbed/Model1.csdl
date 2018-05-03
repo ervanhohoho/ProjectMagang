@@ -27,6 +27,13 @@
     <Property Name="validasiSpv" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="validasiNoTxn" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
   </EntityType>
+  <EntityType Name="AsuransiLayanan">
+    <Key>
+      <PropertyRef Name="jenisLayanan" />
+    </Key>
+    <Property Name="jenisLayanan" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="asuransi" Type="Double" />
+  </EntityType>
   <EntityType Name="Cabang">
     <Key>
       <PropertyRef Name="kodeCabang" />
@@ -34,6 +41,10 @@
     <Property Name="kodeCabang" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="kodePkt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
     <Property Name="kanwil" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="kcu" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="area" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="namaCabang" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="tipe" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="Cashpoint">
     <Key>
@@ -119,6 +130,19 @@
     <Property Name="workDay" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
     <Property Name="event" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
   </EntityType>
+  <EntityType Name="HargaLayanan">
+    <Key>
+      <PropertyRef Name="jenisLayanan" />
+      <PropertyRef Name="stc_cos" />
+    </Key>
+    <Property Name="jenisLayanan" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="stc_cos" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="hargaRing1" Type="Int64" />
+    <Property Name="hargaRing2" Type="Int64" />
+    <Property Name="hargaRing3" Type="Int64" />
+    <Property Name="hargaRing4" Type="Int64" />
+    <Property Name="hargaRing5" Type="Int64" />
+  </EntityType>
   <EntityType Name="laporanBon">
     <Key>
       <PropertyRef Name="idLaporan" />
@@ -142,6 +166,24 @@
     <Property Name="C50" Type="Int64" />
     <Property Name="C20" Type="Int64" />
   </EntityType>
+  <EntityType Name="Nasabah">
+    <Key>
+      <PropertyRef Name="kodeNasabah" />
+    </Key>
+    <Property Name="kodeNasabah" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="fasilitasLayanan" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="metodeLayanan" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+    <Property Name="kodeCabang" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="kodePktCabang" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ring" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="NomorRekening" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+    <Property Name="GroupNasabah" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="namaNasabah" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="segmentasiNasabah" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="sentralisasi" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="subsidi" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="subsidiCabang" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+  </EntityType>
   <EntityType Name="Opti">
     <Key>
       <PropertyRef Name="idTransaksi" />
@@ -162,6 +204,7 @@
     <Property Name="kanwil" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="sentralisasi" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="vendor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="kodePktCabang" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="laporanBons" Relationship="Self.FK_laporanBon_Pkt" FromRole="Pkt" ToRole="laporanBon" />
     <NavigationProperty Name="TransaksiAtms" Relationship="Self.FK_TransaksiAtms_Pkt" FromRole="Pkt" ToRole="TransaksiAtms" />
   </EntityType>
@@ -256,13 +299,16 @@
   <EntityContainer Name="Database1Entities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Abacas" EntityType="Self.Abaca" />
     <EntitySet Name="Approvals" EntityType="Self.Approval" />
+    <EntitySet Name="AsuransiLayanans" EntityType="Self.AsuransiLayanan" />
     <EntitySet Name="Cabangs" EntityType="Self.Cabang" />
     <EntitySet Name="Cashpoints" EntityType="Self.Cashpoint" />
     <EntitySet Name="DailyStocks" EntityType="Self.DailyStock" />
     <EntitySet Name="DetailApprovals" EntityType="Self.DetailApproval" />
     <EntitySet Name="EventTanggals" EntityType="Self.EventTanggal" />
+    <EntitySet Name="HargaLayanans" EntityType="Self.HargaLayanan" />
     <EntitySet Name="laporanBons" EntityType="Self.laporanBon" />
     <EntitySet Name="LaporanPermintaanBons" EntityType="Self.LaporanPermintaanBon" />
+    <EntitySet Name="Nasabahs" EntityType="Self.Nasabah" />
     <EntitySet Name="Optis" EntityType="Self.Opti" />
     <EntitySet Name="Pkts" EntityType="Self.Pkt" />
     <EntitySet Name="StokPosisis" EntityType="Self.StokPosisi" />

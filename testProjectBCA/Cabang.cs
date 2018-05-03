@@ -17,5 +17,9 @@ namespace testProjectBCA
         public string kodeCabang { get; set; }
         public string kodePkt { get; set; }
         public string kanwil { get; set; }
+        public string kcu { get; set; }
+        public string area { get; set; }
+        public string namaCabang { get; set; }
+        public string tipe { get; set; }
     }
 }

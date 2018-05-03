@@ -407,8 +407,8 @@ namespace testProjectBCA
             }
             Console.WriteLine(akurasi.Count);
 
-            List<RasioApproval>listUntukTampil = akurasi.OrderBy(x => x.sislokCRM100).Take(5).ToList();
-            List<RasioApproval> listUntukHitung = akurasi.OrderBy(x => x.sislokCRM100).Take(5).ToList();
+            List<RasioApproval>listUntukTampil = akurasi.OrderBy(x => ubahKolomKeBarisRasio(x).Where(y=>y>0).Average()).Take(5).ToList();
+            List<RasioApproval> listUntukHitung = akurasi.OrderBy(x => ubahKolomKeBarisRasio(x).Where(y => y > 0).Average()).Take(5).ToList();
             if (listUntukHitung.Count > 0)
             {
                 listUntukTampil.Add(new RasioApproval()
@@ -489,8 +489,8 @@ namespace testProjectBCA
             }
             Console.WriteLine(selisihPrediksi.Count);
 
-            List<TableApproval> listUntukTampil = selisihPrediksi.OrderBy(x => x.sislokCRM100).Take(5).ToList();
-            List<TableApproval> listUntukHitung = selisihPrediksi.OrderBy(x => x.sislokCRM100).Take(5).ToList();
+            List<TableApproval> listUntukTampil = selisihPrediksi.OrderByDescending(x => Math.Abs(ubahKolomKeBarisSelisih(x).Where(y => y > 0).Average())).Take(5).ToList();
+            List<TableApproval> listUntukHitung = selisihPrediksi.OrderByDescending(x => Math.Abs(ubahKolomKeBarisSelisih(x).Where(y => y > 0).Average())).Take(5).ToList();
             if (listUntukHitung.Count > 0)
             {
                 listUntukTampil.Add(new TableApproval()
@@ -557,6 +557,50 @@ namespace testProjectBCA
             }
         }
 
+        private List<Double> ubahKolomKeBarisRasio(RasioApproval var)
+        {
+            List<Double> ret = new List<Double>();
+            ret.Add(var.isiATM100);
+            ret.Add(var.isiATM50);
+            ret.Add(var.isiATM20);
+            ret.Add(var.isiCRM100);
+            ret.Add(var.isiCRM50);
+            ret.Add(var.isiCRM20);
+            ret.Add(var.sislokATM100);
+            ret.Add(var.sislokATM50);
+            ret.Add(var.sislokATM20);
+
+            ret.Add(var.sislokCRM100);
+            ret.Add(var.sislokCRM50);
+            ret.Add(var.sislokCRM20);
+
+            ret.Add(var.sislokCDM100);
+            ret.Add(var.sislokCDM50);
+            ret.Add(var.sislokCDM20);
+            return ret;
+        }
+        private List<Int64> ubahKolomKeBarisSelisih(TableApproval var)
+        {
+            List<Int64> ret = new List<Int64>();
+            ret.Add(var.isiATM100);
+            ret.Add(var.isiATM50);
+            ret.Add(var.isiATM20);
+            ret.Add(var.isiCRM100);
+            ret.Add(var.isiCRM50);
+            ret.Add(var.isiCRM20);
+            ret.Add(var.sislokATM100);
+            ret.Add(var.sislokATM50);
+            ret.Add(var.sislokATM20);
+
+            ret.Add(var.sislokCRM100);
+            ret.Add(var.sislokCRM50);
+            ret.Add(var.sislokCRM20);
+
+            ret.Add(var.sislokCDM100);
+            ret.Add(var.sislokCDM50);
+            ret.Add(var.sislokCDM20);
+            return ret;
+        }
         private void loadBtn_Click(object sender, EventArgs e)
         {
             loadForm.ShowSplashScreen();

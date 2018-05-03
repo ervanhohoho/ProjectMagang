@@ -30,9 +30,21 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="AsuransiLayanans">
+      <EntityTypeMapping TypeName="CACModel.AsuransiLayanan">
+        <MappingFragment StoreEntitySet="AsuransiLayanan">
+          <ScalarProperty Name="jenisLayanan" ColumnName="jenisLayanan" />
+          <ScalarProperty Name="asuransi" ColumnName="asuransi" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="Cabangs">
       <EntityTypeMapping TypeName="CACModel.Cabang">
         <MappingFragment StoreEntitySet="Cabang">
+          <ScalarProperty Name="tipe" ColumnName="tipe" />
+          <ScalarProperty Name="namaCabang" ColumnName="namaCabang" />
+          <ScalarProperty Name="area" ColumnName="area" />
+          <ScalarProperty Name="kcu" ColumnName="kcu" />
           <ScalarProperty Name="kodeCabang" ColumnName="kodeCabang" />
           <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
           <ScalarProperty Name="kanwil" ColumnName="kanwil" />
@@ -126,6 +138,19 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="HargaLayanans">
+      <EntityTypeMapping TypeName="CACModel.HargaLayanan">
+        <MappingFragment StoreEntitySet="HargaLayanan">
+          <ScalarProperty Name="jenisLayanan" ColumnName="jenisLayanan" />
+          <ScalarProperty Name="stc_cos" ColumnName="stc/cos" />
+          <ScalarProperty Name="hargaRing1" ColumnName="hargaRing1" />
+          <ScalarProperty Name="hargaRing2" ColumnName="hargaRing2" />
+          <ScalarProperty Name="hargaRing3" ColumnName="hargaRing3" />
+          <ScalarProperty Name="hargaRing4" ColumnName="hargaRing4" />
+          <ScalarProperty Name="hargaRing5" ColumnName="hargaRing5" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="laporanBons">
       <EntityTypeMapping TypeName="CACModel.laporanBon">
         <MappingFragment StoreEntitySet="laporanBon">
@@ -150,6 +175,25 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="Nasabahs">
+      <EntityTypeMapping TypeName="CACModel.Nasabah">
+        <MappingFragment StoreEntitySet="Nasabah">
+          <ScalarProperty Name="subsidiCabang" ColumnName="subsidiCabang" />
+          <ScalarProperty Name="subsidi" ColumnName="subsidi" />
+          <ScalarProperty Name="sentralisasi" ColumnName="sentralisasi" />
+          <ScalarProperty Name="segmentasiNasabah" ColumnName="segmentasiNasabah" />
+          <ScalarProperty Name="namaNasabah" ColumnName="namaNasabah" />
+          <ScalarProperty Name="GroupNasabah" ColumnName="GroupNasabah" />
+          <ScalarProperty Name="NomorRekening" ColumnName="NomorRekening" />
+          <ScalarProperty Name="kodeNasabah" ColumnName="kodeNasabah" />
+          <ScalarProperty Name="fasilitasLayanan" ColumnName="fasilitasLayanan" />
+          <ScalarProperty Name="metodeLayanan" ColumnName="metodeLayanan" />
+          <ScalarProperty Name="kodeCabang" ColumnName="kodeCabang" />
+          <ScalarProperty Name="kodePktCabang" ColumnName="kodePktCabang" />
+          <ScalarProperty Name="ring" ColumnName="ring" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="Optis">
       <EntityTypeMapping TypeName="CACModel.Opti">
         <MappingFragment StoreEntitySet="Opti">
@@ -170,6 +214,7 @@
           <ScalarProperty Name="kanwil" ColumnName="kanwil" />
           <ScalarProperty Name="sentralisasi" ColumnName="sentralisasi" />
           <ScalarProperty Name="vendor" ColumnName="vendor" />
+          <ScalarProperty Name="kodePktCabang" ColumnName="kodePktCabang" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

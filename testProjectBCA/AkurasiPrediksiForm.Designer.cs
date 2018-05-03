@@ -33,6 +33,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.GroupComboBox = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.exportButton = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.endDatePicker = new System.Windows.Forms.DateTimePicker();
             this.loadBtn = new System.Windows.Forms.Button();
@@ -44,7 +45,6 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.selisihPrediksiGridView = new System.Windows.Forms.DataGridView();
-            this.exportButton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.realisasiGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.approvalGridView)).BeginInit();
@@ -102,6 +102,16 @@
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Controls";
+            // 
+            // exportButton
+            // 
+            this.exportButton.Location = new System.Drawing.Point(771, 38);
+            this.exportButton.Name = "exportButton";
+            this.exportButton.Size = new System.Drawing.Size(75, 23);
+            this.exportButton.TabIndex = 8;
+            this.exportButton.Text = "Export";
+            this.exportButton.UseVisualStyleBackColor = true;
+            this.exportButton.Click += new System.EventHandler(this.button1_Click);
             // 
             // label5
             // 
@@ -185,9 +195,9 @@
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(9, 281);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(77, 13);
+            this.label7.Size = new System.Drawing.Size(179, 13);
             this.label7.TabIndex = 14;
-            this.label7.Text = "Selisih Prediksi";
+            this.label7.Text = "Selisih Prediksi (Approval - Realisasi)";
             // 
             // selisihPrediksiGridView
             // 
@@ -197,22 +207,12 @@
             this.selisihPrediksiGridView.Size = new System.Drawing.Size(1098, 160);
             this.selisihPrediksiGridView.TabIndex = 13;
             // 
-            // exportButton
-            // 
-            this.exportButton.Location = new System.Drawing.Point(771, 38);
-            this.exportButton.Name = "exportButton";
-            this.exportButton.Size = new System.Drawing.Size(75, 23);
-            this.exportButton.TabIndex = 8;
-            this.exportButton.Text = "Export";
-            this.exportButton.UseVisualStyleBackColor = true;
-            this.exportButton.Click += new System.EventHandler(this.button1_Click);
-            // 
             // AkurasiPrediksiForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(1142, 468);
+            this.ClientSize = new System.Drawing.Size(1159, 468);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.selisihPrediksiGridView);
             this.Controls.Add(this.label6);
