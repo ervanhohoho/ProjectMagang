@@ -274,6 +274,7 @@
             // 
             // cartesianChart7
             // 
+            this.cartesianChart7.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.cartesianChart7.Location = new System.Drawing.Point(6, 63);
             this.cartesianChart7.Name = "cartesianChart7";
             this.cartesianChart7.Size = new System.Drawing.Size(1020, 326);

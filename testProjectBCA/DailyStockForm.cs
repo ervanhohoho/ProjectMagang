@@ -20,7 +20,7 @@ namespace testProjectBCA
         List<DailyStockDisplay> listTb = new List<DailyStockDisplay>();
         DateTime minTanggal = new DateTime();
         DateTime maxTanggal = new DateTime();
-
+        int jumlahvendor;
         public DailyStockForm()
         {
 
@@ -78,15 +78,11 @@ namespace testProjectBCA
             listPkt = new List<string>();
             foreach (var temp in tempListPkt)
             {
-                if (temp.Contains(" "))
-                {
-                    listPkt.Add(temp.Substring(0, temp.IndexOf(" ")));
-                }
-                else
-                {
-                    listPkt.Add(temp);
-                }
+                
+                listPkt.Add(temp);
+                
             }
+            jumlahvendor = listPkt.Count;
             listPkt.Add("All Vendor");
             comboPkt.DataSource = listPkt;
         }
@@ -119,12 +115,13 @@ namespace testProjectBCA
                            + ", ISNULL(SUM(CN100),0)"
                            + ", ISNULL(SUM(CN50),0)"
                            + ", ISNULL(SUM(CN25),0)"
+                           + ", p.kodePkt"
                            + " FROM DailyStock d"
                            + " JOIN Pkt p ON p.kodePkt = d.kodePkt"
                            + " AND [in/out] LIKE 'IN'"
                            + " AND YEAR(tanggal) = " + tahun
                            + " AND MONTH(tanggal) BETWEEN " + bulanAwal + " AND " + bulanAkhir
-                           + " GROUP BY tanggal";
+                           + " GROUP BY tanggal, p.kodePkt";
             using (SqlConnection sql = new SqlConnection(Variables.connectionString))
             {
                 using (SqlCommand cmd = new SqlCommand())
@@ -155,8 +152,8 @@ namespace testProjectBCA
                             CN50 = (Int64)reader[15],
                             CN25 = (Int64)reader[16],
                             INOUT = "IN",
-                            KETERANGAN = "TOTAL"
-
+                            KETERANGAN = "TOTAL",
+                            kodePkt = reader[17].ToString()
                         });
                     }
                 }
@@ -188,12 +185,13 @@ namespace testProjectBCA
                            + ", ISNULL(SUM(CN100),0)"
                            + ", ISNULL(SUM(CN50),0)"
                            + ", ISNULL(SUM(CN25),0)"
+                           + ", p.kodePkt"
                            + " FROM DailyStock d"
                            + " JOIN Pkt p ON p.kodePkt = d.kodePkt"
                            + " AND [in/out] LIKE 'OUT'"
                            + " AND YEAR(tanggal) = " + tahun
                            + " AND MONTH(tanggal) BETWEEN " + bulanAwal + " AND " + bulanAkhir
-                           + " GROUP BY tanggal";
+                           + " GROUP BY tanggal, p.kodePkt";
 
             using (SqlConnection sql = new SqlConnection(Variables.connectionString))
             {
@@ -225,7 +223,8 @@ namespace testProjectBCA
                             CN50 = (Int64)reader[15],
                             CN25 = (Int64)reader[16],
                             INOUT = "OUT",
-                            KETERANGAN = "TOTAL"
+                            KETERANGAN = "TOTAL",
+                            kodePkt = reader[17].ToString()
 
                         });
                     }
@@ -252,12 +251,13 @@ namespace testProjectBCA
                            + ", ISNULL(SUM(CN100),0)"
                            + ", ISNULL(SUM(CN50),0)"
                            + ", ISNULL(SUM(CN25),0)"
+                           + ", p.kodePkt"
                            + " FROM DailyStock d"
                            + " JOIN Pkt p ON p.kodePkt = d.kodePkt"
                            + " AND jenisTransaksi like '%" + jenisTransaksi + "'"
                            + " AND YEAR(tanggal) = " + tahun
                            + " AND MONTH(tanggal) BETWEEN " + bulanAwal + " AND " + bulanAkhir
-                           + " GROUP BY tanggal";
+                           + " GROUP BY tanggal, p.kodePkt";
             return query;
         }
 
@@ -285,13 +285,14 @@ namespace testProjectBCA
                            + ", ISNULL(SUM(CN100),0)"
                            + ", ISNULL(SUM(CN50),0)"
                            + ", ISNULL(SUM(CN25),0)"
+                           + ", p.kodePkt"
                            + " FROM DailyStock d"
                            + " JOIN Pkt p ON p.kodePkt = d.kodePkt"
                            + " WHERE vendor = '" + listPkt[comboPkt.SelectedIndex] + "'"
                            + " AND [in/out] LIKE 'OUT'"
                            + " AND YEAR(tanggal) = " + tahun
                            + " AND MONTH(tanggal) BETWEEN " + bulanAwal + " AND " + bulanAkhir
-                           + " GROUP BY tanggal";
+                           + " GROUP BY tanggal, p.kodePkt";
 
             using (SqlConnection sql = new SqlConnection(Variables.connectionString))
             {
@@ -323,8 +324,8 @@ namespace testProjectBCA
                             CN50 = (Int64)reader[15],
                             CN25 = (Int64)reader[16],
                             INOUT = "OUT",
-                            KETERANGAN = "TOTAL"
-
+                            KETERANGAN = "TOTAL",
+                            kodePkt = reader[17].ToString()
                         });
                     }
                 }
@@ -354,13 +355,14 @@ namespace testProjectBCA
                            + ", ISNULL(SUM(CN100),0)"
                            + ", ISNULL(SUM(CN50),0)"
                            + ", ISNULL(SUM(CN25),0)"
+                           + ", p.kodePkt"
                            + " FROM DailyStock d"
                            + " JOIN Pkt p ON p.kodePkt = d.kodePkt"
                            + " WHERE vendor = '" + listPkt[comboPkt.SelectedIndex] + "'"
                            + " AND [in/out] LIKE 'IN'"
                            + " AND YEAR(tanggal) = " + tahun
                            + " AND MONTH(tanggal) BETWEEN " + bulanAwal + " AND " + bulanAkhir
-                           + " GROUP BY tanggal";
+                           + " GROUP BY tanggal, p.kodePkt";
             using (SqlConnection sql = new SqlConnection(Variables.connectionString))
             {
                 using (SqlCommand cmd = new SqlCommand())
@@ -391,7 +393,8 @@ namespace testProjectBCA
                             CN50 = (Int64)reader[15],
                             CN25 = (Int64)reader[16],
                             INOUT = "IN",
-                            KETERANGAN = "TOTAL"
+                            KETERANGAN = "TOTAL",
+                            kodePkt = reader[17].ToString()
 
                         });
                     }
@@ -486,7 +489,8 @@ namespace testProjectBCA
                                 CN50 = (Int64)reader[15],
                                 CN25 = (Int64)reader[16],
                                 INOUT = "IN",
-                                KETERANGAN = item.ToString()
+                                KETERANGAN = item.ToString(),
+                                kodePkt = reader[17].ToString()
                             });
                         }
                     }
@@ -578,7 +582,8 @@ namespace testProjectBCA
                                 CN50 = (Int64)reader[15],
                                 CN25 = (Int64)reader[16],
                                 INOUT = "OUT",
-                                KETERANGAN = item.ToString()
+                                KETERANGAN = item.ToString(),
+                                kodePkt = reader[17].ToString()
                             });
                         }
                     }
@@ -674,7 +679,8 @@ namespace testProjectBCA
                                 CN50 = (Int64)reader[15],
                                 CN25 = (Int64)reader[16],
                                 INOUT = "IN",
-                                KETERANGAN = item.ToString()
+                                KETERANGAN = item.ToString(),
+                                kodePkt = reader[17].ToString()
                             });
                         }
                     }
@@ -766,7 +772,8 @@ namespace testProjectBCA
                                 CN50 = (Int64)reader[15],
                                 CN25 = (Int64)reader[16],
                                 INOUT = "OUT",
-                                KETERANGAN = item.ToString()
+                                KETERANGAN = item.ToString(),
+                                kodePkt = reader[17].ToString()
                             });
                         }
                     }
@@ -793,13 +800,14 @@ namespace testProjectBCA
                            + ", ISNULL(SUM(CN100),0)"
                            + ", ISNULL(SUM(CN50),0)"
                            + ", ISNULL(SUM(CN25),0)"
+                           + ", p.kodePkt"
                            + " FROM DailyStock d"
                            + " JOIN Pkt p ON p.kodePkt = d.kodePkt"
                            + " WHERE vendor = '" + listPkt[comboPkt.SelectedIndex] + "'"
                            + " AND jenisTransaksi like '%" + jenisTransaksi + "'"
                            + " AND YEAR(tanggal) = " + tahun
                            + " AND MONTH(tanggal) BETWEEN " + bulanAwal + " AND " + bulanAkhir
-                           + " GROUP BY tanggal";
+                           + " GROUP BY tanggal, p.kodePkt";
             return query;
         }
         private void comboJenisTampilan_SelectionChangeCommitted(object sender, EventArgs e)
@@ -836,7 +844,7 @@ namespace testProjectBCA
         {
             if (comboJenisTampilan.SelectedIndex == 0)
             {
-                if (comboPkt.SelectedIndex == 5)
+                if (comboPkt.SelectedIndex == jumlahvendor)
                 {
                     loadAllin();
                 }
@@ -850,7 +858,7 @@ namespace testProjectBCA
             if (comboJenisTampilan.SelectedIndex == 1)
 
             {
-                if (comboPkt.SelectedIndex == 5)
+                if (comboPkt.SelectedIndex == jumlahvendor)
                 {
                     loadAllout();
                 }
@@ -861,7 +869,7 @@ namespace testProjectBCA
             }
             if (comboJenisTampilan.SelectedIndex == 2)
             {
-                if (comboPkt.SelectedIndex == 5)
+                if (comboPkt.SelectedIndex == jumlahvendor)
                 {
                     loadCustomALL();
                 }
@@ -934,9 +942,26 @@ namespace testProjectBCA
             // Select all the cells
             dataGridView1.SelectAll();
             // Copy selected cells to DataObject
+            for(int a=4;a<dataGridView1.Columns.Count;a++)
+            {
+                dataGridView1.Columns[a].DefaultCellStyle.Format = "";
+                //for(int b=0;b<dataGridView1.Rows.Count;b++)
+                //{
+                //    dataGridView1.Rows[b].Cells[a].Value = (Int64)dataGridView1.Rows[b].Cells[a].Value;
+                //}
+            }
+
             DataObject dataObject = dataGridView1.GetClipboardContent();
             // Get the text of the DataObject, and serialize it to a file
             File.WriteAllText(filename, dataObject.GetText(TextDataFormat.CommaSeparatedValue));
+            for (int a = 4; a < dataGridView1.Columns.Count; a++)
+            {
+                dataGridView1.Columns[a].DefaultCellStyle.Format = "C";
+                //for(int b=0;b<dataGridView1.Rows.Count;b++)
+                //{
+                //    dataGridView1.Rows[b].Cells[a].Value = (Int64)dataGridView1.Rows[b].Cells[a].Value;
+                //}
+            }
         }
 
         private void saveFileDialog1_FileOk(object sender, CancelEventArgs e)
@@ -950,7 +975,9 @@ namespace testProjectBCA
             sv.Filter = Variables.csvFilter;
             if (sv.ShowDialog() == DialogResult.OK)
             {
+                loadForm.ShowSplashScreen();
                 SaveDataGridViewToCSV(sv.FileName);
+                loadForm.CloseForm();
             }
         }
     }
@@ -958,6 +985,7 @@ namespace testProjectBCA
 class DailyStockDisplay
 {
     public DateTime TANGGAL { set; get; }
+    public String kodePkt { set; get; }
     public String INOUT { set; get; }
     public String KETERANGAN { set; get; }
     public Int64 BN100K { get; set; }

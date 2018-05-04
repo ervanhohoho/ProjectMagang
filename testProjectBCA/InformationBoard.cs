@@ -43,7 +43,8 @@ namespace testProjectBCA
         List<Denom> prediksiIsiAtm;//dalem class denom ada 100,50,20
         List<Denom> prediksiIsiAtmDenganStdDeviasi = new List<Denom>();
         List<Rasio> listRasio = new List<Rasio>();
-        
+
+        List<DateTime> tanggalSkip;
         int pktIndex;
         DateTime tanggalOptiMin ,tanggalOptiMax, tanggalKalenderMax; 
         /**
@@ -1815,6 +1816,19 @@ namespace testProjectBCA
                 rekomendasiBon.Add(tempRekomendasiBon);
                 //counter++;
             }
+            for(int a = rekomendasiBon.Count-1;a>0;a--)
+            {
+                if(tanggalSkip.Contains(rekomendasiBon[a].tgl))
+                {
+                    rekomendasiBon[a - 1].d100 += rekomendasiBon[a].d100;
+                    rekomendasiBon[a - 1].d50 += rekomendasiBon[a].d50;
+                    rekomendasiBon[a - 1].d20 += rekomendasiBon[a].d20;
+
+                    rekomendasiBon[a].d100 = 0;
+                    rekomendasiBon[a].d50 = 0;
+                    rekomendasiBon[a].d20 = 0;
+                }
+            }
             Console.WriteLine("Rekomendasi Bon");
             foreach(var temp in rekomendasiBon)
             {
@@ -2208,6 +2222,19 @@ namespace testProjectBCA
             if (!flag20rasiounder && !flag50rasiounder && !flag100rasiounder)
             {
                 rekomendasiBon = rekomendasiBonE2E;
+            }
+            for (int a = rekomendasiBon.Count - 1; a > 0; a--)
+            {
+                if (tanggalSkip.Contains(rekomendasiBon[a].tgl))
+                {
+                    rekomendasiBon[a - 1].d100 += rekomendasiBon[a].d100;
+                    rekomendasiBon[a - 1].d50 += rekomendasiBon[a].d50;
+                    rekomendasiBon[a - 1].d20 += rekomendasiBon[a].d20;
+
+                    rekomendasiBon[a].d100 = 0;
+                    rekomendasiBon[a].d50 = 0;
+                    rekomendasiBon[a].d20 = 0;
+                }
             }
         }
         void loadTableRekomendasiBon()
@@ -2671,10 +2698,31 @@ namespace testProjectBCA
             bonYangSudahDisetujuiGridView.Columns["50"].DefaultCellStyle.Format = "n0";
             bonYangSudahDisetujuiGridView.Columns["20"].DefaultCellStyle.Format = "n0";
         }
+
+        void loadCheckedDariSkipPrediksiTreeView()
+        {
+            tanggalSkip = new List<DateTime>();
+            for(int a=0;a<skipPrediksiTreeView.Nodes.Count;a++)
+            {
+                for(int b=0;b<skipPrediksiTreeView.Nodes[a].Nodes.Count;b++)
+                {
+                    for(int c = 0;c < skipPrediksiTreeView.Nodes[a].Nodes[b].Nodes.Count;c++)
+                    {
+                        if (skipPrediksiTreeView.Nodes[a].Nodes[b].Nodes[c].Checked == true)
+                            tanggalSkip.Add(new DateTime(Int32.Parse(skipPrediksiTreeView.Nodes[a].Text), Int32.Parse(skipPrediksiTreeView.Nodes[a].Nodes[b].Text), Int32.Parse(skipPrediksiTreeView.Nodes[a].Nodes[b].Nodes[c].Text)));
+                    }
+                }
+            }
+            foreach(var temp in tanggalSkip)
+            {
+                Console.WriteLine(temp);
+            }
+        }
         private void loadPrediksiBtn_Click(object sender, EventArgs e)
         {
             Double buf;
             loadPrediksiOpti();
+            loadCheckedDariSkipPrediksiTreeView();
             tanggalOptiMax = tanggalPrediksiMaxPicker.Value.Date;
             tanggalOptiMin = DateTime.Today.Date;
             if (tanggalKalenderMax < tanggalOptiMax)
@@ -3156,6 +3204,131 @@ namespace testProjectBCA
             sumLabel.Text += "Rp. ";
             sumLabel.Text += sum.ToString("#,##0");
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void tanggalPrediksiMaxPicker_ValueChanged(object sender, EventArgs e)
+        {
+            skipPrediksiTreeView.CheckBoxes = true;
+            Console.WriteLine(skipPrediksiTreeView.GetNodeCount(false));
+            skipPrediksiTreeView.Nodes.Clear();
+            for (int year = DateTime.Today.Year; year <= tanggalPrediksiMaxPicker.Value.Year; year++)
+            {
+                skipPrediksiTreeView.Nodes.Add(year.ToString());
+                if (year == DateTime.Today.Year)
+                    loadMonthNodes(year, true);
+                else
+                    loadMonthNodes(year, false);
+            }
+        }
+    
+        void loadMonthNodes(int year, bool first)
+        {
+            if (year < tanggalPrediksiMaxPicker.Value.Year)
+            {
+                int fmonth = DateTime.Today.Month;
+                if (!first)
+                    fmonth = 1;
+                for (int month = fmonth; month <= 12; month++)
+                {
+                    skipPrediksiTreeView.Nodes[year - DateTime.Today.Year].Nodes.Add(month.ToString());
+                    if (DateTime.Today.Month == month && DateTime.Today.Year == year)
+                        loadDayNodes(year, month, true, true);
+                    else if(DateTime.Today.Year == year)
+                        loadDayNodes(year, month, false ,true);
+                    else
+                        loadDayNodes(year, month, false, false);
+                }
+            }
+            else
+            {
+                int fmonth = DateTime.Today.Month;
+                if (!first)
+                    fmonth = 1;
+                for (int month = fmonth; month <= tanggalPrediksiMaxPicker.Value.Month; month++)
+                {
+                    skipPrediksiTreeView.Nodes[year - DateTime.Today.Year].Nodes.Add(month.ToString());
+                    if (DateTime.Today.Month == month && DateTime.Today.Year == year)
+                        loadDayNodes(year, month, true, true);
+                    else if (DateTime.Today.Year == year)
+                        loadDayNodes(year, month, false, true);
+                    else
+                        loadDayNodes(year, month, false, false);
+                }
+            }
+        }
+        void loadDayNodes(int year, int month, bool todayMonth, bool todayYear)
+        {
+            
+                if (year < tanggalPrediksiMaxPicker.Value.Year)
+                {
+                    int fday = DateTime.Today.Day;
+                    if (!todayMonth || !todayYear)
+                        fday = 1;
+                    for (int day = fday; day <= DateTime.DaysInMonth(year, month); day++)
+                    {
+                        skipPrediksiTreeView.Nodes[year - DateTime.Today.Year].Nodes[month - DateTime.Today.Month].Nodes.Add(day.ToString());
+                    }
+                }
+                else
+                {
+                    if (year == DateTime.Today.Year)
+                    {
+                        if (month < tanggalPrediksiMaxPicker.Value.Month)
+                        {
+                            int fday = DateTime.Today.Day;
+                            if (!todayMonth || !todayYear)
+                                fday = 1;
+                            for (int day = fday; day <= DateTime.DaysInMonth(year, month); day++)
+                            {
+                                skipPrediksiTreeView.Nodes[year - DateTime.Today.Year].Nodes[month - DateTime.Today.Month].Nodes.Add(day.ToString());
+                            }
+                        }
+                        else
+                        {
+                            int fday = DateTime.Today.Day;
+                            if (!todayMonth || !todayYear)
+                                fday = 1;
+                            for (int day = fday; day <= tanggalPrediksiMaxPicker.Value.Day; day++)
+                            {
+                                skipPrediksiTreeView.Nodes[year - DateTime.Today.Year].Nodes[month - DateTime.Today.Month].Nodes.Add(day.ToString());
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (month < tanggalPrediksiMaxPicker.Value.Month)
+                        {
+                            int fday = DateTime.Today.Day;
+                            if (!todayMonth || !todayYear)
+                                fday = 1;
+                            for (int day = fday; day <= DateTime.DaysInMonth(year, month); day++)
+                            {
+                                skipPrediksiTreeView.Nodes[year - DateTime.Today.Year].Nodes[month - 1].Nodes.Add(day.ToString());
+                            }
+                        }
+                        else
+                        {
+                            int fday = DateTime.Today.Day;
+                            if (!todayMonth || !todayYear)
+                                fday = 1;
+                            for (int day = fday; day <= tanggalPrediksiMaxPicker.Value.Day; day++)
+                            {
+                                skipPrediksiTreeView.Nodes[year - DateTime.Today.Year].Nodes[month - 1].Nodes.Add(day.ToString());
+                            }
+                        }
+                    }
+                }
+           
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            loadCheckedDariSkipPrediksiTreeView();
+        }
+
         private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
         {
             e.Handled = !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar) && !char.IsPunctuation(e.KeyChar);

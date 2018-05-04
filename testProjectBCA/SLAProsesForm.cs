@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -16,9 +17,10 @@ namespace testProjectBCA
     public partial class SLAProsesForm : Form
     {
         Database1Entities db = new Database1Entities();
-
+        List<slaProsesDisplay> sla;
         List<String> tahun1 = new List<String>();
         List<String> tahun2 = new List<String>();
+        int jumlahPkt;
         public SLAProsesForm()
         {
             InitializeComponent();
@@ -56,7 +58,10 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "SELECT DISTINCT[Tahun] = YEAR(tanggal) FROM DailyStock ds JOIN Pkt ON ds.kodePkt = Pkt.kodePkt WHERE namaPkt = '"+comboNamaPkt.SelectedValue.ToString()+"' ORDER BY Tahun";
+                    if(comboNamaPkt.SelectedIndex<jumlahPkt)
+                        cmd.CommandText = "SELECT DISTINCT[Tahun] = YEAR(tanggal) FROM DailyStock ds JOIN Pkt ON ds.kodePkt = Pkt.kodePkt WHERE namaPkt = '"+comboNamaPkt.SelectedValue.ToString()+"' ORDER BY Tahun";
+                    else
+                        cmd.CommandText = "SELECT DISTINCT[Tahun] = YEAR(tanggal) FROM DailyStock ds JOIN Pkt ON ds.kodePkt = Pkt.kodePkt ORDER BY Tahun";
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
@@ -75,7 +80,10 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "SELECT DISTINCT[Tahun] = YEAR(tanggal) FROM DailyStock ds JOIN Pkt ON ds.kodePkt = Pkt.kodePkt WHERE namaPkt = '" + comboNamaPkt.SelectedValue.ToString() + "' ORDER BY Tahun";
+                    if (comboNamaPkt.SelectedIndex < jumlahPkt)
+                        cmd.CommandText = "SELECT DISTINCT[Tahun] = YEAR(tanggal) FROM DailyStock ds JOIN Pkt ON ds.kodePkt = Pkt.kodePkt WHERE namaPkt = '" + comboNamaPkt.SelectedValue.ToString() + "' ORDER BY Tahun";
+                    else
+                        cmd.CommandText = "SELECT DISTINCT[Tahun] = YEAR(tanggal) FROM DailyStock ds JOIN Pkt ON ds.kodePkt = Pkt.kodePkt ORDER BY Tahun";
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
@@ -94,7 +102,10 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "SELECT DISTINCT [Month] = Month(tanggal) FROM DailyStock ds JOIN Pkt ON ds.kodePkt = Pkt.kodePkt WHERE YEAR(Tanggal) = " + comboTahun1.SelectedValue + " AND namaPkt = '" + comboNamaPkt.SelectedValue.ToString() + "' ORDER BY [Month]";
+                    if (comboNamaPkt.SelectedIndex < jumlahPkt)
+                        cmd.CommandText = "SELECT DISTINCT [Month] = Month(tanggal) FROM DailyStock ds JOIN Pkt ON ds.kodePkt = Pkt.kodePkt WHERE YEAR(Tanggal) = " + comboTahun1.SelectedValue + " AND namaPkt = '" + comboNamaPkt.SelectedValue.ToString() + "' ORDER BY [Month]";
+                    else
+                        cmd.CommandText = "SELECT DISTINCT [Month] = Month(tanggal) FROM DailyStock ds JOIN Pkt ON ds.kodePkt = Pkt.kodePkt WHERE YEAR(Tanggal) = " + comboTahun1.SelectedValue + " ORDER BY [Month]";
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
@@ -107,13 +118,17 @@ namespace testProjectBCA
         void loadComboBulan2()
         {
             List<String> bulan2 = new List<String>();
+            
             using (SqlConnection sql = new SqlConnection(Variables.connectionString))
             {
                 using (SqlCommand cmd = new SqlCommand())
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "SELECT DISTINCT[Tahun] = Month(tanggal) FROM DailyStock ds JOIN Pkt ON ds.kodePkt = Pkt.kodePkt WHERE YEAR(Tanggal) = " + comboTahun2.SelectedValue + " AND namaPkt = '"+ comboNamaPkt.SelectedValue.ToString() + "' ORDER BY Tahun";
+                    if (comboNamaPkt.SelectedIndex < jumlahPkt)
+                        cmd.CommandText = "SELECT DISTINCT[Tahun] = Month(tanggal) FROM DailyStock ds JOIN Pkt ON ds.kodePkt = Pkt.kodePkt WHERE YEAR(Tanggal) = " + comboTahun2.SelectedValue + " AND namaPkt = '"+ comboNamaPkt.SelectedValue.ToString() + "' ORDER BY Tahun";
+                    else
+                        cmd.CommandText = "SELECT DISTINCT[Tahun] = Month(tanggal) FROM DailyStock ds JOIN Pkt ON ds.kodePkt = Pkt.kodePkt WHERE YEAR(Tanggal) = " + comboTahun2.SelectedValue + " ORDER BY Tahun";
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
@@ -125,13 +140,15 @@ namespace testProjectBCA
         }
         void loadComboPkt()
         {
-            List<String>listPkt = (from x in db.Pkts select x.namaPkt).ToList();
+            List<String>listPkt = (from x in db.Pkts where x.kanwil.ToLower().Contains("JABO") select x.namaPkt).ToList();
+            jumlahPkt = listPkt.Count;
+            listPkt.Add("All Vendor(JABO)");
             comboNamaPkt.DataSource = listPkt;
         }
         public void reloadData()
         {
 
-            List<slaProsesDisplay> sla = new List<slaProsesDisplay>();
+            sla = new List<slaProsesDisplay>();
             //using (SqlConnection sql = new SqlConnection(Variables.connectionString))
             //{
             //    using (SqlCommand cmd = new SqlCommand())
@@ -149,8 +166,10 @@ namespace testProjectBCA
             //        }
             //    }
             //}
-         
-            List<DailyStock> listData = (from x in db.DailyStocks.AsEnumerable()
+
+            List<DailyStock> listData;
+            if(comboNamaPkt.SelectedIndex<jumlahPkt)
+                listData= (from x in db.DailyStocks.AsEnumerable()
                                          join y in db.Pkts on x.kodePkt equals y.kodePkt
                                          where ((DateTime)x.tanggal).Month >= Int32.Parse(comboBulan1.SelectedValue.ToString()) 
                                          &&((DateTime)x.tanggal).Year >= Int32.Parse(comboTahun1.SelectedValue.ToString())
@@ -158,6 +177,14 @@ namespace testProjectBCA
                                          &&((DateTime)x.tanggal).Year <= Int32.Parse(comboTahun2.SelectedValue.ToString())
                                          && y.namaPkt == comboNamaPkt.SelectedValue.ToString()
                                          select x).ToList();
+            else
+                listData = (from x in db.DailyStocks.AsEnumerable()
+                            join y in db.Pkts on x.kodePkt equals y.kodePkt
+                            where ((DateTime)x.tanggal).Month >= Int32.Parse(comboBulan1.SelectedValue.ToString())
+                            && ((DateTime)x.tanggal).Year >= Int32.Parse(comboTahun1.SelectedValue.ToString())
+                            && ((DateTime)x.tanggal).Month <= Int32.Parse(comboBulan2.SelectedValue.ToString())
+                            && ((DateTime)x.tanggal).Year <= Int32.Parse(comboTahun2.SelectedValue.ToString())
+                            select x).ToList();
 
             for (int thn = Int32.Parse(comboTahun1.SelectedValue.ToString()); thn <= Int32.Parse(comboTahun2.SelectedValue.ToString()); thn++)
             {
@@ -213,8 +240,8 @@ namespace testProjectBCA
                             inCabangUangKecil = inCabangKecil,
                             inRetailUangBesar = inRetailBesar,
                             inRetailUangKecil = inRetailKecil,
-                            persenProsesUangBesar = 0,
-                            persenProsesUangKecil = 0,
+                            slaProsesBesar = 0,
+                            slaProsesKecil = 0,
                             totalProsesUangBesar = 0,
                             totalProsesUangKecil = 0
                         });
@@ -249,18 +276,54 @@ namespace testProjectBCA
                     sla[i].totalProsesUangKecil = sla[i].unprocUangKecil + sla[i].inCabangUangKecil + sla[i].inRetailUangKecil - sla[i + 1].unprocUangKecil;
                 }
                 if (sla[i].unprocUangBesar + sla[i].inCabangUangBesar + sla[i].inRetailUangBesar != 0)
-                    sla[i].persenProsesUangBesar = sla[i].totalProsesUangBesar / (sla[i].unprocUangBesar + sla[i].inCabangUangBesar + sla[i].inRetailUangBesar);
+                    sla[i].slaProsesBesar = sla[i].totalProsesUangBesar / (sla[i].unprocUangBesar + sla[i].inCabangUangBesar + sla[i].inRetailUangBesar);
                 if (sla[i].unprocUangKecil + sla[i].inCabangUangKecil + sla[i].inRetailUangKecil != 0)
-                    sla[i].persenProsesUangKecil = sla[i].totalProsesUangKecil / (sla[i].unprocUangKecil + sla[i].inCabangUangKecil + sla[i].inRetailUangKecil);
+                    sla[i].slaProsesKecil = sla[i].totalProsesUangKecil / (sla[i].unprocUangKecil + (sla[i].inCabangUangKecil/2) + sla[i].inRetailUangKecil);
             }
+
+            slaProsesDisplay avg = new slaProsesDisplay()
+            {
+                tanggal = new DateTime(1, 1, 1),
+                inCabangUangBesar = (Int64)Math.Round(sla.Average(x => x.inCabangUangBesar), 0),
+                inCabangUangKecil = (Int64)Math.Round(sla.Average(x => x.inCabangUangKecil), 0),
+                inRetailUangBesar = (Int64)Math.Round(sla.Average(x => x.inRetailUangBesar), 0),
+                inRetailUangKecil = (Int64)Math.Round(sla.Average(x => x.inRetailUangKecil), 0),
+                unprocUangBesar = (Int64)Math.Round(sla.Average(x => x.unprocUangBesar), 0),
+                unprocUangKecil = (Int64)Math.Round(sla.Average(x => x.unprocUangKecil), 0),
+                totalProsesUangBesar = (Int64)Math.Round(sla.Average(x => x.totalProsesUangBesar), 0),
+                totalProsesUangKecil = (Int64)Math.Round(sla.Average(x => x.totalProsesUangKecil), 0),
+                slaProsesBesar = sla.Average(x => x.slaProsesBesar),
+                slaProsesKecil = sla.Average(x => x.slaProsesKecil)
+            };
+            slaProsesDisplay sum = new slaProsesDisplay()
+            {
+                tanggal = new DateTime(1, 1, 1),
+                inCabangUangBesar = (Int64)sla.Sum(x => x.inCabangUangBesar),
+                inCabangUangKecil = (Int64)sla.Sum(x => x.inCabangUangKecil),
+                inRetailUangBesar = (Int64)sla.Sum(x => x.inRetailUangBesar),
+                inRetailUangKecil = (Int64)sla.Sum(x => x.inRetailUangKecil),
+                unprocUangBesar = (Int64)sla.Sum(x => x.unprocUangBesar),
+                unprocUangKecil = (Int64)sla.Sum(x => x.unprocUangKecil),
+                totalProsesUangBesar = (Int64)sla.Sum(x => x.totalProsesUangBesar),
+                totalProsesUangKecil = (Int64)sla.Sum(x => x.totalProsesUangKecil),
+                slaProsesBesar = 0,
+                slaProsesKecil = 0
+            };
+
+            sla.Add(sum);
+            sla.Add(avg);
+
             dataGridView1.DataSource = sla;
-            for(int a=1;a<dataGridView1.Columns.Count-2; a++)
+            for (int a = 1; a < dataGridView1.Columns.Count - 2; a++)
             {
                 dataGridView1.Columns[a].DefaultCellStyle.Format = "N0";
                 dataGridView1.Columns[a].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
             }
             dataGridView1.Columns[dataGridView1.Columns.Count - 2].DefaultCellStyle.Format = "0.%";
             dataGridView1.Columns[dataGridView1.Columns.Count - 1].DefaultCellStyle.Format = "0.%";
+
+            dataGridView1.Rows[dataGridView1.Rows.Count - 1].DefaultCellStyle.BackColor = Color.LightSkyBlue;
+            dataGridView1.Rows[dataGridView1.Rows.Count - 2].DefaultCellStyle.BackColor = Color.LightGreen;
         }
         class slaProsesDisplay
         {
@@ -273,9 +336,9 @@ namespace testProjectBCA
             public Int64 inRetailUangKecil { set; get; }
             public Int64 totalProsesUangBesar { set; get; }
             public Int64 totalProsesUangKecil { set; get; }
-            public Double persenProsesUangBesar { set; get; }
-            public Double persenProsesUangKecil { set; get; }
-
+            public Double slaProsesBesar { set; get; }
+            public Double slaProsesKecil { set; get; }
+            public Double slaGabung { set; get; }
         }
 
         private void comboTahun1_SelectionChangeCommitted(object sender, EventArgs e)
@@ -297,6 +360,17 @@ namespace testProjectBCA
         {
             //Console.WriteLine(comboNamaPkt.SelectedIndex);
             initCombos();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sv = new SaveFileDialog();
+            sv.Filter = Variables.csvFilter;
+            if(sv.ShowDialog() == DialogResult.OK)
+            {
+                String csv = ServiceStack.Text.CsvSerializer.SerializeToString(sla);
+                File.WriteAllText(sv.FileName, csv);
+            }
         }
     }
 }

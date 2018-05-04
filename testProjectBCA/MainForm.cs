@@ -655,6 +655,11 @@ namespace testProjectBCA
             inf.MdiParent = this;
             inf.Show();
         }
+
+        private void adminToolsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 public static class SqlBulkCopyExtensions

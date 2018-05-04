@@ -49,6 +49,7 @@
             this.rekomendasiAdhoc20Lbl = new System.Windows.Forms.Label();
             this.bonGridView = new System.Windows.Forms.DataGridView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.skipPrediksiTreeView = new System.Windows.Forms.TreeView();
             this.sumLabel = new System.Windows.Forms.Label();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.label20 = new System.Windows.Forms.Label();
@@ -98,6 +99,7 @@
             this.label25 = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
             this.tanggalPrediksiMaxPicker = new System.Windows.Forms.DateTimePicker();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.rekomendasiBonGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bonGridView)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -123,7 +125,7 @@
             // 
             // rasio100Txt
             // 
-            this.rasio100Txt.Location = new System.Drawing.Point(272, 35);
+            this.rasio100Txt.Location = new System.Drawing.Point(372, 38);
             this.rasio100Txt.Name = "rasio100Txt";
             this.rasio100Txt.Size = new System.Drawing.Size(150, 20);
             this.rasio100Txt.TabIndex = 2;
@@ -132,7 +134,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(175, 38);
+            this.label1.Location = new System.Drawing.Point(277, 41);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(89, 13);
             this.label1.TabIndex = 3;
@@ -152,7 +154,7 @@
             this.treeView1.CheckBoxes = true;
             this.treeView1.Location = new System.Drawing.Point(8, 38);
             this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(147, 201);
+            this.treeView1.Size = new System.Drawing.Size(105, 187);
             this.treeView1.TabIndex = 1;
             this.treeView1.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterCheck);
             this.treeView1.ParentChanged += new System.EventHandler(this.treeView1_ParentChanged);
@@ -160,9 +162,9 @@
             // loadPrediksiBtn
             // 
             this.loadPrediksiBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.loadPrediksiBtn.Location = new System.Drawing.Point(272, 181);
+            this.loadPrediksiBtn.Location = new System.Drawing.Point(280, 182);
             this.loadPrediksiBtn.Name = "loadPrediksiBtn";
-            this.loadPrediksiBtn.Size = new System.Drawing.Size(150, 23);
+            this.loadPrediksiBtn.Size = new System.Drawing.Size(242, 23);
             this.loadPrediksiBtn.TabIndex = 5;
             this.loadPrediksiBtn.Text = "Load Prediksi";
             this.loadPrediksiBtn.UseVisualStyleBackColor = true;
@@ -175,7 +177,7 @@
             this.rekomendasiBonGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.rekomendasiBonGridView.BackgroundColor = System.Drawing.SystemColors.Info;
             this.rekomendasiBonGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.rekomendasiBonGridView.Location = new System.Drawing.Point(465, 38);
+            this.rekomendasiBonGridView.Location = new System.Drawing.Point(917, 32);
             this.rekomendasiBonGridView.Name = "rekomendasiBonGridView";
             this.rekomendasiBonGridView.ReadOnly = true;
             this.rekomendasiBonGridView.RowHeadersVisible = false;
@@ -187,7 +189,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(462, 22);
+            this.label4.Location = new System.Drawing.Point(914, 16);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(94, 13);
             this.label4.TabIndex = 9;
@@ -196,7 +198,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(182, 96);
+            this.label5.Location = new System.Drawing.Point(277, 69);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(83, 13);
             this.label5.TabIndex = 11;
@@ -204,7 +206,7 @@
             // 
             // rasio50Txt
             // 
-            this.rasio50Txt.Location = new System.Drawing.Point(271, 69);
+            this.rasio50Txt.Location = new System.Drawing.Point(372, 66);
             this.rasio50Txt.Name = "rasio50Txt";
             this.rasio50Txt.Size = new System.Drawing.Size(150, 20);
             this.rasio50Txt.TabIndex = 3;
@@ -213,7 +215,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(182, 131);
+            this.label6.Location = new System.Drawing.Point(277, 97);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(83, 13);
             this.label6.TabIndex = 13;
@@ -221,7 +223,7 @@
             // 
             // rasio20Txt
             // 
-            this.rasio20Txt.Location = new System.Drawing.Point(271, 104);
+            this.rasio20Txt.Location = new System.Drawing.Point(372, 97);
             this.rasio20Txt.Name = "rasio20Txt";
             this.rasio20Txt.Size = new System.Drawing.Size(150, 20);
             this.rasio20Txt.TabIndex = 4;
@@ -231,7 +233,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(994, 60);
+            this.label7.Location = new System.Drawing.Point(552, 41);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(133, 13);
             this.label7.TabIndex = 14;
@@ -241,7 +243,7 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(994, 92);
+            this.label8.Location = new System.Drawing.Point(552, 73);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(124, 13);
             this.label8.TabIndex = 15;
@@ -251,7 +253,7 @@
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(994, 122);
+            this.label9.Location = new System.Drawing.Point(552, 103);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(124, 13);
             this.label9.TabIndex = 16;
@@ -262,7 +264,7 @@
             this.rekomendasiAdhoc100Lbl.AutoSize = true;
             this.rekomendasiAdhoc100Lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rekomendasiAdhoc100Lbl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.rekomendasiAdhoc100Lbl.Location = new System.Drawing.Point(1128, 60);
+            this.rekomendasiAdhoc100Lbl.Location = new System.Drawing.Point(686, 41);
             this.rekomendasiAdhoc100Lbl.Name = "rekomendasiAdhoc100Lbl";
             this.rekomendasiAdhoc100Lbl.Size = new System.Drawing.Size(11, 13);
             this.rekomendasiAdhoc100Lbl.TabIndex = 17;
@@ -273,7 +275,7 @@
             this.rekomendasiAdhoc50Lbl.AutoSize = true;
             this.rekomendasiAdhoc50Lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rekomendasiAdhoc50Lbl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.rekomendasiAdhoc50Lbl.Location = new System.Drawing.Point(1128, 92);
+            this.rekomendasiAdhoc50Lbl.Location = new System.Drawing.Point(686, 73);
             this.rekomendasiAdhoc50Lbl.Name = "rekomendasiAdhoc50Lbl";
             this.rekomendasiAdhoc50Lbl.Size = new System.Drawing.Size(11, 13);
             this.rekomendasiAdhoc50Lbl.TabIndex = 18;
@@ -284,7 +286,7 @@
             this.rekomendasiAdhoc20Lbl.AutoSize = true;
             this.rekomendasiAdhoc20Lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rekomendasiAdhoc20Lbl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.rekomendasiAdhoc20Lbl.Location = new System.Drawing.Point(1128, 122);
+            this.rekomendasiAdhoc20Lbl.Location = new System.Drawing.Point(686, 103);
             this.rekomendasiAdhoc20Lbl.Name = "rekomendasiAdhoc20Lbl";
             this.rekomendasiAdhoc20Lbl.Size = new System.Drawing.Size(11, 13);
             this.rekomendasiAdhoc20Lbl.TabIndex = 19;
@@ -315,6 +317,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.button1);
+            this.groupBox1.Controls.Add(this.skipPrediksiTreeView);
             this.groupBox1.Controls.Add(this.sumLabel);
             this.groupBox1.Controls.Add(this.statusStrip1);
             this.groupBox1.Controls.Add(this.label20);
@@ -326,7 +330,9 @@
             this.groupBox1.Controls.Add(this.rasio50Txt);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.rasio100Txt);
+            this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.loadPrediksiBtn);
             this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.rasio20Lbl);
@@ -343,6 +349,13 @@
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Informasi";
+            // 
+            // skipPrediksiTreeView
+            // 
+            this.skipPrediksiTreeView.Location = new System.Drawing.Point(129, 38);
+            this.skipPrediksiTreeView.Name = "skipPrediksiTreeView";
+            this.skipPrediksiTreeView.Size = new System.Drawing.Size(142, 187);
+            this.skipPrediksiTreeView.TabIndex = 102;
             // 
             // sumLabel
             // 
@@ -375,7 +388,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(1287, 34);
+            this.label2.Location = new System.Drawing.Point(756, 16);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(34, 13);
             this.label2.TabIndex = 10;
@@ -386,7 +399,7 @@
             this.rasio20Lbl.AutoSize = true;
             this.rasio20Lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rasio20Lbl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.rasio20Lbl.Location = new System.Drawing.Point(1298, 122);
+            this.rasio20Lbl.Location = new System.Drawing.Point(767, 104);
             this.rasio20Lbl.Name = "rasio20Lbl";
             this.rasio20Lbl.Size = new System.Drawing.Size(11, 13);
             this.rasio20Lbl.TabIndex = 9;
@@ -397,7 +410,7 @@
             this.rasio50Lbl.AutoSize = true;
             this.rasio50Lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rasio50Lbl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.rasio50Lbl.Location = new System.Drawing.Point(1298, 91);
+            this.rasio50Lbl.Location = new System.Drawing.Point(767, 73);
             this.rasio50Lbl.Name = "rasio50Lbl";
             this.rasio50Lbl.Size = new System.Drawing.Size(11, 13);
             this.rasio50Lbl.TabIndex = 8;
@@ -409,7 +422,7 @@
             this.rasio100Lbl.AutoSize = true;
             this.rasio100Lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rasio100Lbl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.rasio100Lbl.Location = new System.Drawing.Point(1299, 59);
+            this.rasio100Lbl.Location = new System.Drawing.Point(768, 41);
             this.rasio100Lbl.Name = "rasio100Lbl";
             this.rasio100Lbl.Size = new System.Drawing.Size(11, 13);
             this.rasio100Lbl.TabIndex = 7;
@@ -867,6 +880,17 @@
             this.tanggalPrediksiMaxPicker.Name = "tanggalPrediksiMaxPicker";
             this.tanggalPrediksiMaxPicker.Size = new System.Drawing.Size(169, 20);
             this.tanggalPrediksiMaxPicker.TabIndex = 110;
+            this.tanggalPrediksiMaxPicker.ValueChanged += new System.EventHandler(this.tanggalPrediksiMaxPicker_ValueChanged);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(571, 182);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 103;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // InformationBoard
             // 
@@ -885,8 +909,6 @@
             this.Controls.Add(this.e2eComboBox);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.e2eTxt);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.label5);
             this.Controls.Add(this.pktComboBox);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox2);
@@ -984,5 +1006,7 @@
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.DateTimePicker tanggalPrediksiMaxPicker;
+        private System.Windows.Forms.TreeView skipPrediksiTreeView;
+        private System.Windows.Forms.Button button1;
     }
 }
