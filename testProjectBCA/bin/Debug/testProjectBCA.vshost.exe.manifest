@@ -359,14 +359,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="LumenWorks.Framework.IO.dll" size="37376">
-      <assemblyIdentity name="LumenWorks.Framework.IO" version="3.8.0.0" publicKeyToken="5AD3EA2F85776344" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="LumenWorks.Framework.IO.dll" size="46080">
+      <assemblyIdentity name="LumenWorks.Framework.IO" version="4.0.0.0" publicKeyToken="5AD3EA2F85776344" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>prlRr8eTYJm6ejlrPzPpjlAcr/r6QEavY+F7v9buRJk=</dsig:DigestValue>
+        <dsig:DigestValue>5695XOnFq2mGASLFfT8zVrx/vaTmizxcVim5+YE0Fes=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -419,35 +419,17 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="testProjectBCA.exe" size="497664">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="testProjectBCA.exe" size="513536">
       <assemblyIdentity name="testProjectBCA" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>73UrIZJYp5Ntuk16d6ESS0LqS6S6SDwe17u5aT+p9IY=</dsig:DigestValue>
+        <dsig:DigestValue>OjqRSlrsWEXYelOkEK8xLBYDQOngb5mChLMXaB2y/8U=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
-  <file name="LumenWorks.Framework.IO.dll" size="37376">
-    <hash>
-      <dsig:Transforms>
-        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
-      </dsig:Transforms>
-      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>prlRr8eTYJm6ejlrPzPpjlAcr/r6QEavY+F7v9buRJk=</dsig:DigestValue>
-    </hash>
-  </file>
-  <file name="LumenWorks.Framework.IO.xml" size="83359" writeableType="applicationData">
-    <hash>
-      <dsig:Transforms>
-        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
-      </dsig:Transforms>
-      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>t67wAYTbs+KipuiFlCNY1JMd7MmUz1l5GpmjvuQuACE=</dsig:DigestValue>
-    </hash>
-  </file>
   <file name="Model1.Context.tt" size="22930">
     <hash>
       <dsig:Transforms>

@@ -321,5 +321,35 @@
       <End Role="Pkt" EntitySet="Pkts" />
       <End Role="TransaksiAtms" EntitySet="TransaksiAtms" />
     </AssociationSet>
+    <EntitySet Name="OrderTrackings" EntityType="CACModel.OrderTracking" />
+    <EntitySet Name="RekapSelisihAmbilSetors" EntityType="CACModel.RekapSelisihAmbilSetor" />
   </EntityContainer>
+  <EntityType Name="OrderTracking">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="kodePkt" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="kodeCabang" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="tanggal" Type="DateTime" Precision="0" />
+    <Property Name="nominalDispute" Type="Int64" />
+  </EntityType>
+  <EntityType Name="RekapSelisihAmbilSetor">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="kodePenerimaDana" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="kodeSumberDana" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="lebih" Type="Int64" />
+    <Property Name="kurang" Type="Int64" />
+    <Property Name="palsu" Type="Int64" />
+    <Property Name="mutilasi" Type="Int64" />
+    <Property Name="total" Type="Int64" />
+    <Property Name="noTxn" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="tanggalTransaksi" Type="DateTime" Precision="0" />
+    <Property Name="tanggalTemu" Type="DateTime" Precision="0" />
+    <Property Name="noBA" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="keterangan" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+  </EntityType>
 </Schema>

@@ -59,8 +59,6 @@ namespace testProjectBCA
                     {
                         counter++; continue; //Skip Header
                     }
-                    if (counter > 66)
-                        break;
                     Pkt toEdit = listPkt.Where(x => x.kodePkt == row[1].ToString()).FirstOrDefault();
                     if (toEdit != null)
                     {
@@ -77,7 +75,10 @@ namespace testProjectBCA
                         toEdit.sentralisasi = row[7].ToString().Replace(" -", "");
                         Console.WriteLine(row[7].ToString());
                         toEdit.vendor = row[9].ToString();
-                        toEdit.kodePktCabang = row[2].ToString();
+                        if (String.IsNullOrEmpty(row[2].ToString()))
+                            toEdit.kodePktCabang = toEdit.kodePkt;
+                        else
+                            toEdit.kodePktCabang = row[2].ToString();
                         counter++;
                     }
                     else
@@ -96,7 +97,10 @@ namespace testProjectBCA
                         newPkt.sentralisasi = row[7].ToString().Replace(" -", "");
                         Console.WriteLine(row[7].ToString());
                         newPkt.vendor = row[9].ToString();
-                        newPkt.kodePktCabang = row[2].ToString();
+                        if (String.IsNullOrEmpty(row[2].ToString()))
+                            newPkt.kodePkt = newPkt.kodePkt;
+                        else
+                            newPkt.kodePktCabang = row[2].ToString();
                         db.Pkts.Add(newPkt);
                         counter++;
                     }

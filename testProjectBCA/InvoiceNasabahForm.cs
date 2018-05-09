@@ -54,24 +54,27 @@ namespace testProjectBCA
             Double rateAsuransi = (Double) (from x in db.AsuransiLayanans select x.asuransi).FirstOrDefault();
             var source = (from x in db.Abacas.AsEnumerable()
                           join y in db.Nasabahs on x.CustomerCode equals y.kodeNasabah
+                          join z in db.EventTanggals on x.tanggal equals z.tanggal
                           where ((DateTime)x.tanggal).Year == (int)tahunComboBox.SelectedValue
                           && ((DateTime)x.tanggal).Month == (int)bulanComboBox.SelectedValue
                           select new {
                               x.CustomerCode,
                               x.totalAmount,
                               frekuensi = y.metodeLayanan.ToLower() == "stc" ? 1 :1+hitungFrekuensi((Int64)x.totalAmount),
+                              jenisLayanan = z.workDay == "Workday" ? "Adhoc" : "Adhoc - Hari Libur"
                           }).ToList();
 
             var query = (from x in source
-                         group x by x.CustomerCode into g
-                         select new { KodeNasabah = g.Key, Total = g.Sum(i => i.totalAmount), Frekuensi = g.Sum(i=>i.frekuensi)}).ToList();
+                         group x by new { x.CustomerCode, x.jenisLayanan } into g
+                         select new { KodeNasabah = g.Key.CustomerCode, jenisLayanan = g.Key.jenisLayanan, Total = g.Sum(i => i.totalAmount), Frekuensi = g.Sum(i=>i.frekuensi)}).ToList();
             //Bikin khusus yang reguler
             var query2 = (from x in query
                           join y in db.Nasabahs on x.KodeNasabah equals y.kodeNasabah
-                          select new { x.KodeNasabah, x.Total, x.Frekuensi,y.fasilitasLayanan, y.metodeLayanan, y.ring, JenisLayanan = "Adhoc", y.segmentasiNasabah, y.sentralisasi, y.subsidi, y.subsidiCabang }).ToList();
+                          
+                          select new { x.KodeNasabah, x.Total, x.Frekuensi,y.fasilitasLayanan, y.metodeLayanan, y.ring, x.jenisLayanan, y.segmentasiNasabah, y.sentralisasi, y.subsidi, y.subsidiCabang }).ToList();
             //Cocokin sama harga
             var query3 = (from x in query2
-                          join y in db.HargaLayanans on x.JenisLayanan equals y.jenisLayanan
+                          join y in db.HargaLayanans on x.jenisLayanan equals y.jenisLayanan
                           where y.stc_cos == x.metodeLayanan.ToLower()
                           select new {
                               x.KodeNasabah,
@@ -80,7 +83,7 @@ namespace testProjectBCA
                               x.fasilitasLayanan,
                               x.metodeLayanan,
                               x.ring,
-                              x.JenisLayanan,
+                              x.jenisLayanan,
                               y.hargaRing1,
                               AsuransiCIT = Math.Round((Double)(x.Total * rateAsuransi)),
                               TotalBiayaTrip = x.Frekuensi * y.hargaRing1,

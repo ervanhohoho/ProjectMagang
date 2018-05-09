@@ -23,6 +23,8 @@
         <EntityTypeShape EntityType="CACModel.TransaksiAtm" Width="1.5" PointX="3" PointY="4.5" IsExpanded="true" />
         <AssociationConnector Association="CACModel.FK_laporanBon_Pkt" ManuallyRouted="false" />
         <AssociationConnector Association="CACModel.FK_TransaksiAtms_Pkt" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="CACModel.OrderTracking" Width="1.5" PointX="12.375" PointY="12.75" />
+        <EntityTypeShape EntityType="CACModel.RekapSelisihAmbilSetor" Width="1.5" PointX="0.75" PointY="13.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

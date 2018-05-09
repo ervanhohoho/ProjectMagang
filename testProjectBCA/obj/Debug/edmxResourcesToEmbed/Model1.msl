@@ -283,5 +283,35 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="OrderTrackings">
+      <EntityTypeMapping TypeName="CACModel.OrderTracking">
+        <MappingFragment StoreEntitySet="OrderTracking">
+          <ScalarProperty Name="nominalDispute" ColumnName="nominalDispute" />
+          <ScalarProperty Name="tanggal" ColumnName="tanggal" />
+          <ScalarProperty Name="kodeCabang" ColumnName="kodeCabang" />
+          <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RekapSelisihAmbilSetors">
+      <EntityTypeMapping TypeName="CACModel.RekapSelisihAmbilSetor">
+        <MappingFragment StoreEntitySet="RekapSelisihAmbilSetor">
+          <ScalarProperty Name="keterangan" ColumnName="keterangan" />
+          <ScalarProperty Name="noBA" ColumnName="noBA" />
+          <ScalarProperty Name="tanggalTemu" ColumnName="tanggalTemu" />
+          <ScalarProperty Name="tanggalTransaksi" ColumnName="tanggalTransaksi" />
+          <ScalarProperty Name="noTxn" ColumnName="noTxn" />
+          <ScalarProperty Name="total" ColumnName="total" />
+          <ScalarProperty Name="mutilasi" ColumnName="mutilasi" />
+          <ScalarProperty Name="palsu" ColumnName="palsu" />
+          <ScalarProperty Name="kurang" ColumnName="kurang" />
+          <ScalarProperty Name="lebih" ColumnName="lebih" />
+          <ScalarProperty Name="kodeSumberDana" ColumnName="kodeSumberDana" />
+          <ScalarProperty Name="kodePenerimaDana" ColumnName="kodePenerimaDana" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

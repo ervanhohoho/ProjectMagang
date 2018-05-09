@@ -660,6 +660,13 @@ namespace testProjectBCA
         {
 
         }
+
+        private void orderTrackingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            InputOrderTrackingForm iotf = new InputOrderTrackingForm();
+            iotf.MdiParent = this;
+            iotf.Show();
+        }
     }
 }
 public static class SqlBulkCopyExtensions

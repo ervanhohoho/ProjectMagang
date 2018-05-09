@@ -105,7 +105,7 @@ namespace testProjectBCA
             /*tanggalOpti = (DateTime) query[0].tanggal*/;
             //Console.WriteLine(query[0]);
             //MessageBox.Show(tanggalOpti.ToShortDateString());
-            tanggalPrediksiMaxPicker.MinDate = DateTime.Today.AddDays(3);
+            tanggalPrediksiMaxPicker.MinDate = DateTime.Today.AddDays(2);
         }
         void loadComboBox()
         {
@@ -1329,7 +1329,7 @@ namespace testProjectBCA
                         //SislokCdm
                         SqlDataReader reader;
                         Rasio tempSislokAtm = new Rasio();
-                        String cText = "SELECT AVG(CAST(sislokAtm100 AS FLOAT)/NULLIF(isiAtm100,0)), AVG(CAST(sislokAtm50 AS FLOAT)/NULLIF(isiAtm50,0)), AVG(CAST(sislokAtm20 AS FLOAT)/NULLIF(isiAtm20,0)) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' AND DATENAME(WEEKDAY, TA.Tanggal) = '" + tempDate.DayOfWeek.ToString() + "'";
+                        String cText = "SELECT ISNULL(AVG(CAST(sislokAtm100 AS FLOAT)/NULLIF(isiAtm100,0)),0), ISNULL(AVG(CAST(sislokAtm50 AS FLOAT)/NULLIF(isiAtm50,0)),0), ISNULL(AVG(CAST(sislokAtm20 AS FLOAT)/NULLIF(isiAtm20,0)),0) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' AND DATENAME(WEEKDAY, TA.Tanggal) = '" + tempDate.DayOfWeek.ToString() + "'";
                         int count = 0;
                         for (int i = 0; i < treeView1.Nodes.Count; i++)
                         {
@@ -1372,7 +1372,7 @@ namespace testProjectBCA
                         {
                             reader.Close();
                             //SislokCdm
-                            cText = "SELECT AVG(CAST(sislokAtm100 AS FLOAT)/NULLIF(isiAtm100,0)), AVG(CAST(sislokAtm50 AS FLOAT)/NULLIF(isiAtm50,0)), AVG(CAST(sislokAtm20 AS FLOAT)/NULLIF(isiAtm20,0)) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' ";
+                            cText = "SELECT ISNULL(AVG(CAST(sislokAtm100 AS FLOAT)/NULLIF(isiAtm100,0)),0), ISNULL(AVG(CAST(sislokAtm50 AS FLOAT)/NULLIF(isiAtm50,0)),0), ISNULL(AVG(CAST(sislokAtm20 AS FLOAT)/NULLIF(isiAtm20,0)),0) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' ";
                             count = 0;
                             for (int i = 0; i < treeView1.Nodes.Count; i++)
                             {
@@ -1591,8 +1591,8 @@ namespace testProjectBCA
                 }
                 sql.Close();
             }
-            Console.WriteLine("BON");
-            Console.WriteLine(bon[0].d100);
+            //Console.WriteLine("BON");
+            //Console.WriteLine(bon[0].d100);
         }
         void loadSetor()
         {
@@ -1639,12 +1639,11 @@ namespace testProjectBCA
                 targetRasio100 = 0;
             else
                 targetRasio100 = Double.Parse(rasio100Txt.Text);
-
-            if (rasio100Txt.Text.Trim().Length == 0)
+            if (rasio50Txt.Text.Trim().Length == 0)
                 targetRasio50 = 0;
             else
                 targetRasio50 = Double.Parse(rasio50Txt.Text);
-            if (rasio100Txt.Text.Trim().Length == 0)
+            if (rasio20Txt.Text.Trim().Length == 0)
                 targetRasio20 = 0;
             else
                 targetRasio20 = Double.Parse(rasio20Txt.Text);
@@ -2740,6 +2739,12 @@ namespace testProjectBCA
             //{
                 if(MetodePrediksiComboBox.SelectedIndex == 0)
                 {
+                    Database1Entities db = new Database1Entities();
+                    if(!(from x in db.Optis select x).Any())
+                    {
+                        MessageBox.Show("Data Opti Tidak Ada!");
+                        return;
+                    }
                     if(prediksiIsiAtmOpti[prediksiIsiAtmOpti.Count-1].tgl < tanggalOptiMax)
                     {
                         MessageBox.Show("Data Opti Salah");

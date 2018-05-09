@@ -192,6 +192,16 @@
     <Property Name="tanggal" Type="date" />
     <Property Name="prediksi" Type="bigint" />
   </EntityType>
+  <EntityType Name="OrderTracking">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="kodePkt" Type="varchar" MaxLength="50" />
+    <Property Name="kodeCabang" Type="varchar" MaxLength="50" />
+    <Property Name="tanggal" Type="date" />
+    <Property Name="nominalDispute" Type="bigint" />
+  </EntityType>
   <EntityType Name="Pkt">
     <Key>
       <PropertyRef Name="kodePkt" />
@@ -204,6 +214,24 @@
     <Property Name="sentralisasi" Type="varchar" MaxLength="50" />
     <Property Name="vendor" Type="varchar" MaxLength="50" />
     <Property Name="kodePktCabang" Type="varchar" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="RekapSelisihAmbilSetor">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="kodePenerimaDana" Type="varchar" MaxLength="50" />
+    <Property Name="kodeSumberDana" Type="varchar" MaxLength="50" />
+    <Property Name="lebih" Type="bigint" />
+    <Property Name="kurang" Type="bigint" />
+    <Property Name="palsu" Type="bigint" />
+    <Property Name="mutilasi" Type="bigint" />
+    <Property Name="total" Type="bigint" />
+    <Property Name="noTxn" Type="varchar" MaxLength="50" />
+    <Property Name="tanggalTransaksi" Type="date" />
+    <Property Name="tanggalTemu" Type="date" />
+    <Property Name="noBA" Type="varchar" MaxLength="50" />
+    <Property Name="keterangan" Type="varchar" MaxLength="200" />
   </EntityType>
   <EntityType Name="StokPosisi">
     <Key>
@@ -306,7 +334,9 @@
     <EntitySet Name="LaporanPermintaanBon" EntityType="Self.LaporanPermintaanBon" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Nasabah" EntityType="Self.Nasabah" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Opti" EntityType="Self.Opti" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="OrderTracking" EntityType="Self.OrderTracking" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Pkt" EntityType="Self.Pkt" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RekapSelisihAmbilSetor" EntityType="Self.RekapSelisihAmbilSetor" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="StokPosisi" EntityType="Self.StokPosisi" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TransaksiAtms" EntityType="Self.TransaksiAtms" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK_laporanBon_Pkt" Association="Self.FK_laporanBon_Pkt">

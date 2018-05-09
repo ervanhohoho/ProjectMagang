@@ -89,7 +89,7 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "SELECT DISTINCT[Tahun] = YEAR(tanggal) FROM TransaksiAtms ORDER BY Tahun";
+                    cmd.CommandText = "SELECT DISTINCT[Tahun] = YEAR(tanggal) FROM TransaksiAtms ORDER BY Tahun DESC";
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
@@ -121,7 +121,7 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "SELECT DISTINCT[Tahun] = YEAR(tanggal) FROM TransaksiAtms ORDER BY Tahun";
+                    cmd.CommandText = "SELECT DISTINCT[Tahun] = YEAR(tanggal) FROM TransaksiAtms ORDER BY Tahun DESC";
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
@@ -137,7 +137,7 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "SELECT DISTINCT[Tahun] = YEAR(tanggal) FROM TransaksiAtms ORDER BY Tahun";
+                    cmd.CommandText = "SELECT DISTINCT[Tahun] = YEAR(tanggal) FROM TransaksiAtms ORDER BY Tahun DESC";
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
@@ -153,7 +153,7 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "SELECT DISTINCT[Tahun] = YEAR(tanggal) FROM TransaksiAtms ORDER BY Tahun";
+                    cmd.CommandText = "SELECT DISTINCT[Tahun] = YEAR(tanggal) FROM TransaksiAtms ORDER BY Tahun DESC";
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
@@ -169,7 +169,7 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "SELECT DISTINCT[Tahun] = YEAR(tanggal) FROM TransaksiAtms ORDER BY Tahun";
+                    cmd.CommandText = "SELECT DISTINCT[Tahun] = YEAR(tanggal) FROM TransaksiAtms ORDER BY Tahun DESC";
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
@@ -201,7 +201,7 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "SELECT DISTINCT[Tahun] = YEAR(tanggal) FROM TransaksiAtms ORDER BY Tahun";
+                    cmd.CommandText = "SELECT DISTINCT[Tahun] = YEAR(tanggal) FROM TransaksiAtms ORDER BY Tahun DESC";
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
@@ -250,7 +250,7 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "SELECT DISTINCT[Tahun] = YEAR(tanggal) FROM TransaksiAtms ORDER BY Tahun";
+                    cmd.CommandText = "SELECT DISTINCT[Tahun] = YEAR(tanggal) FROM TransaksiAtms ORDER BY Tahun DESC";
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
@@ -283,7 +283,7 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "SELECT DISTINCT[Tahun] = YEAR(tanggal) FROM TransaksiAtms ORDER BY Tahun";
+                    cmd.CommandText = "SELECT DISTINCT[Tahun] = YEAR(tanggal) FROM TransaksiAtms ORDER BY Tahun DESC";
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
@@ -299,7 +299,7 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "SELECT DISTINCT[Tahun] = YEAR(tanggal) FROM TransaksiAtms ORDER BY Tahun";
+                    cmd.CommandText = "SELECT DISTINCT[Tahun] = YEAR(tanggal) FROM TransaksiAtms ORDER BY Tahun DESC";
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
@@ -331,7 +331,7 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "SELECT DISTINCT[Tahun] = YEAR(tanggal) FROM TransaksiAtms ORDER BY Tahun";
+                    cmd.CommandText = "SELECT DISTINCT[Tahun] = YEAR(tanggal) FROM TransaksiAtms ORDER BY Tahun DESC";
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
@@ -363,7 +363,7 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "SELECT DISTINCT[Tahun] = YEAR(tanggal) FROM TransaksiAtms ORDER BY Tahun";
+                    cmd.CommandText = "SELECT DISTINCT[Tahun] = YEAR(tanggal) FROM TransaksiAtms ORDER BY Tahun DESC";
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {

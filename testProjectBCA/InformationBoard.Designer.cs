@@ -99,7 +99,6 @@
             this.label25 = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
             this.tanggalPrediksiMaxPicker = new System.Windows.Forms.DateTimePicker();
-            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.rekomendasiBonGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bonGridView)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -317,7 +316,6 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.skipPrediksiTreeView);
             this.groupBox1.Controls.Add(this.sumLabel);
             this.groupBox1.Controls.Add(this.statusStrip1);
@@ -388,7 +386,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(756, 16);
+            this.label2.Location = new System.Drawing.Point(829, 16);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(34, 13);
             this.label2.TabIndex = 10;
@@ -399,7 +397,7 @@
             this.rasio20Lbl.AutoSize = true;
             this.rasio20Lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rasio20Lbl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.rasio20Lbl.Location = new System.Drawing.Point(767, 104);
+            this.rasio20Lbl.Location = new System.Drawing.Point(840, 104);
             this.rasio20Lbl.Name = "rasio20Lbl";
             this.rasio20Lbl.Size = new System.Drawing.Size(11, 13);
             this.rasio20Lbl.TabIndex = 9;
@@ -410,7 +408,7 @@
             this.rasio50Lbl.AutoSize = true;
             this.rasio50Lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rasio50Lbl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.rasio50Lbl.Location = new System.Drawing.Point(767, 73);
+            this.rasio50Lbl.Location = new System.Drawing.Point(840, 73);
             this.rasio50Lbl.Name = "rasio50Lbl";
             this.rasio50Lbl.Size = new System.Drawing.Size(11, 13);
             this.rasio50Lbl.TabIndex = 8;
@@ -422,7 +420,7 @@
             this.rasio100Lbl.AutoSize = true;
             this.rasio100Lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rasio100Lbl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.rasio100Lbl.Location = new System.Drawing.Point(768, 41);
+            this.rasio100Lbl.Location = new System.Drawing.Point(841, 41);
             this.rasio100Lbl.Name = "rasio100Lbl";
             this.rasio100Lbl.Size = new System.Drawing.Size(11, 13);
             this.rasio100Lbl.TabIndex = 7;
@@ -882,16 +880,6 @@
             this.tanggalPrediksiMaxPicker.TabIndex = 110;
             this.tanggalPrediksiMaxPicker.ValueChanged += new System.EventHandler(this.tanggalPrediksiMaxPicker_ValueChanged);
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(571, 182);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 103;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
-            // 
             // InformationBoard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1007,6 +995,5 @@
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.DateTimePicker tanggalPrediksiMaxPicker;
         private System.Windows.Forms.TreeView skipPrediksiTreeView;
-        private System.Windows.Forms.Button button1;
     }
 }
