@@ -99,6 +99,7 @@
             this.label25 = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
             this.tanggalPrediksiMaxPicker = new System.Windows.Forms.DateTimePicker();
+            this.label28 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.rekomendasiBonGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bonGridView)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -316,6 +317,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label28);
             this.groupBox1.Controls.Add(this.skipPrediksiTreeView);
             this.groupBox1.Controls.Add(this.sumLabel);
             this.groupBox1.Controls.Add(this.statusStrip1);
@@ -880,6 +882,15 @@
             this.tanggalPrediksiMaxPicker.TabIndex = 110;
             this.tanggalPrediksiMaxPicker.ValueChanged += new System.EventHandler(this.tanggalPrediksiMaxPicker_ValueChanged);
             // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(129, 22);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(120, 13);
+            this.label28.TabIndex = 103;
+            this.label28.Text = "Hari yang tidak ada bon";
+            // 
             // InformationBoard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -995,5 +1006,6 @@
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.DateTimePicker tanggalPrediksiMaxPicker;
         private System.Windows.Forms.TreeView skipPrediksiTreeView;
+        private System.Windows.Forms.Label label28;
     }
 }

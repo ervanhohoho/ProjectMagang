@@ -327,6 +327,12 @@
     <Compile Include="AkurasiPrediksiForm.Designer.cs">
       <DependentUpon>AkurasiPrediksiForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="proyeksiLikuiditasForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="proyeksiLikuiditasForm.Designer.cs">
+      <DependentUpon>proyeksiLikuiditasForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="RekapApprovalForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -422,6 +428,9 @@
     </Compile>
     <EmbeddedResource Include="AkurasiPrediksiForm.resx">
       <DependentUpon>AkurasiPrediksiForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="proyeksiLikuiditasForm.resx">
+      <DependentUpon>proyeksiLikuiditasForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="RekapApprovalForm.resx">
       <DependentUpon>RekapApprovalForm.cs</DependentUpon>

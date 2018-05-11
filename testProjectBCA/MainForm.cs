@@ -667,6 +667,13 @@ namespace testProjectBCA
             iotf.MdiParent = this;
             iotf.Show();
         }
+
+        private void proyeksiLikuiditaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            proyeksiLikuiditasForm plf = new proyeksiLikuiditasForm();
+            plf.MdiParent = this;
+            plf.Show();
+        }
     }
 }
 public static class SqlBulkCopyExtensions

@@ -54,13 +54,14 @@
             this.inputDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hargaRingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.masterNasabahToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.abacasToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.invoiceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dashboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.adminToolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inputDataKalenderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadMasterPKTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.orderTrackingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.abacasToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.proyeksiLikuiditaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -180,7 +181,8 @@
             this.inputDataToolStripMenuItem1,
             this.masterDataToolStripMenuItem,
             this.dailyStockToolStripMenuItem,
-            this.sLAProsesToolStripMenuItem});
+            this.sLAProsesToolStripMenuItem,
+            this.proyeksiLikuiditaToolStripMenuItem});
             this.cabangToolStripMenuItem.Name = "cabangToolStripMenuItem";
             this.cabangToolStripMenuItem.Size = new System.Drawing.Size(60, 20);
             this.cabangToolStripMenuItem.Text = "Cabang";
@@ -191,7 +193,7 @@
             this.inputTransaksiCabangToolStripMenuItem1,
             this.stokPosisiToolStripMenuItem});
             this.inputDataToolStripMenuItem1.Name = "inputDataToolStripMenuItem1";
-            this.inputDataToolStripMenuItem1.Size = new System.Drawing.Size(168, 22);
+            this.inputDataToolStripMenuItem1.Size = new System.Drawing.Size(171, 22);
             this.inputDataToolStripMenuItem1.Text = "Input Data";
             // 
             // inputTransaksiCabangToolStripMenuItem1
@@ -214,7 +216,7 @@
             this.inputDataPktCabangToolStripMenuItem,
             this.inputDataKanwilCabangToolStripMenuItem});
             this.masterDataToolStripMenuItem.Name = "masterDataToolStripMenuItem";
-            this.masterDataToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.masterDataToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.masterDataToolStripMenuItem.Text = "Input Master Data";
             // 
             // inputDataPktCabangToolStripMenuItem
@@ -234,14 +236,14 @@
             // dailyStockToolStripMenuItem
             // 
             this.dailyStockToolStripMenuItem.Name = "dailyStockToolStripMenuItem";
-            this.dailyStockToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.dailyStockToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.dailyStockToolStripMenuItem.Text = "Daily Stock";
             this.dailyStockToolStripMenuItem.Click += new System.EventHandler(this.dailyStockToolStripMenuItem_Click);
             // 
             // sLAProsesToolStripMenuItem
             // 
             this.sLAProsesToolStripMenuItem.Name = "sLAProsesToolStripMenuItem";
-            this.sLAProsesToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.sLAProsesToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.sLAProsesToolStripMenuItem.Text = "SLA Proses";
             this.sLAProsesToolStripMenuItem.Click += new System.EventHandler(this.sLAProsesToolStripMenuItem_Click);
             // 
@@ -277,6 +279,13 @@
             this.masterNasabahToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
             this.masterNasabahToolStripMenuItem.Text = "Master Nasabah";
             this.masterNasabahToolStripMenuItem.Click += new System.EventHandler(this.masterNasabahToolStripMenuItem_Click);
+            // 
+            // abacasToolStripMenuItem1
+            // 
+            this.abacasToolStripMenuItem1.Name = "abacasToolStripMenuItem1";
+            this.abacasToolStripMenuItem1.Size = new System.Drawing.Size(159, 22);
+            this.abacasToolStripMenuItem1.Text = "Abacas";
+            this.abacasToolStripMenuItem1.Click += new System.EventHandler(this.abacasToolStripMenuItem_Click);
             // 
             // invoiceToolStripMenuItem
             // 
@@ -323,12 +332,12 @@
             this.orderTrackingToolStripMenuItem.Text = "Order Tracking";
             this.orderTrackingToolStripMenuItem.Click += new System.EventHandler(this.orderTrackingToolStripMenuItem_Click);
             // 
-            // abacasToolStripMenuItem1
+            // proyeksiLikuiditaToolStripMenuItem
             // 
-            this.abacasToolStripMenuItem1.Name = "abacasToolStripMenuItem1";
-            this.abacasToolStripMenuItem1.Size = new System.Drawing.Size(159, 22);
-            this.abacasToolStripMenuItem1.Text = "Abacas";
-            this.abacasToolStripMenuItem1.Click += new System.EventHandler(this.abacasToolStripMenuItem_Click);
+            this.proyeksiLikuiditaToolStripMenuItem.Name = "proyeksiLikuiditaToolStripMenuItem";
+            this.proyeksiLikuiditaToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.proyeksiLikuiditaToolStripMenuItem.Text = "Proyeksi Likuiditas";
+            this.proyeksiLikuiditaToolStripMenuItem.Click += new System.EventHandler(this.proyeksiLikuiditaToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -383,5 +392,6 @@
         private System.Windows.Forms.ToolStripMenuItem initTransaksiToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem orderTrackingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem abacasToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem proyeksiLikuiditaToolStripMenuItem;
     }
 }

@@ -58,9 +58,9 @@ namespace testProjectBCA
                     readCollectionLainnya(ds);
                     deliveryCabang = ds.Tables[3];
                     readDeliveryCabang(ds);
-                    deliveryRetail = ds.Tables[5];
+                    deliveryRetail = ds.Tables[4];
                     readDeliveryRetail(ds);
-                    deliveryLainnya = ds.Tables[6];
+                    deliveryLainnya = ds.Tables[5];
                     readDeliveryLainnya(ds);
                 }
                 hilangkanNull();
