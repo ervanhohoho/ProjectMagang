@@ -25,7 +25,7 @@ namespace testProjectBCA
             if(of.ShowDialog() == DialogResult.OK)
             {
                 loadForm.ShowSplashScreen();
-                var dataYangAda = (from x in db.Nasabahs select x.kodeNasabah).ToList();
+                List<Nasabah> dataYangAda = (from x in db.Nasabahs select x).ToList();
                 DataSet ds = Util.openExcel(of.FileName);
                 DataTable dt = ds.Tables[0];
                 dt.Rows.RemoveAt(0);
@@ -36,32 +36,62 @@ namespace testProjectBCA
                 {
                     Console.WriteLine(i);
                     var row = dt.Rows[i];
-                    if((from y in dataYangAda where y == row[0].ToString() select y).FirstOrDefault() != null || (from y in listNasabah where y.kodeNasabah == row[0].ToString() select y).FirstOrDefault()!=null)
-                    {
-                        continue;
-                    }
                     Console.WriteLine(row[0].ToString());
-                    Console.WriteLine(row[1].ToString());
-                    Console.WriteLine(row[2].ToString());
-                    Console.WriteLine(row[3].ToString());
-                    Console.WriteLine(row[6].ToString());
-                    listNasabah.Add(new Nasabah() {
-                        kodeNasabah = row[0].ToString(),
-                        fasilitasLayanan = row[1].ToString(),
-                        metodeLayanan = row[2].ToString(),
-                        kodeCabang = row[3].ToString(),
-                        kodePktCabang = row[6].ToString(),
-                        NomorRekening = row[7].ToString(),
-                        GroupNasabah = row[8].ToString(),
-                        namaNasabah = row[9].ToString(),
-                        segmentasiNasabah = row[10].ToString(),
-                        sentralisasi =row[11].ToString(),
-                        subsidi = row[12].ToString(),
-                        subsidiCabang = row[13].ToString(),
-                        ring = row[14].ToString()
-                    });
+                    if ((from y in dataYangAda where y.kodeNasabah == row[0].ToString() select y).FirstOrDefault() != null || (from y in listNasabah where y.kodeNasabah == row[0].ToString() select y).FirstOrDefault() != null)
+                    {
+                        Nasabah nasabah = (from x in dataYangAda where x.kodeNasabah == row[0].ToString() select x).FirstOrDefault();
+                        if (nasabah == null)
+                            nasabah = (from x in listNasabah where x.kodeNasabah == row[0].ToString() select x).FirstOrDefault();
+
+                        //tidak ada segmentasi
+                        nasabah.fasilitasLayanan = row[1].ToString();
+                        nasabah.metodeLayanan = row[2].ToString();
+                        nasabah.kodeCabang = row[3].ToString();
+                        nasabah.kodePktCabang = row[6].ToString();
+                        nasabah.NomorRekening = row[7].ToString();
+                        nasabah.GroupNasabah = row[8].ToString();
+                        nasabah.namaNasabah = row[9].ToString();
+                        nasabah.ring = row[10].ToString();
+                        nasabah.segmentasiNasabah = row[11].ToString();
+                        nasabah.sentralisasi = row[12].ToString();
+                    }
+                    else
+                    {
+                        //yang ada segmentasi
+                        //listNasabah.Add(new Nasabah() {
+                        //    kodeNasabah = row[0].ToString(),
+                        //    fasilitasLayanan = row[1].ToString(),
+                        //    metodeLayanan = row[2].ToString(),
+                        //    kodeCabang = row[3].ToString(),
+                        //    kodePktCabang = row[6].ToString(),
+                        //    NomorRekening = row[7].ToString(),
+                        //    GroupNasabah = row[8].ToString(),
+                        //    namaNasabah = row[9].ToString(),
+                        //    segmentasiNasabah = row[10].ToString(),
+                        //    sentralisasi =row[11].ToString(),
+                        //    subsidi = row[12].ToString(),
+                        //    subsidiCabang = row[13].ToString(),
+                        //    ring = row[14].ToString()
+                        //});
+
+                        //Yang tidak ada segmentasi
+                        listNasabah.Add(new Nasabah()
+                        {
+                            kodeNasabah = row[0].ToString(),
+                            fasilitasLayanan = row[1].ToString(),
+                            metodeLayanan = row[2].ToString(),
+                            kodeCabang = row[3].ToString(),
+                            kodePktCabang = row[6].ToString(),
+                            NomorRekening = row[7].ToString(),
+                            GroupNasabah = row[8].ToString(),
+                            namaNasabah = row[9].ToString(),
+                            ring = row[10].ToString(),
+                            segmentasiNasabah = row[11].ToString(),
+                            sentralisasi = row[12].ToString()
+                        });
+                    }
                 }
-                foreach(Nasabah temp in listNasabah)
+                foreach (Nasabah temp in listNasabah)
                 {
                     temp.kodeNasabah = temp.kodeNasabah.TrimStart('0');
                     temp.kodeCabang = temp.kodeCabang.TrimStart('0');

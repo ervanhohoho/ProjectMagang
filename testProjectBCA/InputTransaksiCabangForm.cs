@@ -333,7 +333,7 @@ namespace testProjectBCA
         }
         private void readDeliveryRetail(DataSet ds)
         {
-            DataTable dt = ds.Tables[5];
+            DataTable dt = ds.Tables[4];
 
             dataGridView1.DataSource = dt;
             dt.Rows.RemoveAt(0);
@@ -392,7 +392,7 @@ namespace testProjectBCA
         }
         private void readDeliveryLainnya(DataSet ds)
         {
-            DataTable dt = ds.Tables[6];
+            DataTable dt = ds.Tables[5];
             dt.Rows.RemoveAt(0);
             dt.Rows.Remove(dt.Rows[0]); dt.Rows.Remove(dt.Rows[dt.Rows.Count - 1]);
 
@@ -439,7 +439,7 @@ namespace testProjectBCA
                 //Tanggal
                 sbc.ColumnMappings.Add(0, 1);
                 //Keterangan Sumber Dana
-                sbc.ColumnMappings.Add(2, 7);
+                sbc.ColumnMappings.Add(1, 7);
                 //Uang
                 for (int a = 0; a < 15; a++)
                     sbc.ColumnMappings.Add(4 + a, 8 + a);

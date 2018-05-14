@@ -50,6 +50,7 @@
             this.inputDataKanwilCabangToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dailyStockToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sLAProsesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.proyeksiLikuiditaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.nasabahToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inputDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hargaRingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -57,11 +58,11 @@
             this.abacasToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.invoiceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dashboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dashboardCOJToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.adminToolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inputDataKalenderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadMasterPKTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.orderTrackingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.proyeksiLikuiditaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -72,6 +73,7 @@
             this.cabangToolStripMenuItem,
             this.nasabahToolStripMenuItem,
             this.dashboardToolStripMenuItem,
+            this.dashboardCOJToolStripMenuItem,
             this.adminToolsToolStripMenuItem,
             this.orderTrackingToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
@@ -247,6 +249,13 @@
             this.sLAProsesToolStripMenuItem.Text = "SLA Proses";
             this.sLAProsesToolStripMenuItem.Click += new System.EventHandler(this.sLAProsesToolStripMenuItem_Click);
             // 
+            // proyeksiLikuiditaToolStripMenuItem
+            // 
+            this.proyeksiLikuiditaToolStripMenuItem.Name = "proyeksiLikuiditaToolStripMenuItem";
+            this.proyeksiLikuiditaToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.proyeksiLikuiditaToolStripMenuItem.Text = "Proyeksi Likuiditas";
+            this.proyeksiLikuiditaToolStripMenuItem.Click += new System.EventHandler(this.proyeksiLikuiditaToolStripMenuItem_Click);
+            // 
             // nasabahToolStripMenuItem
             // 
             this.nasabahToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -263,7 +272,7 @@
             this.masterNasabahToolStripMenuItem,
             this.abacasToolStripMenuItem1});
             this.inputDataToolStripMenuItem.Name = "inputDataToolStripMenuItem";
-            this.inputDataToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.inputDataToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.inputDataToolStripMenuItem.Text = "Input Data";
             // 
             // hargaRingToolStripMenuItem
@@ -290,7 +299,7 @@
             // invoiceToolStripMenuItem
             // 
             this.invoiceToolStripMenuItem.Name = "invoiceToolStripMenuItem";
-            this.invoiceToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.invoiceToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.invoiceToolStripMenuItem.Text = "Invoice";
             this.invoiceToolStripMenuItem.Click += new System.EventHandler(this.invoiceToolStripMenuItem_Click);
             // 
@@ -300,6 +309,13 @@
             this.dashboardToolStripMenuItem.Size = new System.Drawing.Size(76, 20);
             this.dashboardToolStripMenuItem.Text = "Dashboard";
             this.dashboardToolStripMenuItem.Click += new System.EventHandler(this.dashboardToolStripMenuItem_Click);
+            // 
+            // dashboardCOJToolStripMenuItem
+            // 
+            this.dashboardCOJToolStripMenuItem.Name = "dashboardCOJToolStripMenuItem";
+            this.dashboardCOJToolStripMenuItem.Size = new System.Drawing.Size(100, 20);
+            this.dashboardCOJToolStripMenuItem.Text = "Dashboard COJ";
+            this.dashboardCOJToolStripMenuItem.Click += new System.EventHandler(this.dashboardCOJToolStripMenuItem_Click);
             // 
             // adminToolsToolStripMenuItem
             // 
@@ -331,13 +347,6 @@
             this.orderTrackingToolStripMenuItem.Size = new System.Drawing.Size(97, 20);
             this.orderTrackingToolStripMenuItem.Text = "Order Tracking";
             this.orderTrackingToolStripMenuItem.Click += new System.EventHandler(this.orderTrackingToolStripMenuItem_Click);
-            // 
-            // proyeksiLikuiditaToolStripMenuItem
-            // 
-            this.proyeksiLikuiditaToolStripMenuItem.Name = "proyeksiLikuiditaToolStripMenuItem";
-            this.proyeksiLikuiditaToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
-            this.proyeksiLikuiditaToolStripMenuItem.Text = "Proyeksi Likuiditas";
-            this.proyeksiLikuiditaToolStripMenuItem.Click += new System.EventHandler(this.proyeksiLikuiditaToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -393,5 +402,6 @@
         private System.Windows.Forms.ToolStripMenuItem orderTrackingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem abacasToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem proyeksiLikuiditaToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dashboardCOJToolStripMenuItem;
     }
 }

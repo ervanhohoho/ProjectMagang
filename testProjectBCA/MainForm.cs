@@ -204,9 +204,7 @@ namespace testProjectBCA
                 rows = ds.Tables[0].Select("Column0 not like 'A%' OR LEN(Column0) > 5");
                 foreach (DataRow row in rows)
                 {
-                    
                     dt.Rows.Remove(row);
-                   
                 }
                 
                 List<DataRow> listRow = new List<DataRow>();
@@ -397,7 +395,7 @@ namespace testProjectBCA
                     cmd.Connection = sql;
                     cmd.CommandText = "UPDATE CABANG SET kodeCabang = RIGHT(kodeCabang,4)";
                     cmd.ExecuteNonQuery();
-                    cmd.CommandText = "UPDATE CABANG SET kodeCabang = IIF(kodeCabang like '000%',RIGHT(kodeCabang,1),IIF(kodeCabang like '00%', RIGHT(kodeCabang,2), IIF(kodeCabang like '0%', RIGHT(kodeCabang,3),kodeCabang)))";
+                    cmd.CommandText = "UPDATE CABANG SET kodeCabang =  substring(kodeCabang, patindex('%[^0]%',kodeCabang), 10)";
                     cmd.ExecuteNonQuery();
                     sql.Close();
                 }
@@ -430,7 +428,7 @@ namespace testProjectBCA
                     cmd.Connection = sql;
                     cmd.CommandText = "UPDATE CABANG SET kodeCabang = RIGHT(kodeCabang,4)";
                     cmd.ExecuteNonQuery();
-                    cmd.CommandText = "UPDATE CABANG SET kodeCabang = IIF(kodeCabang like '000%',RIGHT(kodeCabang,1),IIF(kodeCabang like '00%', RIGHT(kodeCabang,2), IIF(kodeCabang like '0%', RIGHT(kodeCabang,3),kodeCabang)))";
+                    cmd.CommandText = "UPDATE CABANG SET kodeCabang =  substring(kodeCabang, patindex('%[^0]%',kodeCabang), 10)";
                     cmd.ExecuteNonQuery();
                     sql.Close();
                 }
@@ -597,11 +595,50 @@ namespace testProjectBCA
         private void inputDataPktCabangToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog of = new OpenFileDialog();
-            of.Filter = Variables.csvFilter;
+            of.Filter = Variables.excelFilter;
             if (of.ShowDialog() == DialogResult.OK)
             {
-                insertDataPktCabang(of.FileName);
+                loadForm.ShowSplashScreen();
+                DataSet ds = Util.openExcel(of.FileName);
+                DataTable dt = ds.Tables[0];
+                DataTable branch = new DataTable();
+                for (int i = 0; i < dt.Columns.Count; i++)
+                {
+                    branch.Columns.Add();
+                }
+                DataRow[] rows = dt.Select("Column0 like 'B%' AND Column2 like 'CAC'");
+                foreach (DataRow row in rows)
+                {
+                    branch.Rows.Add(row.ItemArray);
+                }
+                rows = ds.Tables[0].Select("Column0 not like 'A%' OR LEN(Column0) > 5");
+                foreach (DataRow row in rows)
+                {
+                    dt.Rows.Remove(row);
+                }
+
+                List<DataRow> listRow = new List<DataRow>();
+                for (int a = 0; a < dt.Rows.Count; a++)
+                {
+                    int buf;
+                    if (Int32.TryParse(dt.Rows[a][4].ToString(), out buf))
+                    {
+                        listRow.Add(dt.Rows[a]);
+                    }
+                }
+                foreach (DataRow row in listRow)
+                {
+                    dt.Rows.Remove(row);
+                }
+
+                UpdateDataCashpointPkt(dt);
+                UpdateDataBranchPkt(branch);
+                loadForm.CloseForm();
             }
+            //if (of.ShowDialog() == DialogResult.OK)
+            //{
+            //    insertDataPktCabang(of.FileName);
+            //}
         }
 
         private void inputDataKanwilCabangToolStripMenuItem_Click(object sender, EventArgs e)
@@ -673,6 +710,13 @@ namespace testProjectBCA
             proyeksiLikuiditasForm plf = new proyeksiLikuiditasForm();
             plf.MdiParent = this;
             plf.Show();
+        }
+
+        private void dashboardCOJToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DashboardCOJForm dcf = new DashboardCOJForm();
+            dcf.MdiParent = this;
+            dcf.Show();
         }
     }
 }

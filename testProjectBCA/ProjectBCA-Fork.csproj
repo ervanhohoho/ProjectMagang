@@ -193,10 +193,22 @@
     <Compile Include="dasbor.designer.cs">
       <DependentUpon>dasbor.cs</DependentUpon>
     </Compile>
+    <Compile Include="DashboardCOJForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DashboardCOJForm.designer.cs">
+      <DependentUpon>DashboardCOJForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="DetailApproval.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="EventTanggal.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ForecastDetail.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ForecastHeader.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Form1.cs">
@@ -374,6 +386,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="dasbor.resx">
       <DependentUpon>dasbor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DashboardCOJForm.resx">
+      <DependentUpon>DashboardCOJForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

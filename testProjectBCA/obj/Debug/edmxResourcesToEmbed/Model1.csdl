@@ -177,8 +177,8 @@
     <Property Name="kodePktCabang" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="ring" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
     <Property Name="NomorRekening" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
-    <Property Name="GroupNasabah" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="namaNasabah" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="GroupNasabah" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="namaNasabah" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
     <Property Name="segmentasiNasabah" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
     <Property Name="sentralisasi" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
     <Property Name="subsidi" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
@@ -323,6 +323,8 @@
     </AssociationSet>
     <EntitySet Name="OrderTrackings" EntityType="CACModel.OrderTracking" />
     <EntitySet Name="RekapSelisihAmbilSetors" EntityType="CACModel.RekapSelisihAmbilSetor" />
+    <EntitySet Name="ForecastDetails" EntityType="CACModel.ForecastDetail" />
+    <EntitySet Name="ForecastHeaders" EntityType="CACModel.ForecastHeader" />
   </EntityContainer>
   <EntityType Name="OrderTracking">
     <Key>
@@ -351,5 +353,29 @@
     <Property Name="tanggalTemu" Type="DateTime" Precision="0" />
     <Property Name="noBA" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="keterangan" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="ForecastDetail">
+    <Key>
+      <PropertyRef Name="idForecast" />
+      <PropertyRef Name="idForecastDetail" />
+    </Key>
+    <Property Name="idForecast" Type="Int32" Nullable="false" />
+    <Property Name="idForecastDetail" Type="Int32" Nullable="false" />
+    <Property Name="inCabang100" Type="Int64" />
+    <Property Name="inCabang50" Type="Int64" />
+    <Property Name="inRetail100" Type="Int64" />
+    <Property Name="inRetail50" Type="Int64" />
+    <Property Name="outATM100" Type="Int64" />
+    <Property Name="outATM50" Type="Int64" />
+    <Property Name="outCabang100" Type="Int64" />
+    <Property Name="outCabang50" Type="Int64" />
+    <Property Name="tanggal" Type="DateTime" Precision="0" />
+  </EntityType>
+  <EntityType Name="ForecastHeader">
+    <Key>
+      <PropertyRef Name="idForecast" />
+    </Key>
+    <Property Name="idForecast" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="tanggal" Type="DateTime" Precision="0" />
   </EntityType>
 </Schema>

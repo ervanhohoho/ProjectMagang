@@ -28,27 +28,27 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.rasio100TextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.rasio50TextBox = new System.Windows.Forms.TextBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.bulanPrediksiTreeView = new System.Windows.Forms.TreeView();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.tanggalMaxPrediksiPicker = new System.Windows.Forms.DateTimePicker();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.metodePrediksiComboBox = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.ForecastButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
-            // textBox1
+            // rasio100TextBox
             // 
-            this.textBox1.Location = new System.Drawing.Point(264, 75);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 0;
+            this.rasio100TextBox.Location = new System.Drawing.Point(264, 75);
+            this.rasio100TextBox.Name = "rasio100TextBox";
+            this.rasio100TextBox.Size = new System.Drawing.Size(100, 20);
+            this.rasio100TextBox.TabIndex = 0;
             // 
             // label1
             // 
@@ -68,12 +68,12 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "Target Rasio ATM 50";
             // 
-            // textBox2
+            // rasio50TextBox
             // 
-            this.textBox2.Location = new System.Drawing.Point(264, 112);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(100, 20);
-            this.textBox2.TabIndex = 3;
+            this.rasio50TextBox.Location = new System.Drawing.Point(264, 112);
+            this.rasio50TextBox.Name = "rasio50TextBox";
+            this.rasio50TextBox.Size = new System.Drawing.Size(100, 20);
+            this.rasio50TextBox.TabIndex = 3;
             // 
             // dataGridView1
             // 
@@ -91,12 +91,12 @@
             this.bulanPrediksiTreeView.TabIndex = 5;
             this.bulanPrediksiTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.bulanPrediksiTreeView_AfterCheck);
             // 
-            // dateTimePicker1
+            // tanggalMaxPrediksiPicker
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(355, 15);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
-            this.dateTimePicker1.TabIndex = 6;
+            this.tanggalMaxPrediksiPicker.Location = new System.Drawing.Point(355, 15);
+            this.tanggalMaxPrediksiPicker.Name = "tanggalMaxPrediksiPicker";
+            this.tanggalMaxPrediksiPicker.Size = new System.Drawing.Size(200, 20);
+            this.tanggalMaxPrediksiPicker.TabIndex = 6;
             // 
             // label3
             // 
@@ -116,16 +116,16 @@
             this.label4.TabIndex = 8;
             this.label4.Text = "Bulan untuk prediksi";
             // 
-            // comboBox1
+            // metodePrediksiComboBox
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
+            this.metodePrediksiComboBox.FormattingEnabled = true;
+            this.metodePrediksiComboBox.Items.AddRange(new object[] {
             "Historis",
             "Std Deviasi"});
-            this.comboBox1.Location = new System.Drawing.Point(113, 14);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 21);
-            this.comboBox1.TabIndex = 9;
+            this.metodePrediksiComboBox.Location = new System.Drawing.Point(113, 14);
+            this.metodePrediksiComboBox.Name = "metodePrediksiComboBox";
+            this.metodePrediksiComboBox.Size = new System.Drawing.Size(121, 21);
+            this.metodePrediksiComboBox.TabIndex = 9;
             // 
             // label5
             // 
@@ -136,32 +136,33 @@
             this.label5.TabIndex = 10;
             this.label5.Text = "Metode Prediksi";
             // 
-            // button1
+            // ForecastButton
             // 
-            this.button1.Location = new System.Drawing.Point(434, 63);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(121, 116);
-            this.button1.TabIndex = 11;
-            this.button1.Text = "Forecast";
-            this.button1.UseVisualStyleBackColor = true;
+            this.ForecastButton.Location = new System.Drawing.Point(434, 63);
+            this.ForecastButton.Name = "ForecastButton";
+            this.ForecastButton.Size = new System.Drawing.Size(121, 116);
+            this.ForecastButton.TabIndex = 11;
+            this.ForecastButton.Text = "Forecast";
+            this.ForecastButton.UseVisualStyleBackColor = true;
+            this.ForecastButton.Click += new System.EventHandler(this.button1_Click);
             // 
             // proyeksiLikuiditasForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1063, 607);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.ForecastButton);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.metodePrediksiComboBox);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.dateTimePicker1);
+            this.Controls.Add(this.tanggalMaxPrediksiPicker);
             this.Controls.Add(this.bulanPrediksiTreeView);
             this.Controls.Add(this.dataGridView1);
-            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.rasio50TextBox);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.rasio100TextBox);
             this.Name = "proyeksiLikuiditasForm";
             this.Text = "proyeksiLikuiditasForm";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
@@ -172,17 +173,17 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox rasio100TextBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox rasio50TextBox;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.TreeView bulanPrediksiTreeView;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.DateTimePicker tanggalMaxPrediksiPicker;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox metodePrediksiComboBox;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button ForecastButton;
     }
 }

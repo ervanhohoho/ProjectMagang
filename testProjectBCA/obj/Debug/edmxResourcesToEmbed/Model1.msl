@@ -313,5 +313,30 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="ForecastDetails">
+      <EntityTypeMapping TypeName="CACModel.ForecastDetail">
+        <MappingFragment StoreEntitySet="ForecastDetail">
+          <ScalarProperty Name="tanggal" ColumnName="tanggal" />
+          <ScalarProperty Name="outCabang50" ColumnName="outCabang50" />
+          <ScalarProperty Name="outCabang100" ColumnName="outCabang100" />
+          <ScalarProperty Name="outATM50" ColumnName="outATM50" />
+          <ScalarProperty Name="outATM100" ColumnName="outATM100" />
+          <ScalarProperty Name="inRetail50" ColumnName="inRetail50" />
+          <ScalarProperty Name="inRetail100" ColumnName="inRetail100" />
+          <ScalarProperty Name="inCabang50" ColumnName="inCabang50" />
+          <ScalarProperty Name="inCabang100" ColumnName="inCabang100" />
+          <ScalarProperty Name="idForecastDetail" ColumnName="idForecastDetail" />
+          <ScalarProperty Name="idForecast" ColumnName="idForecast" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ForecastHeaders">
+      <EntityTypeMapping TypeName="CACModel.ForecastHeader">
+        <MappingFragment StoreEntitySet="ForecastHeader">
+          <ScalarProperty Name="tanggal" ColumnName="tanggal" />
+          <ScalarProperty Name="idForecast" ColumnName="idForecast" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>
