@@ -12,18 +12,13 @@ namespace testProjectBCA
     using System;
     using System.Collections.Generic;
     
-    public partial class ForecastDetail
+    public partial class LaporanPermintaanAdhoc
     {
-        public int idForecast { get; set; }
-        public int idForecastDetail { get; set; }
+        public int idLaporan { get; set; }
+        public string kodePkt { get; set; }
         public Nullable<System.DateTime> tanggal { get; set; }
-        public Nullable<long> inCabang100 { get; set; }
-        public Nullable<long> inCabang50 { get; set; }
-        public Nullable<long> inRetail100 { get; set; }
-        public Nullable<long> inRetail50 { get; set; }
-        public Nullable<long> outATM100 { get; set; }
-        public Nullable<long> outATM50 { get; set; }
-        public Nullable<long> outCabang100 { get; set; }
-        public Nullable<long> outCabang50 { get; set; }
+        public Nullable<long> C100 { get; set; }
+        public Nullable<long> C50 { get; set; }
+        public Nullable<long> C20 { get; set; }
     }
 }

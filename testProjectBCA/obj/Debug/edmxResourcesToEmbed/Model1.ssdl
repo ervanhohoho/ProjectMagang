@@ -136,7 +136,7 @@
       <PropertyRef Name="idForecastDetail" />
     </Key>
     <Property Name="idForecast" Type="int" Nullable="false" />
-    <Property Name="idForecastDetail" Type="int" Nullable="false" />
+    <Property Name="idForecastDetail" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="tanggal" Type="date" />
     <Property Name="inCabang100" Type="bigint" />
     <Property Name="inCabang50" Type="bigint" />
@@ -178,6 +178,17 @@
     <Property Name="50" Type="bigint" />
     <Property Name="20" Type="bigint" />
   </EntityType>
+  <EntityType Name="LaporanPermintaanAdhoc">
+    <Key>
+      <PropertyRef Name="idLaporan" />
+    </Key>
+    <Property Name="idLaporan" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="kodePkt" Type="varchar" MaxLength="10" />
+    <Property Name="tanggal" Type="date" />
+    <Property Name="100" Type="bigint" />
+    <Property Name="50" Type="bigint" />
+    <Property Name="20" Type="bigint" />
+  </EntityType>
   <EntityType Name="LaporanPermintaanBon">
     <Key>
       <PropertyRef Name="idLaporan" />
@@ -205,7 +216,8 @@
     <Property Name="segmentasiNasabah" Type="varchar" MaxLength="10" />
     <Property Name="sentralisasi" Type="varchar" MaxLength="10" />
     <Property Name="subsidi" Type="varchar" MaxLength="10" />
-    <Property Name="subsidiCabang" Type="varchar" MaxLength="100" />
+    <Property Name="persentaseSubsidi" Type="float" />
+    <Property Name="kuota" Type="int" />
   </EntityType>
   <EntityType Name="Opti">
     <Key>
@@ -357,6 +369,7 @@
     <EntitySet Name="ForecastHeader" EntityType="Self.ForecastHeader" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="HargaLayanan" EntityType="Self.HargaLayanan" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="laporanBon" EntityType="Self.laporanBon" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="LaporanPermintaanAdhoc" EntityType="Self.LaporanPermintaanAdhoc" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="LaporanPermintaanBon" EntityType="Self.LaporanPermintaanBon" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Nasabah" EntityType="Self.Nasabah" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Opti" EntityType="Self.Opti" Schema="dbo" store:Type="Tables" />

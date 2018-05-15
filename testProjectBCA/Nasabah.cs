@@ -26,6 +26,7 @@ namespace testProjectBCA
         public string segmentasiNasabah { get; set; }
         public string sentralisasi { get; set; }
         public string subsidi { get; set; }
-        public string subsidiCabang { get; set; }
+        public Nullable<double> persentaseSubsidi { get; set; }
+        public Nullable<int> kuota { get; set; }
     }
 }

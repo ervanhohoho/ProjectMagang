@@ -222,6 +222,8 @@ namespace testProjectBCA
                 }
 
                 UpdateDataCashpointPkt(dt);
+
+
                 UpdateDataBranchPkt(branch);
                 loadForm.CloseForm();
             }
@@ -235,9 +237,15 @@ namespace testProjectBCA
                 //Database1Entities db = new Database1Entities();
                 DataSet ds = Util.openExcel(of.FileName);
                 loadForm.ShowSplashScreen();
+                DataTable dt = ds.Tables[0];
+                DataRow[] rows = dt.Select("Column1 is null");
 
-               
-                UpdateDataCashpointDenom(ds.Tables[0]);
+                foreach(var row in rows)
+                {
+                    dt.Rows.Remove(row);
+                }
+
+                UpdateDataCashpointDenom(dt);
                 loadForm.CloseForm();
             }
             else
@@ -265,7 +273,7 @@ namespace testProjectBCA
                             //bulkcopy.BulkCopyTimeout = 660;
                             bulkcopy.DestinationTableName = "#TempTable";
                             bulkcopy.ColumnMappings.Add(0, 0);
-                            bulkcopy.ColumnMappings.Add(4, 1);
+                            bulkcopy.ColumnMappings.Add(5, 1);
                             bulkcopy.WriteToServer(dt);
                             bulkcopy.Close();
                         }
@@ -292,7 +300,7 @@ namespace testProjectBCA
                         command.CommandText = "UPDATE #TempTable SET kodePkt = 'ANDJ' WHERE kodePkt = 'ANJK'";
                         command.ExecuteNonQuery();
 
-                        command.CommandText = "INSERT INTO Cashpoint(idCashpoint, kodePkt) SELECT TT.idCashpoint, TT.kodePkt FROM #TempTable TT LEFT JOIN Cashpoint C ON TT.idCashpoint = C.idCashpoint WHERE C.idCashpoint IS  NULL";
+                        command.CommandText = "INSERT INTO Cashpoint(idCashpoint, kodePkt) SELECT TT.idCashpoint, TT.kodePkt FROM #TempTable TT LEFT JOIN Cashpoint C ON TT.idCashpoint = C.idCashpoint WHERE C.idCashpoint IS NULL";
                         command.ExecuteNonQuery();
                         command.CommandText = "UPDATE T SET T.kodePkt = TT.kodePkt FROM Cashpoint T INNER JOIN #TempTable TT ON TT.idCashpoint = T.idCashpoint; DROP TABLE #TempTable;";
                         command.ExecuteNonQuery();
@@ -630,7 +638,6 @@ namespace testProjectBCA
                 {
                     dt.Rows.Remove(row);
                 }
-
                 UpdateDataCashpointPkt(dt);
                 UpdateDataBranchPkt(branch);
                 loadForm.CloseForm();
@@ -717,6 +724,13 @@ namespace testProjectBCA
             DashboardCOJForm dcf = new DashboardCOJForm();
             dcf.MdiParent = this;
             dcf.Show();
+        }
+
+        private void inputDataSubsidiToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            InputDataSubsidiForm idf = new InputDataSubsidiForm();
+            idf.MdiParent = this;
+            idf.Show();
         }
     }
 }

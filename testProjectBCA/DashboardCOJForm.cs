@@ -21,8 +21,8 @@ namespace testProjectBCA
             reloadTahun();
             reloadBulan();
             reloadTanggal();
-
-            //reloadStokSaldoCoj();
+            reloadUbVsUk();
+            reloadStokSaldoCoj();
         }
 
         public void reloadTahun()
@@ -184,6 +184,69 @@ namespace testProjectBCA
 
                     pieChartStokSaldoCoj.LegendLocation = LegendLocation.Bottom;
 
+                }
+            }
+        }
+
+        public void reloadUbVsUk()
+        {
+            pieChartUbVsUk.Series.Clear();
+
+            Int64 uk = 0;
+            Int64 ub = 0;
+
+
+            using (SqlConnection sql = new SqlConnection(Variables.connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = sql;
+                    sql.Open();
+                    cmd.CommandText = "select[uangbesar],[uangkecil]"
+                                     + " from"
+                                     + " (select[uangbesar] = sum(unprocessed + newBaru + newLama + fitBaru + fitLama + passThrough + unfitBaru + unfitNKRI + unfitLama + RRMBaru + RRMNKRI + RRMLama + RupiahRusakMayor)"
+                                     + " from StokPosisi"
+                                     + " where (denom = 100000 or denom = 50000) and day(tanggal) = 2 and month(tanggal) = 4 and year(tanggal) = 2018)a,"
+                                     + " (select[uangkecil] = sum(unprocessed + newBaru + newLama + fitBaru + fitLama + passThrough + unfitBaru + unfitNKRI +  unfitLama + RRMBaru+ RRMNKRI + RRMLama + RupiahRusakMayor)"
+                                     + " from StokPosisi"
+                                     + " where(denom != 100000 or denom != 50000) and day(tanggal) = 2 and month(tanggal) = 4 and year(tanggal) = 2018)b";
+
+                   SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        ub = Int64.Parse(reader[0].ToString());
+                        uk = Int64.Parse(reader[1].ToString());
+                    }
+
+                    Func<ChartPoint, string> labelPoint = chartPoint =>
+                   string.Format("{0} ({1:P})", chartPoint.Y, chartPoint.Participation);
+
+                    pieChartUbVsUk.Series = new SeriesCollection
+                    {
+                        new PieSeries
+                        {
+                            Title = "Uang Besar",
+                            Values = new ChartValues<Int64>
+                            {
+                                ub
+                            },
+                            DataLabels = true,
+                            LabelPoint = labelPoint
+                        },
+                        new PieSeries
+                        {
+                            Title = "Uang Kecil",
+                            Values = new ChartValues<Int64>
+                            {
+                                uk
+                            },
+                            DataLabels = true,
+                            LabelPoint = labelPoint
+                        }
+                    };
+
+                    pieChartStokSaldoCoj.LegendLocation = LegendLocation.Bottom;
                 }
             }
         }

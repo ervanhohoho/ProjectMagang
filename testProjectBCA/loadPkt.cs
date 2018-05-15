@@ -106,6 +106,7 @@ namespace testProjectBCA
                     }
                 }
                 db.SaveChanges();
+                this.Close();
             }
         }
     }

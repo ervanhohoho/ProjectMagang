@@ -29,6 +29,9 @@
         private void InitializeComponent()
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pktComboBox = new System.Windows.Forms.ComboBox();
             this.rasio100Txt = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -49,6 +52,7 @@
             this.rekomendasiAdhoc20Lbl = new System.Windows.Forms.Label();
             this.bonGridView = new System.Windows.Forms.DataGridView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label28 = new System.Windows.Forms.Label();
             this.skipPrediksiTreeView = new System.Windows.Forms.TreeView();
             this.sumLabel = new System.Windows.Forms.Label();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
@@ -99,7 +103,8 @@
             this.label25 = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
             this.tanggalPrediksiMaxPicker = new System.Windows.Forms.DateTimePicker();
-            this.label28 = new System.Windows.Forms.Label();
+            this.permintaanAdhocGridView = new System.Windows.Forms.DataGridView();
+            this.label29 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.rekomendasiBonGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bonGridView)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -112,16 +117,20 @@
             ((System.ComponentModel.ISupportInitialize)(this.bonYangSudahDisetujuiGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.totalSislokGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.totalIsiGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.permintaanAdhocGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // pktComboBox
             // 
+            this.pktComboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.pktComboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.pktComboBox.FormattingEnabled = true;
             this.pktComboBox.Location = new System.Drawing.Point(1244, 5);
             this.pktComboBox.Name = "pktComboBox";
             this.pktComboBox.Size = new System.Drawing.Size(121, 21);
             this.pktComboBox.TabIndex = 0;
             this.pktComboBox.SelectionChangeCommitted += new System.EventHandler(this.pktComboBox_SelectionChangeCommitted);
+            this.pktComboBox.SelectedValueChanged += new System.EventHandler(this.pktComboBox_SelectedValueChanged);
             // 
             // rasio100Txt
             // 
@@ -307,13 +316,13 @@
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.bonGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.bonGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.bonGridView.Location = new System.Drawing.Point(10, 35);
+            this.bonGridView.Location = new System.Drawing.Point(14, 254);
             this.bonGridView.Name = "bonGridView";
             this.bonGridView.Size = new System.Drawing.Size(443, 193);
             this.bonGridView.TabIndex = 20;
+            this.bonGridView.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.bonGridView_CellBeginEdit);
             this.bonGridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.bonGridView_CellEndEdit);
-            this.bonGridView.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.bonGridView_CellEnter);
-            this.bonGridView.CellLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.bonGridView_CellLeave);
+            this.bonGridView.SelectionChanged += new System.EventHandler(this.bonGridView_SelectionChanged);
             // 
             // groupBox1
             // 
@@ -349,6 +358,15 @@
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Informasi";
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(129, 22);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(120, 13);
+            this.label28.TabIndex = 103;
+            this.label28.Text = "Hari yang tidak ada bon";
             // 
             // skipPrediksiTreeView
             // 
@@ -456,7 +474,7 @@
             // 
             this.label18.AutoSize = true;
             this.label18.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label18.Location = new System.Drawing.Point(909, 21);
+            this.label18.Location = new System.Drawing.Point(906, 26);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(34, 13);
             this.label18.TabIndex = 14;
@@ -469,7 +487,7 @@
             this.rasioGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.rasioGridView.BackgroundColor = System.Drawing.SystemColors.Info;
             this.rasioGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.rasioGridView.Location = new System.Drawing.Point(915, 35);
+            this.rasioGridView.Location = new System.Drawing.Point(910, 42);
             this.rasioGridView.Name = "rasioGridView";
             this.rasioGridView.ReadOnly = true;
             this.rasioGridView.RowHeadersVisible = false;
@@ -480,7 +498,7 @@
             // 
             this.label17.AutoSize = true;
             this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label17.Location = new System.Drawing.Point(461, 19);
+            this.label17.Location = new System.Drawing.Point(11, 26);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(82, 13);
             this.label17.TabIndex = 12;
@@ -491,7 +509,7 @@
             this.permintaanBonGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.permintaanBonGridView.BackgroundColor = System.Drawing.SystemColors.Info;
             this.permintaanBonGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.permintaanBonGridView.Location = new System.Drawing.Point(463, 35);
+            this.permintaanBonGridView.Location = new System.Drawing.Point(14, 42);
             this.permintaanBonGridView.Name = "permintaanBonGridView";
             this.permintaanBonGridView.RowHeadersVisible = false;
             this.permintaanBonGridView.Size = new System.Drawing.Size(443, 193);
@@ -500,8 +518,10 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.approveButton);
+            this.groupBox2.Controls.Add(this.label29);
             this.groupBox2.Controls.Add(this.label17);
             this.groupBox2.Controls.Add(this.bonGridView);
+            this.groupBox2.Controls.Add(this.permintaanAdhocGridView);
             this.groupBox2.Controls.Add(this.permintaanBonGridView);
             this.groupBox2.Controls.Add(this.groupbox3);
             this.groupBox2.Controls.Add(this.label10);
@@ -545,24 +565,25 @@
             this.groupbox3.Controls.Add(this.label13);
             this.groupbox3.Controls.Add(this.label12);
             this.groupbox3.Controls.Add(this.label11);
-            this.groupbox3.Location = new System.Drawing.Point(8, 246);
+            this.groupbox3.Location = new System.Drawing.Point(463, 254);
             this.groupbox3.Name = "groupbox3";
-            this.groupbox3.Size = new System.Drawing.Size(591, 192);
+            this.groupbox3.Size = new System.Drawing.Size(440, 192);
             this.groupbox3.TabIndex = 99;
             this.groupbox3.TabStop = false;
             // 
             // tglSetor
             // 
             this.tglSetor.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tglSetor.Location = new System.Drawing.Point(396, 103);
+            this.tglSetor.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.tglSetor.Location = new System.Drawing.Point(16, 122);
             this.tglSetor.Name = "tglSetor";
-            this.tglSetor.Size = new System.Drawing.Size(186, 20);
+            this.tglSetor.Size = new System.Drawing.Size(96, 20);
             this.tglSetor.TabIndex = 17;
             this.tglSetor.ValueChanged += new System.EventHandler(this.tglSetor_ValueChanged);
             // 
             // bonAdhoc20Txt
             // 
-            this.bonAdhoc20Txt.Location = new System.Drawing.Point(290, 140);
+            this.bonAdhoc20Txt.Location = new System.Drawing.Point(297, 87);
             this.bonAdhoc20Txt.Name = "bonAdhoc20Txt";
             this.bonAdhoc20Txt.Size = new System.Drawing.Size(100, 20);
             this.bonAdhoc20Txt.TabIndex = 16;
@@ -570,7 +591,7 @@
             // 
             // bonAdhoc50Txt
             // 
-            this.bonAdhoc50Txt.Location = new System.Drawing.Point(184, 140);
+            this.bonAdhoc50Txt.Location = new System.Drawing.Point(191, 87);
             this.bonAdhoc50Txt.Name = "bonAdhoc50Txt";
             this.bonAdhoc50Txt.Size = new System.Drawing.Size(100, 20);
             this.bonAdhoc50Txt.TabIndex = 15;
@@ -578,7 +599,7 @@
             // 
             // bonAdhoc100Txt
             // 
-            this.bonAdhoc100Txt.Location = new System.Drawing.Point(78, 140);
+            this.bonAdhoc100Txt.Location = new System.Drawing.Point(85, 87);
             this.bonAdhoc100Txt.Name = "bonAdhoc100Txt";
             this.bonAdhoc100Txt.Size = new System.Drawing.Size(100, 20);
             this.bonAdhoc100Txt.TabIndex = 14;
@@ -588,7 +609,7 @@
             // 
             this.label16.AutoSize = true;
             this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label16.Location = new System.Drawing.Point(6, 147);
+            this.label16.Location = new System.Drawing.Point(13, 94);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(60, 13);
             this.label16.TabIndex = 13;
@@ -596,7 +617,7 @@
             // 
             // setor20Txt
             // 
-            this.setor20Txt.Location = new System.Drawing.Point(290, 103);
+            this.setor20Txt.Location = new System.Drawing.Point(297, 155);
             this.setor20Txt.Name = "setor20Txt";
             this.setor20Txt.Size = new System.Drawing.Size(100, 20);
             this.setor20Txt.TabIndex = 12;
@@ -604,7 +625,7 @@
             // 
             // setor50Txt
             // 
-            this.setor50Txt.Location = new System.Drawing.Point(184, 103);
+            this.setor50Txt.Location = new System.Drawing.Point(191, 155);
             this.setor50Txt.Name = "setor50Txt";
             this.setor50Txt.Size = new System.Drawing.Size(100, 20);
             this.setor50Txt.TabIndex = 11;
@@ -612,7 +633,7 @@
             // 
             // setor100Txt
             // 
-            this.setor100Txt.Location = new System.Drawing.Point(78, 103);
+            this.setor100Txt.Location = new System.Drawing.Point(85, 155);
             this.setor100Txt.Name = "setor100Txt";
             this.setor100Txt.Size = new System.Drawing.Size(100, 20);
             this.setor100Txt.TabIndex = 10;
@@ -620,7 +641,7 @@
             // 
             // setorAdhoc20Txt
             // 
-            this.setorAdhoc20Txt.Location = new System.Drawing.Point(290, 67);
+            this.setorAdhoc20Txt.Location = new System.Drawing.Point(297, 61);
             this.setorAdhoc20Txt.Name = "setorAdhoc20Txt";
             this.setorAdhoc20Txt.Size = new System.Drawing.Size(100, 20);
             this.setorAdhoc20Txt.TabIndex = 9;
@@ -628,7 +649,7 @@
             // 
             // setorAdhoc50Txt
             // 
-            this.setorAdhoc50Txt.Location = new System.Drawing.Point(184, 67);
+            this.setorAdhoc50Txt.Location = new System.Drawing.Point(191, 61);
             this.setorAdhoc50Txt.Name = "setorAdhoc50Txt";
             this.setorAdhoc50Txt.Size = new System.Drawing.Size(100, 20);
             this.setorAdhoc50Txt.TabIndex = 8;
@@ -636,17 +657,18 @@
             // 
             // setorAdhoc100Txt
             // 
-            this.setorAdhoc100Txt.Location = new System.Drawing.Point(78, 67);
+            this.setorAdhoc100Txt.Location = new System.Drawing.Point(85, 61);
             this.setorAdhoc100Txt.Name = "setorAdhoc100Txt";
             this.setorAdhoc100Txt.Size = new System.Drawing.Size(100, 20);
             this.setorAdhoc100Txt.TabIndex = 7;
             this.setorAdhoc100Txt.TextChanged += new System.EventHandler(this.Txt_TextChanged);
+            this.setorAdhoc100Txt.Leave += new System.EventHandler(this.setorAdhoc100Txt_Leave);
             // 
             // label15
             // 
             this.label15.AutoSize = true;
             this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label15.Location = new System.Drawing.Point(319, 36);
+            this.label15.Location = new System.Drawing.Point(326, 30);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(37, 13);
             this.label15.TabIndex = 6;
@@ -656,7 +678,7 @@
             // 
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.Location = new System.Drawing.Point(214, 37);
+            this.label14.Location = new System.Drawing.Point(221, 31);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(37, 13);
             this.label14.TabIndex = 5;
@@ -666,7 +688,7 @@
             // 
             this.label13.AutoSize = true;
             this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label13.Location = new System.Drawing.Point(104, 38);
+            this.label13.Location = new System.Drawing.Point(111, 32);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(43, 13);
             this.label13.TabIndex = 4;
@@ -676,7 +698,7 @@
             // 
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Location = new System.Drawing.Point(6, 110);
+            this.label12.Location = new System.Drawing.Point(13, 158);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(32, 13);
             this.label12.TabIndex = 3;
@@ -686,7 +708,7 @@
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(6, 74);
+            this.label11.Location = new System.Drawing.Point(13, 68);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(66, 13);
             this.label11.TabIndex = 2;
@@ -696,7 +718,7 @@
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(7, 19);
+            this.label10.Location = new System.Drawing.Point(11, 238);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(26, 13);
             this.label10.TabIndex = 0;
@@ -882,14 +904,50 @@
             this.tanggalPrediksiMaxPicker.TabIndex = 110;
             this.tanggalPrediksiMaxPicker.ValueChanged += new System.EventHandler(this.tanggalPrediksiMaxPicker_ValueChanged);
             // 
-            // label28
+            // permintaanAdhocGridView
             // 
-            this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(129, 22);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(120, 13);
-            this.label28.TabIndex = 103;
-            this.label28.Text = "Hari yang tidak ada bon";
+            this.permintaanAdhocGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.permintaanAdhocGridView.BackgroundColor = System.Drawing.SystemColors.Info;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.permintaanAdhocGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            this.permintaanAdhocGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.permintaanAdhocGridView.DefaultCellStyle = dataGridViewCellStyle3;
+            this.permintaanAdhocGridView.Location = new System.Drawing.Point(463, 42);
+            this.permintaanAdhocGridView.Name = "permintaanAdhocGridView";
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.permintaanAdhocGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            this.permintaanAdhocGridView.RowHeadersVisible = false;
+            this.permintaanAdhocGridView.Size = new System.Drawing.Size(443, 193);
+            this.permintaanAdhocGridView.TabIndex = 11;
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label29.Location = new System.Drawing.Point(460, 26);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(94, 13);
+            this.label29.TabIndex = 12;
+            this.label29.Text = "Permintaan Adhoc";
             // 
             // InformationBoard
             // 
@@ -929,6 +987,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.bonYangSudahDisetujuiGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.totalSislokGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.totalIsiGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.permintaanAdhocGridView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1007,5 +1066,7 @@
         private System.Windows.Forms.DateTimePicker tanggalPrediksiMaxPicker;
         private System.Windows.Forms.TreeView skipPrediksiTreeView;
         private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.DataGridView permintaanAdhocGridView;
     }
 }

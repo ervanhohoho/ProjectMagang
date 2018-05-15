@@ -120,7 +120,12 @@ namespace testProjectBCA
             foreach(String path in files)
             {
                 DataSet ds = Util.openExcel(path);
-                collectionTransaksiPkt.Add(loadSheetsIntoClassList(Util.openExcel(path)));
+                try {
+                    collectionTransaksiPkt.Add(loadSheetsIntoClassList(Util.openExcel(path)));
+                }catch(Exception e)
+                {
+                    MessageBox.Show(path + " Bermasalah");
+                }
                 GC.Collect();
             }
         }
@@ -141,7 +146,6 @@ namespace testProjectBCA
             int counterList = 0;
             for (int x = 0; x < data.Tables.Count; x++)
             {
-                
                 var table = data.Tables[x];
                 //Validasi Sheet Kosong
                 if (table.Rows.Count < 10)
@@ -318,8 +322,23 @@ namespace testProjectBCA
                     pkt.permintaanBon.Add(tempList);
 
                 }
-
-                pkt.hitungSaldoAkhir();
+                if (!String.IsNullOrEmpty(table.Rows[44][6].ToString()) && !String.IsNullOrEmpty(table.Rows[44][7].ToString()) && !String.IsNullOrEmpty(table.Rows[44][8].ToString()))
+                {
+                    Int64 buf;
+                    if (Int64.TryParse(table.Rows[44][6].ToString(), out buf))
+                        pkt.permintaanAdhoc.Add(buf);
+                    else
+                        pkt.permintaanAdhoc.Add(0);
+                    if (Int64.TryParse(table.Rows[44][7].ToString(), out buf))
+                        pkt.permintaanAdhoc.Add(buf);
+                    else
+                        pkt.permintaanAdhoc.Add(0);
+                    if (Int64.TryParse(table.Rows[44][8].ToString(), out buf))
+                        pkt.permintaanAdhoc.Add(buf);
+                    else
+                        pkt.permintaanAdhoc.Add(0);
+                } else
+                    pkt.hitungSaldoAkhir();
 
 
 

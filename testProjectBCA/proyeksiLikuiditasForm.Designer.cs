@@ -40,6 +40,7 @@
             this.metodePrediksiComboBox = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.ForecastButton = new System.Windows.Forms.Button();
+            this.saveButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -48,7 +49,7 @@
             this.rasio100TextBox.Location = new System.Drawing.Point(264, 75);
             this.rasio100TextBox.Name = "rasio100TextBox";
             this.rasio100TextBox.Size = new System.Drawing.Size(100, 20);
-            this.rasio100TextBox.TabIndex = 0;
+            this.rasio100TextBox.TabIndex = 4;
             // 
             // label1
             // 
@@ -73,7 +74,7 @@
             this.rasio50TextBox.Location = new System.Drawing.Point(264, 112);
             this.rasio50TextBox.Name = "rasio50TextBox";
             this.rasio50TextBox.Size = new System.Drawing.Size(100, 20);
-            this.rasio50TextBox.TabIndex = 3;
+            this.rasio50TextBox.TabIndex = 5;
             // 
             // dataGridView1
             // 
@@ -88,7 +89,7 @@
             this.bulanPrediksiTreeView.Location = new System.Drawing.Point(16, 82);
             this.bulanPrediksiTreeView.Name = "bulanPrediksiTreeView";
             this.bulanPrediksiTreeView.Size = new System.Drawing.Size(121, 97);
-            this.bulanPrediksiTreeView.TabIndex = 5;
+            this.bulanPrediksiTreeView.TabIndex = 3;
             this.bulanPrediksiTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.bulanPrediksiTreeView_AfterCheck);
             // 
             // tanggalMaxPrediksiPicker
@@ -96,7 +97,7 @@
             this.tanggalMaxPrediksiPicker.Location = new System.Drawing.Point(355, 15);
             this.tanggalMaxPrediksiPicker.Name = "tanggalMaxPrediksiPicker";
             this.tanggalMaxPrediksiPicker.Size = new System.Drawing.Size(200, 20);
-            this.tanggalMaxPrediksiPicker.TabIndex = 6;
+            this.tanggalMaxPrediksiPicker.TabIndex = 2;
             // 
             // label3
             // 
@@ -125,7 +126,7 @@
             this.metodePrediksiComboBox.Location = new System.Drawing.Point(113, 14);
             this.metodePrediksiComboBox.Name = "metodePrediksiComboBox";
             this.metodePrediksiComboBox.Size = new System.Drawing.Size(121, 21);
-            this.metodePrediksiComboBox.TabIndex = 9;
+            this.metodePrediksiComboBox.TabIndex = 1;
             // 
             // label5
             // 
@@ -138,19 +139,30 @@
             // 
             // ForecastButton
             // 
-            this.ForecastButton.Location = new System.Drawing.Point(434, 63);
+            this.ForecastButton.Location = new System.Drawing.Point(393, 63);
             this.ForecastButton.Name = "ForecastButton";
-            this.ForecastButton.Size = new System.Drawing.Size(121, 116);
-            this.ForecastButton.TabIndex = 11;
+            this.ForecastButton.Size = new System.Drawing.Size(78, 78);
+            this.ForecastButton.TabIndex = 6;
             this.ForecastButton.Text = "Forecast";
             this.ForecastButton.UseVisualStyleBackColor = true;
             this.ForecastButton.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // saveButton
+            // 
+            this.saveButton.Location = new System.Drawing.Point(477, 63);
+            this.saveButton.Name = "saveButton";
+            this.saveButton.Size = new System.Drawing.Size(78, 78);
+            this.saveButton.TabIndex = 11;
+            this.saveButton.Text = "Save";
+            this.saveButton.UseVisualStyleBackColor = true;
+            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
             // 
             // proyeksiLikuiditasForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1063, 607);
+            this.Controls.Add(this.saveButton);
             this.Controls.Add(this.ForecastButton);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.metodePrediksiComboBox);
@@ -185,5 +197,6 @@
         private System.Windows.Forms.ComboBox metodePrediksiComboBox;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button ForecastButton;
+        private System.Windows.Forms.Button saveButton;
     }
 }

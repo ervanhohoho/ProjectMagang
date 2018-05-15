@@ -127,7 +127,16 @@ namespace testProjectBCA
                 db.LaporanPermintaanBons.Add(newL);
                 db.SaveChanges();
             }
-            
+            LaporanPermintaanAdhoc newA = new LaporanPermintaanAdhoc();
+            newA.kodePkt = temp.kodePkt;
+            newA.tanggal = temp.tanggalPengajuan.AddDays(1);
+            newA.C100 = temp.permintaanAdhoc[0];
+            newA.C50 = temp.permintaanAdhoc[1];
+            newA.C20 = temp.permintaanAdhoc[2];
+            db.LaporanPermintaanAdhocs.Add(newA);
+            db.SaveChanges();
+
+
         }
         public static void closeExcel()
         {

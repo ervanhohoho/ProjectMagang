@@ -71,7 +71,7 @@ namespace testProjectBCA
             var query2 = (from x in query
                           join y in db.Nasabahs on x.KodeNasabah equals y.kodeNasabah
                           
-                          select new { x.KodeNasabah, x.Total, x.Frekuensi,y.fasilitasLayanan, y.metodeLayanan, y.ring, x.jenisLayanan, y.segmentasiNasabah, y.sentralisasi, y.subsidi, y.subsidiCabang }).ToList();
+                          select new { x.KodeNasabah, x.Total, x.Frekuensi,y.fasilitasLayanan, y.metodeLayanan, y.ring, x.jenisLayanan, y.segmentasiNasabah, y.sentralisasi, y.subsidi, y.persentaseSubsidi }).ToList();
             //Cocokin sama harga
             var query3 = (from x in query2
                           join y in db.HargaLayanans on x.jenisLayanan equals y.jenisLayanan
@@ -90,7 +90,7 @@ namespace testProjectBCA
                               PPN =  0.01 * (x.Frekuensi * y.hargaRing1 + Math.Round((Double)(x.Total * rateAsuransi))),
                               x.segmentasiNasabah,
                               x.subsidi,
-                              x.subsidiCabang
+                              x.persentaseSubsidi
                           }).ToList();
             
             dataGridView1.DataSource = query3;

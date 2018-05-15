@@ -56,6 +56,7 @@
             this.hargaRingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.masterNasabahToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.abacasToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.inputDataSubsidiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.invoiceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dashboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dashboardCOJToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -131,14 +132,14 @@
             // dataPKTToolStripMenuItem
             // 
             this.dataPKTToolStripMenuItem.Name = "dataPKTToolStripMenuItem";
-            this.dataPKTToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
+            this.dataPKTToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.dataPKTToolStripMenuItem.Text = "Data PKT";
             this.dataPKTToolStripMenuItem.Click += new System.EventHandler(this.inputDataPktToolStripMenuItem_Click);
             // 
             // dataDenomToolStripMenuItem
             // 
             this.dataDenomToolStripMenuItem.Name = "dataDenomToolStripMenuItem";
-            this.dataDenomToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
+            this.dataDenomToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.dataDenomToolStripMenuItem.Text = "Data Denom";
             this.dataDenomToolStripMenuItem.Click += new System.EventHandler(this.inputDataDenomToolStripMenuItem_Click);
             // 
@@ -270,7 +271,8 @@
             this.inputDataToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.hargaRingToolStripMenuItem,
             this.masterNasabahToolStripMenuItem,
-            this.abacasToolStripMenuItem1});
+            this.abacasToolStripMenuItem1,
+            this.inputDataSubsidiToolStripMenuItem});
             this.inputDataToolStripMenuItem.Name = "inputDataToolStripMenuItem";
             this.inputDataToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.inputDataToolStripMenuItem.Text = "Input Data";
@@ -278,23 +280,30 @@
             // hargaRingToolStripMenuItem
             // 
             this.hargaRingToolStripMenuItem.Name = "hargaRingToolStripMenuItem";
-            this.hargaRingToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.hargaRingToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
             this.hargaRingToolStripMenuItem.Text = "Harga Layanan";
             this.hargaRingToolStripMenuItem.Click += new System.EventHandler(this.hargaRingToolStripMenuItem_Click);
             // 
             // masterNasabahToolStripMenuItem
             // 
             this.masterNasabahToolStripMenuItem.Name = "masterNasabahToolStripMenuItem";
-            this.masterNasabahToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.masterNasabahToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
             this.masterNasabahToolStripMenuItem.Text = "Master Nasabah";
             this.masterNasabahToolStripMenuItem.Click += new System.EventHandler(this.masterNasabahToolStripMenuItem_Click);
             // 
             // abacasToolStripMenuItem1
             // 
             this.abacasToolStripMenuItem1.Name = "abacasToolStripMenuItem1";
-            this.abacasToolStripMenuItem1.Size = new System.Drawing.Size(159, 22);
+            this.abacasToolStripMenuItem1.Size = new System.Drawing.Size(168, 22);
             this.abacasToolStripMenuItem1.Text = "Abacas";
             this.abacasToolStripMenuItem1.Click += new System.EventHandler(this.abacasToolStripMenuItem_Click);
+            // 
+            // inputDataSubsidiToolStripMenuItem
+            // 
+            this.inputDataSubsidiToolStripMenuItem.Name = "inputDataSubsidiToolStripMenuItem";
+            this.inputDataSubsidiToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.inputDataSubsidiToolStripMenuItem.Text = "Input data subsidi";
+            this.inputDataSubsidiToolStripMenuItem.Click += new System.EventHandler(this.inputDataSubsidiToolStripMenuItem_Click);
             // 
             // invoiceToolStripMenuItem
             // 
@@ -403,5 +412,6 @@
         private System.Windows.Forms.ToolStripMenuItem abacasToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem proyeksiLikuiditaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dashboardCOJToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem inputDataSubsidiToolStripMenuItem;
     }
 }

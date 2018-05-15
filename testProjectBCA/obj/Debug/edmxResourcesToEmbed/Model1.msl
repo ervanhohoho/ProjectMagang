@@ -41,13 +41,13 @@
     <EntitySetMapping Name="Cabangs">
       <EntityTypeMapping TypeName="CACModel.Cabang">
         <MappingFragment StoreEntitySet="Cabang">
-          <ScalarProperty Name="tipe" ColumnName="tipe" />
-          <ScalarProperty Name="namaCabang" ColumnName="namaCabang" />
-          <ScalarProperty Name="area" ColumnName="area" />
-          <ScalarProperty Name="kcu" ColumnName="kcu" />
           <ScalarProperty Name="kodeCabang" ColumnName="kodeCabang" />
           <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
           <ScalarProperty Name="kanwil" ColumnName="kanwil" />
+          <ScalarProperty Name="kcu" ColumnName="kcu" />
+          <ScalarProperty Name="area" ColumnName="area" />
+          <ScalarProperty Name="namaCabang" ColumnName="namaCabang" />
+          <ScalarProperty Name="tipe" ColumnName="tipe" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -138,6 +138,31 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="ForecastDetails">
+      <EntityTypeMapping TypeName="CACModel.ForecastDetail">
+        <MappingFragment StoreEntitySet="ForecastDetail">
+          <ScalarProperty Name="idForecast" ColumnName="idForecast" />
+          <ScalarProperty Name="idForecastDetail" ColumnName="idForecastDetail" />
+          <ScalarProperty Name="tanggal" ColumnName="tanggal" />
+          <ScalarProperty Name="inCabang100" ColumnName="inCabang100" />
+          <ScalarProperty Name="inCabang50" ColumnName="inCabang50" />
+          <ScalarProperty Name="inRetail100" ColumnName="inRetail100" />
+          <ScalarProperty Name="inRetail50" ColumnName="inRetail50" />
+          <ScalarProperty Name="outATM100" ColumnName="outATM100" />
+          <ScalarProperty Name="outATM50" ColumnName="outATM50" />
+          <ScalarProperty Name="outCabang100" ColumnName="outCabang100" />
+          <ScalarProperty Name="outCabang50" ColumnName="outCabang50" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ForecastHeaders">
+      <EntityTypeMapping TypeName="CACModel.ForecastHeader">
+        <MappingFragment StoreEntitySet="ForecastHeader">
+          <ScalarProperty Name="idForecast" ColumnName="idForecast" />
+          <ScalarProperty Name="tanggal" ColumnName="tanggal" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="HargaLayanans">
       <EntityTypeMapping TypeName="CACModel.HargaLayanan">
         <MappingFragment StoreEntitySet="HargaLayanan">
@@ -178,19 +203,20 @@
     <EntitySetMapping Name="Nasabahs">
       <EntityTypeMapping TypeName="CACModel.Nasabah">
         <MappingFragment StoreEntitySet="Nasabah">
-          <ScalarProperty Name="subsidiCabang" ColumnName="subsidiCabang" />
-          <ScalarProperty Name="subsidi" ColumnName="subsidi" />
-          <ScalarProperty Name="sentralisasi" ColumnName="sentralisasi" />
-          <ScalarProperty Name="segmentasiNasabah" ColumnName="segmentasiNasabah" />
-          <ScalarProperty Name="namaNasabah" ColumnName="namaNasabah" />
-          <ScalarProperty Name="GroupNasabah" ColumnName="GroupNasabah" />
-          <ScalarProperty Name="NomorRekening" ColumnName="NomorRekening" />
           <ScalarProperty Name="kodeNasabah" ColumnName="kodeNasabah" />
           <ScalarProperty Name="fasilitasLayanan" ColumnName="fasilitasLayanan" />
           <ScalarProperty Name="metodeLayanan" ColumnName="metodeLayanan" />
           <ScalarProperty Name="kodeCabang" ColumnName="kodeCabang" />
           <ScalarProperty Name="kodePktCabang" ColumnName="kodePktCabang" />
           <ScalarProperty Name="ring" ColumnName="ring" />
+          <ScalarProperty Name="NomorRekening" ColumnName="NomorRekening" />
+          <ScalarProperty Name="GroupNasabah" ColumnName="GroupNasabah" />
+          <ScalarProperty Name="namaNasabah" ColumnName="namaNasabah" />
+          <ScalarProperty Name="segmentasiNasabah" ColumnName="segmentasiNasabah" />
+          <ScalarProperty Name="sentralisasi" ColumnName="sentralisasi" />
+          <ScalarProperty Name="subsidi" ColumnName="subsidi" />
+          <ScalarProperty Name="persentaseSubsidi" ColumnName="persentaseSubsidi" />
+          <ScalarProperty Name="kuota" ColumnName="kuota" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -201,6 +227,17 @@
           <ScalarProperty Name="idCashpoint" ColumnName="idCashpoint" />
           <ScalarProperty Name="tanggal" ColumnName="tanggal" />
           <ScalarProperty Name="prediksi" ColumnName="prediksi" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="OrderTrackings">
+      <EntityTypeMapping TypeName="CACModel.OrderTracking">
+        <MappingFragment StoreEntitySet="OrderTracking">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
+          <ScalarProperty Name="kodeCabang" ColumnName="kodeCabang" />
+          <ScalarProperty Name="tanggal" ColumnName="tanggal" />
+          <ScalarProperty Name="nominalDispute" ColumnName="nominalDispute" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -215,6 +252,25 @@
           <ScalarProperty Name="sentralisasi" ColumnName="sentralisasi" />
           <ScalarProperty Name="vendor" ColumnName="vendor" />
           <ScalarProperty Name="kodePktCabang" ColumnName="kodePktCabang" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RekapSelisihAmbilSetors">
+      <EntityTypeMapping TypeName="CACModel.RekapSelisihAmbilSetor">
+        <MappingFragment StoreEntitySet="RekapSelisihAmbilSetor">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="kodePenerimaDana" ColumnName="kodePenerimaDana" />
+          <ScalarProperty Name="kodeSumberDana" ColumnName="kodeSumberDana" />
+          <ScalarProperty Name="lebih" ColumnName="lebih" />
+          <ScalarProperty Name="kurang" ColumnName="kurang" />
+          <ScalarProperty Name="palsu" ColumnName="palsu" />
+          <ScalarProperty Name="mutilasi" ColumnName="mutilasi" />
+          <ScalarProperty Name="total" ColumnName="total" />
+          <ScalarProperty Name="noTxn" ColumnName="noTxn" />
+          <ScalarProperty Name="tanggalTransaksi" ColumnName="tanggalTransaksi" />
+          <ScalarProperty Name="tanggalTemu" ColumnName="tanggalTemu" />
+          <ScalarProperty Name="noBA" ColumnName="noBA" />
+          <ScalarProperty Name="keterangan" ColumnName="keterangan" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -283,58 +339,15 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="OrderTrackings">
-      <EntityTypeMapping TypeName="CACModel.OrderTracking">
-        <MappingFragment StoreEntitySet="OrderTracking">
-          <ScalarProperty Name="nominalDispute" ColumnName="nominalDispute" />
+    <EntitySetMapping Name="LaporanPermintaanAdhocs">
+      <EntityTypeMapping TypeName="CACModel.LaporanPermintaanAdhoc">
+        <MappingFragment StoreEntitySet="LaporanPermintaanAdhoc">
+          <ScalarProperty Name="C20" ColumnName="20" />
+          <ScalarProperty Name="C50" ColumnName="50" />
+          <ScalarProperty Name="C100" ColumnName="100" />
           <ScalarProperty Name="tanggal" ColumnName="tanggal" />
-          <ScalarProperty Name="kodeCabang" ColumnName="kodeCabang" />
           <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
-          <ScalarProperty Name="Id" ColumnName="Id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="RekapSelisihAmbilSetors">
-      <EntityTypeMapping TypeName="CACModel.RekapSelisihAmbilSetor">
-        <MappingFragment StoreEntitySet="RekapSelisihAmbilSetor">
-          <ScalarProperty Name="keterangan" ColumnName="keterangan" />
-          <ScalarProperty Name="noBA" ColumnName="noBA" />
-          <ScalarProperty Name="tanggalTemu" ColumnName="tanggalTemu" />
-          <ScalarProperty Name="tanggalTransaksi" ColumnName="tanggalTransaksi" />
-          <ScalarProperty Name="noTxn" ColumnName="noTxn" />
-          <ScalarProperty Name="total" ColumnName="total" />
-          <ScalarProperty Name="mutilasi" ColumnName="mutilasi" />
-          <ScalarProperty Name="palsu" ColumnName="palsu" />
-          <ScalarProperty Name="kurang" ColumnName="kurang" />
-          <ScalarProperty Name="lebih" ColumnName="lebih" />
-          <ScalarProperty Name="kodeSumberDana" ColumnName="kodeSumberDana" />
-          <ScalarProperty Name="kodePenerimaDana" ColumnName="kodePenerimaDana" />
-          <ScalarProperty Name="Id" ColumnName="Id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="ForecastDetails">
-      <EntityTypeMapping TypeName="CACModel.ForecastDetail">
-        <MappingFragment StoreEntitySet="ForecastDetail">
-          <ScalarProperty Name="tanggal" ColumnName="tanggal" />
-          <ScalarProperty Name="outCabang50" ColumnName="outCabang50" />
-          <ScalarProperty Name="outCabang100" ColumnName="outCabang100" />
-          <ScalarProperty Name="outATM50" ColumnName="outATM50" />
-          <ScalarProperty Name="outATM100" ColumnName="outATM100" />
-          <ScalarProperty Name="inRetail50" ColumnName="inRetail50" />
-          <ScalarProperty Name="inRetail100" ColumnName="inRetail100" />
-          <ScalarProperty Name="inCabang50" ColumnName="inCabang50" />
-          <ScalarProperty Name="inCabang100" ColumnName="inCabang100" />
-          <ScalarProperty Name="idForecastDetail" ColumnName="idForecastDetail" />
-          <ScalarProperty Name="idForecast" ColumnName="idForecast" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="ForecastHeaders">
-      <EntityTypeMapping TypeName="CACModel.ForecastHeader">
-        <MappingFragment StoreEntitySet="ForecastHeader">
-          <ScalarProperty Name="tanggal" ColumnName="tanggal" />
-          <ScalarProperty Name="idForecast" ColumnName="idForecast" />
+          <ScalarProperty Name="idLaporan" ColumnName="idLaporan" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

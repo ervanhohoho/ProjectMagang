@@ -27,7 +27,7 @@ namespace testProjectBCA
             DateTime tanggal = TanggalPicker.Value.Date;
             String query = "SELECT [Tanggal Proses] = A.tanggal, [Tanggal Order] = DA.tanggal, [KodePkt] = A.kodePkt, [Bon 100] = bon100, [Bon 50] = bon50, [Bon 20] = bon20, ISNULL(inputOpr,''), ISNULL(inputSpv,''), ISNULL(inputNoTxn,''), ISNULL(validasiOpr,''), ISNULL(validasiSpv,''), ISNULL(validasiNoTxn,''), A.idApproval"
                     + " FROM Approvals A JOIN DetailApprovals DA ON A.idApproval = DA.idApproval"
-                    +" WHERE A.tanggal = '" +tanggal.ToShortDateString()+"'";
+                    +" WHERE A.tanggal = '" +tanggal.ToShortDateString()+"' AND DA.tanggal > '"+tanggal+"'";
             using (SqlConnection sql = new SqlConnection(Variables.connectionString))
             {
                 SqlCommand cmd = new SqlCommand(query,sql);
@@ -61,7 +61,7 @@ namespace testProjectBCA
 
                 query = "SELECT [Tanggal Proses] = A.tanggal, [Tanggal Order] = DA.tanggal, [KodePkt] = A.kodePkt, [Bon 100] = ISNULL(adhoc100,0), [Bon 50] = ISNULL(adhoc50,0), [Bon 20] = ISNULL(adhoc20,0), ISNULL(inputOpr,''), ISNULL(inputSpv,''), ISNULL(inputNoTxn,''), ISNULL(validasiOpr,''), ISNULL(validasiSpv,''), ISNULL(validasiNoTxn,''), A.idApproval"
                     + " FROM Approvals A JOIN DetailApprovals DA ON A.idApproval = DA.idApproval"
-                    + " WHERE A.tanggal = '" + tanggal.ToShortDateString() + "' AND (ISNULL(adhoc100,0)!= 0 OR ISNULL(adhoc50,0)!= 0 OR ISNULL(adhoc20,0)!= 0) ";
+                    + " WHERE A.tanggal = '" + tanggal.ToShortDateString() + "' AND (ISNULL(adhoc100,0)!= 0 OR ISNULL(adhoc50,0)!= 0 OR ISNULL(adhoc20,0)!= 0)";
                 cmd.CommandText = query;
                 reader = cmd.ExecuteReader();
                 while (reader.Read())
@@ -88,7 +88,7 @@ namespace testProjectBCA
                 reader.Close();
                 query = "SELECT [Tanggal Proses] = A.tanggal, [Tanggal Order] = DA.tanggal, [KodePkt] = A.kodePkt, [Setor 100] = ISNULL(setor100,0), [Setor 50] = ISNULL(setor50,0), [Setor 20] = ISNULL(setor20,0), ISNULL(inputOpr,''), ISNULL(inputSpv,''), ISNULL(inputNoTxn,''), ISNULL(validasiOpr,''), ISNULL(validasiSpv,''), ISNULL(validasiNoTxn,''), A.idApproval"
                     + " FROM Approvals A JOIN DetailApprovals DA ON A.idApproval = DA.idApproval"
-                    + " WHERE A.tanggal = '" + tanggal.ToShortDateString() + "' AND (ISNULL(setor100,0) != 0 OR ISNULL(setor50,0) != 0 OR ISNULL(setor20,0) != 0) ";
+                    + " WHERE A.tanggal = '" + tanggal.ToShortDateString() + "' AND (ISNULL(setor100,0) != 0 OR ISNULL(setor50,0) != 0 OR ISNULL(setor20,0) != 0)  AND DA.tanggal > '" + tanggal + "'";
                 cmd.CommandText = query;
                 reader = cmd.ExecuteReader();
                 while (reader.Read())
@@ -146,9 +146,9 @@ namespace testProjectBCA
             InputGridView.Columns[0].ReadOnly = true;
             InputGridView.Columns[1].ReadOnly = true;
             InputGridView.Columns[2].ReadOnly = true;
-            InputGridView.Columns[3].ReadOnly = true;
-            InputGridView.Columns[4].ReadOnly = true;
-            InputGridView.Columns[5].ReadOnly = true;
+            //InputGridView.Columns[3].ReadOnly = true;
+            //InputGridView.Columns[4].ReadOnly = true;
+            //InputGridView.Columns[5].ReadOnly = true;
 
             InputGridView.Columns[0].Width = 1;
             InputGridView.Columns[1].Width = 70;
@@ -212,9 +212,7 @@ namespace testProjectBCA
             {
                 var test = (from x in listRekapApproval
                             join y in db.Pkts on x.kodePkt equals y.kodePkt
-                            group x by new { x.kodePkt, x.order, x.orderType, y.namaPkt, x.tanggal ,x.inputNoTxn}
-                            into g
-                            select new { tanggalProses = g.Key.tanggal, namaPkt = g.Key.namaPkt, kodePkt = g.Key.kodePkt, order = g.Key.order, orderType = g.Key.orderType, kodeTxn = g.Key.inputNoTxn, bon100 = g.Sum(i => i.bon100), bon50 = g.Sum(i => i.bon50), bon20 = g.Sum(i => i.bon20) }
+                            select new { tanggalProses = x.tanggal, tanggalOrder = x.tanggalOrder, namaPkt = y.namaPkt, kodePkt = x.kodePkt, order = x.order, orderType = x.orderType, kodeTxn = x.inputNoTxn, bon100 = x.bon100, bon50 = x.bon50, bon20 = x.bon20 }
                             ).ToList();
                 String csv = ServiceStack.Text.CsvSerializer.SerializeToString(test);
                 File.WriteAllText(sv.FileName, csv);

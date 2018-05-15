@@ -69,16 +69,29 @@ namespace testProjectBCA
                         reader.Read();
                         DateTime minTanggal = (DateTime)reader[0];
                         DateTime maxTanggal = (DateTime)reader[1];
-                        DateTime tempTanggal = minTanggal;
+                        Console.WriteLine("Min Date: " + minTanggal.ToShortDateString());
+                        Console.WriteLine("Max Date: " + maxTanggal.ToShortDateString());
+
+                        DateTime tempTanggal = new DateTime(minTanggal.Year, minTanggal.Month,1) ;
                         int counter = 0;
-                        while(tempTanggal<maxTanggal)
+                        bool firstRun = true;
+                        while(tempTanggal<=maxTanggal)
                         {
                             treeView1.Nodes.Add(tempTanggal.Year.ToString());
-                            int monthCounter = 1;
-                            while(tempTanggal<maxTanggal && monthCounter <= 12)
+                            int monthCounter;
+                            if (firstRun)
                             {
+                                monthCounter = minTanggal.Month;
+                                firstRun = false;
+                            }
+                            else
+                                monthCounter = 1;
+                            while(tempTanggal<=maxTanggal && monthCounter <= 12)
+                            {
+                                Console.WriteLine(monthCounter);
                                 treeView1.Nodes[counter].Nodes.Add((monthCounter++).ToString());
                                 tempTanggal = tempTanggal.AddMonths(1);
+                                Console.WriteLine("Temp Tanggal: " + tempTanggal.ToShortDateString());
                             }
                             counter++;
                         }
@@ -114,6 +127,7 @@ namespace testProjectBCA
                 DateTime harikemarin = DateTime.Today.Date.AddDays(-1);
                 List<String> tempListKodePkt = (from x in db.TransaksiAtms
                                                 where x.tanggal == harikemarin
+                                                orderby x.kodePkt
                                                 select x.kodePkt).ToList();
 
                 List<String> dataYangAdaDiApproval = (from x in db.Approvals where x.tanggal == DateTime.Today.Date select x.kodePkt).ToList();
@@ -2717,6 +2731,22 @@ namespace testProjectBCA
                 Console.WriteLine(temp);
             }
         }
+        void loadPermintaanAdhoc()
+        {
+            Database1Entities db = new Database1Entities();
+            var listPermintaanAdhoc = (from x in db.LaporanPermintaanAdhocs.AsEnumerable()
+                                                                where x.tanggal == DateTime.Today.Date
+                                                                && x.kodePkt == KodePkt[pktIndex]
+                                                                select new { x.tanggal,  x.C100, x.C50, x.C20 }).ToList();
+            permintaanAdhocGridView.DataSource = listPermintaanAdhoc;
+            permintaanAdhocGridView.Columns[1].DefaultCellStyle.Format = "C";
+            permintaanAdhocGridView.Columns[2].DefaultCellStyle.Format = "C";
+            permintaanAdhocGridView.Columns[3].DefaultCellStyle.Format = "C";
+
+            permintaanAdhocGridView.Columns[1].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
+            permintaanAdhocGridView.Columns[2].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
+            permintaanAdhocGridView.Columns[3].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
+        }
         private void loadPrediksiBtn_Click(object sender, EventArgs e)
         {
             Double buf;
@@ -2797,7 +2827,6 @@ namespace testProjectBCA
                 loadTablePermintaanBon();
 
                 loadIsiCrm();
-                    
 
                 loadSislokCrm();
                    
@@ -2857,6 +2886,8 @@ namespace testProjectBCA
                 loadTableTotalIsi();
                 loadTableTotalSislok();
                 loadTableBonYangDisetujui();
+
+                loadPermintaanAdhoc();
             //}catch(Exception err)
             //{
             //    MessageBox.Show(err.ToString());
@@ -3022,12 +3053,46 @@ namespace testProjectBCA
                 loadComboBox();
                 loadForm.CloseForm();
                 MessageBox.Show("Approved!");
+                bonAdhoc100Txt.Text = "";
+                bonAdhoc50Txt.Text = "";
+                bonAdhoc20Txt.Text = "";
+
+                setor100Txt.Text = "";
+                setor50Txt.Text = "";
+                setor20Txt.Text = "";
+
+                setorAdhoc100Txt.Text = "";
+                setorAdhoc50Txt.Text = "";
+                setorAdhoc20Txt.Text = "";
+
+
+                cleanGridViews();
+
+
             }
             else
             {
 
             }
             
+        }
+        void cleanGridViews()
+        {
+            //Cleaning Gridviews
+            bonGridView.Rows.Clear();
+            permintaanBonGridView.Rows.Clear();
+            rasioGridView.Rows.Clear();
+            rekomendasiBonGridView.Rows.Clear();
+
+
+            foreach (DataGridViewRow row in bonYangSudahDisetujuiGridView.Rows)
+                bonYangSudahDisetujuiGridView.DataSource = null;
+            foreach (DataGridViewRow row in totalSislokGridView.Rows)
+                totalSislokGridView.DataSource = null;
+            foreach (DataGridViewRow row in totalIsiGridView.Rows)
+                totalIsiGridView.DataSource = null;
+            foreach (DataGridViewRow row in saldoGridView.Rows)
+                saldoGridView.DataSource = null;
         }
         Denom loadBonAdhocFromTxt()
         {
@@ -3117,61 +3182,7 @@ namespace testProjectBCA
         }
         private void Txt_TextChanged(object sender, EventArgs e)
         {
-            Int64 buf;
-            if (Int64.TryParse(bonAdhoc100Txt.Text, out buf))
-            {
-                loadRasio();
-                loadTableRasio();
-                loadTableSaldo();
-            }
-            if (Int64.TryParse(bonAdhoc50Txt.Text, out buf))
-            {
-                loadRasio();
-                loadTableRasio();
-                loadTableSaldo();
-            }
-            if (Int64.TryParse(bonAdhoc20Txt.Text, out buf))
-            {
-                loadRasio();
-                loadTableRasio();
-                loadTableSaldo();
-            }
-            if (Int64.TryParse(setorAdhoc100Txt.Text, out buf))
-            {
-                loadRasio();
-                loadTableRasio();
-                loadTableSaldo();
-            }
-            if (Int64.TryParse(setorAdhoc50Txt.Text, out buf))
-            {
-                loadRasio();
-                loadTableRasio();
-                loadTableSaldo();
-            }
-            if (Int64.TryParse(setorAdhoc20Txt.Text, out buf))
-            {
-                loadRasio();
-                loadTableRasio();
-                loadTableSaldo();
-            }
-            if (Int64.TryParse(setor20Txt.Text, out buf))
-            {
-                loadRasio();
-                loadTableRasio();
-                loadTableSaldo();
-            }
-            if (Int64.TryParse(setor50Txt.Text, out buf))
-            {
-                loadRasio();
-                loadTableRasio();
-                loadTableSaldo();
-            }
-            if (Int64.TryParse(setor100Txt.Text, out buf))
-            {
-                loadRasio();
-                loadTableRasio();
-                loadTableSaldo();
-            }
+            
         }
         private void tglSetor_ValueChanged(object sender, EventArgs e)
         {
@@ -3189,13 +3200,11 @@ namespace testProjectBCA
                 if(Int64.TryParse(bonGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString(),out buf))
                     bonGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = Int64.Parse(bonGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString().Trim());
         }
-
         private void rekomendasiBonGridView_SelectionChanged(object sender, EventArgs e)
         {
             sumLabel.Text = "SUM: ";
             var temp = rekomendasiBonGridView.SelectedCells;
             Int64 sum = 0;
-            Console.WriteLine("REFRESH");
             for(int a=0;a<temp.Count;a++)
             {
                 var temp2 = temp[a].Value;
@@ -3209,11 +3218,6 @@ namespace testProjectBCA
             sumLabel.Text += "Rp. ";
             sumLabel.Text += sum.ToString("#,##0");
         }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-        }
-
         private void tanggalPrediksiMaxPicker_ValueChanged(object sender, EventArgs e)
         {
             skipPrediksiTreeView.CheckBoxes = true;
@@ -3228,7 +3232,6 @@ namespace testProjectBCA
                     loadMonthNodes(year, false);
             }
         }
-    
         void loadMonthNodes(int year, bool first)
         {
             if (year < tanggalPrediksiMaxPicker.Value.Year)
@@ -3329,9 +3332,98 @@ namespace testProjectBCA
            
         }
 
-        private void button1_Click_1(object sender, EventArgs e)
+        private void bonGridView_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
-            loadCheckedDariSkipPrediksiTreeView();
+            int rowidx = e.RowIndex, colidx = e.ColumnIndex;
+            bonGridView.Rows[rowidx].Cells[colidx].Value = bonGridView.Rows[rowidx].Cells[colidx].Value.ToString();
+        }
+
+        private void bonGridView_SelectionChanged(object sender, EventArgs e)
+        {
+            DataGridViewSelectedCellCollection cells = bonGridView.SelectedCells;
+            foreach (DataGridViewCell cell in cells)
+            {
+                int rowidx = cell.RowIndex;
+                int colidx = cell.ColumnIndex;
+                bonGridView.Rows[rowidx].Cells[colidx].Value = bonGridView.Rows[rowidx].Cells[colidx].Value.ToString();
+            }
+            for(int a=0;a<bonGridView.Rows.Count;a++)
+            {
+                for(int b=0;b<bonGridView.Columns.Count;b++)
+                {
+                    if(!cells.Contains(bonGridView.Rows[a].Cells[b]))
+                    {
+                        Int64 buf;
+                        if (Int64.TryParse(bonGridView.Rows[a].Cells[b].Value.ToString(), out buf))
+                            bonGridView.Rows[a].Cells[b].Value = Int64.Parse(bonGridView.Rows[a].Cells[b].Value.ToString().Trim());
+                    }
+                }
+            }
+        }
+
+        private void pktComboBox_SelectedValueChanged(object sender, EventArgs e)
+        {
+            int idx = KodePkt.IndexOf(pktComboBox.SelectedValue.ToString());
+            pktIndex = idx;
+        }
+
+        private void setorAdhoc100Txt_Leave(object sender, EventArgs e)
+        {
+            Int64 buf;
+            if (Int64.TryParse(bonAdhoc100Txt.Text, out buf))
+            {
+                loadRasio();
+                loadTableRasio();
+                loadTableSaldo();
+            }
+            if (Int64.TryParse(bonAdhoc50Txt.Text, out buf))
+            {
+                loadRasio();
+                loadTableRasio();
+                loadTableSaldo();
+            }
+            if (Int64.TryParse(bonAdhoc20Txt.Text, out buf))
+            {
+                loadRasio();
+                loadTableRasio();
+                loadTableSaldo();
+            }
+            if (Int64.TryParse(setorAdhoc100Txt.Text, out buf))
+            {
+                loadRasio();
+                loadTableRasio();
+                loadTableSaldo();
+            }
+            if (Int64.TryParse(setorAdhoc50Txt.Text, out buf))
+            {
+                loadRasio();
+                loadTableRasio();
+                loadTableSaldo();
+            }
+            if (Int64.TryParse(setorAdhoc20Txt.Text, out buf))
+            {
+                loadRasio();
+                loadTableRasio();
+                loadTableSaldo();
+            }
+            if (Int64.TryParse(setor20Txt.Text, out buf))
+            {
+                loadRasio();
+                loadTableRasio();
+                loadTableSaldo();
+            }
+            if (Int64.TryParse(setor50Txt.Text, out buf))
+            {
+                loadRasio();
+                loadTableRasio();
+                loadTableSaldo();
+            }
+            if (Int64.TryParse(setor100Txt.Text, out buf))
+            {
+                loadRasio();
+                loadTableRasio();
+                loadTableSaldo();
+            }
         }
 
         private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
