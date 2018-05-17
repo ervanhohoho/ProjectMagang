@@ -40,6 +40,7 @@ namespace testProjectBCA
             bonAtmYangDisetujui = new List<List<Int64>>();
             saldoAkhir = new List<Int64>();
             permintaanBon = new List<List<Int64>>();
+            permintaanAdhoc = new List<Int64>();
             bongkaranAtm = new List<Int64>();
             saldoAwalHitungan = new List<Int64>();
             saldoAkhirHitungan = new List<Int64>();

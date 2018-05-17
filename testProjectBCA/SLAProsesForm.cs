@@ -325,6 +325,10 @@ namespace testProjectBCA
             dataGridView1.Rows[dataGridView1.Rows.Count - 1].DefaultCellStyle.BackColor = Color.LightSkyBlue;
             dataGridView1.Rows[dataGridView1.Rows.Count - 2].DefaultCellStyle.BackColor = Color.LightGreen;
         }
+        public void reloadDataFromStokPosisi()
+        {
+
+        }
         class slaProsesDisplay
         {
             public DateTime tanggal { set; get; }

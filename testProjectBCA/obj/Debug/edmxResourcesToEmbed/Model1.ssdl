@@ -215,7 +215,7 @@
     <Property Name="namaNasabah" Type="varchar" MaxLength="255" />
     <Property Name="segmentasiNasabah" Type="varchar" MaxLength="10" />
     <Property Name="sentralisasi" Type="varchar" MaxLength="10" />
-    <Property Name="subsidi" Type="varchar" MaxLength="10" />
+    <Property Name="subsidi" Type="varchar" MaxLength="50" />
     <Property Name="persentaseSubsidi" Type="float" />
     <Property Name="kuota" Type="int" />
   </EntityType>

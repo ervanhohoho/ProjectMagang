@@ -64,6 +64,7 @@
             this.inputDataKalenderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadMasterPKTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.orderTrackingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.revisiInformationBoardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -90,6 +91,7 @@
             this.inputDataCashpointToolStripMenuItem,
             this.inputOptiToolStripMenuItem,
             this.informationBoardToolStripMenuItem,
+            this.revisiInformationBoardToolStripMenuItem,
             this.rekapApprovalToolStripMenuItem,
             this.rekapApprovalToolStripMenuItem1,
             this.initTransaksiToolStripMenuItem});
@@ -103,7 +105,7 @@
             this.inputDataToolStripMenuItem2,
             this.revisiDataToolStripMenuItem1});
             this.laporanPKTToolStripMenuItem.Name = "laporanPKTToolStripMenuItem";
-            this.laporanPKTToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.laporanPKTToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
             this.laporanPKTToolStripMenuItem.Text = "Laporan PKT";
             // 
             // inputDataToolStripMenuItem2
@@ -126,55 +128,55 @@
             this.dataPKTToolStripMenuItem,
             this.dataDenomToolStripMenuItem});
             this.inputDataCashpointToolStripMenuItem.Name = "inputDataCashpointToolStripMenuItem";
-            this.inputDataCashpointToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.inputDataCashpointToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
             this.inputDataCashpointToolStripMenuItem.Text = "Input Data Cashpoint";
             // 
             // dataPKTToolStripMenuItem
             // 
             this.dataPKTToolStripMenuItem.Name = "dataPKTToolStripMenuItem";
-            this.dataPKTToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.dataPKTToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
             this.dataPKTToolStripMenuItem.Text = "Data PKT";
             this.dataPKTToolStripMenuItem.Click += new System.EventHandler(this.inputDataPktToolStripMenuItem_Click);
             // 
             // dataDenomToolStripMenuItem
             // 
             this.dataDenomToolStripMenuItem.Name = "dataDenomToolStripMenuItem";
-            this.dataDenomToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.dataDenomToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
             this.dataDenomToolStripMenuItem.Text = "Data Denom";
             this.dataDenomToolStripMenuItem.Click += new System.EventHandler(this.inputDataDenomToolStripMenuItem_Click);
             // 
             // inputOptiToolStripMenuItem
             // 
             this.inputOptiToolStripMenuItem.Name = "inputOptiToolStripMenuItem";
-            this.inputOptiToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.inputOptiToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
             this.inputOptiToolStripMenuItem.Text = "Input OptiCash";
             this.inputOptiToolStripMenuItem.Click += new System.EventHandler(this.inputOptiToolStripMenuItem_Click);
             // 
             // informationBoardToolStripMenuItem
             // 
             this.informationBoardToolStripMenuItem.Name = "informationBoardToolStripMenuItem";
-            this.informationBoardToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.informationBoardToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
             this.informationBoardToolStripMenuItem.Text = "Information Board";
             this.informationBoardToolStripMenuItem.Click += new System.EventHandler(this.informationBoardToolStripMenuItem_Click);
             // 
             // rekapApprovalToolStripMenuItem
             // 
             this.rekapApprovalToolStripMenuItem.Name = "rekapApprovalToolStripMenuItem";
-            this.rekapApprovalToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.rekapApprovalToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
             this.rekapApprovalToolStripMenuItem.Text = "Akurasi Prediksi";
             this.rekapApprovalToolStripMenuItem.Click += new System.EventHandler(this.rekapApprovalToolStripMenuItem_Click);
             // 
             // rekapApprovalToolStripMenuItem1
             // 
             this.rekapApprovalToolStripMenuItem1.Name = "rekapApprovalToolStripMenuItem1";
-            this.rekapApprovalToolStripMenuItem1.Size = new System.Drawing.Size(186, 22);
+            this.rekapApprovalToolStripMenuItem1.Size = new System.Drawing.Size(204, 22);
             this.rekapApprovalToolStripMenuItem1.Text = "Rekap Approval";
             this.rekapApprovalToolStripMenuItem1.Click += new System.EventHandler(this.rekapApprovalToolStripMenuItem1_Click);
             // 
             // initTransaksiToolStripMenuItem
             // 
             this.initTransaksiToolStripMenuItem.Name = "initTransaksiToolStripMenuItem";
-            this.initTransaksiToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.initTransaksiToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
             this.initTransaksiToolStripMenuItem.Text = "Init Transaksi";
             this.initTransaksiToolStripMenuItem.Click += new System.EventHandler(this.initTransToolStripMenuItem_Click);
             // 
@@ -357,6 +359,13 @@
             this.orderTrackingToolStripMenuItem.Text = "Order Tracking";
             this.orderTrackingToolStripMenuItem.Click += new System.EventHandler(this.orderTrackingToolStripMenuItem_Click);
             // 
+            // revisiInformationBoardToolStripMenuItem
+            // 
+            this.revisiInformationBoardToolStripMenuItem.Name = "revisiInformationBoardToolStripMenuItem";
+            this.revisiInformationBoardToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.revisiInformationBoardToolStripMenuItem.Text = "Revisi Information Board";
+            this.revisiInformationBoardToolStripMenuItem.Click += new System.EventHandler(this.revisiInformationBoardToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -413,5 +422,6 @@
         private System.Windows.Forms.ToolStripMenuItem proyeksiLikuiditaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dashboardCOJToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem inputDataSubsidiToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem revisiInformationBoardToolStripMenuItem;
     }
 }

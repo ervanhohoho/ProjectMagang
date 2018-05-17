@@ -220,6 +220,12 @@
     <Compile Include="HargaLayanan.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="RevisiInformationBoard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RevisiInformationBoard.Designer.cs">
+      <DependentUpon>RevisiInformationBoard.cs</DependentUpon>
+    </Compile>
     <Compile Include="InformationBoard.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -401,6 +407,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RevisiInformationBoard.resx">
+      <DependentUpon>RevisiInformationBoard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InformationBoard.resx">
       <DependentUpon>InformationBoard.cs</DependentUpon>

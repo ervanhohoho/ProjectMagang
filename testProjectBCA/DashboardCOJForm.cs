@@ -23,6 +23,11 @@ namespace testProjectBCA
             reloadTanggal();
             reloadUbVsUk();
             reloadStokSaldoCoj();
+            reloadSebaranSaldoCoj();
+            reloadKomposisiUbVsUk();
+            reloadUangBesar();
+            reloadUangKecil();
+            reloadTop5UangBesar();
         }
 
         public void reloadTahun()
@@ -57,7 +62,7 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "select distinct month(tanggal) from StokPosisi  order by month(tanggal) asc";
+                    cmd.CommandText = "select distinct month(tanggal) from StokPosisi  where year(tanggal) = "+ comboTahun.SelectedValue.ToString()+" order by month(tanggal) asc";
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     while (reader.Read())
@@ -79,7 +84,7 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "select distinct day(tanggal) from StokPosisi  order by day(tanggal) asc";
+                    cmd.CommandText = "select distinct day(tanggal) from StokPosisi where year(tanggal) = "+comboTahun.SelectedValue.ToString()+" and month(tanggal) = "+comboBulan.SelectedValue.ToString()+" order by day(tanggal) asc";
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     while (reader.Read())
@@ -113,7 +118,7 @@ namespace testProjectBCA
                                       " [mayor minor] = sum(RRMBaru + RRMLama + RRMNKRI + RupiahRusakMayor)," +
                                       " gress = sum(newBaru + newLama) " +
                                       " from StokPosisi " +
-                                      " where month(tanggal) = 4 and year(tanggal) = 2018 and day(tanggal) = 11";
+                                      " where month(tanggal) = "+comboBulan.SelectedValue.ToString()+" and year(tanggal) = "+comboTahun.SelectedValue.ToString()+" and day(tanggal) = "+comboTanggal.SelectedValue.ToString()+" ";
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     while (reader.Read())
@@ -138,7 +143,8 @@ namespace testProjectBCA
                                 unprocessed
                             },
                             DataLabels = true,
-                            LabelPoint = labelPoint
+                            LabelPoint =  p=>(Math.Round((p.Y/1000000000),2)).ToString() + " M",
+                            
                         },
                         new PieSeries
                         {
@@ -148,17 +154,17 @@ namespace testProjectBCA
                                 fit
                             },
                             DataLabels = true,
-                            LabelPoint = labelPoint
+                            LabelPoint = p=>(Math.Round((p.Y/1000000000),2)).ToString() + " M",
                         },
                         new PieSeries
                         {
-                            Title = "unfit",
+                            Title = "Unfit",
                             Values = new ChartValues<Int64>
                             {
                                 unfit
                             },
                             DataLabels = true,
-                            LabelPoint = labelPoint
+                            LabelPoint = p=>(Math.Round((p.Y/1000000000),2)).ToString() + " M",
                         },
                         new PieSeries
                         {
@@ -168,7 +174,7 @@ namespace testProjectBCA
                                 mayorminor
                             },
                             DataLabels = true,
-                            LabelPoint = labelPoint
+                            LabelPoint = p=>(Math.Round((p.Y/1000000000),2)).ToString() + " M",
                         },
                         new PieSeries
                         {
@@ -178,7 +184,7 @@ namespace testProjectBCA
                                 gress
                             },
                             DataLabels = true,
-                            LabelPoint = labelPoint
+                            LabelPoint = p=>(Math.Round((p.Y/1000000000),2)).ToString() + " M",
                         }
                     };
 
@@ -206,12 +212,12 @@ namespace testProjectBCA
                                      + " from"
                                      + " (select[uangbesar] = sum(unprocessed + newBaru + newLama + fitBaru + fitLama + passThrough + unfitBaru + unfitNKRI + unfitLama + RRMBaru + RRMNKRI + RRMLama + RupiahRusakMayor)"
                                      + " from StokPosisi"
-                                     + " where (denom = 100000 or denom = 50000) and day(tanggal) = 2 and month(tanggal) = 4 and year(tanggal) = 2018)a,"
+                                     + " where (denom = 100000 or denom = 50000) and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " )a, "
                                      + " (select[uangkecil] = sum(unprocessed + newBaru + newLama + fitBaru + fitLama + passThrough + unfitBaru + unfitNKRI +  unfitLama + RRMBaru+ RRMNKRI + RRMLama + RupiahRusakMayor)"
                                      + " from StokPosisi"
-                                     + " where(denom != 100000 or denom != 50000) and day(tanggal) = 2 and month(tanggal) = 4 and year(tanggal) = 2018)b";
+                                     + " where(denom != 100000 or denom != 50000) and day(tanggal) = "+comboTanggal.SelectedValue.ToString()+" and month(tanggal) = "+comboBulan.SelectedValue.ToString()+" and year(tanggal) = "+comboTahun.SelectedValue.ToString()+" )b";
 
-                   SqlDataReader reader = cmd.ExecuteReader();
+                    SqlDataReader reader = cmd.ExecuteReader();
 
                     while (reader.Read())
                     {
@@ -232,7 +238,7 @@ namespace testProjectBCA
                                 ub
                             },
                             DataLabels = true,
-                            LabelPoint = labelPoint
+                            LabelPoint =  p=>(Math.Round((p.Y/1000000000),2)).ToString() + " M",
                         },
                         new PieSeries
                         {
@@ -242,26 +248,514 @@ namespace testProjectBCA
                                 uk
                             },
                             DataLabels = true,
-                            LabelPoint = labelPoint
+                            LabelPoint =  p=>(Math.Round((p.Y/1000000000),2)).ToString() + " M",
                         }
                     };
 
-                    pieChartStokSaldoCoj.LegendLocation = LegendLocation.Bottom;
+                    pieChartUbVsUk.LegendLocation = LegendLocation.Bottom;
                 }
             }
         }
 
+        public void reloadSebaranSaldoCoj()
+        {
+            cartesianChartSebaranSaldoCoj.Series.Clear();
+            cartesianChartSebaranSaldoCoj.AxisX.Clear();
+            cartesianChartSebaranSaldoCoj.AxisY.Clear();
+
+            List<Int64> sebaran = new List<Int64>();
+            List<String> kodepkt = new List<String>();
+
+            using (SqlConnection sql = new SqlConnection(Variables.connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = sql;
+                    sql.Open();
+                    cmd.CommandText = "select p.kodePkt, sum(unprocessed + newBaru + newLama + fitBaru + fitLama + passThrough + unfitBaru + unfitNKRI +  unfitLama + RRMBaru+ RRMNKRI + RRMLama + RupiahRusakMayor)"
+                                        + " from StokPosisi s join Pkt p on s.namaPkt = p.namaPkt"
+                                        + " where month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " "
+                                        + " group by p.kodePkt"
+                                        + " order by kodePkt desc";
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        kodepkt.Add(reader[0].ToString());
+                        sebaran.Add(Int64.Parse(reader[1].ToString()));
+                    }
+
+                    ChartValues<Int64> cv = new ChartValues<Int64>();
+                    foreach (var item in sebaran)
+                    {
+                        cv.Add(item);
+                    }
+
+                    cartesianChartSebaranSaldoCoj.Series = new SeriesCollection
+                    {
+                        new ColumnSeries
+                        {
+                            Title = "Sebaran Saldo COJ",
+                            Values = cv,
+                            DataLabels = true,
+                            LabelPoint = p=>(Math.Round((p.Y/1000000000),2)).ToString() + " M"
+                        }
+                       
+                        
+                    };
+
+                    cartesianChartSebaranSaldoCoj.AxisX.Add(new Axis
+                    {
+                        Title = "PKT",
+                        Labels = kodepkt,
+                        Separator = new Separator
+                        {
+                            Step = 1
+                        }                        
+
+                    });
+
+                    cartesianChartSebaranSaldoCoj.AxisY.Add(new Axis
+                    {
+                        Title = "Jumlah",
+                        LabelFormatter = value => (value / 1000000000).ToString() + " M",
+                        MinValue = 0
+                    });
+                    cartesianChartSebaranSaldoCoj.LegendLocation = LegendLocation.Bottom;
+
+                }
+            }
+
+        }
+
+        public void reloadKomposisiUbVsUk()
+        {
+            cartesianChartKomposisiUbVsUk.Series.Clear();
+            cartesianChartKomposisiUbVsUk.AxisX.Clear();
+            cartesianChartKomposisiUbVsUk.AxisY.Clear();
+
+            List<Int64> ub = new List<Int64>();
+            List<Int64> uk = new List<Int64>();
+            List<String> kodepkt = new List<String>();
+
+            using (SqlConnection sql = new SqlConnection(Variables.connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = sql;
+                    sql.Open();
+                    cmd.CommandText = "select * from("
+                                       + " select[uangbesar] = sum(unprocessed + newBaru + newLama + fitBaru + fitLama + passThrough + unfitBaru + unfitNKRI + unfitLama + RRMBaru + RRMNKRI + RRMLama + RupiahRusakMayor), kodePkt, [tipe] = 'BESAR'"
+                                       + " from StokPosisi s join Pkt p on s.namaPkt = p.namaPkt"
+                                       + " where (denom = 100000 or denom = 50000) and day(tanggal) = "+comboTanggal.SelectedValue.ToString()+" and month(tanggal) = "+comboBulan.SelectedValue.ToString()+" and year(tanggal) = "+comboTahun.SelectedValue.ToString()+""
+                                       + " group by p.kodePkt"
+                                       + " union"
+                                       + " select[uangkecil] = sum(unprocessed + newBaru + newLama + fitBaru + fitLama + passThrough + unfitBaru + unfitNKRI +  unfitLama + RRMBaru+ RRMNKRI + RRMLama + RupiahRusakMayor), kodePkt, [tipe] = 'KECIL'"
+                                       + " from StokPosisi s join Pkt p on s.namaPkt = p.namaPkt"
+                                       + " where(denom != 100000 or denom != 50000) and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + ""
+                                       + " group by p.kodePkt)a"
+                                       + " pivot(sum(uangbesar) for [tipe] in ([BESAR],[KECIL])) as asd";
+
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        kodepkt.Add(reader[0].ToString());
+                        ub.Add(Int64.Parse(reader[1].ToString()));
+                        uk.Add(Int64.Parse(reader[2].ToString()));
+                    }
+
+                    ChartValues<Int64> cv = new ChartValues<Int64>();
+                    foreach (var item in ub)
+                    {
+                        cv.Add(item);
+                    }
+
+                    ChartValues<Int64> cv2 = new ChartValues<Int64>();
+                    foreach (var item in uk)
+                    {
+                        cv2.Add(item);
+                    }
+
+                    ChartValues<String> cv3 = new ChartValues<String>();
+                    foreach (var item in kodepkt)
+                    {
+                        cv3.Add(item);
+                    }
+
+                    cartesianChartKomposisiUbVsUk.Series = new SeriesCollection
+                    {
+                        new StackedColumnSeries
+                        {
+                            Title = "Uang Besar",
+                            Values = cv,
+                            StackMode = StackMode.Percentage,
+                            DataLabels = true,
+                           LabelPoint = p=>(Math.Round((p.Y/1000000000),2)).ToString() + " M"
+
+                        },
+                        new StackedColumnSeries
+                        {
+                            Title = "Uang Kecil",
+                            Values = cv2,
+                            StackMode = StackMode.Percentage,
+                            DataLabels = true,
+                            LabelPoint = p=>(Math.Round((p.Y/1000000000),2)).ToString() + " M"
+                        }
+                    };
+
+                    cartesianChartKomposisiUbVsUk.AxisX.Add(new Axis
+                    {
+                        Title = "PKT",
+                        Labels = kodepkt,
+                        Separator = new Separator
+                        {
+                            Step = 1
+                        }
+                    });
+
+                    cartesianChartKomposisiUbVsUk.AxisY.Add(new Axis
+                    {
+                        Title = "Persen",
+                        LabelFormatter = value => value.ToString() + " %",
+                        MinValue = 0,
+                        
+                    });
+
+                    cartesianChartKomposisiUbVsUk.LegendLocation = LegendLocation.Bottom;
+
+                }
+            }
+        }
+
+        public void reloadUangBesar()
+        {
+            cartesianChartUangBesar.Series.Clear();
+            cartesianChartUangBesar.AxisX.Clear();
+            cartesianChartUangBesar.AxisY.Clear();
+
+            List<Int64> unfitmm = new List<Int64>();
+            List<Int64> gress = new List<Int64>();
+            List<String> kodepkt = new List<String>();
+
+            using (SqlConnection sql = new SqlConnection(Variables.connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = sql;
+                    sql.Open();
+                    cmd.CommandText = "select [unfitmayorminor] = sum(unfitBaru + unfitLama + unfitNKRI + RRMBaru + RRMLama + RRMNKRI + RupiahRusakMayor),[gress] = sum(newBaru + newLama) ,kodePkt"
+                                      + " from StokPosisi s join Pkt p on s.namaPkt = p.namaPkt"
+                                      + " where (denom = 100000 or denom = 50000) and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " "
+                                      + " group by kodePkt";
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        kodepkt.Add(reader[2].ToString());
+                        unfitmm.Add(Int64.Parse(reader[0].ToString()));
+                        gress.Add(Int64.Parse(reader[1].ToString()));
+                    }
+
+                    ChartValues<Int64> cv = new ChartValues<Int64>();
+                    foreach (var item in unfitmm)
+                    {
+                        cv.Add(item);
+                    }
+
+                    ChartValues<Int64> cv2 = new ChartValues<Int64>();
+                    foreach (var item in gress)
+                    {
+                        cv2.Add(item);
+                    }
+
+                    ChartValues<String> cv3 = new ChartValues<String>();
+                    foreach (var item in kodepkt)
+                    {
+                        cv3.Add(item);
+                    }
+
+                    cartesianChartUangBesar.Series = new SeriesCollection
+                    {
+                        new StackedColumnSeries
+                        {
+                            Title = "Unfit, MayorMinor",
+                            Values = cv,
+                            LabelPoint = p=>(Math.Round((p.Y/1000000000),2)).ToString() + " M",
+                            DataLabels = true
+                        },
+                        new StackedColumnSeries
+                        {
+                            Title = "Gress",
+                            Values = cv2,
+                            LabelPoint = p=>(Math.Round((p.Y/1000000000),2)).ToString() + " M",
+                            DataLabels = true
+                        }
+                    };
+
+                    cartesianChartUangBesar.AxisX.Add(new Axis
+                    {
+                        Labels = kodepkt,
+                        Separator = new Separator
+                        {
+                            Step = 1
+                        }
+                    });
+                    
+
+                    cartesianChartUangBesar.AxisY.Add(new Axis
+                    {
+                        Title = "Uang Besar",
+                        LabelFormatter = value => (value / 1000000000).ToString() + "M",
+                    });
+
+                }
+            }
+        }
+
+        public void reloadUangKecil()
+        {
+            cartesianChartUangKecil.Series.Clear();
+            cartesianChartUangKecil.AxisX.Clear();
+            cartesianChartUangKecil.AxisY.Clear();
+
+            List<Int64> unfitmm = new List<Int64>();
+            List<Int64> gress = new List<Int64>();
+            List<Int64> unprocessed = new List<Int64>();
+            List<String> kodepkt = new List<String>();
+
+            using (SqlConnection sql = new SqlConnection(Variables.connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = sql;
+                    sql.Open();
+                    cmd.CommandText = "select [unprocessed] = sum(unprocessed), [unfitmayorminor] = sum(unfitBaru + unfitLama + unfitNKRI + RRMBaru + RRMLama + RRMNKRI + RupiahRusakMayor),[gress] = sum(newBaru + newLama) ,kodePkt"
+                                       +" from StokPosisi s join Pkt p on s.namaPkt = p.namaPkt"
+                                       + " where (denom != 100000 or denom != 50000) and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " "
+                                       + " group by kodePkt";
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        kodepkt.Add(reader[3].ToString());
+                        unfitmm.Add(Int64.Parse(reader[1].ToString()));
+                        gress.Add(Int64.Parse(reader[2].ToString()));
+                        unprocessed.Add(Int64.Parse(reader[0].ToString()));
+                    }
+
+                    ChartValues<Int64> cv = new ChartValues<Int64>();
+                    foreach (var item in unfitmm)
+                    {
+                        cv.Add(item);
+                    }
+
+                    ChartValues<Int64> cv2 = new ChartValues<Int64>();
+                    foreach (var item in gress)
+                    {
+                        cv2.Add(item);
+                    }
+
+                    ChartValues<String> cv3 = new ChartValues<String>();
+                    foreach (var item in kodepkt)
+                    {
+                        cv3.Add(item);
+                    }
+
+                    ChartValues<Int64> cv4 = new ChartValues<Int64>();
+                    foreach (var item in unprocessed)
+                    {
+                        cv4.Add(item);
+                    }
+
+                    cartesianChartUangKecil.Series = new SeriesCollection
+                    {
+                        new StackedColumnSeries
+                        {
+                            Title = "Unfit MayorMinor",
+                            Values = cv,
+                            DataLabels = true,
+                            LabelPoint = p=>(Math.Round((p.Y/1000000000),2)).ToString() + " M"
+                        },
+                        new StackedColumnSeries
+                        {
+                            Title = "Gress",
+                            Values = cv2,
+                            DataLabels = true,
+                            LabelPoint = p=>(Math.Round((p.Y/1000000000),2)).ToString() + " M"
+                        },
+                        new StackedColumnSeries
+                        {
+                            Title = "Unprocessed",
+                            Values = cv4,
+                            DataLabels = true,
+                            LabelPoint = p=>(Math.Round((p.Y/1000000000),2)).ToString() + " M"
+                        }
+                    };
+
+                    cartesianChartUangKecil.AxisX.Add(new Axis
+                    {
+                        Labels = kodepkt,
+                        Separator = new Separator
+                        {
+                            Step = 1
+                        }
+                    });
+
+                    cartesianChartUangKecil.AxisY.Add(new Axis
+                    {
+                        Title = "Uang Kecil",
+                        LabelFormatter = value => (value / 1000000000).ToString() + "M",
+                    });
+
+
+                }
+            }
+        }
+
+        public void reloadTop5UangBesar()
+        {
+            List<Int64> gress = new List<Int64>();
+            List<String> kodepkt = new List<String>();
+
+            label3.Visible = false;
+            label4.Visible = false;
+            label5.Visible = false;
+            label6.Visible = false;
+            label7.Visible = false;
+
+            using (SqlConnection sql = new SqlConnection(Variables.connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = sql;
+                    sql.Open();
+                    cmd.CommandText = "select top 5 [total] =  sum(unfitBaru + unfitLama + unfitNKRI + RRMBaru + RRMLama + RRMNKRI + RupiahRusakMayor) + sum(newBaru + newLama) ,kodePkt"
+                                      + " from StokPosisi s join Pkt p on s.namaPkt = p.namaPkt"
+                                      + " where (denom = 100000 or denom = 50000) and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " "
+                                      + " group by kodePkt"
+                                      + " order by [total] desc";
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        kodepkt.Add(reader[1].ToString());
+                        gress.Add(Int64.Parse(reader[0].ToString()));
+                    }
+
+                    List<Label> asd = new List<Label>();
+                    asd.Add(label3);
+                    asd.Add(label4);
+                    asd.Add(label5);
+                    asd.Add(label6);
+                    asd.Add(label7);
+
+                    for (int i = 0; i < kodepkt.Count; i++)
+                    {
+                        asd[i].Visible = true;
+                        asd[i].Text = kodepkt[i];
+                    }
+
+                    //if (kodepkt[0].ToString() == null || kodepkt[0].ToString() == "")
+                    //{
+                        
+                    //}
+                    //else
+                    //{
+                    //    label3.Visible = true;
+                    //    label3.Text = kodepkt[0];
+
+                    //    if (kodepkt[1].ToString() != null || kodepkt[1].ToString() != "")
+                    //    {
+                    //        label4.Visible = true;
+                    //        label4.Text = kodepkt[1];
+                    //    }
+                    //    if (kodepkt[2].ToString() != null || kodepkt[2].ToString() != "")
+                    //    {
+                    //        label5.Visible = true;
+                    //        label5.Text = kodepkt[2];
+                    //    }
+                    //    if (kodepkt[3].ToString() != null || kodepkt[3].ToString() != "")
+                    //    {
+                    //        label6.Visible = true;
+                    //        label6.Text = kodepkt[3];
+                    //    }
+                    //    if (kodepkt[4].ToString() != null || kodepkt[4].ToString() != "")
+                    //    {
+                    //        label7.Visible = true;
+                    //        label7.Text = kodepkt[4];
+                    //    }
+                    //}
+                    
+                  
+
+                    //label3.Text = kodepkt[0];
+                    //label4.Text = kodepkt[1];
+                    //label5.Text = kodepkt[2];
+                    //label6.Text = kodepkt[3];
+                    //label7.Text = kodepkt[4];
+
+                }
+            }
+        }
+
+
+        private void reloadUangBesarSum()
+        {
+
+        }
+
+
         private void comboTahun_SelectionChangeCommitted(object sender, EventArgs e)
         {
-          
+            reloadBulan();
+            reloadTanggal();
+            reloadUbVsUk();
+            reloadStokSaldoCoj();
+            reloadSebaranSaldoCoj();
+            reloadKomposisiUbVsUk();
+            reloadUangBesar();
+            reloadUangKecil();
+            reloadTop5UangBesar();
         }
 
         private void comboBulan_SelectionChangeCommitted(object sender, EventArgs e)
         {
-          
+            reloadTanggal();
+            reloadUbVsUk();
+            reloadStokSaldoCoj();
+            reloadSebaranSaldoCoj();
+            reloadKomposisiUbVsUk();
+            reloadUangBesar();
+            reloadUangKecil();
+            reloadTop5UangBesar();
         }
 
         private void comboTanggal_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            reloadUbVsUk();
+            reloadStokSaldoCoj();
+            reloadSebaranSaldoCoj();
+            reloadKomposisiUbVsUk();
+            reloadUangBesar();
+            reloadUangKecil();
+            reloadTop5UangBesar();
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label9_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label11_Click(object sender, EventArgs e)
         {
 
         }

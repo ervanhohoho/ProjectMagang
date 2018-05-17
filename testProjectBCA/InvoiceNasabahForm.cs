@@ -17,17 +17,22 @@ namespace testProjectBCA
         IEnumerable<Object> q3;
         Database1Entities db = new Database1Entities();
         List<DateTime> listTanggalAbacas;
+        List<HargaLayanan> listHargaLayanan;
         public InvoiceNasabahForm()
         {
             InitializeComponent();
             listTanggalAbacas = (from x in db.Abacas 
                                 select (DateTime) x.tanggal).Distinct().OrderBy(x=>x).ToList();
+
+            listHargaLayanan = (from x in db.HargaLayanans.AsEnumerable() select x).ToList();
             loadCombo();
             loadData();
             dataGridView1.Columns[1].DefaultCellStyle.Format = "C";
             dataGridView1.Columns[1].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
-            for (int a = 7; a <= 10; a++)
+            for (int a = 5; a <= 14; a++)
             {
+                if (a == 9 || a == 10 || a == 11 || a == 12)
+                    continue;
                 dataGridView1.Columns[a].DefaultCellStyle.Format = "C";
                 dataGridView1.Columns[a].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
             }
@@ -52,31 +57,35 @@ namespace testProjectBCA
         public void loadData()
         {
             Double rateAsuransi = (Double) (from x in db.AsuransiLayanans select x.asuransi).FirstOrDefault();
+
             var source = (from x in db.Abacas.AsEnumerable()
                           join y in db.Nasabahs on x.CustomerCode equals y.kodeNasabah
                           join z in db.EventTanggals on x.tanggal equals z.tanggal
                           where ((DateTime)x.tanggal).Year == (int)tahunComboBox.SelectedValue
                           && ((DateTime)x.tanggal).Month == (int)bulanComboBox.SelectedValue
-                          select new {
+                          && y.metodeLayanan != null
+                          select new
+                          {
                               x.CustomerCode,
                               x.totalAmount,
-                              frekuensi = y.metodeLayanan.ToLower() == "stc" ? 1 :1+hitungFrekuensi((Int64)x.totalAmount),
+                              frekuensi = y.metodeLayanan.ToLower() == "stc" ? 1 : 1 + hitungFrekuensi((Int64)x.totalAmount),
                               jenisLayanan = z.workDay == "Workday" ? "Adhoc" : "Adhoc - Hari Libur"
                           }).ToList();
 
             var query = (from x in source
                          group x by new { x.CustomerCode, x.jenisLayanan } into g
-                         select new { KodeNasabah = g.Key.CustomerCode, jenisLayanan = g.Key.jenisLayanan, Total = g.Sum(i => i.totalAmount), Frekuensi = g.Sum(i=>i.frekuensi)}).ToList();
+                         select new { KodeNasabah = g.Key.CustomerCode, jenisLayanan = g.Key.jenisLayanan, Total = g.Sum(i => i.totalAmount), Frekuensi = g.Sum(i => i.frekuensi) }).ToList();
             //Bikin khusus yang reguler
             var query2 = (from x in query
                           join y in db.Nasabahs on x.KodeNasabah equals y.kodeNasabah
-                          
-                          select new { x.KodeNasabah, x.Total, x.Frekuensi,y.fasilitasLayanan, y.metodeLayanan, y.ring, x.jenisLayanan, y.segmentasiNasabah, y.sentralisasi, y.subsidi, y.persentaseSubsidi }).ToList();
+
+                          select new { x.KodeNasabah, x.Total, x.Frekuensi,y.kuota, y.fasilitasLayanan, y.metodeLayanan, y.ring, x.jenisLayanan, y.segmentasiNasabah, y.sentralisasi, y.subsidi, y.persentaseSubsidi }).ToList();
             //Cocokin sama harga
             var query3 = (from x in query2
                           join y in db.HargaLayanans on x.jenisLayanan equals y.jenisLayanan
                           where y.stc_cos == x.metodeLayanan.ToLower()
-                          select new {
+                          select new
+                          {
                               x.KodeNasabah,
                               GrandSetoran = x.Total,
                               TotalTrip = x.Frekuensi,
@@ -84,19 +93,102 @@ namespace testProjectBCA
                               x.metodeLayanan,
                               x.ring,
                               x.jenisLayanan,
-                              y.hargaRing1,
+                              hargaRing = hitungHargaRing(x.ring, x.metodeLayanan, x.jenisLayanan),
                               AsuransiCIT = Math.Round((Double)(x.Total * rateAsuransi)),
-                              TotalBiayaTrip = x.Frekuensi * y.hargaRing1,
-                              PPN =  0.01 * (x.Frekuensi * y.hargaRing1 + Math.Round((Double)(x.Total * rateAsuransi))),
+                              TotalBiayaTrip = x.Frekuensi * hitungHargaRing(x.ring, x.metodeLayanan, x.jenisLayanan),
+                              PPN = 0.01 * (x.Frekuensi * hitungHargaRing(x.ring, x.metodeLayanan, x.jenisLayanan) + Math.Round((Double)(x.Total * rateAsuransi))),
                               x.segmentasiNasabah,
                               x.subsidi,
-                              x.persentaseSubsidi
+                              x.persentaseSubsidi,
+                              x.kuota
                           }).ToList();
-            
-            dataGridView1.DataSource = query3;
+
+        var query4 = (from x in query3
+                      group x by new {
+                          x.KodeNasabah,
+                          x.fasilitasLayanan,
+                          x.metodeLayanan,
+                          x.ring,
+                          x.segmentasiNasabah,
+                          x.subsidi,
+                          x.persentaseSubsidi,
+                          x.kuota,
+                      } into g
+                      select new {
+                          KodeNasabah = g.Key.KodeNasabah,
+                          GrandSetoran = g.Sum(x => x.GrandSetoran),
+                          TotalTrip = g.Sum(x => x.TotalTrip),
+                          g.Key.fasilitasLayanan,
+                          g.Key.metodeLayanan,
+                          g.Key.ring,
+                          AsuransiCIT = g.Sum(x => x.AsuransiCIT),
+                          TotalBiayaTrip = g.Sum(x => x.TotalBiayaTrip),
+                          PPN = g.Sum(x => x.PPN),
+                          g.Key.segmentasiNasabah,
+                          g.Key.subsidi,
+                          g.Key.persentaseSubsidi,
+                          g.Key.kuota,
+                          BiayaTripSubsidi = hitungBiayaTripSubsidi(g.Key.subsidi, g.Sum(x=>x.TotalBiayaTrip), g.Key.persentaseSubsidi, g.Key.kuota, g.Sum(x=>x.TotalTrip)),
+                          BiayaTripNasabah = g.Sum(x => x.TotalBiayaTrip) - (hitungBiayaTripSubsidi(g.Key.subsidi, g.Sum(x => x.TotalBiayaTrip), g.Key.persentaseSubsidi, g.Key.kuota, g.Sum(x => x.TotalTrip)))
+                          }
+                      ).ToList();
+
+
+            dataGridView1.DataSource = query4;
             q3 = query3;
         }
-
+        Int64 hitungHargaRing(String ring, String metodeLayanan, String jenisLayanan)
+        {
+            if (ring.Contains("1"))
+            {
+                return (Int64)(from x in listHargaLayanan where x.stc_cos.ToLower() == metodeLayanan.ToLower() && x.jenisLayanan.ToLower() == jenisLayanan.ToLower() select x.hargaRing1).FirstOrDefault();
+            }
+            else if (ring.Contains("2"))
+            {
+                return (Int64)(from x in listHargaLayanan
+                               where x.stc_cos.ToLower() == metodeLayanan.ToLower() 
+                               && x.jenisLayanan.ToLower() == jenisLayanan.ToLower()
+                               select x.hargaRing2).FirstOrDefault();
+            }
+            else if (ring.Contains("3"))
+            {
+                return (Int64)(from x in listHargaLayanan where x.stc_cos.ToLower() == metodeLayanan.ToLower() && x.jenisLayanan.ToLower() == jenisLayanan.ToLower() select x.hargaRing3).FirstOrDefault();
+            }
+            else if (ring.Contains("4"))
+            {
+                return (Int64)(from x in listHargaLayanan where x.stc_cos.ToLower() == metodeLayanan.ToLower() && x.jenisLayanan.ToLower() == jenisLayanan.ToLower() select x.hargaRing4).FirstOrDefault();
+            }
+            else if (ring.Contains("5"))
+            {
+                return (Int64)(from x in listHargaLayanan where x.stc_cos.ToLower() == metodeLayanan.ToLower() && x.jenisLayanan.ToLower() == jenisLayanan.ToLower() select x.hargaRing5).FirstOrDefault();
+            }
+            else
+                return 0;
+        }
+        Int64 hitungBiayaTripSubsidi(String subsidi, Int64? biayaTrip, Double? persenSubsidi, int? kuota, Int64 TotalTrip)
+        {
+            if (subsidi == "" || persenSubsidi == null)
+            {
+                return 0;
+            }
+            else if (subsidi.ToUpper().Contains("GBKF"))
+            {
+                return (Int64)Math.Round((Double)biayaTrip * (Double)persenSubsidi, 2);
+            }
+            else if (subsidi.ToUpper().Contains("SCM - HARI KALENDER"))
+            {
+                return (Int64) biayaTrip;
+            }
+            else if(subsidi.ToUpper().Contains("SCM"))
+            {
+                Int64 biayaYangDisubsidi = (Int64) biayaTrip;
+                if (TotalTrip > kuota)
+                    biayaYangDisubsidi = (Int64) ((biayaYangDisubsidi * (int) kuota / TotalTrip));
+                return biayaYangDisubsidi;
+            }
+            else
+                return 0;
+        }
         private void exportButton_Click(object sender, EventArgs e)
         {
             SaveFileDialog sv = new SaveFileDialog();

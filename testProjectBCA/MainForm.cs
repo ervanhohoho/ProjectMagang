@@ -732,6 +732,13 @@ namespace testProjectBCA
             idf.MdiParent = this;
             idf.Show();
         }
+
+        private void revisiInformationBoardToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RevisiInformationBoard rib = new RevisiInformationBoard();
+            rib.MdiParent = this;
+            rib.Show();
+        }
     }
 }
 public static class SqlBulkCopyExtensions

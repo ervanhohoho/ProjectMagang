@@ -205,7 +205,7 @@
     <Property Name="namaNasabah" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
     <Property Name="segmentasiNasabah" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
     <Property Name="sentralisasi" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-    <Property Name="subsidi" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="subsidi" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="persentaseSubsidi" Type="Double" />
     <Property Name="kuota" Type="Int32" />
   </EntityType>

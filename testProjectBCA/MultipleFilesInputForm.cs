@@ -120,9 +120,11 @@ namespace testProjectBCA
             foreach(String path in files)
             {
                 DataSet ds = Util.openExcel(path);
-                try {
+                try
+                {
                     collectionTransaksiPkt.Add(loadSheetsIntoClassList(Util.openExcel(path)));
-                }catch(Exception e)
+                }
+                catch (Exception e)
                 {
                     MessageBox.Show(path + " Bermasalah");
                 }
@@ -325,20 +327,34 @@ namespace testProjectBCA
                 if (!String.IsNullOrEmpty(table.Rows[44][6].ToString()) && !String.IsNullOrEmpty(table.Rows[44][7].ToString()) && !String.IsNullOrEmpty(table.Rows[44][8].ToString()))
                 {
                     Int64 buf;
-                    if (Int64.TryParse(table.Rows[44][6].ToString(), out buf))
+                    if (String.IsNullOrEmpty(table.Rows[44][6].ToString()))
+                        pkt.permintaanAdhoc.Add(0);
+                    else if (Int64.TryParse(table.Rows[44][6].ToString(), out buf))
                         pkt.permintaanAdhoc.Add(buf);
                     else
                         pkt.permintaanAdhoc.Add(0);
-                    if (Int64.TryParse(table.Rows[44][7].ToString(), out buf))
+
+                    if (String.IsNullOrEmpty(table.Rows[44][7].ToString()))
+                        pkt.permintaanAdhoc.Add(0);
+                    else if (Int64.TryParse(table.Rows[44][7].ToString(), out buf))
                         pkt.permintaanAdhoc.Add(buf);
                     else
                         pkt.permintaanAdhoc.Add(0);
-                    if (Int64.TryParse(table.Rows[44][8].ToString(), out buf))
+
+                    if (String.IsNullOrEmpty(table.Rows[44][8].ToString()))
+                        pkt.permintaanAdhoc.Add(0);
+                    else if (Int64.TryParse(table.Rows[44][8].ToString(), out buf))
                         pkt.permintaanAdhoc.Add(buf);
                     else
                         pkt.permintaanAdhoc.Add(0);
-                } else
-                    pkt.hitungSaldoAkhir();
+                }
+                else
+                {
+                    pkt.permintaanAdhoc.Add(0);
+                    pkt.permintaanAdhoc.Add(0);
+                    pkt.permintaanAdhoc.Add(0);
+                } 
+                pkt.hitungSaldoAkhir();
 
 
 

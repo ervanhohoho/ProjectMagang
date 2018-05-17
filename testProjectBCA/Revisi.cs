@@ -22,10 +22,15 @@ namespace testProjectBCA
         private void selectFileBtn_Click(object sender, EventArgs e)
         {
             OpenFileDialog of = new OpenFileDialog();
+            of.Multiselect = true;
             of.Filter = Variables.excelFilter;
             if (of.ShowDialog() == DialogResult.OK)
             {
-                collectionTransaksiPkt.Add(loadSheetsIntoClassList(Util.openExcel(of.FileName)));
+                foreach(String path in of.FileNames)
+                {
+                    collectionTransaksiPkt.Add(loadSheetsIntoClassList(Util.openExcel(path)));
+                }
+           
             }
             foreach(List<transaksiPkt> list in  collectionTransaksiPkt)
             {
@@ -79,6 +84,7 @@ namespace testProjectBCA
                     db.SaveChanges();
                 }
             }
+            MessageBox.Show("Done");
         }
         private List<transaksiPkt> loadSheetsIntoClassList(DataSet data)
         {
@@ -243,7 +249,6 @@ namespace testProjectBCA
                 {
                     MessageBox.Show("Laporan " + pkt.kodePkt + " Tanggal: " + pkt.tanggalPengajuan.ToShortDateString() + " Tidak sesuai");
                 }
-
                 list.Add(pkt);
             }
             return list;

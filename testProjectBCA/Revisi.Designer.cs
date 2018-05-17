@@ -35,9 +35,9 @@
             // 
             this.selectFileBtn.Location = new System.Drawing.Point(12, 12);
             this.selectFileBtn.Name = "selectFileBtn";
-            this.selectFileBtn.Size = new System.Drawing.Size(75, 23);
+            this.selectFileBtn.Size = new System.Drawing.Size(310, 23);
             this.selectFileBtn.TabIndex = 0;
-            this.selectFileBtn.Text = "Revisi Data";
+            this.selectFileBtn.Text = "Select File";
             this.selectFileBtn.UseVisualStyleBackColor = true;
             this.selectFileBtn.Click += new System.EventHandler(this.selectFileBtn_Click);
             // 

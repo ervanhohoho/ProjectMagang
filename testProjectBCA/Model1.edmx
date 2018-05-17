@@ -220,7 +220,7 @@
           <Property Name="namaNasabah" Type="varchar" MaxLength="255" />
           <Property Name="segmentasiNasabah" Type="varchar" MaxLength="10" />
           <Property Name="sentralisasi" Type="varchar" MaxLength="10" />
-          <Property Name="subsidi" Type="varchar" MaxLength="10" />
+          <Property Name="subsidi" Type="varchar" MaxLength="50" />
           <Property Name="persentaseSubsidi" Type="float" />
           <Property Name="kuota" Type="int" />
         </EntityType>
@@ -601,7 +601,7 @@
           <Property Name="namaNasabah" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="segmentasiNasabah" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="sentralisasi" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="subsidi" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="subsidi" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="persentaseSubsidi" Type="Double" />
           <Property Name="kuota" Type="Int32" />
         </EntityType>

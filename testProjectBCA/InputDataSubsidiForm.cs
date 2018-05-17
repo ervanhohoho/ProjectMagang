@@ -13,9 +13,11 @@ namespace testProjectBCA
     public partial class InputDataSubsidiForm : Form
     {
         Database1Entities db = new Database1Entities();
+        List<Nasabah> listNasabah;
         public InputDataSubsidiForm()
         {
             InitializeComponent();
+            listNasabah = (from x in db.Nasabahs select x).ToList();
         }
 
         private void selectButton_Click(object sender, EventArgs e)
@@ -24,22 +26,24 @@ namespace testProjectBCA
             of.Filter = Variables.excelFilter;
             if(of.ShowDialog() == DialogResult.OK)
             {
+                loadForm.ShowSplashScreen();
                 DataSet ds = Util.openExcel(of.FileName);
 
-                DataTable dt = ds.Tables[0];
+                DataTable gbkf = ds.Tables[0];
+                DataTable scm= ds.Tables[1];
                 //dataGridView1.DataSource = dt;
-                loadGBKF(dt);
+                loadGBKF(gbkf);
+                loadSCM(scm);
+                loadForm.CloseForm();
             }
         }
         void loadGBKF(DataTable dt)
         {
-            List<Nasabah> listNasabah = (from x in db.Nasabahs
-                                         select x).ToList();
+            
             DataRow [] rows = dt.Select("Column0 is null");
             foreach (var row in rows)
                 dt.Rows.Remove(row);
             dt.Rows.RemoveAt(0);
-            dataGridView1.DataSource = dt;
 
             for(int a = 0; a<dt.Rows.Count;a++)
             {
@@ -61,6 +65,36 @@ namespace testProjectBCA
             }
             db.SaveChanges();
         }
-
+        void loadSCM(DataTable dt)
+        {
+            DataRow[] rows = dt.Select("Column0 is null");
+            foreach (var row in rows)
+                dt.Rows.Remove(row);
+            dt.Rows.RemoveAt(0);
+            for (int a = 0; a < dt.Rows.Count; a++)
+            {
+                DataRow row = dt.Rows[a];
+                Nasabah toUpdate = listNasabah.Where(x => x.kodeNasabah == row[1].ToString().TrimStart('0')).FirstOrDefault();
+                Console.WriteLine(row[5].ToString());
+                if (toUpdate == null)
+                {
+                    db.Nasabahs.Add(new Nasabah()
+                    {
+                        kodeNasabah = row[1].ToString().TrimStart('0'),
+                        persentaseSubsidi = 1,
+                        subsidi = "SCM - " + (String.IsNullOrEmpty(row[5].ToString())?"Gereja": row[5].ToString()),
+                        kuota = row[5].ToString().Contains("12X") ? 12 : 0
+                    });
+                }
+                else
+                {
+                    toUpdate.subsidi = "SCM - " + (String.IsNullOrEmpty(row[5].ToString()) ? "Gereja" : row[5].ToString());
+                    toUpdate.persentaseSubsidi = 1;
+                    toUpdate.kuota = row[5].ToString().Contains("12X") ? 12 : 0;
+                }
+            }
+           
+            db.SaveChanges();
+        }
     }
 }
