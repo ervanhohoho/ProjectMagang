@@ -11,7 +11,7 @@
     <Property Name="jobId" Type="varchar" MaxLength="20" />
     <Property Name="totalAmount" Type="bigint" />
     <Property Name="CustomerCode" Type="varchar" MaxLength="15" />
-    <Property Name="CustomerName" Type="varchar" MaxLength="50" />
+    <Property Name="CustomerName" Type="varchar" MaxLength="255" />
   </EntityType>
   <EntityType Name="Approvals">
     <Key>

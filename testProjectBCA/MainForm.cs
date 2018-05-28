@@ -576,10 +576,13 @@ namespace testProjectBCA
         {
             loadForm.ShowSplashScreen();
             dasbor d = new dasbor();
+            dasborExtension de = new dasborExtension();
             loadForm.CloseForm();
             d.MdiParent = this;
             //d.WindowState = FormWindowState.Maximized;
             d.Show();
+            de.MdiParent = this;
+            de.Show();
         }
 
         private void dailyStockToolStripMenuItem_Click(object sender, EventArgs e)

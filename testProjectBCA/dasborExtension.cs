@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +22,10 @@ namespace testProjectBCA
             reloadBulan();
             reloadTambahan1();
             reloadTambahan2();
+            comboBulan.Visible = false;
+            comboTahun.Visible = false;
+            comboBox1.Visible = false;
+            comboBox2.Visible = false;
         }
 
         private void reloadKanwil()
@@ -83,6 +88,46 @@ namespace testProjectBCA
             }
         }
 
+        private void reloadTahunSampai()
+        {
+            List<String> tahun = new List<String>();
+            using (SqlConnection sql = new SqlConnection(Variables.connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = sql;
+                    sql.Open();
+                    cmd.CommandText = "select distinct year(tanggal) from TransaksiAtms order by year(tanggal) desc ";
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        tahun.Add(reader[0].ToString());
+                    }
+                    comboBox2.DataSource = tahun;
+                }
+            }
+        }
+
+        private void reloadBulanSampai()
+        {
+            List<String> bulan = new List<String>();
+            using (SqlConnection sql = new SqlConnection(Variables.connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = sql;
+                    sql.Open();
+                    cmd.CommandText = "select distinct month(tanggal) from TransaksiAtms where year(tanggal) = " + comboTahun.SelectedValue.ToString() + " order by month(tanggal) desc ";
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        bulan.Add(reader[0].ToString());
+                    }
+                    comboBox1.DataSource = bulan;
+                }
+            }
+        }
+
 
         private void reloadTambahan1()
         {
@@ -96,8 +141,9 @@ namespace testProjectBCA
                     sql.Open();
                     cmd.CommandText = "select transaksiAtms.kodePkt ,[Sislok CRM] = sum(sislokCRM100+sislokCRM20+sislokCRM50)"
                                         +" from TransaksiAtms join Pkt on TransaksiAtms.kodePkt = Pkt.kodePkt"
-                                        +" where kanwil = '"+comboKanwil.SelectedValue.ToString()+"' and year(tanggal) = "+comboTahun.SelectedValue.ToString()+" and month(tanggal) = "+comboBulan.SelectedValue.ToString()+""
-                                        +" group by TransaksiAtms.kodePkt";
+                                        //+" where kanwil = '"+comboKanwil.SelectedValue.ToString()+"' and year(tanggal) = "+comboTahun.SelectedValue.ToString()+" and month(tanggal) = "+comboBulan.SelectedValue.ToString()+""
+                                        + " where kanwil = '" + comboKanwil.SelectedValue.ToString() + "' and tanggal between  '" + dateTimePicker1.Value.ToShortDateString() + "' and '" + dateTimePicker2.Value.ToShortDateString() + "'"
+                                        + " group by TransaksiAtms.kodePkt";
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
@@ -108,6 +154,12 @@ namespace testProjectBCA
                         });
                     }
                     dataGridView2.DataSource = sc;
+
+                    for (int i = 0; i < dataGridView2.Columns.Count; i++)
+                    {
+                        dataGridView2.Columns[i].DefaultCellStyle.Format = "c0";
+                        dataGridView2.Columns[i].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
+                    }
 
                 }
             }
@@ -123,9 +175,10 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "select transaksiAtms.kodePkt ,[Sislok ATMPersen] = sum( case when(isiATM100 + isiATM20 + isiATM50 )!=0 then (sislokATM100+sislokATM20+sislokATM50)/(isiATM100 + isiATM20 + isiATM50 )else 0 end)"
-                                      +" from TransaksiAtms join Pkt on TransaksiAtms.kodePkt = Pkt.kodePkt"
-                                      + " where kanwil = '" + comboKanwil.SelectedValue.ToString() + "' and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + ""
+                    cmd.CommandText = "select transaksiAtms.kodePkt ,[Sislok ATMPersen] = CASE WHEN SUM(isiATM100+isiATM50+isiATM20) > 0 THEN CAST(sum(sislokATM100 + sislokATM50 + sislokATM20) AS float)/ sum(isiATM100 + isiATM50 + isiATM20) ELSE 0 END"
+                                      + " from TransaksiAtms join Pkt on TransaksiAtms.kodePkt = Pkt.kodePkt"
+                                      + " where kanwil = '" + comboKanwil.SelectedValue.ToString() + "' and tanggal between  '" + dateTimePicker1.Value.ToShortDateString() + "' and '" + dateTimePicker2.Value.ToShortDateString() + "'"
+                                      //+ " where kanwil = '" + comboKanwil.SelectedValue.ToString() + "' and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + ""
                                       + " group by TransaksiAtms.kodePkt";
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
@@ -133,7 +186,7 @@ namespace testProjectBCA
                         sap.Add(new SislokATMPersen
                         {
                             kodePkt = reader[0].ToString(),
-                            sislokATMPersen = (Int64)reader[1]
+                            sislokATMPersen = (Math.Round(Double.Parse(reader[1].ToString()),3) * 100).ToString() + " %"
                         });
                     }
                     dataGridView1.DataSource = sap;
@@ -151,7 +204,7 @@ namespace testProjectBCA
         class SislokATMPersen
         {
             public String kodePkt { set; get; }
-            public Int64 sislokATMPersen { set; get; }
+            public String sislokATMPersen { set; get; }
         }
 
         private void comboKanwil_SelectionChangeCommitted(object sender, EventArgs e)
@@ -168,6 +221,18 @@ namespace testProjectBCA
         }
 
         private void comboBulan_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            reloadTambahan1();
+            reloadTambahan2();
+        }
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+            reloadTambahan1();
+            reloadTambahan2();
+        }
+
+        private void dateTimePicker2_ValueChanged(object sender, EventArgs e)
         {
             reloadTambahan1();
             reloadTambahan2();

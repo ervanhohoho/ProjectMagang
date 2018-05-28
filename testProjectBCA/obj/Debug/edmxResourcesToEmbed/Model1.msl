@@ -188,6 +188,18 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="LaporanPermintaanAdhocs">
+      <EntityTypeMapping TypeName="CACModel.LaporanPermintaanAdhoc">
+        <MappingFragment StoreEntitySet="LaporanPermintaanAdhoc">
+          <ScalarProperty Name="idLaporan" ColumnName="idLaporan" />
+          <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
+          <ScalarProperty Name="tanggal" ColumnName="tanggal" />
+          <ScalarProperty Name="C100" ColumnName="100" />
+          <ScalarProperty Name="C50" ColumnName="50" />
+          <ScalarProperty Name="C20" ColumnName="20" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="LaporanPermintaanBons">
       <EntityTypeMapping TypeName="CACModel.LaporanPermintaanBon">
         <MappingFragment StoreEntitySet="LaporanPermintaanBon">
@@ -203,7 +215,6 @@
     <EntitySetMapping Name="Nasabahs">
       <EntityTypeMapping TypeName="CACModel.Nasabah">
         <MappingFragment StoreEntitySet="Nasabah">
-          <ScalarProperty Name="subsidiCabang" ColumnName="subsidiCabang" />
           <ScalarProperty Name="kodeNasabah" ColumnName="kodeNasabah" />
           <ScalarProperty Name="fasilitasLayanan" ColumnName="fasilitasLayanan" />
           <ScalarProperty Name="metodeLayanan" ColumnName="metodeLayanan" />
@@ -218,6 +229,7 @@
           <ScalarProperty Name="subsidi" ColumnName="subsidi" />
           <ScalarProperty Name="persentaseSubsidi" ColumnName="persentaseSubsidi" />
           <ScalarProperty Name="kuota" ColumnName="kuota" />
+          <ScalarProperty Name="subsidiCabang" ColumnName="subsidiCabang" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -278,8 +290,6 @@
     <EntitySetMapping Name="StokPosisis">
       <EntityTypeMapping TypeName="CACModel.StokPosisi">
         <MappingFragment StoreEntitySet="StokPosisi">
-          <ScalarProperty Name="inRetail" ColumnName="inRetail" />
-          <ScalarProperty Name="inCabang" ColumnName="inCabang" />
           <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="unprocessed" ColumnName="unprocessed" />
           <ScalarProperty Name="newBaru" ColumnName="newBaru" />
@@ -300,6 +310,8 @@
           <ScalarProperty Name="denom" ColumnName="denom" />
           <ScalarProperty Name="tanggal" ColumnName="tanggal" />
           <ScalarProperty Name="namaPkt" ColumnName="namaPkt" />
+          <ScalarProperty Name="inCabang" ColumnName="inCabang" />
+          <ScalarProperty Name="inRetail" ColumnName="inRetail" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -339,18 +351,6 @@
           <ScalarProperty Name="saldoAkhir20" ColumnName="saldoAkhir20" />
           <ScalarProperty Name="saldoAkhir50" ColumnName="saldoAkhir50" />
           <ScalarProperty Name="saldoAkhir100" ColumnName="saldoAkhir100" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="LaporanPermintaanAdhocs">
-      <EntityTypeMapping TypeName="CACModel.LaporanPermintaanAdhoc">
-        <MappingFragment StoreEntitySet="LaporanPermintaanAdhoc">
-          <ScalarProperty Name="C20" ColumnName="20" />
-          <ScalarProperty Name="C50" ColumnName="50" />
-          <ScalarProperty Name="C100" ColumnName="100" />
-          <ScalarProperty Name="tanggal" ColumnName="tanggal" />
-          <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
-          <ScalarProperty Name="idLaporan" ColumnName="idLaporan" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

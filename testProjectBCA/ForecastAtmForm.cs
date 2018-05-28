@@ -202,13 +202,13 @@ namespace testProjectBCA
                            Tanggal = new DateTime(0001,1,1),
                            Realisasi100 = g.Sum(x => x.Realisasi100),
                            Forecast100 = g.Sum(x=>x.Forecast100),
-                           Akurasi100 = (Double) g.Sum(x => x.Realisasi100) /(Double) g.Sum(x => x.Forecast100),
+                           Akurasi100 = (Double) g.Sum(x => x.Forecast100) /(Double) g.Sum(x => x.Realisasi100),
                            Realisasi50 = g.Sum(x=>x.Realisasi50),
                            Forecast50 = g.Sum(x=>x.Forecast50),
-                           Akurasi50 = (Double)g.Sum(x => x.Realisasi50) / (Double)g.Sum(x => x.Forecast50),
+                           Akurasi50 = (Double)g.Sum(x => x.Forecast50) / (Double)g.Sum(x => x.Realisasi50),
                            Realisasi20 = g.Sum(x=>x.Realisasi20),
                            Forecast20 = g.Sum(x=>x.Forecast20),
-                           Akurasi20 = (Double)g.Sum(x => x.Realisasi20) / (Double)g.Sum(x => x.Forecast20),
+                           Akurasi20 = (Double)g.Sum(x => x.Forecast20) / (Double)g.Sum(x => x.Realisasi20),
                        }).FirstOrDefault();
             q.Add(sum);
             dataGridView1.DataSource = q;
@@ -219,7 +219,7 @@ namespace testProjectBCA
                 dataGridView1.Columns[a].DefaultCellStyle.Format = "C";
                 dataGridView1.Columns[a].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
                 if (a == 3 || a == 6 || a == 9)
-                    dataGridView1.Columns[a].DefaultCellStyle.Format = "N2";
+                    dataGridView1.Columns[a].DefaultCellStyle.Format = "P";
             }
             loadForm.CloseForm();
         }

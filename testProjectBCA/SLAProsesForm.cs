@@ -87,7 +87,7 @@ namespace testProjectBCA
                     {
                         tahun1.Add(reader[0].ToString());
                     }
-                    comboTahun1.DataSource = tahun1;
+                    comboTahun1.DataSource = tahun1.OrderByDescending(x=>x).ToList();
                 }
             }
         }
@@ -124,7 +124,7 @@ namespace testProjectBCA
                     {
                         tahun2.Add(reader[0].ToString());
                     }
-                    comboTahun2.DataSource = tahun2;
+                    comboTahun2.DataSource = tahun2.OrderByDescending(x=> x).ToList();
                 }
             }
         }

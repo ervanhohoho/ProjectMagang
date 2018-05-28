@@ -25,6 +25,7 @@ namespace testProjectBCA
             of.Multiselect = true;
             if (of.ShowDialog() == DialogResult.OK)
             {
+                loadForm.ShowSplashScreen();
                 String [] paths = of.FileNames;
                 List<Abaca> listAbacas = new List<Abaca>();
                 List<Abaca> dataDb = (from x in db.Abacas select x).ToList();
@@ -40,12 +41,12 @@ namespace testProjectBCA
                     for (int a = 0; a < dt.Rows.Count; a++)
                     {
                         DataRow row = dt.Rows[a];
-                        if (dataDb.Where(x => x.tanggal == DateTime.Parse(row[3].ToString()) && x.CustomerCode == row[0].ToString() ).FirstOrDefault()!=null )
+                        if (dataDb.Where(x => x.tanggal == DateTime.Parse(row[3].ToString()) && x.CustomerCode == row[0].ToString()).ToList().Any())
                         {
                             var q = dataDb.Where(x => x.tanggal == DateTime.Parse(row[3].ToString()) && x.CustomerCode == row[0].ToString()).FirstOrDefault();
                             q.totalAmount = Int64.Parse(row[2].ToString());
                         }
-                        else if(listAbacas.Where(x => x.tanggal == DateTime.Parse(row[3].ToString()) && x.CustomerCode == row[0].ToString()).FirstOrDefault() != null)
+                        else if(listAbacas.Where(x => x.tanggal == DateTime.Parse(row[3].ToString()) && x.CustomerCode == row[0].ToString()).ToList().Any())
                         {
                             var q = listAbacas.Where(x => x.tanggal == DateTime.Parse(row[3].ToString()) && x.CustomerCode == row[0].ToString()).FirstOrDefault();
                             q.totalAmount = Int64.Parse(row[2].ToString());
@@ -65,6 +66,7 @@ namespace testProjectBCA
                     db.SaveChanges();
                 }
             }
+            loadForm.CloseForm();
         }
     }
 }

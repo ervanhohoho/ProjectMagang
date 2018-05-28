@@ -2823,6 +2823,33 @@ namespace testProjectBCA
             permintaanAdhocGridView.Columns[2].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
             permintaanAdhocGridView.Columns[3].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
         }
+        void validasiPermintaanBon()
+        {
+            String tkodePkt = KodePkt[pktIndex];
+            Database1Entities db1 = new Database1Entities();
+            var query = (from x in db1.Approvals
+                         join y in db1.DetailApprovals on x.idApproval equals y.idApproval
+                         where x.kodePkt == tkodePkt
+                         && y.tanggal >= tanggalOptiMin
+                         select new { Approval = x, DetailApproval = y }).ToList();
+
+            foreach (var temp in bon)
+            {
+                var q2 = (from x in query
+                          where x.DetailApproval.tanggal == temp.tgl
+                          select new
+                          {
+                              bon100 = x.DetailApproval.bon100,
+                              bon50 = x.DetailApproval.bon50,
+                              bon20 = x.DetailApproval.bon20
+                          }).ToList();
+                if (q2.Any())
+                {
+                    if (q2[0].bon100 != temp.d100 || q2[0].bon50 != temp.d50 || q2[0].bon20 != temp.d20)
+                        MessageBox.Show("Data permintaan bon tidak sesuai dengan approval!");
+                }
+            }
+        }
         private void loadPrediksiBtn_Click(object sender, EventArgs e)
         {
             Double buf;
@@ -2966,6 +2993,8 @@ namespace testProjectBCA
                 loadTableBonYangDisetujui();
 
                 loadPermintaanAdhoc();
+
+                validasiPermintaanBon();
             //}catch(Exception err)
             //{
             //    MessageBox.Show(err.ToString());

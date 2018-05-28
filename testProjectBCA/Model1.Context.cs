@@ -37,6 +37,7 @@ namespace testProjectBCA
         public virtual DbSet<ForecastHeader> ForecastHeaders { get; set; }
         public virtual DbSet<HargaLayanan> HargaLayanans { get; set; }
         public virtual DbSet<laporanBon> laporanBons { get; set; }
+        public virtual DbSet<LaporanPermintaanAdhoc> LaporanPermintaanAdhocs { get; set; }
         public virtual DbSet<LaporanPermintaanBon> LaporanPermintaanBons { get; set; }
         public virtual DbSet<Nasabah> Nasabahs { get; set; }
         public virtual DbSet<Opti> Optis { get; set; }
@@ -45,6 +46,5 @@ namespace testProjectBCA
         public virtual DbSet<RekapSelisihAmbilSetor> RekapSelisihAmbilSetors { get; set; }
         public virtual DbSet<StokPosisi> StokPosisis { get; set; }
         public virtual DbSet<TransaksiAtm> TransaksiAtms { get; set; }
-        public virtual DbSet<LaporanPermintaanAdhoc> LaporanPermintaanAdhocs { get; set; }
     }
 }
