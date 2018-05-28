@@ -203,6 +203,7 @@
     <EntitySetMapping Name="Nasabahs">
       <EntityTypeMapping TypeName="CACModel.Nasabah">
         <MappingFragment StoreEntitySet="Nasabah">
+          <ScalarProperty Name="subsidiCabang" ColumnName="subsidiCabang" />
           <ScalarProperty Name="kodeNasabah" ColumnName="kodeNasabah" />
           <ScalarProperty Name="fasilitasLayanan" ColumnName="fasilitasLayanan" />
           <ScalarProperty Name="metodeLayanan" ColumnName="metodeLayanan" />
@@ -277,6 +278,8 @@
     <EntitySetMapping Name="StokPosisis">
       <EntityTypeMapping TypeName="CACModel.StokPosisi">
         <MappingFragment StoreEntitySet="StokPosisi">
+          <ScalarProperty Name="inRetail" ColumnName="inRetail" />
+          <ScalarProperty Name="inCabang" ColumnName="inCabang" />
           <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="unprocessed" ColumnName="unprocessed" />
           <ScalarProperty Name="newBaru" ColumnName="newBaru" />

@@ -28,7 +28,7 @@ namespace testProjectBCA
             // Return the week of our adjusted day
             return CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(time, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
         }
-
+        
         public static DataSet openExcel(string filePath)
         {
             using (stream = File.Open(filePath, FileMode.Open, FileAccess.Read))
@@ -135,12 +135,20 @@ namespace testProjectBCA
             newA.C20 = temp.permintaanAdhoc[2];
             db.LaporanPermintaanAdhocs.Add(newA);
             db.SaveChanges();
-
-
         }
         public static void closeExcel()
         {
             reader.Close();
         }
     }
+}
+public class tanggalValue
+{
+    public DateTime tanggal { set; get; }
+    public Int64 value { set; get; }
+}
+public class tanggalRasio
+{
+    public DateTime tanggal { set; get; }
+    public Double value { set; get; }
 }

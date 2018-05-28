@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pktComboBox = new System.Windows.Forms.ComboBox();
             this.rasio100Txt = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -72,17 +72,9 @@
             this.label29 = new System.Windows.Forms.Label();
             this.permintaanAdhocGridView = new System.Windows.Forms.DataGridView();
             this.groupbox3 = new System.Windows.Forms.GroupBox();
+            this.setorAdhoc100Txt = new System.Windows.Forms.NumericUpDown();
             this.tglSetor = new System.Windows.Forms.DateTimePicker();
-            this.bonAdhoc20Txt = new System.Windows.Forms.TextBox();
-            this.bonAdhoc50Txt = new System.Windows.Forms.TextBox();
-            this.bonAdhoc100Txt = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
-            this.setor20Txt = new System.Windows.Forms.TextBox();
-            this.setor50Txt = new System.Windows.Forms.TextBox();
-            this.setor100Txt = new System.Windows.Forms.TextBox();
-            this.setorAdhoc20Txt = new System.Windows.Forms.TextBox();
-            this.setorAdhoc50Txt = new System.Windows.Forms.TextBox();
-            this.setorAdhoc100Txt = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
@@ -105,6 +97,18 @@
             this.label25 = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
             this.tanggalPrediksiMaxPicker = new System.Windows.Forms.DateTimePicker();
+            this.setorAdhoc50Txt = new System.Windows.Forms.NumericUpDown();
+            this.setorAdhoc20Txt = new System.Windows.Forms.NumericUpDown();
+            this.bonAdhoc100Txt = new System.Windows.Forms.NumericUpDown();
+            this.bonAdhoc50Txt = new System.Windows.Forms.NumericUpDown();
+            this.bonAdhoc20Txt = new System.Windows.Forms.NumericUpDown();
+            this.setor100Txt = new System.Windows.Forms.NumericUpDown();
+            this.setor50Txt = new System.Windows.Forms.NumericUpDown();
+            this.setor20Txt = new System.Windows.Forms.NumericUpDown();
+            this.bufferIsiAtm50Num = new System.Windows.Forms.NumericUpDown();
+            this.bufferIsiAtm100Num = new System.Windows.Forms.NumericUpDown();
+            this.label31 = new System.Windows.Forms.Label();
+            this.label30 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.rekomendasiBonGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bonGridView)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -114,10 +118,21 @@
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.permintaanAdhocGridView)).BeginInit();
             this.groupbox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.setorAdhoc100Txt)).BeginInit();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bonYangSudahDisetujuiGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.totalSislokGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.totalIsiGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.setorAdhoc50Txt)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.setorAdhoc20Txt)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bonAdhoc100Txt)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bonAdhoc50Txt)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bonAdhoc20Txt)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.setor100Txt)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.setor50Txt)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.setor20Txt)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bufferIsiAtm50Num)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bufferIsiAtm100Num)).BeginInit();
             this.SuspendLayout();
             // 
             // pktComboBox
@@ -134,9 +149,9 @@
             // 
             // rasio100Txt
             // 
-            this.rasio100Txt.Location = new System.Drawing.Point(372, 38);
+            this.rasio100Txt.Location = new System.Drawing.Point(423, 41);
             this.rasio100Txt.Name = "rasio100Txt";
-            this.rasio100Txt.Size = new System.Drawing.Size(150, 20);
+            this.rasio100Txt.Size = new System.Drawing.Size(115, 20);
             this.rasio100Txt.TabIndex = 2;
             this.rasio100Txt.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox1_KeyPress);
             // 
@@ -171,7 +186,7 @@
             // loadPrediksiBtn
             // 
             this.loadPrediksiBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.loadPrediksiBtn.Location = new System.Drawing.Point(280, 182);
+            this.loadPrediksiBtn.Location = new System.Drawing.Point(280, 202);
             this.loadPrediksiBtn.Name = "loadPrediksiBtn";
             this.loadPrediksiBtn.Size = new System.Drawing.Size(242, 23);
             this.loadPrediksiBtn.TabIndex = 5;
@@ -215,9 +230,9 @@
             // 
             // rasio50Txt
             // 
-            this.rasio50Txt.Location = new System.Drawing.Point(372, 66);
+            this.rasio50Txt.Location = new System.Drawing.Point(423, 70);
             this.rasio50Txt.Name = "rasio50Txt";
-            this.rasio50Txt.Size = new System.Drawing.Size(150, 20);
+            this.rasio50Txt.Size = new System.Drawing.Size(115, 20);
             this.rasio50Txt.TabIndex = 3;
             this.rasio50Txt.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox1_KeyPress);
             // 
@@ -232,9 +247,9 @@
             // 
             // rasio20Txt
             // 
-            this.rasio20Txt.Location = new System.Drawing.Point(372, 97);
+            this.rasio20Txt.Location = new System.Drawing.Point(423, 97);
             this.rasio20Txt.Name = "rasio20Txt";
-            this.rasio20Txt.Size = new System.Drawing.Size(150, 20);
+            this.rasio20Txt.Size = new System.Drawing.Size(114, 20);
             this.rasio20Txt.TabIndex = 4;
             this.rasio20Txt.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox1_KeyPress);
             // 
@@ -306,15 +321,15 @@
             this.bonGridView.AllowUserToAddRows = false;
             this.bonGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.bonGridView.BackgroundColor = System.Drawing.Color.DarkSeaGreen;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.NullValue = "0";
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.bonGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle13.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle13.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle13.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle13.NullValue = "0";
+            dataGridViewCellStyle13.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle13.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.bonGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle13;
             this.bonGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.bonGridView.Location = new System.Drawing.Point(14, 254);
             this.bonGridView.Name = "bonGridView";
@@ -326,9 +341,13 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.bufferIsiAtm50Num);
             this.groupBox1.Controls.Add(this.label28);
+            this.groupBox1.Controls.Add(this.bufferIsiAtm100Num);
             this.groupBox1.Controls.Add(this.skipPrediksiTreeView);
+            this.groupBox1.Controls.Add(this.label31);
             this.groupBox1.Controls.Add(this.sumLabel);
+            this.groupBox1.Controls.Add(this.label30);
             this.groupBox1.Controls.Add(this.statusStrip1);
             this.groupBox1.Controls.Add(this.label20);
             this.groupBox1.Controls.Add(this.rekomendasiAdhoc20Lbl);
@@ -542,7 +561,7 @@
             this.approveButton.Location = new System.Drawing.Point(909, 268);
             this.approveButton.Name = "approveButton";
             this.approveButton.Size = new System.Drawing.Size(441, 170);
-            this.approveButton.TabIndex = 50;
+            this.approveButton.TabIndex = 15;
             this.approveButton.Text = "Approve";
             this.approveButton.UseVisualStyleBackColor = false;
             this.approveButton.Click += new System.EventHandler(this.approveButton_Click);
@@ -561,50 +580,50 @@
             // 
             this.permintaanAdhocGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.permintaanAdhocGridView.BackgroundColor = System.Drawing.SystemColors.Info;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.permintaanAdhocGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle14.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle14.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle14.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle14.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.permintaanAdhocGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle14;
             this.permintaanAdhocGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.permintaanAdhocGridView.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle15.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle15.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle15.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle15.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle15.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.permintaanAdhocGridView.DefaultCellStyle = dataGridViewCellStyle15;
             this.permintaanAdhocGridView.Location = new System.Drawing.Point(463, 42);
             this.permintaanAdhocGridView.Name = "permintaanAdhocGridView";
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.permintaanAdhocGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle16.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle16.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle16.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle16.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle16.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.permintaanAdhocGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle16;
             this.permintaanAdhocGridView.RowHeadersVisible = false;
             this.permintaanAdhocGridView.Size = new System.Drawing.Size(443, 193);
             this.permintaanAdhocGridView.TabIndex = 11;
             // 
             // groupbox3
             // 
-            this.groupbox3.Controls.Add(this.tglSetor);
-            this.groupbox3.Controls.Add(this.bonAdhoc20Txt);
-            this.groupbox3.Controls.Add(this.bonAdhoc50Txt);
-            this.groupbox3.Controls.Add(this.bonAdhoc100Txt);
-            this.groupbox3.Controls.Add(this.label16);
             this.groupbox3.Controls.Add(this.setor20Txt);
-            this.groupbox3.Controls.Add(this.setor50Txt);
-            this.groupbox3.Controls.Add(this.setor100Txt);
+            this.groupbox3.Controls.Add(this.bonAdhoc20Txt);
             this.groupbox3.Controls.Add(this.setorAdhoc20Txt);
+            this.groupbox3.Controls.Add(this.setor50Txt);
+            this.groupbox3.Controls.Add(this.bonAdhoc50Txt);
             this.groupbox3.Controls.Add(this.setorAdhoc50Txt);
+            this.groupbox3.Controls.Add(this.setor100Txt);
+            this.groupbox3.Controls.Add(this.bonAdhoc100Txt);
             this.groupbox3.Controls.Add(this.setorAdhoc100Txt);
+            this.groupbox3.Controls.Add(this.tglSetor);
+            this.groupbox3.Controls.Add(this.label16);
             this.groupbox3.Controls.Add(this.label15);
             this.groupbox3.Controls.Add(this.label14);
             this.groupbox3.Controls.Add(this.label13);
@@ -616,6 +635,20 @@
             this.groupbox3.TabIndex = 99;
             this.groupbox3.TabStop = false;
             // 
+            // setorAdhoc100Txt
+            // 
+            this.setorAdhoc100Txt.Location = new System.Drawing.Point(85, 62);
+            this.setorAdhoc100Txt.Maximum = new decimal(new int[] {
+            1874919423,
+            2328306,
+            0,
+            0});
+            this.setorAdhoc100Txt.Name = "setorAdhoc100Txt";
+            this.setorAdhoc100Txt.Size = new System.Drawing.Size(100, 20);
+            this.setorAdhoc100Txt.TabIndex = 6;
+            this.setorAdhoc100Txt.ThousandsSeparator = true;
+            this.setorAdhoc100Txt.ValueChanged += new System.EventHandler(this.Txt_ValueChanged);
+            // 
             // tglSetor
             // 
             this.tglSetor.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -626,30 +659,6 @@
             this.tglSetor.TabIndex = 17;
             this.tglSetor.ValueChanged += new System.EventHandler(this.tglSetor_ValueChanged);
             // 
-            // bonAdhoc20Txt
-            // 
-            this.bonAdhoc20Txt.Location = new System.Drawing.Point(297, 87);
-            this.bonAdhoc20Txt.Name = "bonAdhoc20Txt";
-            this.bonAdhoc20Txt.Size = new System.Drawing.Size(100, 20);
-            this.bonAdhoc20Txt.TabIndex = 16;
-            this.bonAdhoc20Txt.TextChanged += new System.EventHandler(this.Txt_TextChanged);
-            // 
-            // bonAdhoc50Txt
-            // 
-            this.bonAdhoc50Txt.Location = new System.Drawing.Point(191, 87);
-            this.bonAdhoc50Txt.Name = "bonAdhoc50Txt";
-            this.bonAdhoc50Txt.Size = new System.Drawing.Size(100, 20);
-            this.bonAdhoc50Txt.TabIndex = 15;
-            this.bonAdhoc50Txt.TextChanged += new System.EventHandler(this.Txt_TextChanged);
-            // 
-            // bonAdhoc100Txt
-            // 
-            this.bonAdhoc100Txt.Location = new System.Drawing.Point(85, 87);
-            this.bonAdhoc100Txt.Name = "bonAdhoc100Txt";
-            this.bonAdhoc100Txt.Size = new System.Drawing.Size(100, 20);
-            this.bonAdhoc100Txt.TabIndex = 14;
-            this.bonAdhoc100Txt.TextChanged += new System.EventHandler(this.Txt_TextChanged);
-            // 
             // label16
             // 
             this.label16.AutoSize = true;
@@ -659,55 +668,6 @@
             this.label16.Size = new System.Drawing.Size(60, 13);
             this.label16.TabIndex = 13;
             this.label16.Text = "Bon Adhoc";
-            // 
-            // setor20Txt
-            // 
-            this.setor20Txt.Location = new System.Drawing.Point(297, 155);
-            this.setor20Txt.Name = "setor20Txt";
-            this.setor20Txt.Size = new System.Drawing.Size(100, 20);
-            this.setor20Txt.TabIndex = 12;
-            this.setor20Txt.TextChanged += new System.EventHandler(this.Txt_TextChanged);
-            // 
-            // setor50Txt
-            // 
-            this.setor50Txt.Location = new System.Drawing.Point(191, 155);
-            this.setor50Txt.Name = "setor50Txt";
-            this.setor50Txt.Size = new System.Drawing.Size(100, 20);
-            this.setor50Txt.TabIndex = 11;
-            this.setor50Txt.TextChanged += new System.EventHandler(this.Txt_TextChanged);
-            // 
-            // setor100Txt
-            // 
-            this.setor100Txt.Location = new System.Drawing.Point(85, 155);
-            this.setor100Txt.Name = "setor100Txt";
-            this.setor100Txt.Size = new System.Drawing.Size(100, 20);
-            this.setor100Txt.TabIndex = 10;
-            this.setor100Txt.TextChanged += new System.EventHandler(this.Txt_TextChanged);
-            // 
-            // setorAdhoc20Txt
-            // 
-            this.setorAdhoc20Txt.Location = new System.Drawing.Point(297, 61);
-            this.setorAdhoc20Txt.Name = "setorAdhoc20Txt";
-            this.setorAdhoc20Txt.Size = new System.Drawing.Size(100, 20);
-            this.setorAdhoc20Txt.TabIndex = 9;
-            this.setorAdhoc20Txt.TextChanged += new System.EventHandler(this.Txt_TextChanged);
-            // 
-            // setorAdhoc50Txt
-            // 
-            this.setorAdhoc50Txt.Location = new System.Drawing.Point(191, 61);
-            this.setorAdhoc50Txt.Name = "setorAdhoc50Txt";
-            this.setorAdhoc50Txt.Size = new System.Drawing.Size(100, 20);
-            this.setorAdhoc50Txt.TabIndex = 8;
-            this.setorAdhoc50Txt.TextChanged += new System.EventHandler(this.Txt_TextChanged);
-            // 
-            // setorAdhoc100Txt
-            // 
-            this.setorAdhoc100Txt.Location = new System.Drawing.Point(85, 61);
-            this.setorAdhoc100Txt.Name = "setorAdhoc100Txt";
-            this.setorAdhoc100Txt.Size = new System.Drawing.Size(100, 20);
-            this.setorAdhoc100Txt.TabIndex = 7;
-            this.setorAdhoc100Txt.TextChanged += new System.EventHandler(this.Txt_TextChanged);
-            this.setorAdhoc100Txt.Leave += new System.EventHandler(this.setorAdhoc100Txt_Leave);
             // 
             // label15
             // 
@@ -949,6 +909,150 @@
             this.tanggalPrediksiMaxPicker.TabIndex = 110;
             this.tanggalPrediksiMaxPicker.ValueChanged += new System.EventHandler(this.tanggalPrediksiMaxPicker_ValueChanged);
             // 
+            // setorAdhoc50Txt
+            // 
+            this.setorAdhoc50Txt.Location = new System.Drawing.Point(191, 61);
+            this.setorAdhoc50Txt.Maximum = new decimal(new int[] {
+            1874919423,
+            2328306,
+            0,
+            0});
+            this.setorAdhoc50Txt.Name = "setorAdhoc50Txt";
+            this.setorAdhoc50Txt.Size = new System.Drawing.Size(100, 20);
+            this.setorAdhoc50Txt.TabIndex = 7;
+            this.setorAdhoc50Txt.ThousandsSeparator = true;
+            this.setorAdhoc50Txt.ValueChanged += new System.EventHandler(this.Txt_ValueChanged);
+            // 
+            // setorAdhoc20Txt
+            // 
+            this.setorAdhoc20Txt.Location = new System.Drawing.Point(297, 61);
+            this.setorAdhoc20Txt.Maximum = new decimal(new int[] {
+            1874919423,
+            2328306,
+            0,
+            0});
+            this.setorAdhoc20Txt.Name = "setorAdhoc20Txt";
+            this.setorAdhoc20Txt.Size = new System.Drawing.Size(100, 20);
+            this.setorAdhoc20Txt.TabIndex = 8;
+            this.setorAdhoc20Txt.ThousandsSeparator = true;
+            this.setorAdhoc20Txt.ValueChanged += new System.EventHandler(this.Txt_ValueChanged);
+            // 
+            // bonAdhoc100Txt
+            // 
+            this.bonAdhoc100Txt.Location = new System.Drawing.Point(85, 88);
+            this.bonAdhoc100Txt.Maximum = new decimal(new int[] {
+            1874919423,
+            2328306,
+            0,
+            0});
+            this.bonAdhoc100Txt.Name = "bonAdhoc100Txt";
+            this.bonAdhoc100Txt.Size = new System.Drawing.Size(100, 20);
+            this.bonAdhoc100Txt.TabIndex = 9;
+            this.bonAdhoc100Txt.ThousandsSeparator = true;
+            this.bonAdhoc100Txt.ValueChanged += new System.EventHandler(this.Txt_ValueChanged);
+            // 
+            // bonAdhoc50Txt
+            // 
+            this.bonAdhoc50Txt.Location = new System.Drawing.Point(191, 88);
+            this.bonAdhoc50Txt.Maximum = new decimal(new int[] {
+            1874919423,
+            2328306,
+            0,
+            0});
+            this.bonAdhoc50Txt.Name = "bonAdhoc50Txt";
+            this.bonAdhoc50Txt.Size = new System.Drawing.Size(100, 20);
+            this.bonAdhoc50Txt.TabIndex = 10;
+            this.bonAdhoc50Txt.ThousandsSeparator = true;
+            this.bonAdhoc50Txt.ValueChanged += new System.EventHandler(this.Txt_ValueChanged);
+            // 
+            // bonAdhoc20Txt
+            // 
+            this.bonAdhoc20Txt.Location = new System.Drawing.Point(297, 87);
+            this.bonAdhoc20Txt.Maximum = new decimal(new int[] {
+            1874919423,
+            2328306,
+            0,
+            0});
+            this.bonAdhoc20Txt.Name = "bonAdhoc20Txt";
+            this.bonAdhoc20Txt.Size = new System.Drawing.Size(100, 20);
+            this.bonAdhoc20Txt.TabIndex = 11;
+            this.bonAdhoc20Txt.ThousandsSeparator = true;
+            this.bonAdhoc20Txt.ValueChanged += new System.EventHandler(this.Txt_ValueChanged);
+            // 
+            // setor100Txt
+            // 
+            this.setor100Txt.Location = new System.Drawing.Point(85, 155);
+            this.setor100Txt.Maximum = new decimal(new int[] {
+            1874919423,
+            2328306,
+            0,
+            0});
+            this.setor100Txt.Name = "setor100Txt";
+            this.setor100Txt.Size = new System.Drawing.Size(100, 20);
+            this.setor100Txt.TabIndex = 12;
+            this.setor100Txt.ThousandsSeparator = true;
+            this.setor100Txt.ValueChanged += new System.EventHandler(this.Txt_ValueChanged);
+            // 
+            // setor50Txt
+            // 
+            this.setor50Txt.Location = new System.Drawing.Point(191, 155);
+            this.setor50Txt.Maximum = new decimal(new int[] {
+            1874919423,
+            2328306,
+            0,
+            0});
+            this.setor50Txt.Name = "setor50Txt";
+            this.setor50Txt.Size = new System.Drawing.Size(100, 20);
+            this.setor50Txt.TabIndex = 13;
+            this.setor50Txt.ThousandsSeparator = true;
+            this.setor50Txt.ValueChanged += new System.EventHandler(this.Txt_ValueChanged);
+            // 
+            // setor20Txt
+            // 
+            this.setor20Txt.Location = new System.Drawing.Point(297, 155);
+            this.setor20Txt.Maximum = new decimal(new int[] {
+            1874919423,
+            2328306,
+            0,
+            0});
+            this.setor20Txt.Name = "setor20Txt";
+            this.setor20Txt.Size = new System.Drawing.Size(100, 20);
+            this.setor20Txt.TabIndex = 14;
+            this.setor20Txt.ThousandsSeparator = true;
+            this.setor20Txt.ValueChanged += new System.EventHandler(this.Txt_ValueChanged);
+            // 
+            // bufferIsiAtm50Num
+            // 
+            this.bufferIsiAtm50Num.Location = new System.Drawing.Point(423, 156);
+            this.bufferIsiAtm50Num.Name = "bufferIsiAtm50Num";
+            this.bufferIsiAtm50Num.Size = new System.Drawing.Size(114, 20);
+            this.bufferIsiAtm50Num.TabIndex = 111;
+            // 
+            // bufferIsiAtm100Num
+            // 
+            this.bufferIsiAtm100Num.Location = new System.Drawing.Point(423, 131);
+            this.bufferIsiAtm100Num.Name = "bufferIsiAtm100Num";
+            this.bufferIsiAtm100Num.Size = new System.Drawing.Size(114, 20);
+            this.bufferIsiAtm100Num.TabIndex = 112;
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(277, 160);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(106, 13);
+            this.label31.TabIndex = 110;
+            this.label31.Text = "Buffer Isi ATM 50 (%)";
+            // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.Location = new System.Drawing.Point(277, 135);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(112, 13);
+            this.label30.TabIndex = 109;
+            this.label30.Text = "Buffer Isi ATM 100 (%)";
+            // 
             // RevisiInformationBoard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -983,11 +1087,22 @@
             ((System.ComponentModel.ISupportInitialize)(this.permintaanAdhocGridView)).EndInit();
             this.groupbox3.ResumeLayout(false);
             this.groupbox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.setorAdhoc100Txt)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bonYangSudahDisetujuiGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.totalSislokGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.totalIsiGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.setorAdhoc50Txt)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.setorAdhoc20Txt)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bonAdhoc100Txt)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bonAdhoc50Txt)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bonAdhoc20Txt)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.setor100Txt)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.setor50Txt)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.setor20Txt)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bufferIsiAtm50Num)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bufferIsiAtm100Num)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1018,16 +1133,7 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.GroupBox groupbox3;
-        private System.Windows.Forms.TextBox bonAdhoc20Txt;
-        private System.Windows.Forms.TextBox bonAdhoc50Txt;
-        private System.Windows.Forms.TextBox bonAdhoc100Txt;
         private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.TextBox setor20Txt;
-        private System.Windows.Forms.TextBox setor50Txt;
-        private System.Windows.Forms.TextBox setor100Txt;
-        private System.Windows.Forms.TextBox setorAdhoc20Txt;
-        private System.Windows.Forms.TextBox setorAdhoc50Txt;
-        private System.Windows.Forms.TextBox setorAdhoc100Txt;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label13;
@@ -1068,5 +1174,18 @@
         private System.Windows.Forms.Label label28;
         private System.Windows.Forms.Label label29;
         private System.Windows.Forms.DataGridView permintaanAdhocGridView;
+        private System.Windows.Forms.NumericUpDown setorAdhoc100Txt;
+        private System.Windows.Forms.NumericUpDown setorAdhoc20Txt;
+        private System.Windows.Forms.NumericUpDown setorAdhoc50Txt;
+        private System.Windows.Forms.NumericUpDown bonAdhoc20Txt;
+        private System.Windows.Forms.NumericUpDown bonAdhoc50Txt;
+        private System.Windows.Forms.NumericUpDown bonAdhoc100Txt;
+        private System.Windows.Forms.NumericUpDown setor20Txt;
+        private System.Windows.Forms.NumericUpDown setor50Txt;
+        private System.Windows.Forms.NumericUpDown setor100Txt;
+        private System.Windows.Forms.NumericUpDown bufferIsiAtm50Num;
+        private System.Windows.Forms.NumericUpDown bufferIsiAtm100Num;
+        private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.Label label30;
     }
 }

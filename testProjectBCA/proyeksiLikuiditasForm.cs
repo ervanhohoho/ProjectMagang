@@ -462,7 +462,7 @@ namespace testProjectBCA
                     }
                     query.AddRange(q3);
                 }
-
+                //Disum dulu untuk semua PKT
                 var query2 = (from x in query
                               group x by x.tanggal into g
                               select new
@@ -895,14 +895,5 @@ namespace testProjectBCA
             db.SaveChanges();
         }
     }
-    class tanggalValue
-    {
-        public DateTime tanggal { set; get; }
-        public Int64 value { set; get; }
-    }
-    class tanggalRasio
-    {
-        public DateTime tanggal { set; get; }
-        public Double value { set; get; }
-    }
+    
 }

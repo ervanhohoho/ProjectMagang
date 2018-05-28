@@ -208,6 +208,7 @@
     <Property Name="subsidi" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="persentaseSubsidi" Type="Double" />
     <Property Name="kuota" Type="Int32" />
+    <Property Name="subsidiCabang" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="Opti">
     <Key>
@@ -285,6 +286,8 @@
     <Property Name="denom" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="tanggal" Type="DateTime" Precision="0" />
     <Property Name="namaPkt" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="inCabang" Type="Int64" />
+    <Property Name="inRetail" Type="Int64" />
   </EntityType>
   <EntityType Name="TransaksiAtm">
     <Key>

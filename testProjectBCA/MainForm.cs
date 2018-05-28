@@ -43,10 +43,12 @@ namespace testProjectBCA
         private void inputDataPktToolStripMenuItem_Click(object sender, EventArgs e)
         {
             inputDataPkt();
+            MessageBox.Show("Done!");
         }
         private void inputDataDenomToolStripMenuItem_Click(object sender, EventArgs e)
         {
             inputDataDenom();
+            MessageBox.Show("Done!");
         }
         private void informationBoardToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -158,6 +160,7 @@ namespace testProjectBCA
                 }
                 loadForm.CloseForm();
             }
+            MessageBox.Show("Done!");
         }
         private void inputDataPkt()
         {
@@ -450,7 +453,7 @@ namespace testProjectBCA
 
             DataSet ds = Util.openExcel(filepath);
             DataTable dt = ds.Tables[0];
-            DataRow[] rows = dt.Select("Column3 not like 'JABO%'");
+            DataRow[] rows = dt.Select("Column3 like 'AREA'");
 
 
             foreach(var row in rows)
@@ -738,6 +741,25 @@ namespace testProjectBCA
             RevisiInformationBoard rib = new RevisiInformationBoard();
             rib.MdiParent = this;
             rib.Show();
+        }
+
+        private void nasabahToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void inputTukaranDanDeliveryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            InputDataTukaranDanDeliveryForm idtdf = new InputDataTukaranDanDeliveryForm();
+            idtdf.MdiParent = this;
+            idtdf.Show();
+        }
+
+        private void forecastATMToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ForecastAtmForm faf = new ForecastAtmForm();
+            faf.MdiParent = this;
+            faf.Show();
         }
     }
 }

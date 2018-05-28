@@ -17,6 +17,7 @@ namespace testProjectBCA
     {
         List<String> KodePkt;
         int jumlahBonLaporan;
+        bool firstRun = true;
 
         Denom saldoAwal = new Denom();
         List<Denom> saldo = new List<Denom>();
@@ -147,6 +148,7 @@ namespace testProjectBCA
             pktIndex = pktComboBox.SelectedIndex;
             loadE2E();
             Database1Entities db = new Database1Entities();
+            firstRun = true;
         }
         
         private void loadPrediksiOpti()
@@ -362,7 +364,7 @@ namespace testProjectBCA
                         //SislokCrm
                         SqlDataReader reader;
                         Denom tempIsiAtm = new Denom();
-                        String cText = "SELECT ISNULL(AVG(isiAtm100),0), ISNULL(AVG(isiAtm50),0), ISNULL(AVG(isiAtm20),0) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' AND DATENAME(WEEKDAY, TA.Tanggal) = '" + tempDate.DayOfWeek.ToString() + "'";
+                        String cText = "SELECT AVG(isiAtm100), AVG(isiAtm50), AVG(isiAtm20) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' AND DATENAME(WEEKDAY, TA.Tanggal) = '" + tempDate.DayOfWeek.ToString() + "'";
                         int count = 0;
                         for (int i = 0; i < treeView1.Nodes.Count; i++)
                         {
@@ -370,30 +372,38 @@ namespace testProjectBCA
                             {
                                 if (treeView1.Nodes[i].Nodes[j].Checked)
                                 {
-                                    //MessageBox.Show("A");
+                                    //;
                                     //Kalo cari minggu (DATEPART(WEEK, tanggal) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM, 0, tanggal), 0)) + 1 ) = (minggu keberapa)
                                     if (count++ == 0)
-                                        cText += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                        cText += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "') AND [event] = (SELECT [event] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
                                     else
-                                        cText += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                        cText += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "') AND [event] = (SELECT [event] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
                                 }
                             }
                         }
                         cText += ")";
                         cmd.CommandText = cText;
                         reader = cmd.ExecuteReader();
+                        bool event1 = true;
                         if (reader.Read())
                         {
-                            tempIsiAtm.d50 = (Int64)reader[1];
-                            tempIsiAtm.d20 = (Int64)reader[2];
-                            tempIsiAtm.tgl = tempDate;
-                            tempIsiAtm.d100 = (Int64)reader[0];
+                            if (String.IsNullOrEmpty(reader[0].ToString()) || String.IsNullOrEmpty(reader[1].ToString()) || String.IsNullOrEmpty(reader[2].ToString()))
+                            {
+                                event1 = false;
+                            }
+                            else
+                            {
+                                tempIsiAtm.d50 = (Int64)reader[1];
+                                tempIsiAtm.d20 = (Int64)reader[2];
+                                tempIsiAtm.tgl = tempDate;
+                                tempIsiAtm.d100 = (Int64)reader[0];
+                            }
                             reader.Close();
                         }
-                        else
+                        if(!event1)
                         {
                             reader.Close();
-                            cText = "SELECT ISNULL(AVG(isiAtm100),0), ISNULL(AVG(isiAtm50),0), ISNULL(AVG(isiAtm20),0) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' ";
+                            cText = "SELECT AVG(isiAtm100), AVG(isiAtm50), AVG(isiAtm20) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' ";
                             count = 0;
                             for (int i = 0; i < treeView1.Nodes.Count; i++)
                             {
@@ -401,12 +411,12 @@ namespace testProjectBCA
                                 {
                                     if (treeView1.Nodes[i].Nodes[j].Checked)
                                     {
-                                        //MessageBox.Show("A");
+                                        //;
                                         //Kalo cari minggu (DATEPART(WEEK, tanggal) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM, 0, tanggal), 0)) + 1 ) = (minggu keberapa)
                                         if (count++ == 0)
-                                            cText += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                            cText += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "') AND [event] = (SELECT [event] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
                                         else
-                                            cText += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                            cText += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "') AND [event] = (SELECT [event] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
                                     }
                                 }
                             }
@@ -415,10 +425,20 @@ namespace testProjectBCA
                             reader = cmd.ExecuteReader();
                             if (reader.Read())
                             {
-                                tempIsiAtm.d50 = (Int64)reader[1];
-                                tempIsiAtm.d20 = (Int64)reader[2];
-                                tempIsiAtm.tgl = tempDate;
-                                tempIsiAtm.d100 = (Int64)reader[0];
+                                if (String.IsNullOrEmpty(reader[0].ToString()) || String.IsNullOrEmpty(reader[1].ToString()) || String.IsNullOrEmpty(reader[2].ToString()))
+                                {
+                                    tempIsiAtm.d50 = 0;
+                                    tempIsiAtm.d20 = 0;
+                                    tempIsiAtm.tgl = tempDate;
+                                    tempIsiAtm.d100 = 0;
+                                }
+                                else
+                                {
+                                    tempIsiAtm.d50 = (Int64)reader[1];
+                                    tempIsiAtm.d20 = (Int64)reader[2];
+                                    tempIsiAtm.tgl = tempDate;
+                                    tempIsiAtm.d100 = (Int64)reader[0];
+                                }
                                 reader.Close();
                             }
                         }//Console.WriteLine(tempSislokCrm.d100.ToString());
@@ -474,12 +494,12 @@ namespace testProjectBCA
                             {
                                 if (treeView1.Nodes[i].Nodes[j].Checked)
                                 {
-                                    //MessageBox.Show("A");
+                                    //;
                                     //Kalo cari minggu (DATEPART(WEEK, tanggal) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM, 0, tanggal), 0)) + 1 ) = (minggu keberapa)
                                     if (count++ == 0)
-                                        kondisi += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                        kondisi += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "') AND [event] = (SELECT [event] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
                                     else
-                                        kondisi += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                        kondisi += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "') AND [event] = (SELECT [event] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
                                 }
                             }
                         }
@@ -497,15 +517,21 @@ namespace testProjectBCA
 
                         cmd.CommandText = query;
                         reader = cmd.ExecuteReader();
+                        bool event1 = true;
                         if (reader.Read())
                         {
-                            tempStdDeviasi.d100 = (Double)reader[0];
-                            tempStdDeviasi.d50 = (Double)reader[1];
-                            tempStdDeviasi.d20 = (Double)reader[2];
-                            tempStdDeviasi.tgl = tempDate;
+                            if (String.IsNullOrEmpty(reader[0].ToString()) || String.IsNullOrEmpty(reader[1].ToString()) || String.IsNullOrEmpty(reader[2].ToString()))
+                                event1 = false;
+                            else
+                            {
+                                tempStdDeviasi.d100 = (Double)reader[0];
+                                tempStdDeviasi.d50 = (Double)reader[1];
+                                tempStdDeviasi.d20 = (Double)reader[2];
+                                tempStdDeviasi.tgl = tempDate;
+                            }
                             reader.Close();
                         }
-                        else
+                        if(!event1)
                         {
                             reader.Close();
                             kondisi = " WHERE kodePkt = '" + KodePkt[pktIndex] + "' ";
@@ -517,12 +543,12 @@ namespace testProjectBCA
                                 {
                                     if (treeView1.Nodes[i].Nodes[j].Checked)
                                     {
-                                        //MessageBox.Show("A");
+                                        //;
                                         //Kalo cari minggu (DATEPART(WEEK, tanggal) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM, 0, tanggal), 0)) + 1 ) = (minggu keberapa)
                                         if (count++ == 0)
-                                            kondisi += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                            kondisi += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "') AND [event] = (SELECT [event] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
                                         else
-                                            kondisi += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                            kondisi += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "') AND [event] = (SELECT [event] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
                                     }
                                 }
                             }
@@ -605,7 +631,7 @@ namespace testProjectBCA
                         //SislokCrm
                         SqlDataReader reader;
                         Denom tempIsiCrm = new Denom();
-                        String cText = "SELECT ISNULL(AVG(isiCrm100),0), ISNULL(AVG(isiCrm50),0), ISNULL(AVG(isiCrm20),0) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' AND DATENAME(WEEKDAY, TA.Tanggal) = '" + tempDate.DayOfWeek.ToString() + "'";
+                        String cText = "SELECT AVG(isiCrm100), AVG(isiCrm50), AVG(isiCrm20) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' AND DATENAME(WEEKDAY, TA.Tanggal) = '" + tempDate.DayOfWeek.ToString() + "'";
                         int count = 0;
                         for (int i = 0; i < treeView1.Nodes.Count; i++)
                         {
@@ -613,27 +639,35 @@ namespace testProjectBCA
                             {
                                 if (treeView1.Nodes[i].Nodes[j].Checked)
                                 {
-                                    //MessageBox.Show("A");
+                                    //;
                                     //Kalo cari minggu (DATEPART(WEEK, tanggal) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM, 0, tanggal), 0)) + 1 ) = (minggu keberapa)
                                     if (count++ == 0)
-                                        cText += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                        cText += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "') AND [event] = (SELECT [event] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
                                     else
-                                        cText += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                        cText += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "') AND [event] = (SELECT [event] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
                                 }
                             }
                         }
                         cText += ")";
                         cmd.CommandText = cText;
                         reader = cmd.ExecuteReader();
+                        bool event1 = true;
+                        bool event2 = true;
+                        bool event3 = true;
                         if (reader.Read())
                         {
-                            tempIsiCrm.d100 = (Int64)reader[0];
-                            tempIsiCrm.d50 = (Int64)reader[1];
-                            tempIsiCrm.d20 = (Int64)reader[2];
-                            tempIsiCrm.tgl = tempDate;
+                            if (String.IsNullOrEmpty(reader[0].ToString()) || String.IsNullOrEmpty(reader[1].ToString()) || String.IsNullOrEmpty(reader[2].ToString()))
+                                event1 = false;
+                            else
+                            {
+                                tempIsiCrm.d100 = (Int64)reader[0];
+                                tempIsiCrm.d50 = (Int64)reader[1];
+                                tempIsiCrm.d20 = (Int64)reader[2];
+                                tempIsiCrm.tgl = tempDate;
+                            }
                             reader.Close();
                         }
-                        else
+                        if(!event1)
                         {
                             reader.Close();
                             cText = "SELECT ISNULL(AVG(isiCrm100),0), ISNULL(AVG(isiCrm50),0), ISNULL(AVG(isiCrm20),0) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' ";
@@ -644,12 +678,12 @@ namespace testProjectBCA
                                 {
                                     if (treeView1.Nodes[i].Nodes[j].Checked)
                                     {
-                                        //MessageBox.Show("A");
+                                        //;
                                         //Kalo cari minggu (DATEPART(WEEK, tanggal) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM, 0, tanggal), 0)) + 1 ) = (minggu keberapa)
                                         if (count++ == 0)
-                                            cText += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                            cText += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "') AND [event] = (SELECT [event] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
                                         else
-                                            cText += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                            cText += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "') AND [event] = (SELECT [event] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
                                     }
                                 }
                             }
@@ -717,18 +751,18 @@ namespace testProjectBCA
                             {
                                 if (treeView1.Nodes[i].Nodes[j].Checked)
                                 {
-                                    //MessageBox.Show("A");
+                                    //;
                                     //Kalo cari minggu (DATEPART(WEEK, tanggal) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM, 0, tanggal), 0)) + 1 ) = (minggu keberapa)
                                     if (count++ == 0)
-                                        kondisi += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                        kondisi += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "') AND [event] = (SELECT [event] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
                                     else
-                                        kondisi += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                        kondisi += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "') AND [event] = (SELECT [event] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "'))";
                                 }
                             }
                         }
                         kondisi += ")";
 
-                        String subqueryTblAverage = "(SELECT ISNULL(AVG(isiCrm100),0) AS Average100 , ISNULL(AVG(isiCrm50),0) AS Average50 , ISNULL(AVG(isiCrm20),0) AS Average20 FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal";
+                        String subqueryTblAverage = "(SELECT AVG(isiCrm100) AS Average100 , AVG(isiCrm50) AS Average50 , AVG(isiCrm20) AS Average20 FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal";
                         subqueryTblAverage += kondisi;
                         subqueryTblAverage += ") avt";
 
@@ -739,16 +773,22 @@ namespace testProjectBCA
                                     + "FROM TransaksiAtms TA JOIN EventTanggal ET ON Ta.tanggal = ET.tanggal, " + subqueryTblAverage + kondisi;
 
                         cmd.CommandText = query;
+                        bool event1 = true;
                         reader = cmd.ExecuteReader();
                         if (reader.Read())
                         {
-                            tempStdDeviasi.d100 = (Double)reader[0];
-                            tempStdDeviasi.d50 = (Double)reader[1];
-                            tempStdDeviasi.d20 = (Double)reader[2];
-                            tempStdDeviasi.tgl = tempDate;
-                            reader.Close();
+                            if (String.IsNullOrEmpty(reader[0].ToString()) || String.IsNullOrEmpty(reader[1].ToString()) || String.IsNullOrEmpty(reader[2].ToString()))
+                                event1 = false;
+                            else{
+                                
+                                tempStdDeviasi.d100 = (Double)reader[0];
+                                tempStdDeviasi.d50 = (Double)reader[1];
+                                tempStdDeviasi.d20 = (Double)reader[2];
+                                tempStdDeviasi.tgl = tempDate;
+                                reader.Close();
+                            }
                         }
-                        else
+                        if(!event1)
                         {
                             reader.Close();
                             kondisi = " WHERE kodePkt = '" + KodePkt[pktIndex] + "' ";
@@ -760,12 +800,12 @@ namespace testProjectBCA
                                 {
                                     if (treeView1.Nodes[i].Nodes[j].Checked)
                                     {
-                                        //MessageBox.Show("A");
+                                        //;
                                         //Kalo cari minggu (DATEPART(WEEK, tanggal) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM, 0, tanggal), 0)) + 1 ) = (minggu keberapa)
                                         if (count++ == 0)
-                                            kondisi += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                            kondisi += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "') AND [event] = (SELECT [event] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
                                         else
-                                            kondisi += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                            kondisi += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "') AND [event] = (SELECT [event] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
                                     }
                                 }
                             }
@@ -849,7 +889,7 @@ namespace testProjectBCA
                         //SislokCrm
                         SqlDataReader reader;
                         Denom tempSislokCrm = new Denom();
-                        String cText = "SELECT ISNULL(AVG(sislokCrm100),0), ISNULL(AVG(sislokCrm50),0), ISNULL(AVG(sislokCrm20),0) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' AND DATENAME(WEEKDAY, TA.Tanggal) = '" + tempDate.DayOfWeek.ToString() + "'";
+                        String cText = "SELECT AVG(sislokCrm100), AVG(sislokCrm50), AVG(sislokCrm20) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' AND DATENAME(WEEKDAY, TA.Tanggal) = '" + tempDate.DayOfWeek.ToString() + "'";
                         int count = 0;
                         for (int i = 0; i < treeView1.Nodes.Count; i++)
                         {
@@ -857,12 +897,12 @@ namespace testProjectBCA
                             {
                                 if (treeView1.Nodes[i].Nodes[j].Checked)
                                 {
-                                    //MessageBox.Show("A");
+                                    //;
                                     //Kalo cari minggu (DATEPART(WEEK, tanggal) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM, 0, tanggal), 0)) + 1 ) = (minggu keberapa)
                                     if (count++ == 0)
-                                        cText += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                        cText += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "') AND [event] = (SELECT [event] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
                                     else
-                                        cText += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                        cText += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "') AND [event] = (SELECT [event] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
                                 }
                             }
                         }
@@ -871,19 +911,24 @@ namespace testProjectBCA
                         reader = cmd.ExecuteReader();
 
                         bool flag = false;
-
+                        bool event1 = true;
                         if(reader.Read())
                         {
-                            tempSislokCrm.d100 = (Int64)reader[0];
-                            tempSislokCrm.d50 = (Int64)reader[1];
-                            tempSislokCrm.d20 = (Int64)reader[2];
-                            tempSislokCrm.tgl = tempDate;
+                            if (String.IsNullOrEmpty(reader[0].ToString()) || String.IsNullOrEmpty(reader[1].ToString()) || String.IsNullOrEmpty(reader[2].ToString()))
+                                event1 = false;
+                            else
+                            {
+                                tempSislokCrm.d100 = (Int64)reader[0];
+                                tempSislokCrm.d50 = (Int64)reader[1];
+                                tempSislokCrm.d20 = (Int64)reader[2];
+                                tempSislokCrm.tgl = tempDate;
+                            }
                         }
-                        else
+                        if(!event1)
                         {
                             reader.Close();
                             //QUERY UNTUK CONDITION TANPA HARI
-                            cText = "SELECT ISNULL(AVG(sislokCrm100)0), ISNULL(AVG(sislokCrm50),0), ISNULL(AVG(sislokCrm20),0) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' ";
+                            cText = "SELECT ISNULL(AVG(sislokCrm100),0), ISNULL(AVG(sislokCrm50),0), ISNULL(AVG(sislokCrm20),0) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' ";
                             count = 0;
                             for (int i = 0; i < treeView1.Nodes.Count; i++)
                             {
@@ -891,12 +936,12 @@ namespace testProjectBCA
                                 {
                                     if (treeView1.Nodes[i].Nodes[j].Checked)
                                     {
-                                        //MessageBox.Show("A");
+                                        //;
                                         //Kalo cari minggu (DATEPART(WEEK, tanggal) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM, 0, tanggal), 0)) + 1 ) = (minggu keberapa)
                                         if (count++ == 0)
-                                            cText += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                            cText += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "') AND [event] = (SELECT [event] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
                                         else
-                                            cText += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                            cText += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "') AND [event] = (SELECT [event] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
                                     }
                                 }
                             }
@@ -964,18 +1009,17 @@ namespace testProjectBCA
                             {
                                 if (treeView1.Nodes[i].Nodes[j].Checked)
                                 {
-                                    //MessageBox.Show("A");
                                     //Kalo cari minggu (DATEPART(WEEK, tanggal) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM, 0, tanggal), 0)) + 1 ) = (minggu keberapa)
                                     if (count++ == 0)
-                                        kondisi += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                        kondisi += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "') AND [event] = (SELECT [event] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
                                     else
-                                        kondisi += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                        kondisi += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "') AND [event] = (SELECT [event] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
                                 }
                             }
                         }
                         kondisi += ")";
 
-                        String subqueryTblAverage = "(SELECT ISNULL(AVG(sislokCrm100),0) AS Average100 , ISNULL(AVG(sislokCrm50),0) AS Average50 , ISNULL(AVG(sislokCrm20),0) AS Average20 FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal";
+                        String subqueryTblAverage = "(SELECT AVG(sislokCrm100) AS Average100 , AVG(sislokCrm50) AS Average50 , AVG(sislokCrm20) AS Average20 FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal";
                         subqueryTblAverage += kondisi;
                         subqueryTblAverage += ") avt";
 
@@ -987,15 +1031,21 @@ namespace testProjectBCA
 
                         cmd.CommandText = query;
                         reader = cmd.ExecuteReader();
+                        bool event1 = true;
                         if (reader.Read())
                         {
-                            tempStdDeviasi.d100 = (Double)reader[0];
-                            tempStdDeviasi.d50 = (Double)reader[1];
-                            tempStdDeviasi.d20 = (Double)reader[2];
-                            tempStdDeviasi.tgl = tempDate;
+                            if (String.IsNullOrEmpty(reader[0].ToString()) || String.IsNullOrEmpty(reader[1].ToString()) || String.IsNullOrEmpty(reader[2].ToString()))
+                                event1 = false;
+                            else
+                            {
+                                tempStdDeviasi.d100 = (Double)reader[0];
+                                tempStdDeviasi.d50 = (Double)reader[1];
+                                tempStdDeviasi.d20 = (Double)reader[2];
+                                tempStdDeviasi.tgl = tempDate;
+                            }
                             reader.Close();
                         }
-                        else
+                        if(!event1)
                         {
                             reader.Close();
                             kondisi = " WHERE kodePkt = '" + KodePkt[pktIndex] + "' ";
@@ -1007,12 +1057,12 @@ namespace testProjectBCA
                                 {
                                     if (treeView1.Nodes[i].Nodes[j].Checked)
                                     {
-                                        //MessageBox.Show("A");
+                                        //;
                                         //Kalo cari minggu (DATEPART(WEEK, tanggal) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM, 0, tanggal), 0)) + 1 ) = (minggu keberapa)
                                         if (count++ == 0)
-                                            kondisi += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                            kondisi += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "') AND [event] = (SELECT [event] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
                                         else
-                                            kondisi += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                            kondisi += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "') AND [event] = (SELECT [event] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
                                     }
                                 }
                             }
@@ -1095,7 +1145,7 @@ namespace testProjectBCA
                         //SislokCdm
                         SqlDataReader reader;
                         Denom tempSislokCdm = new Denom();
-                        String cText = "SELECT ISNULL(AVG(sislokCdm100),0), ISNULL(AVG(sislokCdm50),0), ISNULL(AVG(sislokCdm20),0) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' AND DATENAME(WEEKDAY, TA.Tanggal) = '" + tempDate.DayOfWeek.ToString() + "'";
+                        String cText = "SELECT AVG(sislokCdm100), AVG(sislokCdm50), AVG(sislokCdm20) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' AND DATENAME(WEEKDAY, TA.Tanggal) = '" + tempDate.DayOfWeek.ToString() + "'";
                         int count = 0;
                         for (int i = 0; i < treeView1.Nodes.Count; i++)
                         {
@@ -1103,31 +1153,37 @@ namespace testProjectBCA
                             {
                                 if (treeView1.Nodes[i].Nodes[j].Checked)
                                 {
-                                    //MessageBox.Show("A");
+                                    //;
                                     //Kalo cari minggu (DATEPART(WEEK, tanggal) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM, 0, tanggal), 0)) + 1 ) = (minggu keberapa)
                                     if (count++ == 0)
-                                        cText += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                        cText += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "') AND [event] = (SELECT [event] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
                                     else
-                                        cText += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                        cText += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "') AND [event] = (SELECT [event] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
                                 }
                             }
                         }
                         cText += ")";
                         cmd.CommandText = cText;
                         reader = cmd.ExecuteReader();
+                        bool event1 = true;
                         if (reader.Read())
                         {
-                            tempSislokCdm.d100 = (Int64)reader[0];
-                            tempSislokCdm.d50 = (Int64)reader[1];
-                            tempSislokCdm.d20 = (Int64)reader[2];
-                            tempSislokCdm.tgl = tempDate;
+                            if (String.IsNullOrEmpty(reader[0].ToString()) || String.IsNullOrEmpty(reader[1].ToString()) || String.IsNullOrEmpty(reader[2].ToString()))
+                                event1 = false;
+                            else
+                            {
+                                tempSislokCdm.d100 = (Int64)reader[0];
+                                tempSislokCdm.d50 = (Int64)reader[1];
+                                tempSislokCdm.d20 = (Int64)reader[2];
+                                tempSislokCdm.tgl = tempDate;
+                            }
                             reader.Close();
                         }
-                        else
+                        if(!event1)
                         {
                             reader.Close();
-                            MessageBox.Show("Prediksi Tanggal " + tempDate.ToShortDateString() + " Tanpa Hari");
-                            cText = "SELECT ISNULL(AVG(sislokCdm100),0), ISNULL(AVG(sislokCdm50),0), ISNULL(AVG(sislokCdm20),0) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' ";
+                            
+                            cText = "SELECT AVG(sislokCdm100), AVG(sislokCdm50), AVG(sislokCdm20) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' ";
                             count = 0;
                             for (int i = 0; i < treeView1.Nodes.Count; i++)
                             {
@@ -1135,12 +1191,12 @@ namespace testProjectBCA
                                 {
                                     if (treeView1.Nodes[i].Nodes[j].Checked)
                                     {
-                                        //MessageBox.Show("A");
+                                        //;
                                         //Kalo cari minggu (DATEPART(WEEK, tanggal) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM, 0, tanggal), 0)) + 1 ) = (minggu keberapa)
                                         if (count++ == 0)
-                                            cText += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                            cText += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "') AND [event] = (SELECT [event] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
                                         else
-                                            cText += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                            cText += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "') AND [event] = (SELECT [event] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
                                     }
                                 }
                             }
@@ -1149,10 +1205,18 @@ namespace testProjectBCA
                             reader = cmd.ExecuteReader();
                             if (reader.Read())
                             {
-                                tempSislokCdm.d100 = (Int64)reader[0];
-                                tempSislokCdm.d50 = (Int64)reader[1];
-                                tempSislokCdm.d20 = (Int64)reader[2];
-                                tempSislokCdm.tgl = tempDate;
+                                if (String.IsNullOrEmpty(reader[0].ToString()) || String.IsNullOrEmpty(reader[1].ToString()) || String.IsNullOrEmpty(reader[2].ToString()))
+                                {
+                                    MessageBox.Show("Data Lainnya tanggal" + tempDate.ToShortDateString() + "Tidak ada!\nValue menjadi 0");
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Prediksi Lainnya Tanggal " + tempDate.ToShortDateString() + " Menggunakan Event2");
+                                    tempSislokCdm.d100 = (Int64)reader[0];
+                                    tempSislokCdm.d50 = (Int64)reader[1];
+                                    tempSislokCdm.d20 = (Int64)reader[2];
+                                    tempSislokCdm.tgl = tempDate;
+                                }
                                 reader.Close();
                             }
                             else
@@ -1212,18 +1276,18 @@ namespace testProjectBCA
                             {
                                 if (treeView1.Nodes[i].Nodes[j].Checked)
                                 {
-                                    //MessageBox.Show("A");
+                                    //;
                                     //Kalo cari minggu (DATEPART(WEEK, tanggal) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM, 0, tanggal), 0)) + 1 ) = (minggu keberapa)
                                     if (count++ == 0)
-                                        kondisi += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                        kondisi += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "') AND [event] = (SELECT [event] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
                                     else
-                                        kondisi += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                        kondisi += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "') AND [event] = (SELECT [event] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
                                 }
                             }
                         }
                         kondisi += ")";
 
-                        String subqueryTblAverage = "(SELECT ISNULL(AVG(sislokcdm100),0) AS Average100 , ISNULL(AVG(sislokCdm50),0) AS Average50 , ISNULL(AVG(sislokCdm20),0) AS Average20 FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal";
+                        String subqueryTblAverage = "(SELECT AVG(sislokcdm100) AS Average100 , AVG(sislokCdm50) AS Average50 , AVG(sislokCdm20) AS Average20 FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal";
                         subqueryTblAverage += kondisi;
                         subqueryTblAverage += ") avt";
 
@@ -1235,17 +1299,23 @@ namespace testProjectBCA
 
                         cmd.CommandText = query;
                         reader = cmd.ExecuteReader();
+                        bool event1 = true;
                         if (reader.Read())
                         {
-                            tempStdDeviasi.d100 = (Double)reader[0];
-                            tempStdDeviasi.d50 = (Double)reader[1];
-                            tempStdDeviasi.d20 = (Double)reader[2];
-                            tempStdDeviasi.tgl = tempDate;
+                            if (String.IsNullOrEmpty(reader[0].ToString()) || String.IsNullOrEmpty(reader[1].ToString()) || String.IsNullOrEmpty(reader[2].ToString()))
+                                event1 = false;
+                            else
+                            {
+                                tempStdDeviasi.d100 = (Double)reader[0];
+                                tempStdDeviasi.d50 = (Double)reader[1];
+                                tempStdDeviasi.d20 = (Double)reader[2];
+                                tempStdDeviasi.tgl = tempDate;
+                            }
                             reader.Close();
-                        }else
+                        }
+                        if (!event1)
                         {
                             reader.Close();
-                            MessageBox.Show("Prediksi Tanggal " + tempDate.ToShortDateString() + " Tidak Pakai Hari");
                             kondisi = " WHERE kodePkt = '" + KodePkt[pktIndex] + "' ";
                             count = 0;
 
@@ -1255,12 +1325,12 @@ namespace testProjectBCA
                                 {
                                     if (treeView1.Nodes[i].Nodes[j].Checked)
                                     {
-                                        //MessageBox.Show("A");
+                                        //;
                                         //Kalo cari minggu (DATEPART(WEEK, tanggal) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM, 0, tanggal), 0)) + 1 ) = (minggu keberapa)
                                         if (count++ == 0)
-                                            kondisi += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                            kondisi += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "') AND [event] = (SELECT [event] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
                                         else
-                                            kondisi += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                            kondisi += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "') AND [event] = (SELECT [event] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
                                     }
                                 }
                             }
@@ -1343,7 +1413,7 @@ namespace testProjectBCA
                         //SislokCdm
                         SqlDataReader reader;
                         Rasio tempSislokAtm = new Rasio();
-                        String cText = "SELECT ISNULL(AVG(CAST(sislokAtm100 AS FLOAT)/NULLIF(isiAtm100,0)),0), ISNULL(AVG(CAST(sislokAtm50 AS FLOAT)/NULLIF(isiAtm50,0)),0), ISNULL(AVG(CAST(sislokAtm20 AS FLOAT)/NULLIF(isiAtm20,0)),0) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' AND DATENAME(WEEKDAY, TA.Tanggal) = '" + tempDate.DayOfWeek.ToString() + "'";
+                        String cText = "SELECT AVG(CAST(sislokAtm100 AS FLOAT)/NULLIF(isiAtm100,0)), AVG(CAST(sislokAtm50 AS FLOAT)/NULLIF(isiAtm50,0)), AVG(CAST(sislokAtm20 AS FLOAT)/NULLIF(isiAtm20,0)) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' AND DATENAME(WEEKDAY, TA.Tanggal) = '" + tempDate.DayOfWeek.ToString() + "'";
                         int count = 0;
                         for (int i = 0; i < treeView1.Nodes.Count; i++)
                         {
@@ -1351,38 +1421,33 @@ namespace testProjectBCA
                             {
                                 if (treeView1.Nodes[i].Nodes[j].Checked)
                                 {
-                                    //MessageBox.Show("A");
+                                    //;
                                     //Kalo cari minggu (DATEPART(WEEK, tanggal) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM, 0, tanggal), 0)) + 1 ) = (minggu keberapa)
                                     if (count++ == 0)
-                                        cText += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                        cText += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "') AND [event] = (SELECT [event] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
                                     else
-                                        cText += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                        cText += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "') AND [event] = (SELECT [event] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
                                 }
                             }
                         }
                         cText += ")";
                         cmd.CommandText = cText;
                         reader = cmd.ExecuteReader();
+                        bool event1 = true;
                         if (reader.Read())
                         {//Console.WriteLine(reader[2]);
-                            if (reader[0] != null)
+                            if (String.IsNullOrEmpty(reader[0].ToString()) || String.IsNullOrEmpty(reader[1].ToString()) || String.IsNullOrEmpty(reader[2].ToString()))
+                                event1 = false;
+                            else
+                            {
                                 tempSislokAtm.d100 = Convert.ToDouble(reader[0].ToString());
-                            else
-                                tempSislokAtm.d100 = 0;
-
-                            if (reader[1] != null)
                                 tempSislokAtm.d50 = Convert.ToDouble(reader[1].ToString());
-                            else
-                                tempSislokAtm.d50 = 0;
-
-                            if (reader[2].ToString() != "")
                                 tempSislokAtm.d20 = Convert.ToDouble(reader[2].ToString());
-                            else
-                                tempSislokAtm.d20 = 0;
-                            tempSislokAtm.tgl = tempDate;
+                                tempSislokAtm.tgl = tempDate;
+                            }
                             reader.Close();
                         }
-                        else
+                        if(!event1)
                         {
                             reader.Close();
                             //SislokCdm
@@ -1394,12 +1459,12 @@ namespace testProjectBCA
                                 {
                                     if (treeView1.Nodes[i].Nodes[j].Checked)
                                     {
-                                        //MessageBox.Show("A");
+                                        //;
                                         //Kalo cari minggu (DATEPART(WEEK, tanggal) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM, 0, tanggal), 0)) + 1 ) = (minggu keberapa)
                                         if (count++ == 0)
-                                            cText += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                            cText += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "') AND [event] = (SELECT [event] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
                                         else
-                                            cText += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                            cText += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "') AND [event] = (SELECT [event] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
                                     }
                                 }
                             }
@@ -1477,12 +1542,12 @@ namespace testProjectBCA
                             {
                                 if (treeView1.Nodes[i].Nodes[j].Checked)
                                 {
-                                    //MessageBox.Show("A");
+                                    //;
                                     //Kalo cari minggu (DATEPART(WEEK, tanggal) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM, 0, tanggal), 0)) + 1 ) = (minggu keberapa)
                                     if (count++ == 0)
-                                        kondisi += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                        kondisi += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "') AND [event] = (SELECT [event] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
                                     else
-                                        kondisi += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                        kondisi += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "') AND [event] = (SELECT [event] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
                                 }
                             }
                         }
@@ -1493,21 +1558,28 @@ namespace testProjectBCA
                         subqueryTblAverage += ") avt";
 
                         String query = "SELECT "
-                                    + "[AverageStdDeviasi100] = ISNULL(AVG(CAST((CAST(sislokAtm100 AS FLOAT)/NULLIF(isiAtm100,0) - [Average100]) AS FLOAT) / (CASE WHEN [Average100] = 0 THEN 1 ELSE [Average100] END)),0), "
-                                    + "[AverageStdDeviasi50] = ISNULL(AVG(CAST((CAST(sislokAtm50 AS FLOAT)/NULLIF(isiAtm50,0) - [Average50])AS FLOAT) / (CASE WHEN [Average50] = 0 THEN 1 ELSE [Average50] END)),0), "
-                                    + "[AverageStdDeviasi20] = ISNULL(AVG(CAST((CAST(sislokAtm20 AS FLOAT)/NULLIF(isiAtm20,0) - [Average20])AS FLOAT) / (CASE WHEN [Average20] = 0 THEN 1 ELSE [Average20] END)),0) "
+                                    + "[AverageStdDeviasi100] = AVG(CAST((CAST(sislokAtm100 AS FLOAT)/NULLIF(isiAtm100,0) - [Average100]) AS FLOAT) / (CASE WHEN [Average100] = 0 THEN 1 ELSE [Average100] END)), "
+                                    + "[AverageStdDeviasi50] = AVG(CAST((CAST(sislokAtm50 AS FLOAT)/NULLIF(isiAtm50,0) - [Average50])AS FLOAT) / (CASE WHEN [Average50] = 0 THEN 1 ELSE [Average50] END)), "
+                                    + "[AverageStdDeviasi20] = AVG(CAST((CAST(sislokAtm20 AS FLOAT)/NULLIF(isiAtm20,0) - [Average20])AS FLOAT) / (CASE WHEN [Average20] = 0 THEN 1 ELSE [Average20] END)) "
                                     + "FROM TransaksiAtms TA JOIN EventTanggal ET ON Ta.tanggal = ET.tanggal, " + subqueryTblAverage + kondisi;
 
                         cmd.CommandText = query;
                         reader = cmd.ExecuteReader();
+                        bool event1 = true;
                         if (reader.Read())
                         {
-                            tempStdDeviasi.d100 = (Double)reader[0];
-                            tempStdDeviasi.d50 = (Double)reader[1];
-                            tempStdDeviasi.d20 = (Double)reader[2];
-                            tempStdDeviasi.tgl = tempDate;
+                            if (String.IsNullOrEmpty(reader[0].ToString()) || String.IsNullOrEmpty(reader[1].ToString()) || String.IsNullOrEmpty(reader[2].ToString()))
+                                event1 = false;
+                            else
+                            {
+                                tempStdDeviasi.d100 = (Double)reader[0];
+                                tempStdDeviasi.d50 = (Double)reader[1];
+                                tempStdDeviasi.d20 = (Double)reader[2];
+                                tempStdDeviasi.tgl = tempDate;
+                            }
                             reader.Close();
-                        }else
+                        }
+                        if(!event1)
                         {
                             reader.Close();
                             kondisi = " WHERE kodePkt = '" + KodePkt[pktIndex] + "' ";
@@ -1519,12 +1591,12 @@ namespace testProjectBCA
                                 {
                                     if (treeView1.Nodes[i].Nodes[j].Checked)
                                     {
-                                        //MessageBox.Show("A");
+                                        //;
                                         //Kalo cari minggu (DATEPART(WEEK, tanggal) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM, 0, tanggal), 0)) + 1 ) = (minggu keberapa)
                                         if (count++ == 0)
-                                            kondisi += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                            kondisi += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "') AND [event] = (SELECT [event] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
                                         else
-                                            kondisi += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                            kondisi += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "') AND [event] = (SELECT [event] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
                                     }
                                 }
                             }
@@ -2294,48 +2366,52 @@ namespace testProjectBCA
         }
         void loadTableBon()
         {
-            bonGridView.Columns.Clear();
-            bonGridView.Rows.Clear();
-            //Show(rekomendasiBon.Count.ToString());
-            bonGridView.Columns.Add("Tanggal", "Tanggal");
-            bonGridView.Columns.Add("100", "100");
-            bonGridView.Columns.Add("50", "50");
-            bonGridView.Columns.Add("20", "20");
-            bonGridView.Columns["Tanggal"].ReadOnly = true;
-            //for (int i = 1; i < 4; i++)
-            //{
-            //    bonGridView.Columns[i].DefaultCellStyle.Format = "c";
-            //    bonGridView.Columns[i].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
-            //}
-            DateTime tempDate = tanggalOptiMin.AddDays(1+jumlahBonLaporan-1);
-            while (tempDate <= tanggalOptiMax.AddDays(-1))
+            if (firstRun)
             {
-                DataGridViewRow row = new DataGridViewRow();
+                bonGridView.Columns.Clear();
+                bonGridView.Rows.Clear();
+                //Show(rekomendasiBon.Count.ToString());
+                bonGridView.Columns.Add("Tanggal", "Tanggal");
+                bonGridView.Columns.Add("100", "100");
+                bonGridView.Columns.Add("50", "50");
+                bonGridView.Columns.Add("20", "20");
+                bonGridView.Columns["Tanggal"].ReadOnly = true;
+                //for (int i = 1; i < 4; i++)
+                //{
+                //    bonGridView.Columns[i].DefaultCellStyle.Format = "c";
+                //    bonGridView.Columns[i].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
+                //}
+                DateTime tempDate = tanggalOptiMin.AddDays(1 + jumlahBonLaporan - 1);
+                while (tempDate <= tanggalOptiMax.AddDays(-1))
+                {
+                    DataGridViewRow row = new DataGridViewRow();
 
-                DataGridViewTextBoxCell cell = new DataGridViewTextBoxCell();
-                cell.Value = tempDate.ToShortDateString();
-                row.Cells.Add(cell);
-                cell = new DataGridViewTextBoxCell();
-                cell.Value = "0";
-                row.Cells.Add(cell);
-                cell = new DataGridViewTextBoxCell();
-                cell.Value = "0";
-                row.Cells.Add(cell);
-                cell = new DataGridViewTextBoxCell();
-                cell.Value = "0";
-                row.Cells.Add(cell);
-                bonGridView.Rows.Add(row);
-                tempDate = tempDate.AddDays(1);
+                    DataGridViewTextBoxCell cell = new DataGridViewTextBoxCell();
+                    cell.Value = tempDate.ToShortDateString();
+                    row.Cells.Add(cell);
+                    cell = new DataGridViewTextBoxCell();
+                    cell.Value = "0";
+                    row.Cells.Add(cell);
+                    cell = new DataGridViewTextBoxCell();
+                    cell.Value = "0";
+                    row.Cells.Add(cell);
+                    cell = new DataGridViewTextBoxCell();
+                    cell.Value = "0";
+                    row.Cells.Add(cell);
+                    bonGridView.Rows.Add(row);
+                    tempDate = tempDate.AddDays(1);
+                }
+                bonGridView.Columns["100"].DefaultCellStyle.Format = "c";
+                bonGridView.Columns["100"].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
+                bonGridView.Columns["100"].DefaultCellStyle.NullValue = 0;
+                bonGridView.Columns["50"].DefaultCellStyle.Format = "c";
+                bonGridView.Columns["50"].DefaultCellStyle.NullValue = 0;
+                bonGridView.Columns["50"].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
+                bonGridView.Columns["20"].DefaultCellStyle.Format = "c";
+                bonGridView.Columns["20"].DefaultCellStyle.NullValue = 0;
+                bonGridView.Columns["20"].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
+                firstRun = false;
             }
-            bonGridView.Columns["100"].DefaultCellStyle.Format = "c";
-            bonGridView.Columns["100"].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
-            bonGridView.Columns["100"].DefaultCellStyle.NullValue = 0;
-            bonGridView.Columns["50"].DefaultCellStyle.Format = "c";
-            bonGridView.Columns["50"].DefaultCellStyle.NullValue = 0;
-            bonGridView.Columns["50"].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
-            bonGridView.Columns["20"].DefaultCellStyle.Format = "c";
-            bonGridView.Columns["20"].DefaultCellStyle.NullValue = 0;
-            bonGridView.Columns["20"].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
         }
         //Sekalian load saldoAwal untuk setiap hari
         void loadRasio()
@@ -2817,21 +2893,14 @@ namespace testProjectBCA
 
                 }
                 loadSislokCdm();
-             
-                    
                 loadRasioSislokAtm();
                 loadRasioSislokAtmDenganStdDeviasi();
-
                 loadSaldoAwal();
                 loadBon();
                 loadTablePermintaanBon();
-
                 loadIsiCrm();
-
                 loadSislokCrm();
-                   
                 loadSetor();
-
                 //Hitungan dengan metode kedua
                 if(MetodeHitungLainnyaComboBox.SelectedIndex == 1)
                 {
@@ -2870,7 +2939,16 @@ namespace testProjectBCA
                         rasioSislokAtm[a].d20 = (rasioSislokAtm[a].d20 + rasioSislokATMDenganStdDeviasi[a].d20) / 2;
                     }
                 }
-                //Console.WriteLine(sislokCrm[0].d100);
+
+                //BUFFER ISI ATM
+                Double bufferIsiATM100 = (Double)bufferIsiAtm100Num.Value / 100;
+                Double bufferIsiATM50 = (Double)bufferIsiAtm50Num.Value / 100;
+                foreach (var temp in prediksiIsiAtm)
+                {
+                    temp.d100 = (Int64)(temp.d100 * (1 + bufferIsiATM100));
+                    temp.d50 = (Int64)(temp.d50 * (1 + bufferIsiATM50));
+                }
+
                 if (e2eComboBox.SelectedIndex == 1)
                     loadRekomendasiBonNonE2E();
                 else
@@ -2932,7 +3010,7 @@ namespace testProjectBCA
                 var lastApproval = (from x in db.Approvals select x).ToList();
                 DateTime tempTanggal = tanggalOptiMin;
                 int count = 0;
-
+                int jumlahbon = 0;
                 for (int i=0;i<bon.Count;i++)
                 {
                     DetailApproval newDetailA = new DetailApproval();
@@ -2970,9 +3048,9 @@ namespace testProjectBCA
                     newDetailA.sislokCRM100 = sislokCrm[i].d100;
                     newDetailA.sislokCRM50 = sislokCrm[i].d50;
                     newDetailA.sislokCRM20 = sislokCrm[i].d20;
-                    newDetailA.sislokCDM100 = sislokCrm[i].d100;
-                    newDetailA.sislokCDM50 = sislokCrm[i].d50;
-                    newDetailA.sislokCDM20 = sislokCrm[i].d20;
+                    newDetailA.sislokCDM100 = sislokCdm[i].d100;
+                    newDetailA.sislokCDM50 = sislokCdm[i].d50;
+                    newDetailA.sislokCDM20 = sislokCdm[i].d20;
                     newDetailA.sislokATM100 = (Int64)(rasioSislokAtm[i].d100 * prediksiIsiAtm[i].d100);
                     newDetailA.sislokATM50 = (Int64)(rasioSislokAtm[i].d50 * prediksiIsiAtm[i].d50);
                     newDetailA.sislokATM20 = (Int64)(rasioSislokAtm[i].d20 * prediksiIsiAtm[i].d20);
@@ -2990,6 +3068,7 @@ namespace testProjectBCA
                     db.DetailApprovals.Add(newDetailA);
                     db.SaveChanges();
                     count++;
+                    jumlahbon++;
                 }
 
                 for (int i=0;i<bonYangDisetujui.Count ;i++)
@@ -3020,17 +3099,17 @@ namespace testProjectBCA
                     }
 
                     //Saldo awal
-                    newDetailA.saldoAwal100 = saldo[i].d100;
-                    newDetailA.saldoAwal50 = saldo[i].d50;
-                    newDetailA.saldoAwal20 = saldo[i].d20;
+                    newDetailA.saldoAwal100 = saldo[jumlahbon + i].d100;
+                    newDetailA.saldoAwal50 = saldo[jumlahbon + i].d50;
+                    newDetailA.saldoAwal20 = saldo[jumlahbon + i].d20;
 
                     //Sislok
                     newDetailA.sislokCRM100 = sislokCrm[count].d100;
                     newDetailA.sislokCRM50 = sislokCrm[count].d50;
                     newDetailA.sislokCRM20 = sislokCrm[count].d20;
-                    newDetailA.sislokCDM100 = sislokCrm[count].d100;
-                    newDetailA.sislokCDM50 = sislokCrm[count].d50;
-                    newDetailA.sislokCDM20 = sislokCrm[count].d20;
+                    newDetailA.sislokCDM100 = sislokCdm[count].d100;
+                    newDetailA.sislokCDM50 = sislokCdm[count].d50;
+                    newDetailA.sislokCDM20 = sislokCdm[count].d20;
                     newDetailA.sislokATM100 =(Int64)(rasioSislokAtm[count].d100 * prediksiIsiAtm[count].d100);
                     newDetailA.sislokATM50 = (Int64)(rasioSislokAtm[count].d50 * prediksiIsiAtm[count].d50);
                     newDetailA.sislokATM20 = (Int64)(rasioSislokAtm[count].d20 * prediksiIsiAtm[count].d20);
@@ -3061,9 +3140,9 @@ namespace testProjectBCA
                 setor50Txt.Text = "";
                 setor20Txt.Text = "";
 
-                setorAdhoc100Txt.Text = "";
-                setorAdhoc50Txt.Text = "";
-                setorAdhoc20Txt.Text = "";
+                setorAdhoc100Txt.Value = 0;
+                setorAdhoc50Txt.Value = 0;
+                setorAdhoc20Txt.Value = 0;
 
 
                 cleanGridViews();
@@ -3085,48 +3164,27 @@ namespace testProjectBCA
             rekomendasiBonGridView.Rows.Clear();
 
 
-            foreach (DataGridViewRow row in bonYangSudahDisetujuiGridView.Rows)
-                bonYangSudahDisetujuiGridView.DataSource = null;
-            foreach (DataGridViewRow row in totalSislokGridView.Rows)
-                totalSislokGridView.DataSource = null;
-            foreach (DataGridViewRow row in totalIsiGridView.Rows)
-                totalIsiGridView.DataSource = null;
-            foreach (DataGridViewRow row in saldoGridView.Rows)
-                saldoGridView.DataSource = null;
+            bonYangSudahDisetujuiGridView.DataSource = null;
+            totalSislokGridView.DataSource = null;
+            totalIsiGridView.DataSource = null;
+            saldoGridView.DataSource = null;
+            permintaanAdhocGridView.DataSource = null;
         }
         Denom loadBonAdhocFromTxt()
         {
             Denom bonAdhoc = new Denom();
-            if (bonAdhoc100Txt.Text.ToString().Trim() == "")
-                bonAdhoc.d100 = 0;
-            else
-                bonAdhoc.d100 = Int64.Parse(bonAdhoc100Txt.Text);
-            if (bonAdhoc50Txt.Text.ToString().Trim() == "")
-                bonAdhoc.d50 = 0;
-            else
-                bonAdhoc.d50 = Int64.Parse(bonAdhoc50Txt.Text);
-            if (bonAdhoc20Txt.Text.ToString().Trim() == "")
-                bonAdhoc.d20 = 0;
-            else
-                bonAdhoc.d20 = Int64.Parse(bonAdhoc20Txt.Text);
+            bonAdhoc.d100 = (Int64)bonAdhoc100Txt.Value;
+            bonAdhoc.d50 = (Int64)bonAdhoc50Txt.Value;
+            bonAdhoc.d20 = (Int64)bonAdhoc20Txt.Value;
             return bonAdhoc;
         }
         private Denom loadSetorAdhocFromTxt()
         {
             Denom setorAdhoc = new Denom();
             //Setor Adhoc
-            if (setorAdhoc100Txt.Text.ToString().Trim() == "")
-                setorAdhoc.d100 = 0;
-            else
-                setorAdhoc.d100 = Int64.Parse(setorAdhoc100Txt.Text);
-            if (setorAdhoc50Txt.Text.ToString().Trim() == "")
-                setorAdhoc.d50 = 0;
-            else
-                setorAdhoc.d50 = Int64.Parse(setorAdhoc50Txt.Text);
-            if (setorAdhoc20Txt.Text.ToString().Trim() == "")
-                setorAdhoc.d20 = 0;
-            else
-                setorAdhoc.d20 = Int64.Parse(setorAdhoc20Txt.Text);
+            setorAdhoc.d100 = (Int64)setorAdhoc100Txt.Value;
+            setorAdhoc.d50 = (Int64)setorAdhoc50Txt.Value;
+            setorAdhoc.d20 = (Int64)setorAdhoc20Txt.Value;
             return setorAdhoc;
         }
         private Denom loadSetorFromTxt()
@@ -3134,18 +3192,9 @@ namespace testProjectBCA
             Denom setorBaru = new Denom();
             //Setor
             setorBaru.tgl = tglSetor.Value;
-            if (setor100Txt.Text.ToString().Trim() == "")
-                setorBaru.d100 = 0;
-            else
-                setorBaru.d100 = Int64.Parse(setor100Txt.Text);
-            if (setor50Txt.Text.ToString().Trim() == "")
-                setorBaru.d50 = 0;
-            else
-                setorBaru.d50 = Int64.Parse(setor50Txt.Text);
-            if (setor20Txt.Text.ToString().Trim() == "")
-                setorBaru.d20 = 0;
-            else
-                setorBaru.d20 = Int64.Parse(setor20Txt.Text);
+            setorBaru.d100 = (Int64)setor100Txt.Value;
+            setorBaru.d50 = (Int64)setor50Txt.Value;
+            setorBaru.d20 = (Int64)setor20Txt.Value;
             return setorBaru;
         }
         private List<Denom> loadBonYangDisetujuiFromTable()
@@ -3179,10 +3228,6 @@ namespace testProjectBCA
             loadRasio();
             loadTableRasio();
             loadTableSaldo();
-        }
-        private void Txt_TextChanged(object sender, EventArgs e)
-        {
-            
         }
         private void tglSetor_ValueChanged(object sender, EventArgs e)
         {
@@ -3231,6 +3276,7 @@ namespace testProjectBCA
                 else
                     loadMonthNodes(year, false);
             }
+            firstRun = true;
         }
         void loadMonthNodes(int year, bool first)
         {
@@ -3365,65 +3411,14 @@ namespace testProjectBCA
         {
             int idx = KodePkt.IndexOf(pktComboBox.SelectedValue.ToString());
             pktIndex = idx;
+            firstRun = true;
         }
 
-        private void setorAdhoc100Txt_Leave(object sender, EventArgs e)
+        private void Txt_ValueChanged(object sender, EventArgs e)
         {
-            Int64 buf;
-            if (Int64.TryParse(bonAdhoc100Txt.Text, out buf))
-            {
-                loadRasio();
-                loadTableRasio();
-                loadTableSaldo();
-            }
-            if (Int64.TryParse(bonAdhoc50Txt.Text, out buf))
-            {
-                loadRasio();
-                loadTableRasio();
-                loadTableSaldo();
-            }
-            if (Int64.TryParse(bonAdhoc20Txt.Text, out buf))
-            {
-                loadRasio();
-                loadTableRasio();
-                loadTableSaldo();
-            }
-            if (Int64.TryParse(setorAdhoc100Txt.Text, out buf))
-            {
-                loadRasio();
-                loadTableRasio();
-                loadTableSaldo();
-            }
-            if (Int64.TryParse(setorAdhoc50Txt.Text, out buf))
-            {
-                loadRasio();
-                loadTableRasio();
-                loadTableSaldo();
-            }
-            if (Int64.TryParse(setorAdhoc20Txt.Text, out buf))
-            {
-                loadRasio();
-                loadTableRasio();
-                loadTableSaldo();
-            }
-            if (Int64.TryParse(setor20Txt.Text, out buf))
-            {
-                loadRasio();
-                loadTableRasio();
-                loadTableSaldo();
-            }
-            if (Int64.TryParse(setor50Txt.Text, out buf))
-            {
-                loadRasio();
-                loadTableRasio();
-                loadTableSaldo();
-            }
-            if (Int64.TryParse(setor100Txt.Text, out buf))
-            {
-                loadRasio();
-                loadTableRasio();
-                loadTableSaldo();
-            }
+            loadRasio();
+            loadTableRasio();
+            loadTableSaldo();
         }
 
         private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
@@ -3445,7 +3440,7 @@ namespace testProjectBCA
         }
     }
 }
-class Denom
+public class Denom
 {
     public Denom()
     {
@@ -3459,7 +3454,7 @@ class Denom
     public Int64 d50 { set; get; }
     public Int64 d20 { set; get; }
 }
-class Rasio
+public class Rasio
 {
     public DateTime tgl { set; get; }
     public Double d100 { set; get; }

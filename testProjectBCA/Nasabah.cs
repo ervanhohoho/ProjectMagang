@@ -28,5 +28,6 @@ namespace testProjectBCA
         public string subsidi { get; set; }
         public Nullable<double> persentaseSubsidi { get; set; }
         public Nullable<int> kuota { get; set; }
+        public string subsidiCabang { get; set; }
     }
 }

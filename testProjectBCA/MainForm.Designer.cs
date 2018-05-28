@@ -38,6 +38,7 @@
             this.dataDenomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inputOptiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.informationBoardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.revisiInformationBoardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rekapApprovalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rekapApprovalToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.initTransaksiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -55,8 +56,9 @@
             this.inputDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hargaRingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.masterNasabahToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.abacasToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.inputDataSubsidiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.abacasToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.inputTukaranDanDeliveryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.invoiceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dashboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dashboardCOJToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -64,7 +66,7 @@
             this.inputDataKalenderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadMasterPKTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.orderTrackingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.revisiInformationBoardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.forecastATMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -94,7 +96,8 @@
             this.revisiInformationBoardToolStripMenuItem,
             this.rekapApprovalToolStripMenuItem,
             this.rekapApprovalToolStripMenuItem1,
-            this.initTransaksiToolStripMenuItem});
+            this.initTransaksiToolStripMenuItem,
+            this.forecastATMToolStripMenuItem});
             this.aTMToolStripMenuItem.Name = "aTMToolStripMenuItem";
             this.aTMToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.aTMToolStripMenuItem.Text = "ATM";
@@ -158,6 +161,13 @@
             this.informationBoardToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
             this.informationBoardToolStripMenuItem.Text = "Information Board";
             this.informationBoardToolStripMenuItem.Click += new System.EventHandler(this.informationBoardToolStripMenuItem_Click);
+            // 
+            // revisiInformationBoardToolStripMenuItem
+            // 
+            this.revisiInformationBoardToolStripMenuItem.Name = "revisiInformationBoardToolStripMenuItem";
+            this.revisiInformationBoardToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.revisiInformationBoardToolStripMenuItem.Text = "Revisi Information Board";
+            this.revisiInformationBoardToolStripMenuItem.Click += new System.EventHandler(this.revisiInformationBoardToolStripMenuItem_Click);
             // 
             // rekapApprovalToolStripMenuItem
             // 
@@ -267,14 +277,16 @@
             this.nasabahToolStripMenuItem.Name = "nasabahToolStripMenuItem";
             this.nasabahToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
             this.nasabahToolStripMenuItem.Text = "Nasabah";
+            this.nasabahToolStripMenuItem.Click += new System.EventHandler(this.nasabahToolStripMenuItem_Click);
             // 
             // inputDataToolStripMenuItem
             // 
             this.inputDataToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.hargaRingToolStripMenuItem,
             this.masterNasabahToolStripMenuItem,
+            this.inputDataSubsidiToolStripMenuItem,
             this.abacasToolStripMenuItem1,
-            this.inputDataSubsidiToolStripMenuItem});
+            this.inputTukaranDanDeliveryToolStripMenuItem});
             this.inputDataToolStripMenuItem.Name = "inputDataToolStripMenuItem";
             this.inputDataToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.inputDataToolStripMenuItem.Text = "Input Data";
@@ -282,30 +294,37 @@
             // hargaRingToolStripMenuItem
             // 
             this.hargaRingToolStripMenuItem.Name = "hargaRingToolStripMenuItem";
-            this.hargaRingToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.hargaRingToolStripMenuItem.Size = new System.Drawing.Size(216, 22);
             this.hargaRingToolStripMenuItem.Text = "Harga Layanan";
             this.hargaRingToolStripMenuItem.Click += new System.EventHandler(this.hargaRingToolStripMenuItem_Click);
             // 
             // masterNasabahToolStripMenuItem
             // 
             this.masterNasabahToolStripMenuItem.Name = "masterNasabahToolStripMenuItem";
-            this.masterNasabahToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.masterNasabahToolStripMenuItem.Size = new System.Drawing.Size(216, 22);
             this.masterNasabahToolStripMenuItem.Text = "Master Nasabah";
             this.masterNasabahToolStripMenuItem.Click += new System.EventHandler(this.masterNasabahToolStripMenuItem_Click);
-            // 
-            // abacasToolStripMenuItem1
-            // 
-            this.abacasToolStripMenuItem1.Name = "abacasToolStripMenuItem1";
-            this.abacasToolStripMenuItem1.Size = new System.Drawing.Size(168, 22);
-            this.abacasToolStripMenuItem1.Text = "Abacas";
-            this.abacasToolStripMenuItem1.Click += new System.EventHandler(this.abacasToolStripMenuItem_Click);
             // 
             // inputDataSubsidiToolStripMenuItem
             // 
             this.inputDataSubsidiToolStripMenuItem.Name = "inputDataSubsidiToolStripMenuItem";
-            this.inputDataSubsidiToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.inputDataSubsidiToolStripMenuItem.Size = new System.Drawing.Size(216, 22);
             this.inputDataSubsidiToolStripMenuItem.Text = "Input data subsidi";
             this.inputDataSubsidiToolStripMenuItem.Click += new System.EventHandler(this.inputDataSubsidiToolStripMenuItem_Click);
+            // 
+            // abacasToolStripMenuItem1
+            // 
+            this.abacasToolStripMenuItem1.Name = "abacasToolStripMenuItem1";
+            this.abacasToolStripMenuItem1.Size = new System.Drawing.Size(216, 22);
+            this.abacasToolStripMenuItem1.Text = "Abacas";
+            this.abacasToolStripMenuItem1.Click += new System.EventHandler(this.abacasToolStripMenuItem_Click);
+            // 
+            // inputTukaranDanDeliveryToolStripMenuItem
+            // 
+            this.inputTukaranDanDeliveryToolStripMenuItem.Name = "inputTukaranDanDeliveryToolStripMenuItem";
+            this.inputTukaranDanDeliveryToolStripMenuItem.Size = new System.Drawing.Size(216, 22);
+            this.inputTukaranDanDeliveryToolStripMenuItem.Text = "Input Tukaran dan Delivery";
+            this.inputTukaranDanDeliveryToolStripMenuItem.Click += new System.EventHandler(this.inputTukaranDanDeliveryToolStripMenuItem_Click);
             // 
             // invoiceToolStripMenuItem
             // 
@@ -359,12 +378,12 @@
             this.orderTrackingToolStripMenuItem.Text = "Order Tracking";
             this.orderTrackingToolStripMenuItem.Click += new System.EventHandler(this.orderTrackingToolStripMenuItem_Click);
             // 
-            // revisiInformationBoardToolStripMenuItem
+            // forecastATMToolStripMenuItem
             // 
-            this.revisiInformationBoardToolStripMenuItem.Name = "revisiInformationBoardToolStripMenuItem";
-            this.revisiInformationBoardToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
-            this.revisiInformationBoardToolStripMenuItem.Text = "Revisi Information Board";
-            this.revisiInformationBoardToolStripMenuItem.Click += new System.EventHandler(this.revisiInformationBoardToolStripMenuItem_Click);
+            this.forecastATMToolStripMenuItem.Name = "forecastATMToolStripMenuItem";
+            this.forecastATMToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.forecastATMToolStripMenuItem.Text = "Forecast ATM";
+            this.forecastATMToolStripMenuItem.Click += new System.EventHandler(this.forecastATMToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -423,5 +442,7 @@
         private System.Windows.Forms.ToolStripMenuItem dashboardCOJToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem inputDataSubsidiToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem revisiInformationBoardToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem inputTukaranDanDeliveryToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem forecastATMToolStripMenuItem;
     }
 }

@@ -193,6 +193,12 @@
     <Compile Include="dasbor.designer.cs">
       <DependentUpon>dasbor.cs</DependentUpon>
     </Compile>
+    <Compile Include="dasborExtension.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="dasborExtension.designer.cs">
+      <DependentUpon>dasborExtension.cs</DependentUpon>
+    </Compile>
     <Compile Include="DashboardCOJForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -205,20 +211,32 @@
     <Compile Include="EventTanggal.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="ForecastAtmForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ForecastAtmForm.Designer.cs">
+      <DependentUpon>ForecastAtmForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ForecastDetail.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="ForecastHeader.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
     <Compile Include="HargaLayanan.cs">
       <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="InputDataTukaranDanDeliveryForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InputDataTukaranDanDeliveryForm.Designer.cs">
+      <DependentUpon>InputDataTukaranDanDeliveryForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InputOrderTrackingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InputOrderTrackingForm.designer.cs">
+      <DependentUpon>InputOrderTrackingForm.cs</DependentUpon>
     </Compile>
     <Compile Include="RevisiInformationBoard.cs">
       <SubType>Form</SubType>
@@ -267,12 +285,6 @@
     </Compile>
     <Compile Include="InputMasterNasabahForm.Designer.cs">
       <DependentUpon>InputMasterNasabahForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="InputOrderTrackingForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="InputOrderTrackingForm.designer.cs">
-      <DependentUpon>InputOrderTrackingForm.cs</DependentUpon>
     </Compile>
     <Compile Include="InputTransaksiCabangForm.cs">
       <SubType>Form</SubType>
@@ -402,11 +414,20 @@
     <EmbeddedResource Include="dasbor.resx">
       <DependentUpon>dasbor.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="dasborExtension.resx">
+      <DependentUpon>dasborExtension.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DashboardCOJForm.resx">
       <DependentUpon>DashboardCOJForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="ForecastAtmForm.resx">
+      <DependentUpon>ForecastAtmForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InputDataTukaranDanDeliveryForm.resx">
+      <DependentUpon>InputDataTukaranDanDeliveryForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InputOrderTrackingForm.resx">
+      <DependentUpon>InputOrderTrackingForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="RevisiInformationBoard.resx">
       <DependentUpon>RevisiInformationBoard.cs</DependentUpon>
@@ -431,9 +452,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="InputMasterNasabahForm.resx">
       <DependentUpon>InputMasterNasabahForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="InputOrderTrackingForm.resx">
-      <DependentUpon>InputOrderTrackingForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InputTransaksiCabangForm.resx">
       <DependentUpon>InputTransaksiCabangForm.cs</DependentUpon>

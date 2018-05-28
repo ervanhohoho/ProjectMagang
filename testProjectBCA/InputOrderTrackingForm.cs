@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -31,7 +32,7 @@ namespace testProjectBCA
                 DataSet ds = Util.openExcel(filename);
                 DataTable dt = ds.Tables[0];
                 Console.WriteLine(ds.Tables.Count);
-                dataGridView1.DataSource = dt;
+               
 
                 var query = (from x in en.OrderTrackings
                              where x.tanggal == dateTimePicker1.Value.Date
@@ -109,7 +110,7 @@ namespace testProjectBCA
                 String filename = of.FileName;
                 DataSet ds = Util.openExcel(filename);
                 DataTable dt = ds.Tables[0];
-                dataGridView1.DataSource = dt;
+         
 
                 var query = (from x in en.RekapSelisihAmbilSetors
                             where x.tanggalTransaksi == dateTimePicker1.Value.Date
@@ -231,6 +232,90 @@ namespace testProjectBCA
                 }
                 en.SaveChanges();
             }
+        }
+
+        private void reloadGridView()
+        {
+
+            //List<String> kodePkt = new List<String>();
+            //List<Int64> orderTracking = new List<Int64>();
+            //List<Int64> rekapSelesai = new List<Int64>();
+            //List<Int64> rekapBelumSelesai = new List<Int64>();
+            //List<Int64> totalRekap = new List<Int64>();
+            //List<Int64> dibatalkan = new List<Int64>();
+
+            List<orderTrackingLoad> otl = new List<orderTrackingLoad>();
+
+
+            using (SqlConnection sql = new SqlConnection(Variables.connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = sql;
+                    sql.Open();
+                    cmd.CommandText = "select [kodepkt] =  isnull(kodepkt,kodepenerimadana), "
+                                      +" [kodepenerimadana] = isnull(kodepenerimadana, kodepkt), "
+                                      +" [ordertracking] = isnull(nominalDispute,0), [Selesai], "
+                                      +" [Belum Selesai], "
+                                      +" [total rekap] = [selesai]+ [Belum Selesai],"
+                                      +" [dibatalkan],"
+                                      + " [Keterangan] = case when isnull(nominalDispute,0) = [selesai]+ [Belum Selesai] then 'SAMA' else 'BERBEDA' end"
+                                      + " from"
+                                      +" ("
+                                      +" select kodePkt, nominalDispute = sum(nominalDispute)"
+                                      +" from OrderTracking"
+                                      +" where tanggal = '"+ dateTimePicker1.Value.ToShortDateString() +"'"
+                                      +" group by kodePkt)a right join"
+                                      +" ("
+                                      +" select kodePenerimaDana, [Selesai] = sum(case when lower(keterangan) = 'selesai' then total else 0 end), [Belum Selesai] = sum(case when keterangan = '' then total else 0 end), [dibatalkan] = sum(case when lower(keterangan) = '%batal%' then total else 0 end)"
+                                      +" from RekapSelisihAmbilSetor"
+                                      +" where tanggalTransaksi = '" + dateTimePicker1.Value.ToShortDateString() + "'"
+                                      +" group by kodePenerimaDana)b"
+                                      +" on a.kodePkt = b.kodePenerimaDana";
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        otl.Add(new orderTrackingLoad
+                        {
+                            kodePkt = reader[0].ToString(),
+                            orderTracking = Int64.Parse(reader[2].ToString()),
+                            rekapSelesai = Int64.Parse(reader[3].ToString()),
+                            rekapBelumSelesai= Int64.Parse(reader[4].ToString()),
+                            totalRekap = Int64.Parse(reader[5].ToString()),
+                            dibatalkan = Int64.Parse(reader[6].ToString()),
+                            keterangan = reader[7].ToString()
+
+                        });
+                        //kodePkt.Add(reader[0].ToString());
+                        //orderTracking.Add(Int64.Parse(reader[2].ToString()));
+                        //rekapSelesai.Add(Int64.Parse(reader[3].ToString()));
+                        //rekapBelumSelesai.Add(Int64.Parse(reader[4].ToString()));
+                        //totalRekap.Add(Int64.Parse(reader[5].ToString()));
+                        //dibatalkan.Add(Int64.Parse(reader[6].ToString()));
+                    }
+
+                    dataGridView1.DataSource = otl;
+
+                }
+            }
+        }
+
+        class orderTrackingLoad
+        {
+            public String kodePkt { set; get; }
+            public Int64 orderTracking { set; get; }
+            public Int64 rekapSelesai { set; get; }
+            public Int64 rekapBelumSelesai { set; get; }
+            public Int64 totalRekap { set; get; }
+            public Int64 dibatalkan { set; get; }
+            public String keterangan { set; get; }
+
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            reloadGridView();
         }
     }
 }

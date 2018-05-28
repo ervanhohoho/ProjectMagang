@@ -223,6 +223,7 @@
           <Property Name="subsidi" Type="varchar" MaxLength="50" />
           <Property Name="persentaseSubsidi" Type="float" />
           <Property Name="kuota" Type="int" />
+          <Property Name="subsidiCabang" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Opti">
           <Key>
@@ -298,6 +299,8 @@
           <Property Name="denom" Type="varchar" MaxLength="50" />
           <Property Name="tanggal" Type="date" />
           <Property Name="namaPkt" Type="varchar" MaxLength="50" />
+          <Property Name="inCabang" Type="bigint" />
+          <Property Name="inRetail" Type="bigint" />
         </EntityType>
         <EntityType Name="TransaksiAtms">
           <Key>
@@ -604,6 +607,7 @@
           <Property Name="subsidi" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="persentaseSubsidi" Type="Double" />
           <Property Name="kuota" Type="Int32" />
+          <Property Name="subsidiCabang" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Opti">
           <Key>
@@ -681,6 +685,8 @@
           <Property Name="denom" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="tanggal" Type="DateTime" Precision="0" />
           <Property Name="namaPkt" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="inCabang" Type="Int64" />
+          <Property Name="inRetail" Type="Int64" />
         </EntityType>
         <EntityType Name="TransaksiAtm">
           <Key>
@@ -995,6 +1001,7 @@
           <EntitySetMapping Name="Nasabahs">
             <EntityTypeMapping TypeName="CACModel.Nasabah">
               <MappingFragment StoreEntitySet="Nasabah">
+                <ScalarProperty Name="subsidiCabang" ColumnName="subsidiCabang" />
                 <ScalarProperty Name="kodeNasabah" ColumnName="kodeNasabah" />
                 <ScalarProperty Name="fasilitasLayanan" ColumnName="fasilitasLayanan" />
                 <ScalarProperty Name="metodeLayanan" ColumnName="metodeLayanan" />
@@ -1069,6 +1076,8 @@
           <EntitySetMapping Name="StokPosisis">
             <EntityTypeMapping TypeName="CACModel.StokPosisi">
               <MappingFragment StoreEntitySet="StokPosisi">
+                <ScalarProperty Name="inRetail" ColumnName="inRetail" />
+                <ScalarProperty Name="inCabang" ColumnName="inCabang" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="unprocessed" ColumnName="unprocessed" />
                 <ScalarProperty Name="newBaru" ColumnName="newBaru" />

@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using LiveCharts;
 using LiveCharts.Wpf;
 using System.Data.SqlClient;
+using System.Globalization;
 
 namespace testProjectBCA
 {
@@ -28,6 +29,9 @@ namespace testProjectBCA
             reloadUangBesar();
             reloadUangKecil();
             reloadTop5UangBesar();
+            reloadUangBesarSum();
+            reloadTop5UangKecil();
+            reloadUangKecilSum();
         }
 
         public void reloadTahun()
@@ -705,7 +709,181 @@ namespace testProjectBCA
 
         private void reloadUangBesarSum()
         {
+            Int64 umm = 0;
+            Int64 gress = 0;
 
+            label15.Visible = false;
+            label16.Visible = false;
+
+            using (SqlConnection sql = new SqlConnection(Variables.connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = sql;
+                    sql.Open();
+                    cmd.CommandText = "select [umm] =  sum(unfitBaru + unfitLama + unfitNKRI + RRMBaru + RRMLama + RRMNKRI + RupiahRusakMayor) , [gress] = sum(newBaru + newLama) "
+                                      + " from StokPosisi s join Pkt p on s.namaPkt = p.namaPkt"
+                                      + " where (denom = 100000 or denom = 50000)  and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " ";
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        umm = (Int64.Parse(reader[0].ToString()));
+                        gress = (Int64.Parse(reader[1].ToString()));
+
+                    }
+
+                    if (umm != 0)
+                    {
+                        label15.Visible = true;
+                        label15.Text = umm.ToString("C",CultureInfo.GetCultureInfo("id-ID"));
+                    }
+                    if (gress != 0)
+                    {
+                        label16.Visible = true;
+                        label16.Text = gress.ToString("C", CultureInfo.GetCultureInfo("id-ID"));
+                    }
+
+
+                }
+            }
+        }
+
+
+        public void reloadTop5UangKecil()
+        {
+            List<Int64> gress = new List<Int64>();
+            List<String> kodepkt = new List<String>();
+
+            label26.Visible = false;
+            label25.Visible = false;
+            label24.Visible = false;
+            label23.Visible = false;
+            label22.Visible = false;
+
+            using (SqlConnection sql = new SqlConnection(Variables.connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = sql;
+                    sql.Open();
+                    cmd.CommandText = "select top 5 [total] =  sum(unprocessed) ,kodePkt"
+                                      + " from StokPosisi s join Pkt p on s.namaPkt = p.namaPkt"
+                                      + " where (denom != 100000 or denom != 50000) and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " "
+                                      + " group by kodePkt"
+                                      + " order by [total] desc";
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        kodepkt.Add(reader[1].ToString());
+                        gress.Add(Int64.Parse(reader[0].ToString()));
+                    }
+
+                    List<Label> asd = new List<Label>();
+                    asd.Add(label26);
+                    asd.Add(label25);
+                    asd.Add(label24);
+                    asd.Add(label23);
+                    asd.Add(label22);
+
+                    for (int i = 0; i < kodepkt.Count; i++)
+                    {
+                        asd[i].Visible = true;
+                        asd[i].Text = kodepkt[i];
+                    }
+
+                    //if (kodepkt[0].ToString() == null || kodepkt[0].ToString() == "")
+                    //{
+
+                    //}
+                    //else
+                    //{
+                    //    label3.Visible = true;
+                    //    label3.Text = kodepkt[0];
+
+                    //    if (kodepkt[1].ToString() != null || kodepkt[1].ToString() != "")
+                    //    {
+                    //        label4.Visible = true;
+                    //        label4.Text = kodepkt[1];
+                    //    }
+                    //    if (kodepkt[2].ToString() != null || kodepkt[2].ToString() != "")
+                    //    {
+                    //        label5.Visible = true;
+                    //        label5.Text = kodepkt[2];
+                    //    }
+                    //    if (kodepkt[3].ToString() != null || kodepkt[3].ToString() != "")
+                    //    {
+                    //        label6.Visible = true;
+                    //        label6.Text = kodepkt[3];
+                    //    }
+                    //    if (kodepkt[4].ToString() != null || kodepkt[4].ToString() != "")
+                    //    {
+                    //        label7.Visible = true;
+                    //        label7.Text = kodepkt[4];
+                    //    }
+                    //}
+
+
+
+                    //label3.Text = kodepkt[0];
+                    //label4.Text = kodepkt[1];
+                    //label5.Text = kodepkt[2];
+                    //label6.Text = kodepkt[3];
+                    //label7.Text = kodepkt[4];
+
+                }
+            }
+        }
+
+        private void reloadUangKecilSum()
+        {
+            Int64 umm = 0;
+            Int64 gress = 0;
+            Int64 unproc = 0;
+
+            label30.Visible = false;
+            label33.Visible = false;
+            label29.Visible = false;
+
+            using (SqlConnection sql = new SqlConnection(Variables.connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = sql;
+                    sql.Open();
+                    cmd.CommandText = "select [umm] =  sum(unfitBaru + unfitLama + unfitNKRI + RRMBaru + RRMLama + RRMNKRI + RupiahRusakMayor) , [gress] = sum(newBaru + newLama), [unproc] = sum(unprocessed) "
+                                      + " from StokPosisi s join Pkt p on s.namaPkt = p.namaPkt"
+                                      + " where (denom != 100000 or denom != 50000)  and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " ";
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        umm = (Int64.Parse(reader[0].ToString()));
+                        gress = (Int64.Parse(reader[1].ToString()));
+                        unproc = (Int64.Parse(reader[2].ToString()));
+
+                    }
+
+                    if (umm != 0)
+                    {
+                        label30.Visible = true;
+                        label30.Text = umm.ToString("C", CultureInfo.GetCultureInfo("id-ID"));
+                    }
+                    if (gress != 0)
+                    {
+                        label29.Visible = true;
+                        label29.Text = gress.ToString("C", CultureInfo.GetCultureInfo("id-ID"));
+                    }
+                    if (unproc != 0)
+                    {
+                        label33.Visible = true;
+                        label33.Text = unproc.ToString("C", CultureInfo.GetCultureInfo("id-ID"));
+                    }
+
+
+                }
+            }
         }
 
 
@@ -720,6 +898,9 @@ namespace testProjectBCA
             reloadUangBesar();
             reloadUangKecil();
             reloadTop5UangBesar();
+            reloadUangBesarSum();
+            reloadTop5UangKecil();
+            reloadUangKecilSum();
         }
 
         private void comboBulan_SelectionChangeCommitted(object sender, EventArgs e)
@@ -732,6 +913,9 @@ namespace testProjectBCA
             reloadUangBesar();
             reloadUangKecil();
             reloadTop5UangBesar();
+            reloadUangBesarSum();
+            reloadTop5UangKecil();
+            reloadUangKecilSum();
         }
 
         private void comboTanggal_SelectionChangeCommitted(object sender, EventArgs e)
@@ -743,6 +927,9 @@ namespace testProjectBCA
             reloadUangBesar();
             reloadUangKecil();
             reloadTop5UangBesar();
+            reloadUangBesarSum();
+            reloadTop5UangKecil();
+            reloadUangKecilSum();
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)
@@ -756,6 +943,21 @@ namespace testProjectBCA
         }
 
         private void label11_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void DashboardCOJForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label27_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label28_Click(object sender, EventArgs e)
         {
 
         }

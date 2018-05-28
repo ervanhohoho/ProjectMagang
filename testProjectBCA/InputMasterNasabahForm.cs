@@ -37,11 +37,11 @@ namespace testProjectBCA
                     Console.WriteLine(i);
                     var row = dt.Rows[i];
                     Console.WriteLine(row[0].ToString());
-                    if ((from y in dataYangAda where y.kodeNasabah == row[0].ToString() select y).FirstOrDefault() != null || (from y in listNasabah where y.kodeNasabah == row[0].ToString() select y).FirstOrDefault() != null)
+                    if ((from y in dataYangAda where y.kodeNasabah == row[0].ToString().TrimStart('0') select y).FirstOrDefault() != null || (from y in listNasabah where y.kodeNasabah == row[0].ToString().TrimStart('0') select y).FirstOrDefault() != null)
                     {
-                        Nasabah nasabah = (from x in dataYangAda where x.kodeNasabah == row[0].ToString() select x).FirstOrDefault();
+                        Nasabah nasabah = (from x in dataYangAda where x.kodeNasabah == row[0].ToString().TrimStart('0') select x).FirstOrDefault();
                         if (nasabah == null)
-                            nasabah = (from x in listNasabah where x.kodeNasabah == row[0].ToString() select x).FirstOrDefault();
+                            nasabah = (from x in listNasabah where x.kodeNasabah == row[0].ToString().TrimStart('0') select x).FirstOrDefault();
 
                         //tidak ada segmentasi
                         nasabah.fasilitasLayanan = row[1].ToString();
@@ -53,7 +53,8 @@ namespace testProjectBCA
                         nasabah.namaNasabah = row[9].ToString();
                         nasabah.ring = row[10].ToString();
                         nasabah.segmentasiNasabah = row[11].ToString();
-                        nasabah.sentralisasi = row[12].ToString();
+                        nasabah.sentralisasi= row[12].ToString();
+                        nasabah.subsidiCabang = row[13].ToString();
                     }
                     else
                     {
@@ -77,7 +78,7 @@ namespace testProjectBCA
                         //Yang tidak ada segmentasi
                         listNasabah.Add(new Nasabah()
                         {
-                            kodeNasabah = row[0].ToString(),
+                            kodeNasabah = row[0].ToString().TrimStart('0'),
                             fasilitasLayanan = row[1].ToString(),
                             metodeLayanan = row[2].ToString(),
                             kodeCabang = row[3].ToString(),
@@ -87,8 +88,9 @@ namespace testProjectBCA
                             namaNasabah = row[9].ToString(),
                             ring = row[10].ToString(),
                             segmentasiNasabah = row[11].ToString(),
-                            sentralisasi = row[12].ToString()
-                        });
+                            sentralisasi = row[12].ToString(),
+                            subsidiCabang = row[13].ToString()
+                    });
                     }
                 }
                 foreach (Nasabah temp in listNasabah)
@@ -98,6 +100,19 @@ namespace testProjectBCA
                 }
                 db.Nasabahs.AddRange(listNasabah);
                 db.SaveChanges();
+
+                //Bersihin N/A
+                var q = (from x in db.Nasabahs where x.segmentasiNasabah.ToUpper().Contains("N/A") select x).ToList();
+                foreach (var temp in q)
+                    temp.segmentasiNasabah = "";
+                q = (from x in db.Nasabahs where x.sentralisasi.ToUpper().Contains("N/A") select x).ToList();
+                foreach (var temp in q)
+                    temp.sentralisasi = "";
+                q = (from x in db.Nasabahs where x.subsidiCabang.ToUpper().Contains("N/A") select x).ToList();
+                foreach (var temp in q)
+                    temp.subsidiCabang = "";
+                db.SaveChanges();
+
                 loadForm.CloseForm();
             }
         }

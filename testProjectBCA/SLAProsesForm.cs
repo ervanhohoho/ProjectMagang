@@ -35,6 +35,10 @@ namespace testProjectBCA
         }
         void initCombos()
         {
+            comboTahun1.DataSource = null;
+            comboTahun2.DataSource = null;
+            comboBulan1.DataSource = null;
+            comboBulan2.DataSource = null;
             loadComboTahun1();
             loadComboTahun2();
 
@@ -56,12 +60,28 @@ namespace testProjectBCA
             {
                 using (SqlCommand cmd = new SqlCommand())
                 {
+
+                    /***Untuk penghitungan pake dailyStock***/
+                    //cmd.Connection = sql;
+                    //sql.Open();
+                    //if(comboNamaPkt.SelectedIndex<jumlahPkt)
+                    //    cmd.CommandText = "SELECT DISTINCT[Tahun] = YEAR(tanggal) FROM DailyStock ds JOIN Pkt ON ds.kodePkt = Pkt.kodePkt WHERE namaPkt = '"+comboNamaPkt.SelectedValue.ToString()+"' ORDER BY Tahun";
+                    //else
+                    //    cmd.CommandText = "SELECT DISTINCT[Tahun] = YEAR(tanggal) FROM DailyStock ds JOIN Pkt ON ds.kodePkt = Pkt.kodePkt ORDER BY Tahun";
+                    //SqlDataReader reader = cmd.ExecuteReader();
+                    //while (reader.Read())
+                    //{
+                    //    tahun1.Add(reader[0].ToString());
+                    //}
+                    //comboTahun1.DataSource = tahun1;
+
+                    /***Untuk penghitungan pake stokposisi***/
                     cmd.Connection = sql;
                     sql.Open();
-                    if(comboNamaPkt.SelectedIndex<jumlahPkt)
-                        cmd.CommandText = "SELECT DISTINCT[Tahun] = YEAR(tanggal) FROM DailyStock ds JOIN Pkt ON ds.kodePkt = Pkt.kodePkt WHERE namaPkt = '"+comboNamaPkt.SelectedValue.ToString()+"' ORDER BY Tahun";
-                    else
-                        cmd.CommandText = "SELECT DISTINCT[Tahun] = YEAR(tanggal) FROM DailyStock ds JOIN Pkt ON ds.kodePkt = Pkt.kodePkt ORDER BY Tahun";
+                    if (comboNamaPkt.SelectedIndex < jumlahPkt)
+                        cmd.CommandText = "SELECT DISTINCT[Tahun] = YEAR(tanggal) FROM StokPosisi ds WHERE namaPkt LIKE '%" + comboNamaPkt.SelectedValue.ToString() + "%' ORDER BY Tahun";
+                    else                                                               
+                        cmd.CommandText = "SELECT DISTINCT[Tahun] = YEAR(tanggal) FROM StokPosisi ds ORDER BY Tahun";
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
@@ -78,12 +98,27 @@ namespace testProjectBCA
             {
                 using (SqlCommand cmd = new SqlCommand())
                 {
+                    /***Untuk penghitungan pake dailyStock***/
+                    //cmd.Connection = sql;
+                    //sql.Open();
+                    //if (comboNamaPkt.SelectedIndex < jumlahPkt)
+                    //    cmd.CommandText = "SELECT DISTINCT[Tahun] = YEAR(tanggal) FROM DailyStock ds JOIN Pkt ON ds.kodePkt = Pkt.kodePkt WHERE namaPkt LIKE '%" + comboNamaPkt.SelectedValue.ToString() + "%' ORDER BY Tahun";
+                    //else
+                    //    cmd.CommandText = "SELECT DISTINCT[Tahun] = YEAR(tanggal) FROM DailyStock ds JOIN Pkt ON ds.kodePkt = Pkt.kodePkt ORDER BY Tahun";
+                    //SqlDataReader reader = cmd.ExecuteReader();
+                    //while (reader.Read())
+                    //{
+                    //    tahun2.Add(reader[0].ToString());
+                    //}
+                    //comboTahun2.DataSource = tahun2;
+
+                    /***Untuk penghitungan pake stokposisi***/
                     cmd.Connection = sql;
                     sql.Open();
                     if (comboNamaPkt.SelectedIndex < jumlahPkt)
-                        cmd.CommandText = "SELECT DISTINCT[Tahun] = YEAR(tanggal) FROM DailyStock ds JOIN Pkt ON ds.kodePkt = Pkt.kodePkt WHERE namaPkt = '" + comboNamaPkt.SelectedValue.ToString() + "' ORDER BY Tahun";
-                    else
-                        cmd.CommandText = "SELECT DISTINCT[Tahun] = YEAR(tanggal) FROM DailyStock ds JOIN Pkt ON ds.kodePkt = Pkt.kodePkt ORDER BY Tahun";
+                        cmd.CommandText = "SELECT DISTINCT[Tahun] = YEAR(tanggal) FROM StokPosisi ds WHERE namaPkt LIKE '%" + comboNamaPkt.SelectedValue.ToString() + "%' ORDER BY Tahun";
+                    else                                                                             
+                        cmd.CommandText = "SELECT DISTINCT[Tahun] = YEAR(tanggal) FROM StokPosisi ds ORDER BY Tahun";
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
@@ -98,20 +133,42 @@ namespace testProjectBCA
             List<String> bulan1 = new List<String>();
             using (SqlConnection sql = new SqlConnection(Variables.connectionString))
             {
+               
+
+                
                 using (SqlCommand cmd = new SqlCommand())
                 {
+                    /***Penghitungan menggunakan Dailystock***/
+
+                    //    cmd.Connection = sql;
+                    //    sql.Open();
+                    //    if (comboNamaPkt.SelectedIndex < jumlahPkt)
+                    //        cmd.CommandText = "SELECT DISTINCT [Month] = Month(tanggal) FROM DailyStock ds JOIN Pkt ON ds.kodePkt = Pkt.kodePkt WHERE YEAR(Tanggal) = " + comboTahun1.SelectedValue + " AND namaPkt LIKE '%" + comboNamaPkt.SelectedValue.ToString() + "%' ORDER BY [Month]";
+                    //    else
+                    //        cmd.CommandText = "SELECT DISTINCT [Month] = Month(tanggal) FROM DailyStock ds JOIN Pkt ON ds.kodePkt = Pkt.kodePkt WHERE YEAR(Tanggal) = " + comboTahun1.SelectedValue + " ORDER BY [Month]";
+                    //    SqlDataReader reader = cmd.ExecuteReader();
+                    //    while (reader.Read())
+                    //    {
+                    //        bulan1.Add(reader[0].ToString());
+                    //    }
+                    //    comboBulan1.DataSource = bulan1;
+
+                    /***Penghitungan Menggunakan Stok Posisi***/
                     cmd.Connection = sql;
                     sql.Open();
                     if (comboNamaPkt.SelectedIndex < jumlahPkt)
-                        cmd.CommandText = "SELECT DISTINCT [Month] = Month(tanggal) FROM DailyStock ds JOIN Pkt ON ds.kodePkt = Pkt.kodePkt WHERE YEAR(Tanggal) = " + comboTahun1.SelectedValue + " AND namaPkt = '" + comboNamaPkt.SelectedValue.ToString() + "' ORDER BY [Month]";
-                    else
-                        cmd.CommandText = "SELECT DISTINCT [Month] = Month(tanggal) FROM DailyStock ds JOIN Pkt ON ds.kodePkt = Pkt.kodePkt WHERE YEAR(Tanggal) = " + comboTahun1.SelectedValue + " ORDER BY [Month]";
+                        cmd.CommandText = "SELECT DISTINCT [Month] = Month(tanggal) FROM StokPosisi ds WHERE YEAR(Tanggal) = " + comboTahun1.SelectedValue + " AND namaPkt LIKE '%" + comboNamaPkt.SelectedValue.ToString() + "%' ORDER BY [Month]";
+                    else                                                                     
+                        cmd.CommandText = "SELECT DISTINCT [Month] = Month(tanggal) FROM StokPosisi ds WHERE YEAR(Tanggal) = " + comboTahun1.SelectedValue + " ORDER BY [Month]";
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
                         bulan1.Add(reader[0].ToString());
                     }
+
+                    bulan1 = bulan1.OrderByDescending(x=>x).ToList();
                     comboBulan1.DataSource = bulan1;
+
                 }
             }
         }
@@ -123,31 +180,52 @@ namespace testProjectBCA
             {
                 using (SqlCommand cmd = new SqlCommand())
                 {
+                    /***Penghitungan menggunakan Dailystock***/
+                    //cmd.Connection = sql;
+                    //sql.Open();
+                    //if (comboNamaPkt.SelectedIndex < jumlahPkt)
+                    //    cmd.CommandText = "SELECT DISTINCT[Tahun] = Month(tanggal) FROM DailyStock ds JOIN Pkt ON ds.kodePkt = Pkt.kodePkt WHERE YEAR(Tanggal) = " + comboTahun2.SelectedValue + " AND namaPkt = '"+ comboNamaPkt.SelectedValue.ToString() + "' ORDER BY Tahun";
+                    //else
+                    //    cmd.CommandText = "SELECT DISTINCT[Tahun] = Month(tanggal) FROM DailyStock ds JOIN Pkt ON ds.kodePkt = Pkt.kodePkt WHERE YEAR(Tanggal) = " + comboTahun2.SelectedValue + " ORDER BY Tahun";
+                    //SqlDataReader reader = cmd.ExecuteReader();
+                    //while (reader.Read())
+                    //{
+                    //    bulan2.Add(reader[0].ToString());
+                    //}
+                    //comboBulan2.DataSource = bulan2;
+
+                    /***Penghitungan menggunakan Stok Posisi***/
                     cmd.Connection = sql;
                     sql.Open();
                     if (comboNamaPkt.SelectedIndex < jumlahPkt)
-                        cmd.CommandText = "SELECT DISTINCT[Tahun] = Month(tanggal) FROM DailyStock ds JOIN Pkt ON ds.kodePkt = Pkt.kodePkt WHERE YEAR(Tanggal) = " + comboTahun2.SelectedValue + " AND namaPkt = '"+ comboNamaPkt.SelectedValue.ToString() + "' ORDER BY Tahun";
-                    else
-                        cmd.CommandText = "SELECT DISTINCT[Tahun] = Month(tanggal) FROM DailyStock ds JOIN Pkt ON ds.kodePkt = Pkt.kodePkt WHERE YEAR(Tanggal) = " + comboTahun2.SelectedValue + " ORDER BY Tahun";
+                        cmd.CommandText = "SELECT DISTINCT[Tahun] = Month(tanggal) FROM StokPosisi ds WHERE YEAR(Tanggal) = " + comboTahun2.SelectedValue + " AND namaPkt LIKE '%" + comboNamaPkt.SelectedValue.ToString() + "%' ORDER BY Tahun";
+                    else                                                                
+                        cmd.CommandText = "SELECT DISTINCT[Tahun] = Month(tanggal) FROM StokPosisi ds WHERE YEAR(Tanggal) = " + comboTahun2.SelectedValue + " ORDER BY Tahun";
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
                         bulan2.Add(reader[0].ToString());
                     }
+                    bulan2 = (from x in bulan2
+                              orderby x descending
+                              select x).ToList();
                     comboBulan2.DataSource = bulan2;
                 }
             }
         }
+
         void loadComboPkt()
         {
             List<String>listPkt = (from x in db.Pkts where x.kanwil.ToLower().Contains("JABO") select x.namaPkt).ToList();
+            listPkt = listPkt.Select(x => x.ToUpper().Contains("CASH PROCESSING CENTER ALAM SUTERA") ? "CASH PROCESSING CENTER ALAM SUTERA" : x).Distinct().ToList();
+
             jumlahPkt = listPkt.Count;
+            
             listPkt.Add("All Vendor(JABO)");
             comboNamaPkt.DataSource = listPkt;
         }
         public void reloadData()
         {
-
             sla = new List<slaProsesDisplay>();
             //using (SqlConnection sql = new SqlConnection(Variables.connectionString))
             //{
@@ -327,7 +405,286 @@ namespace testProjectBCA
         }
         public void reloadDataFromStokPosisi()
         {
+            sla = new List<slaProsesDisplay>();
+            //using (SqlConnection sql = new SqlConnection(Variables.connectionString))
+            //{
+            //    using (SqlCommand cmd = new SqlCommand())
+            //    {
+            //        cmd.Connection = sql;
+            //        cmd.CommandText = "";
+            //        sql.Open();
+            //        SqlDataReader reader = cmd.ExecuteReader();
+            //        while (reader.Read())
+            //        {
+            //            sla.Add(new slaProsesDisplay
+            //            {
 
+            //            });
+            //        }
+            //    }
+            //}
+
+            List<StokPosisi> listData;
+            Console.WriteLine(jumlahPkt);
+            Console.WriteLine(comboNamaPkt.SelectedIndex);
+            if (comboNamaPkt.SelectedIndex < jumlahPkt)
+                listData = (from x in db.StokPosisis.AsEnumerable()
+                            where ((DateTime)x.tanggal).Month >= Int32.Parse(comboBulan1.SelectedValue.ToString())
+                            && ((DateTime)x.tanggal).Year >= Int32.Parse(comboTahun1.SelectedValue.ToString())
+                            && ((DateTime)x.tanggal).Month <= Int32.Parse(comboBulan2.SelectedValue.ToString())
+                            && ((DateTime)x.tanggal).Year <= Int32.Parse(comboTahun2.SelectedValue.ToString())
+                            && x.namaPkt.Contains(comboNamaPkt.SelectedValue.ToString())
+                            select x).ToList();
+            else
+                listData = (from x in db.StokPosisis.AsEnumerable()
+                            where ((DateTime)x.tanggal).Month >= Int32.Parse(comboBulan1.SelectedValue.ToString())
+                            && ((DateTime)x.tanggal).Year >= Int32.Parse(comboTahun1.SelectedValue.ToString())
+                            && ((DateTime)x.tanggal).Month <= Int32.Parse(comboBulan2.SelectedValue.ToString())
+                            && ((DateTime)x.tanggal).Year <= Int32.Parse(comboTahun2.SelectedValue.ToString())
+                            select x).ToList();
+
+
+            for (int thn = Int32.Parse(comboTahun1.SelectedValue.ToString()); thn <= Int32.Parse(comboTahun2.SelectedValue.ToString()); thn++)
+            {
+                for (int bln = Int32.Parse(comboBulan1.SelectedValue.ToString()); bln <= Int32.Parse(comboBulan2.SelectedValue.ToString()); bln++)
+                {
+                    for (int tgl = 1; tgl <= DateTime.DaysInMonth(thn, bln); tgl++)
+                    {
+                        var allDenom = (from x in listData
+                                        where ((DateTime)x.tanggal).Day == tgl
+                                        && ((DateTime)x.tanggal).Month == bln
+                                        && ((DateTime)x.tanggal).Year == thn
+                                        select x).ToList();
+
+                        var allDenomIn = (from x in listData
+                                          where ((DateTime)x.tanggal).Day == tgl + 1
+                                          && ((DateTime)x.tanggal).Month == bln
+                                          && ((DateTime)x.tanggal).Year == thn
+                                          select x).ToList();
+
+                        if (tgl == DateTime.DaysInMonth(thn, bln))
+                        {
+                            int tTgl = 1;
+
+                            if (bln == 12)
+                            {
+                                allDenomIn = (from x in listData
+                                              where ((DateTime)x.tanggal).Day == tTgl
+                                              && ((DateTime)x.tanggal).Month == 1
+                                              && ((DateTime)x.tanggal).Year == thn + 1
+                                              select x).ToList();
+                            }
+                            else
+                            {
+                                allDenomIn = (from x in listData
+                                              where ((DateTime)x.tanggal).Day == tTgl
+                                              && ((DateTime)x.tanggal).Month == bln + 1
+                                              && ((DateTime)x.tanggal).Year == thn
+                                              select x).ToList();
+                            }
+                        }
+                        else
+                        {
+                            DateTime temp = new DateTime(thn, bln, tgl + 1);
+                            Console.WriteLine(temp);
+                            allDenomIn = (from x in listData
+                                          where (DateTime)x.tanggal == temp
+                                          select x).ToList();
+                        }
+
+
+                        Int64 unprocessedBesar = (Int64)(from x in allDenom
+                                                         where x.denom == "100000"
+                                                         || x.denom == "50000"
+                                                         select new { value = hitungPcs((Int64)x.unprocessed, x.denom) }).Sum(x => x.value);
+
+                        Int64 unprocessedKecil = (Int64)(from x in allDenom
+                                                         where x.denom == "20000"
+                                                         || x.denom == "10000"
+                                                         || x.denom == "5000"
+                                                         || x.denom == "2000"
+                                                         || x.denom == "1000"
+                                                         || x.denom == "500"
+                                                         || x.denom == "200"
+                                                         || x.denom == "100"
+                                                         || x.denom == "50"
+                                                         || x.denom == "25"
+                                                         select new { value = hitungPcs((Int64)x.unprocessed, x.denom) }).Sum(x => x.value);
+
+                        Int64 inCabangBesar = (Int64)(from x in allDenomIn
+                                                      where x.denom == "100000"
+                                                      || x.denom == "50000"
+                                                      select new { value = hitungPcs((Int64)x.inCabang, x.denom) }).Sum(x => x.value);
+
+                        Int64 inCabangKecil = (Int64)(from x in allDenomIn
+                                                      where !(x.denom == "100000" || x.denom == "50000")
+                                                      select new { value = hitungPcs((Int64)x.inCabang, x.denom) }).Sum(x => x.value);
+                        Int64 inRetailBesar = (Int64)(from x in allDenomIn
+                                                      where x.denom == "100000"
+                                                      || x.denom == "50000"
+                                                      select new { value = hitungPcs((Int64)x.inRetail, x.denom) }).Sum(x => x.value);
+
+                        Int64 inRetailKecil = (Int64)(from x in allDenomIn
+                                                      where x.denom == "20000"
+                                                      || x.denom == "10000"
+                                                      || x.denom == "5000"
+                                                      || x.denom == "2000"
+                                                      || x.denom == "1000"
+                                                      || x.denom == "500"
+                                                      || x.denom == "200"
+                                                      || x.denom == "100"
+                                                      || x.denom == "50"
+                                                      || x.denom == "25"
+                                                      select new { value = hitungPcs((Int64)x.inRetail, x.denom) }).Sum(x => x.value);
+                        Console.WriteLine(thn + " " + bln + " " + tgl);
+                        sla.Add(new slaProsesDisplay()
+                        {
+                            tanggal = new DateTime(thn, bln, tgl),
+                            unprocUangBesar = unprocessedBesar,
+                            unprocUangKecil = unprocessedKecil,
+                            inCabangUangBesar = inCabangBesar,
+                            inCabangUangKecil = inCabangKecil,
+                            inRetailUangBesar = inRetailBesar,
+                            inRetailUangKecil = inRetailKecil,
+                            slaProsesBesar = 0,
+                            slaProsesKecil = 0,
+                            totalProsesUangBesar = 0,
+                            totalProsesUangKecil = 0
+                        });
+                    }
+                }
+            }
+            for (int i = 0; i < sla.Count; i++)
+            {
+                if (i == sla.Count - 1)
+                {
+                    DateTime tgl = sla[i].tanggal.AddDays(1);
+                    Int64 UnprocUangBesar = (from x in db.StokPosisis.AsEnumerable()
+                                             where (x.denom == "100000"
+                                             || x.denom == "50000")
+                                             && x.tanggal == tgl
+                                             select new { value = hitungPcs((Int64)x.unprocessed, x.denom) }
+                             ).Sum(x => x.value);
+                    Int64 UnprocUangKecil = (from x in db.StokPosisis.AsEnumerable()
+                                             where !(x.denom == "100000"
+                                             || x.denom == "50000")
+                                             && x.tanggal == tgl
+                                             select new { value = hitungPcs((Int64)x.unprocessed, x.denom) }
+                             ).Sum(x => x.value);
+
+                    sla[i].totalProsesUangBesar = sla[i].unprocUangBesar + sla[i].inCabangUangBesar + sla[i].inRetailUangBesar;
+                    sla[i].totalProsesUangKecil = sla[i].unprocUangKecil + sla[i].inCabangUangKecil + sla[i].inRetailUangKecil;
+
+                    sla[i].totalProsesUangBesar -= UnprocUangBesar;
+                    sla[i].totalProsesUangKecil -= UnprocUangKecil;
+                }
+                else
+                {
+                    sla[i].totalProsesUangBesar = sla[i].unprocUangBesar + sla[i].inCabangUangBesar + sla[i].inRetailUangBesar - sla[i + 1].unprocUangBesar;
+                    sla[i].totalProsesUangKecil = sla[i].unprocUangKecil + sla[i].inCabangUangKecil + sla[i].inRetailUangKecil - sla[i + 1].unprocUangKecil;
+                }
+
+                //if (sla[i].unprocUangBesar + sla[i].inCabangUangBesar + sla[i].inRetailUangBesar != 0)
+                //{
+                sla[i].slaProsesBesar = (Double)sla[i].totalProsesUangBesar / (sla[i].unprocUangBesar + sla[i].inCabangUangBesar + sla[i].inRetailUangBesar);
+                //}
+                //if (sla[i].unprocUangKecil + sla[i].inCabangUangKecil + sla[i].inRetailUangKecil != 0)
+                //{
+                sla[i].slaProsesKecil = (Double)sla[i].totalProsesUangKecil / (sla[i].unprocUangKecil + (sla[i].inCabangUangKecil / 2) + sla[i].inRetailUangKecil);
+                //}
+                //if (sla[i].unprocUangBesar + sla[i].inCabangUangBesar + sla[i].inRetailUangBesar + sla[i].unprocUangKecil + sla[i].inCabangUangKecil + sla[i].inRetailUangKecil != 0)
+                //{
+                if (!Double.IsNaN(sla[i].slaProsesBesar) && !Double.IsNaN(sla[i].slaProsesKecil))
+                    sla[i].slaGabung = ((Double)sla[i].totalProsesUangBesar + (Double)sla[i].totalProsesUangKecil) / (sla[i].unprocUangBesar + sla[i].inCabangUangBesar + sla[i].inRetailUangBesar + sla[i].unprocUangKecil + (sla[i].inCabangUangKecil / 2) + sla[i].inRetailUangKecil);
+                else if (!Double.IsNaN(sla[i].slaProsesBesar))
+                    sla[i].slaGabung = sla[i].slaProsesKecil;
+                else if (!Double.IsNaN(sla[i].slaProsesBesar))
+                    sla[i].slaGabung = sla[i].slaProsesBesar;
+                else
+                    sla[i].slaGabung = Double.NaN;
+                //}
+
+
+                if (!Double.IsNaN(sla[i].slaProsesBesar))
+                {
+                    if (sla[i].slaProsesBesar > 1)
+                        sla[i].slaProsesBesar = 1;
+                    if (sla[i].slaProsesBesar < 0)
+                        sla[i].slaProsesBesar = 0;
+                }
+                if (!Double.IsNaN(sla[i].slaProsesKecil))
+                {
+                    if (sla[i].slaProsesKecil > 1)
+                        sla[i].slaProsesKecil = 1;
+                    if (sla[i].slaProsesKecil < 0)
+                        sla[i].slaProsesKecil = 0;
+                }
+                if (!Double.IsNaN(sla[i].slaGabung))
+                {
+                    if (sla[i].slaGabung > 1)
+                        sla[i].slaGabung = 1;
+                    if (sla[i].slaGabung < 0)
+                        sla[i].slaGabung = 0;
+                }
+            }
+            Double buf;
+
+            List<slaProsesDisplay> testq = (from x in sla
+                         where !Double.IsNaN(x.slaProsesBesar)
+                         select x).ToList();
+            foreach(var temp in testq)
+            {
+                Console.WriteLine(temp.slaProsesBesar);
+            }
+            slaProsesDisplay avg = new slaProsesDisplay()
+            {
+                tanggal = new DateTime(1, 1, 1),
+                inCabangUangBesar = (Int64)Math.Round(sla.Average(x => x.inCabangUangBesar), 0),
+                inCabangUangKecil = (Int64)Math.Round(sla.Average(x => x.inCabangUangKecil), 0),
+                inRetailUangBesar = (Int64)Math.Round(sla.Average(x => x.inRetailUangBesar), 0),
+                inRetailUangKecil = (Int64)Math.Round(sla.Average(x => x.inRetailUangKecil), 0),
+                unprocUangBesar = (Int64)Math.Round(sla.Average(x => x.unprocUangBesar), 0),
+                unprocUangKecil = (Int64)Math.Round(sla.Average(x => x.unprocUangKecil), 0),
+                totalProsesUangBesar = (Int64)Math.Round(sla.Average(x => x.totalProsesUangBesar), 0),
+                totalProsesUangKecil = (Int64)Math.Round(sla.Average(x => x.totalProsesUangKecil), 0),
+                slaProsesBesar = sla.Where(x=> !Double.IsNaN(x.slaProsesBesar)).Average(x => x.slaProsesBesar),
+                slaProsesKecil = sla.Where(x=> !Double.IsNaN(x.slaProsesKecil)).Average(x => x.slaProsesKecil),
+                slaGabung = sla.Where(x => !Double.IsNaN(x.slaGabung)).Average(x => x.slaGabung)
+            };
+            slaProsesDisplay sum = new slaProsesDisplay()
+            {
+                tanggal = new DateTime(1, 1, 1),
+                inCabangUangBesar = (Int64)sla.Sum(x => x.inCabangUangBesar),
+                inCabangUangKecil = (Int64)sla.Sum(x => x.inCabangUangKecil),
+                inRetailUangBesar = (Int64)sla.Sum(x => x.inRetailUangBesar),
+                inRetailUangKecil = (Int64)sla.Sum(x => x.inRetailUangKecil),
+                unprocUangBesar = (Int64)sla.Sum(x => x.unprocUangBesar),
+                unprocUangKecil = (Int64)sla.Sum(x => x.unprocUangKecil),
+                totalProsesUangBesar = (Int64)sla.Sum(x => x.totalProsesUangBesar),
+                totalProsesUangKecil = (Int64)sla.Sum(x => x.totalProsesUangKecil),
+                slaProsesBesar = 0,
+                slaProsesKecil = 0
+            };
+
+            sla.Add(sum);
+            sla.Add(avg);
+
+            dataGridView1.DataSource = sla;
+            for (int a = 1; a < dataGridView1.Columns.Count - 2; a++)
+            {
+                dataGridView1.Columns[a].DefaultCellStyle.Format = "N0";
+                dataGridView1.Columns[a].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
+            }
+            dataGridView1.Columns[dataGridView1.Columns.Count - 3].DefaultCellStyle.Format = "0.%";
+            dataGridView1.Columns[dataGridView1.Columns.Count - 2].DefaultCellStyle.Format = "0.%";
+            dataGridView1.Columns[dataGridView1.Columns.Count - 1].DefaultCellStyle.Format = "0.%";
+
+            dataGridView1.Rows[dataGridView1.Rows.Count - 1].DefaultCellStyle.BackColor = Color.LightSkyBlue;
+            dataGridView1.Rows[dataGridView1.Rows.Count - 2].DefaultCellStyle.BackColor = Color.LightGreen;
+        }
+        public Int64 hitungPcs(Int64 value, String denom)
+        {
+            return value / Int32.Parse(denom);
         }
         class slaProsesDisplay
         {
@@ -357,7 +714,8 @@ namespace testProjectBCA
 
         private void buttonRefresh_Click(object sender, EventArgs e)
         {
-            reloadData();
+            //reloadData();
+            reloadDataFromStokPosisi();
         }
 
         private void comboNamaPkt_SelectionChangeCommitted(object sender, EventArgs e)

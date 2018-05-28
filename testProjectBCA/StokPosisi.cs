@@ -34,5 +34,7 @@ namespace testProjectBCA
         public string denom { get; set; }
         public Nullable<System.DateTime> tanggal { get; set; }
         public string namaPkt { get; set; }
+        public Nullable<long> inCabang { get; set; }
+        public Nullable<long> inRetail { get; set; }
     }
 }

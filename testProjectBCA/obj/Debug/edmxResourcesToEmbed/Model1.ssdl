@@ -218,6 +218,7 @@
     <Property Name="subsidi" Type="varchar" MaxLength="50" />
     <Property Name="persentaseSubsidi" Type="float" />
     <Property Name="kuota" Type="int" />
+    <Property Name="subsidiCabang" Type="varchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="Opti">
     <Key>
@@ -293,6 +294,8 @@
     <Property Name="denom" Type="varchar" MaxLength="50" />
     <Property Name="tanggal" Type="date" />
     <Property Name="namaPkt" Type="varchar" MaxLength="50" />
+    <Property Name="inCabang" Type="bigint" />
+    <Property Name="inRetail" Type="bigint" />
   </EntityType>
   <EntityType Name="TransaksiAtms">
     <Key>
