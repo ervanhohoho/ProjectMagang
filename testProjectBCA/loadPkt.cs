@@ -64,21 +64,26 @@ namespace testProjectBCA
                     {
                         toEdit.kodePkt = row[1].ToString();
                         Console.Write(row[1].ToString() + " ");
-                        toEdit.namaPkt = row[3].ToString();
-                        Console.Write(row[3].ToString());
-                        toEdit.e2e = row[4].ToString();
+                        toEdit.namaPkt = row[4].ToString();
                         Console.Write(row[4].ToString());
-                        toEdit.koordinator = row[5].ToString();
+                        toEdit.e2e = row[5].ToString();
                         Console.Write(row[5].ToString());
-                        toEdit.kanwil = row[6].ToString().Replace(" -", "");
+                        toEdit.koordinator = row[6].ToString();
                         Console.Write(row[6].ToString());
-                        toEdit.sentralisasi = row[7].ToString().Replace(" -", "");
-                        Console.WriteLine(row[7].ToString());
-                        toEdit.vendor = row[9].ToString();
-                        if (String.IsNullOrEmpty(row[2].ToString()))
-                            toEdit.kodePktCabang = toEdit.kodePkt;
+                        toEdit.kanwil = row[7].ToString().Replace(" -", "");
+                        Console.Write(row[7].ToString());
+                        toEdit.sentralisasi = row[8].ToString().Replace(" -", "");
+                        Console.WriteLine(row[8].ToString());
+                        toEdit.vendor = row[10].ToString();
+                        if (String.IsNullOrEmpty(row[3].ToString()))
+                            toEdit.kodePktCabang = "";
                         else
-                            toEdit.kodePktCabang = row[2].ToString();
+                            toEdit.kodePktCabang = row[3].ToString();
+
+                        if (String.IsNullOrEmpty(row[2].ToString()))
+                            toEdit.kodePktATM = "";
+                        else
+                            toEdit.kodePktATM = row[2].ToString();
                         counter++;
                     }
                     else
@@ -86,21 +91,26 @@ namespace testProjectBCA
                         Pkt newPkt = new Pkt();
                         newPkt.kodePkt = row[1].ToString();
                         Console.Write(row[1].ToString() + " ");
-                        newPkt.namaPkt = row[3].ToString();
-                        Console.Write(row[3].ToString());
-                        newPkt.e2e = row[4].ToString();
+                        newPkt.namaPkt = row[4].ToString();
                         Console.Write(row[4].ToString());
-                        newPkt.koordinator = row[5].ToString();
+                        newPkt.e2e = row[5].ToString();
                         Console.Write(row[5].ToString());
-                        newPkt.kanwil = row[6].ToString().Replace(" -", "");
+                        newPkt.koordinator = row[6].ToString();
                         Console.Write(row[6].ToString());
-                        newPkt.sentralisasi = row[7].ToString().Replace(" -", "");
-                        Console.WriteLine(row[7].ToString());
-                        newPkt.vendor = row[9].ToString();
-                        if (String.IsNullOrEmpty(row[2].ToString()))
-                            newPkt.kodePkt = newPkt.kodePkt;
+                        newPkt.kanwil = row[7].ToString().Replace(" -", "");
+                        Console.Write(row[7].ToString());
+                        newPkt.sentralisasi = row[8].ToString().Replace(" -", "");
+                        Console.WriteLine(row[8].ToString());
+                        newPkt.vendor = row[10].ToString();
+                        if (String.IsNullOrEmpty(row[3].ToString()))
+                            newPkt.kodePktCabang = "";
                         else
-                            newPkt.kodePktCabang = row[2].ToString();
+                            newPkt.kodePktCabang = row[3].ToString();
+
+                        if (String.IsNullOrEmpty(row[2].ToString()))
+                            newPkt.kodePktATM = "";
+                        else
+                            newPkt.kodePktATM = row[2].ToString();
                         db.Pkts.Add(newPkt);
                         counter++;
                     }

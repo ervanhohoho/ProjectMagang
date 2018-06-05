@@ -17,6 +17,10 @@ namespace testProjectBCA
         public InputOrderTrackingForm()
         {
             InitializeComponent();
+            button5.Enabled = false;
+            button4.Enabled = false;
+            button6.Enabled = false;
+
 
         }
 
@@ -24,7 +28,7 @@ namespace testProjectBCA
         {
             OpenFileDialog of = new OpenFileDialog();
             of.Filter = Variables.excelFilter;
-          
+
 
             if (of.ShowDialog() == DialogResult.OK)
             {
@@ -32,7 +36,7 @@ namespace testProjectBCA
                 DataSet ds = Util.openExcel(filename);
                 DataTable dt = ds.Tables[0];
                 Console.WriteLine(ds.Tables.Count);
-               
+
 
                 var query = (from x in en.OrderTrackings
                              where x.tanggal == dateTimePicker1.Value.Date
@@ -67,12 +71,12 @@ namespace testProjectBCA
                             }
                             else
                             {
-                                if (Convert.ToDateTime(dt.Rows[i][4].ToString()).Date == dateTimePicker1.Value.Date && dt.Rows[i][13].ToString() == "CONFIRMED")
+                                if (Convert.ToDateTime(dt.Rows[i][10].ToString()).Date == dateTimePicker1.Value.Date && dt.Rows[i][13].ToString() == "CONFIRMED")
                                 {
                                     Console.WriteLine("cus");
                                     kodePkt = dt.Rows[i][0].ToString();
                                     kodeCabang = dt.Rows[i][2].ToString();
-                                    tanggal = Convert.ToDateTime(dt.Rows[i][4].ToString()).Date;
+                                    tanggal = Convert.ToDateTime(dt.Rows[i][10].ToString()).Date;
                                     nominalDispute = Int64.Parse(dt.Rows[i][19].ToString().Split(':')[1].Trim('\"'));
                                 }
                                 else
@@ -95,7 +99,7 @@ namespace testProjectBCA
 
                     }
                 }
-                
+
 
             }
         }
@@ -110,11 +114,11 @@ namespace testProjectBCA
                 String filename = of.FileName;
                 DataSet ds = Util.openExcel(filename);
                 DataTable dt = ds.Tables[0];
-         
+
 
                 var query = (from x in en.RekapSelisihAmbilSetors
-                            where x.tanggalTransaksi == dateTimePicker1.Value.Date
-                            select x).FirstOrDefault();
+                             where x.tanggalTransaksi == dateTimePicker1.Value.Date
+                             select x).FirstOrDefault();
 
                 DataRow[] rows = dt.Select("Column17 is null or Column4 not like 'CABANG'");
 
@@ -254,24 +258,24 @@ namespace testProjectBCA
                     cmd.Connection = sql;
                     sql.Open();
                     cmd.CommandText = "select [kodepkt] =  isnull(kodepkt,kodepenerimadana), "
-                                      +" [kodepenerimadana] = isnull(kodepenerimadana, kodepkt), "
-                                      +" [ordertracking] = isnull(nominalDispute,0), [Selesai], "
-                                      +" [Belum Selesai], "
-                                      +" [total rekap] = [selesai]+ [Belum Selesai],"
-                                      +" [dibatalkan],"
+                                      + " [kodepenerimadana] = isnull(kodepenerimadana, kodepkt), "
+                                      + " [ordertracking] = isnull(nominalDispute,0), [selesai] = isnull([Selesai],0), "
+                                      + " [belum selesai] = isnull([belum selesai],0), "
+                                      + " [total rekap] = isnull([selesai]+ [Belum Selesai],0),"
+                                      + " [dibatalkan] = isnull([dibatalkan],0),"
                                       + " [Keterangan] = case when isnull(nominalDispute,0) = [selesai]+ [Belum Selesai] then 'SAMA' else 'BERBEDA' end"
                                       + " from"
-                                      +" ("
-                                      +" select kodePkt, nominalDispute = sum(nominalDispute)"
-                                      +" from OrderTracking"
-                                      +" where tanggal = '"+ dateTimePicker1.Value.ToShortDateString() +"'"
-                                      +" group by kodePkt)a right join"
-                                      +" ("
-                                      +" select kodePenerimaDana, [Selesai] = sum(case when lower(keterangan) = 'selesai' then total else 0 end), [Belum Selesai] = sum(case when keterangan = '' then total else 0 end), [dibatalkan] = sum(case when lower(keterangan) = '%batal%' then total else 0 end)"
-                                      +" from RekapSelisihAmbilSetor"
-                                      +" where tanggalTransaksi = '" + dateTimePicker1.Value.ToShortDateString() + "'"
-                                      +" group by kodePenerimaDana)b"
-                                      +" on a.kodePkt = b.kodePenerimaDana";
+                                      + " ("
+                                      + " select kodePkt, nominalDispute = sum(nominalDispute)"
+                                      + " from OrderTracking"
+                                      + " where tanggal = '" + dateTimePicker1.Value.ToShortDateString() + "'"
+                                      + " group by kodePkt)a full outer join"
+                                      + " ("
+                                      + " select kodePenerimaDana, [Selesai] = sum(case when lower(keterangan) = 'selesai' then total else 0 end), [Belum Selesai] = sum(case when keterangan = '' then total else 0 end), [dibatalkan] = sum(case when lower(keterangan) = '%batal%' then total else 0 end)"
+                                      + " from RekapSelisihAmbilSetor"
+                                      + " where tanggalTransaksi = '" + dateTimePicker1.Value.ToShortDateString() + "'"
+                                      + " group by kodePenerimaDana)b"
+                                      + " on a.kodePkt = b.kodePenerimaDana";
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     while (reader.Read())
@@ -281,7 +285,7 @@ namespace testProjectBCA
                             kodePkt = reader[0].ToString(),
                             orderTracking = Int64.Parse(reader[2].ToString()),
                             rekapSelesai = Int64.Parse(reader[3].ToString()),
-                            rekapBelumSelesai= Int64.Parse(reader[4].ToString()),
+                            rekapBelumSelesai = Int64.Parse(reader[4].ToString()),
                             totalRekap = Int64.Parse(reader[5].ToString()),
                             dibatalkan = Int64.Parse(reader[6].ToString()),
                             keterangan = reader[7].ToString()
@@ -295,7 +299,25 @@ namespace testProjectBCA
                         //dibatalkan.Add(Int64.Parse(reader[6].ToString()));
                     }
 
+                    var query = (from x in en.SaveRekaps
+                                 select x).ToList();
+                    foreach (var item in otl)
+                    {
+
+                        var q2 = query.Where(x => ((DateTime)x.tanggal).Date == dateTimePicker1.Value.Date && x.kodePkt == item.kodePkt).Select(x => x.komentar).ToList();
+                        if (q2.Any())
+                        {
+                            item.komentar = q2[0];
+                        }
+
+                    }
+
                     dataGridView1.DataSource = otl;
+                    for (int i = 0; i < 8; i++)
+                    {
+                        dataGridView1.Columns[i].ReadOnly = true;
+                    }
+                    button4.Enabled = true;
 
                 }
             }
@@ -310,12 +332,90 @@ namespace testProjectBCA
             public Int64 totalRekap { set; get; }
             public Int64 dibatalkan { set; get; }
             public String keterangan { set; get; }
+            public String komentar { set; get; }
 
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
             reloadGridView();
+            button6.Enabled = true;
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            button4.Enabled = false;
+            dataGridView1.Columns[7].ReadOnly = false;
+            button5.Enabled = true;
+            button6.Enabled = false;
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            button4.Enabled = true;
+            button5.Enabled = false;
+            button6.Enabled = true;
+            dataGridView1.Columns[7].ReadOnly = true;
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            List<SaveRekap> sr = new List<SaveRekap>();
+           
+            for (int i = 0; i < dataGridView1.Rows.Count; i++)
+            {
+                DateTime tanggal = dateTimePicker1.Value.Date;
+                String komentar = "";
+                String kodePkt = dataGridView1.Rows[i].Cells["kodePkt"].Value.ToString();
+                Int64 orderTracking = Int64.Parse(dataGridView1.Rows[i].Cells["orderTracking"].Value.ToString());
+                Int64 rekapSelesai = Int64.Parse(dataGridView1.Rows[i].Cells["rekapSelesai"].Value.ToString());
+                Int64 rekapBelumSelesai = Int64.Parse(dataGridView1.Rows[i].Cells["rekapBelumSelesai"].Value.ToString());
+                Int64 totalRekap = Int64.Parse(dataGridView1.Rows[i].Cells["totalRekap"].Value.ToString());
+                String keterangan = dataGridView1.Rows[i].Cells["keterangan"].Value.ToString();
+                
+                var query = (from x in en.SaveRekaps.AsEnumerable()
+                             where x.kodePkt == kodePkt && ((DateTime)x.tanggal).Date == dateTimePicker1.Value.Date
+                             select x).FirstOrDefault();
+
+                if (dataGridView1.Rows[i].Cells["komentar"].Value != null)
+                {
+                    komentar = dataGridView1.Rows[i].Cells["komentar"].Value.ToString();
+                }
+
+                if (query == null)
+                {
+                    //insert
+                    
+                    sr.Add(new SaveRekap()
+                    {
+                        kodePkt = kodePkt,
+                        orderTracking = orderTracking,
+                        rekapBelumSelesai = rekapBelumSelesai,
+                        rekapSelesai = rekapSelesai,
+                        totalRekap = totalRekap,
+                        keterangan = keterangan,
+                        komentar = komentar,
+                        tanggal = tanggal
+                    });
+
+                }
+                else
+                {
+                    query.tanggal = tanggal;
+                    query.komentar = komentar;
+                    query.kodePkt = kodePkt;
+                    query.orderTracking = orderTracking;
+                    query.rekapSelesai = rekapSelesai;
+                    query.rekapBelumSelesai = rekapBelumSelesai;
+                    query.totalRekap = totalRekap;
+                    query.keterangan = keterangan;
+                    
+                }
+
+                
+            }
+            en.SaveRekaps.AddRange(sr);
+            en.SaveChanges();
         }
     }
 }

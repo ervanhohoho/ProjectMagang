@@ -30,7 +30,6 @@ namespace testProjectBCA
                 {
                     collectionTransaksiPkt.Add(loadSheetsIntoClassList(Util.openExcel(path)));
                 }
-           
             }
             foreach(List<transaksiPkt> list in  collectionTransaksiPkt)
             {
@@ -81,6 +80,30 @@ namespace testProjectBCA
                             temp.saldoAkhir20 += selisih20;
                         }
                     }
+                    var q2 = (from x in db.LaporanPermintaanBons
+                         where x.tanggal > pkt.tanggalPengajuan && x.kodePkt == pkt.kodePkt
+                         select x).ToList();
+                    if (q2.Any())
+                    {
+                        for (int a = 0; a < pkt.permintaanBon.Count; a++)
+                        {
+                            if (a >= q2.Count)
+                                break;
+                            q2[a].C100 = pkt.permintaanBon[a][0];
+                            q2[a].C50 = pkt.permintaanBon[a][1];
+                            q2[a].C20 = pkt.permintaanBon[a][2];
+                        }
+                    }
+                    var q3 = (from x in db.LaporanPermintaanAdhocs
+                              where x.tanggal == pkt.tanggalPengajuan && x.kodePkt == pkt.kodePkt
+                              select x).ToList();
+                    if (q3.Any())
+                    {
+                        q3[0].C100 = pkt.permintaanAdhoc[0];
+                        q3[0].C50 = pkt.permintaanAdhoc[1];
+                        q3[0].C20 = pkt.permintaanAdhoc[2];
+                    }
+
                     db.SaveChanges();
                 }
             }
@@ -241,6 +264,37 @@ namespace testProjectBCA
                             tempList.Add(0);
                     }
                     pkt.permintaanBon.Add(tempList);
+                }
+
+                if (!String.IsNullOrEmpty(table.Rows[44][6].ToString()) && !String.IsNullOrEmpty(table.Rows[44][7].ToString()) && !String.IsNullOrEmpty(table.Rows[44][8].ToString()))
+                {
+                    Int64 buf;
+                    if (String.IsNullOrEmpty(table.Rows[44][6].ToString()))
+                        pkt.permintaanAdhoc.Add(0);
+                    else if (Int64.TryParse(table.Rows[44][6].ToString(), out buf))
+                        pkt.permintaanAdhoc.Add(buf);
+                    else
+                        pkt.permintaanAdhoc.Add(0);
+
+                    if (String.IsNullOrEmpty(table.Rows[44][7].ToString()))
+                        pkt.permintaanAdhoc.Add(0);
+                    else if (Int64.TryParse(table.Rows[44][7].ToString(), out buf))
+                        pkt.permintaanAdhoc.Add(buf);
+                    else
+                        pkt.permintaanAdhoc.Add(0);
+
+                    if (String.IsNullOrEmpty(table.Rows[44][8].ToString()))
+                        pkt.permintaanAdhoc.Add(0);
+                    else if (Int64.TryParse(table.Rows[44][8].ToString(), out buf))
+                        pkt.permintaanAdhoc.Add(buf);
+                    else
+                        pkt.permintaanAdhoc.Add(0);
+                }
+                else
+                {
+                    pkt.permintaanAdhoc.Add(0);
+                    pkt.permintaanAdhoc.Add(0);
+                    pkt.permintaanAdhoc.Add(0);
                 }
 
                 pkt.hitungSaldoAkhir();

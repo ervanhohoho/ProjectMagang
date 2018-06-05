@@ -143,8 +143,9 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.Size = new System.Drawing.Size(162, 436);
+            this.dataGridView1.Size = new System.Drawing.Size(162, 446);
             this.dataGridView1.TabIndex = 26;
+            this.dataGridView1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.dataGridView1_Scroll);
             // 
             // dataGridView2
             // 
@@ -158,8 +159,9 @@
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.ReadOnly = true;
             this.dataGridView2.RowHeadersVisible = false;
-            this.dataGridView2.Size = new System.Drawing.Size(161, 436);
+            this.dataGridView2.Size = new System.Drawing.Size(161, 446);
             this.dataGridView2.TabIndex = 27;
+            this.dataGridView2.Scroll += new System.Windows.Forms.ScrollEventHandler(this.dataGridView2_Scroll);
             // 
             // dataGridView3
             // 
@@ -173,8 +175,9 @@
             this.dataGridView3.Name = "dataGridView3";
             this.dataGridView3.ReadOnly = true;
             this.dataGridView3.RowHeadersVisible = false;
-            this.dataGridView3.Size = new System.Drawing.Size(652, 436);
+            this.dataGridView3.Size = new System.Drawing.Size(652, 446);
             this.dataGridView3.TabIndex = 28;
+            this.dataGridView3.Scroll += new System.Windows.Forms.ScrollEventHandler(this.dataGridView3_Scroll);
             // 
             // comboKanwil6
             // 
@@ -647,7 +650,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.ClientSize = new System.Drawing.Size(1105, 781);
+            this.ClientSize = new System.Drawing.Size(1087, 781);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox9);
             this.Controls.Add(this.groupBox8);

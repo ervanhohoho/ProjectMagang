@@ -15,6 +15,17 @@ namespace testProjectBCA
     {
         Database1Entities db = new Database1Entities();
         List<ForecastDetail> list = new List<ForecastDetail>();
+
+        List<tanggalValue> prediksiInCabang100; 
+        List<tanggalValue> prediksiInCabang50;
+        List<tanggalValue> prediksiInRetail100;
+        List<tanggalValue> prediksiInRetail50;
+        List<tanggalValue> prediksiOutCabang100;
+        List<tanggalValue> prediksiOutCabang50;
+        List<tanggalValue> prediksiOutAtm100;
+        List<tanggalValue> prediksiOutAtm50;
+        List<tanggalValue> morningBalance100;
+        List<tanggalValue> morningBalance50;
         public proyeksiLikuiditasForm()
         {
             InitializeComponent();
@@ -29,12 +40,12 @@ namespace testProjectBCA
             DateTime minTanggal;
             DateTime maxTanggal;
 
-            var q = (from x in db.DailyStocks select (DateTime)x.tanggal).ToList();
+            var q = (from x in db.StokPosisis select (DateTime)x.tanggal).ToList();
             minTanggal = q.Min(x => x);
             maxTanggal = q.Max(x => x);
-            DateTime tempTanggal = minTanggal;
+            DateTime tempTanggal = new DateTime(minTanggal.Year, minTanggal.Month, 1);
             int counter = 0;
-            while (tempTanggal < maxTanggal)
+            while (tempTanggal <= maxTanggal)
             {
                 bulanPrediksiTreeView.Nodes.Add(tempTanggal.Year.ToString());
                 int monthCounter = tempTanggal.Month;
@@ -102,7 +113,7 @@ namespace testProjectBCA
                 var eventT = (from x in et
                               where x.tanggal == tanggal
                               select new { x.workDay, x.@event }).FirstOrDefault();
-                
+
                 foreach (var temp in listTanggalHistorisUntukPrediksi)
                 {
                     List<Int64> q3 = (from x in q
@@ -111,8 +122,8 @@ namespace testProjectBCA
                                       && temp.Year == ((DateTime)x.tanggal).Year
                                       && eventT.workDay == y.workDay
                                       && eventT.@event == y.@event
-                                      select new { tanggal = (DateTime) x.tanggal, BN100K = (Int64)x.BN100K }
-                              ).AsEnumerable().Where(x=>x.tanggal.DayOfWeek == tanggal.DayOfWeek).Select(x=>x.BN100K).ToList();
+                                      select new { tanggal = (DateTime)x.tanggal, BN100K = (Int64)x.BN100K }
+                              ).AsEnumerable().Where(x => x.tanggal.DayOfWeek == tanggal.DayOfWeek).Select(x => x.BN100K).ToList();
 
                     if (q3.Count == 0)
                     {
@@ -427,7 +438,6 @@ namespace testProjectBCA
             DateTime maxTanggal = tanggalMaxPrediksiPicker.Value;
 
             if (!q.Where(x => x.tanggal == tanggal).Any())
-                MessageBox.Show("Data Laporan PKT Hari ini belum ada");
             saldo100.Add(new tanggalValue() { tanggal = tanggal, value = (Int64)q.Where(x => x.tanggal == tanggal).Select(x => x.saldoAwal100).Sum() });
             Console.WriteLine(saldo100.Count);
             while (tanggal <= maxTanggal.AddDays(1))
@@ -485,7 +495,7 @@ namespace testProjectBCA
                 tanggal = tanggal.AddDays(1);
             }
 
-           
+
 
 
             DateTime today = DateTime.Today.Date;
@@ -839,44 +849,497 @@ namespace testProjectBCA
             return result;
         }
 
+        List<tanggalValue> loadPrediksiInCabang100SP()
+        {
+            List<tanggalValue> result = new List<tanggalValue>();
+            List<DateTime> listTanggalHistorisUntukPrediksi = loadTanggalHistorisUntukPrediksi();
+
+            //Load semua in Cabang 100
+            var q = (from x in db.StokPosisis
+                     where x.denom == "100000"
+                     select new { x.tanggal, BN100K = x.inCabang });
+
+            foreach(var temp in q)
+            {
+                Console.WriteLine(temp.tanggal + " " + temp.BN100K);
+            }
+            List<EventTanggal> et = (from x in db.EventTanggals.AsEnumerable().AsEnumerable()
+                                     select x).ToList();
+
+
+            DateTime tanggal = DateTime.Today;
+            DateTime maxTanggal = tanggalMaxPrediksiPicker.Value;
+
+            while (tanggal <= maxTanggal)
+            {
+                List<Int64> query = new List<Int64>();
+                var eventT = (from x in et
+                              where x.tanggal == tanggal
+                              select new { x.workDay, x.@event }).FirstOrDefault();
+
+                foreach (var temp in listTanggalHistorisUntukPrediksi)
+                {
+                    List<Int64> q3 = (from x in q
+                                      join y in db.EventTanggals.AsEnumerable() on x.tanggal equals y.tanggal
+                                      where temp.Month == ((DateTime)x.tanggal).Month
+                                      && temp.Year == ((DateTime)x.tanggal).Year
+                                      && eventT.workDay == y.workDay
+                                      && eventT.@event == y.@event
+                                      select new { tanggal = (DateTime)x.tanggal, BN100K = (Int64)x.BN100K }
+                              ).AsEnumerable().Where(x => x.tanggal.DayOfWeek == tanggal.DayOfWeek).Select(x => x.BN100K).ToList();
+
+                    if (q3.Count == 0)
+                    {
+                        q3 = (from x in q
+                              join y in db.EventTanggals.AsEnumerable() on x.tanggal equals y.tanggal
+                              where temp.Month == ((DateTime)x.tanggal).Month
+                              && temp.Year == ((DateTime)x.tanggal).Year
+                              && eventT.workDay == y.workDay
+                              select (Int64)x.BN100K
+                              ).ToList();
+                    }
+                    query.AddRange(q3);
+                }
+                result.Add(new tanggalValue() { tanggal = tanggal, value = (Int64)Math.Round(query.Any() ? query.Average(x => x) : 0, 0) });
+                tanggal = tanggal.AddDays(1);
+            }
+            return result;
+        }
+        List<tanggalValue> loadPrediksiInCabang50SP()
+        {
+            List<tanggalValue> result = new List<tanggalValue>();
+            List<DateTime> listTanggalHistorisUntukPrediksi = loadTanggalHistorisUntukPrediksi();
+
+            var q = (from x in db.StokPosisis
+                     where x.denom == "50000"
+                     select new { x.tanggal, BN50K = x.inCabang });
+            List<EventTanggal> et = (from x in db.EventTanggals.AsEnumerable().AsEnumerable()
+                                     select x).ToList();
+
+
+            DateTime tanggal = DateTime.Today;
+            DateTime maxTanggal = tanggalMaxPrediksiPicker.Value;
+
+            while (tanggal <= maxTanggal)
+            {
+                List<Int64> query = new List<Int64>();
+                var eventT = (from x in et
+                              where x.tanggal == tanggal
+                              select new { x.workDay, x.@event }).FirstOrDefault();
+
+
+                foreach (var temp in listTanggalHistorisUntukPrediksi)
+                {
+                    List<Int64> q3 = (from x in q
+                                      join y in db.EventTanggals.AsEnumerable() on x.tanggal equals y.tanggal
+                                      where temp.Month == ((DateTime)x.tanggal).Month
+                                      && temp.Year == ((DateTime)x.tanggal).Year
+                                      && eventT.workDay == y.workDay
+                                      && eventT.@event == y.@event
+                                      select new { tanggal = (DateTime)x.tanggal, BN50K = (Int64)x.BN50K }
+                              ).AsEnumerable().Where(x => x.tanggal.DayOfWeek == tanggal.DayOfWeek).Select(x => x.BN50K).ToList();
+
+                    if (q3.Count == 0)
+                    {
+                        q3 = (from x in q
+                              join y in db.EventTanggals.AsEnumerable() on x.tanggal equals y.tanggal
+                              where temp.Month == ((DateTime)x.tanggal).Month
+                              && temp.Year == ((DateTime)x.tanggal).Year
+                              && eventT.workDay == y.workDay
+                              select (Int64)x.BN50K
+                              ).ToList();
+                    }
+                    query.AddRange(q3);
+                }
+                result.Add(new tanggalValue() { tanggal = tanggal, value = (Int64)Math.Round(query.Any() ? query.Average(x => x) : 0, 0) });
+                tanggal = tanggal.AddDays(1);
+            }
+            return result;
+        }
+        List<tanggalValue> loadPrediksiInRetail100SP()
+        {
+            List<tanggalValue> result = new List<tanggalValue>();
+            List<DateTime> listTanggalHistorisUntukPrediksi = loadTanggalHistorisUntukPrediksi();
+
+            //Load semua in Cabang 100
+            var q = (from x in db.StokPosisis
+                     where x.denom == "100000"
+                     select new { x.tanggal, BN100K = x.inRetail});
+            List<EventTanggal> et = (from x in db.EventTanggals.AsEnumerable().AsEnumerable()
+                                     select x).ToList();
+
+
+            DateTime tanggal = DateTime.Today;
+            DateTime maxTanggal = tanggalMaxPrediksiPicker.Value;
+
+            while (tanggal <= maxTanggal)
+            {
+                List<Int64> query = new List<Int64>();
+                var eventT = (from x in et
+                              where x.tanggal == tanggal
+                              select new { x.workDay, x.@event }).FirstOrDefault();
+
+
+                foreach (var temp in listTanggalHistorisUntukPrediksi)
+                {
+                    List<Int64> q3 = (from x in q
+                                      join y in db.EventTanggals.AsEnumerable() on x.tanggal equals y.tanggal
+                                      where temp.Month == ((DateTime)x.tanggal).Month
+                                      && temp.Year == ((DateTime)x.tanggal).Year
+                                      && eventT.workDay == y.workDay
+                                      && eventT.@event == y.@event
+                                      select new { tanggal = (DateTime)x.tanggal, BN100K = (Int64)x.BN100K }
+                              ).AsEnumerable().Where(x => x.tanggal.DayOfWeek == tanggal.DayOfWeek).Select(x => x.BN100K).ToList();
+
+                    if (q3.Count == 0)
+                    {
+                        q3 = (from x in q
+                              join y in db.EventTanggals.AsEnumerable() on x.tanggal equals y.tanggal
+                              where temp.Month == ((DateTime)x.tanggal).Month
+                              && temp.Year == ((DateTime)x.tanggal).Year
+                              && eventT.workDay == y.workDay
+                              select (Int64)x.BN100K
+                              ).ToList();
+                    }
+                    query.AddRange(q3);
+                }
+                result.Add(new tanggalValue() { tanggal = tanggal, value = (Int64)Math.Round(query.Any() ? query.Average(x => x) : 0, 0) });
+                tanggal = tanggal.AddDays(1);
+            }
+            return result;
+        }
+        List<tanggalValue> loadPrediksiInRetail50SP()
+        {
+            List<tanggalValue> result = new List<tanggalValue>();
+            List<DateTime> listTanggalHistorisUntukPrediksi = loadTanggalHistorisUntukPrediksi();
+
+            var q = (from x in db.StokPosisis
+                     where x.denom == "50000"
+                     select new { x.tanggal, BN50K = x.inRetail});
+            List<EventTanggal> et = (from x in db.EventTanggals.AsEnumerable().AsEnumerable()
+                                     select x).ToList();
+
+
+            DateTime tanggal = DateTime.Today;
+            DateTime maxTanggal = tanggalMaxPrediksiPicker.Value;
+
+            while (tanggal <= maxTanggal)
+            {
+                List<Int64> query = new List<Int64>();
+                var eventT = (from x in et
+                              where x.tanggal == tanggal
+                              select new { x.workDay, x.@event }).FirstOrDefault();
+
+
+                foreach (var temp in listTanggalHistorisUntukPrediksi)
+                {
+                    List<Int64> q3 = (from x in q
+                                      join y in db.EventTanggals.AsEnumerable() on x.tanggal equals y.tanggal
+                                      where temp.Month == ((DateTime)x.tanggal).Month
+                                      && temp.Year == ((DateTime)x.tanggal).Year
+                                      && eventT.workDay == y.workDay
+                                      && eventT.@event == y.@event
+                                      select new { tanggal = (DateTime)x.tanggal, BN50K = (Int64)x.BN50K }
+                              ).AsEnumerable().Where(x => x.tanggal.DayOfWeek == tanggal.DayOfWeek).Select(x => x.BN50K).ToList();
+
+                    if (q3.Count == 0)
+                    {
+                        q3 = (from x in q
+                              join y in db.EventTanggals.AsEnumerable() on x.tanggal equals y.tanggal
+                              where temp.Month == ((DateTime)x.tanggal).Month
+                              && temp.Year == ((DateTime)x.tanggal).Year
+                              && eventT.workDay == y.workDay
+                              select (Int64)x.BN50K
+                              ).ToList();
+                    }
+                    query.AddRange(q3);
+                }
+                result.Add(new tanggalValue() { tanggal = tanggal, value = (Int64)Math.Round(query.Any() ? query.Average(x => x) : 0, 0) });
+                tanggal = tanggal.AddDays(1);
+            }
+            return result;
+        }
+        List<tanggalValue> loadPrediksiOutCabang100SP()
+        {
+            List<tanggalValue> result = new List<tanggalValue>();
+            List<DateTime> listTanggalHistorisUntukPrediksi = loadTanggalHistorisUntukPrediksi();
+
+            //Load semua in Cabang 100
+            var q = (from x in db.StokPosisis
+                     where x.denom == "100000"
+                     select new { x.tanggal, BN100K = x.outCabang});
+            List<EventTanggal> et = (from x in db.EventTanggals.AsEnumerable().AsEnumerable()
+                                     select x).ToList();
+
+
+            DateTime tanggal = DateTime.Today;
+            DateTime maxTanggal = tanggalMaxPrediksiPicker.Value;
+
+            while (tanggal <= maxTanggal)
+            {
+                List<Int64> query = new List<Int64>();
+                var eventT = (from x in et
+                              where x.tanggal == tanggal
+                              select new { x.workDay, x.@event }).FirstOrDefault();
+
+
+                foreach (var temp in listTanggalHistorisUntukPrediksi)
+                {
+                    List<Int64> q3 = (from x in q
+                                      join y in db.EventTanggals.AsEnumerable() on x.tanggal equals y.tanggal
+                                      where temp.Month == ((DateTime)x.tanggal).Month
+                                      && temp.Year == ((DateTime)x.tanggal).Year
+                                      && eventT.workDay == y.workDay
+                                      && eventT.@event == y.@event
+                                      select new { tanggal = (DateTime)x.tanggal, BN100K = (Int64)x.BN100K }
+                              ).AsEnumerable().Where(x => x.tanggal.DayOfWeek == tanggal.DayOfWeek).Select(x => x.BN100K).ToList();
+
+                    if (q3.Count == 0)
+                    {
+                        q3 = (from x in q
+                              join y in db.EventTanggals.AsEnumerable() on x.tanggal equals y.tanggal
+                              where temp.Month == ((DateTime)x.tanggal).Month
+                              && temp.Year == ((DateTime)x.tanggal).Year
+                              && eventT.workDay == y.workDay
+                              select (Int64)x.BN100K
+                              ).ToList();
+                    }
+                    query.AddRange(q3);
+                }
+                result.Add(new tanggalValue() { tanggal = tanggal, value = (Int64)Math.Round(query.Any() ? query.Average(x => x) : 0, 0) });
+                tanggal = tanggal.AddDays(1);
+            }
+            return result;
+        }
+        List<tanggalValue> loadPrediksiOutCabang50SP()
+        {
+            List<tanggalValue> result = new List<tanggalValue>();
+            List<DateTime> listTanggalHistorisUntukPrediksi = loadTanggalHistorisUntukPrediksi();
+
+            //Load semua in Cabang 50
+            var q = (from x in db.StokPosisis
+                     where x.denom == "50000"
+                     select new { x.tanggal, BN50K = x.outCabang});
+            List<EventTanggal> et = (from x in db.EventTanggals.AsEnumerable().AsEnumerable()
+                                     select x).ToList();
+
+
+            DateTime tanggal = DateTime.Today;
+            DateTime maxTanggal = tanggalMaxPrediksiPicker.Value;
+
+            while (tanggal <= maxTanggal)
+            {
+                List<Int64> query = new List<Int64>();
+                var eventT = (from x in et
+                              where x.tanggal == tanggal
+                              select new { x.workDay, x.@event }).FirstOrDefault();
+
+
+                foreach (var temp in listTanggalHistorisUntukPrediksi)
+                {
+                    List<Int64> q3 = (from x in q
+                                      join y in db.EventTanggals.AsEnumerable() on x.tanggal equals y.tanggal
+                                      where temp.Month == ((DateTime)x.tanggal).Month
+                                      && temp.Year == ((DateTime)x.tanggal).Year
+                                      && eventT.workDay == y.workDay
+                                      && eventT.@event == y.@event
+                                      select new { tanggal = (DateTime)x.tanggal, BN50K = (Int64)x.BN50K }
+                              ).AsEnumerable().Where(x => x.tanggal.DayOfWeek == tanggal.DayOfWeek).Select(x => x.BN50K).ToList();
+
+                    if (q3.Count == 0)
+                    {
+                        q3 = (from x in q
+                              join y in db.EventTanggals.AsEnumerable() on x.tanggal equals y.tanggal
+                              where temp.Month == ((DateTime)x.tanggal).Month
+                              && temp.Year == ((DateTime)x.tanggal).Year
+                              && eventT.workDay == y.workDay
+                              select (Int64)x.BN50K
+                              ).ToList();
+                    }
+                    query.AddRange(q3);
+                }
+                result.Add(new tanggalValue() { tanggal = tanggal, value = (Int64)Math.Round(query.Any() ? query.Average(x => x) : 0, 0) });
+                tanggal = tanggal.AddDays(1);
+            }
+            return result;
+        }
+
+
+        List<tanggalValue> loadMorningBalance100SP()
+        {
+            List<tanggalValue> listMorningBalance = new List<tanggalValue>();
+            List<tanggalValue> listEndingBalance = new List<tanggalValue>();
+            DateTime today = DateTime.Today.Date;
+            DateTime maxTanggal = tanggalMaxPrediksiPicker.Value.Date;
+            var query = (from x in db.StokPosisis
+                         select x).ToList();
+            var q2 = (from x in query
+                      where x.tanggal == today
+                      select x).ToList();
+
+            //Morning Balance Hari Pertama
+            listMorningBalance.Add(new tanggalValue() {
+                tanggal = today,
+                value = (Int64) q2.Sum(x=>(x.fitBaru + x.fitLama + x.fitNKRI + x.newBaru + x.newLama + x.RRMBaru + x.RRMLama + x.RRMNKRI + x.RupiahRusakMayor + x.unfitBaru + x.unfitLama + x.unfitNKRI + x.unprocessed + x.passThrough))
+              });
+
+            //Hitung Ending Balance + Morning Balance Selanjutnya
+            DateTime temp = today;
+            while(temp<=maxTanggal)
+            {
+                Int64 morningBal = listMorningBalance.Where(x => x.tanggal == temp).Select(x => x.value).First();
+                Int64 totalIn = (from x in prediksiInRetail100
+                                 join y in prediksiInCabang100 on x.tanggal equals y.tanggal
+                                 where x.tanggal == temp
+                                 select x.value+y.value).First();
+                Int64 adhoc100 = (Int64) adhoc100Num.Value;
+                Int64 endBal;
+                if (temp == today)
+                    endBal = morningBal + totalIn - adhoc100;
+                else
+                    endBal = morningBal + totalIn;
+
+                listEndingBalance.Add(new tanggalValue() {
+                    tanggal = temp,
+                    value = endBal
+                });
+
+                if (temp == maxTanggal)
+                    break;
+                else
+                {
+                    DateTime temph1 = temp.AddDays(1);
+                    Int64 totalOut = (from x in prediksiOutAtm100
+                                      join y in prediksiOutAtm50 on x.tanggal equals y.tanggal
+                                      select x.value + y.value).First();
+                    Int64 morningBalh1 = endBal - totalOut;
+                    listMorningBalance.Add(new tanggalValue() { tanggal = temph1, value = morningBalh1});
+                }
+                temp = temp.AddDays(1);
+            }
+            return listMorningBalance;
+        }
+        List<tanggalValue> loadMorningBalance50SP()
+        {
+            List<tanggalValue> listMorningBalance = new List<tanggalValue>();
+            List<tanggalValue> listEndingBalance = new List<tanggalValue>();
+            DateTime today = DateTime.Today.Date;
+            DateTime maxTanggal = tanggalMaxPrediksiPicker.Value.Date;
+            var query = (from x in db.StokPosisis
+                         select x).ToList();
+            var q2 = (from x in query
+                      where x.tanggal == today
+                      select x).ToList();
+
+            //Morning Balance Hari Pertama
+            listMorningBalance.Add(new tanggalValue()
+            {
+                tanggal = today,
+                value = (Int64)q2.Sum(x => (x.fitBaru + x.fitLama + x.fitNKRI + x.newBaru + x.newLama + x.RRMBaru + x.RRMLama + x.RRMNKRI + x.RupiahRusakMayor + x.unfitBaru + x.unfitLama + x.unfitNKRI + x.unprocessed + x.passThrough))
+            });
+
+            //Hitung Ending Balance + Morning Balance Selanjutnya
+            DateTime temp = today;
+            while (temp <= maxTanggal)
+            {
+                Int64 morningBal = listMorningBalance.Where(x => x.tanggal == temp).Select(x => x.value).First();
+                Int64 totalIn = (from x in prediksiInRetail50
+                                 join y in prediksiInCabang50 on x.tanggal equals y.tanggal
+                                 where x.tanggal == temp
+                                 select x.value + y.value).First();
+                Int64 adhoc50 = (Int64)adhoc50Num.Value;
+                Int64 endBal;
+                if (temp == today)
+                    endBal = morningBal + totalIn - adhoc50;
+                else
+                    endBal = morningBal + totalIn;
+
+                listEndingBalance.Add(new tanggalValue()
+                {
+                    tanggal = temp,
+                    value = endBal
+                });
+
+                if (temp == maxTanggal)
+                    break;
+                else
+                {
+                    DateTime temph1 = temp.AddDays(1);
+                    Int64 totalOut = (from x in prediksiOutAtm50
+                                      join y in prediksiOutAtm50 on x.tanggal equals y.tanggal
+                                      select x.value + y.value).First();
+                    Int64 morningBalh1 = endBal - totalOut;
+                    listMorningBalance.Add(new tanggalValue() { tanggal = temph1, value = morningBalh1 });
+                }
+                temp = temp.AddDays(1);
+            }
+            return listMorningBalance;
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
             loadForm.ShowSplashScreen();
             List<DateTime> listTanggal = loadTanggalHistorisUntukPrediksi();
 
-            List<tanggalValue> prediksiInCabang100 = loadPrediksiInCabang100();
-            List<tanggalValue> prediksiInCabang50 = loadPrediksiInCabang50();
-            List<tanggalValue> prediksiInRetail100 = loadPrediksiInRetail100();
-            List<tanggalValue> prediksiInRetail50 = loadPrediksiInRetail50();
-            List<tanggalValue> prediksiOutCabang100 = loadPrediksiOutCabang100();
-            List<tanggalValue> prediksiOutCabang50 = loadPrediksiOutCabang50();
-            List<tanggalValue> prediksiOutAtm100 = loadPrediksiOutAtm100();
-            List<tanggalValue> prediksiOutAtm50 = loadPrediksiOutAtm50();
-
+            prediksiInCabang100 = loadPrediksiInCabang100SP();
+            prediksiInCabang50 = loadPrediksiInCabang50SP();
+            prediksiInRetail100 = loadPrediksiInRetail100SP();
+            prediksiInRetail50 = loadPrediksiInRetail50SP();
+            prediksiOutCabang100 = loadPrediksiOutCabang100SP();
+            prediksiOutCabang50 = loadPrediksiOutCabang50SP();
+            prediksiOutAtm100 = loadPrediksiOutAtm100();
+            prediksiOutAtm50 = loadPrediksiOutAtm50();
+            morningBalance100 = loadMorningBalance100SP();
+            morningBalance50 = loadMorningBalance50SP();
             list = new List<ForecastDetail>();
             DateTime tgl = DateTime.Today.Date;
             DateTime maxTanggal = tanggalMaxPrediksiPicker.Value.Date;
-            while (tgl<= maxTanggal)
-            {
-                list.Add(new ForecastDetail() { tanggal = tgl,
-                    inCabang100 = prediksiInCabang100.Where(x => x.tanggal == tgl).Select(x => x.value).FirstOrDefault(),
-                    inRetail100 = prediksiInRetail100.Where(x => x.tanggal == tgl).Select(x => x.value).FirstOrDefault(),
-                    inCabang50 = prediksiInCabang50.Where(x => x.tanggal == tgl).Select(x => x.value).FirstOrDefault(),
-                    inRetail50 = prediksiInRetail50.Where(x => x.tanggal == tgl).Select(x => x.value).FirstOrDefault(),
-                    outCabang100 = prediksiOutCabang100.Where(x => x.tanggal == tgl).Select(x => x.value).FirstOrDefault(),
-                    outCabang50 = prediksiOutCabang50.Where(x => x.tanggal == tgl).Select(x => x.value).FirstOrDefault(),
-                    outATM100 = prediksiOutAtm100.Where(x=>x.tanggal == tgl).Select(x=>x.value).FirstOrDefault(),
-                    outATM50 = prediksiOutAtm50.Where(x=>x.tanggal == tgl).Select(x=>x.value).FirstOrDefault()
-                });
-                tgl = tgl.AddDays(1);
-            }
-            
-            dataGridView1.DataSource = list;
-            for(int a=2;a<dataGridView1.Columns.Count-1;a++)
-            {
-                dataGridView1.Columns[a].DefaultCellStyle.Format = "C";
-                dataGridView1.Columns[a].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
-            }
+            //while (tgl<= maxTanggal)
+            //{
+            //    list.Add(new ForecastDetail() { tanggal = tgl,
+            //        inCabang100 = prediksiInCabang100.Where(x => x.tanggal == tgl).Select(x => x.value).FirstOrDefault(),
+            //        inRetail100 = prediksiInRetail100.Where(x => x.tanggal == tgl).Select(x => x.value).FirstOrDefault(),
+            //        inCabang50 = prediksiInCabang50.Where(x => x.tanggal == tgl).Select(x => x.value).FirstOrDefault(),
+            //        inRetail50 = prediksiInRetail50.Where(x => x.tanggal == tgl).Select(x => x.value).FirstOrDefault(),
+            //        outCabang100 = prediksiOutCabang100.Where(x => x.tanggal == tgl).Select(x => x.value).FirstOrDefault(),
+            //        outCabang50 = prediksiOutCabang50.Where(x => x.tanggal == tgl).Select(x => x.value).FirstOrDefault(),
+            //        outATM100 = prediksiOutAtm100.Where(x=>x.tanggal == tgl).Select(x=>x.value).FirstOrDefault(),
+            //        outATM50 = prediksiOutAtm50.Where(x=>x.tanggal == tgl).Select(x=>x.value).FirstOrDefault()
+            //    });
+            //    tgl = tgl.AddDays(1);
+            //}
+
+            Double fit100 = (Double)fit100Num.Value / 100, fit50 = (Double)fit50Num.Value / 100;
+
+            var qView = (from a in prediksiInCabang100
+                         join b in prediksiInCabang50 on a.tanggal equals b.tanggal
+                         join c in prediksiInRetail100 on a.tanggal equals c.tanggal
+                         join d in prediksiInRetail50 on a.tanggal equals d.tanggal
+                         join f in prediksiOutCabang100 on a.tanggal equals f.tanggal
+                         join g in prediksiOutCabang50 on a.tanggal equals g.tanggal
+                         join h in prediksiOutAtm100 on a.tanggal equals h.tanggal
+                         join i in prediksiOutAtm50 on a.tanggal equals i.tanggal
+                         join j in morningBalance100 on a.tanggal equals j.tanggal
+                         join k in morningBalance50 on a.tanggal equals k.tanggal
+                         select new {
+                             Tanggal = a.tanggal,
+                             InCabang100 = a.value * fit100,
+                             InCabang50 = b.value * fit50,
+                             InRetail100 = c.value * fit100,
+                             InRetail50 = d.value * fit50,
+                             OutCabang100 = f.value * fit100,
+                             OutCabang50 = g.value * fit50,
+                             OutATM100 = h.value * fit100,
+                             OutATM50 = i.value * fit50,
+                             MorningBalance100 = j.value,
+                             MorningBalance50 = k.value
+                         }).ToList();
+            dataGridView1.DataSource = qView;
+            //for(int a=3;a<dataGridView1.Columns.Count;a++)
+            //{
+            //    dataGridView1.Columns[a].DefaultCellStyle.Format = "C";
+            //    dataGridView1.Columns[a].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
+            //}
             loadForm.CloseForm();
         }
 

@@ -401,6 +401,19 @@ namespace testProjectBCA
             reload8();
             reload9();
             reload10();
+
+            foreach (DataGridViewColumn dgvc in dataGridView1.Columns)
+            {
+                dgvc.SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
+            foreach (DataGridViewColumn dgvc in dataGridView2.Columns)
+            {
+                dgvc.SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
+            foreach (DataGridViewColumn dgvc in dataGridView3.Columns)
+            {
+                dgvc.SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
         }
 
         public String areaChoose(String areaMasuk)
@@ -494,43 +507,43 @@ namespace testProjectBCA
 
             if (a.Equals("Nasional"))
             {
-                b = "select distinct upper( vendor ) from Pkt";
+                b = "select distinct upper( vendor ) from Pkt where kodepktatm != ''";
             }
             else if (a.Equals("Jabotabek"))
             {
-                b = "select kodePkt from Pkt where kanwil like 'Jabo%'";
+                b = "select kodePkt from Pkt where kanwil like 'Jabo%' and kodepktatm != ''";
             }
             else if (a.Equals("Kanwil I"))
             {
-                b = "select kodePkt from Pkt where kanwil like 'Kanwil I'";
+                b = "select kodePkt from Pkt where kanwil like 'Kanwil I' and kodepktatm != ''";
             }
             else if (a.Equals("Kanwil II"))
             {
-                b = "select kodePkt from Pkt where kanwil like 'Kanwil II'";
+                b = "select kodePkt from Pkt where kanwil like 'Kanwil II' and kodepktatm != ''";
             }
             else if (a.Equals("Kanwil III"))
             {
-                b = "select kodePkt from Pkt where kanwil like 'Kanwil III'";
+                b = "select kodePkt from Pkt where kanwil like 'Kanwil III' and kodepktatm != ''";
             }
             else if (a.Equals("Kanwil IV"))
             {
-                b = "select kodePkt from Pkt where kanwil like 'Kanwil IV'";
+                b = "select kodePkt from Pkt where kanwil like 'Kanwil IV' and kodepktatm != ''";
             }
             else if (a.Equals("Kanwil V"))
             {
-                b = "select kodePkt from Pkt where kanwil like 'Kanwil V'";
+                b = "select kodePkt from Pkt where kanwil like 'Kanwil V' and kodepktatm != ''";
             }
             else if (a.Equals("Kanwil VI"))
             {
-                b = "select kodePkt from Pkt where kanwil like 'Kanwil VI'";
+                b = "select kodePkt from Pkt where kanwil like 'Kanwil VI' and kodepktatm != ''";
             }
             else if (a.Equals("Kanwil VII"))
             {
-                b = "select kodePkt from Pkt where kanwil like 'Kanwil VII'";
+                b = "select kodePkt from Pkt where kanwil like 'Kanwil VII' and kodepktatm != ''";
             }
             else if (a.Equals("Kanwil XI"))
             {
-                b = "select kodePkt from Pkt where kanwil like 'Kanwil XI'";
+                b = "select kodePkt from Pkt where kanwil like 'Kanwil XI' and kodepktatm != ''";
             }
 
             return b;
@@ -1790,6 +1803,18 @@ namespace testProjectBCA
 
 
             }
+            foreach (DataGridViewColumn dgvc in dataGridView1.Columns)
+            {
+                dgvc.SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
+            foreach (DataGridViewColumn dgvc in dataGridView2.Columns)
+            {
+                dgvc.SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
+            foreach (DataGridViewColumn dgvc in dataGridView3.Columns)
+            {
+                dgvc.SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
 
         }
 
@@ -1823,6 +1848,18 @@ namespace testProjectBCA
                 reload13();
 
 
+            }
+            foreach (DataGridViewColumn dgvc in dataGridView1.Columns)
+            {
+                dgvc.SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
+            foreach (DataGridViewColumn dgvc in dataGridView2.Columns)
+            {
+                dgvc.SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
+            foreach (DataGridViewColumn dgvc in dataGridView3.Columns)
+            {
+                dgvc.SortMode = DataGridViewColumnSortMode.NotSortable;
             }
         }
 
@@ -2029,8 +2066,18 @@ namespace testProjectBCA
                 reload6();
                 reload14();
                 reload13();
-
-
+            }
+            foreach (DataGridViewColumn dgvc in dataGridView1.Columns)
+            {
+                dgvc.SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
+            foreach (DataGridViewColumn dgvc in dataGridView2.Columns)
+            {
+                dgvc.SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
+            foreach (DataGridViewColumn dgvc in dataGridView3.Columns)
+            {
+                dgvc.SortMode = DataGridViewColumnSortMode.NotSortable;
             }
         }
 
@@ -2059,6 +2106,18 @@ namespace testProjectBCA
                 reload13();
 
 
+            }
+            foreach (DataGridViewColumn dgvc in dataGridView1.Columns)
+            {
+                dgvc.SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
+            foreach (DataGridViewColumn dgvc in dataGridView2.Columns)
+            {
+                dgvc.SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
+            foreach (DataGridViewColumn dgvc in dataGridView3.Columns)
+            {
+                dgvc.SortMode = DataGridViewColumnSortMode.NotSortable;
             }
         }
 
@@ -2179,6 +2238,8 @@ namespace testProjectBCA
             //    }
         }
 
+        
+
         private void comboTahun6_1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
@@ -2191,6 +2252,33 @@ namespace testProjectBCA
 
         private void comboTahun8_SelectedIndexChanged(object sender, EventArgs e)
         {
+
+        }
+        void dataGridView2_Scroll(object sender, ScrollEventArgs e)
+
+        {
+
+            this.dataGridView1.FirstDisplayedScrollingRowIndex = this.dataGridView2.FirstDisplayedScrollingRowIndex;
+            this.dataGridView3.FirstDisplayedScrollingRowIndex = this.dataGridView2.FirstDisplayedScrollingRowIndex;
+
+        }
+
+
+
+        void dataGridView1_Scroll(object sender, ScrollEventArgs e)
+
+        {
+
+            this.dataGridView2.FirstDisplayedScrollingRowIndex = this.dataGridView2.FirstDisplayedScrollingRowIndex;
+            this.dataGridView3.FirstDisplayedScrollingRowIndex = this.dataGridView2.FirstDisplayedScrollingRowIndex;
+
+        }
+        void dataGridView3_Scroll(object sender, ScrollEventArgs e)
+
+        {
+
+            this.dataGridView2.FirstDisplayedScrollingRowIndex = this.dataGridView3.FirstDisplayedScrollingRowIndex;
+            this.dataGridView1.FirstDisplayedScrollingRowIndex = this.dataGridView3.FirstDisplayedScrollingRowIndex;
 
         }
     }
@@ -2225,4 +2313,6 @@ namespace testProjectBCA
     //        return new Bitmap(stream);
     //    }
     //}
+
+    //MAAF UNTUK YANG MAINTAIN INI SELANJUTNYA, SANGAT BERANTAKAN
 }

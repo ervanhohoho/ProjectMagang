@@ -36,5 +36,6 @@ namespace testProjectBCA
         public string namaPkt { get; set; }
         public Nullable<long> inCabang { get; set; }
         public Nullable<long> inRetail { get; set; }
+        public Nullable<long> outCabang { get; set; }
     }
 }

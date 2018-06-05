@@ -22,7 +22,6 @@ namespace testProjectBCA
 
             loadListDataYangSudahAda();
             loadDataYangBelumAda();
-
         }
         void loadListDataYangSudahAda()
         {
@@ -46,7 +45,7 @@ namespace testProjectBCA
 
             filesListBelumMasuk.Items.Clear();
 
-            var query = (from x in db.Pkts select x.kodePkt).ToList();
+            var query = (from x in db.Pkts where x.kodePktATM != "" select x.kodePkt).ToList();
             semuaPkt = query;
 
             foreach(var item in dataYangSudahAdaList.Items)
@@ -386,7 +385,7 @@ namespace testProjectBCA
                     }
                 }
 
-                if(isError)
+                if (isError)
                 {
                     String errMsg2 = "Laporan " + pkt.kodePkt + " Tanggal: " + pkt.tanggalPengajuan.ToShortDateString() + " Tidak sesuai\n";
                     errMsg2 += errMsg;

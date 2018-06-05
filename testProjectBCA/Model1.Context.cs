@@ -12,6 +12,8 @@ namespace testProjectBCA
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class Database1Entities : DbContext
     {
@@ -46,5 +48,32 @@ namespace testProjectBCA
         public virtual DbSet<RekapSelisihAmbilSetor> RekapSelisihAmbilSetors { get; set; }
         public virtual DbSet<StokPosisi> StokPosisis { get; set; }
         public virtual DbSet<TransaksiAtm> TransaksiAtms { get; set; }
+        public virtual DbSet<SaveRekap> SaveRekaps { get; set; }
+    
+        public virtual int prediksiEvent2(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("startDate", startDate) :
+                new ObjectParameter("startDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("endDate", endDate) :
+                new ObjectParameter("endDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("prediksiEvent2", startDateParameter, endDateParameter);
+        }
+    
+        public virtual int prediksiHistoris(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("startDate", startDate) :
+                new ObjectParameter("startDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("endDate", endDate) :
+                new ObjectParameter("endDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("prediksiHistoris", startDateParameter, endDateParameter);
+        }
     }
 }

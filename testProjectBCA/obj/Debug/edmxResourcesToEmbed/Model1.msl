@@ -257,6 +257,7 @@
     <EntitySetMapping Name="Pkts">
       <EntityTypeMapping TypeName="CACModel.Pkt">
         <MappingFragment StoreEntitySet="Pkt">
+          <ScalarProperty Name="kodePktATM" ColumnName="kodePktATM" />
           <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
           <ScalarProperty Name="namaPkt" ColumnName="namaPkt" />
           <ScalarProperty Name="e2e" ColumnName="e2e" />
@@ -290,6 +291,7 @@
     <EntitySetMapping Name="StokPosisis">
       <EntityTypeMapping TypeName="CACModel.StokPosisi">
         <MappingFragment StoreEntitySet="StokPosisi">
+          <ScalarProperty Name="outCabang" ColumnName="outCabang" />
           <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="unprocessed" ColumnName="unprocessed" />
           <ScalarProperty Name="newBaru" ColumnName="newBaru" />

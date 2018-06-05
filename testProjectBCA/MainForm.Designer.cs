@@ -42,6 +42,7 @@
             this.rekapApprovalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rekapApprovalToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.initTransaksiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.forecastATMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cabangToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inputDataToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.inputTransaksiCabangToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -66,7 +67,6 @@
             this.inputDataKalenderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadMasterPKTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.orderTrackingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.forecastATMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -190,6 +190,13 @@
             this.initTransaksiToolStripMenuItem.Text = "Init Transaksi";
             this.initTransaksiToolStripMenuItem.Click += new System.EventHandler(this.initTransToolStripMenuItem_Click);
             // 
+            // forecastATMToolStripMenuItem
+            // 
+            this.forecastATMToolStripMenuItem.Name = "forecastATMToolStripMenuItem";
+            this.forecastATMToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.forecastATMToolStripMenuItem.Text = "Forecast ATM";
+            this.forecastATMToolStripMenuItem.Click += new System.EventHandler(this.forecastATMToolStripMenuItem_Click);
+            // 
             // cabangToolStripMenuItem
             // 
             this.cabangToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -282,13 +289,13 @@
             // inputDataToolStripMenuItem
             // 
             this.inputDataToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.abacasToolStripMenuItem1,
+            this.inputTukaranDanDeliveryToolStripMenuItem,
             this.hargaRingToolStripMenuItem,
             this.masterNasabahToolStripMenuItem,
-            this.inputDataSubsidiToolStripMenuItem,
-            this.abacasToolStripMenuItem1,
-            this.inputTukaranDanDeliveryToolStripMenuItem});
+            this.inputDataSubsidiToolStripMenuItem});
             this.inputDataToolStripMenuItem.Name = "inputDataToolStripMenuItem";
-            this.inputDataToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.inputDataToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.inputDataToolStripMenuItem.Text = "Input Data";
             // 
             // hargaRingToolStripMenuItem
@@ -329,7 +336,7 @@
             // invoiceToolStripMenuItem
             // 
             this.invoiceToolStripMenuItem.Name = "invoiceToolStripMenuItem";
-            this.invoiceToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.invoiceToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.invoiceToolStripMenuItem.Text = "Invoice";
             this.invoiceToolStripMenuItem.Click += new System.EventHandler(this.invoiceToolStripMenuItem_Click);
             // 
@@ -377,13 +384,6 @@
             this.orderTrackingToolStripMenuItem.Size = new System.Drawing.Size(97, 20);
             this.orderTrackingToolStripMenuItem.Text = "Order Tracking";
             this.orderTrackingToolStripMenuItem.Click += new System.EventHandler(this.orderTrackingToolStripMenuItem_Click);
-            // 
-            // forecastATMToolStripMenuItem
-            // 
-            this.forecastATMToolStripMenuItem.Name = "forecastATMToolStripMenuItem";
-            this.forecastATMToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
-            this.forecastATMToolStripMenuItem.Text = "Forecast ATM";
-            this.forecastATMToolStripMenuItem.Click += new System.EventHandler(this.forecastATMToolStripMenuItem_Click);
             // 
             // MainForm
             // 

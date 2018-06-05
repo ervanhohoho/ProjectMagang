@@ -21,6 +21,7 @@ namespace testProjectBCA
         DataTable deliveryCabang;
         DataTable deliveryRetail;
         DataTable deliveryLainnya;
+        List<Pkt> listPkt;
         public InputTransaksiCabangForm()
         {
             InitializeComponent();
@@ -31,6 +32,8 @@ namespace testProjectBCA
             OpenFileDialog of = new OpenFileDialog();
             of.Multiselect = true;
             of.Filter = Variables.excelFilter;
+            listPkt = (from x in db.Pkts
+                       select x).ToList();
             if(of.ShowDialog() == DialogResult.OK)
             {
                 String [] filenames = of.FileNames;
@@ -41,7 +44,6 @@ namespace testProjectBCA
                 {
                     //List<Pkt> listPkt = (from x in db.Pkts select x).ToList(); 
                     
-                    kodePkt = of.FileName.ToString().Substring(filename.LastIndexOf(".") - 4, 4);
 
                     
                    //Console.WriteLine(kodePkt);
@@ -128,6 +130,12 @@ namespace testProjectBCA
         private void readCollectionCabang(DataSet ds)
         {
             DataTable dt = ds.Tables[0];
+            //Ambil Nama PKT
+            String namaPkt = dt.Rows[0][1].ToString();
+            kodePkt = (from x in listPkt
+                       where x.namaPkt == namaPkt
+                       select x.kodePkt).FirstOrDefault();
+
             DataRow[] rows = dt.Select("not LEN(Column2) = 4 OR Column1 IN('Vendor', 'Tanggal%')");
             foreach (var row in rows)
             {
