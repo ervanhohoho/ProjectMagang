@@ -19,9 +19,9 @@ namespace testProjectBCA
         public List<Int64> bongkaranAtm { set; get; }
         public List<Int64> bongkaranCrm { set; get; }
         public List<Int64> bongkaranCdm { set; get; }
-        public List<List<Int64>> bonAtmYangDisetujui { set; get; }
+        public List<Denom> bonAtmYangDisetujui { set; get; }
         public List<Int64> saldoAkhir { set; get; }
-        public List<List<Int64>> permintaanBon { set; get; }
+        public List<Denom> permintaanBon { set; get; }
         public List<Int64> permintaanAdhoc { set; get; }
         public List<Int64> saldoAwalHitungan { set; get; }
         public List<Int64> saldoAkhirHitungan { set; get; }
@@ -37,9 +37,9 @@ namespace testProjectBCA
             bongkaranCrm = new List<Int64>();
             bongkaranCdm = new List<Int64>();
             //Penerimaan bon CIT untuk hari H
-            bonAtmYangDisetujui = new List<List<Int64>>();
+            bonAtmYangDisetujui = new List<Denom>();
             saldoAkhir = new List<Int64>();
-            permintaanBon = new List<List<Int64>>();
+            permintaanBon = new List<Denom>();
             permintaanAdhoc = new List<Int64>();
             bongkaranAtm = new List<Int64>();
             saldoAwalHitungan = new List<Int64>();

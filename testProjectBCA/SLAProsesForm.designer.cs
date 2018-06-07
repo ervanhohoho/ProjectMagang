@@ -38,7 +38,20 @@
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.slaRetailBesarNum = new System.Windows.Forms.NumericUpDown();
+            this.slaRetailKecilNum = new System.Windows.Forms.NumericUpDown();
+            this.slaCabangBesarNum = new System.Windows.Forms.NumericUpDown();
+            this.slaCabangKecilNum = new System.Windows.Forms.NumericUpDown();
+            this.label7 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.slaRetailBesarNum)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.slaRetailKecilNum)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.slaCabangBesarNum)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.slaCabangKecilNum)).BeginInit();
             this.SuspendLayout();
             // 
             // dataGridView1
@@ -72,7 +85,7 @@
             // comboBulan2
             // 
             this.comboBulan2.FormattingEnabled = true;
-            this.comboBulan2.Location = new System.Drawing.Point(325, 44);
+            this.comboBulan2.Location = new System.Drawing.Point(332, 44);
             this.comboBulan2.Name = "comboBulan2";
             this.comboBulan2.Size = new System.Drawing.Size(121, 21);
             this.comboBulan2.TabIndex = 3;
@@ -80,7 +93,7 @@
             // comboTahun2
             // 
             this.comboTahun2.FormattingEnabled = true;
-            this.comboTahun2.Location = new System.Drawing.Point(452, 44);
+            this.comboTahun2.Location = new System.Drawing.Point(459, 44);
             this.comboTahun2.Name = "comboTahun2";
             this.comboTahun2.Size = new System.Drawing.Size(121, 21);
             this.comboTahun2.TabIndex = 4;
@@ -88,7 +101,7 @@
             // 
             // buttonRefresh
             // 
-            this.buttonRefresh.Location = new System.Drawing.Point(638, 44);
+            this.buttonRefresh.Location = new System.Drawing.Point(645, 44);
             this.buttonRefresh.Name = "buttonRefresh";
             this.buttonRefresh.Size = new System.Drawing.Size(75, 23);
             this.buttonRefresh.TabIndex = 5;
@@ -109,7 +122,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(733, 44);
+            this.button1.Location = new System.Drawing.Point(740, 44);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 7;
@@ -137,11 +150,114 @@
             this.label2.TabIndex = 9;
             this.label2.Text = "AVG";
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(287, 14);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(87, 13);
+            this.label3.TabIndex = 10;
+            this.label3.Text = "SLA Retail Besar";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(481, 15);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(83, 13);
+            this.label4.TabIndex = 10;
+            this.label4.Text = "SLA Retail Kecil";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(675, 14);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(97, 13);
+            this.label5.TabIndex = 10;
+            this.label5.Text = "SLA Cabang Besar";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(891, 14);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(93, 13);
+            this.label6.TabIndex = 10;
+            this.label6.Text = "SLA Cabang Kecil";
+            // 
+            // slaRetailBesarNum
+            // 
+            this.slaRetailBesarNum.Location = new System.Drawing.Point(371, 12);
+            this.slaRetailBesarNum.Name = "slaRetailBesarNum";
+            this.slaRetailBesarNum.Size = new System.Drawing.Size(104, 20);
+            this.slaRetailBesarNum.TabIndex = 11;
+            this.slaRetailBesarNum.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // slaRetailKecilNum
+            // 
+            this.slaRetailKecilNum.Location = new System.Drawing.Point(565, 12);
+            this.slaRetailKecilNum.Name = "slaRetailKecilNum";
+            this.slaRetailKecilNum.Size = new System.Drawing.Size(104, 20);
+            this.slaRetailKecilNum.TabIndex = 11;
+            this.slaRetailKecilNum.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // slaCabangBesarNum
+            // 
+            this.slaCabangBesarNum.Location = new System.Drawing.Point(778, 12);
+            this.slaCabangBesarNum.Name = "slaCabangBesarNum";
+            this.slaCabangBesarNum.Size = new System.Drawing.Size(104, 20);
+            this.slaCabangBesarNum.TabIndex = 11;
+            this.slaCabangBesarNum.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // slaCabangKecilNum
+            // 
+            this.slaCabangKecilNum.Location = new System.Drawing.Point(985, 12);
+            this.slaCabangKecilNum.Name = "slaCabangKecilNum";
+            this.slaCabangKecilNum.Size = new System.Drawing.Size(104, 20);
+            this.slaCabangKecilNum.TabIndex = 11;
+            this.slaCabangKecilNum.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(285, 36);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(26, 33);
+            this.label7.TabIndex = 12;
+            this.label7.Text = "-";
+            // 
             // SLAProsesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1134, 623);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.slaCabangKecilNum);
+            this.Controls.Add(this.slaCabangBesarNum);
+            this.Controls.Add(this.slaRetailKecilNum);
+            this.Controls.Add(this.slaRetailBesarNum);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button1);
@@ -155,6 +271,10 @@
             this.Name = "SLAProsesForm";
             this.Text = "SLAProsesForm";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.slaRetailBesarNum)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.slaRetailKecilNum)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.slaCabangBesarNum)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.slaCabangKecilNum)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -172,5 +292,14 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.NumericUpDown slaRetailBesarNum;
+        private System.Windows.Forms.NumericUpDown slaRetailKecilNum;
+        private System.Windows.Forms.NumericUpDown slaCabangBesarNum;
+        private System.Windows.Forms.NumericUpDown slaCabangKecilNum;
+        private System.Windows.Forms.Label label7;
     }
 }

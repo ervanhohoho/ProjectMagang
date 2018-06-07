@@ -55,13 +55,13 @@ namespace testProjectBCA
 
                 DataTable dt = ds.Tables[i];
                 String sheetname = dt.TableName;
-                
+
                 var query3 = (from x in en.StokPosisis.AsEnumerable()
-                              where x.namaPkt == ds.Tables[0].Rows[5][11].ToString() 
+                              where x.namaPkt == ds.Tables[0].Rows[5][11].ToString()
                               && ((DateTime)x.tanggal).ToShortDateString() == Convert.ToDateTime(dt.Rows[8][1].ToString()).ToShortDateString()
                               select x).ToList();
                 var query4 = (from x in en.StokPosisis.AsEnumerable()
-                              where ((DateTime) x.tanggal).ToShortDateString() == Convert.ToDateTime(dt.Rows[8][1].ToString()).AddDays(-1).ToShortDateString() 
+                              where ((DateTime)x.tanggal).ToShortDateString() == Convert.ToDateTime(dt.Rows[8][1].ToString()).AddDays(-1).ToShortDateString()
                               && x.namaPkt == ds.Tables[0].Rows[5][11].ToString()
                               select x).ToList();
 
@@ -77,6 +77,9 @@ namespace testProjectBCA
                     //start of penimpaan
                     //Console.WriteLine(query);
                     //continue
+
+
+
                     for (int j = 0; j < 8; j++)
                     {
                         Int64 unprocessed = 0;
@@ -155,37 +158,61 @@ namespace testProjectBCA
                         if (!String.IsNullOrEmpty(dt.Rows[12 + j][9].ToString()) && Int64.TryParse(dt.Rows[12 + j][9].ToString(), out buf))
                             outCabang = Int64.Parse(dt.Rows[12 + j][9].ToString());
 
-
-
-
                         //
                         tanggal = Convert.ToDateTime(dt.Rows[8][1].ToString());
 
-                        //
-
-                        //en.StokPosisis.Add(new StokPosisi()
-                        //{
-
-                        query3[j].unprocessed = unprocessed;
-                        query3[j].newBaru = newBaru;
-                        query3[j].newLama = newLama;
-                        query3[j].fitBaru = fitBaru;
-                        query3[j].fitNKRI = fitNKRI;
-                        query3[j].fitLama = fitLama;
-                        query3[j].passThrough = passThrough;
-                        query3[j].unfitBaru = unfitBaru;
-                        query3[j].unfitNKRI = unfitNKRI;
-                        query3[j].unfitLama = unfitLama;
-                        query3[j].RRMBaru = RRMBaru;
-                        query3[j].RRMNKRI = RRMNKRI;
-                        query3[j].RRMLama = RRMLama;
-                        query3[j].RupiahRusakMayor = RupiahRusakMayor;
-                        query3[j].cekLaporan = cekLaporan;
-                        query3[j].denom = dt.Rows[12 + j][0].ToString();
-                        query3[j].jenis = "Kertas";
-                        query3[j].tanggal = tanggal;
-                        query3[j].namaPkt = dt.Rows[5][11].ToString();
-
+                        var check = (from x in query3
+                                     where ((DateTime)x.tanggal).Date == tanggal.Date
+                                     && x.denom == dt.Rows[12 + j][0].ToString()
+                                     && x.jenis == "Kertas"
+                                     select x).FirstOrDefault();
+                        if (check != null)
+                        {
+                            query3[j].unprocessed = unprocessed;
+                            query3[j].newBaru = newBaru;
+                            query3[j].newLama = newLama;
+                            query3[j].fitBaru = fitBaru;
+                            query3[j].fitNKRI = fitNKRI;
+                            query3[j].fitLama = fitLama;
+                            query3[j].passThrough = passThrough;
+                            query3[j].unfitBaru = unfitBaru;
+                            query3[j].unfitNKRI = unfitNKRI;
+                            query3[j].unfitLama = unfitLama;
+                            query3[j].RRMBaru = RRMBaru;
+                            query3[j].RRMNKRI = RRMNKRI;
+                            query3[j].RRMLama = RRMLama;
+                            query3[j].RupiahRusakMayor = RupiahRusakMayor;
+                            query3[j].cekLaporan = cekLaporan;
+                            query3[j].denom = dt.Rows[12 + j][0].ToString();
+                            query3[j].jenis = "Kertas";
+                            query3[j].tanggal = tanggal;
+                            query3[j].namaPkt = dt.Rows[5][11].ToString();
+                        }
+                        else
+                        {
+                            en.StokPosisis.Add(new StokPosisi()
+                            {
+                                unprocessed = unprocessed,
+                                newBaru = newBaru,
+                                newLama = newLama,
+                                fitBaru = fitBaru,
+                                fitNKRI = fitNKRI,
+                                fitLama = fitLama,
+                                passThrough = passThrough,
+                                unfitBaru = unfitBaru,
+                                unfitNKRI = unfitNKRI,
+                                unfitLama = unfitLama,
+                                RRMBaru = RRMBaru,
+                                RRMNKRI = RRMNKRI,
+                                RRMLama = RRMLama,
+                                RupiahRusakMayor = RupiahRusakMayor,
+                                cekLaporan = cekLaporan,
+                                denom = dt.Rows[12 + j][0].ToString(),
+                                jenis = "Kertas",
+                                tanggal = tanggal,
+                                namaPkt = dt.Rows[5][11].ToString()
+                            });
+                        }
                         if (query4.Any())
                         {
                             query4[j].inCabang = inCabang;
@@ -199,7 +226,7 @@ namespace testProjectBCA
                                 denom = dt.Rows[12 + j][0].ToString(),
                                 namaPkt = dt.Rows[5][11].ToString(),
                                 tanggal = tanggal.AddDays(-1),
-                                jenis = "Kertas", 
+                                jenis = "Kertas",
                                 fitBaru = 0,
                                 fitLama = 0,
                                 fitNKRI = 0,
@@ -305,27 +332,59 @@ namespace testProjectBCA
 
                         tanggal = Convert.ToDateTime(dt.Rows[8][1].ToString());
 
-                        //en.StokPosisis.Add(new StokPosisi()
-                        //{
-                        query3[j + 8].unprocessed = unprocessed;
-                        query3[j + 8].newBaru = newBaru;
-                        query3[j + 8].newLama = newLama;
-                        query3[j + 8].fitBaru = fitBaru;
-                        query3[j + 8].fitNKRI = fitNKRI;
-                        query3[j + 8].fitLama = fitLama;
-                        query3[j + 8].passThrough = passThrough;
-                        query3[j + 8].unfitBaru = unfitBaru;
-                        query3[j + 8].unfitNKRI = unfitNKRI;
-                        query3[j + 8].unfitLama = unfitLama;
-                        query3[j + 8].RRMBaru = RRMBaru;
-                        query3[j + 8].RRMNKRI = RRMNKRI;
-                        query3[j + 8].RRMLama = RRMLama;
-                        query3[j + 8].RupiahRusakMayor = RupiahRusakMayor;
-                        query3[j + 8].cekLaporan = cekLaporan;
-                        query3[j + 8].denom = dt.Rows[23 + j][0].ToString();
-                        query3[j + 8].jenis = "Koin";
-                        query3[j + 8].tanggal = tanggal;
-                        query3[j + 8].namaPkt = dt.Rows[5][11].ToString();
+                        var check = (from x in query3
+                                     where ((DateTime)x.tanggal).Date == tanggal.Date
+                                     && x.denom == dt.Rows[23 + j][0].ToString()
+                                     && x.jenis == "Koin"
+                                     select x).FirstOrDefault();
+                        if (check != null)
+                        {
+                            query3[j + 8].unprocessed = unprocessed;
+                            query3[j + 8].newBaru = newBaru;
+                            query3[j + 8].newLama = newLama;
+                            query3[j + 8].fitBaru = fitBaru;
+                            query3[j + 8].fitNKRI = fitNKRI;
+                            query3[j + 8].fitLama = fitLama;
+                            query3[j + 8].passThrough = passThrough;
+                            query3[j + 8].unfitBaru = unfitBaru;
+                            query3[j + 8].unfitNKRI = unfitNKRI;
+                            query3[j + 8].unfitLama = unfitLama;
+                            query3[j + 8].RRMBaru = RRMBaru;
+                            query3[j + 8].RRMNKRI = RRMNKRI;
+                            query3[j + 8].RRMLama = RRMLama;
+                            query3[j + 8].RupiahRusakMayor = RupiahRusakMayor;
+                            query3[j + 8].cekLaporan = cekLaporan;
+                            query3[j + 8].denom = dt.Rows[23 + j][0].ToString();
+                            query3[j + 8].jenis = "Koin";
+                            query3[j + 8].tanggal = tanggal;
+                            query3[j + 8].namaPkt = dt.Rows[5][11].ToString();
+                        }
+                        else
+                        {
+                            en.StokPosisis.Add(new StokPosisi()
+                            {
+                                unprocessed = unprocessed,
+                                newBaru = newBaru,
+                                newLama = newLama,
+                                fitBaru = fitBaru,
+                                fitNKRI = fitNKRI,
+                                fitLama = fitLama,
+                                passThrough = passThrough,
+                                unfitBaru = unfitBaru,
+                                unfitNKRI = unfitNKRI,
+                                unfitLama = unfitLama,
+                                RRMBaru = RRMBaru,
+                                RRMNKRI = RRMNKRI,
+                                RRMLama = RRMLama,
+                                RupiahRusakMayor = RupiahRusakMayor,
+                                cekLaporan = cekLaporan,
+                                denom = dt.Rows[12 + j][0].ToString(),
+                                jenis = "Koin",
+                                tanggal = tanggal,
+                                namaPkt = dt.Rows[5][11].ToString()
+                            });
+                        }
+
                         //});
 
                         if (query4.Any())

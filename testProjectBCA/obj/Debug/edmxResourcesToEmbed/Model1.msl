@@ -356,5 +356,22 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="SaveRekaps">
+      <EntityTypeMapping TypeName="CACModel.SaveRekap">
+        <MappingFragment StoreEntitySet="SaveRekap">
+          <ScalarProperty Name="tanggal" ColumnName="tanggal" />
+          <ScalarProperty Name="komentar" ColumnName="komentar" />
+          <ScalarProperty Name="keterangan" ColumnName="keterangan" />
+          <ScalarProperty Name="totalRekap" ColumnName="totalRekap" />
+          <ScalarProperty Name="rekapBelumSelesai" ColumnName="rekapBelumSelesai" />
+          <ScalarProperty Name="rekapSelesai" ColumnName="rekapSelesai" />
+          <ScalarProperty Name="orderTracking" ColumnName="orderTracking" />
+          <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="prediksiEvent2" FunctionName="CACModel.Store.prediksiEvent2" />
+    <FunctionImportMapping FunctionImportName="prediksiHistoris" FunctionName="CACModel.Store.prediksiHistoris" />
   </EntityContainerMapping>
 </Mapping>

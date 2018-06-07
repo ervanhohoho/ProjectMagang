@@ -217,7 +217,7 @@ namespace testProjectBCA
 
         void loadComboPkt()
         {
-            List<String>listPkt = (from x in db.Pkts where x.kanwil.ToLower().Contains("JABO") select x.namaPkt).ToList();
+            List<String>listPkt = (from x in db.Pkts where x.kanwil.ToLower().Contains("JABO") && x.kodePktCabang != "" select x.namaPkt).ToList();
             listPkt = listPkt.Select(x => x.ToUpper().Contains("CASH PROCESSING CENTER ALAM SUTERA") ? "CASH PROCESSING CENTER ALAM SUTERA" : x).Distinct().ToList();
 
             jumlahPkt = listPkt.Count;
@@ -628,6 +628,10 @@ namespace testProjectBCA
                         && ((DateTime)x.tanggal).Year <= Int32.Parse(comboTahun2.SelectedValue.ToString())
                         && x.namaPkt.Contains(comboNamaPkt.SelectedValue.ToString())
                         select x).ToList();
+            int slaRetailBesar = (int)slaRetailBesarNum.Value,
+                slaRetailKecil = (int)slaRetailKecilNum.Value,
+                slaCabangBesar = (int)slaCabangBesarNum.Value,
+                slaCabangKecil = (int)slaCabangKecilNum.Value;
             for (int thn = Int32.Parse(comboTahun1.SelectedValue.ToString()); thn <= Int32.Parse(comboTahun2.SelectedValue.ToString()); thn++)
             {
                 for (int bln = Int32.Parse(comboBulan1.SelectedValue.ToString()); bln <= Int32.Parse(comboBulan2.SelectedValue.ToString()); bln++)
@@ -771,20 +775,20 @@ namespace testProjectBCA
 
                 //if (sla[i].unprocUangBesar + sla[i].inCabangUangBesar + sla[i].inRetailUangBesar != 0)
                 //{
-                sla[i].slaProsesBesar = (Double)sla[i].totalProsesUangBesar / (sla[i].unprocUangBesar + sla[i].inCabangUangBesar + sla[i].inRetailUangBesar);
+                sla[i].slaProsesBesar = (Double)sla[i].totalProsesUangBesar / (sla[i].unprocUangBesar + sla[i].inCabangUangBesar / slaCabangBesar + sla[i].inRetailUangBesar/slaRetailBesar);
                 //}
                 //if (sla[i].unprocUangKecil + sla[i].inCabangUangKecil + sla[i].inRetailUangKecil != 0)
                 //{
-                sla[i].slaProsesKecil = (Double)sla[i].totalProsesUangKecil / (sla[i].unprocUangKecil + (sla[i].inCabangUangKecil / 2) + sla[i].inRetailUangKecil);
+                sla[i].slaProsesKecil = (Double)sla[i].totalProsesUangKecil / (sla[i].unprocUangKecil + (sla[i].inCabangUangKecil / slaCabangKecil) + sla[i].inRetailUangKecil/slaRetailKecil);
                 //}
                 //if (sla[i].unprocUangBesar + sla[i].inCabangUangBesar + sla[i].inRetailUangBesar + sla[i].unprocUangKecil + sla[i].inCabangUangKecil + sla[i].inRetailUangKecil != 0)
                 //{
                 if (!Double.IsNaN(sla[i].slaProsesBesar) && !Double.IsNaN(sla[i].slaProsesKecil))
-                    sla[i].slaGabung = ((Double)sla[i].totalProsesUangBesar + (Double)sla[i].totalProsesUangKecil) / (sla[i].unprocUangBesar + sla[i].inCabangUangBesar + sla[i].inRetailUangBesar + sla[i].unprocUangKecil + (sla[i].inCabangUangKecil / 2) + sla[i].inRetailUangKecil);
+                    sla[i].slaGabung = ((Double)sla[i].totalProsesUangBesar + (Double)sla[i].totalProsesUangKecil) / (sla[i].unprocUangBesar + sla[i].inCabangUangBesar/slaCabangBesar + sla[i].inRetailUangBesar/slaRetailBesar + sla[i].unprocUangKecil + (sla[i].inCabangUangKecil / slaCabangKecil) + sla[i].inRetailUangKecil/slaRetailKecil);
                 else if (!Double.IsNaN(sla[i].slaProsesBesar))
-                    sla[i].slaGabung = sla[i].slaProsesKecil;
-                else if (!Double.IsNaN(sla[i].slaProsesKecil))
                     sla[i].slaGabung = sla[i].slaProsesBesar;
+                else if (!Double.IsNaN(sla[i].slaProsesKecil))
+                    sla[i].slaGabung = sla[i].slaProsesKecil;
                 else
                     sla[i].slaGabung = Double.NaN;
                 //}
@@ -869,11 +873,15 @@ namespace testProjectBCA
         }
         public Double hitungSLA(Int64 unproc, Int64 retail, Int64 cabang, Int64 unprocH1, String bk)
         {
+            int slaRetailBesar  = (int)slaRetailBesarNum.Value, 
+                slaRetailKecil = (int)slaRetailKecilNum.Value, 
+                slaCabangBesar  = (int)slaCabangBesarNum.Value, 
+                slaCabangKecil = (int)slaCabangKecilNum.Value;
             Double sla;
             if (bk == "Besar")
-                sla= (Double)(unproc + retail + cabang - unprocH1) / (unproc + retail + cabang);
+                sla= (Double)(unproc + retail + cabang - unprocH1) / (unproc + retail/slaRetailBesar + cabang/slaCabangBesar);
             else
-                sla = (Double)(unproc + retail + cabang - unprocH1) / (unproc + retail + cabang/2);
+                sla = (Double)(unproc + retail + cabang - unprocH1) / (unproc + retail/slaRetailKecil + cabang/slaCabangKecil);
             if (sla > 1)
                 sla = 1;
             else if (sla < 0)
@@ -882,21 +890,25 @@ namespace testProjectBCA
         }
         public Double hitungSLA(Int64 unprocBesar, Int64 retailBesar, Int64 cabangBesar, Int64 unprocH1Besar, Int64 unprocKecil, Int64 retailKecil, Int64 cabangKecil, Int64 unprocH1Kecil)
         {
-            if((unprocBesar + retailBesar + cabangBesar) == 0 && (unprocKecil + retailKecil + cabangKecil) == 0)
+            int slaRetailBesar = (int)slaRetailBesarNum.Value,
+                slaRetailKecil= (int)slaRetailKecilNum.Value,
+                slaCabangBesar = (int)slaCabangBesarNum.Value,
+                slaCabangKecil= (int)slaCabangKecilNum.Value;
+            if ((unprocBesar + retailBesar + cabangBesar) == 0 && (unprocKecil + retailKecil + cabangKecil) == 0)
             {
                 return Double.NaN;
             }
             else if((unprocBesar + retailBesar + cabangBesar) == 0)
             {
-                return (Double)(unprocKecil + retailKecil + cabangKecil - unprocH1Kecil) / (unprocKecil + retailKecil + cabangKecil/2);
+                return (Double)(unprocKecil + retailKecil + cabangKecil - unprocH1Kecil) / (unprocKecil + retailKecil/slaRetailKecil + cabangKecil/slaCabangKecil);
             }
             else if((unprocKecil + retailKecil+cabangKecil)==0)
             {
-                return (Double)(unprocBesar + retailBesar + cabangBesar - unprocH1Besar) / (unprocBesar + retailBesar + cabangBesar);
+                return (Double)(unprocBesar + retailBesar + cabangBesar - unprocH1Besar) / (unprocBesar + retailBesar/slaRetailBesar + cabangBesar/slaCabangBesar);
             }
             else
             {
-                return (Double)((unprocBesar + retailBesar + cabangBesar - unprocH1Besar) + (unprocKecil + retailKecil + cabangKecil - unprocH1Kecil)) / ((unprocBesar + retailBesar + cabangBesar)+ (unprocKecil + retailKecil + cabangKecil / 2));
+                return (Double)((unprocBesar + retailBesar + cabangBesar - unprocH1Besar) + (unprocKecil + retailKecil + cabangKecil - unprocH1Kecil)) / ((unprocBesar + retailBesar/slaRetailBesar + cabangBesar/slaCabangBesar)+ (unprocKecil + retailKecil/slaRetailKecil + cabangKecil / slaCabangKecil));
             }
         }
         public Int64 hitungPcs(Int64 value, String denom)

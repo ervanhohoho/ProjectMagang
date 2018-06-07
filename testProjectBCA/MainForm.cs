@@ -764,6 +764,20 @@ namespace testProjectBCA
             faf.MdiParent = this;
             faf.Show();
         }
+
+        private void inputUpdateDataToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MultipleFilesInputUpdateForm mfiuf = new MultipleFilesInputUpdateForm();
+            mfiuf.MdiParent = this;
+            mfiuf.Show();
+        }
+
+        private void exportDataHistorisToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ExportForm ef = new ExportForm();
+            ef.MdiParent = this;
+            ef.Show();
+        }
     }
 }
 public static class SqlBulkCopyExtensions

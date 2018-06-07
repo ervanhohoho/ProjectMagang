@@ -276,73 +276,146 @@ namespace testProjectBCA
                         pkt.bongkaranCrm.Add(0);
                 }
                 //Pengambilan bon yang disetujui dari excel
-                for (int i = 0; i < 7; i++)
+                for (int i = 0; i < 15; i++)
                 {
-                    List<Int64> tempList = new List<Int64>();
-                    if (table.Rows[22+i][5].ToString().Trim() == "" && (table.Rows[22 + i][6].ToString().Trim() == "" || table.Rows[22 + i][6].ToString().Trim() == "0") &&
-                        (table.Rows[22 + i][7].ToString().Trim() == "" || table.Rows[22 + i][7].ToString().Trim() == "0") &&
-                        (table.Rows[22 + i][8].ToString().Trim() == "" || table.Rows[22 + i][8].ToString().Trim() == "0"))
+                    DataRow row = table.Rows[22 + i];
+                    if (row[5].ToString().Trim() == "" && (String.IsNullOrEmpty(row[6].ToString().Trim()) || row[6].ToString().Trim() == "0") && (String.IsNullOrEmpty(row[7].ToString().Trim()) || row[7].ToString().Trim() == "0") && (String.IsNullOrEmpty(row[8].ToString().Trim()) || row[8].ToString().Trim() == "0"))
                         continue;
-                    for (int j = 0; j < 3; j++)
+
+                    String tanggalE = row[5].ToString(), d100E = row[6].ToString(), d50E = row[7].ToString(), d20E = row[8].ToString();
+
+                    DateTime tanggal;
+                    Int64 d100, d50, d20, buf;
+
+                    //Tanggal
+                    tanggal = Convert.ToDateTime(tanggalE);
+
+                    //Denom 100.000
+                    if (!String.IsNullOrEmpty(row[6].ToString()))
                     {
-                        Console.WriteLine(i + " " + j);
-                        Console.WriteLine(table.Rows[22 + i][6 + j].ToString());
-                        if (table.Rows[22 + i][6 + j].ToString().Trim() != "0" && table.Rows[22 + i][6 + j].ToString().Trim() != "" && table.Rows[22 + i][6 + j].ToString().Trim() != "-")
-                            tempList.Add(Int64.Parse(table.Rows[22 + i][6 + j].ToString()));
+                        if (Int64.TryParse(d100E, out buf))
+                            d100 = buf;
                         else
-                            tempList.Add(0);
+                            d100 = 0;
                     }
-                    pkt.bonAtmYangDisetujui.Add(tempList);
-                    //MessageBox.Show(pkt.bonAtmYangDisetujui[0][0].ToString());
+                    else
+                        d100 = 0;
+
+                    //Denom 50.000
+                    if (!String.IsNullOrEmpty(row[7].ToString()))
+                    {
+                        if (Int64.TryParse(d50E, out buf))
+                            d50 = buf;
+                        else
+                            d50 = 0;
+                    }
+                    else
+                        d50 = 0;
+
+                    //Denom 20.000
+                    if (!String.IsNullOrEmpty(row[8].ToString()))
+                    {
+                        if (Int64.TryParse(d20E, out buf))
+                            d20 = buf;
+                        else
+                            d20 = 0;
+                    }
+                    else
+                        d20 = 0;
+                    pkt.bonAtmYangDisetujui.Add(new Denom()
+                    {
+                        tgl = tanggal,
+                        d100 = d100,
+                        d50 = d50,
+                        d20 = d20
+                    });
                 }
                 //Pengambilan saldo akhir dari excel
                 for (int a = 0; a < 4; a++)
                 {
-                    if (table.Rows[32][6 + a].ToString() != "0" && table.Rows[32][6 + a].ToString() != "")
+                    if (table.Rows[38][6 + a].ToString() != "0" && table.Rows[32][6 + a].ToString() != "")
                         pkt.saldoAkhir.Add(Int64.Parse(table.Rows[32][6 + a].ToString()));
                     else
                         pkt.saldoAkhir.Add(0);
                 }
                 //Pengambilan data permintaan bon
-                for (int i = 0; i < 7; i++)
+                for (int i = 0; i < 10; i++)
                 {
-                    List<Int64> tempList = new List<Int64>();
-                    if (table.Rows[34 + i][5].ToString().Trim() == "" && 
-                        (table.Rows[34 + i][6].ToString().Trim() == "" || table.Rows[34 + i][6].ToString().Trim() == "0" || table.Rows[34 + i][6].ToString().Trim() == ".") &&
-                        (table.Rows[34 + i][7].ToString().Trim() == "" || table.Rows[34 + i][7].ToString().Trim() == "0" || table.Rows[34 + i][7].ToString().Trim() == ".") &&
-                        (table.Rows[34 + i][8].ToString().Trim() == "" || table.Rows[34 + i][8].ToString().Trim() == "0" || table.Rows[34 + i][8].ToString().Trim() == "."))
+                    DataRow row = table.Rows[40 + i];
+                    if (row[5].ToString().Trim() == "" &&
+                        (String.IsNullOrEmpty(row[6].ToString().Trim()) || row[6].ToString().Trim() == "0" || row[6].ToString().Trim() == ".") &&
+                        (String.IsNullOrEmpty(row[7].ToString().Trim()) || row[7].ToString().Trim() == "0" || row[7].ToString().Trim() == ".") &&
+                        (String.IsNullOrEmpty(row[8].ToString().Trim()) || row[8].ToString().Trim() == "0" || row[8].ToString().Trim() == "."))
                         continue;
+                    String tanggalE = row[5].ToString(), d100E = row[6].ToString(), d50E = row[7].ToString(), d20E = row[8].ToString();
 
-                    for (int j = 0; j < 4; j++)
+                    DateTime tanggal;
+                    Int64 d100, d50, d20, buf;
+
+                    //Tanggal
+                    tanggal = Convert.ToDateTime(tanggalE);
+
+                    //Denom 100.000
+                    if (!String.IsNullOrEmpty(row[6].ToString()))
                     {
-                        if (table.Rows[34 + i][6 + j].ToString().Trim() != "0" && table.Rows[34 + i][6 + j].ToString().Trim() != "" && table.Rows[34 + i][6+j].ToString() != ".")
-                            tempList.Add(Int64.Parse(table.Rows[34 + i][6 + j].ToString()));
+                        if (Int64.TryParse(d100E, out buf))
+                            d100 = buf;
                         else
-                            tempList.Add(0);
+                            d100 = 0;
                     }
-                    pkt.permintaanBon.Add(tempList);
+                    else
+                        d100 = 0;
 
+                    //Denom 50.000
+                    if (!String.IsNullOrEmpty(row[7].ToString()))
+                    {
+                        if (Int64.TryParse(d50E, out buf))
+                            d50 = buf;
+                        else
+                            d50 = 0;
+                    }
+                    else
+                        d50 = 0;
+
+                    //Denom 20.000
+                    if (!String.IsNullOrEmpty(row[8].ToString()))
+                    {
+                        if (Int64.TryParse(d20E, out buf))
+                            d20 = buf;
+                        else
+                            d20 = 0;
+                    }
+                    else
+                        d20 = 0;
+
+                    pkt.permintaanBon.Add(new Denom()
+                    {
+                        tgl = tanggal,
+                        d100 = d100,
+                        d50 = d50,
+                        d20 = d20
+                    });
                 }
-                if (!String.IsNullOrEmpty(table.Rows[44][6].ToString()) && !String.IsNullOrEmpty(table.Rows[44][7].ToString()) && !String.IsNullOrEmpty(table.Rows[44][8].ToString()))
+                if (!String.IsNullOrEmpty(table.Rows[52][6].ToString()) && !String.IsNullOrEmpty(table.Rows[52][7].ToString()) && !String.IsNullOrEmpty(table.Rows[52][8].ToString()))
                 {
                     Int64 buf;
-                    if (String.IsNullOrEmpty(table.Rows[44][6].ToString()))
+                    if (String.IsNullOrEmpty(table.Rows[52][6].ToString()))
                         pkt.permintaanAdhoc.Add(0);
-                    else if (Int64.TryParse(table.Rows[44][6].ToString(), out buf))
+                    else if (Int64.TryParse(table.Rows[52][6].ToString(), out buf))
                         pkt.permintaanAdhoc.Add(buf);
                     else
                         pkt.permintaanAdhoc.Add(0);
 
-                    if (String.IsNullOrEmpty(table.Rows[44][7].ToString()))
+                    if (String.IsNullOrEmpty(table.Rows[52][7].ToString()))
                         pkt.permintaanAdhoc.Add(0);
-                    else if (Int64.TryParse(table.Rows[44][7].ToString(), out buf))
+                    else if (Int64.TryParse(table.Rows[52][7].ToString(), out buf))
                         pkt.permintaanAdhoc.Add(buf);
                     else
                         pkt.permintaanAdhoc.Add(0);
 
-                    if (String.IsNullOrEmpty(table.Rows[44][8].ToString()))
+                    if (String.IsNullOrEmpty(table.Rows[52][8].ToString()))
                         pkt.permintaanAdhoc.Add(0);
-                    else if (Int64.TryParse(table.Rows[44][8].ToString(), out buf))
+                    else if (Int64.TryParse(table.Rows[52][8].ToString(), out buf))
                         pkt.permintaanAdhoc.Add(buf);
                     else
                         pkt.permintaanAdhoc.Add(0);

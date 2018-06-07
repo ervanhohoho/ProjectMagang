@@ -305,18 +305,13 @@ namespace testProjectBCA
             dataGridView1.Rows.Add(row);
 
             //Penerimaan BON CIT
-            foreach (List<Int64> temp in pkt[sheetIndex].bonAtmYangDisetujui)
+            foreach (var temp in pkt[sheetIndex].bonAtmYangDisetujui)
             {
                 row = new DataGridViewRow();
                 keterangan = new DataGridViewTextBoxCell();
                 keterangan.Value = "Bon ATM Yang Disetujui";
                 row.Cells.Add(keterangan);
-                foreach (Int64 temp2 in temp)
-                {
-                    DataGridViewCell cell = new DataGridViewTextBoxCell();
-                    cell.Value = temp2;
-                    row.Cells.Add(cell);
-                }
+                
                 dataGridView1.Rows.Add(row);
             }
             
@@ -422,21 +417,59 @@ namespace testProjectBCA
                         pkt.bongkaranCrm.Add(0);
                 }
                 //Pengambilan bon yang disetujui dari excel
-                for (int i = 0; i < 7; i++)
+                for (int i = 0; i < 15; i++)
                 {
-                    List<Int64> tempList = new List<Int64>();
-                    if ((table.Rows[22 + i][6].ToString() == "" || table.Rows[22 + i][6].ToString() == "0") &&
-                        (table.Rows[22 + i][7].ToString() == "" || table.Rows[22 + i][7].ToString() == "0") &&
-                        (table.Rows[22 + i][8].ToString() == "" || table.Rows[22 + i][8].ToString() == "0"))
+                    DataRow row = table.Rows[22 + i];
+                    if (row[5].ToString().Trim() == "" && (String.IsNullOrEmpty(row[6].ToString().Trim()) || row[6].ToString().Trim() == "0") && (String.IsNullOrEmpty(row[7].ToString().Trim()) || row[7].ToString().Trim() == "0") && (String.IsNullOrEmpty(row[8].ToString().Trim()) || row[8].ToString().Trim() == "0"))
                         continue;
-                    for (int j = 0; j < 4; j++)
+
+                    String tanggalE = row[5].ToString(), d100E = row[6].ToString(), d50E = row[7].ToString(), d20E = row[8].ToString();
+
+                    DateTime tanggal;
+                    Int64 d100, d50, d20, buf;
+
+                    //Tanggal
+                    tanggal = Convert.ToDateTime(tanggalE);
+
+                    //Denom 100.000
+                    if (!String.IsNullOrEmpty(row[6].ToString()))
                     {
-                        if (table.Rows[22 + i][6 + j].ToString() != "0" && table.Rows[22 + i][6 + j].ToString() != "")
-                            tempList.Add(Int64.Parse(table.Rows[22 + i][6 + j].ToString()));
+                        if (Int64.TryParse(d100E, out buf))
+                            d100 = buf;
                         else
-                            tempList.Add(0);
+                            d100 = 0;
                     }
-                    pkt.bonAtmYangDisetujui.Add(tempList);
+                    else
+                        d100 = 0;
+
+                    //Denom 50.000
+                    if (!String.IsNullOrEmpty(row[7].ToString()))
+                    {
+                        if (Int64.TryParse(d50E, out buf))
+                            d50 = buf;
+                        else
+                            d50 = 0;
+                    }
+                    else
+                        d50 = 0;
+
+                    //Denom 20.000
+                    if (!String.IsNullOrEmpty(row[8].ToString()))
+                    {
+                        if (Int64.TryParse(d20E, out buf))
+                            d20 = buf;
+                        else
+                            d20 = 0;
+                    }
+                    else
+                        d20 = 0;
+                    pkt.bonAtmYangDisetujui.Add(new Denom()
+                    {
+                        tgl = tanggal,
+                        d100 = d100,
+                        d50 = d50,
+                        d20 = d20
+                    });
                 }
                 //Pengambilan saldo akhir dari excel
                 for (int a = 0; a < 4; a++)
@@ -447,21 +480,62 @@ namespace testProjectBCA
                         pkt.saldoAkhir.Add(0);
                 }
                 //Pengambilan data permintaan bon
-                for (int i = 0; i < 7; i++)
+                for (int i = 0; i < 10; i++)
                 {
-                    List<Int64> tempList = new List<Int64>();
-                    if ((table.Rows[34 + i][6].ToString() == "" || table.Rows[34 + i][6].ToString() == "0") &&
-                        (table.Rows[34 + i][7].ToString() == "" || table.Rows[34 + i][7].ToString() == "0") &&
-                        (table.Rows[34 + i][8].ToString() == "" || table.Rows[34 + i][8].ToString() == "0"))
+                    DataRow row = table.Rows[40 + i];
+                    if (row[5].ToString().Trim() == "" &&
+                        (String.IsNullOrEmpty(row[6].ToString().Trim()) || row[6].ToString().Trim() == "0" || row[6].ToString().Trim() == ".") &&
+                        (String.IsNullOrEmpty(row[7].ToString().Trim()) || row[7].ToString().Trim() == "0" || row[7].ToString().Trim() == ".") &&
+                        (String.IsNullOrEmpty(row[8].ToString().Trim()) || row[8].ToString().Trim() == "0" || row[8].ToString().Trim() == "."))
                         continue;
-                    for (int j = 0; j < 4; j++)
+                    String tanggalE = row[5].ToString(), d100E = row[6].ToString(), d50E = row[7].ToString(), d20E = row[8].ToString();
+
+                    DateTime tanggal;
+                    Int64 d100, d50, d20, buf;
+
+                    //Tanggal
+                    tanggal = Convert.ToDateTime(tanggalE);
+
+                    //Denom 100.000
+                    if (!String.IsNullOrEmpty(row[6].ToString()))
                     {
-                        if (table.Rows[34 + i][6 + j].ToString() != "0" && table.Rows[34 + i][6 + j].ToString() != "")
-                            tempList.Add(Int64.Parse(table.Rows[34 + i][6 + j].ToString()));
+                        if (Int64.TryParse(d100E, out buf))
+                            d100 = buf;
                         else
-                            tempList.Add(0);
+                            d100 = 0;
                     }
-                    pkt.permintaanBon.Add(tempList);
+                    else
+                        d100 = 0;
+
+                    //Denom 50.000
+                    if (!String.IsNullOrEmpty(row[7].ToString()))
+                    {
+                        if (Int64.TryParse(d50E, out buf))
+                            d50 = buf;
+                        else
+                            d50 = 0;
+                    }
+                    else
+                        d50 = 0;
+
+                    //Denom 20.000
+                    if (!String.IsNullOrEmpty(row[8].ToString()))
+                    {
+                        if (Int64.TryParse(d20E, out buf))
+                            d20 = buf;
+                        else
+                            d20 = 0;
+                    }
+                    else
+                        d20 = 0;
+
+                    pkt.permintaanBon.Add(new Denom()
+                    {
+                        tgl = tanggal,
+                        d100 = d100,
+                        d50 = d50,
+                        d20 = d20
+                    });
                 }
 
                 pkt.hitungSaldoAkhir();

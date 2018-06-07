@@ -109,10 +109,10 @@ namespace testProjectBCA
             {
                 laporanBon newL = new laporanBon();
                 newL.kodePkt = temp.kodePkt;
-                newL.tanggal = temp.tanggalPengajuan.AddDays(counter++);
-                newL.C100 = temp2[0];
-                newL.C50 = temp2[1];
-                newL.C20 = temp2[2];
+                newL.tanggal = temp2.tgl;
+                newL.C100 = temp2.d100;
+                newL.C50 = temp2.d50;
+                newL.C20 = temp2.d20;
                 db.laporanBons.Add(newL);
                 db.SaveChanges();
             }
@@ -120,10 +120,10 @@ namespace testProjectBCA
             {
                 LaporanPermintaanBon newL = new LaporanPermintaanBon();
                 newL.kodePkt = temp.kodePkt;
-                newL.tanggal = temp.tanggalPengajuan.AddDays(counter++);
-                newL.C100 = temp2[0];
-                newL.C50 = temp2[1];
-                newL.C20 = temp2[2];
+                newL.tanggal = temp2.tgl;
+                newL.C100 = temp2.d100;
+                newL.C50 = temp2.d50;
+                newL.C20 = temp2.d20;
                 db.LaporanPermintaanBons.Add(newL);
                 db.SaveChanges();
             }

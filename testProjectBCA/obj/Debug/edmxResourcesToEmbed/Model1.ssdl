@@ -271,6 +271,20 @@
     <Property Name="noBA" Type="varchar" MaxLength="50" />
     <Property Name="keterangan" Type="varchar" MaxLength="200" />
   </EntityType>
+  <EntityType Name="SaveRekap">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="kodePkt" Type="varchar" MaxLength="10" />
+    <Property Name="orderTracking" Type="bigint" />
+    <Property Name="rekapSelesai" Type="bigint" />
+    <Property Name="rekapBelumSelesai" Type="bigint" />
+    <Property Name="totalRekap" Type="bigint" />
+    <Property Name="keterangan" Type="varchar" MaxLength="15" />
+    <Property Name="komentar" Type="varchar" MaxLength="255" />
+    <Property Name="tanggal" Type="date" />
+  </EntityType>
   <EntityType Name="StokPosisi">
     <Key>
       <PropertyRef Name="id" />
@@ -361,6 +375,14 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Function Name="prediksiEvent2" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="startDate" Type="date" Mode="In" />
+    <Parameter Name="endDate" Type="date" Mode="In" />
+  </Function>
+  <Function Name="prediksiHistoris" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="startDate" Type="date" Mode="In" />
+    <Parameter Name="endDate" Type="date" Mode="In" />
+  </Function>
   <EntityContainer Name="CACModelStoreContainer">
     <EntitySet Name="Abacas" EntityType="Self.Abacas" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Approvals" EntityType="Self.Approvals" Schema="dbo" store:Type="Tables" />
@@ -381,6 +403,7 @@
     <EntitySet Name="OrderTracking" EntityType="Self.OrderTracking" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Pkt" EntityType="Self.Pkt" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RekapSelisihAmbilSetor" EntityType="Self.RekapSelisihAmbilSetor" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SaveRekap" EntityType="Self.SaveRekap" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="StokPosisi" EntityType="Self.StokPosisi" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TransaksiAtms" EntityType="Self.TransaksiAtms" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK_laporanBon_Pkt" Association="Self.FK_laporanBon_Pkt">
