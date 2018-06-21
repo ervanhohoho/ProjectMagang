@@ -16,5 +16,44 @@ namespace testProjectBCA
         public static string excelFilter = "Microsoft Excel | *.xls; *.xlsx; *.xlsm;";
         public static string csvFilter = "CSV | *.csv";
         public static string connectionString = "Data Source=MSI;Initial Catalog=CAC;Persist Security Info=True;User ID=TEST;Password=1234;";
+
+
+        /**Bekas SLA Proses
+        //var allDenomIn = (from x in listData
+        //                  where ((DateTime)x.tanggal).Day == tgl + 1
+        //                  && ((DateTime)x.tanggal).Month == bln
+        //                  && ((DateTime)x.tanggal).Year == thn
+        //                  select x).ToList();
+
+        //if (tgl == DateTime.DaysInMonth(thn, bln))
+        //{
+        //    int tTgl = 1;
+
+        //    if (bln == 12)
+        //    {
+        //        allDenomIn = (from x in listData
+        //                      where ((DateTime)x.tanggal).Day == tTgl
+        //                      && ((DateTime)x.tanggal).Month == 1
+        //                      && ((DateTime)x.tanggal).Year == thn + 1
+        //                      select x).ToList();
+        //    }
+        //    else
+        //    {
+        //        allDenomIn = (from x in listData
+        //                      where ((DateTime)x.tanggal).Day == tTgl
+        //                      && ((DateTime)x.tanggal).Month == bln
+        //                      && ((DateTime)x.tanggal).Year == thn
+        //                      select x).ToList();
+        //    }
+        //}
+        //else
+        //{
+        //    DateTime temp = new DateTime(thn, bln, tgl + 1);
+        //    Console.WriteLine(temp);
+        //    allDenomIn = (from x in listData
+        //                  where (DateTime)x.tanggal == temp
+        //                  select x).ToList();
+        //}
+    **/
     }
 }

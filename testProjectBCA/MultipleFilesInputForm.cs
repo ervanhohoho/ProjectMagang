@@ -151,15 +151,15 @@ namespace testProjectBCA
                 //Validasi Sheet Kosong
                 if (table.Rows.Count < 10)
                     continue;
-                try
-                {
+                //try
+                //{
                     //tanggal pengajuan
                     DateTime testanggal = (DateTime)table.Rows[12][5];
-                }
-                catch (Exception e)
-                {
-                    continue;
-                }
+                //}
+                //catch (Exception e)
+                //{
+                    //continue;
+                //}
 
                 Console.WriteLine(table.TableName);
                 transaksiPkt pkt = new transaksiPkt();
@@ -286,49 +286,55 @@ namespace testProjectBCA
 
                     DateTime tanggal;
                     Int64 d100, d50, d20, buf;
-
-                    //Tanggal
-                    tanggal = Convert.ToDateTime(tanggalE);
-
-                    //Denom 100.000
-                    if (!String.IsNullOrEmpty(row[6].ToString()))
+                    if (String.IsNullOrEmpty(tanggalE) || !DateTime.TryParse(tanggalE, out tanggal))
                     {
-                        if (Int64.TryParse(d100E, out buf))
-                            d100 = buf;
+                        //Kalo Gaada Tanggal
+                    }
+                    else
+                    {
+                        //Tanggal
+                        tanggal = Convert.ToDateTime(tanggalE);
+
+                        //Denom 100.000
+                        if (!String.IsNullOrEmpty(row[6].ToString()))
+                        {
+                            if (Int64.TryParse(d100E, out buf))
+                                d100 = buf;
+                            else
+                                d100 = 0;
+                        }
                         else
                             d100 = 0;
-                    }
-                    else
-                        d100 = 0;
 
-                    //Denom 50.000
-                    if (!String.IsNullOrEmpty(row[7].ToString()))
-                    {
-                        if (Int64.TryParse(d50E, out buf))
-                            d50 = buf;
+                        //Denom 50.000
+                        if (!String.IsNullOrEmpty(row[7].ToString()))
+                        {
+                            if (Int64.TryParse(d50E, out buf))
+                                d50 = buf;
+                            else
+                                d50 = 0;
+                        }
                         else
                             d50 = 0;
-                    }
-                    else
-                        d50 = 0;
 
-                    //Denom 20.000
-                    if (!String.IsNullOrEmpty(row[8].ToString()))
-                    {
-                        if (Int64.TryParse(d20E, out buf))
-                            d20 = buf;
+                        //Denom 20.000
+                        if (!String.IsNullOrEmpty(row[8].ToString()))
+                        {
+                            if (Int64.TryParse(d20E, out buf))
+                                d20 = buf;
+                            else
+                                d20 = 0;
+                        }
                         else
                             d20 = 0;
+                        pkt.bonAtmYangDisetujui.Add(new Denom()
+                        {
+                            tgl = tanggal,
+                            d100 = d100,
+                            d50 = d50,
+                            d20 = d20
+                        });
                     }
-                    else
-                        d20 = 0;
-                    pkt.bonAtmYangDisetujui.Add(new Denom()
-                    {
-                        tgl = tanggal,
-                        d100 = d100,
-                        d50 = d50,
-                        d20 = d20
-                    });
                 }
                 //Pengambilan saldo akhir dari excel
                 for (int a = 0; a < 4; a++)
@@ -348,53 +354,61 @@ namespace testProjectBCA
                         (String.IsNullOrEmpty(row[8].ToString().Trim()) || row[8].ToString().Trim() == "0" || row[8].ToString().Trim() == "."))
                         continue;
                     String tanggalE = row[5].ToString(), d100E = row[6].ToString(), d50E = row[7].ToString(), d20E = row[8].ToString();
-
                     DateTime tanggal;
-                    Int64 d100, d50, d20, buf;
 
-                    //Tanggal
-                    tanggal = Convert.ToDateTime(tanggalE);
-
-                    //Denom 100.000
-                    if (!String.IsNullOrEmpty(row[6].ToString()))
+                    if (String.IsNullOrEmpty(tanggalE) || !DateTime.TryParse(tanggalE, out tanggal))
                     {
-                        if (Int64.TryParse(d100E, out buf))
-                            d100 = buf;
+                        //Kalo Gaada Tanggal
+                    }
+                    else
+                    {
+                        
+                        Int64 d100, d50, d20, buf;
+
+                        //Tanggal
+                        tanggal = Convert.ToDateTime(tanggalE);
+
+                        //Denom 100.000
+                        if (!String.IsNullOrEmpty(row[6].ToString()))
+                        {
+                            if (Int64.TryParse(d100E, out buf))
+                                d100 = buf;
+                            else
+                                d100 = 0;
+                        }
                         else
                             d100 = 0;
-                    }
-                    else
-                        d100 = 0;
 
-                    //Denom 50.000
-                    if (!String.IsNullOrEmpty(row[7].ToString()))
-                    {
-                        if (Int64.TryParse(d50E, out buf))
-                            d50 = buf;
+                        //Denom 50.000
+                        if (!String.IsNullOrEmpty(row[7].ToString()))
+                        {
+                            if (Int64.TryParse(d50E, out buf))
+                                d50 = buf;
+                            else
+                                d50 = 0;
+                        }
                         else
                             d50 = 0;
-                    }
-                    else
-                        d50 = 0;
 
-                    //Denom 20.000
-                    if (!String.IsNullOrEmpty(row[8].ToString()))
-                    {
-                        if (Int64.TryParse(d20E, out buf))
-                            d20 = buf;
+                        //Denom 20.000
+                        if (!String.IsNullOrEmpty(row[8].ToString()))
+                        {
+                            if (Int64.TryParse(d20E, out buf))
+                                d20 = buf;
+                            else
+                                d20 = 0;
+                        }
                         else
                             d20 = 0;
-                    }
-                    else
-                        d20 = 0;
 
-                    pkt.permintaanBon.Add(new Denom()
-                    {
-                        tgl = tanggal,
-                        d100 = d100,
-                        d50 = d50,
-                        d20 = d20
-                    });
+                        pkt.permintaanBon.Add(new Denom()
+                        {
+                            tgl = tanggal,
+                            d100 = d100,
+                            d50 = d50,
+                            d20 = d20
+                        });
+                    }
                 }
                 if (!String.IsNullOrEmpty(table.Rows[52][6].ToString()) && !String.IsNullOrEmpty(table.Rows[52][7].ToString()) && !String.IsNullOrEmpty(table.Rows[52][8].ToString()))
                 {
@@ -455,6 +469,23 @@ namespace testProjectBCA
                             "\nHitungan 100: Rp. " + ((Int64)queryApproval[queryApproval.Count - 1].DetailApproval.bon100).ToString("n0") + "\nLaporan 100: Rp. " + pkt.penerimaanBon[0].ToString("n0") +
                             "\nHitungan 50: Rp. " + ((Int64)queryApproval[queryApproval.Count - 1].DetailApproval.bon50).ToString("n0") + "\nLaporan 50: Rp. " + pkt.penerimaanBon[1].ToString("n0") +
                             "\nHitungan 20: Rp. " + ((Int64)queryApproval[queryApproval.Count - 1].DetailApproval.bon20).ToString("n0") + "\nLaporan 20: Rp." + pkt.penerimaanBon[2].ToString("n0"); 
+                    }
+                }
+
+                var queryApprovalLaporanBon = (from a in db.Approvals.AsEnumerable()
+                                               join da in db.DetailApprovals.AsEnumerable() on a.idApproval equals da.idApproval
+                                               join lb in pkt.bonAtmYangDisetujui on ((DateTime)da.tanggal).Date equals ((DateTime)lb.tgl).Date
+                                               where a.kodePkt == pkt.kodePkt && pkt.tanggalPengajuan.Date == ((DateTime)da.tanggal).Date
+                                               select new { Approval = a, DetailApproval = da, LaporanBon = lb }).ToList();
+                foreach(var temp in queryApprovalLaporanBon)
+                {
+                    isError = true;
+                    if(temp.DetailApproval.bon100 != temp.LaporanBon.d100 || temp.DetailApproval.bon50 != temp.LaporanBon.d50 || temp.DetailApproval.bon20 != temp.LaporanBon.d20)
+                    {
+                        errMsg += "\nBon yang disetujui\n=========================="
+                            + "\nApproval Bon 100: " + ((Int64)temp.DetailApproval.bon100).ToString("n0") + " Laporan Bon 100: " + ((Int64)temp.LaporanBon.d100).ToString("n0")
+                            + "\nApproval Bon 50: " + ((Int64)temp.DetailApproval.bon50).ToString("n0") + " Laporan Bon 50: " + ((Int64)temp.LaporanBon.d50).ToString("n0")
+                            + "\nApproval Bon 20: " + ((Int64)temp.DetailApproval.bon20).ToString("n0") + " Laporan Bon 20: " + ((Int64)temp.LaporanBon.d20).ToString("n0");
                     }
                 }
 

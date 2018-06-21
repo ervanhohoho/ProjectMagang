@@ -35,6 +35,9 @@
             this.label3 = new System.Windows.Forms.Label();
             this.endDatePicker = new System.Windows.Forms.DateTimePicker();
             this.ExportBtn = new System.Windows.Forms.Button();
+            this.viewButton = new System.Windows.Forms.Button();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // pktComboBox
@@ -98,11 +101,31 @@
             this.ExportBtn.UseVisualStyleBackColor = true;
             this.ExportBtn.Click += new System.EventHandler(this.ExportBtn_Click);
             // 
+            // viewButton
+            // 
+            this.viewButton.Location = new System.Drawing.Point(256, 95);
+            this.viewButton.Name = "viewButton";
+            this.viewButton.Size = new System.Drawing.Size(75, 23);
+            this.viewButton.TabIndex = 4;
+            this.viewButton.Text = "View";
+            this.viewButton.UseVisualStyleBackColor = true;
+            this.viewButton.Click += new System.EventHandler(this.viewButton_Click);
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(15, 160);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(1289, 398);
+            this.dataGridView1.TabIndex = 5;
+            // 
             // ExportForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(511, 169);
+            this.ClientSize = new System.Drawing.Size(1316, 570);
+            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.viewButton);
             this.Controls.Add(this.ExportBtn);
             this.Controls.Add(this.endDatePicker);
             this.Controls.Add(this.startDatePicker);
@@ -112,6 +135,7 @@
             this.Controls.Add(this.pktComboBox);
             this.Name = "ExportForm";
             this.Text = "ExportForm";
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -126,5 +150,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.DateTimePicker endDatePicker;
         private System.Windows.Forms.Button ExportBtn;
+        private System.Windows.Forms.Button viewButton;
+        private System.Windows.Forms.DataGridView dataGridView1;
     }
 }

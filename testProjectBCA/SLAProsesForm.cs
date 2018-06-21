@@ -644,42 +644,6 @@ namespace testProjectBCA
                                         && ((DateTime)x.tanggal).Year == thn
                                         select x).ToList();
 
-                        //var allDenomIn = (from x in listData
-                        //                  where ((DateTime)x.tanggal).Day == tgl + 1
-                        //                  && ((DateTime)x.tanggal).Month == bln
-                        //                  && ((DateTime)x.tanggal).Year == thn
-                        //                  select x).ToList();
-
-                        //if (tgl == DateTime.DaysInMonth(thn, bln))
-                        //{
-                        //    int tTgl = 1;
-
-                        //    if (bln == 12)
-                        //    {
-                        //        allDenomIn = (from x in listData
-                        //                      where ((DateTime)x.tanggal).Day == tTgl
-                        //                      && ((DateTime)x.tanggal).Month == 1
-                        //                      && ((DateTime)x.tanggal).Year == thn + 1
-                        //                      select x).ToList();
-                        //    }
-                        //    else
-                        //    {
-                        //        allDenomIn = (from x in listData
-                        //                      where ((DateTime)x.tanggal).Day == tTgl
-                        //                      && ((DateTime)x.tanggal).Month == bln
-                        //                      && ((DateTime)x.tanggal).Year == thn
-                        //                      select x).ToList();
-                        //    }
-                        //}
-                        //else
-                        //{
-                        //    DateTime temp = new DateTime(thn, bln, tgl + 1);
-                        //    Console.WriteLine(temp);
-                        //    allDenomIn = (from x in listData
-                        //                  where (DateTime)x.tanggal == temp
-                        //                  select x).ToList();
-                        //}
-
 
                         Int64 unprocessedBesar = (Int64)(from x in allDenom
                                                          where x.denom == "100000"
@@ -752,12 +716,14 @@ namespace testProjectBCA
                                              where (x.denom == "100000"
                                              || x.denom == "50000")
                                              && x.tanggal == tgl
+                                             && x.namaPkt.Contains(comboNamaPkt.SelectedValue.ToString())
                                              select new { value = hitungPcs((Int64)x.unprocessed, x.denom) }
                              ).Sum(x => x.value);
                     Int64 UnprocUangKecil = (from x in db.StokPosisis.AsEnumerable()
                                              where !(x.denom == "100000"
                                              || x.denom == "50000")
                                              && x.tanggal == tgl
+                                             && x.namaPkt.Contains(comboNamaPkt.SelectedValue.ToString())
                                              select new { value = hitungPcs((Int64)x.unprocessed, x.denom) }
                              ).Sum(x => x.value);
 

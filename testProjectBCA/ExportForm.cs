@@ -17,7 +17,9 @@ namespace testProjectBCA
         public ExportForm()
         {
             InitializeComponent();
-            pktComboBox.DataSource = (from x in db.Pkts select x.kodePkt).ToList();
+            pktComboBox.DataSource = (from x in db.Pkts
+                                      where x.kodePktATM != ""
+                                      select x.kodePkt).OrderBy(x=>x).ToList();
         }
 
         private void ExportBtn_Click(object sender, EventArgs e)
@@ -27,6 +29,7 @@ namespace testProjectBCA
             DateTime startDate = startDatePicker.Value.Date, endDate = endDatePicker.Value.Date;
             if (sv.ShowDialog() == DialogResult.OK)
             {
+                loadForm.ShowSplashScreen();
                 String kodePkt = pktComboBox.SelectedItem.ToString();
                 Console.WriteLine(kodePkt);
                 List<TransaksiAtm> list = (from x in db.TransaksiAtms.AsEnumerable()
@@ -50,10 +53,59 @@ namespace testProjectBCA
                         + temp.setor20 + "," + temp.setor50 + "," + temp.setor100 + ","
                         + temp.saldoAkhir20 + "," + temp.saldoAkhir50 + "," + temp.saldoAkhir100 + ",";
                 }
+                loadForm.CloseForm();
                 Console.WriteLine("Success");
                 File.WriteAllText(sv.FileName, csv);
-
             }
+        }
+
+        private void viewButton_Click(object sender, EventArgs e)
+        {
+            loadForm.ShowSplashScreen();
+            DateTime startDate = startDatePicker.Value.Date, endDate = endDatePicker.Value.Date;
+            String kodePkt = pktComboBox.SelectedItem.ToString();
+            Console.WriteLine(kodePkt);
+            var list = (from x in db.TransaksiAtms.AsEnumerable()
+                                       where ((DateTime)x.tanggal).Date >= startDate && ((DateTime)x.tanggal).Date <= endDate
+                                       && x.kodePkt == kodePkt
+                                       select new {
+                                           x.tanggal,
+                                           x.kodePkt,
+                                           x.saldoAwal20,
+                                           x.saldoAwal50,
+                                           x.saldoAwal100,
+                                           x.sislokATM20,
+                                           x.sislokATM50,
+                                           x.sislokATM100,
+                                           x.sislokCRM20,
+                                           x.sislokCRM50,
+                                           x.sislokCRM100,
+                                           x.sislokCDM20,
+                                           x.sislokCDM50,
+                                           x.sislokCDM100,
+                                           x.isiATM20,
+                                           x.isiATM50,
+                                           x.isiATM100,
+                                           x.isiCRM20,
+                                           x.isiCRM50,
+                                           x.isiCRM100,
+                                           x.bon20,
+                                           x.bon50,
+                                           x.bon100,
+                                           x.adhoc20,
+                                           x.adhoc50,
+                                           x.adhoc100,
+                                           x.setor20,
+                                           x.setor50,
+                                           x.setor100,
+                                           x.saldoAkhir20,
+                                           x.saldoAkhir50,
+                                           x.saldoAkhir100 }).ToList();
+            
+            dataGridView1.DataSource = list;
+            for (int a = 2; a < dataGridView1.ColumnCount; a++)
+                dataGridView1.Columns[a].DefaultCellStyle.Format = "N0";
+            loadForm.CloseForm();
         }
     }
 }

@@ -107,24 +107,50 @@ namespace testProjectBCA
             int counter = 1;
             foreach (var temp2 in temp.bonAtmYangDisetujui)
             {
-                laporanBon newL = new laporanBon();
-                newL.kodePkt = temp.kodePkt;
-                newL.tanggal = temp2.tgl;
-                newL.C100 = temp2.d100;
-                newL.C50 = temp2.d50;
-                newL.C20 = temp2.d20;
-                db.laporanBons.Add(newL);
+                var query = (from x in db.laporanBons.AsEnumerable()
+                             where ((DateTime)x.tanggal).Date == temp2.tgl.Date
+                             && x.kodePkt == temp.kodePkt
+                             select x).FirstOrDefault();
+                if (query != null)
+                {
+                    query.C100 = temp2.d100;
+                    query.C50 = temp2.d50;
+                    query.C20 = temp2.d20;
+                }
+                else
+                {
+                    laporanBon newL = new laporanBon();
+                    newL.kodePkt = temp.kodePkt;
+                    newL.tanggal = temp2.tgl;
+                    newL.C100 = temp2.d100;
+                    newL.C50 = temp2.d50;
+                    newL.C20 = temp2.d20;
+                    db.laporanBons.Add(newL);
+                }
                 db.SaveChanges();
             }
             foreach(var temp2 in temp.permintaanBon)
             {
-                LaporanPermintaanBon newL = new LaporanPermintaanBon();
-                newL.kodePkt = temp.kodePkt;
-                newL.tanggal = temp2.tgl;
-                newL.C100 = temp2.d100;
-                newL.C50 = temp2.d50;
-                newL.C20 = temp2.d20;
-                db.LaporanPermintaanBons.Add(newL);
+                var query = (from x in db.LaporanPermintaanBons.AsEnumerable()
+                             where ((DateTime)x.tanggal).Date == temp2.tgl.Date
+                             && x.kodePkt == temp.kodePkt
+                             select x).FirstOrDefault();
+                if (query != null)
+                {
+                    query.C100 = temp2.d100;
+                    query.C50 = temp2.d50;
+                    query.C20 = temp2.d20;
+                }
+                else
+                {
+                    LaporanPermintaanBon newL = new LaporanPermintaanBon();
+                    newL.kodePkt = temp.kodePkt;
+                    newL.tanggal = temp2.tgl;
+                    newL.C100 = temp2.d100;
+                    newL.C50 = temp2.d50;
+                    newL.C20 = temp2.d20;
+                    db.LaporanPermintaanBons.Add(newL);
+                }
                 db.SaveChanges();
             }
             LaporanPermintaanAdhoc newA = new LaporanPermintaanAdhoc();

@@ -290,6 +290,12 @@
     <Compile Include="Pkt.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="popupsementara.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="popupsementara.designer.cs">
+      <DependentUpon>popupsementara.cs</DependentUpon>
+    </Compile>
     <Compile Include="RekapSelisihAmbilSetor.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -459,6 +465,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MultipleFilesInputUpdateForm.resx">
       <DependentUpon>MultipleFilesInputUpdateForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="popupsementara.resx">
+      <DependentUpon>popupsementara.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="RevisiInformationBoard.resx">
       <DependentUpon>RevisiInformationBoard.cs</DependentUpon>

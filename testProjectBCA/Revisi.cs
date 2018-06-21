@@ -26,91 +26,154 @@ namespace testProjectBCA
             of.Filter = Variables.excelFilter;
             if (of.ShowDialog() == DialogResult.OK)
             {
+                loadForm.ShowSplashScreen();
                 foreach(String path in of.FileNames)
                 {
                     collectionTransaksiPkt.Add(loadSheetsIntoClassList(Util.openExcel(path)));
                 }
-            }
-            foreach(List<transaksiPkt> list in  collectionTransaksiPkt)
-            {
-                foreach(transaksiPkt pkt in list)
+                foreach (List<transaksiPkt> list in collectionTransaksiPkt)
                 {
-                    var q = (from x in db.TransaksiAtms where x.kodePkt == pkt.kodePkt && x.tanggal == pkt.tanggalPengajuan select x).FirstOrDefault();
-                    if (q!=null)
+                    foreach (transaksiPkt pkt in list)
                     {
-                        q.adhoc100 = pkt.penerimaanBonAdhoc[0];
-                        q.adhoc50 = pkt.penerimaanBonAdhoc[1];
-                        q.adhoc20 = pkt.penerimaanBonAdhoc[2];
-                        q.bon100 = pkt.penerimaanBon[0];
-                        q.bon50 = pkt.penerimaanBon[1];
-                        q.bon20 = pkt.penerimaanBon[2];
-                        q.isiATM100 = pkt.pengisianAtm[0];
-                        q.isiATM50 = pkt.pengisianAtm[1];
-                        q.isiATM20 = pkt.pengisianAtm[2];
-                        q.isiCRM100 = pkt.pengisianCrm[0];
-                        q.isiCRM50 = pkt.pengisianCrm[1];
-                        q.isiCRM20 = pkt.pengisianCrm[2];
-                        q.setor100 = pkt.setorUang[0];
-                        q.setor50 = pkt.setorUang[1];
-                        q.setor20 = pkt.setorUang[2];
-                        q.sislokATM100 = pkt.bongkaranAtm[0];
-                        q.sislokATM50 = pkt.bongkaranAtm[1];
-                        q.sislokATM20 = pkt.bongkaranAtm[2];
-                        q.sislokCDM100 = pkt.bongkaranCdm[0];
-                        q.sislokCDM50 = pkt.bongkaranCdm[1];
-                        q.sislokCDM20 = pkt.bongkaranCdm[2];
-                        q.sislokCRM100 = pkt.bongkaranCrm[0];
-                        q.sislokCRM50 = pkt.bongkaranCrm[1];
-                        q.sislokCRM20 = pkt.bongkaranCrm[2];
-
-                        Int64 selisih100 = pkt.saldoAkhirHitungan[0] - (Int64)q.saldoAkhir100;
-                        Int64 selisih50 = pkt.saldoAkhirHitungan[1] - (Int64)q.saldoAkhir50;
-                        Int64 selisih20 = pkt.saldoAkhirHitungan[2] - (Int64)q.saldoAkhir20;
-                        Console.WriteLine("Selisih 100: " + selisih100);
-                        Console.WriteLine("Selisih 50: " + selisih50);
-                        Console.WriteLine("Selisih 20: " + selisih20);
-
-                        q.saldoAkhir100 += selisih100;
-                        q.saldoAkhir50 += selisih50;
-                        q.saldoAkhir20 += selisih20;
-                        foreach (var temp in (from x in db.TransaksiAtms where x.kodePkt == pkt.kodePkt && x.tanggal > pkt.tanggalPengajuan select x).ToList())
+                        var q = (from x in db.TransaksiAtms where x.kodePkt == pkt.kodePkt && x.tanggal == pkt.tanggalPengajuan select x).FirstOrDefault();
+                        if (q != null)
                         {
-                            temp.saldoAwal100 += selisih100;
-                            temp.saldoAwal50 += selisih50;
-                            temp.saldoAwal20 += selisih20;
+                            q.adhoc100 = pkt.penerimaanBonAdhoc[0];
+                            q.adhoc50 = pkt.penerimaanBonAdhoc[1];
+                            q.adhoc20 = pkt.penerimaanBonAdhoc[2];
+                            q.bon100 = pkt.penerimaanBon[0];
+                            q.bon50 = pkt.penerimaanBon[1];
+                            q.bon20 = pkt.penerimaanBon[2];
+                            q.isiATM100 = pkt.pengisianAtm[0];
+                            q.isiATM50 = pkt.pengisianAtm[1];
+                            q.isiATM20 = pkt.pengisianAtm[2];
+                            q.isiCRM100 = pkt.pengisianCrm[0];
+                            q.isiCRM50 = pkt.pengisianCrm[1];
+                            q.isiCRM20 = pkt.pengisianCrm[2];
+                            q.setor100 = pkt.setorUang[0];
+                            q.setor50 = pkt.setorUang[1];
+                            q.setor20 = pkt.setorUang[2];
+                            q.sislokATM100 = pkt.bongkaranAtm[0];
+                            q.sislokATM50 = pkt.bongkaranAtm[1];
+                            q.sislokATM20 = pkt.bongkaranAtm[2];
+                            q.sislokCDM100 = pkt.bongkaranCdm[0];
+                            q.sislokCDM50 = pkt.bongkaranCdm[1];
+                            q.sislokCDM20 = pkt.bongkaranCdm[2];
+                            q.sislokCRM100 = pkt.bongkaranCrm[0];
+                            q.sislokCRM50 = pkt.bongkaranCrm[1];
+                            q.sislokCRM20 = pkt.bongkaranCrm[2];
 
-                            temp.saldoAkhir100 += selisih100;
-                            temp.saldoAkhir50 += selisih50;
-                            temp.saldoAkhir20 += selisih20;
+                            Int64 selisih100 = pkt.saldoAkhirHitungan[0] - (Int64)q.saldoAkhir100;
+                            Int64 selisih50 = pkt.saldoAkhirHitungan[1] - (Int64)q.saldoAkhir50;
+                            Int64 selisih20 = pkt.saldoAkhirHitungan[2] - (Int64)q.saldoAkhir20;
+                            Console.WriteLine("Selisih 100: " + selisih100);
+                            Console.WriteLine("Selisih 50: " + selisih50);
+                            Console.WriteLine("Selisih 20: " + selisih20);
+
+                            q.saldoAkhir100 += selisih100;
+                            q.saldoAkhir50 += selisih50;
+                            q.saldoAkhir20 += selisih20;
+                            foreach (var temp in (from x in db.TransaksiAtms where x.kodePkt == pkt.kodePkt && x.tanggal > pkt.tanggalPengajuan select x).ToList())
+                            {
+                                temp.saldoAwal100 += selisih100;
+                                temp.saldoAwal50 += selisih50;
+                                temp.saldoAwal20 += selisih20;
+
+                                temp.saldoAkhir100 += selisih100;
+                                temp.saldoAkhir50 += selisih50;
+                                temp.saldoAkhir20 += selisih20;
+                            }
                         }
-                    }
-                    var q2 = (from x in db.LaporanPermintaanBons
-                         where x.tanggal > pkt.tanggalPengajuan && x.kodePkt == pkt.kodePkt
-                         select x).ToList();
-                    if (q2.Any())
-                    {
-                        for (int a = 0; a < pkt.permintaanBon.Count; a++)
+
+                        foreach (var temp2 in pkt.bonAtmYangDisetujui)
                         {
-                            if (a >= q2.Count)
-                                break;
-                            q2[a].C100 = pkt.permintaanBon[a].d100;
-                            q2[a].C50 = pkt.permintaanBon[a].d50;
-                            q2[a].C20 = pkt.permintaanBon[a].d20;
+                            var query = (from x in db.laporanBons.AsEnumerable()
+                                         where ((DateTime)x.tanggal).Date == temp2.tgl.Date
+                                         && x.kodePkt == pkt.kodePkt
+                                         select x).FirstOrDefault();
+                            if (query != null)
+                            {
+                                query.C100 = temp2.d100;
+                                query.C50 = temp2.d50;
+                                query.C20 = temp2.d20;
+                            }
+                            else
+                            {
+                                laporanBon newL = new laporanBon();
+                                newL.kodePkt = pkt.kodePkt;
+                                newL.tanggal = temp2.tgl;
+                                newL.C100 = temp2.d100;
+                                newL.C50 = temp2.d50;
+                                newL.C20 = temp2.d20;
+                                db.laporanBons.Add(newL);
+                            }
+                            db.SaveChanges();
                         }
-                    }
-                    var q3 = (from x in db.LaporanPermintaanAdhocs
-                              where x.tanggal == pkt.tanggalPengajuan && x.kodePkt == pkt.kodePkt
-                              select x).ToList();
-                    if (q3.Any())
-                    {
-                        q3[0].C100 = pkt.permintaanAdhoc[0];
-                        q3[0].C50 = pkt.permintaanAdhoc[1];
-                        q3[0].C20 = pkt.permintaanAdhoc[2];
-                    }
 
-                    db.SaveChanges();
+                        foreach (var temp2 in pkt.permintaanBon)
+                        {
+                            var query = (from x in db.LaporanPermintaanBons.AsEnumerable()
+                                         where ((DateTime)x.tanggal).Date == temp2.tgl.Date
+                                         && x.kodePkt == pkt.kodePkt
+                                         select x).FirstOrDefault();
+                            if (query != null)
+                            {
+                                query.C100 = temp2.d100;
+                                query.C50 = temp2.d50;
+                                query.C20 = temp2.d20;
+                            }
+                            else
+                            {
+                                LaporanPermintaanBon newL = new LaporanPermintaanBon();
+                                newL.kodePkt = pkt.kodePkt;
+                                newL.tanggal = temp2.tgl;
+                                newL.C100 = temp2.d100;
+                                newL.C50 = temp2.d50;
+                                newL.C20 = temp2.d20;
+                                db.LaporanPermintaanBons.Add(newL);
+                            }
+                            db.SaveChanges();
+                        }
+
+                        var q3 = (from x in db.LaporanPermintaanAdhocs
+                                  where x.tanggal == pkt.tanggalPengajuan && x.kodePkt == pkt.kodePkt
+                                  select x).ToList();
+                        if (q3.Any())
+                        {
+                            q3[0].C100 = pkt.permintaanAdhoc[0];
+                            q3[0].C50 = pkt.permintaanAdhoc[1];
+                            q3[0].C20 = pkt.permintaanAdhoc[2];
+                        }
+
+
+                        bool isError = false;
+                        String errMsg = "";
+                        var queryApprovalLaporanBon = (from a in db.Approvals.AsEnumerable()
+                                                       join da in db.DetailApprovals.AsEnumerable() on a.idApproval equals da.idApproval
+                                                       join lb in pkt.bonAtmYangDisetujui.AsEnumerable() on ((DateTime)da.tanggal).Date equals ((DateTime)lb.tgl).Date
+                                                       where a.kodePkt == pkt.kodePkt && pkt.tanggalPengajuan == ((DateTime)da.tanggal).Date
+                                                       select new { Approval = a, DetailApproval = da, LaporanBon = lb }).ToList();
+                        foreach (var temp in queryApprovalLaporanBon)
+                        {
+                            isError = true;
+                            if (temp.DetailApproval.bon100 != temp.LaporanBon.d100 || temp.DetailApproval.bon50 != temp.LaporanBon.d50 || temp.DetailApproval.bon20 != temp.LaporanBon.d20)
+                            {
+                                errMsg += "\nBon yang disetujui\n=========================="
+                                    + "\nApproval Bon 100: " + ((Int64)temp.DetailApproval.bon100).ToString("n0") + " Laporan Bon 100: " + ((Int64)temp.LaporanBon.d100).ToString("n0")
+                                    + "\nApproval Bon 50: " + ((Int64)temp.DetailApproval.bon50).ToString("n0") + " Laporan Bon 50: " + ((Int64)temp.LaporanBon.d50).ToString("n0")
+                                    + "\nApproval Bon 20: " + ((Int64)temp.DetailApproval.bon20).ToString("n0") + " Laporan Bon 20: " + ((Int64)temp.LaporanBon.d20).ToString("n0");
+                            }
+                        }
+                        if (isError)
+                        {
+                            MessageBox.Show("Ada Kesalahan:\n" + errMsg);
+                        }
+                        db.SaveChanges();
+                    }
                 }
+                loadForm.CloseForm();
             }
+            
             MessageBox.Show("Done");
         }
         private List<transaksiPkt> loadSheetsIntoClassList(DataSet data)
