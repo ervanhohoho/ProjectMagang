@@ -285,7 +285,7 @@ namespace testProjectBCA
                     String tanggalE = row[5].ToString(), d100E = row[6].ToString(), d50E = row[7].ToString(), d20E = row[8].ToString();
 
                     DateTime tanggal;
-                    Int64 d100, d50, d20, buf;
+                    Int64 d100, d50, d20, buf1;
                     if (String.IsNullOrEmpty(tanggalE) || !DateTime.TryParse(tanggalE, out tanggal))
                     {
                         //Kalo Gaada Tanggal
@@ -298,8 +298,8 @@ namespace testProjectBCA
                         //Denom 100.000
                         if (!String.IsNullOrEmpty(row[6].ToString()))
                         {
-                            if (Int64.TryParse(d100E, out buf))
-                                d100 = buf;
+                            if (Int64.TryParse(d100E, out buf1))
+                                d100 = buf1;
                             else
                                 d100 = 0;
                         }
@@ -309,8 +309,8 @@ namespace testProjectBCA
                         //Denom 50.000
                         if (!String.IsNullOrEmpty(row[7].ToString()))
                         {
-                            if (Int64.TryParse(d50E, out buf))
-                                d50 = buf;
+                            if (Int64.TryParse(d50E, out buf1))
+                                d50 = buf1;
                             else
                                 d50 = 0;
                         }
@@ -320,8 +320,8 @@ namespace testProjectBCA
                         //Denom 20.000
                         if (!String.IsNullOrEmpty(row[8].ToString()))
                         {
-                            if (Int64.TryParse(d20E, out buf))
-                                d20 = buf;
+                            if (Int64.TryParse(d20E, out buf1))
+                                d20 = buf1;
                             else
                                 d20 = 0;
                         }
@@ -363,7 +363,7 @@ namespace testProjectBCA
                     else
                     {
                         
-                        Int64 d100, d50, d20, buf;
+                        Int64 d100, d50, d20, buf1;
 
                         //Tanggal
                         tanggal = Convert.ToDateTime(tanggalE);
@@ -371,8 +371,8 @@ namespace testProjectBCA
                         //Denom 100.000
                         if (!String.IsNullOrEmpty(row[6].ToString()))
                         {
-                            if (Int64.TryParse(d100E, out buf))
-                                d100 = buf;
+                            if (Int64.TryParse(d100E, out buf1))
+                                d100 = buf1;
                             else
                                 d100 = 0;
                         }
@@ -382,8 +382,8 @@ namespace testProjectBCA
                         //Denom 50.000
                         if (!String.IsNullOrEmpty(row[7].ToString()))
                         {
-                            if (Int64.TryParse(d50E, out buf))
-                                d50 = buf;
+                            if (Int64.TryParse(d50E, out buf1))
+                                d50 = buf1;
                             else
                                 d50 = 0;
                         }
@@ -393,8 +393,8 @@ namespace testProjectBCA
                         //Denom 20.000
                         if (!String.IsNullOrEmpty(row[8].ToString()))
                         {
-                            if (Int64.TryParse(d20E, out buf))
-                                d20 = buf;
+                            if (Int64.TryParse(d20E, out buf1))
+                                d20 = buf1;
                             else
                                 d20 = 0;
                         }
@@ -410,36 +410,29 @@ namespace testProjectBCA
                         });
                     }
                 }
-                if (!String.IsNullOrEmpty(table.Rows[52][6].ToString()) && !String.IsNullOrEmpty(table.Rows[52][7].ToString()) && !String.IsNullOrEmpty(table.Rows[52][8].ToString()))
-                {
-                    Int64 buf;
-                    if (String.IsNullOrEmpty(table.Rows[52][6].ToString()))
-                        pkt.permintaanAdhoc.Add(0);
-                    else if (Int64.TryParse(table.Rows[52][6].ToString(), out buf))
-                        pkt.permintaanAdhoc.Add(buf);
-                    else
-                        pkt.permintaanAdhoc.Add(0);
 
-                    if (String.IsNullOrEmpty(table.Rows[52][7].ToString()))
-                        pkt.permintaanAdhoc.Add(0);
-                    else if (Int64.TryParse(table.Rows[52][7].ToString(), out buf))
-                        pkt.permintaanAdhoc.Add(buf);
-                    else
-                        pkt.permintaanAdhoc.Add(0);
-
-                    if (String.IsNullOrEmpty(table.Rows[52][8].ToString()))
-                        pkt.permintaanAdhoc.Add(0);
-                    else if (Int64.TryParse(table.Rows[52][8].ToString(), out buf))
-                        pkt.permintaanAdhoc.Add(buf);
-                    else
-                        pkt.permintaanAdhoc.Add(0);
-                }
+                Int64 buf;
+                if (String.IsNullOrEmpty(table.Rows[52][6].ToString()))
+                    pkt.permintaanAdhoc.Add(0);
+                else if (Int64.TryParse(table.Rows[52][6].ToString(), out buf))
+                    pkt.permintaanAdhoc.Add(buf);
                 else
-                {
                     pkt.permintaanAdhoc.Add(0);
+
+                if (String.IsNullOrEmpty(table.Rows[52][7].ToString()))
                     pkt.permintaanAdhoc.Add(0);
+                else if (Int64.TryParse(table.Rows[52][7].ToString(), out buf))
+                    pkt.permintaanAdhoc.Add(buf);
+                else
                     pkt.permintaanAdhoc.Add(0);
-                } 
+
+                if (String.IsNullOrEmpty(table.Rows[52][8].ToString()))
+                    pkt.permintaanAdhoc.Add(0);
+                else if (Int64.TryParse(table.Rows[52][8].ToString(), out buf))
+                    pkt.permintaanAdhoc.Add(buf);
+                else
+                    pkt.permintaanAdhoc.Add(0);
+
                 pkt.hitungSaldoAkhir();
 
 
@@ -465,7 +458,7 @@ namespace testProjectBCA
                     if(queryApproval[queryApproval.Count-1].DetailApproval.bon100 != pkt.penerimaanBon[0] || queryApproval[queryApproval.Count - 1].DetailApproval.bon50 != pkt.penerimaanBon[1] || queryApproval[queryApproval.Count - 1].DetailApproval.bon20 != pkt.penerimaanBon[2])
                     {
                         isError = true;
-                        errMsg += "\nBon menurut approval : \n=====================\n" +
+                        errMsg += "\nBon menurut approval\n=====================" +
                             "\nHitungan 100: Rp. " + ((Int64)queryApproval[queryApproval.Count - 1].DetailApproval.bon100).ToString("n0") + "\nLaporan 100: Rp. " + pkt.penerimaanBon[0].ToString("n0") +
                             "\nHitungan 50: Rp. " + ((Int64)queryApproval[queryApproval.Count - 1].DetailApproval.bon50).ToString("n0") + "\nLaporan 50: Rp. " + pkt.penerimaanBon[1].ToString("n0") +
                             "\nHitungan 20: Rp. " + ((Int64)queryApproval[queryApproval.Count - 1].DetailApproval.bon20).ToString("n0") + "\nLaporan 20: Rp." + pkt.penerimaanBon[2].ToString("n0"); 
@@ -482,10 +475,48 @@ namespace testProjectBCA
                     isError = true;
                     if(temp.DetailApproval.bon100 != temp.LaporanBon.d100 || temp.DetailApproval.bon50 != temp.LaporanBon.d50 || temp.DetailApproval.bon20 != temp.LaporanBon.d20)
                     {
-                        errMsg += "\nBon yang disetujui\n=========================="
+                        errMsg += "\nBon yang disetujui\n======================="
                             + "\nApproval Bon 100: " + ((Int64)temp.DetailApproval.bon100).ToString("n0") + " Laporan Bon 100: " + ((Int64)temp.LaporanBon.d100).ToString("n0")
                             + "\nApproval Bon 50: " + ((Int64)temp.DetailApproval.bon50).ToString("n0") + " Laporan Bon 50: " + ((Int64)temp.LaporanBon.d50).ToString("n0")
                             + "\nApproval Bon 20: " + ((Int64)temp.DetailApproval.bon20).ToString("n0") + " Laporan Bon 20: " + ((Int64)temp.LaporanBon.d20).ToString("n0");
+                    }
+                }
+
+                var queryApprovalAdhoc = (from a in db.Approvals.AsEnumerable()
+                                          join da in db.DetailApprovals.AsEnumerable() on a.idApproval equals da.idApproval
+                                          where a.kodePkt == pkt.kodePkt && da.tanggal == pkt.tanggalPengajuan
+                                          select new { DetailApproval = da }).FirstOrDefault();
+                if (queryApprovalAdhoc != null)
+                {
+                    if (queryApprovalAdhoc.DetailApproval.adhoc100 != null)
+                    {
+                        if (queryApprovalAdhoc.DetailApproval.adhoc100 != pkt.penerimaanBonAdhoc[0] || queryApprovalAdhoc.DetailApproval.adhoc50 != pkt.penerimaanBonAdhoc[1] || queryApprovalAdhoc.DetailApproval.adhoc20 != pkt.penerimaanBonAdhoc[2])
+                        {
+                            errMsg += "\nAdhoc menurut Approval\n===================="
+                            + "\n Approval Adhoc 100: " + ((Int64)queryApprovalAdhoc.DetailApproval.adhoc100 + " Laporan Adhoc 100: " + ((Int64)pkt.penerimaanBonAdhoc[0]))
+                            + "\n Approval Adhoc 50: " + ((Int64)queryApprovalAdhoc.DetailApproval.adhoc50 + " Laporan Adhoc 50: " + ((Int64)pkt.penerimaanBonAdhoc[1]))
+                            + "\n Approval Adhoc 20: " + ((Int64)queryApprovalAdhoc.DetailApproval.adhoc20 + " Laporan Adhoc 20: " + ((Int64)pkt.penerimaanBonAdhoc[2]))
+                            ;
+                        }
+                    }
+                }
+
+                var queryApprovalSetor = (from a in db.Approvals.AsEnumerable()
+                                          join da in db.DetailApprovals.AsEnumerable() on a.idApproval equals da.idApproval
+                                          where a.kodePkt == pkt.kodePkt && da.tanggal == pkt.tanggalPengajuan
+                                          select new { DetailApproval = da }).FirstOrDefault();
+                if (queryApprovalSetor != null)
+                {
+                    if (queryApprovalSetor.DetailApproval.setor100 != null)
+                    {
+                        if (queryApprovalSetor.DetailApproval.setor100 != pkt.setorUang[0] || queryApprovalSetor.DetailApproval.setor50 != pkt.setorUang[1] || queryApprovalSetor.DetailApproval.setor20 != pkt.setorUang[2])
+                        {
+                            errMsg += "\nsetor menurut Approval\n===================="
+                            + "\n Approval setor 100: " + ((Int64)queryApprovalSetor.DetailApproval.setor100 + " Laporan setor 100: " + ((Int64)pkt.setorUang[0]))
+                            + "\n Approval setor 50: " + ((Int64)queryApprovalSetor.DetailApproval.setor50 + " Laporan setor 50: " + ((Int64)pkt.setorUang[1]))
+                            + "\n Approval setor 20: " + ((Int64)queryApprovalSetor.DetailApproval.setor20 + " Laporan setor 20: " + ((Int64)pkt.setorUang[2]))
+                            ;
+                        }
                     }
                 }
 

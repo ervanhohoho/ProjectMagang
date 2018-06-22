@@ -32,13 +32,14 @@
             this.TanggalPicker = new System.Windows.Forms.DateTimePicker();
             this.InputButton = new System.Windows.Forms.Button();
             this.ExportButton = new System.Windows.Forms.Button();
+            this.kanwilCheckListBox = new System.Windows.Forms.CheckedListBox();
             ((System.ComponentModel.ISupportInitialize)(this.InputGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // InputGridView
             // 
             this.InputGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.InputGridView.Location = new System.Drawing.Point(12, 41);
+            this.InputGridView.Location = new System.Drawing.Point(12, 91);
             this.InputGridView.Name = "InputGridView";
             this.InputGridView.Size = new System.Drawing.Size(959, 428);
             this.InputGridView.TabIndex = 0;
@@ -54,7 +55,7 @@
             // 
             // InputButton
             // 
-            this.InputButton.Location = new System.Drawing.Point(896, 490);
+            this.InputButton.Location = new System.Drawing.Point(896, 549);
             this.InputButton.Name = "InputButton";
             this.InputButton.Size = new System.Drawing.Size(75, 23);
             this.InputButton.TabIndex = 2;
@@ -64,7 +65,7 @@
             // 
             // ExportButton
             // 
-            this.ExportButton.Location = new System.Drawing.Point(815, 490);
+            this.ExportButton.Location = new System.Drawing.Point(815, 549);
             this.ExportButton.Name = "ExportButton";
             this.ExportButton.Size = new System.Drawing.Size(75, 23);
             this.ExportButton.TabIndex = 3;
@@ -72,11 +73,20 @@
             this.ExportButton.UseVisualStyleBackColor = true;
             this.ExportButton.Click += new System.EventHandler(this.ExportButton_Click);
             // 
+            // kanwilCheckListBox
+            // 
+            this.kanwilCheckListBox.FormattingEnabled = true;
+            this.kanwilCheckListBox.Location = new System.Drawing.Point(242, 12);
+            this.kanwilCheckListBox.Name = "kanwilCheckListBox";
+            this.kanwilCheckListBox.Size = new System.Drawing.Size(133, 64);
+            this.kanwilCheckListBox.TabIndex = 4;
+            // 
             // RekapApprovalForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(983, 525);
+            this.ClientSize = new System.Drawing.Size(983, 584);
+            this.Controls.Add(this.kanwilCheckListBox);
             this.Controls.Add(this.ExportButton);
             this.Controls.Add(this.InputButton);
             this.Controls.Add(this.TanggalPicker);
@@ -94,5 +104,6 @@
         private System.Windows.Forms.DateTimePicker TanggalPicker;
         private System.Windows.Forms.Button InputButton;
         private System.Windows.Forms.Button ExportButton;
+        private System.Windows.Forms.CheckedListBox kanwilCheckListBox;
     }
 }

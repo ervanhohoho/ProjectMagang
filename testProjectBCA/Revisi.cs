@@ -413,36 +413,28 @@ namespace testProjectBCA
                         d20 = d20
                     });
                 }
-                if (!String.IsNullOrEmpty(table.Rows[52][6].ToString()) && !String.IsNullOrEmpty(table.Rows[52][7].ToString()) && !String.IsNullOrEmpty(table.Rows[52][8].ToString()))
-                {
-                    Int64 buf;
-                    if (String.IsNullOrEmpty(table.Rows[52][6].ToString()))
-                        pkt.permintaanAdhoc.Add(0);
-                    else if (Int64.TryParse(table.Rows[52][6].ToString(), out buf))
-                        pkt.permintaanAdhoc.Add(buf);
-                    else
-                        pkt.permintaanAdhoc.Add(0);
-
-                    if (String.IsNullOrEmpty(table.Rows[52][7].ToString()))
-                        pkt.permintaanAdhoc.Add(0);
-                    else if (Int64.TryParse(table.Rows[52][7].ToString(), out buf))
-                        pkt.permintaanAdhoc.Add(buf);
-                    else
-                        pkt.permintaanAdhoc.Add(0);
-
-                    if (String.IsNullOrEmpty(table.Rows[52][8].ToString()))
-                        pkt.permintaanAdhoc.Add(0);
-                    else if (Int64.TryParse(table.Rows[52][8].ToString(), out buf))
-                        pkt.permintaanAdhoc.Add(buf);
-                    else
-                        pkt.permintaanAdhoc.Add(0);
-                }
+                
+                Int64 buf1;
+                if (String.IsNullOrEmpty(table.Rows[52][6].ToString()))
+                    pkt.permintaanAdhoc.Add(0);
+                else if (Int64.TryParse(table.Rows[52][6].ToString(), out buf1))
+                    pkt.permintaanAdhoc.Add(buf1);
                 else
-                {
                     pkt.permintaanAdhoc.Add(0);
+
+                if (String.IsNullOrEmpty(table.Rows[52][7].ToString()))
                     pkt.permintaanAdhoc.Add(0);
+                else if (Int64.TryParse(table.Rows[52][7].ToString(), out buf1))
+                    pkt.permintaanAdhoc.Add(buf1);
+                else
                     pkt.permintaanAdhoc.Add(0);
-                }
+
+                if (String.IsNullOrEmpty(table.Rows[52][8].ToString()))
+                    pkt.permintaanAdhoc.Add(0);
+                else if (Int64.TryParse(table.Rows[52][8].ToString(), out buf1))
+                    pkt.permintaanAdhoc.Add(buf1);
+                else
+                    pkt.permintaanAdhoc.Add(0);
 
                 Console.WriteLine("Saldo Awal Hitungan 100: " + pkt.saldoAwalHitungan[0]);
                 Console.WriteLine("Saldo Awal Hitungan 50: " + pkt.saldoAwalHitungan[1]);

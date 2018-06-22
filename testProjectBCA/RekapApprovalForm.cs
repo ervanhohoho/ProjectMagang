@@ -21,6 +21,14 @@ namespace testProjectBCA
         {
             InitializeComponent();
             loadGridView();
+            loadKanwilCheckListBox();
+        }
+        void loadKanwilCheckListBox()
+        {
+            List<String> listKanwil = (from x in db.Pkts orderby x.kanwil select x.kanwil).Distinct().ToList();
+            foreach(String temp in listKanwil)
+                kanwilCheckListBox.Items.Add(temp);
+
         }
         void loadGridView()
         {
@@ -173,7 +181,6 @@ namespace testProjectBCA
         {
             foreach(var temp in listRekapApproval)
             {
-                MessageBox.Show(temp.inputOpr);
                 Approval ap = (from x in db.Approvals where x.idApproval == temp.id select x).FirstOrDefault();
                 ap.inputOpr = temp.inputOpr;
                 ap.inputSpv = temp.inputSpv;
@@ -181,6 +188,9 @@ namespace testProjectBCA
                 ap.validasiOpr = temp.validasiOpr;
                 ap.validasiSpv = temp.validasiSpv;
                 ap.validasiNoTxn = temp.validasiNoTxn;
+
+
+
                 db.SaveChanges();
             }
         }

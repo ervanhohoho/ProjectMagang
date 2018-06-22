@@ -669,6 +669,12 @@
             // 
             // setor20Txt
             // 
+            this.setor20Txt.Increment = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.setor20Txt.InterceptArrowKeys = false;
             this.setor20Txt.Location = new System.Drawing.Point(297, 150);
             this.setor20Txt.Maximum = new decimal(new int[] {
             -1304428545,
@@ -683,6 +689,12 @@
             // 
             // bonAdhoc20Txt
             // 
+            this.bonAdhoc20Txt.Increment = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.bonAdhoc20Txt.InterceptArrowKeys = false;
             this.bonAdhoc20Txt.Location = new System.Drawing.Point(297, 87);
             this.bonAdhoc20Txt.Maximum = new decimal(new int[] {
             -1304428545,
@@ -697,6 +709,12 @@
             // 
             // setorAdhoc20Txt
             // 
+            this.setorAdhoc20Txt.Increment = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.setorAdhoc20Txt.InterceptArrowKeys = false;
             this.setorAdhoc20Txt.Location = new System.Drawing.Point(297, 61);
             this.setorAdhoc20Txt.Maximum = new decimal(new int[] {
             -1304428545,
@@ -711,6 +729,12 @@
             // 
             // setor50Txt
             // 
+            this.setor50Txt.Increment = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.setor50Txt.InterceptArrowKeys = false;
             this.setor50Txt.Location = new System.Drawing.Point(191, 150);
             this.setor50Txt.Maximum = new decimal(new int[] {
             -1304428545,
@@ -725,6 +749,12 @@
             // 
             // bonAdhoc50Txt
             // 
+            this.bonAdhoc50Txt.Increment = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.bonAdhoc50Txt.InterceptArrowKeys = false;
             this.bonAdhoc50Txt.Location = new System.Drawing.Point(191, 87);
             this.bonAdhoc50Txt.Maximum = new decimal(new int[] {
             -1304428545,
@@ -739,6 +769,12 @@
             // 
             // setorAdhoc50Txt
             // 
+            this.setorAdhoc50Txt.Increment = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.setorAdhoc50Txt.InterceptArrowKeys = false;
             this.setorAdhoc50Txt.Location = new System.Drawing.Point(191, 61);
             this.setorAdhoc50Txt.Maximum = new decimal(new int[] {
             -1304428545,
@@ -750,9 +786,17 @@
             this.setorAdhoc50Txt.TabIndex = 7;
             this.setorAdhoc50Txt.ThousandsSeparator = true;
             this.setorAdhoc50Txt.ValueChanged += new System.EventHandler(this.Txt_ValueChanged);
+            this.setorAdhoc50Txt.Scroll += new System.Windows.Forms.ScrollEventHandler(this.setorAdhoc50Txt_Scroll);
+            this.setorAdhoc50Txt.MouseUp += new System.Windows.Forms.MouseEventHandler(this.setorAdhoc50Txt_MouseUp);
             // 
             // setor100Txt
             // 
+            this.setor100Txt.Increment = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.setor100Txt.InterceptArrowKeys = false;
             this.setor100Txt.Location = new System.Drawing.Point(85, 151);
             this.setor100Txt.Maximum = new decimal(new int[] {
             -1304428545,
@@ -767,6 +811,12 @@
             // 
             // bonAdhoc100Txt
             // 
+            this.bonAdhoc100Txt.Increment = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.bonAdhoc100Txt.InterceptArrowKeys = false;
             this.bonAdhoc100Txt.Location = new System.Drawing.Point(85, 88);
             this.bonAdhoc100Txt.Maximum = new decimal(new int[] {
             -1304428545,
@@ -781,6 +831,12 @@
             // 
             // setorAdhoc100Txt
             // 
+            this.setorAdhoc100Txt.Increment = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.setorAdhoc100Txt.InterceptArrowKeys = false;
             this.setorAdhoc100Txt.Location = new System.Drawing.Point(85, 61);
             this.setorAdhoc100Txt.Maximum = new decimal(new int[] {
             -1304428545,

@@ -55,6 +55,7 @@ namespace testProjectBCA
         public InformationBoard()
         {
             InitializeComponent();
+            pktComboBox.MouseWheel += new MouseEventHandler(pktComboBox_MouseWheel);
             pktIndex = 0;
             loadComboBox();
             //Load Tree
@@ -120,6 +121,8 @@ namespace testProjectBCA
             //Console.WriteLine(query[0]);
             //MessageBox.Show(tanggalOpti.ToShortDateString());
             tanggalPrediksiMaxPicker.MinDate = DateTime.Today.AddDays(2);
+
+            setorAdhoc100Txt.Increment = 0;
         }
         void loadComboBox()
         {
@@ -285,9 +288,11 @@ namespace testProjectBCA
 
             DateTime tanggalKemaren = tanggalOptiMin.AddDays(-1);
             //Delete data yang udah ada di approval
-            var detailApprovals = (from x in db.laporanBons where x.kodePkt == kodePkt && x.tanggal > tanggalOptiMin select x).ToList();
-            for (int a = 0; a < detailApprovals.Count-1; a++)
-                laporanPermintaanBon.RemoveAt(0);
+            var laporanBons = (from x in db.laporanBons where x.kodePkt == kodePkt && x.tanggal > tanggalOptiMin select x).ToList();
+            List<LaporanPermintaanBon> toDelete = new List<LaporanPermintaanBon>();
+            for (int a = 0; a < laporanPermintaanBon.Count; a++)
+                if(laporanBons.Where(x=>x.tanggal == laporanPermintaanBon[a].tanggal).FirstOrDefault() != null)
+                    toDelete.Add(laporanPermintaanBon[a]);
 
             permintaanBonGridView.Columns.Add("Tanggal", "Tanggal");
             permintaanBonGridView.Columns.Add("100", "100");
@@ -1685,10 +1690,12 @@ namespace testProjectBCA
             Database1Entities db = new Database1Entities();
             setor = new List<Denom>();
             String kodepkt = KodePkt[pktIndex];
+            DateTime today = DateTime.Today.Date;
             Denom temp = new Denom();
             var q2 = (from x in db.Approvals
                       join y in db.DetailApprovals on x.idApproval equals y.idApproval
-                      where x.kodePkt == kodepkt && (y.tanggal >= tanggalOptiMin) select new {Approval = x, DetailApproval = y}).ToList();
+                      
+                      where x.kodePkt == kodepkt && (y.tanggal >= tanggalOptiMin) && ((DateTime)x.tanggal) < today select new {Approval = x, DetailApproval = y}).ToList();
             foreach(var s in q2)
             {
                 temp = new Denom();
@@ -1740,6 +1747,10 @@ namespace testProjectBCA
             rasio50Lbl.Text = "-";
             rasio20Lbl.Text = "-";
 
+
+            Console.WriteLine("Target Rasio 100: " + targetRasio100);
+            Console.WriteLine("Target Rasio 50: " + targetRasio50);
+            Console.WriteLine("Target Rasio 20: " + targetRasio20);
             Console.WriteLine("Saldo Awal");
             Console.WriteLine(saldoAwal.d100 + " " + saldoAwal.d50 + " " + saldoAwal.d20);
 
@@ -1801,7 +1812,7 @@ namespace testProjectBCA
             
 
             //Hitung saldo ideal h+2, h+3, ..
-            for (int a = 2 + jumlahBonLaporan-1 ; a<prediksiIsiAtm.Count;a++)
+            for (int a = 1 + jumlahBonLaporan ; a<prediksiIsiAtm.Count;a++)
             {
                 Denom temp = new Denom();
                 temp.d100 = (Int64)Math.Round(((Double)prediksiIsiAtm[a].d100 + (Double)isiCrm[a].d100) * targetRasio100);
@@ -1811,6 +1822,11 @@ namespace testProjectBCA
                 saldoAwalIdeal.Add(temp);
             }
 
+            Console.WriteLine("Saldo awal ideal\n===============");
+            foreach (var temp in saldoAwalIdeal)
+            {
+                Console.WriteLine(temp.tgl + " " + temp.d100 + " " + temp.d50 + " " + temp.d20);
+            }
             //MessageBox.Show("Jumlah Bon Laporan: " + jumlahBonLaporan);
 
             //Ambil saldo akhir ideal h+1 dari saldo awal ideal h+2
@@ -1819,6 +1835,9 @@ namespace testProjectBCA
             saldoAkhirH1Ideal.d100 = saldoAwalIdeal[0].d100;
             saldoAkhirH1Ideal.d50 = saldoAwalIdeal[0].d50;
             saldoAkhirH1Ideal.d20 = saldoAwalIdeal[0].d20;
+
+            Console.WriteLine("Saldo Akhir Hari H");
+            Console.WriteLine(saldoAkhirH.tgl + " " + saldoAkhirH.d100 + " " + saldoAkhirH.d50 + " " + saldoAkhirH.d20);
 
             //Hitung rekomendasiBon untuk h+1 (Belom ada setor dan adhoc)
             Denom tempRekomendasiBon = new Denom();
@@ -1849,7 +1868,8 @@ namespace testProjectBCA
                 + prediksiIsiAtm[jumlahBonLaporan].d20
                 + isiCrm[jumlahBonLaporan].d20;
 
-            tempRekomendasiBon.tgl = tanggalOptiMin.AddDays(1+jumlahBonLaporan-1);
+            tempRekomendasiBon.tgl = tanggalOptiMin.AddDays(jumlahBonLaporan);
+
 
             if (setorCounter < setor.Count && tempRekomendasiBon.tgl == setor[setorCounter].tgl)
             {
@@ -1905,13 +1925,15 @@ namespace testProjectBCA
             {
                 if(tanggalSkip.Contains(rekomendasiBon[a].tgl))
                 {
-                    rekomendasiBon[a - 1].d100 += rekomendasiBon[a].d100;
+                    if(a>0)
+                    { rekomendasiBon[a - 1].d100 += rekomendasiBon[a].d100;
                     rekomendasiBon[a - 1].d50 += rekomendasiBon[a].d50;
                     rekomendasiBon[a - 1].d20 += rekomendasiBon[a].d20;
 
                     rekomendasiBon[a].d100 = 0;
                     rekomendasiBon[a].d50 = 0;
                     rekomendasiBon[a].d20 = 0;
+                        }
                 }
             }
             Console.WriteLine("Rekomendasi Bon");
@@ -2344,22 +2366,13 @@ namespace testProjectBCA
                 cell.Value = temp.tgl.ToShortDateString();
                 row.Cells.Add(cell);
                 DataGridViewTextBoxCell cell1 = new DataGridViewTextBoxCell();
-                if (temp.d100 > 0)
-                    cell1.Value = temp.d100;
-                else
-                    cell1.Value = 0;
+                cell1.Value = temp.d100;
                 row.Cells.Add(cell1);
                 DataGridViewTextBoxCell cell2 = new DataGridViewTextBoxCell();
-                if (temp.d50 > 0)
-                    cell2.Value = temp.d50;
-                else
-                    cell2.Value = 0;
+                cell2.Value = temp.d50;
                 row.Cells.Add(cell2);
                 DataGridViewTextBoxCell cell3 = new DataGridViewTextBoxCell();
-                if (temp.d20 > 0)
-                    cell3.Value = temp.d20;
-                else
-                    cell3.Value = 0;
+                cell3.Value = temp.d20;
                 row.Cells.Add(cell3);
                 rekomendasiBonGridView.Rows.Add(row);
             }
@@ -2381,7 +2394,7 @@ namespace testProjectBCA
                 //    bonGridView.Columns[i].DefaultCellStyle.Format = "c";
                 //    bonGridView.Columns[i].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
                 //}
-                DateTime tempDate = tanggalOptiMin.AddDays(1 + jumlahBonLaporan - 1);
+                DateTime tempDate = tanggalOptiMin.AddDays(jumlahBonLaporan);
                 while (tempDate <= tanggalOptiMax.AddDays(-1))
                 {
                     DataGridViewRow row = new DataGridViewRow();
@@ -2460,12 +2473,14 @@ namespace testProjectBCA
                     saldoAkhir.d50 = saldoAwal.d50 + sislokCdm[counter].d50 + sislokCrm[counter].d50 + (Int64)(rasioSislokAtm[counter].d50 * prediksiIsiAtm[counter].d50) - prediksiIsiAtm[counter].d50 - isiCrm[counter].d50 + bon[counter].d50 + bonAdhoc.d50 - setorAdhoc.d50 - setor[setorCounter].d50;
                     saldoAkhir.d20 = saldoAwal.d20 + sislokCdm[counter].d20 + sislokCrm[counter].d20 + (Int64)(rasioSislokAtm[counter].d20 * prediksiIsiAtm[counter].d20) - prediksiIsiAtm[counter].d20 - isiCrm[counter].d20 + bon[counter].d20 + bonAdhoc.d20 - setorAdhoc.d20 - setor[setorCounter].d20;
                     setorCounter++;
+                    counter++;
                 }
                 else
                 {
                     saldoAkhir.d100 = saldoAwal.d100 + sislokCdm[counter].d100 + sislokCrm[counter].d100 + (Int64)(rasioSislokAtm[counter].d100 * prediksiIsiAtm[counter].d100) - prediksiIsiAtm[counter].d100 - isiCrm[counter].d100 + bon[counter].d100 + bonAdhoc.d100 - setorAdhoc.d100;
                     saldoAkhir.d50 = saldoAwal.d50 + sislokCdm[counter].d50 + sislokCrm[counter].d50 + (Int64)(rasioSislokAtm[counter].d50 * prediksiIsiAtm[counter].d50) - prediksiIsiAtm[counter].d50 - isiCrm[counter].d50 + bon[counter].d50 + bonAdhoc.d50 - setorAdhoc.d50;
                     saldoAkhir.d20 = saldoAwal.d20 + sislokCdm[counter].d20 + sislokCrm[counter].d20 + (Int64)(rasioSislokAtm[counter].d20 * prediksiIsiAtm[counter].d20) - prediksiIsiAtm[counter].d20 - isiCrm[counter].d20 + bon[counter].d20 + bonAdhoc.d20 - setorAdhoc.d20;
+                    counter++;
                 }
             }
             else
@@ -2473,6 +2488,7 @@ namespace testProjectBCA
                 saldoAkhir.d100 = saldoAwal.d100 + sislokCdm[counter].d100 + sislokCrm[counter].d100 + (Int64)(rasioSislokAtm[counter].d100 * prediksiIsiAtm[counter].d100) - prediksiIsiAtm[counter].d100 - isiCrm[counter].d100 + bon[counter].d100 + bonAdhoc.d100 - setorAdhoc.d100;
                 saldoAkhir.d50 = saldoAwal.d50 + sislokCdm[counter].d50 + sislokCrm[counter].d50 + (Int64)(rasioSislokAtm[counter].d50 * prediksiIsiAtm[counter].d50) - prediksiIsiAtm[counter].d50 - isiCrm[counter].d50 + bon[counter].d50 + bonAdhoc.d50 - setorAdhoc.d50;
                 saldoAkhir.d20 = saldoAwal.d20 + sislokCdm[counter].d20 + sislokCrm[counter].d20 + (Int64)(rasioSislokAtm[counter].d20 * prediksiIsiAtm[counter].d20) - prediksiIsiAtm[counter].d20 - isiCrm[counter].d20 + bon[counter].d20 + bonAdhoc.d20 - setorAdhoc.d20;
+                counter++;
             }
             if (setorBaru.tgl.ToShortDateString() == tanggalOptiMin.ToShortDateString())
             {
@@ -2480,7 +2496,7 @@ namespace testProjectBCA
                 saldoAkhir.d50 -= setorBaru.d50;
                 saldoAkhir.d20 -= setorBaru.d20;
             }
-            counter++;
+           
 
             for (int a=1;a<bon.Count;a++)
             {
@@ -2537,29 +2553,38 @@ namespace testProjectBCA
             for (int a=0;a<saldoAwalIdeal.Count;a++)
             {
                 Int64 bon100,bon50,bon20;
-                if (bonGridView.Rows[a].Cells[1].Value.ToString() == "0")
+                if (bonGridView.Rows[a].Cells[1].Value.ToString() == "0" || String.IsNullOrEmpty(bonGridView.Rows[a].Cells[1].Value.ToString()))
                 {
                     bon100 = 0;
                 }
                 else
                 {
-                    bon100 = (Int64)bonGridView.Rows[a].Cells[1].Value;
+                    String temp = (String) bonGridView.Rows[a].Cells[1].Value.ToString();
+                    temp = temp.Replace("Rp", "");
+                    temp = temp.Replace(".", "");
+                    bon100 = Int64.Parse(temp);
                 }
-                if (bonGridView.Rows[a].Cells[2].Value.ToString() == "0")
+                if (bonGridView.Rows[a].Cells[2].Value.ToString() == "0" || String.IsNullOrEmpty(bonGridView.Rows[a].Cells[2].Value.ToString()))
                 {
                     bon50 = 0;
                 }
                 else
                 {
-                    bon50 = (Int64)bonGridView.Rows[a].Cells[2].Value;
+                    String temp = (String)bonGridView.Rows[a].Cells[2].Value.ToString();
+                    temp = temp.Replace("Rp", "");
+                    temp = temp.Replace(".", "");
+                    bon50 = Int64.Parse(temp);
                 }
-                if (bonGridView.Rows[a].Cells[3].Value.ToString()== "0")
+                if (bonGridView.Rows[a].Cells[3].Value.ToString()== "0" || String.IsNullOrEmpty(bonGridView.Rows[a].Cells[3].Value.ToString()))
                 {
                     bon20 = 0;
                 }
                 else
                 {
-                    bon20 = (Int64)bonGridView.Rows[a].Cells[3].Value;
+                    String temp = (String)bonGridView.Rows[a].Cells[3].Value.ToString();
+                    temp = temp.Replace("Rp", "");
+                    temp = temp.Replace(".", "");
+                    bon20 = Int64.Parse(temp);
                 }
                 rasio = new Rasio();
                 rasio.tgl = tempTgl.AddDays(counter);
@@ -3161,13 +3186,13 @@ namespace testProjectBCA
                 loadComboBox();
                 loadForm.CloseForm();
                 MessageBox.Show("Approved!");
-                bonAdhoc100Txt.Text = "";
-                bonAdhoc50Txt.Text = "";
-                bonAdhoc20Txt.Text = "";
+                bonAdhoc100Txt.Value = 0;
+                bonAdhoc50Txt.Value = 0;
+                bonAdhoc20Txt.Value = 0;
 
-                setor100Txt.Text = "";
-                setor50Txt.Text = "";
-                setor20Txt.Text = "";
+                setor100Txt.Value = 0;
+                setor50Txt.Value = 0;
+                setor20Txt.Value = 0;
 
                 setorAdhoc100Txt.Value = 0;
                 setorAdhoc50Txt.Value = 0;
@@ -3406,7 +3431,10 @@ namespace testProjectBCA
                 }
            
         }
-
+        void pktComboBox_MouseWheel(object sender, MouseEventArgs e)
+        {
+            ((HandledMouseEventArgs)e).Handled = true;
+        }
         private void bonGridView_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
             int rowidx = e.RowIndex, colidx = e.ColumnIndex;
@@ -3449,6 +3477,17 @@ namespace testProjectBCA
             loadTableRasio();
             loadTableSaldo();
         }
+
+        private void setorAdhoc50Txt_MouseUp(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void setorAdhoc50Txt_Scroll(object sender, ScrollEventArgs e)
+        {
+            
+        }
+
 
         private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
         {
