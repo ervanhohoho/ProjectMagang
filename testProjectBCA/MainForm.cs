@@ -781,6 +781,13 @@ namespace testProjectBCA
             ef.MdiParent = this;
             ef.Show();
         }
+
+        private void inputBonYangDisetujuiToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            InputBonYangDisetujuiForm ibydf = new InputBonYangDisetujuiForm();
+            ibydf.MdiParent = this;
+            ibydf.Show();
+        }
     }
 }
 public static class SqlBulkCopyExtensions

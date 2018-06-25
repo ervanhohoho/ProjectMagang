@@ -22,6 +22,7 @@ namespace testProjectBCA
             InitializeComponent();
             loadGridView();
             loadKanwilCheckListBox();
+            kanwilCheckListBox.CheckOnClick = true;
         }
         void loadKanwilCheckListBox()
         {
@@ -32,10 +33,17 @@ namespace testProjectBCA
         }
         void loadGridView()
         {
+            List<String> kanwilYangDibaca = new List<String>();
+            var checkeditems = kanwilCheckListBox.CheckedItems;
+            foreach(var temp in checkeditems)
+            {
+                Console.WriteLine(temp.ToString());
+                kanwilYangDibaca.Add(temp.ToString());
+            }
             DateTime tanggal = TanggalPicker.Value.Date;
-            String query = "SELECT [Tanggal Proses] = A.tanggal, [Tanggal Order] = DA.tanggal, [KodePkt] = A.kodePkt, [Bon 100] = bon100, [Bon 50] = bon50, [Bon 20] = bon20, ISNULL(inputOpr,''), ISNULL(inputSpv,''), ISNULL(inputNoTxn,''), ISNULL(validasiOpr,''), ISNULL(validasiSpv,''), ISNULL(validasiNoTxn,''), A.idApproval"
-                    + " FROM Approvals A JOIN DetailApprovals DA ON A.idApproval = DA.idApproval"
-                    +" WHERE A.tanggal = '" +tanggal.ToShortDateString()+"' AND DA.tanggal > '"+tanggal+"'";
+            String query = "SELECT [Tanggal Proses] = A.tanggal, [Tanggal Order] = DA.tanggal, [KodePkt] = A.kodePkt, [Bon 100] = bon100, [Bon 50] = bon50, [Bon 20] = bon20, ISNULL(inputOpr,''), ISNULL(inputSpv,''), ISNULL(inputNoTxn,''), ISNULL(validasiOpr,''), ISNULL(validasiSpv,''), ISNULL(validasiNoTxn,''), A.idApproval, DA.idDetailApproval, kanwil, koordinator"
+                    + " FROM Approvals A JOIN DetailApprovals DA ON A.idApproval = DA.idApproval JOIN Pkt P ON A.kodePkt = P.kodePkt"
+                    + " WHERE A.tanggal = '" +tanggal.ToShortDateString()+"' AND DA.tanggal > '"+tanggal+"'";
             using (SqlConnection sql = new SqlConnection(Variables.connectionString))
             {
                 SqlCommand cmd = new SqlCommand(query,sql);
@@ -51,9 +59,9 @@ namespace testProjectBCA
                         tanggal = (DateTime) reader[0],
                         tanggalOrder = (DateTime) reader[1],
                         kodePkt = (String) reader[2],
-                        bon100 = (Int64) reader[3],
-                        bon50 = (Int64) reader[4],
-                        bon20 = (Int64) reader[5],
+                        d100 = (Int64) reader[3],
+                        d50 = (Int64) reader[4],
+                        d20 = (Int64) reader[5],
                         inputOpr = (String) reader[6],
                         inputSpv = (String) reader[7],
                         inputNoTxn = (String) reader[8],
@@ -62,13 +70,16 @@ namespace testProjectBCA
                         validasiNoTxn = (String) reader[11],
                         order = "Bon CIT",
                         orderType = "Reguler",
-                        id = (int) reader[12]
+                        id = (int) reader[12],
+                        idDetailApproval = (int)reader[13],
+                        kanwil = reader[14].ToString(),
+                        koordinator = reader[15].ToString()
                     });
                 }
                 reader.Close();
 
-                query = "SELECT [Tanggal Proses] = A.tanggal, [Tanggal Order] = DA.tanggal, [KodePkt] = A.kodePkt, [Bon 100] = ISNULL(adhoc100,0), [Bon 50] = ISNULL(adhoc50,0), [Bon 20] = ISNULL(adhoc20,0), ISNULL(inputOpr,''), ISNULL(inputSpv,''), ISNULL(inputNoTxn,''), ISNULL(validasiOpr,''), ISNULL(validasiSpv,''), ISNULL(validasiNoTxn,''), A.idApproval"
-                    + " FROM Approvals A JOIN DetailApprovals DA ON A.idApproval = DA.idApproval"
+                query = "SELECT [Tanggal Proses] = A.tanggal, [Tanggal Order] = DA.tanggal, [KodePkt] = A.kodePkt, [Bon 100] = ISNULL(adhoc100,0), [Bon 50] = ISNULL(adhoc50,0), [Bon 20] = ISNULL(adhoc20,0), ISNULL(inputOpr,''), ISNULL(inputSpv,''), ISNULL(inputNoTxn,''), ISNULL(validasiOpr,''), ISNULL(validasiSpv,''), ISNULL(validasiNoTxn,''), A.idApproval, DA.idDetailApproval, kanwil, koordinator"
+                    + " FROM Approvals A JOIN DetailApprovals DA ON A.idApproval = DA.idApproval JOIN Pkt P ON A.kodePkt = P.kodePkt"
                     + " WHERE A.tanggal = '" + tanggal.ToShortDateString() + "' AND (ISNULL(adhoc100,0)!= 0 OR ISNULL(adhoc50,0)!= 0 OR ISNULL(adhoc20,0)!= 0)";
                 cmd.CommandText = query;
                 reader = cmd.ExecuteReader();
@@ -79,9 +90,9 @@ namespace testProjectBCA
                         tanggal = (DateTime)reader[0],
                         tanggalOrder = (DateTime)reader[1],
                         kodePkt = (String)reader[2],
-                        bon100 = (Int64)reader[3],
-                        bon50 = (Int64)reader[4],
-                        bon20 = (Int64)reader[5],
+                        d100 = (Int64)reader[3],
+                        d50 = (Int64)reader[4],
+                        d20 = (Int64)reader[5],
                         inputOpr = (String)reader[6],
                         inputSpv = (String)reader[7],
                         inputNoTxn = (String)reader[8],
@@ -90,12 +101,15 @@ namespace testProjectBCA
                         validasiNoTxn = (String)reader[11],
                         order = "Bon CIT",
                         orderType = "Adhoc",
-                        id = (int)reader[12]
+                        id = (int)reader[12],
+                        idDetailApproval = (int)reader[13],
+                        kanwil = reader[14].ToString(),
+                        koordinator = reader[15].ToString()
                     });
                 }
                 reader.Close();
-                query = "SELECT [Tanggal Proses] = A.tanggal, [Tanggal Order] = DA.tanggal, [KodePkt] = A.kodePkt, [Setor 100] = ISNULL(setor100,0), [Setor 50] = ISNULL(setor50,0), [Setor 20] = ISNULL(setor20,0), ISNULL(inputOpr,''), ISNULL(inputSpv,''), ISNULL(inputNoTxn,''), ISNULL(validasiOpr,''), ISNULL(validasiSpv,''), ISNULL(validasiNoTxn,''), A.idApproval"
-                    + " FROM Approvals A JOIN DetailApprovals DA ON A.idApproval = DA.idApproval"
+                query = "SELECT [Tanggal Proses] = A.tanggal, [Tanggal Order] = DA.tanggal, [KodePkt] = A.kodePkt, [Setor 100] = ISNULL(setor100,0), [Setor 50] = ISNULL(setor50,0), [Setor 20] = ISNULL(setor20,0), ISNULL(inputOpr,''), ISNULL(inputSpv,''), ISNULL(inputNoTxn,''), ISNULL(validasiOpr,''), ISNULL(validasiSpv,''), ISNULL(validasiNoTxn,''), A.idApproval, DA.idDetailApproval, kanwil, koordinator"
+                    + " FROM Approvals A JOIN DetailApprovals DA ON A.idApproval = DA.idApproval JOIN Pkt P ON A.kodePkt = P.kodePkt"
                     + " WHERE A.tanggal = '" + tanggal.ToShortDateString() + "' AND (ISNULL(setor100,0) != 0 OR ISNULL(setor50,0) != 0 OR ISNULL(setor20,0) != 0)  AND DA.tanggal > '" + tanggal + "'";
                 cmd.CommandText = query;
                 reader = cmd.ExecuteReader();
@@ -106,9 +120,9 @@ namespace testProjectBCA
                         tanggal = (DateTime)reader[0],
                         tanggalOrder = (DateTime)reader[1],
                         kodePkt = (String)reader[2],
-                        bon100 = (Int64)reader[3],
-                        bon50 = (Int64)reader[4],
-                        bon20 = (Int64)reader[5],
+                        d100 = (Int64)reader[3],
+                        d50 = (Int64)reader[4],
+                        d20 = (Int64)reader[5],
                         inputOpr = (String)reader[6],
                         inputSpv = (String)reader[7],
                         inputNoTxn = (String)reader[8],
@@ -117,12 +131,15 @@ namespace testProjectBCA
                         validasiNoTxn = (String)reader[11],
                         order = "Setor",
                         orderType = "Reguler",
-                        id = (int)reader[12]
+                        id = (int)reader[12],
+                        idDetailApproval = (int)reader[13],
+                        kanwil = reader[14].ToString(),
+                        koordinator = reader[15].ToString()
                     });
                 }
                 reader.Close();
-                query = "SELECT [Tanggal Proses] = A.tanggal, [Tanggal Order] = DA.tanggal, [KodePkt] = A.kodePkt, [Setor 100] = ISNULL(setorAdhoc100,0), [Setor 50] = ISNULL(setorAdhoc50,0), [Setor 20] = ISNULL(setorAdhoc20,0), ISNULL(inputOpr,''), ISNULL(inputSpv,''), ISNULL(inputNoTxn,''), ISNULL(validasiOpr,''), ISNULL(validasiSpv,''), ISNULL(validasiNoTxn,''), A.idApproval"
-                    + " FROM Approvals A JOIN DetailApprovals DA ON A.idApproval = DA.idApproval"
+                query = "SELECT [Tanggal Proses] = A.tanggal, [Tanggal Order] = DA.tanggal, [KodePkt] = A.kodePkt, [Setor 100] = ISNULL(setorAdhoc100,0), [Setor 50] = ISNULL(setorAdhoc50,0), [Setor 20] = ISNULL(setorAdhoc20,0), ISNULL(inputOpr,''), ISNULL(inputSpv,''), ISNULL(inputNoTxn,''), ISNULL(validasiOpr,''), ISNULL(validasiSpv,''), ISNULL(validasiNoTxn,''), A.idApproval, DA.idDetailApproval, kanwil, koordinator"
+                    + " FROM Approvals A JOIN DetailApprovals DA ON A.idApproval = DA.idApproval JOIN Pkt P ON A.kodePkt = P.kodePkt"
                     + " WHERE A.tanggal = '" + tanggal.ToShortDateString() + "' AND (ISNULL(setorAdhoc100,0) != 0 OR ISNULL(setorAdhoc50,0)!= 0 OR ISNULL(setorAdhoc20,0) != 0)";
                 cmd.CommandText = query;
                 reader = cmd.ExecuteReader();
@@ -133,9 +150,9 @@ namespace testProjectBCA
                         tanggal = (DateTime)reader[0],
                         tanggalOrder = (DateTime)reader[1],
                         kodePkt = (String)reader[2],
-                        bon100 = (Int64)reader[3],
-                        bon50 = (Int64)reader[4],
-                        bon20 = (Int64)reader[5],
+                        d100 = (Int64)reader[3],
+                        d50 = (Int64)reader[4],
+                        d20 = (Int64)reader[5],
                         inputOpr = (String)reader[6],
                         inputSpv = (String)reader[7],
                         inputNoTxn = (String)reader[8],
@@ -144,12 +161,17 @@ namespace testProjectBCA
                         validasiNoTxn = (String)reader[11],
                         order = "Setor",
                         orderType = "Adhoc",
-                        id = (int)reader[12]
+                        id = (int)reader[12],
+                        idDetailApproval = (int)reader[13],
+                        kanwil = reader[14].ToString(),
+                        koordinator = reader[15].ToString()
                     });
                 }
                 reader.Close();
-
-                InputGridView.DataSource = listRekapApproval;
+                if (kanwilYangDibaca.Any())
+                    InputGridView.DataSource = listRekapApproval.Where(x => kanwilYangDibaca.Where(y => y == x.kanwil).FirstOrDefault() != null).ToList();
+                else
+                    InputGridView.DataSource = listRekapApproval;
             }
             InputGridView.Columns[0].ReadOnly = true;
             InputGridView.Columns[1].ReadOnly = true;
@@ -174,11 +196,11 @@ namespace testProjectBCA
 
         private void TanggalPicker_ValueChanged(object sender, EventArgs e)
         {
-            loadGridView();
         }
 
         private void InputButton_Click(object sender, EventArgs e)
         {
+            loadForm.ShowSplashScreen();
             foreach(var temp in listRekapApproval)
             {
                 Approval ap = (from x in db.Approvals where x.idApproval == temp.id select x).FirstOrDefault();
@@ -190,9 +212,41 @@ namespace testProjectBCA
                 ap.validasiNoTxn = temp.validasiNoTxn;
 
 
+                DetailApproval da = (from x in db.DetailApprovals where x.idApproval == temp.id && x.idDetailApproval == temp.idDetailApproval select x).FirstOrDefault();
+                if(temp.order.ToLower() == "setor")
+                {
+                    if(temp.orderType.ToLower() == "adhoc")
+                    {
+                        da.setorAdhoc100 = temp.d100;
+                        da.setorAdhoc50 = temp.d50;
+                        da.setorAdhoc20 = temp.d20;
+                    }
+                    else
+                    {
+                        da.setor100 = temp.d100;
+                        da.setor50 = temp.d50;
+                        da.setor20 = temp.d20;
+                    }
+                }
+                if(temp.order.ToLower() == "bon cit")
+                {
+                    if (temp.orderType.ToLower() == "adhoc")
+                    {
+                        da.adhoc100 = temp.d100;
+                        da.adhoc50 = temp.d50;
+                        da.adhoc20 = temp.d20;
+                    }
+                    else
+                    {
+                        da.bon100 = temp.d100;
+                        da.bon50 = temp.d50;
+                        da.bon20 = temp.d20;
+                    }
+                }
 
                 db.SaveChanges();
             }
+            loadForm.CloseForm();
         }
 
         private void InputGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
@@ -220,10 +274,19 @@ namespace testProjectBCA
             sv.Filter = Variables.csvFilter;
             if (sv.ShowDialog() == DialogResult.OK)
             {
+                List<String> kanwilYangDilihat = new List<String>();
+                var listKanwil = kanwilCheckListBox.SelectedItems;
+                foreach (var temp in listKanwil)
+                    kanwilYangDilihat.Add(temp.ToString());
+
                 var test = (from x in listRekapApproval
                             join y in db.Pkts on x.kodePkt equals y.kodePkt
-                            select new { tanggalProses = x.tanggal, tanggalOrder = x.tanggalOrder, namaPkt = y.namaPkt, kodePkt = x.kodePkt, order = x.order, orderType = x.orderType, kodeTxn = x.inputNoTxn, bon100 = x.bon100, bon50 = x.bon50, bon20 = x.bon20 }
+                            select new { tanggalProses = x.tanggal, tanggalOrder = x.tanggalOrder, namaPkt = y.namaPkt, kodePkt = x.kodePkt, order = x.order, orderType = x.orderType, kodeTxn = x.inputNoTxn, d100 = x.d100, d50 = x.d50, d20 = x.d20, kanwil = x.kanwil, koordinator = x.koordinator }
                             ).ToList();
+                if(kanwilYangDilihat.Any())
+                {
+                    test = test.Where(x => kanwilYangDilihat.Where(y => y == x.kanwil).FirstOrDefault() != null).ToList();
+                }
                 String csv = ServiceStack.Text.CsvSerializer.SerializeToString(test);
                 File.WriteAllText(sv.FileName, csv);
             }
@@ -237,25 +300,37 @@ namespace testProjectBCA
             // Get the text of the DataObject, and serialize it to a file
             
         }
+
+        private void kanwilCheckListBox_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            loadGridView();
+        }
     }
     class RekapApprovalData
     {
         public int id { set; get; }
+        public int idDetailApproval { set; get; }
         public DateTime tanggal { set; get; }
         public DateTime tanggalOrder { set; get; }
         public String order { set; get; }
         public String orderType { set; get; }
 
         public String kodePkt { set; get; }
-        public Int64 bon100 { set; get; }
-        public Int64 bon50 { set; get; }
-        public Int64 bon20 { set; get; }
+        public Int64 d100 { set; get; }
+        public Int64 d50 { set; get; }
+        public Int64 d20 { set; get; }
         public String inputOpr { set; get; }
         public String inputSpv { set; get; }
         public String inputNoTxn { set; get; }
         public String validasiOpr { set; get; }
         public String validasiSpv { set; get; }
         public String validasiNoTxn { set; get; }
+        public String kanwil { set; get; }
+        public String koordinator { set; get; }
     }
 }
 

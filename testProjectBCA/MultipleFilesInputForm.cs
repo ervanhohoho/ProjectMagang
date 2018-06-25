@@ -14,7 +14,7 @@ namespace testProjectBCA
     public partial class MultipleFilesInputForm : Form
     {
         Database1Entities db = new Database1Entities();
-        String[] files;
+        List<String> files = new List<String>();
         List<List<transaksiPkt>> collectionTransaksiPkt = new List<List<transaksiPkt>>();
         public MultipleFilesInputForm()
         {
@@ -75,11 +75,14 @@ namespace testProjectBCA
             OpenFileDialog of = new OpenFileDialog();
             of.Multiselect = true;
             of.Filter = "Microsoft Excel | *.xls; *xlsx; *xlsm";
-            
+            files = new List<String>();
             if(of.ShowDialog() == DialogResult.OK)
             {
                 loadForm.ShowSplashScreen();
-                files = of.FileNames;
+                String [] tempFileNames = of.FileNames;
+                foreach (var temp in tempFileNames)
+                    files.Add(temp);
+
                 filesList.Items.Clear();
                 foreach (String temp in files)
                 {
@@ -104,14 +107,42 @@ namespace testProjectBCA
                 {
                     q.Remove(temp);
                 }
-
-                //foreach(var temp in q)
-                //{
-                //    filesListBelumMasuk.Items.Add(temp.kodePkt);
-                //}
+                checkSheetDates();
                 inputIntoCollection();
                 loadForm.CloseForm();
                 MessageBox.Show("Done!");
+            }
+        }
+        private void checkSheetDates()
+        {
+            List<String> toDelete = new List<String>();
+            foreach (String temp in files)
+            {
+                DataSet ds = Util.openExcel(temp);
+                DateTime tempDate = new DateTime(1,1,1);
+                for(int a=0;a<ds.Tables.Count;a++)
+                {
+                    String sDate = ds.Tables[a].Rows[12][5].ToString();
+                    if(a==0)
+                    {
+                        tempDate = Convert.ToDateTime(sDate);
+                    }
+                    else
+                    {
+                        DateTime tempDate2 = Convert.ToDateTime(sDate);
+                        if (tempDate2 != tempDate.AddDays(1))
+                        {
+                            toDelete.Add(temp);
+                            MessageBox.Show("File " + temp + " Tidak lengkap/tidak urut tanggalnya!\nData tidak dimasukkan","Warning");
+                            break;
+                        }
+                        tempDate = Convert.ToDateTime(sDate); 
+                    }
+                }
+            }
+            foreach(String temp in toDelete)
+            {
+                files.Remove(temp);
             }
         }
         private void inputIntoCollection()
@@ -151,6 +182,12 @@ namespace testProjectBCA
                 //Validasi Sheet Kosong
                 if (table.Rows.Count < 10)
                     continue;
+                if(String.IsNullOrEmpty(table.Rows[22][5].ToString()))
+                {
+                    MessageBox.Show("Sheet " + table.TableName + " Tidak ada bon yang disetujui!");
+                    break;
+                }
+                
                 //try
                 //{
                     //tanggal pengajuan
@@ -504,6 +541,7 @@ namespace testProjectBCA
                 var queryApprovalSetor = (from a in db.Approvals.AsEnumerable()
                                           join da in db.DetailApprovals.AsEnumerable() on a.idApproval equals da.idApproval
                                           where a.kodePkt == pkt.kodePkt && da.tanggal == pkt.tanggalPengajuan
+                                          orderby da.idDetailApproval descending
                                           select new { DetailApproval = da }).FirstOrDefault();
                 if (queryApprovalSetor != null)
                 {
@@ -511,7 +549,7 @@ namespace testProjectBCA
                     {
                         if (queryApprovalSetor.DetailApproval.setor100 != pkt.setorUang[0] || queryApprovalSetor.DetailApproval.setor50 != pkt.setorUang[1] || queryApprovalSetor.DetailApproval.setor20 != pkt.setorUang[2])
                         {
-                            errMsg += "\nsetor menurut Approval\n===================="
+                            errMsg += "\nSetor menurut Approval\n===================="
                             + "\n Approval setor 100: " + ((Int64)queryApprovalSetor.DetailApproval.setor100 + " Laporan setor 100: " + ((Int64)pkt.setorUang[0]))
                             + "\n Approval setor 50: " + ((Int64)queryApprovalSetor.DetailApproval.setor50 + " Laporan setor 50: " + ((Int64)pkt.setorUang[1]))
                             + "\n Approval setor 20: " + ((Int64)queryApprovalSetor.DetailApproval.setor20 + " Laporan setor 20: " + ((Int64)pkt.setorUang[2]))

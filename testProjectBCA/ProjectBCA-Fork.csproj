@@ -236,6 +236,12 @@
     <Compile Include="HargaLayanan.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="InputBonYangDisetujuiForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InputBonYangDisetujuiForm.Designer.cs">
+      <DependentUpon>InputBonYangDisetujuiForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="InputDataTukaranDanDeliveryForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -456,6 +462,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ForecastAtmForm.resx">
       <DependentUpon>ForecastAtmForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InputBonYangDisetujuiForm.resx">
+      <DependentUpon>InputBonYangDisetujuiForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InputDataTukaranDanDeliveryForm.resx">
       <DependentUpon>InputDataTukaranDanDeliveryForm.cs</DependentUpon>

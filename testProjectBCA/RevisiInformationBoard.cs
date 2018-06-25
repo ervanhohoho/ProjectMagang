@@ -1136,6 +1136,8 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
+                    bool isError = false;
+                    String errMsg = "";
                     while (tempDate <= endDate)
                     {
                         //SislokCdm
@@ -1203,11 +1205,13 @@ namespace testProjectBCA
                             {
                                 if (String.IsNullOrEmpty(reader[0].ToString()) || String.IsNullOrEmpty(reader[1].ToString()) || String.IsNullOrEmpty(reader[2].ToString()))
                                 {
-                                    MessageBox.Show("Data Lainnya tanggal" + tempDate.ToShortDateString() + "Tidak ada!\nValue menjadi 0");
+                                    isError = true;
+                                    errMsg = errMsg + "Data Lainnya tanggal" + tempDate.ToShortDateString() + "Tidak ada! Value menjadi 0";
                                 }
                                 else
                                 {
-                                    MessageBox.Show("Prediksi Lainnya Tanggal " + tempDate.ToShortDateString() + " Menggunakan Event2");
+                                    isError = true;
+                                    errMsg = errMsg + "Prediksi Lainnya Tanggal " + tempDate.ToShortDateString() + " Menggunakan Event2";
                                     tempSislokCdm.d100 = (Int64)reader[0];
                                     tempSislokCdm.d50 = (Int64)reader[1];
                                     tempSislokCdm.d20 = (Int64)reader[2];
@@ -1225,8 +1229,13 @@ namespace testProjectBCA
                         tempDate = tempDate.AddDays(1);
                         reader.Close();
                     }
+                    if(isError)
+                    {
+                        MessageBox.Show(errMsg);
+                    }
                 }
                 sql.Close();
+               
                 Console.WriteLine("CDM");
                 foreach (var temp in sislokCdm)
                 {

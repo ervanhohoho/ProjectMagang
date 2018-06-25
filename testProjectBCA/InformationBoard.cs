@@ -1145,6 +1145,8 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
+                    String errMsg = "";
+                    bool iserror = false;
                     while (tempDate <= endDate)
                     {
                         //SislokCdm
@@ -1212,11 +1214,13 @@ namespace testProjectBCA
                             {
                                 if (String.IsNullOrEmpty(reader[0].ToString()) || String.IsNullOrEmpty(reader[1].ToString()) || String.IsNullOrEmpty(reader[2].ToString()))
                                 {
-                                    MessageBox.Show("Data Lainnya tanggal" + tempDate.ToShortDateString() + "Tidak ada!\nValue menjadi 0");
+                                    iserror = true;
+                                    errMsg = errMsg + "Data Lainnya tanggal" + tempDate.ToShortDateString() + "Tidak ada!\nValue menjadi 0";
                                 }
                                 else
                                 {
-                                    MessageBox.Show("Prediksi Lainnya Tanggal " + tempDate.ToShortDateString() + " Menggunakan Event2");
+                                    iserror = true;
+                                    errMsg=errMsg+"\nPrediksi Lainnya Tanggal " + tempDate.ToShortDateString() + " Menggunakan Event2";
                                     tempSislokCdm.d100 = (Int64)reader[0];
                                     tempSislokCdm.d50 = (Int64)reader[1];
                                     tempSislokCdm.d20 = (Int64)reader[2];
@@ -1233,6 +1237,10 @@ namespace testProjectBCA
                         sislokCdm.Add(tempSislokCdm);
                         tempDate = tempDate.AddDays(1);
                         reader.Close();
+                    }
+                    if(iserror)
+                    {
+                        MessageBox.Show(errMsg);
                     }
                 }
                 sql.Close();
@@ -2862,6 +2870,7 @@ namespace testProjectBCA
             {
                 var q2 = (from x in query
                           where x.DetailApproval.tanggal == temp.tgl
+                          orderby x.DetailApproval.idDetailApproval descending
                           select new
                           {
                               bon100 = x.DetailApproval.bon100,
@@ -2871,7 +2880,7 @@ namespace testProjectBCA
                 if (q2.Any())
                 {
                     if (q2[0].bon100 != temp.d100 || q2[0].bon50 != temp.d50 || q2[0].bon20 != temp.d20)
-                        MessageBox.Show("Data permintaan bon tidak sesuai dengan approval!");
+                        MessageBox.Show("Data bon yang disetujui tidak sesuai dengan approval!");
                 }
             }
         }
@@ -3054,7 +3063,7 @@ namespace testProjectBCA
                 List<Denom> bonYangDisetujui = loadBonYangDisetujuiFromTable();
                 Denom bonAdhoc = loadBonAdhocFromTxt();
                 Denom setorAdhoc = loadSetorAdhocFromTxt();
-                Denom setor = loadSetorFromTxt();
+                Denom setorTxt = loadSetorFromTxt();
                 
                 Approval newA = new Approval();
                 newA.tanggal = tanggalOptiMin;
@@ -3067,10 +3076,42 @@ namespace testProjectBCA
                 int jumlahbon = 0;
                 for (int i=0;i<bon.Count;i++)
                 {
-                    DetailApproval newDetailA = new DetailApproval();
+                    DetailApproval newDetailA = new DetailApproval()
+                    {
+                        adhoc100 = 0,
+                        adhoc20 = 0,
+                        adhoc50 = 0,
+                        bon100 = 0,
+                        bon20 = 0,
+                        bon50 = 0,
+                        isiATM100 = 0,
+                        isiATM20 = 0,
+                        isiATM50 = 0,
+                        isiCRM100 = 0,
+                        isiCRM20 = 0,
+                        isiCRM50 = 0,
+                        saldoAwal100 = 0,
+                        saldoAwal20 = 0,
+                        saldoAwal50 = 0,
+                        setor100 = 0,
+                        setor50 = 0,
+                        setor20 = 0,
+                        setorAdhoc100 = 0,
+                        setorAdhoc20 = 0,
+                        setorAdhoc50 = 0,
+                        sislokATM100 = 0,
+                        sislokATM20 = 0,
+                        sislokATM50 = 0,
+                        sislokCDM100 = 0,
+                        sislokCDM20 = 0,
+                        sislokCDM50 = 0,
+                        sislokCRM100 = 0,
+                        sislokCRM20 = 0,
+                        sislokCRM50 = 0
+                    };
                     newDetailA.idApproval = lastApproval[lastApproval.Count - 1].idApproval;
                     newDetailA.tanggal = tempTanggal;
-
+                    
                     if (i == 0)
                     {
                         //Adhoc
@@ -3084,9 +3125,9 @@ namespace testProjectBCA
                     }
                     if (((DateTime)newDetailA.tanggal).ToShortDateString() == tglSetor.Value.ToShortDateString())
                     {
-                        newDetailA.setor100 = setor.d100;
-                        newDetailA.setor50 = setor.d50;
-                        newDetailA.setor20 = setor.d20;
+                        newDetailA.setor100 = setorTxt.d100;
+                        newDetailA.setor50 = setorTxt.d50;
+                        newDetailA.setor20 = setorTxt.d20;
                     }
                     //Bon
                     newDetailA.bon100 = bon[i].d100;
@@ -3118,6 +3159,7 @@ namespace testProjectBCA
                     newDetailA.isiCRM20 = isiCrm[i].d20;
 
                     tempTanggal = tempTanggal.AddDays(1);
+                   
 
                     db.DetailApprovals.Add(newDetailA);
                     db.SaveChanges();
@@ -3133,9 +3175,9 @@ namespace testProjectBCA
 
                     if(newDetailA.tanggal.Value.ToShortDateString()==tglSetor.Value.ToShortDateString())
                     {
-                        newDetailA.setor100 = setor.d100;
-                        newDetailA.setor50 = setor.d50;
-                        newDetailA.setor20 = setor.d20;
+                        newDetailA.setor100 = setorTxt.d100;
+                        newDetailA.setor50 = setorTxt.d50;
+                        newDetailA.setor20 = setorTxt.d20;
                     }
                     
                     if(i<bonYangDisetujui.Count)
@@ -3176,6 +3218,14 @@ namespace testProjectBCA
                     newDetailA.isiCRM50 = isiCrm[count].d50;
                     newDetailA.isiCRM20 = isiCrm[count].d20;
 
+
+                    if(setor.Where(x=>x.tgl == tempTanggal).FirstOrDefault()!=null)
+                    {
+                        Denom tS = setor.Where(x => x.tgl == tempTanggal).FirstOrDefault();
+                        newDetailA.setor100 = tS.d100;
+                        newDetailA.setor50 = tS.d50;
+                        newDetailA.setor20 = tS.d20;
+                    }
                     tempTanggal = tempTanggal.AddDays(1);
 
                     db.DetailApprovals.Add(newDetailA);

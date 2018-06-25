@@ -44,6 +44,7 @@
             this.rekapApprovalToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.initTransaksiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.forecastATMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportDataHistorisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cabangToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inputDataToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.inputTransaksiCabangToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -68,7 +69,7 @@
             this.inputDataKalenderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadMasterPKTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.orderTrackingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exportDataHistorisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.inputBonYangDisetujuiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -93,6 +94,7 @@
             this.aTMToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.laporanPKTToolStripMenuItem,
             this.inputDataCashpointToolStripMenuItem,
+            this.inputBonYangDisetujuiToolStripMenuItem,
             this.inputOptiToolStripMenuItem,
             this.informationBoardToolStripMenuItem,
             this.revisiInformationBoardToolStripMenuItem,
@@ -207,6 +209,13 @@
             this.forecastATMToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
             this.forecastATMToolStripMenuItem.Text = "Forecast ATM";
             this.forecastATMToolStripMenuItem.Click += new System.EventHandler(this.forecastATMToolStripMenuItem_Click);
+            // 
+            // exportDataHistorisToolStripMenuItem
+            // 
+            this.exportDataHistorisToolStripMenuItem.Name = "exportDataHistorisToolStripMenuItem";
+            this.exportDataHistorisToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.exportDataHistorisToolStripMenuItem.Text = "Export Data Historis";
+            this.exportDataHistorisToolStripMenuItem.Click += new System.EventHandler(this.exportDataHistorisToolStripMenuItem_Click);
             // 
             // cabangToolStripMenuItem
             // 
@@ -396,12 +405,12 @@
             this.orderTrackingToolStripMenuItem.Text = "Order Tracking";
             this.orderTrackingToolStripMenuItem.Click += new System.EventHandler(this.orderTrackingToolStripMenuItem_Click);
             // 
-            // exportDataHistorisToolStripMenuItem
+            // inputBonYangDisetujuiToolStripMenuItem
             // 
-            this.exportDataHistorisToolStripMenuItem.Name = "exportDataHistorisToolStripMenuItem";
-            this.exportDataHistorisToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
-            this.exportDataHistorisToolStripMenuItem.Text = "Export Data Historis";
-            this.exportDataHistorisToolStripMenuItem.Click += new System.EventHandler(this.exportDataHistorisToolStripMenuItem_Click);
+            this.inputBonYangDisetujuiToolStripMenuItem.Name = "inputBonYangDisetujuiToolStripMenuItem";
+            this.inputBonYangDisetujuiToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.inputBonYangDisetujuiToolStripMenuItem.Text = "Input Bon Yang Disetujui";
+            this.inputBonYangDisetujuiToolStripMenuItem.Click += new System.EventHandler(this.inputBonYangDisetujuiToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -464,5 +473,6 @@
         private System.Windows.Forms.ToolStripMenuItem forecastATMToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem inputUpdateDataToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportDataHistorisToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem inputBonYangDisetujuiToolStripMenuItem;
     }
 }

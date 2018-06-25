@@ -155,9 +155,10 @@ namespace testProjectBCA
                                                        select new { Approval = a, DetailApproval = da, LaporanBon = lb }).ToList();
                         foreach (var temp in queryApprovalLaporanBon)
                         {
-                            isError = true;
+                           
                             if (temp.DetailApproval.bon100 != temp.LaporanBon.d100 || temp.DetailApproval.bon50 != temp.LaporanBon.d50 || temp.DetailApproval.bon20 != temp.LaporanBon.d20)
                             {
+                                isError = true;
                                 errMsg += "\nBon yang disetujui\n=========================="
                                     + "\nApproval Bon 100: " + ((Int64)temp.DetailApproval.bon100).ToString("n0") + " Laporan Bon 100: " + ((Int64)temp.LaporanBon.d100).ToString("n0")
                                     + "\nApproval Bon 50: " + ((Int64)temp.DetailApproval.bon50).ToString("n0") + " Laporan Bon 50: " + ((Int64)temp.LaporanBon.d50).ToString("n0")
@@ -193,12 +194,20 @@ namespace testProjectBCA
                     continue;
                 }
                 Console.WriteLine(table.TableName);
+
+                String sSaldoAwal100 = table.Rows[12][6].ToString(), 
+                       sSaldoAwal50 = table.Rows[12][7].ToString(), 
+                       sSaldoAwal20 = table.Rows[12][8].ToString();
+
+                Double dbuf;
+
                 transaksiPkt pkt = new transaksiPkt();
                 //Kode Pkt
                 pkt.kodePkt = table.Rows[5][5].ToString();
 
                 //tanggal pengajuan
                 pkt.tanggalPengajuan = (DateTime)table.Rows[12][5];
+
 
                 //Pengambilan data hitungan dari db
                 if (x == 0 && (from q in db.TransaksiAtms where q.kodePkt == pkt.kodePkt select q).FirstOrDefault() != null)
@@ -220,75 +229,78 @@ namespace testProjectBCA
                 }
 
 
+                
+
                 //Pengambilan saldo awal dari excel
                 for (int a = 0; a < 4; a++)
                 {
-                    if (table.Rows[12][6 + a].ToString() != "0" && table.Rows[12][6 + a].ToString() != "")
-                        pkt.saldoAwal.Add(Int64.Parse(table.Rows[12][6 + a].ToString()));
+                    if (Double.TryParse(table.Rows[12][6+a].ToString(), out dbuf))
+                        pkt.saldoAwal.Add((Int64) dbuf);
                     else
                         pkt.saldoAwal.Add(0);
                 }
+
                 //Pengambilan setor uang dari excel
                 for (int a = 0; a < 4; a++)
                 {
-                    if (table.Rows[14][6 + a].ToString() != "0" && table.Rows[14][6 + a].ToString() != "")
-                        pkt.setorUang.Add(Int64.Parse(table.Rows[14][6 + a].ToString()));
+                    if (Double.TryParse(table.Rows[14][6 + a].ToString(), out dbuf))
+                        pkt.setorUang.Add((Int64)dbuf);
                     else
                         pkt.setorUang.Add(0);
                 }
                 //Pengambilan penerimaan bon dari excel
                 for (int a = 0; a < 4; a++)
                 {
-                    if (table.Rows[15][6 + a].ToString() != "0" && table.Rows[15][6 + a].ToString() != "")
-                        pkt.penerimaanBon.Add(Int64.Parse(table.Rows[15][6 + a].ToString()));
+                    if (Double.TryParse(table.Rows[15][6 + a].ToString(), out dbuf))
+                        pkt.penerimaanBon.Add((Int64) dbuf);
                     else
                         pkt.penerimaanBon.Add(0);
                 }
                 //Pengambilan penerimaan bon adhoc dari excel
                 for (int a = 0; a < 4; a++)
                 {
-                    if (table.Rows[16][6 + a].ToString() != "0" && table.Rows[16][6 + a].ToString() != "")
-                        pkt.penerimaanBonAdhoc.Add(Int64.Parse(table.Rows[16][6 + a].ToString()));
+                    if (Double.TryParse(table.Rows[16][6 + a].ToString(), out dbuf))
+                        pkt.penerimaanBonAdhoc.Add((Int64) dbuf);
                     else
                         pkt.penerimaanBonAdhoc.Add(0);
                 }
                 //Pengambilan pengisian atm dari excel
                 for (int a = 0; a < 4; a++)
                 {
-                    if (table.Rows[17][6 + a].ToString() != "0" && table.Rows[17][6 + a].ToString() != "")
-                        pkt.pengisianAtm.Add(Int64.Parse(table.Rows[17][6 + a].ToString()));
+                    if (Double.TryParse(table.Rows[17][6 + a].ToString(), out dbuf))
+                        pkt.pengisianAtm.Add((Int64) dbuf);
                     else
                         pkt.pengisianAtm.Add(0);
                 }
                 //Pengambilan pengisian crm dari excel
                 for (int a = 0; a < 4; a++)
                 {
-                    if (table.Rows[18][6 + a].ToString() != "0" && table.Rows[18][6 + a].ToString() != "")
-                        pkt.pengisianCrm.Add(Int64.Parse(table.Rows[18][6 + a].ToString()));
+                    if (Double.TryParse(table.Rows[18][6 + a].ToString(), out dbuf))
+                        pkt.pengisianCrm.Add((Int64) dbuf);
                     else
                         pkt.pengisianCrm.Add(0);
                 }
                 //Pengambilan bongkaran ATM dari excel
                 for (int a = 0; a < 4; a++)
                 {
-                    if (table.Rows[19][6 + a].ToString() != "0" && table.Rows[19][6 + a].ToString() != "")
-                        pkt.bongkaranAtm.Add(Int64.Parse(table.Rows[19][6 + a].ToString()));
+                    if (Double.TryParse(table.Rows[19][6 + a].ToString(), out dbuf))
+                        pkt.bongkaranAtm.Add((Int64)dbuf);
                     else
                         pkt.bongkaranAtm.Add(0);
                 }
                 //Pengambilan bongkaran cdm dari excel
                 for (int a = 0; a < 4; a++)
                 {
-                    if (table.Rows[20][6 + a].ToString() != "0" && table.Rows[20][6 + a].ToString() != "")
-                        pkt.bongkaranCdm.Add(Int64.Parse(table.Rows[20][6 + a].ToString()));
+                    if (Double.TryParse(table.Rows[20][6 + a].ToString(), out dbuf))
+                        pkt.bongkaranCdm.Add((Int64) dbuf);
                     else
                         pkt.bongkaranCdm.Add(0);
                 }
                 //Pengambilan bongkaran crm dari excel
                 for (int a = 0; a < 4; a++)
                 {
-                    if (table.Rows[21][6 + a].ToString() != "0" && table.Rows[21][6 + a].ToString() != "")
-                        pkt.bongkaranCrm.Add(Int64.Parse(table.Rows[21][6 + a].ToString()));
+                    if (Double.TryParse(table.Rows[21][6 + a].ToString(), out dbuf))
+                        pkt.bongkaranCrm.Add((Int64)dbuf);
                     else
                         pkt.bongkaranCrm.Add(0);
                 }
