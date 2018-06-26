@@ -64,23 +64,37 @@ namespace testProjectBCA
             Database1Entities db = new Database1Entities();
             List<Denom> list = new List<Denom>();
           
-                DateTime tanggal = startDate;
-                DateTime maxTanggal = endDate;
-                var q = (from x in db.TransaksiAtms
-                         join y in db.Pkts on x.kodePkt equals y.kodePkt
-                         where y.kanwil.ToUpper().Contains("JABO")
-                         select x).ToList();
+            DateTime tanggal = startDate;
+            DateTime maxTanggal = endDate;
+            var q = (from x in db.TransaksiAtms
+                        join y in db.Pkts on x.kodePkt equals y.kodePkt
+                     where x.kodePkt == kodePkt
+                        select x).ToList();
 
-                var et = (from x in db.EventTanggals select x).ToList();
-                while (tanggal <= maxTanggal)
+            var et = (from x in db.EventTanggals select x).ToList();
+            while (tanggal <= maxTanggal)
+            {
+
+                List<TransaksiAtm> query = new List<TransaksiAtm>();
+                var eventT = (from x in et
+                                where x.tanggal == tanggal
+                                select new { x.workDay, x.@event }).FirstOrDefault();
+                Console.WriteLine(tanggal.ToShortDateString() + "Workday: " + eventT.workDay + " Event: " + eventT.@event);
+                foreach (var temp in listTanggalHistorisUntukPrediksi)
                 {
-
-                    List<TransaksiAtm> query = new List<TransaksiAtm>();
-                    var eventT = (from x in et
-                                  where x.tanggal == tanggal
-                                  select new { x.workDay, x.@event }).FirstOrDefault();
-
-
+                    List<TransaksiAtm> q3 = (from x in q
+                                                join y in db.EventTanggals.AsEnumerable() on x.tanggal equals y.tanggal
+                                                where temp.Month == ((DateTime)x.tanggal).Month
+                                                && temp.Year == ((DateTime)x.tanggal).Year
+                                                && eventT.workDay == y.workDay
+                                                && eventT.@event == y.@event
+                                                select x
+                                ).AsEnumerable().Where(x => x.tanggal.DayOfWeek == tanggal.DayOfWeek).ToList();
+                    query.AddRange(q3);
+                }
+                if(query.Count == 0)
+                {
+                    Console.WriteLine(tanggal + " Masuk Event2");
                     foreach (var temp in listTanggalHistorisUntukPrediksi)
                     {
                         List<TransaksiAtm> q3 = (from x in q
@@ -90,21 +104,13 @@ namespace testProjectBCA
                                                  && eventT.workDay == y.workDay
                                                  && eventT.@event == y.@event
                                                  select x
-                                  ).AsEnumerable().Where(x => x.tanggal.DayOfWeek == tanggal.DayOfWeek).ToList();
-                        
-                        if (q3.Count == 0)
-                        {
-                            q3 = (from x in q
-                                  join y in db.EventTanggals.AsEnumerable() on x.tanggal equals y.tanggal
-                                  where temp.Month == ((DateTime)x.tanggal).Month
-                                  && temp.Year == ((DateTime)x.tanggal).Year
-                                  && eventT.workDay == y.workDay
-                                  && x.kodePkt == kodePkt
-                                  select x
-                                  ).ToList();
-                        }
+                              ).ToList();
+                        Console.WriteLine(temp.ToShortDateString() + " " + q3.Count);
                         query.AddRange(q3);
                     }
+                }
+                Console.WriteLine(tanggal + " Query: " + query.Count);
+
                 if (jenis.ToUpper() == "SISLOK CDM")
                     list.Add(new Denom() { tgl = tanggal, d100 = (Int64)Math.Round((Double)query.Average(x => x.sislokCDM100), 0), d50 = (Int64)Math.Round((Double)query.Average(x => x.sislokCDM50), 0), d20 = (Int64)Math.Round((Double)query.Average(x => x.sislokCDM20), 0) });
                 else if(jenis.ToUpper() == "SISLOK CRM")
@@ -115,7 +121,8 @@ namespace testProjectBCA
                     list.Add(new Denom() { tgl = tanggal, d100 = (Int64)Math.Round((Double)query.Average(x => x.isiCRM100), 0), d50 = (Int64)Math.Round((Double)query.Average(x => x.isiCRM50), 0), d20 = (Int64)Math.Round((Double)query.Average(x => x.isiCRM20), 0) });
                 else if (jenis.ToUpper() == "SISLOK ATM")
                 {
-                    
+                    Int64 d100 = (Int64)Math.Round((Double)query.Average(x => x.sislokATM100), 0);
+                    Console.WriteLine("D100 : " + d100);
                     list.Add(new Denom() { tgl = tanggal, d100 = (Int64)Math.Round((Double)query.Average(x => x.sislokATM100), 0), d50 = (Int64)Math.Round((Double)query.Average(x => x.sislokATM50), 0), d20 = (Int64)Math.Round((Double)query.Average(x => x.sislokATM20), 0) });
                 }
                 tanggal = tanggal.AddDays(1);
@@ -181,19 +188,20 @@ namespace testProjectBCA
             if (yangDilihat.ToLower() == "isi crm")
                 listRealisasi = (from x in dataRealisasi select new Denom() { tgl = (DateTime)x.tanggal, d100 = (Int64)x.isiCRM100, d50 = (Int64)x.isiCRM50, d20 = (Int64)x.isiCRM20 }).ToList();
             var q = (from x in list
-                        join y in listRealisasi on x.tgl equals y.tgl
+                        join y in listRealisasi on x.tgl equals y.tgl into xy
+                        from y in xy.DefaultIfEmpty()
                         select new
                         {
                             Tanggal = x.tgl,
-                            Realisasi100 = y.d100,
+                            Realisasi100 = y == null? 0 : y.d100,
                             Forecast100 = x.d100,
-                            Akurasi100 = (Double)x.d100 / (Double)y.d100,
-                            Realisasi50 = y.d50,
+                            Akurasi100 = y == null ? 0 : (Double)x.d100 / (Double)y.d100,
+                            Realisasi50 = y == null ? 0 : y.d50,
                             Forecast50 = x.d50,
-                            Akurasi50 = (Double)x.d50 / (Double)y.d50,
-                            Realisasi20 = y.d20,
+                            Akurasi50 = y == null ? 0 : (Double)x.d50 / (Double)y.d50,
+                            Realisasi20 = y == null ? 0 : y.d20,
                             Forecast20 = x.d20,
-                            Akurasi20 = (Double)x.d20 / (Double)y.d20,
+                            Akurasi20 = y == null ? 0 : (Double)x.d20 / (Double)y.d20,
                         }).ToList();
 
             var sum = (from x in q

@@ -2714,18 +2714,18 @@ namespace testProjectBCA
             saldoGridView.Columns["50"].DefaultCellStyle.Format = "n0";
             saldoGridView.Columns["20"].DefaultCellStyle.Format = "n0";
         }
-        void loadTableTotalIsi()
+        void loadTableIsiCRM()
         {
             DataTable table = new DataTable();
             List<Denom> totalIsi = new List<Denom>();
-            for (int i=0;i<prediksiIsiAtm.Count;i++)
+            for (int i=0;i<isiCrm.Count;i++)
             {
-                var temp = prediksiIsiAtm[i];
+                var temp = isiCrm[i];
                 Denom tempD = new Denom();
                 tempD.tgl = temp.tgl;
-                tempD.d100 = temp.d100 + isiCrm[i].d100;
-                tempD.d50 = temp.d50 + isiCrm[i].d50;
-                tempD.d20 = temp.d20 + isiCrm[i].d20;
+                tempD.d100 = temp.d100;
+                tempD.d50 = temp.d50;
+                tempD.d20 = temp.d20;
                 totalIsi.Add(tempD);
             }
 
@@ -2750,13 +2750,55 @@ namespace testProjectBCA
             table.Rows.Add(row);
 
             
-            totalIsiGridView.DataSource = table;
-            totalIsiGridView.Columns["100"].DefaultCellStyle.Format = "n0";
-            totalIsiGridView.Columns["50"].DefaultCellStyle.Format = "n0";
-            totalIsiGridView.Columns["20"].DefaultCellStyle.Format = "n0";
-            totalIsiGridView.Rows[totalIsiGridView.Rows.Count-1].DefaultCellStyle.BackColor = Color.PapayaWhip;
+            isiCrmGridView.DataSource = table;
+            isiCrmGridView.Columns["100"].DefaultCellStyle.Format = "n0";
+            isiCrmGridView.Columns["50"].DefaultCellStyle.Format = "n0";
+            isiCrmGridView.Columns["20"].DefaultCellStyle.Format = "n0";
+            isiCrmGridView.Rows[isiCrmGridView.Rows.Count-1].DefaultCellStyle.BackColor = Color.PapayaWhip;
         }
-        void loadTableTotalSislok()
+        void loadTableIsiATM()
+        {
+            DataTable table = new DataTable();
+            List<Denom> totalIsi = new List<Denom>();
+            for (int i = 0; i < prediksiIsiAtm.Count; i++)
+            {
+                var temp = prediksiIsiAtm[i];
+                Denom tempD = new Denom();
+                tempD.tgl = temp.tgl;
+                tempD.d100 = temp.d100;
+                tempD.d50 = temp.d50;
+                tempD.d20 = temp.d20;
+                totalIsi.Add(tempD);
+            }
+
+            using (var reader = ObjectReader.Create(totalIsi, "tgl", "d100", "d50", "d20"))
+            {
+                table.Load(reader);
+            }
+            table.Columns["tgl"].ColumnName = "Tanggal";
+            table.Columns["d100"].ColumnName = "100";
+            table.Columns["d50"].ColumnName = "50";
+            table.Columns["d20"].ColumnName = "20";
+
+            Int64 avg100 = (Int64)Math.Round(totalIsi.Average(x => x.d100), 0);
+            Int64 avg50 = (Int64)Math.Round(totalIsi.Average(x => x.d50), 0);
+            Int64 avg20 = (Int64)Math.Round(totalIsi.Average(x => x.d20), 0);
+
+            DataRow row = table.NewRow();
+            row["Tanggal"] = new DateTime(0001, 1, 1);
+            row["100"] = avg100;
+            row["50"] = avg50;
+            row["20"] = avg20;
+            table.Rows.Add(row);
+
+
+            isiAtmGridView.DataSource = table;
+            isiAtmGridView.Columns["100"].DefaultCellStyle.Format = "n0";
+            isiAtmGridView.Columns["50"].DefaultCellStyle.Format = "n0";
+            isiAtmGridView.Columns["20"].DefaultCellStyle.Format = "n0";
+            isiAtmGridView.Rows[isiCrmGridView.Rows.Count - 1].DefaultCellStyle.BackColor = Color.PapayaWhip;
+        }
+        void loadTableSislokCRM()
         {
             DataTable table = new DataTable();
             List<Denom> totalSislok = new List<Denom>();
@@ -2765,15 +2807,14 @@ namespace testProjectBCA
             Console.WriteLine("Load Table Total Sislok");
             Console.WriteLine("========================");
 
-            for (int i = 0; i < prediksiIsiAtm.Count; i++)
+            for (int i = 0; i < sislokCrm.Count; i++)
             {
-                var temp = prediksiIsiAtm[i];
+                var temp = sislokCrm[i];
                 Denom tempD = new Denom();
-                Console.WriteLine(temp.d100 +" "+rasioSislokAtm[i].d100+" "+temp.d100 * rasioSislokAtm[i].d100);
                 tempD.tgl = temp.tgl;
-                tempD.d100 = (Int64) Math.Round((temp.d100* rasioSislokAtm[i].d100),0) + sislokCdm[i].d100 + sislokCrm[i].d100;
-                tempD.d50 = (Int64)Math.Round((temp.d50 * rasioSislokAtm[i].d50), 0) + sislokCdm[i].d50 + sislokCrm[i].d50;
-                tempD.d20 = (Int64)Math.Round((temp.d20 * rasioSislokAtm[i].d20), 0) + sislokCdm[i].d20 + sislokCrm[i].d20;
+                tempD.d100 = sislokCrm[i].d100;
+                tempD.d50 = sislokCrm[i].d50;
+                tempD.d20 = sislokCrm[i].d20;
                 totalSislok.Add(tempD);
             }
 
@@ -2796,12 +2837,59 @@ namespace testProjectBCA
             row["50"] = avg50;
             row["20"] = avg20;
             table.Rows.Add(row);
-            totalSislokGridView.DataSource = table;
-            totalSislokGridView.Columns["100"].DefaultCellStyle.Format = "n0";
-            totalSislokGridView.Columns["50"].DefaultCellStyle.Format = "n0";
-            totalSislokGridView.Columns["20"].DefaultCellStyle.Format = "n0";
+            sislokCrmGridView.DataSource = table;
+            sislokCrmGridView.Columns["100"].DefaultCellStyle.Format = "n0";
+            sislokCrmGridView.Columns["50"].DefaultCellStyle.Format = "n0";
+            sislokCrmGridView.Columns["20"].DefaultCellStyle.Format = "n0";
+                 
+            sislokCrmGridView.Rows[sislokAtmGridView.Rows.Count - 1].DefaultCellStyle.BackColor = Color.PapayaWhip;
 
-            totalSislokGridView.Rows[totalSislokGridView.Rows.Count - 1].DefaultCellStyle.BackColor = Color.PapayaWhip;
+        }
+        void loadTableSislokATM()
+        {
+            DataTable table = new DataTable();
+            List<Denom> totalSislok = new List<Denom>();
+
+            Console.WriteLine("");
+            Console.WriteLine("Load Table Total Sislok");
+            Console.WriteLine("========================");
+
+            for (int i = 0; i < prediksiIsiAtm.Count; i++)
+            {
+                var temp = prediksiIsiAtm[i];
+                Denom tempD = new Denom();
+                tempD.tgl = temp.tgl;
+                tempD.d100 = (Int64)Math.Round((temp.d100 * rasioSislokAtm[i].d100), 0);
+                tempD.d50 = (Int64)Math.Round((temp.d50 * rasioSislokAtm[i].d50), 0);
+                tempD.d20 = (Int64)Math.Round((temp.d20 * rasioSislokAtm[i].d20), 0);
+                totalSislok.Add(tempD);
+            }
+
+            using (var reader = ObjectReader.Create(totalSislok, "tgl", "d100", "d50", "d20"))
+            {
+                table.Load(reader);
+            }
+            table.Columns["tgl"].ColumnName = "Tanggal";
+            table.Columns["d100"].ColumnName = "100";
+            table.Columns["d50"].ColumnName = "50";
+            table.Columns["d20"].ColumnName = "20";
+
+            Int64 avg100 = (Int64)Math.Round(totalSislok.Average(x => x.d100), 0);
+            Int64 avg50 = (Int64)Math.Round(totalSislok.Average(x => x.d50), 0);
+            Int64 avg20 = (Int64)Math.Round(totalSislok.Average(x => x.d20), 0);
+
+            DataRow row = table.NewRow();
+            row["Tanggal"] = new DateTime(0001, 1, 1);
+            row["100"] = avg100;
+            row["50"] = avg50;
+            row["20"] = avg20;
+            table.Rows.Add(row);
+            sislokAtmGridView.DataSource = table;
+            sislokAtmGridView.Columns["100"].DefaultCellStyle.Format = "n0";
+            sislokAtmGridView.Columns["50"].DefaultCellStyle.Format = "n0";
+            sislokAtmGridView.Columns["20"].DefaultCellStyle.Format = "n0";
+
+            sislokAtmGridView.Rows[sislokAtmGridView.Rows.Count - 1].DefaultCellStyle.BackColor = Color.PapayaWhip;
 
         }
         void loadTableBonYangDisetujui()
@@ -3022,8 +3110,10 @@ namespace testProjectBCA
                 loadTableRasio();
                 loadTableSaldo();
 
-                loadTableTotalIsi();
-                loadTableTotalSislok();
+                loadTableIsiCRM();
+                loadTableIsiATM();
+                loadTableSislokATM();
+                loadTableSislokCRM();
                 loadTableBonYangDisetujui();
 
                 loadPermintaanAdhoc();
@@ -3167,7 +3257,7 @@ namespace testProjectBCA
                     jumlahbon++;
                 }
 
-                for (int i=0;i<bonYangDisetujui.Count ;i++)
+                for (int i=0;i<=bonYangDisetujui.Count ;i++)
                 {
                     DetailApproval newDetailA = new DetailApproval();
                     newDetailA.idApproval = lastApproval[lastApproval.Count-1].idApproval;
@@ -3189,9 +3279,9 @@ namespace testProjectBCA
                     }                              
                     else
                     {
-                        newDetailA.bon100 = 0;
-                        newDetailA.bon50 = 0;
-                        newDetailA.bon20 = 0;
+                        newDetailA.bon100 = -1;
+                        newDetailA.bon50 = -1;
+                        newDetailA.bon20 = -1;
                     }
 
                     //Saldo awal
@@ -3269,8 +3359,8 @@ namespace testProjectBCA
 
 
             bonYangSudahDisetujuiGridView.DataSource = null;
-            totalSislokGridView.DataSource = null;
-            totalIsiGridView.DataSource = null;
+            sislokAtmGridView.DataSource = null;
+            isiCrmGridView.DataSource = null;
             saldoGridView.DataSource = null;
             permintaanAdhocGridView.DataSource = null;
         }

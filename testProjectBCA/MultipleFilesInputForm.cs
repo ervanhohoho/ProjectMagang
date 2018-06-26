@@ -182,7 +182,7 @@ namespace testProjectBCA
                 //Validasi Sheet Kosong
                 if (table.Rows.Count < 10)
                     continue;
-                if(String.IsNullOrEmpty(table.Rows[22][5].ToString()))
+                if(String.IsNullOrEmpty(table.Rows[22][5].ToString()) && x == data.Tables.Count-1)
                 {
                     MessageBox.Show("Sheet " + table.TableName + " Tidak ada bon yang disetujui!");
                     break;

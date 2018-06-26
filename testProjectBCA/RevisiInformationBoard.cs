@@ -3050,7 +3050,7 @@ namespace testProjectBCA
                     tempTanggal = tempTanggal.AddDays(1);
                     jumlahBon++;
                 }
-                for (int i=0;i<bonYangDisetujui.Count ;i++)
+                for (int i=0;i<=bonYangDisetujui.Count ;i++)
                 {
                     DetailApproval newDetailA = (from x in db.DetailApprovals.AsEnumerable()
                                                  where x.idApproval == lastApproval[lastApproval.Count - 1].idApproval
