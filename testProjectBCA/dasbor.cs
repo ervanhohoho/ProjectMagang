@@ -1671,7 +1671,7 @@ namespace testProjectBCA
                     {
                         cmd.Connection = sql;
                         sql.Open();
-                        cmd.CommandText = "SELECT [Tahun] = YEAR(tanggal),[Rasio] = CAST(SUM(saldoAwal100 + saldoAwal50 + saldoAwal20) AS FLOAT)/(SUM(isiATM100+isiATM50+isiATM20+isiCRM100+isiCRM50+isiCRM20)) FROM TransaksiAtms WHERE YEAR(tanggal) = " + comboAvg1.SelectedValue.ToString() + " GROUP BY  YEAR(tanggal)";
+                        cmd.CommandText = "SELECT [Tahun] = YEAR(tanggal),[Rasio] = CAST(SUM(saldoAwal100 + saldoAwal50 + saldoAwal20) AS FLOAT)/(SUM(isiATM100+isiATM50+isiATM20+isiCRM100+isiCRM50+isiCRM20)) FROM TransaksiAtms t join Pkt p on t.kodePkt = p.kodePkt WHERE YEAR(tanggal) = " + comboAvg1.SelectedValue.ToString() + " " + areaChoose(comboArea.SelectedValue.ToString()) + " GROUP BY  YEAR(tanggal)";
                         SqlDataReader reader = cmd.ExecuteReader();
                         while (reader.Read())
                         {
@@ -1770,10 +1770,65 @@ namespace testProjectBCA
         private void comboArea_SelectionChangeCommitted(object sender, EventArgs e)
         {
             areaChoose(comboArea.SelectedIndex.ToString());
-            reload();
-            reload2();
-            reload3();
-            reload4();
+
+
+            if (checkAvg1.Checked == true)
+            {
+                reload();
+                List<Double> rasio = new List<Double>();
+                List<String> tahun = new List<String>();
+                using (SqlConnection sql = new SqlConnection(Variables.connectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.Connection = sql;
+                        sql.Open();
+                        cmd.CommandText = "SELECT [Tahun] = YEAR(tanggal),[Rasio] = CAST(SUM(saldoAwal100 + saldoAwal50 + saldoAwal20) AS FLOAT)/(SUM(isiATM100+isiATM50+isiATM20+isiCRM100+isiCRM50+isiCRM20)) FROM TransaksiAtms t join Pkt p on t.kodePkt = p.kodePkt WHERE YEAR(tanggal) = " + comboAvg1.SelectedValue.ToString() + " " + areaChoose(comboArea.SelectedValue.ToString()) + " GROUP BY  YEAR(tanggal)";
+                        SqlDataReader reader = cmd.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            tahun.Add(reader[0].ToString());
+                            rasio.Add((Double)reader[1]);
+
+                        }
+
+                        ChartValues<Double> cv = new ChartValues<Double>();
+                        for (int i = 0; i < 12; i++)
+                        {
+                            cv.Add(Math.Round(rasio[0], 2));
+                        }
+
+                        /* foreach (Double temp in rasio)
+                         {
+                             cv.Add(Math.Round(temp, 2));
+                         }*/
+
+
+                        cartesianChart1.Series.Add(
+                            new LineSeries()
+                            {
+                                Title = comboAvg1.Text + " Average",
+                                Values = cv,
+                                DataLabels = true,
+                                LineSmoothness = 0
+                            }
+                        );
+                    }
+                }
+
+                reload2();
+                reload3();
+                reload4();
+
+            }
+            else
+            {
+                reload();
+                reload2();
+                reload3();
+                reload4();
+            }
+
         }
 
         private void comboKanwil6_SelectionChangeCommitted(object sender, EventArgs e)
@@ -1874,7 +1929,7 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "SELECT [Bulan] = MONTH(tanggal),[Rasio] = CAST(SUM(saldoAwal100 + saldoAwal50 + saldoAwal20) AS FLOAT)/(SUM(isiATM100+isiATM50+isiATM20+isiCRM100+isiCRM50+isiCRM20)) FROM TransaksiAtms WHERE YEAR(tanggal) = " + comboTambah1.SelectedValue.ToString() + " GROUP BY MONTH(tanggal), YEAR(tanggal) ORDER BY Bulan";
+                    cmd.CommandText = "SELECT [Bulan] = MONTH(tanggal),[Rasio] = CAST(SUM(saldoAwal100 + saldoAwal50 + saldoAwal20) AS FLOAT)/(SUM(isiATM100+isiATM50+isiATM20+isiCRM100+isiCRM50+isiCRM20)) FROM TransaksiAtms t join Pkt p on t.kodePkt = p.kodePkt WHERE YEAR(tanggal) = " + comboTambah1.SelectedValue.ToString() + " " + areaChoose(comboArea.SelectedValue.ToString()) + " GROUP BY MONTH(tanggal), YEAR(tanggal) ORDER BY Bulan";
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
@@ -2171,7 +2226,7 @@ namespace testProjectBCA
                     {
                         cmd.Connection = sql;
                         sql.Open();
-                        cmd.CommandText = "SELECT [Tahun] = YEAR(tanggal),[Rasio] = CAST(SUM(saldoAwal100 + saldoAwal50 + saldoAwal20) AS FLOAT)/(SUM(isiATM100+isiATM50+isiATM20+isiCRM100+isiCRM50+isiCRM20)) FROM TransaksiAtms WHERE YEAR(tanggal) = " + comboAvg1.SelectedValue.ToString() + " GROUP BY  YEAR(tanggal)";
+                        cmd.CommandText = "SELECT [Tahun] = YEAR(tanggal),[Rasio] = CAST(SUM(saldoAwal100 + saldoAwal50 + saldoAwal20) AS FLOAT)/(SUM(isiATM100+isiATM50+isiATM20+isiCRM100+isiCRM50+isiCRM20)) FROM TransaksiAtms t join Pkt p on t.kodePkt = p.kodePkt WHERE YEAR(tanggal) = " + comboAvg1.SelectedValue.ToString() + " " + areaChoose(comboArea.SelectedValue.ToString()) + " GROUP BY  YEAR(tanggal)";
                         SqlDataReader reader = cmd.ExecuteReader();
                         while (reader.Read())
                         {
@@ -2238,7 +2293,7 @@ namespace testProjectBCA
             //    }
         }
 
-        
+
 
         private void comboTahun6_1_SelectedIndexChanged(object sender, EventArgs e)
         {

@@ -529,6 +529,7 @@ namespace testProjectBCA
             of.Filter = Variables.excelFilter;
             if(of.ShowDialog() == DialogResult.OK)
             {
+                loadForm.ShowSplashScreen();
                 DataSet ds = Util.openExcel(of.FileName);
                 DataTable dt = ds.Tables[0];
                 dt.Rows.RemoveAt(0);
@@ -554,8 +555,10 @@ namespace testProjectBCA
                         sql.Close();
                     }
                 }
-               
+                loadForm.CloseForm();
+                MessageBox.Show("Done!");
             }
+            
         }
 
         private void loadMasterPKTToolStripMenuItem_Click(object sender, EventArgs e)
@@ -577,15 +580,15 @@ namespace testProjectBCA
             loadForm.ShowSplashScreen();
             dasbor d = new dasbor();
             dasborExtension de = new dasborExtension();
-            popupsementara ps = new popupsementara();
+            //popupsementara ps = new popupsementara();
             loadForm.CloseForm();
             d.MdiParent = this;
             //d.WindowState = FormWindowState.Maximized;
             d.Show();
             de.MdiParent = this;
             de.Show();
-            ps.MdiParent = this;
-            ps.Show();
+            //ps.MdiParent = this;
+            //ps.Show();
         }
 
         private void dailyStockToolStripMenuItem_Click(object sender, EventArgs e)
@@ -787,6 +790,13 @@ namespace testProjectBCA
             InputBonYangDisetujuiForm ibydf = new InputBonYangDisetujuiForm();
             ibydf.MdiParent = this;
             ibydf.Show();
+        }
+
+        private void rasioApprovalToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RasioApprovalForm raf = new RasioApprovalForm();
+            raf.MdiParent = this;
+            raf.Show();
         }
     }
 }

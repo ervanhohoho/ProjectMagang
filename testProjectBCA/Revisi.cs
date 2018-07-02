@@ -73,6 +73,7 @@ namespace testProjectBCA
                             q.saldoAkhir100 += selisih100;
                             q.saldoAkhir50 += selisih50;
                             q.saldoAkhir20 += selisih20;
+
                             foreach (var temp in (from x in db.TransaksiAtms where x.kodePkt == pkt.kodePkt && x.tanggal > pkt.tanggalPengajuan select x).ToList())
                             {
                                 temp.saldoAwal100 += selisih100;

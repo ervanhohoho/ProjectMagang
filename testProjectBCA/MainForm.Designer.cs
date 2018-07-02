@@ -37,6 +37,7 @@
             this.inputDataCashpointToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataPKTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataDenomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.inputBonYangDisetujuiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inputOptiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.informationBoardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.revisiInformationBoardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -69,7 +70,7 @@
             this.inputDataKalenderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadMasterPKTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.orderTrackingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.inputBonYangDisetujuiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.rasioApprovalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -100,6 +101,7 @@
             this.revisiInformationBoardToolStripMenuItem,
             this.rekapApprovalToolStripMenuItem,
             this.rekapApprovalToolStripMenuItem1,
+            this.rasioApprovalToolStripMenuItem,
             this.initTransaksiToolStripMenuItem,
             this.forecastATMToolStripMenuItem,
             this.exportDataHistorisToolStripMenuItem});
@@ -160,6 +162,13 @@
             this.dataDenomToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
             this.dataDenomToolStripMenuItem.Text = "Data Denom";
             this.dataDenomToolStripMenuItem.Click += new System.EventHandler(this.inputDataDenomToolStripMenuItem_Click);
+            // 
+            // inputBonYangDisetujuiToolStripMenuItem
+            // 
+            this.inputBonYangDisetujuiToolStripMenuItem.Name = "inputBonYangDisetujuiToolStripMenuItem";
+            this.inputBonYangDisetujuiToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.inputBonYangDisetujuiToolStripMenuItem.Text = "Input Bon Yang Disetujui";
+            this.inputBonYangDisetujuiToolStripMenuItem.Click += new System.EventHandler(this.inputBonYangDisetujuiToolStripMenuItem_Click);
             // 
             // inputOptiToolStripMenuItem
             // 
@@ -405,12 +414,12 @@
             this.orderTrackingToolStripMenuItem.Text = "Order Tracking";
             this.orderTrackingToolStripMenuItem.Click += new System.EventHandler(this.orderTrackingToolStripMenuItem_Click);
             // 
-            // inputBonYangDisetujuiToolStripMenuItem
+            // rasioApprovalToolStripMenuItem
             // 
-            this.inputBonYangDisetujuiToolStripMenuItem.Name = "inputBonYangDisetujuiToolStripMenuItem";
-            this.inputBonYangDisetujuiToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
-            this.inputBonYangDisetujuiToolStripMenuItem.Text = "Input Bon Yang Disetujui";
-            this.inputBonYangDisetujuiToolStripMenuItem.Click += new System.EventHandler(this.inputBonYangDisetujuiToolStripMenuItem_Click);
+            this.rasioApprovalToolStripMenuItem.Name = "rasioApprovalToolStripMenuItem";
+            this.rasioApprovalToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.rasioApprovalToolStripMenuItem.Text = "Rasio Approval";
+            this.rasioApprovalToolStripMenuItem.Click += new System.EventHandler(this.rasioApprovalToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -474,5 +483,6 @@
         private System.Windows.Forms.ToolStripMenuItem inputUpdateDataToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportDataHistorisToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem inputBonYangDisetujuiToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem rasioApprovalToolStripMenuItem;
     }
 }

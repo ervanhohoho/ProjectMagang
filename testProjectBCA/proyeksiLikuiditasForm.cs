@@ -409,6 +409,7 @@ namespace testProjectBCA
         }
         List<tanggalValue> loadPrediksiOutAtm100()
         {
+            Console.WriteLine("Prediksi ATM");
             List<tanggalValue> result = new List<tanggalValue>();
             List<DateTime> listTanggalHistorisUntukPrediksi = loadTanggalHistorisUntukPrediksi();
             List<tanggalValue> isiAtm100 = new List<tanggalValue>(),
@@ -519,6 +520,15 @@ namespace testProjectBCA
             //hitung saldo tiap hari dari laporan bon dan prediksi
             for (int a = 0; a < bon.Count; a++)
             {
+                Int64 tSaldo = saldo100.Where(x => x.tanggal == today.AddDays(a)).Select(x => x.value).FirstOrDefault(),
+                    tSislokAtm = (Int64)Math.Round(sislokAtm100.Where(x => x.tanggal == today.AddDays(a)).Select(x => x.value).First() * isiAtm100.Where(x => x.tanggal == today.AddDays(a)).Select(x => x.value).First(), 0),
+                    tSislokCdm = sislokCdm100.Where(x => x.tanggal == today.AddDays(a)).Select(x => x.value).First(),
+                    tSislokCrm = sislokCrm100.Where(x => x.tanggal == today.AddDays(a)).Select(x => x.value).First(),
+                    tIsiAtm = isiAtm100.Where(x => x.tanggal == today.AddDays(a)).Select(x => x.value).First(),
+                    tIsiCrm = isiCrm100.Where(x => x.tanggal == today.AddDays(a)).Select(x => x.value).First(),
+                    tBon = (Int64) bon[a].C100;
+
+                Console.WriteLine(tSaldo + "\n" + tSislokAtm + "\n" + tSislokCdm + "\n" + tSislokCrm + "\n" + tIsiAtm + "\n" + tIsiCrm + "\n" + tBon);
                 saldo100.Add(new tanggalValue()
                 {
                     tanggal = today.AddDays(a + 1),
@@ -536,30 +546,39 @@ namespace testProjectBCA
                     result.Add(new tanggalValue() { tanggal = bon[a].Key, value = (Int64)bon[a].C100 });
             }
 
-            //Cek bon di approval
-            if (listApproval.Max(x => x.Key) > saldo100.Max(x => x.tanggal))
-            {
-                DateTime tTanggal = saldo100.Max(x => x.tanggal);
-                var tempLA = listApproval.Where(x => x.Key == tTanggal).FirstOrDefault();
-                int idx = listApproval.IndexOf(tempLA);
+            ////Cek bon di approval
+            //if (listApproval.Max(x => x.Key) > saldo100.Max(x => x.tanggal))
+            //{
+            //    DateTime tTanggal = saldo100.Max(x => x.tanggal);
+            //    var tempLA = listApproval.Where(x => x.Key == tTanggal).FirstOrDefault();
+            //    int idx = listApproval.IndexOf(tempLA);
 
-                for (int a = idx; a < listApproval.Count; a++)
-                {
-                    saldo100.Add(new tanggalValue()
-                    {
-                        tanggal = tTanggal.AddDays(a + 1),
-                        value =
-                          saldo100.Where(x => x.tanggal == tTanggal.AddDays(a)).Select(x => x.value).First()
-                          + (Int64)Math.Round(sislokAtm100.Where(x => x.tanggal == tTanggal.AddDays(a)).Select(x => x.value).First() * isiAtm100.Where(x => x.tanggal == tTanggal.AddDays(a)).Select(x => x.value).First(), 0)
-                          + sislokCdm100.Where(x => x.tanggal == tTanggal.AddDays(a)).Select(x => x.value).First()
-                          + sislokCrm100.Where(x => x.tanggal == tTanggal.AddDays(a)).Select(x => x.value).First()
-                          - isiAtm100.Where(x => x.tanggal == tTanggal.AddDays(a)).Select(x => x.value).First()
-                          - isiCrm100.Where(x => x.tanggal == tTanggal.AddDays(a)).Select(x => x.value).First()
-                          + (Int64)bon.Where(x => x.Key == tTanggal.AddDays(a)).Select(x => x.C100).First()
-                          - (listApproval.Where(x => x.Key == tanggal).Select(x => x.setor100).Any() ? (Int64)listApproval.Where(x => x.Key == tTanggal.AddDays(a)).Select(x => x.setor100).ToList()[listApproval.Where(x => x.Key == tTanggal.AddDays(a)).Select(x => x.setor100).ToList().Count - 1] : 0)
-                    });
-                }
-            }
+            //    for (int a = idx; a < listApproval.Count; a++)
+            //    {
+            //        Int64 tSaldo = saldo100.Where(x => x.tanggal == today.AddDays(a)).Select(x => x.value).First(),
+            //            tSislokAtm = (Int64)Math.Round(sislokAtm100.Where(x => x.tanggal == today.AddDays(a)).Select(x => x.value).First() * isiAtm100.Where(x => x.tanggal == today.AddDays(a)).Select(x => x.value).First(), 0),
+            //            tSislokCdm = sislokCdm100.Where(x => x.tanggal == today.AddDays(a)).Select(x => x.value).First(),
+            //            tSislokCrm = sislokCrm100.Where(x => x.tanggal == today.AddDays(a)).Select(x => x.value).First(),
+            //            tIsiAtm = isiAtm100.Where(x => x.tanggal == today.AddDays(a)).Select(x => x.value).First(),
+            //            tIsiCrm = isiCrm100.Where(x => x.tanggal == today.AddDays(a)).Select(x => x.value).First(),
+            //            tBon = (Int64)bon.Where(x => x.Key == tTanggal.AddDays(a)).Select(x => x.C100).First();
+
+            //        Console.WriteLine(tSaldo + "\n" + tSislokAtm + "\n" + tSislokCdm + "\n" + tSislokCrm + "\n" + tIsiAtm + "\n" + tIsiCrm + "\n" + tBon);
+            //        saldo100.Add(new tanggalValue()
+            //        {
+            //            tanggal = tTanggal.AddDays(a + 1),
+            //            value =
+            //              saldo100.Where(x => x.tanggal == tTanggal.AddDays(a)).Select(x => x.value).First()
+            //              + (Int64)Math.Round(sislokAtm100.Where(x => x.tanggal == tTanggal.AddDays(a)).Select(x => x.value).First() * isiAtm100.Where(x => x.tanggal == tTanggal.AddDays(a)).Select(x => x.value).First(), 0)
+            //              + sislokCdm100.Where(x => x.tanggal == tTanggal.AddDays(a)).Select(x => x.value).First()
+            //              + sislokCrm100.Where(x => x.tanggal == tTanggal.AddDays(a)).Select(x => x.value).First()
+            //              - isiAtm100.Where(x => x.tanggal == tTanggal.AddDays(a)).Select(x => x.value).First()
+            //              - isiCrm100.Where(x => x.tanggal == tTanggal.AddDays(a)).Select(x => x.value).First()
+            //              + (Int64)bon.Where(x => x.Key == tTanggal.AddDays(a)).Select(x => x.C100).First()
+            //              - (listApproval.Where(x => x.Key == tanggal).Select(x => x.setor100).Any() ? (Int64)listApproval.Where(x => x.Key == tTanggal.AddDays(a)).Select(x => x.setor100).ToList()[listApproval.Where(x => x.Key == tTanggal.AddDays(a)).Select(x => x.setor100).ToList().Count - 1] : 0)
+            //        });
+            //    }
+            //}
 
             for (DateTime a = saldo100.Select(x => x.tanggal).Max().AddDays(1); a <= maxTanggal.AddDays(1); a = a.AddDays(1))
             {
@@ -764,30 +783,30 @@ namespace testProjectBCA
                     result.Add(new tanggalValue() { tanggal = bon[a].Key, value = (Int64)bon[a].C50 });
             }
 
-            //Cek bon di approval
-            if (listApproval.Max(x => x.Key) > saldo50.Max(x => x.tanggal))
-            {
-                DateTime tTanggal = saldo50.Max(x => x.tanggal);
-                var tempLA = listApproval.Where(x => x.Key == tTanggal).FirstOrDefault();
-                int idx = listApproval.IndexOf(tempLA);
+            ////Cek bon di approval
+            //if (listApproval.Max(x => x.Key) > saldo50.Max(x => x.tanggal))
+            //{
+            //    DateTime tTanggal = saldo50.Max(x => x.tanggal);
+            //    var tempLA = listApproval.Where(x => x.Key == tTanggal).FirstOrDefault();
+            //    int idx = listApproval.IndexOf(tempLA);
 
-                for (int a = idx; a < listApproval.Count; a++)
-                {
-                    saldo50.Add(new tanggalValue()
-                    {
-                        tanggal = tTanggal.AddDays(a + 1),
-                        value =
-                          saldo50.Where(x => x.tanggal == tTanggal.AddDays(a)).Select(x => x.value).First()
-                          + (Int64)Math.Round(sislokAtm50.Where(x => x.tanggal == tTanggal.AddDays(a)).Select(x => x.value).First() * isiAtm50.Where(x => x.tanggal == tTanggal.AddDays(a)).Select(x => x.value).First(), 0)
-                          + sislokCdm50.Where(x => x.tanggal == tTanggal.AddDays(a)).Select(x => x.value).First()
-                          + sislokCrm50.Where(x => x.tanggal == tTanggal.AddDays(a)).Select(x => x.value).First()
-                          - isiAtm50.Where(x => x.tanggal == tTanggal.AddDays(a)).Select(x => x.value).First()
-                          - isiCrm50.Where(x => x.tanggal == tTanggal.AddDays(a)).Select(x => x.value).First()
-                          + (Int64)bon.Where(x => x.Key == tTanggal.AddDays(a)).Select(x => x.C50).First()
-                          - (listApproval.Where(x => x.Key == tanggal).Select(x => x.setor50).Any() ? (Int64)listApproval.Where(x => x.Key == tTanggal.AddDays(a)).Select(x => x.setor50).ToList()[listApproval.Where(x => x.Key == tTanggal.AddDays(a)).Select(x => x.setor50).ToList().Count - 1] : 0)
-                    });
-                }
-            }
+            //    for (int a = idx; a < listApproval.Count; a++)
+            //    {
+            //        saldo50.Add(new tanggalValue()
+            //        {
+            //            tanggal = tTanggal.AddDays(a + 1),
+            //            value =
+            //              saldo50.Where(x => x.tanggal == tTanggal.AddDays(a)).Select(x => x.value).First()
+            //              + (Int64)Math.Round(sislokAtm50.Where(x => x.tanggal == tTanggal.AddDays(a)).Select(x => x.value).First() * isiAtm50.Where(x => x.tanggal == tTanggal.AddDays(a)).Select(x => x.value).First(), 0)
+            //              + sislokCdm50.Where(x => x.tanggal == tTanggal.AddDays(a)).Select(x => x.value).First()
+            //              + sislokCrm50.Where(x => x.tanggal == tTanggal.AddDays(a)).Select(x => x.value).First()
+            //              - isiAtm50.Where(x => x.tanggal == tTanggal.AddDays(a)).Select(x => x.value).First()
+            //              - isiCrm50.Where(x => x.tanggal == tTanggal.AddDays(a)).Select(x => x.value).First()
+            //              + (Int64)bon.Where(x => x.Key == tTanggal.AddDays(a)).Select(x => x.C50).First()
+            //              - (listApproval.Where(x => x.Key == tanggal).Select(x => x.setor50).Any() ? (Int64)listApproval.Where(x => x.Key == tTanggal.AddDays(a)).Select(x => x.setor50).ToList()[listApproval.Where(x => x.Key == tTanggal.AddDays(a)).Select(x => x.setor50).ToList().Count - 1] : 0)
+            //        });
+            //    }
+            //}
 
             for (DateTime a = saldo50.Select(x => x.tanggal).Max().AddDays(1); a <= maxTanggal.AddDays(1); a = a.AddDays(1))
             {

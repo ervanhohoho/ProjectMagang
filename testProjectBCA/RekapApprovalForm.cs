@@ -41,9 +41,10 @@ namespace testProjectBCA
                 kanwilYangDibaca.Add(temp.ToString());
             }
             DateTime tanggal = TanggalPicker.Value.Date;
+            DateTime tanggalMin = tanggalMinPicker.Value.Date;
             String query = "SELECT [Tanggal Proses] = A.tanggal, [Tanggal Order] = DA.tanggal, [KodePkt] = A.kodePkt, [Bon 100] = bon100, [Bon 50] = bon50, [Bon 20] = bon20, ISNULL(inputOpr,''), ISNULL(inputSpv,''), ISNULL(inputNoTxn,''), ISNULL(validasiOpr,''), ISNULL(validasiSpv,''), ISNULL(validasiNoTxn,''), A.idApproval, DA.idDetailApproval, kanwil, koordinator"
                     + " FROM Approvals A JOIN DetailApprovals DA ON A.idApproval = DA.idApproval JOIN Pkt P ON A.kodePkt = P.kodePkt"
-                    + " WHERE A.tanggal = '" +tanggal.ToShortDateString()+"' AND DA.tanggal > '"+tanggal+"'";
+                    + " WHERE A.tanggal = '" +tanggal.ToShortDateString()+"' AND DA.tanggal >= '"+tanggalMin+"' AND bon100 != -1";
             using (SqlConnection sql = new SqlConnection(Variables.connectionString))
             {
                 SqlCommand cmd = new SqlCommand(query,sql);
@@ -110,7 +111,7 @@ namespace testProjectBCA
                 reader.Close();
                 query = "SELECT [Tanggal Proses] = A.tanggal, [Tanggal Order] = DA.tanggal, [KodePkt] = A.kodePkt, [Setor 100] = ISNULL(setor100,0), [Setor 50] = ISNULL(setor50,0), [Setor 20] = ISNULL(setor20,0), ISNULL(inputOpr,''), ISNULL(inputSpv,''), ISNULL(inputNoTxn,''), ISNULL(validasiOpr,''), ISNULL(validasiSpv,''), ISNULL(validasiNoTxn,''), A.idApproval, DA.idDetailApproval, kanwil, koordinator"
                     + " FROM Approvals A JOIN DetailApprovals DA ON A.idApproval = DA.idApproval JOIN Pkt P ON A.kodePkt = P.kodePkt"
-                    + " WHERE A.tanggal = '" + tanggal.ToShortDateString() + "' AND (ISNULL(setor100,0) != 0 OR ISNULL(setor50,0) != 0 OR ISNULL(setor20,0) != 0)  AND DA.tanggal > '" + tanggal + "'";
+                    + " WHERE A.tanggal = '" + tanggal.ToShortDateString() + "' AND (ISNULL(setor100,0) != 0 OR ISNULL(setor50,0) != 0 OR ISNULL(setor20,0) != 0)  AND DA.tanggal >= '" + tanggalMin + "'";
                 cmd.CommandText = query;
                 reader = cmd.ExecuteReader();
                 while (reader.Read())
@@ -168,10 +169,21 @@ namespace testProjectBCA
                     });
                 }
                 reader.Close();
-                if (kanwilYangDibaca.Any())
-                    InputGridView.DataSource = listRekapApproval.Where(x => kanwilYangDibaca.Where(y => y == x.kanwil).FirstOrDefault() != null).ToList();
+                if (listRekapApproval.Any())
+                {
+                    DateTime excludeDate = listRekapApproval.Max(x => x.tanggal);
+                    if (kanwilYangDibaca.Any())
+                        InputGridView.DataSource = listRekapApproval.Where(x => kanwilYangDibaca.Where(y => y == x.kanwil).FirstOrDefault() != null && x.d100 != -1).ToList();
+                    else
+                        InputGridView.DataSource = listRekapApproval;
+                }
                 else
-                    InputGridView.DataSource = listRekapApproval;
+                {
+                    if (kanwilYangDibaca.Any())
+                        InputGridView.DataSource = listRekapApproval.Where(x => kanwilYangDibaca.Where(y => y == x.kanwil).FirstOrDefault() != null).ToList();
+                    else
+                        InputGridView.DataSource = listRekapApproval;
+                }
             }
             InputGridView.Columns[0].ReadOnly = true;
             InputGridView.Columns[1].ReadOnly = true;
@@ -196,6 +208,8 @@ namespace testProjectBCA
 
         private void TanggalPicker_ValueChanged(object sender, EventArgs e)
         {
+            tanggalMinPicker.MinDate = TanggalPicker.Value;
+            tanggalMinPicker.Value = TanggalPicker.Value;
         }
 
         private void InputButton_Click(object sender, EventArgs e)
@@ -217,30 +231,84 @@ namespace testProjectBCA
                 {
                     if(temp.orderType.ToLower() == "adhoc")
                     {
+                        Int64 selisih100 = (Int64) da.setorAdhoc100 - temp.d100, 
+                            selisih50 = (Int64)da.setorAdhoc50 - temp.d50, 
+                            selisih20 = (Int64)da.setorAdhoc20 - temp.d20;
                         da.setorAdhoc100 = temp.d100;
                         da.setorAdhoc50 = temp.d50;
                         da.setorAdhoc20 = temp.d20;
+                        DetailApproval dah1 = (from x in db.DetailApprovals where x.idApproval == temp.id && x.idDetailApproval == temp.idDetailApproval + 1 select x).FirstOrDefault();
+                        int counter = 1;
+                        while (dah1 != null)
+                        {
+                            dah1 = (from x in db.DetailApprovals where x.idApproval == temp.id && x.idDetailApproval == temp.idDetailApproval + counter select x).FirstOrDefault();
+                            dah1.saldoAwal100 += selisih100;
+                            dah1.saldoAwal50 += selisih50;
+                            dah1.saldoAwal20 += selisih20;
+                            counter++;
+                        }
                     }
                     else
                     {
+                        Int64 selisih100 = (Int64)da.setor100 - temp.d100,
+                            selisih50 = (Int64)da.setor50 - temp.d50,
+                            selisih20 = (Int64)da.setor20 - temp.d20;
                         da.setor100 = temp.d100;
                         da.setor50 = temp.d50;
                         da.setor20 = temp.d20;
+                        DetailApproval dah1 = (from x in db.DetailApprovals where x.idApproval == temp.id && x.idDetailApproval == temp.idDetailApproval + 1 select x).FirstOrDefault();
+                        int counter = 1;
+                        while (dah1 != null)
+                        {
+                            dah1 = (from x in db.DetailApprovals where x.idApproval == temp.id && x.idDetailApproval == temp.idDetailApproval + counter select x).FirstOrDefault();
+                            dah1.saldoAwal100 += selisih100;
+                            dah1.saldoAwal50 += selisih50;
+                            dah1.saldoAwal20 += selisih20;
+                            counter++;
+                        }
                     }
                 }
                 if(temp.order.ToLower() == "bon cit")
                 {
                     if (temp.orderType.ToLower() == "adhoc")
                     {
+                        Int64 selisih100 = temp.d100 - (Int64)da.adhoc100,
+                           selisih50 = temp.d50 - (Int64)da.adhoc50,
+                           selisih20 = temp.d20 - (Int64)da.adhoc20 ;
+
                         da.adhoc100 = temp.d100;
                         da.adhoc50 = temp.d50;
                         da.adhoc20 = temp.d20;
+
+                        DetailApproval dah1 = (from x in db.DetailApprovals where x.idApproval == temp.id && x.idDetailApproval == temp.idDetailApproval + 1 select x).FirstOrDefault();
+                        int counter = 1;
+                        while (dah1 != null)
+                        {
+                            dah1 = (from x in db.DetailApprovals where x.idApproval == temp.id && x.idDetailApproval == temp.idDetailApproval + counter select x).FirstOrDefault();
+                            dah1.saldoAwal100 += selisih100;
+                            dah1.saldoAwal50 += selisih50;
+                            dah1.saldoAwal20 += selisih20;
+                            counter++;
+                        }
                     }
                     else
                     {
+                        Int64 selisih100 = temp.d100 - (Int64)da.bon100,
+                           selisih50 = temp.d50 - (Int64)da.bon50,
+                           selisih20 = temp.d20 - (Int64)da.bon20;
                         da.bon100 = temp.d100;
                         da.bon50 = temp.d50;
                         da.bon20 = temp.d20;
+                        DetailApproval dah1 = (from x in db.DetailApprovals where x.idApproval == temp.id && x.idDetailApproval == temp.idDetailApproval + 1 select x).FirstOrDefault();
+                        int counter = 1;
+                        while (dah1 != null)
+                        {
+                            dah1 = (from x in db.DetailApprovals where x.idApproval == temp.id && x.idDetailApproval == temp.idDetailApproval + counter select x).FirstOrDefault();
+                            dah1.saldoAwal100 += selisih100;
+                            dah1.saldoAwal50 += selisih50;
+                            dah1.saldoAwal20 += selisih20;
+                            counter++;
+                        }
                     }
                 }
 
@@ -274,10 +342,15 @@ namespace testProjectBCA
             sv.Filter = Variables.csvFilter;
             if (sv.ShowDialog() == DialogResult.OK)
             {
+                Console.WriteLine("Export Button Clicked");
                 List<String> kanwilYangDilihat = new List<String>();
-                var listKanwil = kanwilCheckListBox.SelectedItems;
+                var listKanwil = kanwilCheckListBox.CheckedItems;
                 foreach (var temp in listKanwil)
+                {
                     kanwilYangDilihat.Add(temp.ToString());
+                    Console.WriteLine(temp.ToString());
+                }
+                
 
                 var test = (from x in listRekapApproval
                             join y in db.Pkts on x.kodePkt equals y.kodePkt
@@ -285,7 +358,7 @@ namespace testProjectBCA
                             ).ToList();
                 if(kanwilYangDilihat.Any())
                 {
-                    test = test.Where(x => kanwilYangDilihat.Where(y => y == x.kanwil).FirstOrDefault() != null).ToList();
+                    test = test.Where(x => kanwilYangDilihat.Where(y => y == x.kanwil).FirstOrDefault() != null && x.d100 != -1).ToList();
                 }
                 String csv = ServiceStack.Text.CsvSerializer.SerializeToString(test);
                 File.WriteAllText(sv.FileName, csv);

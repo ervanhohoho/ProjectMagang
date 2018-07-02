@@ -476,6 +476,7 @@ namespace testProjectBCA
 
                 //Bagian Checking 
                 String errMsg = "";
+                String summary = "";
                 bool isError = false;
                 if (pkt.saldoAwalHitungan[0] != pkt.saldoAwal[0] || pkt.saldoAwalHitungan[1] != pkt.saldoAwal[1] || pkt.saldoAwalHitungan[2] != pkt.saldoAwal[2])
                 {
@@ -484,11 +485,19 @@ namespace testProjectBCA
                         "\nHitungan 100: Rp. " + pkt.saldoAwalHitungan[0].ToString("n0") + "\nLaporan 100: Rp. " + pkt.saldoAwal[0].ToString("n0") +
                         "\nHitungan 50: Rp. " + pkt.saldoAwalHitungan[1].ToString("n0") + "\nLaporan 50: Rp. " + pkt.saldoAwal[1].ToString("n0") +
                         "\nHitungan 20: Rp. " + pkt.saldoAwalHitungan[2].ToString("n0") + "\nLaporan 20: Rp." + pkt.saldoAwal[2].ToString("n0");
+                    if (pkt.saldoAwalHitungan[0] != pkt.saldoAwal[0])
+                        summary += "\nSaldo Awal 100 Tidak Sesuai";
+                    if (pkt.saldoAwalHitungan[1] != pkt.saldoAwal[1])
+                        summary += "\nSaldo Awal 50 Tidak Sesuai";
+                    if (pkt.saldoAwalHitungan[2] != pkt.saldoAwal[2])
+                        summary += "\nSaldo Awal 20 Tidak Sesuai";
                 }
 
                 var queryApproval = (from a in db.Approvals
                                      join da in db.DetailApprovals on a.idApproval equals da.idApproval
                                      where a.kodePkt == pkt.kodePkt && pkt.tanggalPengajuan == da.tanggal
+                                     && da.bon100 != -1
+                                     orderby da.idDetailApproval
                                      select new { Approval = a, DetailApproval = da }).ToList();
                 if (queryApproval.Count>0 && queryApproval != null)
                 {
@@ -496,72 +505,106 @@ namespace testProjectBCA
                     {
                         isError = true;
                         errMsg += "\nBon menurut approval\n=====================" +
-                            "\nHitungan 100: Rp. " + ((Int64)queryApproval[queryApproval.Count - 1].DetailApproval.bon100).ToString("n0") + "\nLaporan 100: Rp. " + pkt.penerimaanBon[0].ToString("n0") +
-                            "\nHitungan 50: Rp. " + ((Int64)queryApproval[queryApproval.Count - 1].DetailApproval.bon50).ToString("n0") + "\nLaporan 50: Rp. " + pkt.penerimaanBon[1].ToString("n0") +
-                            "\nHitungan 20: Rp. " + ((Int64)queryApproval[queryApproval.Count - 1].DetailApproval.bon20).ToString("n0") + "\nLaporan 20: Rp." + pkt.penerimaanBon[2].ToString("n0"); 
+                            "\nApproval 100: Rp. " + ((Int64)queryApproval[queryApproval.Count - 1].DetailApproval.bon100).ToString("n0") + "\nLaporan 100: Rp. " + pkt.penerimaanBon[0].ToString("n0") +
+                            "\nApproval 50: Rp. " + ((Int64)queryApproval[queryApproval.Count - 1].DetailApproval.bon50).ToString("n0") + "\nLaporan 50: Rp. " + pkt.penerimaanBon[1].ToString("n0") +
+                            "\nApproval 20: Rp. " + ((Int64)queryApproval[queryApproval.Count - 1].DetailApproval.bon20).ToString("n0") + "\nLaporan 20: Rp." + pkt.penerimaanBon[2].ToString("n0");
+                        if (queryApproval[queryApproval.Count - 1].DetailApproval.bon100 != pkt.penerimaanBon[0])
+                            summary += "\nBon 100 tidak sesuai dengan approval";
+                        if (queryApproval[queryApproval.Count - 1].DetailApproval.bon50 != pkt.penerimaanBon[1])
+                            summary += "\nBon 50 tidak sesuai dengan approval";
+                        if (queryApproval[queryApproval.Count - 1].DetailApproval.bon20 != pkt.penerimaanBon[2])
+                            summary += "\nBon 20 tidak sesuai dengan approval";
                     }
                 }
 
-                var queryApprovalLaporanBon = (from a in db.Approvals.AsEnumerable()
-                                               join da in db.DetailApprovals.AsEnumerable() on a.idApproval equals da.idApproval
-                                               join lb in pkt.bonAtmYangDisetujui on ((DateTime)da.tanggal).Date equals ((DateTime)lb.tgl).Date
-                                               where a.kodePkt == pkt.kodePkt && pkt.tanggalPengajuan.Date == ((DateTime)da.tanggal).Date
-                                               select new { Approval = a, DetailApproval = da, LaporanBon = lb }).ToList();
-                foreach(var temp in queryApprovalLaporanBon)
-                {
-                    isError = true;
-                    if(temp.DetailApproval.bon100 != temp.LaporanBon.d100 || temp.DetailApproval.bon50 != temp.LaporanBon.d50 || temp.DetailApproval.bon20 != temp.LaporanBon.d20)
-                    {
-                        errMsg += "\nBon yang disetujui\n======================="
-                            + "\nApproval Bon 100: " + ((Int64)temp.DetailApproval.bon100).ToString("n0") + " Laporan Bon 100: " + ((Int64)temp.LaporanBon.d100).ToString("n0")
-                            + "\nApproval Bon 50: " + ((Int64)temp.DetailApproval.bon50).ToString("n0") + " Laporan Bon 50: " + ((Int64)temp.LaporanBon.d50).ToString("n0")
-                            + "\nApproval Bon 20: " + ((Int64)temp.DetailApproval.bon20).ToString("n0") + " Laporan Bon 20: " + ((Int64)temp.LaporanBon.d20).ToString("n0");
-                    }
-                }
+               
 
                 var queryApprovalAdhoc = (from a in db.Approvals.AsEnumerable()
                                           join da in db.DetailApprovals.AsEnumerable() on a.idApproval equals da.idApproval
-                                          where a.kodePkt == pkt.kodePkt && da.tanggal == pkt.tanggalPengajuan
-                                          select new { DetailApproval = da }).FirstOrDefault();
-                if (queryApprovalAdhoc != null)
+                                          where a.kodePkt == pkt.kodePkt && da.tanggal == pkt.tanggalPengajuan.Date
+                                          orderby a.idApproval
+                                          select new { DetailApproval = da }).ToList();
+                if (queryApprovalAdhoc.Any())
                 {
-                    if (queryApprovalAdhoc.DetailApproval.adhoc100 != null)
+                    var tempQueryApprovalAdhoc = queryApprovalAdhoc[queryApprovalAdhoc.Count - 1];
+
+                    if (tempQueryApprovalAdhoc.DetailApproval.adhoc100 != null)
                     {
-                        if (queryApprovalAdhoc.DetailApproval.adhoc100 != pkt.penerimaanBonAdhoc[0] || queryApprovalAdhoc.DetailApproval.adhoc50 != pkt.penerimaanBonAdhoc[1] || queryApprovalAdhoc.DetailApproval.adhoc20 != pkt.penerimaanBonAdhoc[2])
+                        if (tempQueryApprovalAdhoc.DetailApproval.adhoc100 != pkt.penerimaanBonAdhoc[0] || tempQueryApprovalAdhoc.DetailApproval.adhoc50 != pkt.penerimaanBonAdhoc[1] || tempQueryApprovalAdhoc.DetailApproval.adhoc20 != pkt.penerimaanBonAdhoc[2])
                         {
+                            isError = true;
                             errMsg += "\nAdhoc menurut Approval\n===================="
-                            + "\n Approval Adhoc 100: " + ((Int64)queryApprovalAdhoc.DetailApproval.adhoc100 + " Laporan Adhoc 100: " + ((Int64)pkt.penerimaanBonAdhoc[0]))
-                            + "\n Approval Adhoc 50: " + ((Int64)queryApprovalAdhoc.DetailApproval.adhoc50 + " Laporan Adhoc 50: " + ((Int64)pkt.penerimaanBonAdhoc[1]))
-                            + "\n Approval Adhoc 20: " + ((Int64)queryApprovalAdhoc.DetailApproval.adhoc20 + " Laporan Adhoc 20: " + ((Int64)pkt.penerimaanBonAdhoc[2]))
+                            + "\n Approval Adhoc 100: " + ((Int64)tempQueryApprovalAdhoc.DetailApproval.adhoc100 + " Laporan Adhoc 100: " + ((Int64)pkt.penerimaanBonAdhoc[0]))
+                            + "\n Approval Adhoc 50: " + ((Int64)tempQueryApprovalAdhoc.DetailApproval.adhoc50 + " Laporan Adhoc 50: " + ((Int64)pkt.penerimaanBonAdhoc[1]))
+                            + "\n Approval Adhoc 20: " + ((Int64)tempQueryApprovalAdhoc.DetailApproval.adhoc20 + " Laporan Adhoc 20: " + ((Int64)pkt.penerimaanBonAdhoc[2]))
                             ;
+                            if (tempQueryApprovalAdhoc.DetailApproval.adhoc100 != pkt.penerimaanBonAdhoc[0])
+                                summary += "\nAdhoc 100 tidak sesuai";
+                            if (tempQueryApprovalAdhoc.DetailApproval.adhoc50 != pkt.penerimaanBonAdhoc[1])
+                                summary += "\nAdhoc 50 tidak sesuai";
+                            if (tempQueryApprovalAdhoc.DetailApproval.adhoc20 != pkt.penerimaanBonAdhoc[2])
+                                summary += "\nAdhoc 20 tidak sesuai";
                         }
                     }
                 }
 
+                Int64 setor100=0, setor50=0, setor20=0;
+                //Check Setor
                 var queryApprovalSetor = (from a in db.Approvals.AsEnumerable()
                                           join da in db.DetailApprovals.AsEnumerable() on a.idApproval equals da.idApproval
                                           where a.kodePkt == pkt.kodePkt && da.tanggal == pkt.tanggalPengajuan
-                                          orderby da.idDetailApproval descending
-                                          select new { DetailApproval = da }).FirstOrDefault();
-                if (queryApprovalSetor != null)
+                                          && (da.setor100 > 0 || da.setor50 > 0 || da.setor20 > 0)
+                                          orderby da.idDetailApproval ascending
+                                          select new { DetailApproval = da }).ToList();
+                if (queryApprovalSetor.Any())
                 {
-                    if (queryApprovalSetor.DetailApproval.setor100 != null)
+                    var tempQueryApprovalSetor = queryApprovalSetor[queryApprovalSetor.Count - 1];
+                    if (tempQueryApprovalSetor.DetailApproval.setor100 != null)
                     {
-                        if (queryApprovalSetor.DetailApproval.setor100 != pkt.setorUang[0] || queryApprovalSetor.DetailApproval.setor50 != pkt.setorUang[1] || queryApprovalSetor.DetailApproval.setor20 != pkt.setorUang[2])
+                        setor100 = (Int64)tempQueryApprovalSetor.DetailApproval.setor100;
+                        setor50 = (Int64)tempQueryApprovalSetor.DetailApproval.setor50;
+                        setor20 = (Int64)tempQueryApprovalSetor.DetailApproval.setor20;
+                    }
+                }
+
+
+                var queryApprovalSetorAdhoc = (from a in db.Approvals.AsEnumerable()
+                                          join da in db.DetailApprovals.AsEnumerable() on a.idApproval equals da.idApproval
+                                          where a.kodePkt == pkt.kodePkt && da.tanggal == pkt.tanggalPengajuan.Date
+                                          orderby a.idApproval
+                                          select new { DetailApproval = da }).ToList();
+                if (queryApprovalSetorAdhoc.Any())
+                {
+                    var tempQueryApprovalSetorAdhoc = queryApprovalSetorAdhoc[queryApprovalSetorAdhoc.Count - 1];
+
+                    if (tempQueryApprovalSetorAdhoc.DetailApproval.adhoc100 != null)
+                    {
+                        if (tempQueryApprovalSetorAdhoc.DetailApproval.setorAdhoc100 + setor100 != pkt.setorUang[0] || tempQueryApprovalSetorAdhoc.DetailApproval.setorAdhoc50 + setor50 != pkt.setorUang[1] || tempQueryApprovalSetorAdhoc.DetailApproval.setorAdhoc20 + setor20 != pkt.setorUang[2])
                         {
-                            errMsg += "\nSetor menurut Approval\n===================="
-                            + "\n Approval setor 100: " + ((Int64)queryApprovalSetor.DetailApproval.setor100 + " Laporan setor 100: " + ((Int64)pkt.setorUang[0]))
-                            + "\n Approval setor 50: " + ((Int64)queryApprovalSetor.DetailApproval.setor50 + " Laporan setor 50: " + ((Int64)pkt.setorUang[1]))
-                            + "\n Approval setor 20: " + ((Int64)queryApprovalSetor.DetailApproval.setor20 + " Laporan setor 20: " + ((Int64)pkt.setorUang[2]))
+                            isError = true;
+                            errMsg += "\nJumlah Setor menurut Approval\n===================="
+                            + "\n Approval Setor + Setor Adhoc 100 : " + ((Int64)tempQueryApprovalSetorAdhoc.DetailApproval.setorAdhoc100 + setor100) + " Laporan Setor Adhoc 100: " + ((Int64)pkt.setorUang[0])
+                            + "\n Approval Setor + Setor Adhoc 50: " + ((Int64)tempQueryApprovalSetorAdhoc.DetailApproval.setorAdhoc50 + setor50) + " Laporan Setor Adhoc 50: " + ((Int64)pkt.setorUang[1])
+                            + "\n Approval Setor + Setor Adhoc 20: " + ((Int64)tempQueryApprovalSetorAdhoc.DetailApproval.setorAdhoc20 + setor20) + " Laporan Setor Adhoc 20: " + ((Int64)pkt.setorUang[2])
                             ;
+                            if (tempQueryApprovalSetorAdhoc.DetailApproval.setor100 != pkt.setorUang[0])
+                                summary += "\nAdhoc 100 tidak sesuai";
+                            if (tempQueryApprovalSetorAdhoc.DetailApproval.setor50 != pkt.setorUang[1])
+                                summary += "\nAdhoc 50 tidak sesuai";
+                            if (tempQueryApprovalSetorAdhoc.DetailApproval.setor20 != pkt.setorUang[2])
+                                summary += "\nAdhoc 20 tidak sesuai";
                         }
                     }
                 }
+
+                
+                
 
                 if (isError)
                 {
                     String errMsg2 = "Laporan " + pkt.kodePkt + " Tanggal: " + pkt.tanggalPengajuan.ToShortDateString() + " Tidak sesuai\n";
                     errMsg2 += errMsg;
+                    errMsg2 += "\n\nSummary\n======================" + summary;
                     MessageBox.Show(errMsg2, "Warning!");
                 }
                 list.Add(pkt);

@@ -99,7 +99,9 @@ namespace testProjectBCA
                         }
                     }
                 }
+                
             }
+            tglSetor.MinDate = DateTime.Today.AddDays(1);
             MessageBox.Show(KodePkt.Count.ToString());
             //dataGridView1.Columns.Add("Tanggal", "Tanggal");
             //dataGridView1.Columns.Add("100000", "100000");
@@ -293,6 +295,9 @@ namespace testProjectBCA
             for (int a = 0; a < laporanPermintaanBon.Count; a++)
                 if(laporanBons.Where(x=>x.tanggal == laporanPermintaanBon[a].tanggal).FirstOrDefault() != null)
                     toDelete.Add(laporanPermintaanBon[a]);
+
+            foreach (var temp in toDelete)
+                laporanPermintaanBon.Remove(temp);
 
             permintaanBonGridView.Columns.Add("Tanggal", "Tanggal");
             permintaanBonGridView.Columns.Add("100", "100");
@@ -3249,8 +3254,20 @@ namespace testProjectBCA
                     newDetailA.isiCRM20 = isiCrm[i].d20;
 
                     tempTanggal = tempTanggal.AddDays(1);
-                   
 
+                    if (setor.Where(x => ((DateTime)x.tgl).Date == tempTanggal.Date).FirstOrDefault() != null)
+                    {
+                        Denom tS = setor.Where(x => ((DateTime)x.tgl).Date == tempTanggal.Date).FirstOrDefault();
+                        newDetailA.setor100 = tS.d100;
+                        newDetailA.setor50 = tS.d50;
+                        newDetailA.setor20 = tS.d20;
+                    }
+                    if (newDetailA.tanggal.Value.ToShortDateString() == tglSetor.Value.ToShortDateString())
+                    {
+                        newDetailA.setor100 = setorTxt.d100;
+                        newDetailA.setor50 = setorTxt.d50;
+                        newDetailA.setor20 = setorTxt.d20;
+                    }
                     db.DetailApprovals.Add(newDetailA);
                     db.SaveChanges();
                     count++;
@@ -3259,16 +3276,43 @@ namespace testProjectBCA
 
                 for (int i=0;i<=bonYangDisetujui.Count ;i++)
                 {
-                    DetailApproval newDetailA = new DetailApproval();
+                    DetailApproval newDetailA = new DetailApproval()
+                    {
+                        adhoc100 = 0,
+                        adhoc20 = 0,
+                        adhoc50 = 0,
+                        bon100 = 0,
+                        bon20 = 0,
+                        bon50 = 0,
+                        isiATM100 = 0,
+                        isiATM20 = 0,
+                        isiATM50 = 0,
+                        isiCRM100 = 0,
+                        isiCRM20 = 0,
+                        isiCRM50 = 0,
+                        saldoAwal100 = 0,
+                        saldoAwal20 = 0,
+                        saldoAwal50 = 0,
+                        setor100 = 0,
+                        setor50 = 0,
+                        setor20 = 0,
+                        setorAdhoc100 = 0,
+                        setorAdhoc20 = 0,
+                        setorAdhoc50 = 0,
+                        sislokATM100 = 0,
+                        sislokATM20 = 0,
+                        sislokATM50 = 0,
+                        sislokCDM100 = 0,
+                        sislokCDM20 = 0,
+                        sislokCDM50 = 0,
+                        sislokCRM100 = 0,
+                        sislokCRM20 = 0,
+                        sislokCRM50 = 0
+                    };
                     newDetailA.idApproval = lastApproval[lastApproval.Count-1].idApproval;
                     newDetailA.tanggal = tempTanggal;
 
-                    if(newDetailA.tanggal.Value.ToShortDateString()==tglSetor.Value.ToShortDateString())
-                    {
-                        newDetailA.setor100 = setorTxt.d100;
-                        newDetailA.setor50 = setorTxt.d50;
-                        newDetailA.setor20 = setorTxt.d20;
-                    }
+                   
                     
                     if(i<bonYangDisetujui.Count)
                     {
@@ -3309,12 +3353,18 @@ namespace testProjectBCA
                     newDetailA.isiCRM20 = isiCrm[count].d20;
 
 
-                    if(setor.Where(x=>x.tgl == tempTanggal).FirstOrDefault()!=null)
+                    if(setor.Where(x=>((DateTime)x.tgl).Date == tempTanggal.Date).FirstOrDefault()!=null)
                     {
-                        Denom tS = setor.Where(x => x.tgl == tempTanggal).FirstOrDefault();
+                        Denom tS = setor.Where(x => ((DateTime)x.tgl).Date == tempTanggal.Date).FirstOrDefault();
                         newDetailA.setor100 = tS.d100;
                         newDetailA.setor50 = tS.d50;
                         newDetailA.setor20 = tS.d20;
+                    }
+                    if (newDetailA.tanggal.Value.ToShortDateString() == tglSetor.Value.ToShortDateString())
+                    {
+                        newDetailA.setor100 = setorTxt.d100;
+                        newDetailA.setor50 = setorTxt.d50;
+                        newDetailA.setor20 = setorTxt.d20;
                     }
                     tempTanggal = tempTanggal.AddDays(1);
 
@@ -3338,9 +3388,7 @@ namespace testProjectBCA
                 setorAdhoc50Txt.Value = 0;
                 setorAdhoc20Txt.Value = 0;
 
-
                 cleanGridViews();
-
 
             }
             else

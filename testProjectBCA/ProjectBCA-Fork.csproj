@@ -302,6 +302,12 @@
     <Compile Include="popupsementara.designer.cs">
       <DependentUpon>popupsementara.cs</DependentUpon>
     </Compile>
+    <Compile Include="RasioApprovalForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RasioApprovalForm.Designer.cs">
+      <DependentUpon>RasioApprovalForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="RekapSelisihAmbilSetor.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -477,6 +483,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="popupsementara.resx">
       <DependentUpon>popupsementara.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RasioApprovalForm.resx">
+      <DependentUpon>RasioApprovalForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="RevisiInformationBoard.resx">
       <DependentUpon>RevisiInformationBoard.cs</DependentUpon>

@@ -42,11 +42,14 @@
             // 
             // pktComboBox
             // 
+            this.pktComboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.pktComboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.pktComboBox.FormattingEnabled = true;
             this.pktComboBox.Location = new System.Drawing.Point(61, 12);
             this.pktComboBox.Name = "pktComboBox";
             this.pktComboBox.Size = new System.Drawing.Size(121, 21);
             this.pktComboBox.TabIndex = 0;
+            this.pktComboBox.SelectedValueChanged += new System.EventHandler(this.pktComboBox_SelectedValueChanged);
             // 
             // label1
             // 
