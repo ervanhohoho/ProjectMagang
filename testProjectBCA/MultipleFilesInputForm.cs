@@ -111,6 +111,12 @@ namespace testProjectBCA
                 inputIntoCollection();
                 loadForm.CloseForm();
                 MessageBox.Show("Done!");
+                if( MessageBox.Show("Input File?","Reminder", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    inputDataToDB();
+                    loadListDataYangSudahAda();
+                    loadDataYangBelumAda();
+                }
             }
         }
         private void checkSheetDates()
@@ -486,11 +492,11 @@ namespace testProjectBCA
                         "\nHitungan 50: Rp. " + pkt.saldoAwalHitungan[1].ToString("n0") + "\nLaporan 50: Rp. " + pkt.saldoAwal[1].ToString("n0") +
                         "\nHitungan 20: Rp. " + pkt.saldoAwalHitungan[2].ToString("n0") + "\nLaporan 20: Rp." + pkt.saldoAwal[2].ToString("n0");
                     if (pkt.saldoAwalHitungan[0] != pkt.saldoAwal[0])
-                        summary += "\nSaldo Awal 100 Tidak Sesuai";
+                        summary += "\nSaldo Awal 100 " + (pkt.saldoAkhirHitungan[0] - pkt.saldoAwal[0]).ToString("n0");
                     if (pkt.saldoAwalHitungan[1] != pkt.saldoAwal[1])
-                        summary += "\nSaldo Awal 50 Tidak Sesuai";
+                        summary += "\nSaldo Awal 50 " + (pkt.saldoAkhirHitungan[1] - pkt.saldoAwal[1]).ToString("n0");
                     if (pkt.saldoAwalHitungan[2] != pkt.saldoAwal[2])
-                        summary += "\nSaldo Awal 20 Tidak Sesuai";
+                        summary += "\nSaldo Awal 20 " + (pkt.saldoAkhirHitungan[2] - pkt.saldoAwal[2]).ToString("n0");
                 }
 
                 var queryApproval = (from a in db.Approvals
@@ -509,11 +515,11 @@ namespace testProjectBCA
                             "\nApproval 50: Rp. " + ((Int64)queryApproval[queryApproval.Count - 1].DetailApproval.bon50).ToString("n0") + "\nLaporan 50: Rp. " + pkt.penerimaanBon[1].ToString("n0") +
                             "\nApproval 20: Rp. " + ((Int64)queryApproval[queryApproval.Count - 1].DetailApproval.bon20).ToString("n0") + "\nLaporan 20: Rp." + pkt.penerimaanBon[2].ToString("n0");
                         if (queryApproval[queryApproval.Count - 1].DetailApproval.bon100 != pkt.penerimaanBon[0])
-                            summary += "\nBon 100 tidak sesuai dengan approval";
+                            summary += "\nBon 100 " + ((Int64) queryApproval[queryApproval.Count - 1].DetailApproval.bon100 - (Int64)pkt.penerimaanBon[0]).ToString("n0");
                         if (queryApproval[queryApproval.Count - 1].DetailApproval.bon50 != pkt.penerimaanBon[1])
-                            summary += "\nBon 50 tidak sesuai dengan approval";
+                            summary += "\nBon 50 " + ((Int64)queryApproval[queryApproval.Count - 1].DetailApproval.bon50 - (Int64)pkt.penerimaanBon[1]).ToString("n0");
                         if (queryApproval[queryApproval.Count - 1].DetailApproval.bon20 != pkt.penerimaanBon[2])
-                            summary += "\nBon 20 tidak sesuai dengan approval";
+                            summary += "\nBon 20 " + ((Int64)queryApproval[queryApproval.Count - 1].DetailApproval.bon20 - (Int64)pkt.penerimaanBon[2]).ToString("n0");
                     }
                 }
 
@@ -596,9 +602,6 @@ namespace testProjectBCA
                         }
                     }
                 }
-
-                
-                
 
                 if (isError)
                 {

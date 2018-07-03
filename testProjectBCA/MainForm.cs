@@ -43,18 +43,18 @@ namespace testProjectBCA
         private void inputDataPktToolStripMenuItem_Click(object sender, EventArgs e)
         {
             inputDataPkt();
-            MessageBox.Show("Done!");
+            
         }
         private void inputDataDenomToolStripMenuItem_Click(object sender, EventArgs e)
         {
             inputDataDenom();
-            MessageBox.Show("Done!");
         }
         private void informationBoardToolStripMenuItem_Click(object sender, EventArgs e)
         {
             loadForm.ShowSplashScreen();
             InformationBoard ib = new InformationBoard();
             loadForm.CloseForm();
+            ib.Location = new Point(0,0);
             ib.MdiParent = this;
             ib.Show();
 
@@ -159,8 +159,9 @@ namespace testProjectBCA
                     con.Close();
                 }
                 loadForm.CloseForm();
+                MessageBox.Show("Done!");
             }
-            MessageBox.Show("Done!");
+         
         }
         private void inputDataPkt()
         {
@@ -229,6 +230,7 @@ namespace testProjectBCA
 
                 UpdateDataBranchPkt(branch);
                 loadForm.CloseForm();
+                MessageBox.Show("Done!");
             }
         }
         private void inputDataDenom()
@@ -250,6 +252,7 @@ namespace testProjectBCA
 
                 UpdateDataCashpointDenom(dt);
                 loadForm.CloseForm();
+                MessageBox.Show("Done!");
             }
             else
             {

@@ -20,8 +20,9 @@ namespace testProjectBCA
             button5.Enabled = false;
             button4.Enabled = false;
             button6.Enabled = false;
-
-
+            button8.Enabled = false;
+            button9.Enabled = false;
+            button10.Enabled = false;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -534,7 +535,7 @@ namespace testProjectBCA
             //List<Int64> totalRekap = new List<Int64>();
             //List<Int64> dibatalkan = new List<Int64>();
 
-            List<orderTrackingLoad> otl = new List<orderTrackingLoad>();
+            List<orderTrackingSumUp6> otsu = new List<orderTrackingSumUp6>();
 
 
             using (SqlConnection sql = new SqlConnection(Variables.connectionString))
@@ -543,13 +544,8 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "select [kodepkt] =  isnull(kodepkt,kodepenerimadana), "
-                                      + " [kodepenerimadana] = isnull(kodepenerimadana, kodepkt), "
-                                      + " [ordertracking] = isnull(nominalDispute,0), [selesai] = isnull([Selesai],0), "
-                                      + " [belum selesai] = isnull([belum selesai],0), "
-                                      + " [total rekap] = isnull([selesai]+ [Belum Selesai]-[dibatalkan],0),"
-                                      + " [dibatalkan] = isnull([dibatalkan],0),"
-                                      + " [Keterangan] = case when isnull(nominalDispute,0) = [selesai]+ [Belum Selesai] then 'SAMA' else 'BERBEDA' end"
+                    cmd.CommandText = "select "
+                                      + " [total rekap] = isnull(sum(isnull([selesai]+ [Belum Selesai]-[dibatalkan],0)),0)"
                                       + " from"
                                       + " ("
                                       + " select kodePkt, nominalDispute = sum(nominalDispute)"
@@ -566,15 +562,11 @@ namespace testProjectBCA
 
                     while (reader.Read())
                     {
-                        otl.Add(new orderTrackingLoad
+                        otsu.Add(new orderTrackingSumUp6
                         {
-                            kodePkt = reader[0].ToString(),
-                            orderTracking = Int64.Parse(reader[2].ToString()),
-                            rekapSelesai = Int64.Parse(reader[3].ToString()),
-                            rekapBelumSelesai = Int64.Parse(reader[4].ToString()),
-                            totalRekap = Int64.Parse(reader[5].ToString()),
-                            dibatalkan = Int64.Parse(reader[6].ToString()),
-                            keterangan = reader[7].ToString()
+                            
+                            rekapAsk = Int64.Parse(reader[0].ToString()),
+                            ask = 0,
 
                         });
                         //kodePkt.Add(reader[0].ToString());
@@ -584,18 +576,15 @@ namespace testProjectBCA
                         //totalRekap.Add(Int64.Parse(reader[5].ToString()));
                         //dibatalkan.Add(Int64.Parse(reader[6].ToString()));
                     }
-
-
-
-                    var query = (from x in en.SaveRekaps
+                    var query = (from x in en.SaveAsks
                                  select x).ToList();
 
+                    
 
-
-                    foreach (var item in otl)
+                    foreach (var item in otsu)
                     {
 
-                        var q2 = query.Where(x => ((DateTime)x.tanggal).Date == dateTimePicker1.Value.Date && x.kodePkt == item.kodePkt).Select(x => x.komentar).ToList();
+                        var q2 = query.Where(x => ((DateTime)x.tanggal).Date == dateTimePicker1.Value.Date /*&& x.kodePkt == item.kodePkt*/).Select(x => x.komentar).ToList();
                         if (q2.Any())
                         {
                             item.komentar = q2[0];
@@ -604,34 +593,34 @@ namespace testProjectBCA
                     }
 
                     //adding ccas-ordertracking
-                    var query2 = (from x in otl
-                                  where x.kodePkt.Contains("CCAS") && x.kodePkt.Length > 4
-                                  select x).ToList();
+                    //var query2 = (from x in otl
+                    //              where x.kodePkt.Contains("CCAS") && x.kodePkt.Length > 4
+                    //              select x).ToList();
 
-                    Int64 orderTrackingbuff = query2.Sum(x => x.orderTracking);
-                    Int64 rekapSelesaibuff = query2.Sum(x => x.rekapSelesai);
-                    Int64 rekapBelumSelesaibuff = query2.Sum(x => x.rekapBelumSelesai);
-                    Int64 dibatalkanbuff = query2.Sum(x => x.dibatalkan);
-                    Int64 totalRekapBuff = query2.Sum(x => x.totalRekap);
+                    //Int64 orderTrackingbuff = query2.Sum(x => x.orderTracking);
+                    //Int64 rekapSelesaibuff = query2.Sum(x => x.rekapSelesai);
+                    //Int64 rekapBelumSelesaibuff = query2.Sum(x => x.rekapBelumSelesai);
+                    //Int64 dibatalkanbuff = query2.Sum(x => x.dibatalkan);
+                    //Int64 totalRekapBuff = query2.Sum(x => x.totalRekap);
 
-                    otl.Add(new orderTrackingLoad
-                    {
-                        kodePkt = "CCAS-OrderTracking",
-                        orderTracking = orderTrackingbuff,
-                        rekapSelesai = rekapBelumSelesaibuff,
-                        rekapBelumSelesai = rekapBelumSelesaibuff,
-                        dibatalkan = dibatalkanbuff,
-                        totalRekap = totalRekapBuff,
-                        keterangan = "SUM CCAS-OT"
-                    });
+                    //otl.Add(new orderTrackingLoad
+                    //{
+                    //    kodePkt = "CCAS-OrderTracking",
+                    //    orderTracking = orderTrackingbuff,
+                    //    rekapSelesai = rekapBelumSelesaibuff,
+                    //    rekapBelumSelesai = rekapBelumSelesaibuff,
+                    //    dibatalkan = dibatalkanbuff,
+                    //    totalRekap = totalRekapBuff,
+                    //    keterangan = "SUM CCAS-OT"
+                    //});
                     //
 
-                    dataGridView2.DataSource = otl;
-                    for (int i = 0; i < 8; i++)
+                    dataGridView2.DataSource = otsu;
+                    for (int i = 0; i < 3; i++)
                     {
-                        dataGridView1.Columns[i].ReadOnly = true;
+                        dataGridView2.Columns[i].ReadOnly = true;
                     }
-                    button4.Enabled = true;
+                    //button4.Enabled = true;
 
                 }
             }
@@ -650,10 +639,17 @@ namespace testProjectBCA
 
         }
 
+        class orderTrackingSumUp6
+        {
+            public Int64 rekapAsk { set; get; }
+            public Int64 ask { set; get; }
+            public String komentar { set; get; }
+        }
+
         private void button3_Click(object sender, EventArgs e)
         {
             reloadGridView();
-            reloadGridView2();
+           
             button6.Enabled = true;
         }
 
@@ -730,6 +726,90 @@ namespace testProjectBCA
                 
             }
             en.SaveRekaps.AddRange(sr);
+            en.SaveChanges();
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            reloadGridView2();
+            button8.Enabled = true;
+            dataGridView2.Columns[1].ReadOnly = true;
+            dataGridView2.Columns[2].ReadOnly = true;
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            button8.Enabled = false;
+            dataGridView2.Columns[1].ReadOnly = false;
+            dataGridView2.Columns[2].ReadOnly = false;
+            button9.Enabled = true;
+            button10.Enabled = false;
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            dataGridView2.Columns[1].ReadOnly = true;
+            dataGridView2.Columns[2].ReadOnly = true;
+            button8.Enabled = true;
+            button9.Enabled = false;
+            button10.Enabled = true;
+        }
+
+        class saveAsk
+        {
+            public DateTime tanggal { set; get; }
+            public Int64 rekapAsk { set; get; }
+            public Int64 ask { set; get; }
+            public String komentar { set; get; }
+
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            List<SaveAsk> sa = new List<SaveAsk>();
+
+            for (int i = 0; i < dataGridView2.Rows.Count; i++)
+            {
+                DateTime tanggal = dateTimePicker1.Value.Date;
+                String komentar = "";
+                Int64 rekapAsk = 0;
+                Int64 ask = 0;
+
+                var query = (from x in en.SaveAsks.AsEnumerable()
+                             where /*x.kodePkt == kodePkt && */((DateTime)x.tanggal).Date == dateTimePicker1.Value.Date
+                             select x).FirstOrDefault();
+
+                if (dataGridView2.Rows[i].Cells["komentar"].Value != null)
+                {
+                    komentar = dataGridView2.Rows[i].Cells["komentar"].Value.ToString();
+                }
+
+                if (query == null)
+                {
+                    //insert
+
+                    sa.Add(new SaveAsk()
+                    {
+                        ask = ask,
+                        rekapAsk = rekapAsk,
+                        komentar = komentar,
+                        tanggal = tanggal
+                    });
+
+                }
+                else
+                {
+                    query.tanggal = tanggal;
+                    query.komentar = komentar;
+                    query.ask = ask;
+                    query.rekapAsk = rekapAsk;
+                    
+
+                }
+
+
+            }
+            en.SaveAsks.AddRange(sa);
             en.SaveChanges();
         }
     }

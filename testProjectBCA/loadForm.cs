@@ -13,10 +13,14 @@ namespace testProjectBCA
 {
     public partial class loadForm : Form
     {
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        public static extern bool SetForegroundWindow(IntPtr hWnd);
+
         public loadForm()
         {
             InitializeComponent();
             progressBar1.MarqueeAnimationSpeed = 25;
+            SetForegroundWindow(this.Handle);
         }
         private delegate void CloseDelegate();
 
@@ -29,6 +33,7 @@ namespace testProjectBCA
 
             if (LoadForm != null)
                 return;
+            
             Thread thread = new Thread(new ThreadStart(loadForm.ShowForm));
             thread.IsBackground = true;
             thread.SetApartmentState(ApartmentState.STA);

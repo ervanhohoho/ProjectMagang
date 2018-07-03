@@ -58,6 +58,7 @@
             this.Controls.Add(this.progressBar1);
             this.Name = "loadForm";
             this.Text = "loadForm";
+            this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.loadForm_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();

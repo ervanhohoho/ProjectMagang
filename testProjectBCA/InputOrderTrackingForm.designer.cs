@@ -37,6 +37,10 @@
             this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.button7 = new System.Windows.Forms.Button();
+            this.button8 = new System.Windows.Forms.Button();
+            this.button9 = new System.Windows.Forms.Button();
+            this.button10 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.SuspendLayout();
@@ -84,7 +88,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(278, 11);
+            this.button3.Location = new System.Drawing.Point(221, 11);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(158, 23);
             this.button3.TabIndex = 4;
@@ -94,7 +98,7 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(278, 40);
+            this.button4.Location = new System.Drawing.Point(221, 40);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(158, 23);
             this.button4.TabIndex = 5;
@@ -104,7 +108,7 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(278, 69);
+            this.button5.Location = new System.Drawing.Point(221, 69);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(158, 23);
             this.button5.TabIndex = 6;
@@ -114,7 +118,7 @@
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(638, 11);
+            this.button6.Location = new System.Drawing.Point(385, 11);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(180, 81);
             this.button6.TabIndex = 7;
@@ -124,17 +128,67 @@
             // 
             // dataGridView2
             // 
+            this.dataGridView2.AllowUserToAddRows = false;
+            this.dataGridView2.AllowUserToDeleteRows = false;
+            this.dataGridView2.AllowUserToResizeColumns = false;
+            this.dataGridView2.AllowUserToResizeRows = false;
+            this.dataGridView2.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Location = new System.Drawing.Point(12, 454);
+            this.dataGridView2.Location = new System.Drawing.Point(12, 465);
             this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.Size = new System.Drawing.Size(806, 350);
+            this.dataGridView2.RowHeadersVisible = false;
+            this.dataGridView2.Size = new System.Drawing.Size(442, 52);
             this.dataGridView2.TabIndex = 8;
+            // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(460, 465);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(184, 23);
+            this.button7.TabIndex = 9;
+            this.button7.Text = "Show > 6";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
+            // 
+            // button8
+            // 
+            this.button8.Location = new System.Drawing.Point(460, 494);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(184, 23);
+            this.button8.TabIndex = 10;
+            this.button8.Text = "Edit ASK dan KOMENTAR";
+            this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.button8_Click);
+            // 
+            // button9
+            // 
+            this.button9.Location = new System.Drawing.Point(650, 465);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(168, 23);
+            this.button9.TabIndex = 11;
+            this.button9.Text = "Save ASK dan KOMENTAR";
+            this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
+            // 
+            // button10
+            // 
+            this.button10.Location = new System.Drawing.Point(650, 494);
+            this.button10.Name = "button10";
+            this.button10.Size = new System.Drawing.Size(168, 23);
+            this.button10.TabIndex = 12;
+            this.button10.Text = "Save to Database";
+            this.button10.UseVisualStyleBackColor = true;
+            this.button10.Click += new System.EventHandler(this.button10_Click);
             // 
             // InputOrderTrackingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(837, 813);
+            this.ClientSize = new System.Drawing.Size(837, 532);
+            this.Controls.Add(this.button10);
+            this.Controls.Add(this.button9);
+            this.Controls.Add(this.button8);
+            this.Controls.Add(this.button7);
             this.Controls.Add(this.dataGridView2);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.button5);
@@ -163,5 +217,9 @@
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.DataGridView dataGridView2;
+        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Button button9;
+        private System.Windows.Forms.Button button10;
     }
 }
