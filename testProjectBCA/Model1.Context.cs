@@ -49,6 +49,8 @@ namespace testProjectBCA
         public virtual DbSet<StokPosisi> StokPosisis { get; set; }
         public virtual DbSet<TransaksiAtm> TransaksiAtms { get; set; }
         public virtual DbSet<SaveRekap> SaveRekaps { get; set; }
+        public virtual DbSet<SaveAsk> SaveAsks { get; set; }
+        public virtual DbSet<VaultOrderBlogHistory> VaultOrderBlogHistories { get; set; }
     
         public virtual int prediksiEvent2(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate)
         {
@@ -74,6 +76,19 @@ namespace testProjectBCA
                 new ObjectParameter("endDate", typeof(System.DateTime));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("prediksiHistoris", startDateParameter, endDateParameter);
+        }
+    
+        public virtual int prediksiStdDev(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("startDate", startDate) :
+                new ObjectParameter("startDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("endDate", endDate) :
+                new ObjectParameter("endDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("prediksiStdDev", startDateParameter, endDateParameter);
         }
     }
 }

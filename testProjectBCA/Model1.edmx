@@ -276,6 +276,16 @@
           <Property Name="noBA" Type="varchar" MaxLength="50" />
           <Property Name="keterangan" Type="varchar" MaxLength="200" />
         </EntityType>
+        <EntityType Name="SaveAsk">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tanggal" Type="date" />
+          <Property Name="rekapAsk" Type="bigint" />
+          <Property Name="ask" Type="bigint" />
+          <Property Name="komentar" Type="varchar" MaxLength="500" />
+        </EntityType>
         <EntityType Name="SaveRekap">
           <Key>
             <PropertyRef Name="id" />
@@ -356,6 +366,24 @@
           <Property Name="saldoAkhir50" Type="bigint" />
           <Property Name="saldoAkhir100" Type="bigint" />
         </EntityType>
+        <EntityType Name="VaultOrderBlogHistory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="vaultId" Type="varchar" MaxLength="50" />
+          <Property Name="cashPoint" Type="varchar" MaxLength="50" />
+          <Property Name="action" Type="varchar" MaxLength="50" />
+          <Property Name="status" Type="varchar" MaxLength="100" />
+          <Property Name="confNum" Type="varchar" MaxLength="50" />
+          <Property Name="orderDate" Type="date" />
+          <Property Name="dueDate" Type="date" />
+          <Property Name="timeStamp" Type="datetime" />
+          <Property Name="taskId" Type="varchar" MaxLength="50" />
+          <Property Name="blogMessage" Type="varchar" MaxLength="100" />
+          <Property Name="userName" Type="varchar" MaxLength="50" />
+          <Property Name="currencyAmmount" Type="bigint" />
+        </EntityType>
         <Association Name="FK_laporanBon_Pkt">
           <End Role="Pkt" Type="Self.Pkt" Multiplicity="0..1" />
           <End Role="laporanBon" Type="Self.laporanBon" Multiplicity="*" />
@@ -388,6 +416,10 @@
           <Parameter Name="startDate" Type="date" Mode="In" />
           <Parameter Name="endDate" Type="date" Mode="In" />
         </Function>
+        <Function Name="prediksiStdDev" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="startDate" Type="date" Mode="In" />
+          <Parameter Name="endDate" Type="date" Mode="In" />
+        </Function>
         <EntityContainer Name="CACModelStoreContainer">
           <EntitySet Name="Abacas" EntityType="Self.Abacas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Approvals" EntityType="Self.Approvals" Schema="dbo" store:Type="Tables" />
@@ -408,9 +440,11 @@
           <EntitySet Name="OrderTracking" EntityType="Self.OrderTracking" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pkt" EntityType="Self.Pkt" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RekapSelisihAmbilSetor" EntityType="Self.RekapSelisihAmbilSetor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SaveAsk" EntityType="Self.SaveAsk" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SaveRekap" EntityType="Self.SaveRekap" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StokPosisi" EntityType="Self.StokPosisi" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TransaksiAtms" EntityType="Self.TransaksiAtms" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VaultOrderBlogHistory" EntityType="Self.VaultOrderBlogHistory" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_laporanBon_Pkt" Association="Self.FK_laporanBon_Pkt">
             <End Role="Pkt" EntitySet="Pkt" />
             <End Role="laporanBon" EntitySet="laporanBon" />
@@ -828,6 +862,12 @@
             <Parameter Name="startDate" Mode="In" Type="DateTime" />
             <Parameter Name="endDate" Mode="In" Type="DateTime" />
           </FunctionImport>
+          <EntitySet Name="SaveAsks" EntityType="CACModel.SaveAsk" />
+          <EntitySet Name="VaultOrderBlogHistories" EntityType="CACModel.VaultOrderBlogHistory" />
+          <FunctionImport Name="prediksiStdDev">
+            <Parameter Name="startDate" Mode="In" Type="DateTime" />
+            <Parameter Name="endDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="SaveRekap">
           <Key>
@@ -842,6 +882,34 @@
           <Property Name="keterangan" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="komentar" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="tanggal" Type="DateTime" Precision="0" />
+        </EntityType>
+        <EntityType Name="SaveAsk">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="tanggal" Type="DateTime" Precision="0" />
+          <Property Name="rekapAsk" Type="Int64" />
+          <Property Name="ask" Type="Int64" />
+          <Property Name="komentar" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="VaultOrderBlogHistory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="vaultId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cashPoint" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="action" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="status" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="confNum" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="orderDate" Type="DateTime" Precision="0" />
+          <Property Name="dueDate" Type="DateTime" Precision="0" />
+          <Property Name="timeStamp" Type="DateTime" Precision="3" />
+          <Property Name="taskId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="blogMessage" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="userName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="currencyAmmount" Type="Int64" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1221,6 +1289,37 @@
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="prediksiEvent2" FunctionName="CACModel.Store.prediksiEvent2" />
           <FunctionImportMapping FunctionImportName="prediksiHistoris" FunctionName="CACModel.Store.prediksiHistoris" />
+          <EntitySetMapping Name="SaveAsks">
+            <EntityTypeMapping TypeName="CACModel.SaveAsk">
+              <MappingFragment StoreEntitySet="SaveAsk">
+                <ScalarProperty Name="komentar" ColumnName="komentar" />
+                <ScalarProperty Name="ask" ColumnName="ask" />
+                <ScalarProperty Name="rekapAsk" ColumnName="rekapAsk" />
+                <ScalarProperty Name="tanggal" ColumnName="tanggal" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VaultOrderBlogHistories">
+            <EntityTypeMapping TypeName="CACModel.VaultOrderBlogHistory">
+              <MappingFragment StoreEntitySet="VaultOrderBlogHistory">
+                <ScalarProperty Name="currencyAmmount" ColumnName="currencyAmmount" />
+                <ScalarProperty Name="userName" ColumnName="userName" />
+                <ScalarProperty Name="blogMessage" ColumnName="blogMessage" />
+                <ScalarProperty Name="taskId" ColumnName="taskId" />
+                <ScalarProperty Name="timeStamp" ColumnName="timeStamp" />
+                <ScalarProperty Name="dueDate" ColumnName="dueDate" />
+                <ScalarProperty Name="orderDate" ColumnName="orderDate" />
+                <ScalarProperty Name="confNum" ColumnName="confNum" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="action" ColumnName="action" />
+                <ScalarProperty Name="cashPoint" ColumnName="cashPoint" />
+                <ScalarProperty Name="vaultId" ColumnName="vaultId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="prediksiStdDev" FunctionName="CACModel.Store.prediksiStdDev" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

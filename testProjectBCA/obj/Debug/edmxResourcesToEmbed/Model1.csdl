@@ -404,6 +404,12 @@
       <Parameter Name="startDate" Mode="In" Type="DateTime" />
       <Parameter Name="endDate" Mode="In" Type="DateTime" />
     </FunctionImport>
+    <EntitySet Name="SaveAsks" EntityType="CACModel.SaveAsk" />
+    <EntitySet Name="VaultOrderBlogHistories" EntityType="CACModel.VaultOrderBlogHistory" />
+    <FunctionImport Name="prediksiStdDev">
+      <Parameter Name="startDate" Mode="In" Type="DateTime" />
+      <Parameter Name="endDate" Mode="In" Type="DateTime" />
+    </FunctionImport>
   </EntityContainer>
   <EntityType Name="SaveRekap">
     <Key>
@@ -418,5 +424,33 @@
     <Property Name="keterangan" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
     <Property Name="komentar" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
     <Property Name="tanggal" Type="DateTime" Precision="0" />
+  </EntityType>
+  <EntityType Name="SaveAsk">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="tanggal" Type="DateTime" Precision="0" />
+    <Property Name="rekapAsk" Type="Int64" />
+    <Property Name="ask" Type="Int64" />
+    <Property Name="komentar" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="VaultOrderBlogHistory">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="vaultId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="cashPoint" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="action" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="status" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="confNum" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="orderDate" Type="DateTime" Precision="0" />
+    <Property Name="dueDate" Type="DateTime" Precision="0" />
+    <Property Name="timeStamp" Type="DateTime" Precision="3" />
+    <Property Name="taskId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="blogMessage" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="userName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="currencyAmmount" Type="Int64" />
   </EntityType>
 </Schema>

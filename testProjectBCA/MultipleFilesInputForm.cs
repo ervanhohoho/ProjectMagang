@@ -78,6 +78,7 @@ namespace testProjectBCA
             files = new List<String>();
             if(of.ShowDialog() == DialogResult.OK)
             {
+                collectionTransaksiPkt = new List<List<transaksiPkt>>(); 
                 loadForm.ShowSplashScreen();
                 String [] tempFileNames = of.FileNames;
                 foreach (var temp in tempFileNames)

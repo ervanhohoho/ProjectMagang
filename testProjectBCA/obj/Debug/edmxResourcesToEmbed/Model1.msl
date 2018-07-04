@@ -373,5 +373,36 @@
     </EntitySetMapping>
     <FunctionImportMapping FunctionImportName="prediksiEvent2" FunctionName="CACModel.Store.prediksiEvent2" />
     <FunctionImportMapping FunctionImportName="prediksiHistoris" FunctionName="CACModel.Store.prediksiHistoris" />
+    <EntitySetMapping Name="SaveAsks">
+      <EntityTypeMapping TypeName="CACModel.SaveAsk">
+        <MappingFragment StoreEntitySet="SaveAsk">
+          <ScalarProperty Name="komentar" ColumnName="komentar" />
+          <ScalarProperty Name="ask" ColumnName="ask" />
+          <ScalarProperty Name="rekapAsk" ColumnName="rekapAsk" />
+          <ScalarProperty Name="tanggal" ColumnName="tanggal" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VaultOrderBlogHistories">
+      <EntityTypeMapping TypeName="CACModel.VaultOrderBlogHistory">
+        <MappingFragment StoreEntitySet="VaultOrderBlogHistory">
+          <ScalarProperty Name="currencyAmmount" ColumnName="currencyAmmount" />
+          <ScalarProperty Name="userName" ColumnName="userName" />
+          <ScalarProperty Name="blogMessage" ColumnName="blogMessage" />
+          <ScalarProperty Name="taskId" ColumnName="taskId" />
+          <ScalarProperty Name="timeStamp" ColumnName="timeStamp" />
+          <ScalarProperty Name="dueDate" ColumnName="dueDate" />
+          <ScalarProperty Name="orderDate" ColumnName="orderDate" />
+          <ScalarProperty Name="confNum" ColumnName="confNum" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="action" ColumnName="action" />
+          <ScalarProperty Name="cashPoint" ColumnName="cashPoint" />
+          <ScalarProperty Name="vaultId" ColumnName="vaultId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="prediksiStdDev" FunctionName="CACModel.Store.prediksiStdDev" />
   </EntityContainerMapping>
 </Mapping>

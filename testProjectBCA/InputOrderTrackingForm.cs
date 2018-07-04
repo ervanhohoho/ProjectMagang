@@ -45,13 +45,13 @@ namespace testProjectBCA
 
                 if (query.Any())
                 {
-                    
-                    var Result = MessageBox.Show("Tanggal " + dateTimePicker1.Value.Date.ToShortDateString() + " sudah ada di database, update?","",MessageBoxButtons.YesNo);
+
+                    var Result = MessageBox.Show("Tanggal " + dateTimePicker1.Value.Date.ToShortDateString() + " sudah ada di database, update?", "", MessageBoxButtons.YesNo);
                     if (Result == DialogResult.Yes)
                     {
                         en.OrderTrackings.RemoveRange(query);
                         en.SaveChanges();
-                        
+
                         for (int i = 1; i < dt.Rows.Count; i++)
                         {
                             Console.WriteLine(i);
@@ -89,7 +89,7 @@ namespace testProjectBCA
                                         continue;
                                     }
 
-                                    
+
 
                                     en.OrderTrackings.Add(new OrderTracking()
                                     {
@@ -100,14 +100,14 @@ namespace testProjectBCA
                                     });
                                     en.SaveChanges();
                                 }
-                                
+
                             }
 
 
                         }
                         MessageBox.Show("data berhasil diupdate");
                     }
-                    else  /*(DialogResult ==DialogResult.No)*/        
+                    else  /*(DialogResult ==DialogResult.No)*/
                     {
                         MessageBox.Show("data tidak diupdate");
                     }
@@ -474,12 +474,12 @@ namespace testProjectBCA
                         //dibatalkan.Add(Int64.Parse(reader[6].ToString()));
                     }
 
-                    
+
 
                     var query = (from x in en.SaveRekaps
                                  select x).ToList();
 
-                    
+
 
                     foreach (var item in otl)
                     {
@@ -564,7 +564,7 @@ namespace testProjectBCA
                     {
                         otsu.Add(new orderTrackingSumUp6
                         {
-                            
+
                             rekapAsk = Int64.Parse(reader[0].ToString()),
                             ask = 0,
 
@@ -579,7 +579,8 @@ namespace testProjectBCA
                     var query = (from x in en.SaveAsks
                                  select x).ToList();
 
-                    
+
+
 
                     foreach (var item in otsu)
                     {
@@ -588,6 +589,12 @@ namespace testProjectBCA
                         if (q2.Any())
                         {
                             item.komentar = q2[0];
+                        }
+
+                        var q3 = query.Where(x => ((DateTime)x.tanggal).Date == dateTimePicker1.Value.Date).Select(x => x.ask).ToList();
+                        if (q3.Any())
+                        {
+                            item.ask = Int64.Parse(q3[0].ToString());
                         }
 
                     }
@@ -649,7 +656,7 @@ namespace testProjectBCA
         private void button3_Click(object sender, EventArgs e)
         {
             reloadGridView();
-           
+
             button6.Enabled = true;
         }
 
@@ -672,8 +679,8 @@ namespace testProjectBCA
         private void button6_Click(object sender, EventArgs e)
         {
             List<SaveRekap> sr = new List<SaveRekap>();
-           
-            for (int i = 0; i < dataGridView1.Rows.Count-1; i++)
+
+            for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
             {
                 DateTime tanggal = dateTimePicker1.Value.Date;
                 String komentar = "";
@@ -683,7 +690,7 @@ namespace testProjectBCA
                 Int64 rekapBelumSelesai = Int64.Parse(dataGridView1.Rows[i].Cells["rekapBelumSelesai"].Value.ToString());
                 Int64 totalRekap = Int64.Parse(dataGridView1.Rows[i].Cells["totalRekap"].Value.ToString());
                 String keterangan = dataGridView1.Rows[i].Cells["keterangan"].Value.ToString();
-                
+
                 var query = (from x in en.SaveRekaps.AsEnumerable()
                              where x.kodePkt == kodePkt && ((DateTime)x.tanggal).Date == dateTimePicker1.Value.Date
                              select x).FirstOrDefault();
@@ -696,7 +703,7 @@ namespace testProjectBCA
                 if (query == null)
                 {
                     //insert
-                    
+
                     sr.Add(new SaveRekap()
                     {
                         kodePkt = kodePkt,
@@ -720,10 +727,10 @@ namespace testProjectBCA
                     query.rekapBelumSelesai = rekapBelumSelesai;
                     query.totalRekap = totalRekap;
                     query.keterangan = keterangan;
-                    
+
                 }
 
-                
+
             }
             en.SaveRekaps.AddRange(sr);
             en.SaveChanges();
@@ -784,6 +791,9 @@ namespace testProjectBCA
                     komentar = dataGridView2.Rows[i].Cells["komentar"].Value.ToString();
                 }
 
+                rekapAsk = Int64.Parse(dataGridView2.Rows[i].Cells["rekapAsk"].Value.ToString());
+                ask = Int64.Parse(dataGridView2.Rows[i].Cells["ask"].Value.ToString());
+
                 if (query == null)
                 {
                     //insert
@@ -803,7 +813,7 @@ namespace testProjectBCA
                     query.komentar = komentar;
                     query.ask = ask;
                     query.rekapAsk = rekapAsk;
-                    
+
 
                 }
 
