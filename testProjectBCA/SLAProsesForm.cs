@@ -999,9 +999,9 @@ namespace testProjectBCA
                 slaCabangKecil = (int)slaCabangKecilNum.Value;
             Double sla;
             if (bk == "Besar")
-                sla= (Double)(unproc + retail + cabang - unprocH1) / (unproc / (slaRetailBesar - 1) + retail/slaRetailBesar + cabang/slaCabangBesar);
+                sla= (Double)(unproc + retail + cabang - unprocH1) / (unproc / (slaCabangBesar - 1) + retail/slaRetailBesar + cabang/slaCabangBesar);
             else
-                sla = (Double)(unproc + retail + cabang - unprocH1) / (unproc / (slaRetailKecil - 1) + retail/slaRetailKecil + cabang/slaCabangKecil);
+                sla = (Double)(unproc + retail + cabang - unprocH1) / (unproc / (slaCabangKecil - 1) + retail/slaRetailKecil + cabang/slaCabangKecil);
             if (sla > 1)
                 sla = 1;
             else if (sla < 0)
@@ -1020,15 +1020,15 @@ namespace testProjectBCA
             }
             else if((unprocBesar + retailBesar + cabangBesar) == 0)
             {
-                return (Double)(unprocKecil + retailKecil + cabangKecil - unprocH1Kecil) / (unprocKecil / (slaRetailKecil - 1) + retailKecil/slaRetailKecil + cabangKecil/slaCabangKecil);
+                return (Double)(unprocKecil + retailKecil + cabangKecil - unprocH1Kecil) / (unprocKecil / (slaCabangKecil - 1) + retailKecil/slaRetailKecil + cabangKecil/slaCabangKecil);
             }
             else if((unprocKecil + retailKecil+cabangKecil)==0)
             {
-                return (Double)(unprocBesar + retailBesar + cabangBesar - unprocH1Besar) / (unprocBesar / (slaRetailBesar - 1) + retailBesar/slaRetailBesar + cabangBesar/slaCabangBesar);
+                return (Double)(unprocBesar + retailBesar + cabangBesar - unprocH1Besar) / (unprocBesar / (slaCabangBesar - 1) + retailBesar/slaRetailBesar + cabangBesar/slaCabangBesar);
             }
             else
             {
-                return (Double)((unprocBesar + retailBesar + cabangBesar - unprocH1Besar) + (unprocKecil + retailKecil + cabangKecil - unprocH1Kecil)) / ((unprocBesar / (slaRetailBesar - 1) + retailBesar/slaRetailBesar + cabangBesar/slaCabangBesar)+ (unprocKecil / (slaRetailKecil - 1) + retailKecil/slaRetailKecil + cabangKecil / slaCabangKecil));
+                return (Double)((unprocBesar + retailBesar + cabangBesar - unprocH1Besar) + (unprocKecil + retailKecil + cabangKecil - unprocH1Kecil)) / ((unprocBesar / (slaCabangBesar - 1) + retailBesar/slaRetailBesar + cabangBesar/slaCabangBesar)+ (unprocKecil / (slaCabangKecil - 1) + retailKecil/slaRetailKecil + cabangKecil / slaCabangKecil));
             }
         }
         public Int64 hitungPcs(Int64 value, String denom)

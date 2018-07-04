@@ -522,9 +522,38 @@ namespace testProjectBCA
                         if (queryApproval[queryApproval.Count - 1].DetailApproval.bon20 != pkt.penerimaanBon[2])
                             summary += "\nBon 20 " + ((Int64)queryApproval[queryApproval.Count - 1].DetailApproval.bon20 - (Int64)pkt.penerimaanBon[2]).ToString("n0");
                     }
+                    
                 }
 
-               
+                queryApproval = (from a in db.Approvals
+                                 join da in db.DetailApprovals on a.idApproval equals da.idApproval
+                                 where a.kodePkt == pkt.kodePkt
+                                 && da.bon100 != -1
+                                 orderby da.idDetailApproval
+                                 select new { Approval = a, DetailApproval = da }).ToList();
+                if(queryApproval.Any())
+                {
+                    foreach(var bonygdisetujui in pkt.bonAtmYangDisetujui)
+                    {
+                        var qa = queryApproval.Where(a => a.DetailApproval.tanggal == bonygdisetujui.tgl).OrderByDescending(a => a.DetailApproval.idDetailApproval).Select(a => a.DetailApproval).FirstOrDefault();
+                        if(qa!=null)
+                        {
+                            if(qa.bon100 != bonygdisetujui.d100 || qa.bon50 != bonygdisetujui.d50 || qa.bon20 != bonygdisetujui.d100)
+                            {
+                                errMsg += "\nBon tanggal " + ((DateTime)qa.tanggal).ToShortDateString() + " yang disetujui beda\n=====================" +
+                                    "\nApproval 100: Rp. " + ((Int64)qa.bon100).ToString("n0") + "\nLaporan 100: Rp. " + bonygdisetujui.d100.ToString("n0") +
+                                    "\nApproval 50: Rp. " + ((Int64)qa.bon50).ToString("n0") + "\nLaporan 50: Rp. " + bonygdisetujui.d50.ToString("n0") +
+                                    "\nApproval 20: Rp. " + ((Int64)qa.bon20).ToString("n0") + "\nLaporan 20: Rp. " + bonygdisetujui.d20.ToString("n0");
+                            }
+                            if (qa.bon100 != bonygdisetujui.d100)
+                                summary += "\nSelisih bon tanggal " + ((DateTime)qa.tanggal).ToShortDateString() + " yang disetujui 100: " + ((Int64)qa.bon100 - (Int64)bonygdisetujui.d100);
+                            if (qa.bon50 != bonygdisetujui.d50)
+                                summary += "\nSelisih bon tanggal " + ((DateTime)qa.tanggal).ToShortDateString() + " yang disetujui 50: " + ((Int64)qa.bon50 - (Int64)bonygdisetujui.d50);
+                            if (qa.bon20 != bonygdisetujui.d20)
+                                summary += "\nSelisih bon tanggal " + ((DateTime)qa.tanggal).ToShortDateString() + " yang disetujui 20: " + ((Int64)qa.bon20 - (Int64)bonygdisetujui.d20);
+                        }
+                    }
+                }
 
                 var queryApprovalAdhoc = (from a in db.Approvals.AsEnumerable()
                                           join da in db.DetailApprovals.AsEnumerable() on a.idApproval equals da.idApproval

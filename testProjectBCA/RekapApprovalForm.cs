@@ -282,17 +282,24 @@ namespace testProjectBCA
 
                         DetailApproval dah1 = (from x in db.DetailApprovals where x.idApproval == temp.id && x.idDetailApproval == temp.idDetailApproval + 1 select x).FirstOrDefault();
                         int counter = 1;
-                        while (dah1 != null)
+                         while (dah1 != null)
                         {
                             dah1 = (from x in db.DetailApprovals where x.idApproval == temp.id && x.idDetailApproval == temp.idDetailApproval + counter select x).FirstOrDefault();
-                            dah1.saldoAwal100 += selisih100;
-                            dah1.saldoAwal50 += selisih50;
-                            dah1.saldoAwal20 += selisih20;
+                            if (dah1 != null)
+                            {
+                                dah1.saldoAwal100 += selisih100;
+                                dah1.saldoAwal50 += selisih50;
+                                dah1.saldoAwal20 += selisih20;
+                            }
                             counter++;
                         }
                     }
                     else
                     {
+                        Console.WriteLine("Temp: " + temp);
+                        Console.WriteLine("Temp 100: " + temp.d100);
+                        Console.WriteLine("Temp 50: " + temp.d50);
+                        Console.WriteLine("Temp 20: " + temp.d20);
                         Int64 selisih100 = temp.d100 - (Int64)da.bon100,
                            selisih50 = temp.d50 - (Int64)da.bon50,
                            selisih20 = temp.d20 - (Int64)da.bon20;
@@ -303,10 +310,14 @@ namespace testProjectBCA
                         int counter = 1;
                         while (dah1 != null)
                         {
+
                             dah1 = (from x in db.DetailApprovals where x.idApproval == temp.id && x.idDetailApproval == temp.idDetailApproval + counter select x).FirstOrDefault();
-                            dah1.saldoAwal100 += selisih100;
-                            dah1.saldoAwal50 += selisih50;
-                            dah1.saldoAwal20 += selisih20;
+                            if (dah1 != null)
+                            {
+                                dah1.saldoAwal100 += selisih100;
+                                dah1.saldoAwal50 += selisih50;
+                                dah1.saldoAwal20 += selisih20;
+                            }
                             counter++;
                         }
                     }
