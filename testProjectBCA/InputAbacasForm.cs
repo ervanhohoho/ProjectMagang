@@ -49,7 +49,9 @@ namespace testProjectBCA
                 Console.WriteLine(dt.Rows[4][1].GetType());
                 dataGridView1.DataSource = dt;
 
-              
+                var allAbacas = (from x in db.Abacas
+                                 select x).ToList();
+                List<Abaca> toInput = new List<Abaca>();
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     Console.WriteLine("i = " + i);
@@ -67,6 +69,13 @@ namespace testProjectBCA
                             String jobId = dt.Rows[i + counter][4].ToString();
 
                             Int64 totalAmount = Int64.Parse(dt.Rows[i + counter][5].ToString());
+
+                            var checkData = allAbacas.Where(x => x.jobId == jobId && x.tanggal == tanggal).FirstOrDefault();
+                            if (checkData != null)
+                            {
+                                counter++;
+                                continue;
+                            }
                             Abaca newItem = new Abaca()
                             {
                                 jobId = jobId,
@@ -74,16 +83,18 @@ namespace testProjectBCA
                                 vendorCardNo = vendorCardNo,
                                 vendorName = vendorName,
                                 totalAmount = totalAmount,
-                                CustomerCode = kodeNasabah.TrimStart('0'),
-                                CustomerName = namaNasabah
+                                CustomerCode = kodeNasabah.TrimStart(':').TrimStart(' '),
+                                CustomerName = namaNasabah.TrimStart(':').TrimStart(' ')
                             };
-                            db.Abacas.Add(newItem);
+                            toInput.Add(newItem);
                             counter++;
                         }
+                        
                         i += counter;
-                        db.SaveChanges();
                     }
                 }
+                db.Abacas.AddRange(toInput);
+                db.SaveChanges();
                 loadForm.CloseForm(); 
             }
         }

@@ -28,9 +28,14 @@ namespace testProjectBCA
                 loadForm.ShowSplashScreen();
                 String [] paths = of.FileNames;
                 List<Abaca> listAbacas = new List<Abaca>();
-                List<Abaca> dataDb = (from x in db.Abacas select x).ToList();
+                
                 foreach (string path in paths)
                 {
+                    List<Abaca> dataDb = (from x in db.Abacas
+                                          where x.CustomerCode.ToUpper().Contains("T")
+                                          || x.CustomerCode.ToUpper().Contains("D")
+                                          select x).ToList();
+                    listAbacas = new List<Abaca>();
                     DataSet ds = Util.openExcel(path);
                     DataTable dt = ds.Tables[0];
                     DataRow[] delrows = dt.Select("Column0 is null OR Column0 like 'F%'");
@@ -41,12 +46,14 @@ namespace testProjectBCA
                     for (int a = 0; a < dt.Rows.Count; a++)
                     {
                         DataRow row = dt.Rows[a];
-                        if (dataDb.Where(x => x.tanggal == DateTime.Parse(row[3].ToString()) && x.CustomerCode == row[0].ToString()).ToList().Any())
+                        if (dataDb.Where(x => ((DateTime)x.tanggal).Date == DateTime.Parse(row[3].ToString()).Date && x.CustomerCode == row[0].ToString()).ToList().Any())
                         {
+                            Console.WriteLine("Revisi");
                             var q = dataDb.Where(x => x.tanggal == DateTime.Parse(row[3].ToString()) && x.CustomerCode == row[0].ToString()).FirstOrDefault();
                             q.totalAmount = Int64.Parse(row[2].ToString());
+                            db.SaveChanges();
                         }
-                        else if(listAbacas.Where(x => x.tanggal == DateTime.Parse(row[3].ToString()) && x.CustomerCode == row[0].ToString()).ToList().Any())
+                        else if(listAbacas.Where(x => ((DateTime)x.tanggal).Date == DateTime.Parse(row[3].ToString()).Date && x.CustomerCode == row[0].ToString()).ToList().Any())
                         {
                             var q = listAbacas.Where(x => x.tanggal == DateTime.Parse(row[3].ToString()) && x.CustomerCode == row[0].ToString()).FirstOrDefault();
                             q.totalAmount = Int64.Parse(row[2].ToString());

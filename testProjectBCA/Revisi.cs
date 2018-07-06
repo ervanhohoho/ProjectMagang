@@ -144,6 +144,7 @@ namespace testProjectBCA
                             q3[0].C100 = pkt.permintaanAdhoc[0];
                             q3[0].C50 = pkt.permintaanAdhoc[1];
                             q3[0].C20 = pkt.permintaanAdhoc[2];
+                            db.SaveChanges();
                         }
 
 

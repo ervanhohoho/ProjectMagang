@@ -43,6 +43,7 @@
             this.revisiInformationBoardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rekapApprovalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rekapApprovalToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.rasioApprovalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.initTransaksiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.forecastATMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportDataHistorisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -70,7 +71,7 @@
             this.inputDataKalenderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadMasterPKTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.orderTrackingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.rasioApprovalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.rekonSaldoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -83,7 +84,8 @@
             this.dashboardToolStripMenuItem,
             this.dashboardCOJToolStripMenuItem,
             this.adminToolsToolStripMenuItem,
-            this.orderTrackingToolStripMenuItem});
+            this.orderTrackingToolStripMenuItem,
+            this.rekonSaldoToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1004, 24);
@@ -204,6 +206,13 @@
             this.rekapApprovalToolStripMenuItem1.Size = new System.Drawing.Size(204, 22);
             this.rekapApprovalToolStripMenuItem1.Text = "Rekap Approval";
             this.rekapApprovalToolStripMenuItem1.Click += new System.EventHandler(this.rekapApprovalToolStripMenuItem1_Click);
+            // 
+            // rasioApprovalToolStripMenuItem
+            // 
+            this.rasioApprovalToolStripMenuItem.Name = "rasioApprovalToolStripMenuItem";
+            this.rasioApprovalToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.rasioApprovalToolStripMenuItem.Text = "Rasio Approval";
+            this.rasioApprovalToolStripMenuItem.Click += new System.EventHandler(this.rasioApprovalToolStripMenuItem_Click);
             // 
             // initTransaksiToolStripMenuItem
             // 
@@ -414,12 +423,12 @@
             this.orderTrackingToolStripMenuItem.Text = "Order Tracking";
             this.orderTrackingToolStripMenuItem.Click += new System.EventHandler(this.orderTrackingToolStripMenuItem_Click);
             // 
-            // rasioApprovalToolStripMenuItem
+            // rekonSaldoToolStripMenuItem
             // 
-            this.rasioApprovalToolStripMenuItem.Name = "rasioApprovalToolStripMenuItem";
-            this.rasioApprovalToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
-            this.rasioApprovalToolStripMenuItem.Text = "Rasio Approval";
-            this.rasioApprovalToolStripMenuItem.Click += new System.EventHandler(this.rasioApprovalToolStripMenuItem_Click);
+            this.rekonSaldoToolStripMenuItem.Name = "rekonSaldoToolStripMenuItem";
+            this.rekonSaldoToolStripMenuItem.Size = new System.Drawing.Size(84, 20);
+            this.rekonSaldoToolStripMenuItem.Text = "Rekon Saldo";
+            this.rekonSaldoToolStripMenuItem.Click += new System.EventHandler(this.rekonSaldoToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -484,5 +493,6 @@
         private System.Windows.Forms.ToolStripMenuItem exportDataHistorisToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem inputBonYangDisetujuiToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem rasioApprovalToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem rekonSaldoToolStripMenuItem;
     }
 }

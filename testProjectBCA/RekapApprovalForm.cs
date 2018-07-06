@@ -242,9 +242,12 @@ namespace testProjectBCA
                         while (dah1 != null)
                         {
                             dah1 = (from x in db.DetailApprovals where x.idApproval == temp.id && x.idDetailApproval == temp.idDetailApproval + counter select x).FirstOrDefault();
-                            dah1.saldoAwal100 += selisih100;
-                            dah1.saldoAwal50 += selisih50;
-                            dah1.saldoAwal20 += selisih20;
+                            if (dah1 != null)
+                            {
+                                dah1.saldoAwal100 += selisih100;
+                                dah1.saldoAwal50 += selisih50;
+                                dah1.saldoAwal20 += selisih20;
+                            }
                             counter++;
                         }
                     }
@@ -261,9 +264,12 @@ namespace testProjectBCA
                         while (dah1 != null)
                         {
                             dah1 = (from x in db.DetailApprovals where x.idApproval == temp.id && x.idDetailApproval == temp.idDetailApproval + counter select x).FirstOrDefault();
-                            dah1.saldoAwal100 += selisih100;
-                            dah1.saldoAwal50 += selisih50;
-                            dah1.saldoAwal20 += selisih20;
+                            if (dah1 != null)
+                            {
+                                dah1.saldoAwal100 += selisih100;
+                                dah1.saldoAwal50 += selisih50;
+                                dah1.saldoAwal20 += selisih20;
+                            }
                             counter++;
                         }
                     }

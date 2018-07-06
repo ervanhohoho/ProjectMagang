@@ -670,6 +670,7 @@ namespace testProjectBCA
             if (of.ShowDialog() == DialogResult.OK)
             {
                 insertDataKanwilCabang(of.FileName);
+                MessageBox.Show("Done!");
             }
         }
 
@@ -800,6 +801,13 @@ namespace testProjectBCA
             RasioApprovalForm raf = new RasioApprovalForm();
             raf.MdiParent = this;
             raf.Show();
+        }
+
+        private void rekonSaldoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RekonSaldoForm rsf = new RekonSaldoForm();
+            rsf.MdiParent = this;
+            rsf.Show();
         }
     }
 }

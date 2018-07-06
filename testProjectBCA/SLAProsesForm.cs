@@ -463,8 +463,6 @@ namespace testProjectBCA
                                                      || g.Key.denom == "50000")
                                              select new { namapkt = g.Key.namaPkt, value = hitungPcs((Int64)g.Sum(x => x.inRetail), g.Key.denom), tanggal = g.Key.tanggal }).GroupBy(x => new { x.namapkt, x.tanggal }).Select(x => new { namapkt = x.Key.namapkt, tanggal = x.Key.tanggal, value = x.Sum(y => y.value) }).ToList();
 
-                        foreach (var temp in inRetailBesar)
-                            Console.WriteLine("In Retail Besar " + temp.namapkt + " " + temp.tanggal + " : " + temp.value);
 
                         DateTime date = new DateTime(thn, bln, tgl);
                         var unprocessedBesarH1 = (from x in listAllStokPosisiData.AsEnumerable()
@@ -645,8 +643,6 @@ namespace testProjectBCA
                                                      || g.Key.denom == "50000")
                                              select new { namapkt = g.Key.namaPkt, value = hitungPcs((Int64)g.Sum(x => x.inRetail), g.Key.denom), tanggal = g.Key.tanggal }).GroupBy(x => new { x.namapkt, x.tanggal }).Select(x => new { namapkt = x.Key.namapkt, tanggal = x.Key.tanggal, value = x.Sum(y => y.value) }).ToList();
 
-                        foreach (var temp in inRetailBesar)
-                            Console.WriteLine("In Retail Besar " + temp.namapkt + " " + temp.tanggal + " : " + temp.value);
 
                         DateTime date = new DateTime(thn, bln, tgl);
                         var unprocessedBesarH1 = (from x in listAllStokPosisiData.AsEnumerable()
@@ -701,40 +697,61 @@ namespace testProjectBCA
                                  where !Double.IsNaN(x.slaGabung)
                                  group x by new { x.namaPkt, x.tanggal } into g
                                  select new { namaPkt = g.Key.namaPkt, slaGabung = g.Average(x => x.slaGabung), tanggal = g.Key.tanggal }).ToList();
-
+            
             var qt = (from x in slapav
                       group x by new { x.namaPkt, x.tanggal } into g
                       from y in tempSlaBesar.Where(a=>a.namaPkt == g.Key.namaPkt && a.tanggal == g.Key.tanggal)
                       from z in tempSlaKecil.Where(a => a.namaPkt == g.Key.namaPkt && a.tanggal == g.Key.tanggal)
                       from zz in tempSlaGabung.Where(a => a.namaPkt == g.Key.namaPkt && a.tanggal == g.Key.tanggal)
-                      select new
+                      select new Result()
                       {
                           namaPkt = g.Key.namaPkt,
                           tanggal = g.Key.tanggal,
                           UnprocessedBesar = g.Average(x => x.unprocUangBesar),
                           UnprocessedKecil = g.Average(x => x.unprocUangKecil),
-                          InRetailBesar = g.Average(x => x.inRetailUangBesar),
-                          InRetailKecil = g.Average(x => x.inRetailUangKecil),
                           InCabangBesar = g.Average(x => x.inCabangUangBesar),
                           InCabangKecil = g.Average(x => x.inCabangUangKecil),
+                          InRetailBesar = g.Average(x => x.inRetailUangBesar),
+                          InRetailKecil = g.Average(x => x.inRetailUangKecil),
                           TotalProcessUangBesar = g.Average(x => x.unprocUangBesar) + g.Average(x => x.inRetailUangBesar) + g.Average(x => x.inCabangUangBesar),
                           TotalProcessUangKecil = g.Average(x => x.unprocUangKecil) + g.Average(x => x.inRetailUangKecil) + g.Average(x => x.inCabangUangKecil),
                           slaBesar = y.slaBesar,
                           slaKecil = z.slaKecil,
                           slaGabung = zz.slaGabung
                       }).ToList();
+
+            int maxDayInMonth = DateTime.DaysInMonth(qt.Max(x => x.tanggal).Year, qt.Max(x => x.tanggal).Month);
+
+            qt = (from x in qt
+                  select new Result()
+                  {
+                     
+                      namaPkt = printpkt(x.namaPkt),
+                      tanggal = printTanggal(x.tanggal),
+                      UnprocessedBesar = x.UnprocessedBesar,
+                      UnprocessedKecil = x.UnprocessedKecil,
+                      InCabangBesar = x.InCabangBesar,
+                      InCabangKecil = x.InCabangKecil,
+                      InRetailBesar = x.InRetailBesar,
+                      InRetailKecil = x.InRetailKecil,
+                      TotalProcessUangBesar =  x.tanggal.Day == maxDayInMonth ? hitungTotalProsesBulanDpn(x.TotalProcessUangBesar, x.tanggal, x.namaPkt, "Besar") : x.TotalProcessUangBesar - qt.Where(y => y.tanggal == x.tanggal.AddDays(1) && y.namaPkt == x.namaPkt).Select(y => y.UnprocessedBesar).FirstOrDefault(),
+                      TotalProcessUangKecil =  x.tanggal.Day == maxDayInMonth ? hitungTotalProsesBulanDpn(x.TotalProcessUangKecil, x.tanggal, x.namaPkt, "Kecil") : x.TotalProcessUangKecil - qt.Where(y => y.tanggal == x.tanggal.AddDays(1) && y.namaPkt == x.namaPkt).Select(y => y.UnprocessedKecil).FirstOrDefault(),
+                      slaBesar = x.slaBesar,
+                      slaKecil = x.slaKecil,
+                      slaGabung = x.slaGabung
+                  }).ToList();
             var avg = (from x in qt
                        group x by true into g
-                       select new
+                       select new Result()
                        {
                            namaPkt = "",
                            tanggal = new DateTime(1, 1, 1),
                            UnprocessedBesar = g.Average(x => x.UnprocessedBesar),
                            UnprocessedKecil = g.Average(x => x.UnprocessedKecil),
-                           InRetailBesar = g.Average(x => x.InRetailBesar),
-                           InRetailKecil = g.Average(x => x.InRetailKecil),
                            InCabangBesar = g.Average(x => x.InCabangBesar),
                            InCabangKecil = g.Average(x => x.InCabangKecil),
+                           InRetailBesar = g.Average(x => x.InRetailBesar),
+                           InRetailKecil = g.Average(x => x.InRetailKecil),
                            TotalProcessUangBesar = g.Average(x => x.TotalProcessUangBesar),
                            TotalProcessUangKecil = g.Average(x => x.TotalProcessUangKecil),
                            slaBesar = g.Average(x => x.slaBesar),
@@ -743,16 +760,16 @@ namespace testProjectBCA
                        }).First();
             var sum = (from x in qt
                        group x by true into g
-                       select new
+                       select new Result()
                        {
                            namaPkt = "",
                            tanggal = new DateTime(1,1,1),
                            UnprocessedBesar = g.Sum(x => x.UnprocessedBesar),
                            UnprocessedKecil = g.Sum(x => x.UnprocessedKecil),
-                           InRetailBesar = g.Sum(x => x.InRetailBesar),
-                           InRetailKecil = g.Sum(x => x.InRetailKecil),
                            InCabangBesar = g.Sum(x => x.InCabangBesar),
                            InCabangKecil = g.Sum(x => x.InCabangKecil),
+                           InRetailBesar = g.Sum(x => x.InRetailBesar),
+                           InRetailKecil = g.Sum(x => x.InRetailKecil),
                            TotalProcessUangBesar = g.Sum(x => x.TotalProcessUangBesar),
                            TotalProcessUangKecil = g.Sum(x => x.TotalProcessUangKecil),
                            slaBesar = (Double)0,
@@ -785,7 +802,15 @@ namespace testProjectBCA
             int slaRetailBesar = (int)slaRetailBesarNum.Value,
                 slaRetailKecil = (int)slaRetailKecilNum.Value,
                 slaCabangBesar = (int)slaCabangBesarNum.Value,
-                slaCabangKecil = (int)slaCabangKecilNum.Value;
+                slaCabangKecil = (int)slaCabangKecilNum.Value,
+                slaUnprocBesar = (int)slaCabangBesarNum.Value - 1,
+                slaUnprocKecil = (int)slaCabangKecilNum.Value - 1;
+
+
+            if (slaUnprocBesar <= 1)
+                slaUnprocBesar = 1;
+            if (slaUnprocKecil <= 1)
+                slaUnprocKecil = 1;
             for (int thn = Int32.Parse(comboTahun1.SelectedValue.ToString()); thn <= Int32.Parse(comboTahun2.SelectedValue.ToString()); thn++)
             {
                 for (int bln = Int32.Parse(comboBulan1.SelectedValue.ToString()); bln <= Int32.Parse(comboBulan2.SelectedValue.ToString()); bln++)
@@ -895,16 +920,16 @@ namespace testProjectBCA
 
                 //if (sla[i].unprocUangBesar + sla[i].inCabangUangBesar + sla[i].inRetailUangBesar != 0)
                 //{
-                sla[i].slaProsesBesar = (Double)sla[i].totalProsesUangBesar / (sla[i].unprocUangBesar + sla[i].inCabangUangBesar / slaCabangBesar + sla[i].inRetailUangBesar/slaRetailBesar);
+                sla[i].slaProsesBesar = (Double)sla[i].totalProsesUangBesar / (sla[i].unprocUangBesar / (slaUnprocBesar) + sla[i].inCabangUangBesar / slaCabangBesar + sla[i].inRetailUangBesar/slaRetailBesar);
                 //}
                 //if (sla[i].unprocUangKecil + sla[i].inCabangUangKecil + sla[i].inRetailUangKecil != 0)
                 //{
-                sla[i].slaProsesKecil = (Double)sla[i].totalProsesUangKecil / (sla[i].unprocUangKecil + (sla[i].inCabangUangKecil / slaCabangKecil) + sla[i].inRetailUangKecil/slaRetailKecil);
+                sla[i].slaProsesKecil = (Double)sla[i].totalProsesUangKecil / (sla[i].unprocUangKecil / (slaUnprocKecil) + (sla[i].inCabangUangKecil / slaCabangKecil) + sla[i].inRetailUangKecil/slaRetailKecil);
                 //}
                 //if (sla[i].unprocUangBesar + sla[i].inCabangUangBesar + sla[i].inRetailUangBesar + sla[i].unprocUangKecil + sla[i].inCabangUangKecil + sla[i].inRetailUangKecil != 0)
                 //{
                 if (!Double.IsNaN(sla[i].slaProsesBesar) && !Double.IsNaN(sla[i].slaProsesKecil))
-                    sla[i].slaGabung = ((Double)sla[i].totalProsesUangBesar + (Double)sla[i].totalProsesUangKecil) / (sla[i].unprocUangBesar + sla[i].inCabangUangBesar/slaCabangBesar + sla[i].inRetailUangBesar/slaRetailBesar + sla[i].unprocUangKecil + (sla[i].inCabangUangKecil / slaCabangKecil) + sla[i].inRetailUangKecil/slaRetailKecil);
+                    sla[i].slaGabung = ((Double)sla[i].totalProsesUangBesar + (Double)sla[i].totalProsesUangKecil) / (sla[i].unprocUangBesar / (slaUnprocBesar) + sla[i].inCabangUangBesar/slaCabangBesar + sla[i].inRetailUangBesar/slaRetailBesar + sla[i].unprocUangKecil / (slaUnprocKecil) + (sla[i].inCabangUangKecil / slaCabangKecil) + sla[i].inRetailUangKecil/slaRetailKecil);
                 else if (!Double.IsNaN(sla[i].slaProsesBesar))
                     sla[i].slaGabung = sla[i].slaProsesBesar;
                 else if (!Double.IsNaN(sla[i].slaProsesKecil))
@@ -991,17 +1016,59 @@ namespace testProjectBCA
             dataGridView1.Rows[dataGridView1.Rows.Count - 1].DefaultCellStyle.BackColor = Color.LightSkyBlue;
             dataGridView1.Rows[dataGridView1.Rows.Count - 2].DefaultCellStyle.BackColor = Color.LightGreen;
         }
+        public Double hitungTotalProsesBulanDpn(Double totalProses, DateTime tanggal , String namapkt, String bk)
+        {
+            DateTime tgl = tanggal.AddDays(1);
+            var query = (from x in db.StokPosisis
+                         where x.namaPkt == namapkt
+                         && x.tanggal == tgl
+                         select x
+                         ).ToList();
+            if(query.Any())
+            {
+                if(bk == "Besar")
+                {
+                    return (Double) query.Where(x => x.denom == "100000" || x.denom == "50000").Sum(x => x.unprocessed);
+                }
+                else
+                {
+                    return (Double)query.Where(x => !(x.denom == "100000" || x.denom == "50000")).Sum(x => x.unprocessed);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Data tanggal " + tgl + " PKT " + namapkt + "Tidak ada!");
+                return 0;
+            }
+        }
+        public DateTime printTanggal(DateTime tanggal)
+        {
+            Console.WriteLine(tanggal);
+            return tanggal;
+        }
+        public String printpkt(string pkt)
+        {
+            Console.WriteLine(pkt);
+            return pkt;
+        }
         public Double hitungSLA(Int64 unproc, Int64 retail, Int64 cabang, Int64 unprocH1, String bk)
         {
             int slaRetailBesar  = (int)slaRetailBesarNum.Value, 
                 slaRetailKecil = (int)slaRetailKecilNum.Value, 
                 slaCabangBesar  = (int)slaCabangBesarNum.Value, 
-                slaCabangKecil = (int)slaCabangKecilNum.Value;
+                slaCabangKecil = (int)slaCabangKecilNum.Value,
+                slaUnprocBesar = (int)slaCabangBesarNum.Value - 1,
+                slaUnprocKecil = (int)slaCabangKecilNum.Value - 1;
+            if (slaUnprocBesar <= 1)
+                slaUnprocBesar = 1;
+            if (slaUnprocKecil <= 1)
+                slaUnprocKecil = 1;
+
             Double sla;
             if (bk == "Besar")
-                sla= (Double)(unproc + retail + cabang - unprocH1) / (unproc / (slaCabangBesar - 1) + retail/slaRetailBesar + cabang/slaCabangBesar);
+                sla= (Double)(unproc + retail + cabang - unprocH1) / (unproc / (slaUnprocBesar) + retail/slaRetailBesar + cabang/slaCabangBesar);
             else
-                sla = (Double)(unproc + retail + cabang - unprocH1) / (unproc / (slaCabangKecil - 1) + retail/slaRetailKecil + cabang/slaCabangKecil);
+                sla = (Double)(unproc + retail + cabang - unprocH1) / (unproc / (slaUnprocKecil) + retail/slaRetailKecil + cabang/slaCabangKecil);
             if (sla > 1)
                 sla = 1;
             else if (sla < 0)
@@ -1013,22 +1080,29 @@ namespace testProjectBCA
             int slaRetailBesar = (int)slaRetailBesarNum.Value,
                 slaRetailKecil= (int)slaRetailKecilNum.Value,
                 slaCabangBesar = (int)slaCabangBesarNum.Value,
-                slaCabangKecil= (int)slaCabangKecilNum.Value;
+                slaCabangKecil= (int)slaCabangKecilNum.Value,
+                slaUnprocBesar = (int)slaCabangBesarNum.Value - 1,
+                slaUnprocKecil = (int)slaCabangKecilNum.Value - 1;
+
+            if (slaUnprocBesar <= 1)
+                slaUnprocBesar = 1;
+            if (slaUnprocKecil <= 1)
+                slaUnprocKecil = 1;
             if ((unprocBesar + retailBesar + cabangBesar) == 0 && (unprocKecil + retailKecil + cabangKecil) == 0)
             {
                 return Double.NaN;
             }
             else if((unprocBesar + retailBesar + cabangBesar) == 0)
             {
-                return (Double)(unprocKecil + retailKecil + cabangKecil - unprocH1Kecil) / (unprocKecil / (slaCabangKecil - 1) + retailKecil/slaRetailKecil + cabangKecil/slaCabangKecil);
+                return (Double)(unprocKecil + retailKecil + cabangKecil - unprocH1Kecil) / (unprocKecil / (slaUnprocKecil) + retailKecil/slaRetailKecil + cabangKecil/slaCabangKecil);
             }
             else if((unprocKecil + retailKecil+cabangKecil)==0)
             {
-                return (Double)(unprocBesar + retailBesar + cabangBesar - unprocH1Besar) / (unprocBesar / (slaCabangBesar - 1) + retailBesar/slaRetailBesar + cabangBesar/slaCabangBesar);
+                return (Double)(unprocBesar + retailBesar + cabangBesar - unprocH1Besar) / (unprocBesar / (slaUnprocBesar) + retailBesar/slaRetailBesar + cabangBesar/slaCabangBesar);
             }
             else
             {
-                return (Double)((unprocBesar + retailBesar + cabangBesar - unprocH1Besar) + (unprocKecil + retailKecil + cabangKecil - unprocH1Kecil)) / ((unprocBesar / (slaCabangBesar - 1) + retailBesar/slaRetailBesar + cabangBesar/slaCabangBesar)+ (unprocKecil / (slaCabangKecil - 1) + retailKecil/slaRetailKecil + cabangKecil / slaCabangKecil));
+                return (Double)((unprocBesar + retailBesar + cabangBesar - unprocH1Besar) + (unprocKecil + retailKecil + cabangKecil - unprocH1Kecil)) / ((unprocBesar / (slaUnprocBesar) + retailBesar/slaRetailBesar + cabangBesar/slaCabangBesar)+ (unprocKecil / (slaUnprocKecil) + retailKecil/slaRetailKecil + cabangKecil / slaCabangKecil));
             }
         }
         public Int64 hitungPcs(Int64 value, String denom)
@@ -1133,6 +1207,7 @@ namespace testProjectBCA
                                   slaKecil = z.slaKecil,
                                   slaGabung = zz.slaGabung
                               }).ToList();
+
                     csv = ServiceStack.Text.CsvSerializer.SerializeToString(qt);
                 }
                 else
@@ -1154,27 +1229,62 @@ namespace testProjectBCA
                               from y in tempSlaBesar.Where(a => a.namaPkt == g.Key.namaPkt && a.tanggal == g.Key.tanggal)
                               from z in tempSlaKecil.Where(a => a.namaPkt == g.Key.namaPkt && a.tanggal == g.Key.tanggal)
                               from zz in tempSlaGabung.Where(a => a.namaPkt == g.Key.namaPkt && a.tanggal == g.Key.tanggal)
-                              select new
+                              select new Result()
                               {
                                   namaPkt = g.Key.namaPkt,
                                   tanggal = g.Key.tanggal,
                                   UnprocessedBesar = g.Average(x => x.unprocUangBesar),
                                   UnprocessedKecil = g.Average(x => x.unprocUangKecil),
-                                  InRetailBesar = g.Average(x => x.inRetailUangBesar),
-                                  InRetailKecil = g.Average(x => x.inRetailUangKecil),
                                   InCabangBesar = g.Average(x => x.inCabangUangBesar),
                                   InCabangKecil = g.Average(x => x.inCabangUangKecil),
+                                  InRetailBesar = g.Average(x => x.inRetailUangBesar),
+                                  InRetailKecil = g.Average(x => x.inRetailUangKecil),
                                   TotalProcessUangBesar = g.Average(x => x.unprocUangBesar) + g.Average(x => x.inRetailUangBesar) + g.Average(x => x.inCabangUangBesar),
                                   TotalProcessUangKecil = g.Average(x => x.unprocUangKecil) + g.Average(x => x.inRetailUangKecil) + g.Average(x => x.inCabangUangKecil),
                                   slaBesar = y.slaBesar,
                                   slaKecil = z.slaKecil,
                                   slaGabung = zz.slaGabung
                               }).ToList();
+                    int maxDayInMonth = DateTime.DaysInMonth(qt.Max(x => x.tanggal).Year, qt.Max(x => x.tanggal).Month);
+                    qt = (from x in qt
+                          select new Result()
+                          {
+
+                              namaPkt = printpkt(x.namaPkt),
+                              tanggal = printTanggal(x.tanggal),
+                              UnprocessedBesar = x.UnprocessedBesar,
+                              UnprocessedKecil = x.UnprocessedKecil,
+                              InCabangBesar = x.InCabangBesar,
+                              InCabangKecil = x.InCabangKecil,
+                              InRetailBesar = x.InRetailBesar,
+                              InRetailKecil = x.InRetailKecil,
+                              TotalProcessUangBesar = x.tanggal.Day == maxDayInMonth ? hitungTotalProsesBulanDpn(x.TotalProcessUangBesar, x.tanggal, x.namaPkt, "Besar") : x.TotalProcessUangBesar - qt.Where(y => y.tanggal == x.tanggal.AddDays(1) && y.namaPkt == x.namaPkt).Select(y => y.UnprocessedBesar).FirstOrDefault(),
+                              TotalProcessUangKecil = x.tanggal.Day == maxDayInMonth ? hitungTotalProsesBulanDpn(x.TotalProcessUangKecil, x.tanggal, x.namaPkt, "Kecil") : x.TotalProcessUangKecil - qt.Where(y => y.tanggal == x.tanggal.AddDays(1) && y.namaPkt == x.namaPkt).Select(y => y.UnprocessedKecil).FirstOrDefault(),
+                              slaBesar = x.slaBesar,
+                              slaKecil = x.slaKecil,
+                              slaGabung = x.slaGabung > 1 ? 1 : x.slaGabung < 0 ? 0 : x.slaGabung
+                          }).ToList();
                     csv = ServiceStack.Text.CsvSerializer.SerializeToString(qt);
                 }
                 File.WriteAllText(sv.FileName, csv);
             }
         }
+    }
+    public class Result
+    {
+        public String namaPkt {set;get;}
+        public DateTime tanggal {set;get;}
+        public Double UnprocessedBesar {set;get;} 
+        public Double UnprocessedKecil {set;get;} 
+        public Double InCabangBesar {set;get;} 
+        public Double InCabangKecil {set;get;} 
+        public Double InRetailBesar {set;get;} 
+        public Double InRetailKecil {set;get;} 
+        public Double TotalProcessUangBesar {set;get;} 
+        public Double TotalProcessUangKecil {set;get;} 
+        public Double slaBesar {set;get;} 
+        public Double slaKecil {set;get;} 
+        public Double slaGabung {set;get;}
     }
 }
 public static class MyStringExtensions

@@ -160,7 +160,7 @@
       <PropertyRef Name="stc_cos" />
     </Key>
     <Property Name="jenisLayanan" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="stc_cos" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="stc_cos" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="hargaRing1" Type="Int64" />
     <Property Name="hargaRing2" Type="Int64" />
     <Property Name="hargaRing3" Type="Int64" />
@@ -207,7 +207,7 @@
     </Key>
     <Property Name="kodeNasabah" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="fasilitasLayanan" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-    <Property Name="metodeLayanan" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+    <Property Name="metodeLayanan" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
     <Property Name="kodeCabang" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
     <Property Name="kodePktCabang" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="ring" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />

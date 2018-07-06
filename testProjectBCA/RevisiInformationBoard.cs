@@ -3160,6 +3160,47 @@ namespace testProjectBCA
                             saldo[j].d20 += selisih20;
                         }
                     }
+                    DetailApproval newDetailA = (from x in db.DetailApprovals.AsEnumerable()
+                                                where x.idApproval == lastApproval[lastApproval.Count - 1].idApproval
+                                                && x.tanggal == tempTanggal
+                                                select x).FirstOrDefault();
+                    if (tanggalSetorLama == tempTanggal && tanggalSetorLama.Date != tglSetor.Value.Date)
+                    {
+                        Int64 selisih100 = (Int64)newDetailA.setor100,
+                            selisih50 = (Int64)newDetailA.setor50,
+                            selisih20 = (Int64)newDetailA.setor20;
+                        newDetailA.setor100 = 0;
+                        newDetailA.setor50 = 0;
+                        newDetailA.setor20 = 0;
+
+                        for (int a = i; a < saldo.Count; a++)
+                        {
+                            saldo[a].d100 += selisih100;
+                            saldo[a].d50 += selisih50;
+                            saldo[a].d20 += selisih20;
+                        }
+                    }
+
+                    if (newDetailA.tanggal.Value.ToShortDateString() == tglSetor.Value.ToShortDateString())
+                    {
+                        newDetailA.setor100 = setor.d100;
+                        newDetailA.setor50 = setor.d50;
+                        newDetailA.setor20 = setor.d20;
+
+                        for (int a = i; a < saldo.Count; a++)
+                        {
+                            saldo[a].d100 -= setor.d100;
+                            saldo[a].d50 -= setor.d50;
+                            saldo[a].d20 -= setor.d20;
+                        }
+                    }
+                    if (i < bonYangDisetujui.Count)
+                    {
+                        //Bon
+                        newDetailA.bon100 = bonYangDisetujui[i].d100;
+                        newDetailA.bon50 = bonYangDisetujui[i].d50;
+                        newDetailA.bon20 = bonYangDisetujui[i].d20;
+                    }
                     tempTanggal = tempTanggal.AddDays(1);
                     jumlahBon++;
                     count++;
@@ -3204,12 +3245,12 @@ namespace testProjectBCA
                         }
                     }
                     
-                    if(i<bonYangDisetujui.Count)
+                    if(i + jumlahBon <bonYangDisetujui.Count)
                     {
                         //Bon
-                        newDetailA.bon100 = bonYangDisetujui[i].d100;
-                        newDetailA.bon50 = bonYangDisetujui[i].d50;
-                        newDetailA.bon20 = bonYangDisetujui[i].d20;
+                        newDetailA.bon100 = bonYangDisetujui[i + jumlahBon].d100;
+                        newDetailA.bon50 = bonYangDisetujui[i + jumlahBon].d50;
+                        newDetailA.bon20 = bonYangDisetujui[i + jumlahBon].d20;
                     }                              
                     else
                     {
