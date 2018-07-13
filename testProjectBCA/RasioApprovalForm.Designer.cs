@@ -35,6 +35,8 @@
             this.ExportButton = new System.Windows.Forms.Button();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.minTanggalPicker = new System.Windows.Forms.Label();
+            this.filterComboBox = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -85,7 +87,7 @@
             // 
             // dateTimePicker1
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(592, 6);
+            this.dateTimePicker1.Location = new System.Drawing.Point(519, 6);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
             this.dateTimePicker1.TabIndex = 5;
@@ -93,17 +95,36 @@
             // minTanggalPicker
             // 
             this.minTanggalPicker.AutoSize = true;
-            this.minTanggalPicker.Location = new System.Drawing.Point(520, 9);
+            this.minTanggalPicker.Location = new System.Drawing.Point(447, 9);
             this.minTanggalPicker.Name = "minTanggalPicker";
             this.minTanggalPicker.Size = new System.Drawing.Size(66, 13);
             this.minTanggalPicker.TabIndex = 6;
             this.minTanggalPicker.Text = "Min Tanggal";
+            // 
+            // filterComboBox
+            // 
+            this.filterComboBox.FormattingEnabled = true;
+            this.filterComboBox.Location = new System.Drawing.Point(829, 6);
+            this.filterComboBox.Name = "filterComboBox";
+            this.filterComboBox.Size = new System.Drawing.Size(121, 21);
+            this.filterComboBox.TabIndex = 7;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(794, 9);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(29, 13);
+            this.label2.TabIndex = 8;
+            this.label2.Text = "Filter";
             // 
             // RasioApprovalForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(962, 548);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.filterComboBox);
             this.Controls.Add(this.minTanggalPicker);
             this.Controls.Add(this.dateTimePicker1);
             this.Controls.Add(this.ExportButton);
@@ -128,5 +149,7 @@
         private System.Windows.Forms.Button ExportButton;
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.Label minTanggalPicker;
+        private System.Windows.Forms.ComboBox filterComboBox;
+        private System.Windows.Forms.Label label2;
     }
 }

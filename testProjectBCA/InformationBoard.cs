@@ -1676,24 +1676,34 @@ namespace testProjectBCA
         {
             bon = new List<Denom>();
             jumlahBonLaporan = 0;
-            using (SqlConnection sql = new SqlConnection(Variables.connectionString))
+            Database1Entities db = new Database1Entities();
+
+            String kodePkt = KodePkt[pktIndex];
+            var query = (from a in db.Approvals
+                         join da in db.DetailApprovals on a.idApproval equals da.idApproval
+                         where a.kodePkt == kodePkt
+                         select new { Approval = a, DetailApproval = da }).ToList();
+            int maxIdApproval = query.Max(x => x.Approval.idApproval);
+            Console.WriteLine("Max Id Approval = " + maxIdApproval);
+            query = query.Where(x => x.Approval.idApproval == maxIdApproval).ToList();
+            if (query.Any())
             {
-                SqlCommand cmd = new SqlCommand();
-                cmd.Connection = sql;
-                cmd.CommandText = "SELECT DISTINCT [tanggal], [100], [50], [20] FROM laporanBon WHERE kodePkt = '" + KodePkt[pktIndex] + "' AND tanggal BETWEEN '" + tanggalOptiMin.ToShortDateString() + "' AND '" + tanggalOptiMax.ToShortDateString() + "'";
-                sql.Open();
-                SqlDataReader reader = cmd.ExecuteReader();
-                while(reader.Read())
-                {
-                    Denom temp = new Denom();
-                    temp.tgl = (DateTime) reader[0];
-                    temp.d100 = Convert.ToInt64(reader[1]);
-                    temp.d50 = Convert.ToInt64(reader[2]);
-                    temp.d20 = Convert.ToInt64(reader[3]);
-                    bon.Add(temp);
-                    jumlahBonLaporan++;
-                }
-                sql.Close();
+                bon = (from x in query
+                       where x.DetailApproval.tanggal >= tanggalOptiMin
+                       && x.DetailApproval.bon100 != -1
+                       select new Denom()
+                       {
+                           tgl = (DateTime)x.DetailApproval.tanggal,
+                           d100 = (Int64)x.DetailApproval.bon100,
+                           d50 = (Int64)x.DetailApproval.bon50,
+                           d20 = (Int64)x.DetailApproval.bon20,
+                       }).ToList();
+                jumlahBonLaporan = bon.Count;
+            }
+            Console.WriteLine("Bon yang disetujui");
+            foreach (var temp in bon)
+            {
+                Console.WriteLine("Tgl: " + temp.tgl + " 100: " + temp.d100 + " 50: " + temp.d50 + " 20: " + temp.d20);
             }
             //Console.WriteLine("BON");
             //Console.WriteLine(bon[0].d100);
