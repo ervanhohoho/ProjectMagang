@@ -411,6 +411,9 @@ namespace testProjectBCA
 
             var listAllStokPosisiData = (from x in db.StokPosisis
                                          select x).ToList();
+            var toChange = listAllStokPosisiData.Where(x => x.namaPkt.Contains("CASH PROCESSING CENTER ALAM SUTERA")).ToList();
+            foreach (var temp in toChange)
+                temp.namaPkt = "CASH PROCESSING CENTER ALAM SUTERA";
             var listData = (from x in db.StokPosisis.AsEnumerable()
                             where ((DateTime)x.tanggal).Month >= Int32.Parse(comboBulan1.SelectedValue.ToString())
                             && ((DateTime)x.tanggal).Year >= Int32.Parse(comboTahun1.SelectedValue.ToString())
@@ -584,13 +587,15 @@ namespace testProjectBCA
             dataGridView1.Rows[dataGridView1.Rows.Count - 1].DefaultCellStyle.BackColor = Color.LightSkyBlue;
             dataGridView1.Rows[dataGridView1.Rows.Count - 2].DefaultCellStyle.BackColor = Color.LightGreen;
         }
-
         public void loadDataAllVendorDetailStokPosisi()
         {
             slapav = new List<slaProsesDisplayAllVendor>();
 
             var listAllStokPosisiData = (from x in db.StokPosisis
                                          select x).ToList();
+            var toChange = listAllStokPosisiData.Where(x => x.namaPkt.Contains("CASH PROCESSING CENTER ALAM SUTERA")).ToList();
+            foreach (var temp in toChange)
+                temp.namaPkt = "CASH PROCESSING CENTER ALAM SUTERA";
             var listData = (from x in db.StokPosisis.AsEnumerable()
                             where ((DateTime)x.tanggal).Month >= Int32.Parse(comboBulan1.SelectedValue.ToString())
                             && ((DateTime)x.tanggal).Year >= Int32.Parse(comboTahun1.SelectedValue.ToString())
@@ -1020,19 +1025,20 @@ namespace testProjectBCA
         {
             DateTime tgl = tanggal.AddDays(1);
             var query = (from x in db.StokPosisis
-                         where x.namaPkt == namapkt
-                         && x.tanggal == tgl
+                         where x.namaPkt.Contains(namapkt)
+                         && ((DateTime)x.tanggal) == tgl
                          select x
                          ).ToList();
-            if(query.Any())
+            Console.WriteLine("Bln Depan" + tgl);
+            if (query.Any())
             {
                 if(bk == "Besar")
                 {
-                    return (Double) query.Where(x => x.denom == "100000" || x.denom == "50000").Sum(x => x.unprocessed);
+                    return (Double) query.Where(x => x.denom == "100000" || x.denom == "50000").Select(x => new { unprocessesed = hitungPcs((Int64) x.unprocessed,x.denom) }).Select(x=>x.unprocessesed).FirstOrDefault();
                 }
                 else
                 {
-                    return (Double)query.Where(x => !(x.denom == "100000" || x.denom == "50000")).Sum(x => x.unprocessed);
+                    return (Double)query.Where(x => !(x.denom == "100000" || x.denom == "50000")).Select(x => new { unprocessesed = hitungPcs((Int64)x.unprocessed, x.denom) }).Select(x => x.unprocessesed).FirstOrDefault();
                 }
             }
             else

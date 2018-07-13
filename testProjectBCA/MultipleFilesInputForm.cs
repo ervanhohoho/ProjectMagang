@@ -30,7 +30,7 @@ namespace testProjectBCA
             String simpleDate = hariKemarin.ToShortDateString();
             DateTime tempTgl = Convert.ToDateTime(simpleDate);
             Console.WriteLine(tempTgl);
-            var list = (from x in db.TransaksiAtms where x.tanggal == tempTgl select x).ToList();
+            var list = (from x in db.TransaksiAtms where x.tanggal == tempTgl select x).OrderBy(x=>x.kodePkt).ToList();
             foreach(var temp in list)
             {
                 dataYangSudahAdaList.Items.Add(temp.kodePkt);
@@ -78,6 +78,7 @@ namespace testProjectBCA
             files = new List<String>();
             if(of.ShowDialog() == DialogResult.OK)
             {
+                
                 collectionTransaksiPkt = new List<List<transaksiPkt>>(); 
                 loadForm.ShowSplashScreen();
                 String [] tempFileNames = of.FileNames;
@@ -89,7 +90,8 @@ namespace testProjectBCA
                 {
                     filesList.Items.Add(temp.Substring(temp.LastIndexOf("\\")+1, temp.LastIndexOf(".xls") - temp.LastIndexOf("\\")-1));
                 }
-                Database1Entities db = new Database1Entities();
+                GC.Collect();
+                db = new Database1Entities();
                 var q = (from x in db.Pkts select x).ToList();
                 int counter = 0;
                 List<Pkt> tempP = new List<Pkt>();
@@ -406,7 +408,7 @@ namespace testProjectBCA
                     }
                     else
                     {
-                        
+                        Console.WriteLine(table.TableName + " Permintaan Bon" + tanggalE + " 100: " + d100E + " 50: " + d50E + " 20: " + d20E);
                         Int64 d100, d50, d20, buf1;
 
                         //Tanggal
@@ -493,11 +495,11 @@ namespace testProjectBCA
                         "\nHitungan 50: Rp. " + pkt.saldoAwalHitungan[1].ToString("n0") + "\nLaporan 50: Rp. " + pkt.saldoAwal[1].ToString("n0") +
                         "\nHitungan 20: Rp. " + pkt.saldoAwalHitungan[2].ToString("n0") + "\nLaporan 20: Rp." + pkt.saldoAwal[2].ToString("n0");
                     if (pkt.saldoAwalHitungan[0] != pkt.saldoAwal[0])
-                        summary += "\nSaldo Awal 100 " + (pkt.saldoAkhirHitungan[0] - pkt.saldoAwal[0]).ToString("n0");
+                        summary += "\nSaldo Awal 100 " + (pkt.saldoAwalHitungan[0] - pkt.saldoAwal[0]).ToString("n0");
                     if (pkt.saldoAwalHitungan[1] != pkt.saldoAwal[1])
-                        summary += "\nSaldo Awal 50 " + (pkt.saldoAkhirHitungan[1] - pkt.saldoAwal[1]).ToString("n0");
+                        summary += "\nSaldo Awal 50 " + (pkt.saldoAwalHitungan[1] - pkt.saldoAwal[1]).ToString("n0");
                     if (pkt.saldoAwalHitungan[2] != pkt.saldoAwal[2])
-                        summary += "\nSaldo Awal 20 " + (pkt.saldoAkhirHitungan[2] - pkt.saldoAwal[2]).ToString("n0");
+                        summary += "\nSaldo Awal 20 " + (pkt.saldoAwalHitungan[2] - pkt.saldoAwal[2]).ToString("n0");
                 }
 
                 var queryApproval = (from a in db.Approvals
@@ -538,8 +540,9 @@ namespace testProjectBCA
                         var qa = queryApproval.Where(a => a.DetailApproval.tanggal == bonygdisetujui.tgl).OrderByDescending(a => a.DetailApproval.idDetailApproval).Select(a => a.DetailApproval).FirstOrDefault();
                         if(qa!=null)
                         {
-                            if(qa.bon100 != bonygdisetujui.d100 || qa.bon50 != bonygdisetujui.d50 || qa.bon20 != bonygdisetujui.d100)
+                            if(qa.bon100 != bonygdisetujui.d100 || qa.bon50 != bonygdisetujui.d50 || qa.bon20 != bonygdisetujui.d20)
                             {
+                                isError = true;
                                 errMsg += "\nBon tanggal " + ((DateTime)qa.tanggal).ToShortDateString() + " yang disetujui beda\n=====================" +
                                     "\nApproval 100: Rp. " + ((Int64)qa.bon100).ToString("n0") + "\nLaporan 100: Rp. " + bonygdisetujui.d100.ToString("n0") +
                                     "\nApproval 50: Rp. " + ((Int64)qa.bon50).ToString("n0") + "\nLaporan 50: Rp. " + bonygdisetujui.d50.ToString("n0") +
@@ -624,11 +627,11 @@ namespace testProjectBCA
                             + "\n Approval Setor + Setor Adhoc 20: " + ((Int64)tempQueryApprovalSetorAdhoc.DetailApproval.setorAdhoc20 + setor20) + " Laporan Setor Adhoc 20: " + ((Int64)pkt.setorUang[2])
                             ;
                             if (tempQueryApprovalSetorAdhoc.DetailApproval.setor100 != pkt.setorUang[0])
-                                summary += "\nAdhoc 100 tidak sesuai";
+                                summary += "\nSetor 100 tidak sesuai";
                             if (tempQueryApprovalSetorAdhoc.DetailApproval.setor50 != pkt.setorUang[1])
-                                summary += "\nAdhoc 50 tidak sesuai";
+                                summary += "\nSetor 50 tidak sesuai";
                             if (tempQueryApprovalSetorAdhoc.DetailApproval.setor20 != pkt.setorUang[2])
-                                summary += "\nAdhoc 20 tidak sesuai";
+                                summary += "\nSetor 20 tidak sesuai";
                         }
                     }
                 }

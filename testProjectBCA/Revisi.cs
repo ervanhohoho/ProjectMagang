@@ -114,7 +114,7 @@ namespace testProjectBCA
                         foreach (var temp2 in pkt.permintaanBon)
                         {
                             var query = (from x in db.LaporanPermintaanBons.AsEnumerable()
-                                         where ((DateTime)x.tanggal).Date == temp2.tgl.Date
+                                         where ((DateTime)x.tanggal).Date == temp2.tgl
                                          && x.kodePkt == pkt.kodePkt
                                          select x).FirstOrDefault();
                             if (query != null)
@@ -136,8 +136,8 @@ namespace testProjectBCA
                             db.SaveChanges();
                         }
 
-                        var q3 = (from x in db.LaporanPermintaanAdhocs
-                                  where x.tanggal == pkt.tanggalPengajuan && x.kodePkt == pkt.kodePkt
+                        var q3 = (from x in db.LaporanPermintaanAdhocs.AsEnumerable()
+                                  where x.tanggal == pkt.tanggalPengajuan.AddDays(1) && x.kodePkt == pkt.kodePkt
                                   select x).ToList();
                         if (q3.Any())
                         {

@@ -75,7 +75,7 @@ namespace testProjectBCA
                                 }
                                 else
                                 {
-                                    if (Convert.ToDateTime(dt.Rows[i][10].ToString()).Date == dateTimePicker1.Value.Date && dt.Rows[i][13].ToString() == "CONFIRMED")
+                                    if (Convert.ToDateTime(dt.Rows[i][10].ToString()).Date == dateTimePicker1.Value.Date && dt.Rows[i][13].ToString() == "CONFIRMED" && dt.Rows[i][9].ToString() == "2")
                                     {
                                         //Console.WriteLine("cus");
                                         kodePkt = dt.Rows[i][0].ToString();
@@ -137,7 +137,7 @@ namespace testProjectBCA
                             }
                             else
                             {
-                                if (Convert.ToDateTime(dt.Rows[i][10].ToString()).Date == dateTimePicker1.Value.Date && dt.Rows[i][13].ToString() == "CONFIRMED")
+                                if (Convert.ToDateTime(dt.Rows[i][10].ToString()).Date == dateTimePicker1.Value.Date && dt.Rows[i][13].ToString() == "CONFIRMED" && dt.Rows[i][9].ToString() == "2")
                                 {
                                     Console.WriteLine("cus");
                                     kodePkt = dt.Rows[i][0].ToString();

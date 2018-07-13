@@ -146,7 +146,7 @@
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(184, 23);
             this.button7.TabIndex = 9;
-            this.button7.Text = "Show > 6";
+            this.button7.Text = "Show ASK";
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.button7_Click);
             // 

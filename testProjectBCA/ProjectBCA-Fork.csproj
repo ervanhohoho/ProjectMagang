@@ -561,6 +561,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="AkurasiPrediksiForm.resx">
       <DependentUpon>AkurasiPrediksiForm.cs</DependentUpon>
@@ -633,6 +634,11 @@
       <DependentUpon>Model1.edmx</DependentUpon>
       <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
+    <None Include="Resources\2f30014e-5d8b-483c-a29a-92d1d4c896e1.jpg" />
+    <None Include="Resources\xFD40136-cr-300x300.jpg.pagespeed.ic.ipz70q516j.jpg" />
+    <None Include="Resources\Nautical-Seas-Wallpaper-Wallums.jpg" />
+    <None Include="Resources\logobca1.png" />
+    <None Include="Resources\logobca.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -257,7 +257,7 @@ namespace testProjectBCA
             else
                 temp = (DateTime) date;
 
-            if ((temp.DayOfWeek.ToString().ToUpper() == "SUNDAY" || temp.DayOfWeek.ToString().ToUpper() == "SATURDAY") && !vendor.ToUpper().Contains("ADVANTAGE"))
+            if ((temp.DayOfWeek.ToString().ToUpper() == "SUNDAY" || temp.DayOfWeek.ToString().ToUpper() == "SATURDAY"))
                 return "Reguler - Hari Libur";
             else
             {
@@ -361,6 +361,8 @@ namespace testProjectBCA
         }
         Int64 hitungFrekuensi(Int64 amount)
         {
+            if (amount % 500000000 == 0)
+                return (amount / 500000000) - 1;
             return amount / 500000000;
         }
     }

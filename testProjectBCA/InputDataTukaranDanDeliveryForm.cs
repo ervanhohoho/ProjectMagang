@@ -62,7 +62,7 @@ namespace testProjectBCA
                         {
                             listAbacas.Add(new Abaca()
                             {
-                                CustomerCode = row[0].ToString(),
+                                CustomerCode = row[0].ToString().ToUpper(),
                                 tanggal = DateTime.Parse(row[3].ToString()),
                                 totalAmount = Int64.Parse(row[2].ToString()),
                                 CustomerName = row[1].ToString()

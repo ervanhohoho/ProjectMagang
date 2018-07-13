@@ -3039,6 +3039,9 @@ namespace testProjectBCA
                 //{
                 //    MessageBox.Show(err.ToString());
                 //}
+                loadRasio();
+                loadTableRasio();
+                loadTableSaldo();
             }
         }
         List<DetailApproval> loadDetailApproval()
@@ -3123,6 +3126,7 @@ namespace testProjectBCA
             Database1Entities db = new Database1Entities();
             if(MessageBox.Show("Approve Bon?", "Approve Bon", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
+                loadForm.ShowSplashScreen();
                 List<Denom> bonYangDisetujui = loadBonYangDisetujuiFromTable();
                 Denom bonAdhoc = loadBonAdhocFromTxt();
                 Denom setorAdhoc = loadSetorAdhocFromTxt();
@@ -3194,13 +3198,7 @@ namespace testProjectBCA
                             saldo[a].d20 -= setor.d20;
                         }
                     }
-                    if (i < bonYangDisetujui.Count)
-                    {
-                        //Bon
-                        newDetailA.bon100 = bonYangDisetujui[i].d100;
-                        newDetailA.bon50 = bonYangDisetujui[i].d50;
-                        newDetailA.bon20 = bonYangDisetujui[i].d20;
-                    }
+                  
                     tempTanggal = tempTanggal.AddDays(1);
                     jumlahBon++;
                     count++;
@@ -3245,12 +3243,12 @@ namespace testProjectBCA
                         }
                     }
                     
-                    if(i + jumlahBon <bonYangDisetujui.Count)
+                    if(i  <bonYangDisetujui.Count)
                     {
                         //Bon
-                        newDetailA.bon100 = bonYangDisetujui[i + jumlahBon].d100;
-                        newDetailA.bon50 = bonYangDisetujui[i + jumlahBon].d50;
-                        newDetailA.bon20 = bonYangDisetujui[i + jumlahBon].d20;
+                        newDetailA.bon100 = bonYangDisetujui[i].d100;
+                        newDetailA.bon50 = bonYangDisetujui[i].d50;
+                        newDetailA.bon20 = bonYangDisetujui[i].d20;
                     }                              
                     else
                     {
@@ -3304,9 +3302,10 @@ namespace testProjectBCA
 
 
                 db.SaveChanges();
-                loadForm.ShowSplashScreen();
-                loadComboBox();
+                
                 loadForm.CloseForm();
+                loadComboBox();
+                
                 MessageBox.Show("Approved!");
                 bonAdhoc100Txt.Value = 0;
                 bonAdhoc50Txt.Value = 0;
@@ -3319,7 +3318,7 @@ namespace testProjectBCA
                 setorAdhoc100Txt.Value = 0;
                 setorAdhoc50Txt.Value = 0;
                 setorAdhoc20Txt.Value = 0;
-
+              
                 cleanGridViews();
             }
             else
@@ -3410,6 +3409,7 @@ namespace testProjectBCA
         private void tglSetor_ValueChanged(object sender, EventArgs e)
         {
             Console.WriteLine(tglSetor.Value.ToShortDateString() == new DateTime(2018,3,23).ToShortDateString());
+            loadRasio();
         }
         private void bonGridView_CellEnter(object sender, DataGridViewCellEventArgs e)
         {
@@ -3581,6 +3581,7 @@ namespace testProjectBCA
         {
             int idx = KodePkt.IndexOf(pktComboBox.SelectedValue.ToString());
             pktIndex = idx;
+            loadE2E();
         }
 
        

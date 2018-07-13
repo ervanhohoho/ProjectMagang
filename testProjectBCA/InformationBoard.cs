@@ -2979,6 +2979,8 @@ namespace testProjectBCA
         }
         private void loadPrediksiBtn_Click(object sender, EventArgs e)
         {
+            PopupInformationBoard pib = new PopupInformationBoard(KodePkt[pktIndex]);
+            pib.Show();
             Double buf;
             loadPrediksiOpti();
             loadCheckedDariSkipPrediksiTreeView();
@@ -3656,6 +3658,7 @@ namespace testProjectBCA
         {
             int idx = KodePkt.IndexOf(pktComboBox.SelectedValue.ToString());
             pktIndex = idx;
+            loadE2E();
             firstRun = true;
         }
 

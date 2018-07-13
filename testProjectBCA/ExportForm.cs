@@ -152,6 +152,8 @@ namespace testProjectBCA
             DateTime startDate = startDatePicker.Value.Date, endDate = endDatePicker.Value.Date;
             String kodePkt = pktComboBox.SelectedItem.ToString();
             Console.WriteLine(kodePkt);
+            GC.Collect();
+            db = new Database1Entities();
             var list = (from x in db.TransaksiAtms.AsEnumerable()
                         where ((DateTime)x.tanggal).Date >= startDate && ((DateTime)x.tanggal).Date <= endDate
                         && x.kodePkt == kodePkt

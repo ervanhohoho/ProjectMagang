@@ -22,6 +22,8 @@ namespace testProjectBCA
             reloadBulan();
             reloadTambahan1();
             reloadTambahan2();
+            reloadTambahan3();
+            reloadTambahan4();
             comboBulan.Visible = false;
             comboTahun.Visible = false;
             comboBox1.Visible = false;
@@ -128,6 +130,61 @@ namespace testProjectBCA
             }
         }
 
+        private void reloadTambahan3()
+        {
+            List<SislokCRMAvg> sca = new List<SislokCRMAvg>();
+            using (SqlConnection sql = new SqlConnection(Variables.connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = sql;
+                    sql.Open();
+                    cmd.CommandText = "select kodepkt, avg(sislokcrm100+sislokcrm50+sislokcrm20) from transaksiatms"
+                                      + " where tanggal between '" + dateTimePicker1.Value.ToShortDateString() + "' and '" + dateTimePicker2.Value.ToShortDateString() + "'"
+                                      + " group by kodepkt";
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        sca.Add(new SislokCRMAvg
+                        {
+                            kodePkt = reader[0].ToString(),
+                            sislokCRMAvg = Int64.Parse(reader[1].ToString())
+                        });
+                    }
+                    dataGridView3.DataSource = sca;
+
+                }
+            }
+
+        }
+
+        private void reloadTambahan4()
+        {
+            List<SislokATMAvg> sta = new List<SislokATMAvg>();
+            using (SqlConnection sql = new SqlConnection(Variables.connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = sql;
+                    sql.Open();
+                    cmd.CommandText = "select kodepkt, avg(sislokatm100+sislokatm50+sislokatm20) from transaksiatms"
+                                      + " where tanggal between '" + dateTimePicker1.Value.ToShortDateString() + "' and '" + dateTimePicker2.Value.ToShortDateString() + "'"
+                                      + " group by kodepkt";
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        sta.Add(new SislokATMAvg
+                        {
+                            kodePkt = reader[0].ToString(),
+                            sislokATMAvg = Int64.Parse(reader[1].ToString())
+                        });
+                    }
+                    dataGridView4.DataSource = sta;
+
+                }
+            }
+
+        }
 
         private void reloadTambahan1()
         {
@@ -207,10 +264,25 @@ namespace testProjectBCA
             public String sislokATMPersen { set; get; }
         }
 
+        class SislokCRMAvg
+        {
+            public String kodePkt { set; get; }
+            public Int64 sislokCRMAvg { set; get; }
+        }
+        
+        class SislokATMAvg
+        {
+            public String kodePkt { set; get; }
+            public Int64 sislokATMAvg { set; get; }
+        }
+             
+
         private void comboKanwil_SelectionChangeCommitted(object sender, EventArgs e)
         {
             reloadTambahan1();
             reloadTambahan2();
+            reloadTambahan3();
+            reloadTambahan4();
         }
 
         private void comboTahun_SelectionChangeCommitted(object sender, EventArgs e)
@@ -218,24 +290,37 @@ namespace testProjectBCA
             reloadBulan();
             reloadTambahan1();
             reloadTambahan2();
+            reloadTambahan3();
+            reloadTambahan4();
         }
 
         private void comboBulan_SelectionChangeCommitted(object sender, EventArgs e)
         {
             reloadTambahan1();
             reloadTambahan2();
+            reloadTambahan3();
+            reloadTambahan4();
         }
 
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
             reloadTambahan1();
             reloadTambahan2();
+            reloadTambahan3();
+            reloadTambahan4();
         }
 
         private void dateTimePicker2_ValueChanged(object sender, EventArgs e)
         {
             reloadTambahan1();
             reloadTambahan2();
+            reloadTambahan3();
+            reloadTambahan4();
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
