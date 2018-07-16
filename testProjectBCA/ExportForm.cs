@@ -251,7 +251,7 @@ namespace testProjectBCA
                 
                 dataGridView1.Columns[a].DefaultCellStyle.Format = "N0";
             }
-
+            dataGridView1.Columns[dataGridView1.ColumnCount - 4].DefaultCellStyle.Format = "N2";
             dataGridView1.Columns[dataGridView1.ColumnCount - 3].DefaultCellStyle.Format = "N2";
             dataGridView1.Columns[dataGridView1.ColumnCount - 2].DefaultCellStyle.Format = "N2";
             dataGridView1.Columns[dataGridView1.ColumnCount - 1].DefaultCellStyle.Format = "N2";

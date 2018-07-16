@@ -7,14 +7,14 @@
     <framework targetVersion="4.5.2" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
-    <dependentAssembly dependencyType="install" codebase="testProjectBCA.exe.manifest" size="27299">
+    <dependentAssembly dependencyType="install" codebase="testProjectBCA.exe.manifest" size="27300">
       <assemblyIdentity name="testProjectBCA.exe" version="1.0.0.1" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>msIdevf0Feiu//ZNj0MLGzJx+FZpvW9TGZDQfz+rR8A=</dsig:DigestValue>
+        <dsig:DigestValue>YeUweH9ZIr6BXCVL1PSMvF6+YJnN+ucphbioi9p+QLc=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

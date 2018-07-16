@@ -634,6 +634,10 @@
       <DependentUpon>Model1.edmx</DependentUpon>
       <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
+    <None Include="Resources\background-crop-layered.png" />
+    <None Include="Resources\background-crop.png" />
+    <None Include="Resources\BACKGROUND 2.png" />
+    <None Include="Resources\background.png" />
     <None Include="Resources\2f30014e-5d8b-483c-a29a-92d1d4c896e1.jpg" />
     <None Include="Resources\xFD40136-cr-300x300.jpg.pagespeed.ic.ipz70q516j.jpg" />
     <None Include="Resources\Nautical-Seas-Wallpaper-Wallums.jpg" />
