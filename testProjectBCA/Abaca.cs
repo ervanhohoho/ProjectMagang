@@ -22,5 +22,6 @@ namespace testProjectBCA
         public Nullable<long> totalAmount { get; set; }
         public string CustomerCode { get; set; }
         public string CustomerName { get; set; }
+        public Nullable<long> TotalUangBesar { get; set; }
     }
 }

@@ -32,12 +32,12 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pktComboBox = new System.Windows.Forms.ComboBox();
             this.rasio100Txt = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -102,7 +102,12 @@
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.label22 = new System.Windows.Forms.Label();
             this.bonYangSudahDisetujuiGridView = new System.Windows.Forms.DataGridView();
+            this.label33 = new System.Windows.Forms.Label();
+            this.label32 = new System.Windows.Forms.Label();
+            this.sislokCrmGridView = new System.Windows.Forms.DataGridView();
             this.sislokAtmGridView = new System.Windows.Forms.DataGridView();
+            this.isiAtmGridView = new System.Windows.Forms.DataGridView();
+            this.label3 = new System.Windows.Forms.Label();
             this.isiCrmGridView = new System.Windows.Forms.DataGridView();
             this.label21 = new System.Windows.Forms.Label();
             this.e2eComboBox = new System.Windows.Forms.ComboBox();
@@ -114,11 +119,6 @@
             this.label25 = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
             this.tanggalPrediksiMaxPicker = new System.Windows.Forms.DateTimePicker();
-            this.label32 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.isiAtmGridView = new System.Windows.Forms.DataGridView();
-            this.sislokCrmGridView = new System.Windows.Forms.DataGridView();
-            this.label33 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.rekomendasiBonGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bonGridView)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -141,10 +141,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.setorAdhoc100Txt)).BeginInit();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bonYangSudahDisetujuiGridView)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sislokAtmGridView)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.isiCrmGridView)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.isiAtmGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.sislokCrmGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sislokAtmGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.isiAtmGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.isiCrmGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // pktComboBox
@@ -403,6 +403,7 @@
             this.bufferIsiAtm100Num.Name = "bufferIsiAtm100Num";
             this.bufferIsiAtm100Num.Size = new System.Drawing.Size(114, 20);
             this.bufferIsiAtm100Num.TabIndex = 108;
+            this.bufferIsiAtm100Num.ValueChanged += new System.EventHandler(this.bufferIsiAtm100Num_ValueChanged);
             // 
             // label31
             // 
@@ -986,6 +987,64 @@
             this.bonYangSudahDisetujuiGridView.Size = new System.Drawing.Size(603, 215);
             this.bonYangSudahDisetujuiGridView.TabIndex = 26;
             // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label33.Location = new System.Drawing.Point(703, 511);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(63, 13);
+            this.label33.TabIndex = 25;
+            this.label33.Text = "SIslok CRM";
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label32.Location = new System.Drawing.Point(6, 511);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(61, 13);
+            this.label32.TabIndex = 25;
+            this.label32.Text = "Sislok ATM";
+            // 
+            // sislokCrmGridView
+            // 
+            this.sislokCrmGridView.AllowUserToAddRows = false;
+            this.sislokCrmGridView.AllowUserToDeleteRows = false;
+            this.sislokCrmGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.sislokCrmGridView.BackgroundColor = System.Drawing.SystemColors.Info;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.sislokCrmGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            this.sislokCrmGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.sislokCrmGridView.DefaultCellStyle = dataGridViewCellStyle6;
+            this.sislokCrmGridView.Location = new System.Drawing.Point(706, 527);
+            this.sislokCrmGridView.Name = "sislokCrmGridView";
+            this.sislokCrmGridView.ReadOnly = true;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.sislokCrmGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            this.sislokCrmGridView.RowHeadersVisible = false;
+            this.sislokCrmGridView.Size = new System.Drawing.Size(603, 215);
+            this.sislokCrmGridView.TabIndex = 24;
+            // 
             // sislokAtmGridView
             // 
             this.sislokAtmGridView.AllowUserToAddRows = false;
@@ -999,6 +1058,55 @@
             this.sislokAtmGridView.RowHeadersVisible = false;
             this.sislokAtmGridView.Size = new System.Drawing.Size(603, 215);
             this.sislokAtmGridView.TabIndex = 24;
+            // 
+            // isiAtmGridView
+            // 
+            this.isiAtmGridView.AllowUserToAddRows = false;
+            this.isiAtmGridView.AllowUserToDeleteRows = false;
+            this.isiAtmGridView.AllowUserToResizeRows = false;
+            this.isiAtmGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.isiAtmGridView.BackgroundColor = System.Drawing.SystemColors.Info;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.isiAtmGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle8;
+            this.isiAtmGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.isiAtmGridView.DefaultCellStyle = dataGridViewCellStyle9;
+            this.isiAtmGridView.Location = new System.Drawing.Point(9, 282);
+            this.isiAtmGridView.Name = "isiAtmGridView";
+            this.isiAtmGridView.ReadOnly = true;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.isiAtmGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle10;
+            this.isiAtmGridView.RowHeadersVisible = false;
+            this.isiAtmGridView.Size = new System.Drawing.Size(603, 215);
+            this.isiAtmGridView.TabIndex = 17;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(6, 265);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(43, 13);
+            this.label3.TabIndex = 18;
+            this.label3.Text = "Isi ATM";
             // 
             // isiCrmGridView
             // 
@@ -1116,113 +1224,6 @@
             this.tanggalPrediksiMaxPicker.TabIndex = 110;
             this.tanggalPrediksiMaxPicker.ValueChanged += new System.EventHandler(this.tanggalPrediksiMaxPicker_ValueChanged);
             // 
-            // label32
-            // 
-            this.label32.AutoSize = true;
-            this.label32.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label32.Location = new System.Drawing.Point(6, 511);
-            this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(61, 13);
-            this.label32.TabIndex = 25;
-            this.label32.Text = "Sislok ATM";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(6, 265);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(43, 13);
-            this.label3.TabIndex = 18;
-            this.label3.Text = "Isi ATM";
-            // 
-            // isiAtmGridView
-            // 
-            this.isiAtmGridView.AllowUserToAddRows = false;
-            this.isiAtmGridView.AllowUserToDeleteRows = false;
-            this.isiAtmGridView.AllowUserToResizeRows = false;
-            this.isiAtmGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.isiAtmGridView.BackgroundColor = System.Drawing.SystemColors.Info;
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.isiAtmGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle8;
-            this.isiAtmGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.isiAtmGridView.DefaultCellStyle = dataGridViewCellStyle9;
-            this.isiAtmGridView.Location = new System.Drawing.Point(9, 282);
-            this.isiAtmGridView.Name = "isiAtmGridView";
-            this.isiAtmGridView.ReadOnly = true;
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.isiAtmGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle10;
-            this.isiAtmGridView.RowHeadersVisible = false;
-            this.isiAtmGridView.Size = new System.Drawing.Size(603, 215);
-            this.isiAtmGridView.TabIndex = 17;
-            // 
-            // sislokCrmGridView
-            // 
-            this.sislokCrmGridView.AllowUserToAddRows = false;
-            this.sislokCrmGridView.AllowUserToDeleteRows = false;
-            this.sislokCrmGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.sislokCrmGridView.BackgroundColor = System.Drawing.SystemColors.Info;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.sislokCrmGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
-            this.sislokCrmGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.sislokCrmGridView.DefaultCellStyle = dataGridViewCellStyle6;
-            this.sislokCrmGridView.Location = new System.Drawing.Point(706, 527);
-            this.sislokCrmGridView.Name = "sislokCrmGridView";
-            this.sislokCrmGridView.ReadOnly = true;
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.sislokCrmGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle7;
-            this.sislokCrmGridView.RowHeadersVisible = false;
-            this.sislokCrmGridView.Size = new System.Drawing.Size(603, 215);
-            this.sislokCrmGridView.TabIndex = 24;
-            // 
-            // label33
-            // 
-            this.label33.AutoSize = true;
-            this.label33.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label33.Location = new System.Drawing.Point(703, 511);
-            this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(63, 13);
-            this.label33.TabIndex = 25;
-            this.label33.Text = "SIslok CRM";
-            // 
             // InformationBoard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1271,10 +1272,10 @@
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bonYangSudahDisetujuiGridView)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sislokAtmGridView)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.isiCrmGridView)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.isiAtmGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.sislokCrmGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sislokAtmGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.isiAtmGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.isiCrmGridView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

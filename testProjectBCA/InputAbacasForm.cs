@@ -84,7 +84,8 @@ namespace testProjectBCA
                                 vendorName = vendorName,
                                 totalAmount = totalAmount,
                                 CustomerCode = kodeNasabah.TrimStart(':').TrimStart(' ').ToUpper(),
-                                CustomerName = namaNasabah.TrimStart(':').TrimStart(' ')
+                                CustomerName = namaNasabah.TrimStart(':').TrimStart(' '),
+                                TotalUangBesar = 0
                             };
                             toInput.Add(newItem);
                             counter++;

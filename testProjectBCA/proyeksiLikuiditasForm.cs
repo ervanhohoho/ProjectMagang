@@ -44,16 +44,20 @@ namespace testProjectBCA
             minTanggal = q.Min(x => x);
             maxTanggal = q.Max(x => x);
             DateTime tempTanggal = new DateTime(minTanggal.Year, minTanggal.Month, 1);
+            
             int counter = 0;
             while (tempTanggal <= maxTanggal)
             {
+                Console.WriteLine(tempTanggal);
                 bulanPrediksiTreeView.Nodes.Add(tempTanggal.Year.ToString());
                 int monthCounter = tempTanggal.Month;
                 while (tempTanggal < maxTanggal && monthCounter <= 12)
                 {
+                    Console.WriteLine(tempTanggal);
                     bulanPrediksiTreeView.Nodes[counter].Nodes.Add((monthCounter++).ToString());
                     tempTanggal = tempTanggal.AddMonths(1);
                 }
+                tempTanggal = tempTanggal.AddMonths(1);
                 counter++;
             }
             bulanPrediksiTreeView.CheckBoxes = true;

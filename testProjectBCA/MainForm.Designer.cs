@@ -72,6 +72,7 @@
             this.loadMasterPKTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.orderTrackingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rekonSaldoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.inputStokPosisiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -251,6 +252,7 @@
             // 
             this.inputDataToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.inputTransaksiCabangToolStripMenuItem1,
+            this.inputStokPosisiToolStripMenuItem,
             this.stokPosisiToolStripMenuItem});
             this.inputDataToolStripMenuItem1.Name = "inputDataToolStripMenuItem1";
             this.inputDataToolStripMenuItem1.Size = new System.Drawing.Size(171, 22);
@@ -266,8 +268,8 @@
             // stokPosisiToolStripMenuItem
             // 
             this.stokPosisiToolStripMenuItem.Name = "stokPosisiToolStripMenuItem";
-            this.stokPosisiToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
-            this.stokPosisiToolStripMenuItem.Text = "Stok Posisi";
+            this.stokPosisiToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.stokPosisiToolStripMenuItem.Text = "Input/Update Stok Posisi";
             this.stokPosisiToolStripMenuItem.Click += new System.EventHandler(this.stokPosisiToolStripMenuItem1_Click);
             // 
             // masterDataToolStripMenuItem
@@ -333,7 +335,7 @@
             this.masterNasabahToolStripMenuItem,
             this.inputDataSubsidiToolStripMenuItem});
             this.inputDataToolStripMenuItem.Name = "inputDataToolStripMenuItem";
-            this.inputDataToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.inputDataToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.inputDataToolStripMenuItem.Text = "Input Data";
             // 
             // abacasToolStripMenuItem1
@@ -374,7 +376,7 @@
             // invoiceToolStripMenuItem
             // 
             this.invoiceToolStripMenuItem.Name = "invoiceToolStripMenuItem";
-            this.invoiceToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.invoiceToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.invoiceToolStripMenuItem.Text = "Invoice";
             this.invoiceToolStripMenuItem.Click += new System.EventHandler(this.invoiceToolStripMenuItem_Click);
             // 
@@ -429,6 +431,13 @@
             this.rekonSaldoToolStripMenuItem.Size = new System.Drawing.Size(84, 20);
             this.rekonSaldoToolStripMenuItem.Text = "Rekon Saldo";
             this.rekonSaldoToolStripMenuItem.Click += new System.EventHandler(this.rekonSaldoToolStripMenuItem_Click);
+            // 
+            // inputStokPosisiToolStripMenuItem
+            // 
+            this.inputStokPosisiToolStripMenuItem.Name = "inputStokPosisiToolStripMenuItem";
+            this.inputStokPosisiToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.inputStokPosisiToolStripMenuItem.Text = "Input Stok Posisi";
+            this.inputStokPosisiToolStripMenuItem.Click += new System.EventHandler(this.inputStokPosisiToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -498,5 +507,6 @@
         private System.Windows.Forms.ToolStripMenuItem inputBonYangDisetujuiToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem rasioApprovalToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem rekonSaldoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem inputStokPosisiToolStripMenuItem;
     }
 }

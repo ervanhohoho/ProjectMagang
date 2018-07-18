@@ -12,6 +12,7 @@
     <Property Name="totalAmount" Type="Int64" />
     <Property Name="CustomerCode" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
     <Property Name="CustomerName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="TotalUangBesar" Type="Int64" />
   </EntityType>
   <EntityType Name="Approval">
     <Key>
@@ -410,6 +411,8 @@
       <Parameter Name="startDate" Mode="In" Type="DateTime" />
       <Parameter Name="endDate" Mode="In" Type="DateTime" />
     </FunctionImport>
+    <EntitySet Name="RekonSaldoPerVendors" EntityType="CACModel.RekonSaldoPerVendor" />
+    <EntitySet Name="RekonSaldoVaults" EntityType="CACModel.RekonSaldoVault" />
   </EntityContainer>
   <EntityType Name="SaveRekap">
     <Key>
@@ -452,5 +455,39 @@
     <Property Name="blogMessage" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
     <Property Name="userName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="currencyAmmount" Type="Int64" />
+  </EntityType>
+  <EntityType Name="RekonSaldoPerVendor">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="cashPointtId" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="confId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="orderDate" Type="DateTime" Precision="0" />
+    <Property Name="vendor" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="actionRekon" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="statusRekon" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="dueDate" Type="DateTime" Precision="0" />
+    <Property Name="blogTime" Type="DateTime" Precision="3" />
+    <Property Name="currencyAmmount" Type="Int64" />
+    <Property Name="realDate" Type="DateTime" Precision="0" />
+    <Property Name="validation" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="RekonSaldoVault">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="vaultId" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="confId" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="fundingSoure" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="actionRekon" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="statusRekon" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="orderDate" Type="DateTime" Precision="0" />
+    <Property Name="dueDate" Type="DateTime" Precision="0" />
+    <Property Name="timeStampRekon" Type="DateTime" Precision="3" />
+    <Property Name="currencyAmmount" Type="Int64" />
+    <Property Name="realDate" Type="DateTime" Precision="0" />
+    <Property Name="valdiation" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
   </EntityType>
 </Schema>

@@ -1710,9 +1710,12 @@ namespace testProjectBCA
             Denom temp = new Denom();
             var q2 = (from x in db.Approvals
                       join y in db.DetailApprovals on x.idApproval equals y.idApproval
-                      where x.kodePkt == kodepkt && (y.tanggal >= tanggalOptiMin)
-                      && x.tanggal < today
+                      where x.kodePkt == kodepkt && (y.tanggal >= tanggalOptiMin) && ((DateTime)x.tanggal) < today
                       select new { Approval = x, DetailApproval = y }).ToList();
+            int maxIdApproval = q2.Max(x => x.Approval.idApproval);
+            q2 = (from x in q2
+                  where x.Approval.idApproval == maxIdApproval
+                  select x).ToList();
             foreach (var s in q2)
             {
                 temp = new Denom();
@@ -3349,7 +3352,7 @@ namespace testProjectBCA
         {
             Denom setorBaru = new Denom();
             //Setor
-            setorBaru.tgl = tglSetor.Value;
+            setorBaru.tgl = tglSetor.Value.Date;
             setorBaru.d100 = (Int64)setor100Txt.Value;
             setorBaru.d50 = (Int64)setor50Txt.Value;
             setorBaru.d20 = (Int64)setor20Txt.Value;

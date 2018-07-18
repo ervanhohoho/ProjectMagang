@@ -17,6 +17,7 @@
           <Property Name="totalAmount" Type="bigint" />
           <Property Name="CustomerCode" Type="varchar" MaxLength="15" />
           <Property Name="CustomerName" Type="varchar" MaxLength="255" />
+          <Property Name="TotalUangBesar" Type="bigint" />
         </EntityType>
         <EntityType Name="Approvals">
           <Key>
@@ -276,6 +277,40 @@
           <Property Name="noBA" Type="varchar" MaxLength="50" />
           <Property Name="keterangan" Type="varchar" MaxLength="200" />
         </EntityType>
+        <EntityType Name="RekonSaldoPerVendor">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="cashPointtId" Type="varchar" MaxLength="20" />
+          <Property Name="confId" Type="varchar" MaxLength="50" />
+          <Property Name="orderDate" Type="date" />
+          <Property Name="vendor" Type="varchar" MaxLength="20" />
+          <Property Name="actionRekon" Type="varchar" MaxLength="255" />
+          <Property Name="statusRekon" Type="varchar" MaxLength="255" />
+          <Property Name="dueDate" Type="date" />
+          <Property Name="blogTime" Type="datetime" />
+          <Property Name="currencyAmmount" Type="bigint" />
+          <Property Name="realDate" Type="date" />
+          <Property Name="validation" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="RekonSaldoVault">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="vaultId" Type="varchar" MaxLength="255" />
+          <Property Name="confId" Type="varchar" MaxLength="255" />
+          <Property Name="fundingSoure" Type="varchar" MaxLength="255" />
+          <Property Name="actionRekon" Type="varchar" MaxLength="255" />
+          <Property Name="statusRekon" Type="varchar" MaxLength="255" />
+          <Property Name="orderDate" Type="date" />
+          <Property Name="dueDate" Type="date" />
+          <Property Name="timeStampRekon" Type="datetime" />
+          <Property Name="currencyAmmount" Type="bigint" />
+          <Property Name="realDate" Type="date" />
+          <Property Name="valdiation" Type="varchar" MaxLength="255" />
+        </EntityType>
         <EntityType Name="SaveAsk">
           <Key>
             <PropertyRef Name="id" />
@@ -440,6 +475,8 @@
           <EntitySet Name="OrderTracking" EntityType="Self.OrderTracking" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pkt" EntityType="Self.Pkt" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RekapSelisihAmbilSetor" EntityType="Self.RekapSelisihAmbilSetor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RekonSaldoPerVendor" EntityType="Self.RekonSaldoPerVendor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RekonSaldoVault" EntityType="Self.RekonSaldoVault" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SaveAsk" EntityType="Self.SaveAsk" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SaveRekap" EntityType="Self.SaveRekap" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StokPosisi" EntityType="Self.StokPosisi" Schema="dbo" store:Type="Tables" />
@@ -470,6 +507,7 @@
           <Property Name="totalAmount" Type="Int64" />
           <Property Name="CustomerCode" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="CustomerName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="TotalUangBesar" Type="Int64" />
         </EntityType>
         <EntityType Name="Approval">
           <Key>
@@ -868,6 +906,8 @@
             <Parameter Name="startDate" Mode="In" Type="DateTime" />
             <Parameter Name="endDate" Mode="In" Type="DateTime" />
           </FunctionImport>
+          <EntitySet Name="RekonSaldoPerVendors" EntityType="CACModel.RekonSaldoPerVendor" />
+          <EntitySet Name="RekonSaldoVaults" EntityType="CACModel.RekonSaldoVault" />
         </EntityContainer>
         <EntityType Name="SaveRekap">
           <Key>
@@ -911,6 +951,40 @@
           <Property Name="userName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="currencyAmmount" Type="Int64" />
         </EntityType>
+        <EntityType Name="RekonSaldoPerVendor">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="cashPointtId" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="confId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="orderDate" Type="DateTime" Precision="0" />
+          <Property Name="vendor" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="actionRekon" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="statusRekon" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="dueDate" Type="DateTime" Precision="0" />
+          <Property Name="blogTime" Type="DateTime" Precision="3" />
+          <Property Name="currencyAmmount" Type="Int64" />
+          <Property Name="realDate" Type="DateTime" Precision="0" />
+          <Property Name="validation" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="RekonSaldoVault">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="vaultId" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="confId" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="fundingSoure" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="actionRekon" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="statusRekon" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="orderDate" Type="DateTime" Precision="0" />
+          <Property Name="dueDate" Type="DateTime" Precision="0" />
+          <Property Name="timeStampRekon" Type="DateTime" Precision="3" />
+          <Property Name="currencyAmmount" Type="Int64" />
+          <Property Name="realDate" Type="DateTime" Precision="0" />
+          <Property Name="valdiation" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -920,6 +994,7 @@
           <EntitySetMapping Name="Abacas">
             <EntityTypeMapping TypeName="CACModel.Abaca">
               <MappingFragment StoreEntitySet="Abacas">
+                <ScalarProperty Name="TotalUangBesar" ColumnName="TotalUangBesar" />
                 <ScalarProperty Name="idTransaksi" ColumnName="idTransaksi" />
                 <ScalarProperty Name="tanggal" ColumnName="tanggal" />
                 <ScalarProperty Name="vendorCardNo" ColumnName="vendorCardNo" />
@@ -1320,6 +1395,42 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="prediksiStdDev" FunctionName="CACModel.Store.prediksiStdDev" />
+          <EntitySetMapping Name="RekonSaldoPerVendors">
+            <EntityTypeMapping TypeName="CACModel.RekonSaldoPerVendor">
+              <MappingFragment StoreEntitySet="RekonSaldoPerVendor">
+                <ScalarProperty Name="validation" ColumnName="validation" />
+                <ScalarProperty Name="realDate" ColumnName="realDate" />
+                <ScalarProperty Name="currencyAmmount" ColumnName="currencyAmmount" />
+                <ScalarProperty Name="blogTime" ColumnName="blogTime" />
+                <ScalarProperty Name="dueDate" ColumnName="dueDate" />
+                <ScalarProperty Name="statusRekon" ColumnName="statusRekon" />
+                <ScalarProperty Name="actionRekon" ColumnName="actionRekon" />
+                <ScalarProperty Name="vendor" ColumnName="vendor" />
+                <ScalarProperty Name="orderDate" ColumnName="orderDate" />
+                <ScalarProperty Name="confId" ColumnName="confId" />
+                <ScalarProperty Name="cashPointtId" ColumnName="cashPointtId" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RekonSaldoVaults">
+            <EntityTypeMapping TypeName="CACModel.RekonSaldoVault">
+              <MappingFragment StoreEntitySet="RekonSaldoVault">
+                <ScalarProperty Name="valdiation" ColumnName="valdiation" />
+                <ScalarProperty Name="realDate" ColumnName="realDate" />
+                <ScalarProperty Name="currencyAmmount" ColumnName="currencyAmmount" />
+                <ScalarProperty Name="timeStampRekon" ColumnName="timeStampRekon" />
+                <ScalarProperty Name="dueDate" ColumnName="dueDate" />
+                <ScalarProperty Name="orderDate" ColumnName="orderDate" />
+                <ScalarProperty Name="statusRekon" ColumnName="statusRekon" />
+                <ScalarProperty Name="actionRekon" ColumnName="actionRekon" />
+                <ScalarProperty Name="fundingSoure" ColumnName="fundingSoure" />
+                <ScalarProperty Name="confId" ColumnName="confId" />
+                <ScalarProperty Name="vaultId" ColumnName="vaultId" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -254,6 +254,12 @@
     <Compile Include="InputOrderTrackingForm.designer.cs">
       <DependentUpon>InputOrderTrackingForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="InsertStokPosisiForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InsertStokPosisiForm.Designer.cs">
+      <DependentUpon>InsertStokPosisiForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="laporanBon.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -322,6 +328,12 @@
     </Compile>
     <Compile Include="RekonSaldoForm.designer.cs">
       <DependentUpon>RekonSaldoForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RekonSaldoPerVendor.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RekonSaldoVault.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="RevisiInformationBoard.cs">
       <SubType>Form</SubType>
@@ -464,6 +476,12 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="transaksiPkt.cs" />
+    <Compile Include="UpdateStokPosisiForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UpdateStokPosisiForm.Designer.cs">
+      <DependentUpon>UpdateStokPosisiForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Util.cs" />
     <Compile Include="Variables.cs" />
     <Compile Include="VaultOrderBlogHistory.cs">
@@ -495,6 +513,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="InputOrderTrackingForm.resx">
       <DependentUpon>InputOrderTrackingForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InsertStokPosisiForm.resx">
+      <DependentUpon>InsertStokPosisiForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MultipleFilesInputUpdateForm.resx">
       <DependentUpon>MultipleFilesInputUpdateForm.cs</DependentUpon>
@@ -583,6 +604,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="TestForm.resx">
       <DependentUpon>TestForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UpdateStokPosisiForm.resx">
+      <DependentUpon>UpdateStokPosisiForm.cs</DependentUpon>
     </EmbeddedResource>
     <EntityDeploy Include="Model1.edmx">
       <Generator>EntityModelCodeGenerator</Generator>

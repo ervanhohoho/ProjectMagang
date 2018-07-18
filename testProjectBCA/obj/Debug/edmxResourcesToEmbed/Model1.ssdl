@@ -12,6 +12,7 @@
     <Property Name="totalAmount" Type="bigint" />
     <Property Name="CustomerCode" Type="varchar" MaxLength="15" />
     <Property Name="CustomerName" Type="varchar" MaxLength="255" />
+    <Property Name="TotalUangBesar" Type="bigint" />
   </EntityType>
   <EntityType Name="Approvals">
     <Key>
@@ -271,6 +272,40 @@
     <Property Name="noBA" Type="varchar" MaxLength="50" />
     <Property Name="keterangan" Type="varchar" MaxLength="200" />
   </EntityType>
+  <EntityType Name="RekonSaldoPerVendor">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="cashPointtId" Type="varchar" MaxLength="20" />
+    <Property Name="confId" Type="varchar" MaxLength="50" />
+    <Property Name="orderDate" Type="date" />
+    <Property Name="vendor" Type="varchar" MaxLength="20" />
+    <Property Name="actionRekon" Type="varchar" MaxLength="255" />
+    <Property Name="statusRekon" Type="varchar" MaxLength="255" />
+    <Property Name="dueDate" Type="date" />
+    <Property Name="blogTime" Type="datetime" />
+    <Property Name="currencyAmmount" Type="bigint" />
+    <Property Name="realDate" Type="date" />
+    <Property Name="validation" Type="varchar" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="RekonSaldoVault">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="vaultId" Type="varchar" MaxLength="255" />
+    <Property Name="confId" Type="varchar" MaxLength="255" />
+    <Property Name="fundingSoure" Type="varchar" MaxLength="255" />
+    <Property Name="actionRekon" Type="varchar" MaxLength="255" />
+    <Property Name="statusRekon" Type="varchar" MaxLength="255" />
+    <Property Name="orderDate" Type="date" />
+    <Property Name="dueDate" Type="date" />
+    <Property Name="timeStampRekon" Type="datetime" />
+    <Property Name="currencyAmmount" Type="bigint" />
+    <Property Name="realDate" Type="date" />
+    <Property Name="valdiation" Type="varchar" MaxLength="255" />
+  </EntityType>
   <EntityType Name="SaveAsk">
     <Key>
       <PropertyRef Name="id" />
@@ -435,6 +470,8 @@
     <EntitySet Name="OrderTracking" EntityType="Self.OrderTracking" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Pkt" EntityType="Self.Pkt" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RekapSelisihAmbilSetor" EntityType="Self.RekapSelisihAmbilSetor" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RekonSaldoPerVendor" EntityType="Self.RekonSaldoPerVendor" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RekonSaldoVault" EntityType="Self.RekonSaldoVault" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SaveAsk" EntityType="Self.SaveAsk" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SaveRekap" EntityType="Self.SaveRekap" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="StokPosisi" EntityType="Self.StokPosisi" Schema="dbo" store:Type="Tables" />

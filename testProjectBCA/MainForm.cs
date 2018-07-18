@@ -809,6 +809,13 @@ namespace testProjectBCA
             rsf.MdiParent = this;
             rsf.Show();
         }
+
+        private void inputStokPosisiToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            InsertStokPosisiForm ispf = new InsertStokPosisiForm();
+            ispf.MdiParent = this;
+            ispf.Show();
+        }
     }
 }
 public static class SqlBulkCopyExtensions

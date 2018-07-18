@@ -92,12 +92,21 @@ namespace testProjectBCA
                 ChartValues<Double> values = new ChartValues<Double>();
                 foreach (var temp in q)
                     values.Add(Math.Round((Double)temp.Rasio));
+                List<String> listTgl = new List<String>();
+                for(int a= 1; a<= values.Count; a++)
+                {
+                    listTgl.Add(a.ToString());
+                }
+                if(rasioChart.AxisX.Count == 0)
+                {
+                    rasioChart.AxisX.Add(new Axis() { Labels = listTgl});
+                }
                 rasioChart.Series.Add(
                     new LineSeries()
                     {
                         Values = values,
                         Title = "Rasio " + month + " - " + year,
-                        DataLabels = false
+                        DataLabels = false,
                     });
             }
             rasioChart.LegendLocation = LegendLocation.Right;

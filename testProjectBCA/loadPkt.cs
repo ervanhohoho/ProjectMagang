@@ -53,8 +53,10 @@ namespace testProjectBCA
                 //Console.WriteLine(newpkt.kodePkt + " " + newpkt.namaPkt);
                 //db.Pkts.Add(newpkt);
                 //db.SaveChanges();
+
                 foreach (DataRow row in ds.Tables[0].Rows)
                 {
+                    Console.WriteLine(counter);
                     if (counter == 0)
                     {
                         counter++; continue; //Skip Header

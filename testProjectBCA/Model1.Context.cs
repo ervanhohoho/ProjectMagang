@@ -51,6 +51,8 @@ namespace testProjectBCA
         public virtual DbSet<SaveRekap> SaveRekaps { get; set; }
         public virtual DbSet<SaveAsk> SaveAsks { get; set; }
         public virtual DbSet<VaultOrderBlogHistory> VaultOrderBlogHistories { get; set; }
+        public virtual DbSet<RekonSaldoPerVendor> RekonSaldoPerVendors { get; set; }
+        public virtual DbSet<RekonSaldoVault> RekonSaldoVaults { get; set; }
     
         public virtual int prediksiEvent2(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate)
         {

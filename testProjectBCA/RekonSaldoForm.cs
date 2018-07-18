@@ -19,7 +19,7 @@ namespace testProjectBCA
             buttonProcessVault.Visible = false;
             buttonProcessSetoranCpc.Visible = false;
             buttonProsesOrderBlogHistory.Visible = false;
-            dataGridView1.Visible = false;
+            //dataGridView1.Visible = false;
             //buttonGeneratePivot.Enabled = false;
             //buttonGeneratePivotPerVendor.Enabled = false;
 
@@ -251,11 +251,11 @@ namespace testProjectBCA
 
         private void buttonGeneratePivotPerVendor_Click(object sender, EventArgs e)
         {
-            ProsesOrderBlogHistory();
+            //ProsesOrderBlogHistory();
 
             //preparing data for pivot pervendor bon
-            var query = (from x in obhp
-                         where x.action.Contains("Delivery")
+            var query = (from x in en.RekonSaldoPerVendors
+                         where x.actionRekon.Contains("Delivery") && ((DateTime)x.dueDate) >= dateTimePicker1.Value.Date && ((DateTime)x.dueDate) <= dateTimePicker2.Value.Date
                          select x).ToList();
             
             //generating pivotbon
@@ -282,20 +282,20 @@ namespace testProjectBCA
             {
                 ppvb.Add(new PivotPerVendor_bon
                 {
-                    dueDate = item.dueDate,
+                    dueDate = ((DateTime)item.dueDate).Date,
                     vendor = item.vendor,
-                    belumValidasi = item.belumValidasi,
-                    sudahValidasi = item.sudahValidasi,
-                    grandTotal = item.grandTotal
+                    belumValidasi = (Int64)item.belumValidasi,
+                    sudahValidasi = (Int64)item.sudahValidasi,
+                    grandTotal = (Int64)item.grandTotal
                 });
             }
 
             dataGridView6.DataSource = ppvb;
 
             //preparing data for pivot pervendor setoran
-            var querysetoran = (from x in obhp
-                         where x.action.Contains("Return")
-                         select x).ToList();
+            var querysetoran = (from x in en.RekonSaldoPerVendors
+                         where x.actionRekon.Contains("Return") && ((DateTime)x.dueDate) >= dateTimePicker1.Value.Date && ((DateTime)x.dueDate) <= dateTimePicker2.Value.Date
+                                select x).ToList();
 
             //generating pivot
             ppvs = new List<PivotPerVendor_setoran>();
@@ -315,11 +315,11 @@ namespace testProjectBCA
             {
                 ppvs.Add(new PivotPerVendor_setoran
                 {
-                    dueDate = item.dueDate,
+                    dueDate = ((DateTime)item.dueDate).Date,
                     vendor = item.vendor,
-                    belumValidasi = item.belumValidasi,
-                    sudahValidasi = item.sudahValidasi,
-                    grandTotal = item.grandTotal
+                    belumValidasi = (Int64)item.belumValidasi,
+                    sudahValidasi = (Int64)item.sudahValidasi,
+                    grandTotal = (Int64)item.grandTotal
                 });
             }
 
@@ -329,11 +329,11 @@ namespace testProjectBCA
 
         private void buttonGeneratePivot_Click(object sender, EventArgs e)
         {
-            ProsesVault();
-            ProsesSetoranCPC();
+            //ProsesVault();
+            //ProsesSetoranCPC();
             //preparing data for pivotCPC - BI dan BankLain Return
-            var query = (from x in sc
-                         where x.fundingSource == "BI" || x.fundingSource.Contains("OB")
+            var query = (from x in en.RekonSaldoVaults
+                         where (x.fundingSoure == "BI" || x.fundingSoure.Contains("OB")) && ((DateTime)x.dueDate) >= dateTimePicker1.Value.Date && ((DateTime)x.dueDate) <= dateTimePicker2.Value.Date
                          select x).ToList();
 
             pc = new List<PivotCPC>();
@@ -346,15 +346,15 @@ namespace testProjectBCA
                 {
                     vaultId = item.vaultId,
                     confId = item.confId,
-                    action = item.action,
-                    status = item.status,
-                    orderDate = item.orderDate,
-                    dueDate = item.dueDate,
-                    timeStamp = item.timeStamp,
-                    currencyAmmount = item.currencyAmmount,
-                    fundingSource = item.fundingSource,
-                    realDate = item.timeStamp.Hour < 21 ? item.timeStamp.Date : item.timeStamp.AddDays(1).Date,
-                    validation = (item.timeStamp.Hour < 21 ? item.timeStamp : item.timeStamp.AddDays(1)).Date <= item.dueDate.Date ? "VALIDATED" : "NOT VALIDATED"
+                    action = item.actionRekon,
+                    status = item.statusRekon,
+                    orderDate = ((DateTime)item.orderDate).Date,
+                    dueDate = ((DateTime)item.dueDate).Date,
+                    timeStamp = (DateTime)item.timeStampRekon,
+                    currencyAmmount = Int64.Parse(item.currencyAmmount.ToString()),
+                    fundingSource = item.fundingSoure,
+                    realDate = ((DateTime)item.timeStampRekon).Hour < 21 ? ((DateTime)item.timeStampRekon).Date : ((DateTime)item.timeStampRekon).AddDays(1).Date,
+                    validation = (((DateTime)item.timeStampRekon).Hour < 21 ? (DateTime)item.timeStampRekon : ((DateTime)item.timeStampRekon).AddDays(1)).Date <= ((DateTime)item.dueDate).Date ? "VALIDATED" : "NOT VALIDATED"
                 });
 
             }
@@ -395,9 +395,9 @@ namespace testProjectBCA
             dataGridView2.DataSource = bibl;
 
             //preparing data for Pivot CPC - BI dan BankLain delivery
-            var queryd = (from x in sc
-                         where x.fundingSource == "BI" || x.fundingSource.Contains("OB")
-                         select x).ToList();
+            var queryd = (from x in en.RekonSaldoVaults
+                         where (x.fundingSoure == "BI" || x.fundingSoure.Contains("OB")) && ((DateTime)x.dueDate) >= dateTimePicker1.Value.Date && ((DateTime)x.dueDate) <= dateTimePicker2.Value.Date
+                          select x).ToList();
 
             pc = new List<PivotCPC>();
 
@@ -409,15 +409,15 @@ namespace testProjectBCA
                 {
                     vaultId = item.vaultId,
                     confId = item.confId,
-                    action = item.action,
-                    status = item.status,
-                    orderDate = item.orderDate,
-                    dueDate = item.dueDate,
-                    timeStamp = item.timeStamp,
-                    currencyAmmount = item.currencyAmmount,
-                    fundingSource = item.fundingSource,
-                    realDate = item.timeStamp.Hour < 21 ? item.timeStamp.Date : item.timeStamp.AddDays(1).Date,
-                    validation = (item.timeStamp.Hour < 21 ? item.timeStamp : item.timeStamp.AddDays(1)).Date <= item.dueDate.Date ? "VALIDATED" : "NOT VALIDATED"
+                    action = item.actionRekon,
+                    status = item.statusRekon,
+                    orderDate = ((DateTime)item.orderDate).Date,
+                    dueDate = ((DateTime)item.dueDate).Date,
+                    timeStamp = (DateTime)item.timeStampRekon,
+                    currencyAmmount = Int64.Parse(item.currencyAmmount.ToString()),
+                    fundingSource = item.fundingSoure,
+                    realDate = ((DateTime)item.timeStampRekon).Hour < 21 ? ((DateTime)item.timeStampRekon).Date : ((DateTime)item.timeStampRekon).AddDays(1).Date,
+                    validation = (((DateTime)item.timeStampRekon).Hour < 21 ? (DateTime)item.timeStampRekon : ((DateTime)item.timeStampRekon).AddDays(1)).Date <= ((DateTime)item.dueDate).Date ? "VALIDATED" : "NOT VALIDATED"
                 });
 
             }
@@ -457,9 +457,9 @@ namespace testProjectBCA
             dataGridView3.DataSource = bibld;
 
             //preparing data for pivot - ATM delivery
-            var queryad = (from x in sc
-                          where x.fundingSource != "BI" && !x.fundingSource.Contains("OB")
-                          select x).ToList();
+            var queryad = (from x in en.RekonSaldoVaults
+                          where (x.fundingSoure != "BI" && !x.fundingSoure.Contains("OB")) && ((DateTime)x.dueDate)>= dateTimePicker1.Value.Date && ((DateTime)x.dueDate) <= dateTimePicker2.Value.Date
+                           select x).ToList();
 
             pc = new List<PivotCPC>();
 
@@ -471,15 +471,15 @@ namespace testProjectBCA
                 {
                     vaultId = item.vaultId,
                     confId = item.confId,
-                    action = item.action,
-                    status = item.status,
-                    orderDate = item.orderDate,
-                    dueDate = item.dueDate,
-                    timeStamp = item.timeStamp,
-                    currencyAmmount = item.currencyAmmount,
-                    fundingSource = item.fundingSource,
-                    realDate = item.timeStamp.Hour < 21 ? item.timeStamp.Date : item.timeStamp.AddDays(1).Date,
-                    validation = (item.timeStamp.Hour < 21 ? item.timeStamp : item.timeStamp.AddDays(1)).Date <= item.dueDate.Date ? "VALIDATED" : "NOT VALIDATED"
+                    action = item.actionRekon,
+                    status = item.statusRekon,
+                    orderDate = ((DateTime)item.orderDate).Date,
+                    dueDate = ((DateTime)item.dueDate).Date,
+                    timeStamp = (DateTime)item.timeStampRekon,
+                    currencyAmmount = Int64.Parse(item.currencyAmmount.ToString()),
+                    fundingSource = item.fundingSoure,
+                    realDate = ((DateTime)item.timeStampRekon).Hour < 21 ? ((DateTime)item.timeStampRekon).Date : ((DateTime)item.timeStampRekon).AddDays(1).Date,
+                    validation = (((DateTime)item.timeStampRekon).Hour < 21 ? ((DateTime)item.timeStampRekon) : ((DateTime)item.timeStampRekon).AddDays(1)).Date <= ((DateTime)item.dueDate).Date ? "VALIDATED" : "NOT VALIDATED"
                 });
 
             }
@@ -519,8 +519,8 @@ namespace testProjectBCA
             dataGridView4.DataSource = atmd;
 
             //preparing data for pivot - atm return
-            var queryar = (from x in sc
-                           where x.fundingSource != "BI" && !x.fundingSource.Contains("OB")
+            var queryar = (from x in en.RekonSaldoVaults
+                           where (x.fundingSoure != "BI" && !x.fundingSoure.Contains("OB")) && ((DateTime)x.dueDate) >= dateTimePicker1.Value.Date && ((DateTime)x.dueDate) <= dateTimePicker2.Value.Date
                            select x).ToList();
 
             pc = new List<PivotCPC>();
@@ -533,15 +533,15 @@ namespace testProjectBCA
                 {
                     vaultId = item.vaultId,
                     confId = item.confId,
-                    action = item.action,
-                    status = item.status,
-                    orderDate = item.orderDate,
-                    dueDate = item.dueDate,
-                    timeStamp = item.timeStamp,
-                    currencyAmmount = item.currencyAmmount,
-                    fundingSource = item.fundingSource,
-                    realDate = item.timeStamp.Hour < 21 ? item.timeStamp.Date : item.timeStamp.AddDays(1).Date,
-                    validation = (item.timeStamp.Hour < 21 ? item.timeStamp : item.timeStamp.AddDays(1)).Date <= item.dueDate.Date ? "VALIDATED" : "NOT VALIDATED"
+                    action = item.actionRekon,
+                    status = item.statusRekon,
+                    orderDate = ((DateTime)item.orderDate).Date,
+                    dueDate = ((DateTime)item.dueDate).Date,
+                    timeStamp = (DateTime)item.timeStampRekon,
+                    currencyAmmount = Int64.Parse(item.currencyAmmount.ToString()),
+                    fundingSource = item.fundingSoure,
+                    realDate = ((DateTime)item.timeStampRekon).Hour < 21 ? ((DateTime)item.timeStampRekon).Date : ((DateTime)item.timeStampRekon).AddDays(1).Date,
+                    validation = (((DateTime)item.timeStampRekon).Hour < 21 ? (DateTime)item.timeStampRekon : ((DateTime)item.timeStampRekon).AddDays(1)).Date <= ((DateTime)item.dueDate).Date ? "VALIDATED" : "NOT VALIDATED"
                 });
 
             }
@@ -683,60 +683,66 @@ namespace testProjectBCA
 
         class PivotCPC_BIBL //pivotCPC - BI dan BankLain return
         {
+            public DateTime dueDate { set; get; }
             public String vaultId { set; get; }
             public String fundingSource { set; get; }
             public Int64 plannedReturn { set; get; }
             public Int64 emergencyReturn { set; get; }
             public Int64 grandTotal { set; get; }
-            public DateTime dueDate { set; get; }
+            
         }
 
         class PivotCPC_BIBLD//pivotCPC - BI dan BankLain delivery
         {
+            public DateTime dueDate { set; get; }
             public String vaultId { set; get; }
             public String fundingSource { set; get; }
             public Int64 plannedDelivery { set; get; }
             public Int64 emergencyDelivery { set; get; }
             public Int64 grandTotal { set; get; }
-            public DateTime dueDate { set; get; }
+            
         }
 
         class PivotCPC_ATMD //pivotcpc - atm delivery
         {
+            public DateTime dueDate { set; get; }
             public String vaultId { set; get; }
             public String fundingSource { set; get; }
             public Int64 plannedDelivery { set; get; }
             public Int64 emergencyDelivery { set; get; }
             public Int64 grandTotal { set; get; }
-            public DateTime dueDate { set; get; }
+            
         }
 
         class PivotCPC_ATMR //pivotcpc - atm return
         {
+            public DateTime dueDate { set; get; }
             public String vaultId { set; get; }
             public String fundingSource { set; get; }
             public Int64 plannedReturn{ set; get; }
             public Int64 emergencyReturn{ set; get; }
             public Int64 grandTotal { set; get; }
-            public DateTime dueDate { set; get; }
+            
         }
 
         class PivotPerVendor_bon
         {
+            public DateTime dueDate { set; get; }
             public String vendor { set; get; }
             public Int64 belumValidasi { set; get; }
             public Int64 sudahValidasi { set; get; }
             public Int64 grandTotal { set; get; }
-            public DateTime dueDate { set; get; }
+            
         }
 
         class PivotPerVendor_setoran
         {
+            public DateTime dueDate { set; get; }
             public String vendor { set; get; }
             public Int64 belumValidasi { set; get; }
             public Int64 sudahValidasi { set; get; }
             public Int64 grandTotal { set; get; }
-            public DateTime dueDate { set; get; }
+            
         }
 
         public Int64 CurrencyFill(String a)
@@ -848,6 +854,138 @@ namespace testProjectBCA
                 });
             }
             dataGridView1.DataSource = obhp;
+        }
+
+        private void buttonSaveToDB_Click(object sender, EventArgs e)
+        {
+            ProsesVault();
+            ProsesSetoranCPC();
+            //save to db rs-vault
+            List<RekonSaldoVault> rsv = (from x in sc
+                                         select new RekonSaldoVault()
+                                         {
+                                             vaultId = x.vaultId,
+                                             confId = x.confId,
+                                             fundingSoure = x.fundingSource,
+                                             actionRekon = x.action,
+                                             statusRekon = x.status,
+                                             orderDate = x.orderDate,
+                                             dueDate = x.dueDate,
+                                             timeStampRekon = x.timeStamp,
+                                             currencyAmmount = x.currencyAmmount,
+                                             realDate = x.realDate,
+                                             valdiation = x.validation
+                                         }).ToList();
+
+
+            DateTime maxdate2 = rsv.Max(x => (DateTime)x.dueDate);
+            DateTime mindate2= rsv.Min(x => (DateTime)x.dueDate);
+
+            var query3 = (from x in en.RekonSaldoVaults
+                         where (DateTime)x.dueDate >= mindate2 && (DateTime)x.dueDate <= maxdate2
+                         select x
+                         ).ToList();
+
+            List<RekonSaldoVault> rsvToRemove = new List<RekonSaldoVault>();
+
+            foreach (var item in rsv)
+            {
+                var query4 = (from x in query3
+                              where x.confId == item.confId && x.dueDate == item.dueDate
+                              select x).FirstOrDefault();
+                if (query4 != null)
+                {
+                    query4.vaultId = item.vaultId;
+                    query4.confId = item.confId;
+                    query4.orderDate = item.orderDate;
+                    query4.fundingSoure = item.fundingSoure;
+                    query4.actionRekon = item.actionRekon;
+                    query4.statusRekon = item.statusRekon;
+                    query4.dueDate = item.dueDate;
+                    query4.timeStampRekon = item.timeStampRekon;
+                    query4.currencyAmmount = item.currencyAmmount;
+                    query4.realDate = item.realDate;
+                    query4.valdiation = item.valdiation;
+
+                    en.SaveChanges();
+
+                    rsvToRemove.Add(item);
+
+                }
+            }
+
+            foreach (var item in rsvToRemove)
+            {
+                rsv.Remove(item);
+            }
+
+
+            en.RekonSaldoVaults.AddRange(rsv);
+            en.SaveChanges();
+
+            //save to db rs-pervendor
+            ProsesOrderBlogHistory();
+            List<RekonSaldoPerVendor> rspv = (from x in obhp
+                                         select new RekonSaldoPerVendor()
+                                         {
+                                             cashPointtId = x.cashpointId,
+                                             confId = x.confId,
+                                             orderDate = x.orderDate,
+                                             vendor = x.vendor,
+                                             actionRekon = x.action,
+                                             statusRekon = x.status,
+                                             dueDate = x.dueDate,
+                                             blogTime = x.blogTime,
+                                             currencyAmmount = x.currencyAmmount,
+                                             realDate = x.realDate,
+                                             validation = x.validation
+                                         }).ToList();
+
+            DateTime maxdate = rspv.Max(x => (DateTime)x.dueDate);
+            DateTime mindate = rspv.Min(x => (DateTime)x.dueDate);
+
+            var query = (from x in en.RekonSaldoPerVendors
+                         where (DateTime)x.dueDate >= mindate && (DateTime)x.dueDate <= maxdate
+                         select x
+                         ).ToList();
+
+            List<RekonSaldoPerVendor> rspvToRemove = new List<RekonSaldoPerVendor>();
+
+            foreach (var item in rspv)
+            {
+                var query2 = (from x in query
+                              where x.confId == item.confId && x.dueDate == item.dueDate
+                              select x).FirstOrDefault();
+                if (query2!=null)
+                {
+                    query2.cashPointtId = item.cashPointtId;
+                    query2.confId = item.confId;
+                    query2.orderDate = item.orderDate;
+                    query2.vendor = item.vendor;
+                    query2.actionRekon = item.actionRekon;
+                    query2.statusRekon = item.statusRekon;
+                    query2.dueDate = item.dueDate;
+                    query2.blogTime = item.blogTime;
+                    query2.currencyAmmount = item.currencyAmmount;
+                    query2.realDate = item.realDate;
+                    query2.validation = item.validation;
+
+                    en.SaveChanges();
+
+                    rspvToRemove.Add(item);
+
+                }
+            }
+
+            foreach (var item in rspvToRemove)
+            {
+                rspv.Remove(item);
+            }
+
+            en.RekonSaldoPerVendors.AddRange(rspv);
+            en.SaveChanges();
+
+
         }
 
         //BELUM SELSAI MASIH DI MINUS 1 DARI YG ATAS

@@ -4,6 +4,7 @@
     <EntitySetMapping Name="Abacas">
       <EntityTypeMapping TypeName="CACModel.Abaca">
         <MappingFragment StoreEntitySet="Abacas">
+          <ScalarProperty Name="TotalUangBesar" ColumnName="TotalUangBesar" />
           <ScalarProperty Name="idTransaksi" ColumnName="idTransaksi" />
           <ScalarProperty Name="tanggal" ColumnName="tanggal" />
           <ScalarProperty Name="vendorCardNo" ColumnName="vendorCardNo" />
@@ -404,5 +405,41 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <FunctionImportMapping FunctionImportName="prediksiStdDev" FunctionName="CACModel.Store.prediksiStdDev" />
+    <EntitySetMapping Name="RekonSaldoPerVendors">
+      <EntityTypeMapping TypeName="CACModel.RekonSaldoPerVendor">
+        <MappingFragment StoreEntitySet="RekonSaldoPerVendor">
+          <ScalarProperty Name="validation" ColumnName="validation" />
+          <ScalarProperty Name="realDate" ColumnName="realDate" />
+          <ScalarProperty Name="currencyAmmount" ColumnName="currencyAmmount" />
+          <ScalarProperty Name="blogTime" ColumnName="blogTime" />
+          <ScalarProperty Name="dueDate" ColumnName="dueDate" />
+          <ScalarProperty Name="statusRekon" ColumnName="statusRekon" />
+          <ScalarProperty Name="actionRekon" ColumnName="actionRekon" />
+          <ScalarProperty Name="vendor" ColumnName="vendor" />
+          <ScalarProperty Name="orderDate" ColumnName="orderDate" />
+          <ScalarProperty Name="confId" ColumnName="confId" />
+          <ScalarProperty Name="cashPointtId" ColumnName="cashPointtId" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RekonSaldoVaults">
+      <EntityTypeMapping TypeName="CACModel.RekonSaldoVault">
+        <MappingFragment StoreEntitySet="RekonSaldoVault">
+          <ScalarProperty Name="valdiation" ColumnName="valdiation" />
+          <ScalarProperty Name="realDate" ColumnName="realDate" />
+          <ScalarProperty Name="currencyAmmount" ColumnName="currencyAmmount" />
+          <ScalarProperty Name="timeStampRekon" ColumnName="timeStampRekon" />
+          <ScalarProperty Name="dueDate" ColumnName="dueDate" />
+          <ScalarProperty Name="orderDate" ColumnName="orderDate" />
+          <ScalarProperty Name="statusRekon" ColumnName="statusRekon" />
+          <ScalarProperty Name="actionRekon" ColumnName="actionRekon" />
+          <ScalarProperty Name="fundingSoure" ColumnName="fundingSoure" />
+          <ScalarProperty Name="confId" ColumnName="confId" />
+          <ScalarProperty Name="vaultId" ColumnName="vaultId" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

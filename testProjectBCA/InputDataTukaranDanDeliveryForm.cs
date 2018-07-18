@@ -28,7 +28,14 @@ namespace testProjectBCA
                 loadForm.ShowSplashScreen();
                 String [] paths = of.FileNames;
                 List<Abaca> listAbacas = new List<Abaca>();
-                
+
+                int COL_CUSTOMER_CODE = 1,
+                    COL_TOTAL_AMOUNT = 'Q' - 'A',
+                    COL_TANGGAL = 0,
+                    COL_NAMA_NASABAH = 2,
+                    COL_KERTAS_START = 'D'-'A',
+                    COL_KERTAS_END = 'J'-'A';
+
                 foreach (string path in paths)
                 {
                     List<Abaca> dataDb = (from x in db.Abacas
@@ -38,7 +45,7 @@ namespace testProjectBCA
                     listAbacas = new List<Abaca>();
                     DataSet ds = Util.openExcel(path);
                     DataTable dt = ds.Tables[0];
-                    DataRow[] delrows = dt.Select("Column0 is null OR Column0 like 'F%'");
+                    DataRow[] delrows = dt.Select("Column1 is null OR Column1 like 'F%' OR Column1 like 'KODE%'");
 
                     foreach (var row in delrows)
                         dt.Rows.Remove(row);
@@ -46,34 +53,50 @@ namespace testProjectBCA
                     for (int a = 0; a < dt.Rows.Count; a++)
                     {
                         DataRow row = dt.Rows[a];
-                        if (dataDb.Where(x => ((DateTime)x.tanggal).Date == DateTime.Parse(row[3].ToString()).Date && x.CustomerCode == row[0].ToString()).ToList().Any())
+                        Int64 totalUangBesar = 0;
+
+                        for(int b = COL_KERTAS_START; b<=COL_KERTAS_END;b++)
+                        {
+                            Int64 buff;
+                            String temp = row[b].ToString();
+                            if (!String.IsNullOrEmpty(temp))
+                                if (Int64.TryParse(temp, out buff))
+                                    totalUangBesar += buff;
+                        }   
+
+                        if (dataDb.Where(x => ((DateTime)x.tanggal).Date == DateTime.Parse(row[COL_TANGGAL].ToString()).Date && x.CustomerCode == row[COL_CUSTOMER_CODE].ToString()).ToList().Any())
                         {
                             Console.WriteLine("Revisi");
-                            var q = dataDb.Where(x => x.tanggal == DateTime.Parse(row[3].ToString()) && x.CustomerCode == row[0].ToString()).FirstOrDefault();
-                            q.totalAmount = Int64.Parse(row[2].ToString());
+                            var q = dataDb.Where(x => x.tanggal == DateTime.Parse(row[COL_TANGGAL].ToString()) && x.CustomerCode == row[COL_CUSTOMER_CODE].ToString()).FirstOrDefault();
+                            q.totalAmount = Int64.Parse(row[COL_TOTAL_AMOUNT].ToString());
+                            q.TotalUangBesar = totalUangBesar;
                             db.SaveChanges();
                         }
-                        else if(listAbacas.Where(x => ((DateTime)x.tanggal).Date == DateTime.Parse(row[3].ToString()).Date && x.CustomerCode == row[0].ToString()).ToList().Any())
+                        else if(listAbacas.Where(x => ((DateTime)x.tanggal).Date == DateTime.Parse(row[COL_TANGGAL].ToString()).Date && x.CustomerCode == row[COL_CUSTOMER_CODE].ToString()).ToList().Any())
                         {
-                            var q = listAbacas.Where(x => x.tanggal == DateTime.Parse(row[3].ToString()) && x.CustomerCode == row[0].ToString()).FirstOrDefault();
-                            q.totalAmount = Int64.Parse(row[2].ToString());
+                            var q = listAbacas.Where(x => x.tanggal == DateTime.Parse(row[COL_TANGGAL].ToString()) && x.CustomerCode == row[COL_CUSTOMER_CODE].ToString()).FirstOrDefault();
+                            q.TotalUangBesar = totalUangBesar;
+                            q.totalAmount = Int64.Parse(row[COL_TOTAL_AMOUNT].ToString());
                         }
                         else
                         {
+                            Console.WriteLine(row[COL_TANGGAL].ToString());
                             listAbacas.Add(new Abaca()
                             {
-                                CustomerCode = row[0].ToString().ToUpper(),
-                                tanggal = DateTime.Parse(row[3].ToString()),
-                                totalAmount = Int64.Parse(row[2].ToString()),
-                                CustomerName = row[1].ToString()
+                                CustomerCode = row[COL_CUSTOMER_CODE].ToString().ToUpper(),
+                                tanggal = DateTime.Parse(row[COL_TANGGAL].ToString()),
+                                totalAmount = Int64.Parse(row[COL_TOTAL_AMOUNT].ToString()),
+                                CustomerName = row[COL_NAMA_NASABAH].ToString(),
+                                TotalUangBesar = totalUangBesar
                             });
                         }
                     }
                     db.Abacas.AddRange(listAbacas);
                     db.SaveChanges();
                 }
+                loadForm.CloseForm();
             }
-            loadForm.CloseForm();
+       
         }
     }
 }

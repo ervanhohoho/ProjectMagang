@@ -95,3 +95,5 @@ C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\test
 C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.application
 C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.exe
 C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.pdb
+C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.InsertStokPosisiForm.resources
+C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.UpdateStokPosisiForm.resources

@@ -1717,8 +1717,11 @@ namespace testProjectBCA
             Denom temp = new Denom();
             var q2 = (from x in db.Approvals
                       join y in db.DetailApprovals on x.idApproval equals y.idApproval
-                      
                       where x.kodePkt == kodepkt && (y.tanggal >= tanggalOptiMin) && ((DateTime)x.tanggal) < today select new {Approval = x, DetailApproval = y}).ToList();
+            int maxIdApproval = q2.Max(x => x.Approval.idApproval);
+            q2 = (from x in q2
+                  where x.Approval.idApproval == maxIdApproval
+                  select x).ToList();
             foreach(var s in q2)
             {
                 temp = new Denom();
@@ -2488,6 +2491,7 @@ namespace testProjectBCA
             Console.WriteLine();
             Denom saldoAkhir = new Denom();
             //Console.WriteLine("Jalan");
+            
             if (setor.Count > setorCounter)
             {
                 if (setor[setorCounter].tgl == tanggalOptiMin)
@@ -3265,7 +3269,7 @@ namespace testProjectBCA
                     newDetailA.isiCRM50 = isiCrm[i].d50;
                     newDetailA.isiCRM20 = isiCrm[i].d20;
 
-                    tempTanggal = tempTanggal.AddDays(1);
+                   
 
                     if (setor.Where(x => ((DateTime)x.tgl).Date == tempTanggal.Date).FirstOrDefault() != null)
                     {
@@ -3281,6 +3285,7 @@ namespace testProjectBCA
                         newDetailA.setor20 = setorTxt.d20;
                     }
                     db.DetailApprovals.Add(newDetailA);
+                    tempTanggal = tempTanggal.AddDays(1);
                     db.SaveChanges();
                     count++;
                     jumlahbon++;
@@ -3689,6 +3694,9 @@ namespace testProjectBCA
             
         }
 
+        private void bufferIsiAtm100Num_ValueChanged(object sender, EventArgs e)
+        {
+        }
 
         private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
         {

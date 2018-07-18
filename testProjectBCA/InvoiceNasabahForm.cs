@@ -70,7 +70,7 @@ namespace testProjectBCA
                           {
                               x.CustomerCode,
                               x.totalAmount,
-                              frekuensi = y.metodeLayanan.ToLower() == "stc" ? 1 : 1 + hitungFrekuensi((Int64)x.totalAmount),
+                              frekuensi = x.CustomerCode.ToLower().Contains("t") ? hitungFrekuensiTukaran((Int64) x.TotalUangBesar, (Int64) x.totalAmount) : hitungFrekuensi(y.metodeLayanan, (Int64)x.totalAmount),
                               jenisLayanan = getJenisLayanan(x.CustomerCode, x.tanggal, z.vendor)
                           }).ToList();
 
@@ -359,11 +359,40 @@ namespace testProjectBCA
         {
             loadData();
         }
-        Int64 hitungFrekuensi(Int64 amount)
+        Int64 hitungFrekuensi(String metodeLayanan, Int64 amount)
         {
-            if (amount % 500000000 == 0)
-                return (amount / 500000000) - 1;
-            return amount / 500000000;
+
+            Int64 divider = (Int64)maxCosNumeric.Value;
+            if (metodeLayanan.ToLower() == "stc")
+                return 1;
+            else if (metodeLayanan.ToLower() == "cos")
+            {
+                if (amount % divider == 0)
+                    return (amount / divider);
+                return 1 + (amount / divider);
+            }
+            return 0;
+        }
+        Int64 hitungFrekuensiTukaran(Int64 uangKertas, Int64 totalAmount)
+        {
+            Int64 uangKoin= totalAmount - uangKertas;
+
+            int frekKertas, frekKoin, maxKertas = (int)maxTukaranKertasNumeric.Value, maxKoin = (int)maxTukaranKoinMax.Value;
+
+            if (uangKertas % maxKertas == 0)
+                frekKertas = (int)(uangKertas / maxKertas);
+            else
+                frekKertas = 1 + (int)(uangKertas / maxKertas);
+
+            if (uangKoin % maxKoin == 0)
+                frekKoin = (int)(uangKoin / maxKoin);
+            else
+                frekKoin = 1 + (int)(uangKoin / maxKoin);
+
+            if (frekKertas > frekKoin)
+                return frekKertas;
+            else
+                return frekKoin;
         }
     }
     class InvoiceToExport
