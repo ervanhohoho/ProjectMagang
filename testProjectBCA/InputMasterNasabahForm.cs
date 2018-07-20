@@ -114,6 +114,7 @@ namespace testProjectBCA
                 db.SaveChanges();
 
                 loadForm.CloseForm();
+                MessageBox.Show("Done!");
             }
         }
     }

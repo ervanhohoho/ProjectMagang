@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,7 +20,7 @@ namespace testProjectBCA
             buttonProcessVault.Visible = false;
             buttonProcessSetoranCpc.Visible = false;
             buttonProsesOrderBlogHistory.Visible = false;
-            //dataGridView1.Visible = false;
+            dataGridView1.Visible = false;
             //buttonGeneratePivot.Enabled = false;
             //buttonGeneratePivotPerVendor.Enabled = false;
 
@@ -324,6 +325,25 @@ namespace testProjectBCA
             }
 
             dataGridView7.DataSource = ppvs;
+
+            if (dataGridView6.Rows.Count > 0)
+            {
+                for (int i = 2; i < dataGridView6.Columns.Count; i++)
+                {
+                    dataGridView6.Columns[i].DefaultCellStyle.Format = "c";
+                    dataGridView6.Columns[i].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("ID-id");
+                }
+            }
+
+            if (dataGridView7.Rows.Count > 0)
+            {
+                for (int i = 2; i < dataGridView7.Columns.Count; i++)
+                {
+                    dataGridView7.Columns[i].DefaultCellStyle.Format = "c";
+                    dataGridView7.Columns[i].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("ID-id");
+                }
+            }
+
         }
 
 
@@ -579,6 +599,42 @@ namespace testProjectBCA
             }
 
             dataGridView5.DataSource = atmr;
+
+            //formatting
+            if (dataGridView2.Rows.Count>0)
+            {
+                for (int i = 3; i < dataGridView2.Columns.Count; i++)
+                {
+                    dataGridView2.Columns[i].DefaultCellStyle.Format = "c";
+                    dataGridView2.Columns[i].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("ID-id");
+                }
+            }
+            if (dataGridView3.Rows.Count > 0)
+            {
+                for (int i = 3; i < dataGridView3.Columns.Count; i++)
+                {
+                    dataGridView3.Columns[i].DefaultCellStyle.Format = "c";
+                    dataGridView3.Columns[i].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("ID-id");
+                }
+            }
+            if (dataGridView4.Rows.Count > 0)
+            {
+                for (int i = 3; i < dataGridView4.Columns.Count; i++)
+                {
+                    dataGridView4.Columns[i].DefaultCellStyle.Format = "c";
+                    dataGridView4.Columns[i].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("ID-id");
+                }
+            }
+            if (dataGridView5.Rows.Count > 0)
+            {
+                for (int i = 3; i < dataGridView5.Columns.Count; i++)
+                {
+                    dataGridView5.Columns[i].DefaultCellStyle.Format = "c";
+                    dataGridView5.Columns[i].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("ID-id");
+                }
+            }
+
+
         }
 
 
@@ -986,6 +1042,144 @@ namespace testProjectBCA
             en.SaveChanges();
 
 
+        }
+
+        private void dataGridView2_SelectionChanged(object sender, EventArgs e)
+        {
+            DataGridViewSelectedCellCollection cells = dataGridView2.SelectedCells;
+            foreach (DataGridViewCell cell in cells)
+            {
+                int rowidx = cell.RowIndex;
+                int colidx = cell.ColumnIndex;
+                dataGridView2.Rows[rowidx].Cells[colidx].Value = dataGridView2.Rows[rowidx].Cells[colidx].Value.ToString();
+            }
+            for (int a = 0; a < dataGridView2.Rows.Count; a++)
+            {
+                for (int b = 0; b < dataGridView2.Columns.Count; b++)
+                {
+                    if (!cells.Contains(dataGridView2.Rows[a].Cells[b]))
+                    {
+                        Int64 buf;
+                        if (Int64.TryParse(dataGridView2.Rows[a].Cells[b].Value.ToString(), out buf))
+                            dataGridView2.Rows[a].Cells[b].Value = Int64.Parse(dataGridView2.Rows[a].Cells[b].Value.ToString().Replace("Rp.", "").Replace(".", "").Trim());
+                    }
+                }
+            }
+        }
+
+        private void dataGridView3_SelectionChanged(object sender, EventArgs e)
+        {
+            DataGridViewSelectedCellCollection cells = dataGridView3.SelectedCells;
+            foreach (DataGridViewCell cell in cells)
+            {
+                int rowidx = cell.RowIndex;
+                int colidx = cell.ColumnIndex;
+                dataGridView3.Rows[rowidx].Cells[colidx].Value = dataGridView3.Rows[rowidx].Cells[colidx].Value.ToString();
+            }
+            for (int a = 0; a < dataGridView3.Rows.Count; a++)
+            {
+                for (int b = 0; b < dataGridView3.Columns.Count; b++)
+                {
+                    if (!cells.Contains(dataGridView3.Rows[a].Cells[b]))
+                    {
+                        Int64 buf;
+                        if (Int64.TryParse(dataGridView3.Rows[a].Cells[b].Value.ToString(), out buf))
+                            dataGridView3.Rows[a].Cells[b].Value = Int64.Parse(dataGridView3.Rows[a].Cells[b].Value.ToString().Replace("Rp.", "").Replace(".", "").Trim());
+                    }
+                }
+            }
+        }
+
+        private void dataGridView6_SelectionChanged(object sender, EventArgs e)
+        {
+            DataGridViewSelectedCellCollection cells = dataGridView6.SelectedCells;
+            foreach (DataGridViewCell cell in cells)
+            {
+                int rowidx = cell.RowIndex;
+                int colidx = cell.ColumnIndex;
+                dataGridView6.Rows[rowidx].Cells[colidx].Value = dataGridView6.Rows[rowidx].Cells[colidx].Value.ToString();
+            }
+            for (int a = 0; a < dataGridView6.Rows.Count; a++)
+            {
+                for (int b = 0; b < dataGridView6.Columns.Count; b++)
+                {
+                    if (!cells.Contains(dataGridView6.Rows[a].Cells[b]))
+                    {
+                        Int64 buf;
+                        if (Int64.TryParse(dataGridView6.Rows[a].Cells[b].Value.ToString(), out buf))
+                            dataGridView6.Rows[a].Cells[b].Value = Int64.Parse(dataGridView6.Rows[a].Cells[b].Value.ToString().Replace("Rp.", "").Replace(".", "").Trim());
+                    }
+                }
+            }
+        }
+
+        private void dataGridView5_SelectionChanged(object sender, EventArgs e)
+        {
+            DataGridViewSelectedCellCollection cells = dataGridView5.SelectedCells;
+            foreach (DataGridViewCell cell in cells)
+            {
+                int rowidx = cell.RowIndex;
+                int colidx = cell.ColumnIndex;
+                dataGridView5.Rows[rowidx].Cells[colidx].Value = dataGridView5.Rows[rowidx].Cells[colidx].Value.ToString();
+            }
+            for (int a = 0; a < dataGridView5.Rows.Count; a++)
+            {
+                for (int b = 0; b < dataGridView5.Columns.Count; b++)
+                {
+                    if (!cells.Contains(dataGridView5.Rows[a].Cells[b]))
+                    {
+                        Int64 buf;
+                        if (Int64.TryParse(dataGridView5.Rows[a].Cells[b].Value.ToString(), out buf))
+                            dataGridView5.Rows[a].Cells[b].Value = Int64.Parse(dataGridView5.Rows[a].Cells[b].Value.ToString().Replace("Rp.", "").Replace(".", "").Trim());
+                    }
+                }
+            }
+        }
+
+        private void dataGridView4_SelectionChanged(object sender, EventArgs e)
+        {
+            DataGridViewSelectedCellCollection cells = dataGridView4.SelectedCells;
+            foreach (DataGridViewCell cell in cells)
+            {
+                int rowidx = cell.RowIndex;
+                int colidx = cell.ColumnIndex;
+                dataGridView4.Rows[rowidx].Cells[colidx].Value = dataGridView4.Rows[rowidx].Cells[colidx].Value.ToString();
+            }
+            for (int a = 0; a < dataGridView4.Rows.Count; a++)
+            {
+                for (int b = 0; b < dataGridView4.Columns.Count; b++)
+                {
+                    if (!cells.Contains(dataGridView4.Rows[a].Cells[b]))
+                    {
+                        Int64 buf;
+                        if (Int64.TryParse(dataGridView4.Rows[a].Cells[b].Value.ToString(), out buf))
+                            dataGridView4.Rows[a].Cells[b].Value = Int64.Parse(dataGridView4.Rows[a].Cells[b].Value.ToString().Replace("Rp.", "").Replace(".", "").Trim());
+                    }
+                }
+            }
+        }
+
+        private void dataGridView7_SelectionChanged(object sender, EventArgs e)
+        {
+            DataGridViewSelectedCellCollection cells = dataGridView7.SelectedCells;
+            foreach (DataGridViewCell cell in cells)
+            {
+                int rowidx = cell.RowIndex;
+                int colidx = cell.ColumnIndex;
+                dataGridView7.Rows[rowidx].Cells[colidx].Value = dataGridView7.Rows[rowidx].Cells[colidx].Value.ToString();
+            }
+            for (int a = 0; a < dataGridView7.Rows.Count; a++)
+            {
+                for (int b = 0; b < dataGridView7.Columns.Count; b++)
+                {
+                    if (!cells.Contains(dataGridView7.Rows[a].Cells[b]))
+                    {
+                        Int64 buf;
+                        if (Int64.TryParse(dataGridView7.Rows[a].Cells[b].Value.ToString(), out buf))
+                            dataGridView7.Rows[a].Cells[b].Value = Int64.Parse(dataGridView7.Rows[a].Cells[b].Value.ToString().Replace("Rp.", "").Replace(".", "").Trim());
+                    }
+                }
+            }
         }
 
         //BELUM SELSAI MASIH DI MINUS 1 DARI YG ATAS

@@ -35,6 +35,7 @@ namespace testProjectBCA
                 loadGBKF(gbkf);
                 loadSCM(scm);
                 loadForm.CloseForm();
+                MessageBox.Show("Done!");
             }
         }
         void loadGBKF(DataTable dt)

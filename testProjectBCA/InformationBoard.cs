@@ -3521,6 +3521,26 @@ namespace testProjectBCA
             }
             sumLabel.Text += "Rp. ";
             sumLabel.Text += sum.ToString("#,##0");
+
+            DataGridViewSelectedCellCollection cells = rekomendasiBonGridView.SelectedCells;
+            foreach (DataGridViewCell cell in cells)
+            {
+                int rowidx = cell.RowIndex;
+                int colidx = cell.ColumnIndex;
+                rekomendasiBonGridView.Rows[rowidx].Cells[colidx].Value = rekomendasiBonGridView.Rows[rowidx].Cells[colidx].Value.ToString();
+            }
+            for (int a = 0; a < rekomendasiBonGridView.Rows.Count; a++)
+            {
+                for (int b = 0; b < rekomendasiBonGridView.Columns.Count; b++)
+                {
+                    if (!cells.Contains(rekomendasiBonGridView.Rows[a].Cells[b]))
+                    {
+                        Int64 buf;
+                        if (Int64.TryParse(rekomendasiBonGridView.Rows[a].Cells[b].Value.ToString(), out buf))
+                            rekomendasiBonGridView.Rows[a].Cells[b].Value = Int64.Parse(rekomendasiBonGridView.Rows[a].Cells[b].Value.ToString().Replace("Rp.","").Replace(".","").Trim());
+                    }
+                }
+            }
         }
         private void tanggalPrediksiMaxPicker_ValueChanged(object sender, EventArgs e)
         {
@@ -3696,6 +3716,75 @@ namespace testProjectBCA
 
         private void bufferIsiAtm100Num_ValueChanged(object sender, EventArgs e)
         {
+        }
+
+        private void permintaanBonGridView_SelectionChanged(object sender, EventArgs e)
+        {
+            DataGridViewSelectedCellCollection cells = permintaanBonGridView.SelectedCells;
+            foreach (DataGridViewCell cell in cells)
+            {
+                int rowidx = cell.RowIndex;
+                int colidx = cell.ColumnIndex;
+                permintaanBonGridView.Rows[rowidx].Cells[colidx].Value = permintaanBonGridView.Rows[rowidx].Cells[colidx].Value.ToString();
+            }
+            for (int a = 0; a < permintaanBonGridView.Rows.Count; a++)
+            {
+                for (int b = 0; b < permintaanBonGridView.Columns.Count; b++)
+                {
+                    if (!cells.Contains(permintaanBonGridView.Rows[a].Cells[b]))
+                    {
+                        Int64 buf;
+                        if (Int64.TryParse(permintaanBonGridView.Rows[a].Cells[b].Value.ToString(), out buf))
+                            permintaanBonGridView.Rows[a].Cells[b].Value = Int64.Parse(permintaanBonGridView.Rows[a].Cells[b].Value.ToString().Replace("Rp.", "").Replace(".", "").Trim());
+                    }
+                }
+            }
+        }
+
+        private void permintaanAdhocGridView_SelectionChanged(object sender, EventArgs e)
+        {
+            DataGridViewSelectedCellCollection cells = permintaanAdhocGridView.SelectedCells;
+            foreach (DataGridViewCell cell in cells)
+            {
+                int rowidx = cell.RowIndex;
+                int colidx = cell.ColumnIndex;
+                permintaanAdhocGridView.Rows[rowidx].Cells[colidx].Value = permintaanAdhocGridView.Rows[rowidx].Cells[colidx].Value.ToString();
+            }
+            for (int a = 0; a < permintaanAdhocGridView.Rows.Count; a++)
+            {
+                for (int b = 0; b < permintaanAdhocGridView.Columns.Count; b++)
+                {
+                    if (!cells.Contains(permintaanAdhocGridView.Rows[a].Cells[b]))
+                    {
+                        Int64 buf;
+                        if (Int64.TryParse(permintaanAdhocGridView.Rows[a].Cells[b].Value.ToString(), out buf))
+                            permintaanAdhocGridView.Rows[a].Cells[b].Value = Int64.Parse(permintaanAdhocGridView.Rows[a].Cells[b].Value.ToString().Replace("Rp.", "").Replace(".", "").Trim());
+                    }
+                }
+            }
+        }
+
+        private void rasioGridView_SelectionChanged(object sender, EventArgs e)
+        {
+            DataGridViewSelectedCellCollection cells = rasioGridView.SelectedCells;
+            foreach (DataGridViewCell cell in cells)
+            {
+                int rowidx = cell.RowIndex;
+                int colidx = cell.ColumnIndex;
+                rasioGridView.Rows[rowidx].Cells[colidx].Value = rasioGridView.Rows[rowidx].Cells[colidx].Value.ToString();
+            }
+            for (int a = 0; a < rasioGridView.Rows.Count; a++)
+            {
+                for (int b = 0; b < rasioGridView.Columns.Count; b++)
+                {
+                    if (!cells.Contains(rasioGridView.Rows[a].Cells[b]))
+                    {
+                        Int64 buf;
+                        if (Int64.TryParse(rasioGridView.Rows[a].Cells[b].Value.ToString(), out buf))
+                            rasioGridView.Rows[a].Cells[b].Value = Int64.Parse(rasioGridView.Rows[a].Cells[b].Value.ToString().Replace("Rp.", "").Replace(".", "").Trim());
+                    }
+                }
+            }
         }
 
         private void textBox1_KeyPress(object sender, KeyPressEventArgs e)

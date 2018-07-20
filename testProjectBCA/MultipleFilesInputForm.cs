@@ -626,11 +626,11 @@ namespace testProjectBCA
                             + "\n Approval Setor + Setor Adhoc 50: " + ((Int64)tempQueryApprovalSetorAdhoc.DetailApproval.setorAdhoc50 + setor50) + " Laporan Setor Adhoc 50: " + ((Int64)pkt.setorUang[1])
                             + "\n Approval Setor + Setor Adhoc 20: " + ((Int64)tempQueryApprovalSetorAdhoc.DetailApproval.setorAdhoc20 + setor20) + " Laporan Setor Adhoc 20: " + ((Int64)pkt.setorUang[2])
                             ;
-                            if (tempQueryApprovalSetorAdhoc.DetailApproval.setor100 != pkt.setorUang[0])
+                            if (tempQueryApprovalSetorAdhoc.DetailApproval.setor100 + setor100 != pkt.setorUang[0])
                                 summary += "\nSetor 100 tidak sesuai";
-                            if (tempQueryApprovalSetorAdhoc.DetailApproval.setor50 != pkt.setorUang[1])
+                            if (tempQueryApprovalSetorAdhoc.DetailApproval.setor50  + setor50 != pkt.setorUang[1])
                                 summary += "\nSetor 50 tidak sesuai";
-                            if (tempQueryApprovalSetorAdhoc.DetailApproval.setor20 != pkt.setorUang[2])
+                            if (tempQueryApprovalSetorAdhoc.DetailApproval.setor20  + setor20 != pkt.setorUang[2])
                                 summary += "\nSetor 20 tidak sesuai";
                         }
                     }

@@ -123,7 +123,7 @@ namespace testProjectBCA
                 if (a >= 0 && a <= 1)
                     continue;
                 dataGridView1.Columns[a].DefaultCellStyle.Format = "N0";
-                if (a >= dataGridView1.ColumnCount - 3)
+                if (a >= dataGridView1.ColumnCount - 4)
                     dataGridView1.Columns[a].DefaultCellStyle.Format = "N2";
             }
         }

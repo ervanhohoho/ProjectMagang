@@ -96,7 +96,8 @@ namespace testProjectBCA
                 }
                 db.Abacas.AddRange(toInput);
                 db.SaveChanges();
-                loadForm.CloseForm(); 
+                loadForm.CloseForm();
+                MessageBox.Show("Done!");
             }
         }
     }

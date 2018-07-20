@@ -40,6 +40,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.maxTukaranKoinMax = new System.Windows.Forms.NumericUpDown();
+            this.loadButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxCosNumeric)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxTukaranKertasNumeric)).BeginInit();
@@ -51,12 +52,12 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(12, 49);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(1060, 418);
+            this.dataGridView1.Size = new System.Drawing.Size(1109, 418);
             this.dataGridView1.TabIndex = 0;
             // 
             // exportButton
             // 
-            this.exportButton.Location = new System.Drawing.Point(997, 12);
+            this.exportButton.Location = new System.Drawing.Point(1046, 12);
             this.exportButton.Name = "exportButton";
             this.exportButton.Size = new System.Drawing.Size(75, 23);
             this.exportButton.TabIndex = 1;
@@ -196,11 +197,22 @@
             0,
             0});
             // 
+            // loadButton
+            // 
+            this.loadButton.Location = new System.Drawing.Point(965, 12);
+            this.loadButton.Name = "loadButton";
+            this.loadButton.Size = new System.Drawing.Size(75, 23);
+            this.loadButton.TabIndex = 11;
+            this.loadButton.Text = "Load Data";
+            this.loadButton.UseVisualStyleBackColor = true;
+            this.loadButton.Click += new System.EventHandler(this.loadButton_Click);
+            // 
             // InvoiceNasabahForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1084, 479);
+            this.ClientSize = new System.Drawing.Size(1133, 479);
+            this.Controls.Add(this.loadButton);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.maxTukaranKoinMax);
@@ -238,5 +250,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.NumericUpDown maxTukaranKoinMax;
+        private System.Windows.Forms.Button loadButton;
     }
 }

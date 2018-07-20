@@ -557,6 +557,7 @@
             this.rasioGridView.RowHeadersVisible = false;
             this.rasioGridView.Size = new System.Drawing.Size(443, 193);
             this.rasioGridView.TabIndex = 13;
+            this.rasioGridView.SelectionChanged += new System.EventHandler(this.rasioGridView_SelectionChanged);
             // 
             // label17
             // 
@@ -578,6 +579,7 @@
             this.permintaanBonGridView.RowHeadersVisible = false;
             this.permintaanBonGridView.Size = new System.Drawing.Size(443, 193);
             this.permintaanBonGridView.TabIndex = 11;
+            this.permintaanBonGridView.SelectionChanged += new System.EventHandler(this.permintaanBonGridView_SelectionChanged);
             // 
             // groupBox2
             // 
@@ -655,6 +657,7 @@
             this.permintaanAdhocGridView.RowHeadersVisible = false;
             this.permintaanAdhocGridView.Size = new System.Drawing.Size(443, 193);
             this.permintaanAdhocGridView.TabIndex = 11;
+            this.permintaanAdhocGridView.SelectionChanged += new System.EventHandler(this.permintaanAdhocGridView_SelectionChanged);
             // 
             // groupbox3
             // 

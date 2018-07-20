@@ -28,9 +28,8 @@ namespace testProjectBCA
             listHargaLayanan = (from x in db.HargaLayanans.AsEnumerable() select x).ToList();
             listEventTanggal = (from x in db.EventTanggals select x).ToList();
             loadCombo();
-            loadData();
-            dataGridView1.Columns[1].DefaultCellStyle.Format = "C";
-            dataGridView1.Columns[1].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
+            //dataGridView1.Columns[1].DefaultCellStyle.Format = "C";
+            //dataGridView1.Columns[1].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
             for (int a = 17; a < dataGridView1.Columns.Count; a++)
             {
                 if (a == 15 || a == 16 || a == 18 || a == 19 || a==20 || a==21 || a==22)
@@ -38,6 +37,9 @@ namespace testProjectBCA
                 dataGridView1.Columns[a].DefaultCellStyle.Format = "C";
                 dataGridView1.Columns[a].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
             }
+            maxCosNumeric.Value = 500000000;
+            maxTukaranKertasNumeric.Value = 100000000;
+            maxTukaranKoinMax.Value = 5000000;
         }
         public void loadCombo()
         {
@@ -352,12 +354,10 @@ namespace testProjectBCA
         private void tahunComboBox_SelectionChangeCommitted(object sender, EventArgs e)
         {
             loadComboBulan();
-            loadData();
         }
 
         private void bulanComboBox_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            loadData();
         }
         Int64 hitungFrekuensi(String metodeLayanan, Int64 amount)
         {
@@ -393,6 +393,11 @@ namespace testProjectBCA
                 return frekKertas;
             else
                 return frekKoin;
+        }
+
+        private void loadButton_Click(object sender, EventArgs e)
+        {
+            loadData();
         }
     }
     class InvoiceToExport

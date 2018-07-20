@@ -816,6 +816,13 @@ namespace testProjectBCA
             ispf.MdiParent = this;
             ispf.Show();
         }
+
+        private void updateStokPosisiToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            UpdateStokPosisiForm uspf = new UpdateStokPosisiForm();
+            uspf.MdiParent = this;
+            uspf.Show();
+        }
     }
 }
 public static class SqlBulkCopyExtensions

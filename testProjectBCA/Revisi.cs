@@ -173,11 +173,11 @@ namespace testProjectBCA
                         }
                         db.SaveChanges();
                     }
+                    
                 }
                 loadForm.CloseForm();
+                MessageBox.Show("Done");
             }
-            
-            MessageBox.Show("Done");
         }
         private List<transaksiPkt> loadSheetsIntoClassList(DataSet data)
         {

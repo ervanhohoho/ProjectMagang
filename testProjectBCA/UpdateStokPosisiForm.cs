@@ -20,17 +20,22 @@ namespace testProjectBCA
         private void selectFileButton_Click(object sender, EventArgs e)
         {
             OpenFileDialog of = new OpenFileDialog();
+            of.Multiselect = true;
             of.Filter = Variables.excelFilter;
             if(of.ShowDialog() == DialogResult.OK)
             {
+                loadForm.ShowSplashScreen();
                 foreach (string path in of.FileNames)
                 {
                     processFile(path);
                 }
+                loadForm.CloseForm();
+                MessageBox.Show("Done!");
             }
         }
         void processFile(String path)
         {
+            GC.Collect();
             DataSet ds = Util.openExcel(path);
 
             foreach (DataTable temp in ds.Tables)
@@ -39,6 +44,8 @@ namespace testProjectBCA
         }
         void processTable(DataTable table)
         {
+            GC.Collect();
+
             int ROWSTARTKERTAS = 12,
                 ROWENDKERTAS = 19,
                 ROWSTARTKOIN = 23,
@@ -347,6 +354,7 @@ namespace testProjectBCA
                     }
                 }
                 db.SaveChanges();
+                db.Dispose();
             }
             else
             {

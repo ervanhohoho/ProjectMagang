@@ -161,11 +161,11 @@
             this.dataGridView3.AllowUserToResizeRows = false;
             this.dataGridView3.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView3.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView3.Location = new System.Drawing.Point(522, 131);
+            this.dataGridView3.Location = new System.Drawing.Point(777, 131);
             this.dataGridView3.Name = "dataGridView3";
             this.dataGridView3.ReadOnly = true;
             this.dataGridView3.RowHeadersVisible = false;
-            this.dataGridView3.Size = new System.Drawing.Size(243, 387);
+            this.dataGridView3.Size = new System.Drawing.Size(249, 387);
             this.dataGridView3.TabIndex = 11;
             // 
             // label3
@@ -186,11 +186,11 @@
             this.dataGridView4.AllowUserToResizeRows = false;
             this.dataGridView4.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView4.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView4.Location = new System.Drawing.Point(771, 131);
+            this.dataGridView4.Location = new System.Drawing.Point(522, 131);
             this.dataGridView4.Name = "dataGridView4";
             this.dataGridView4.ReadOnly = true;
             this.dataGridView4.RowHeadersVisible = false;
-            this.dataGridView4.Size = new System.Drawing.Size(240, 388);
+            this.dataGridView4.Size = new System.Drawing.Size(249, 387);
             this.dataGridView4.TabIndex = 13;
             // 
             // dasborExtension

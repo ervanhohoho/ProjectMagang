@@ -72,12 +72,12 @@ namespace testProjectBCA
                             q.TotalUangBesar = totalUangBesar;
                             db.SaveChanges();
                         }
-                        else if(listAbacas.Where(x => ((DateTime)x.tanggal).Date == DateTime.Parse(row[COL_TANGGAL].ToString()).Date && x.CustomerCode == row[COL_CUSTOMER_CODE].ToString()).ToList().Any())
-                        {
-                            var q = listAbacas.Where(x => x.tanggal == DateTime.Parse(row[COL_TANGGAL].ToString()) && x.CustomerCode == row[COL_CUSTOMER_CODE].ToString()).FirstOrDefault();
-                            q.TotalUangBesar = totalUangBesar;
-                            q.totalAmount = Int64.Parse(row[COL_TOTAL_AMOUNT].ToString());
-                        }
+                        //else if(listAbacas.Where(x => ((DateTime)x.tanggal).Date == DateTime.Parse(row[COL_TANGGAL].ToString()).Date && x.CustomerCode == row[COL_CUSTOMER_CODE].ToString()).ToList().Any())
+                        //{
+                        //    var q = listAbacas.Where(x => x.tanggal == DateTime.Parse(row[COL_TANGGAL].ToString()) && x.CustomerCode == row[COL_CUSTOMER_CODE].ToString()).FirstOrDefault();
+                        //    q.TotalUangBesar = totalUangBesar;
+                        //    q.totalAmount = Int64.Parse(row[COL_TOTAL_AMOUNT].ToString());
+                        //}
                         else
                         {
                             Console.WriteLine(row[COL_TANGGAL].ToString());
@@ -91,10 +91,33 @@ namespace testProjectBCA
                             });
                         }
                     }
+                    listAbacas = (from x in listAbacas
+                                  group x by new { x.CustomerCode, x.tanggal, x.CustomerName } into g
+                                  select new Abaca()
+                                  {
+                                      tanggal = g.Key.tanggal,
+                                      CustomerCode = g.Key.CustomerCode,
+                                      CustomerName = g.Key.CustomerName,
+                                      jobId = "",
+                                      vendorCardNo = "",
+                                      vendorName = "",
+                                      totalAmount = g.Sum(x=>x.totalAmount),
+                                      TotalUangBesar = g.Sum(x=>x.TotalUangBesar)
+                                  }).ToList();
+
+                    int counter = 0;
+                    //foreach(var temp in listAbacas)
+                    //{
+                    //    Console.WriteLine(counter++);
+                    //    Console.WriteLine(temp.CustomerCode + " " + temp.CustomerName + " " + temp.totalAmount + " " + temp.TotalUangBesar);
+                    //    db.Abacas.Add(temp);
+                    //    db.SaveChanges();
+                    //}
                     db.Abacas.AddRange(listAbacas);
                     db.SaveChanges();
                 }
                 loadForm.CloseForm();
+                MessageBox.Show("Done!");
             }
        
         }

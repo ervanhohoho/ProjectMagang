@@ -68,12 +68,54 @@ namespace testProjectBCA
                                  Rasio20 = calculateRasio(x.saldoAwal20, x.isiCRM20, x.isiATM20),
                                  RasioGabungan = calculateRasio(x.saldoAwal100 + x.saldoAwal50 + x.saldoAwal20, x.isiCRM100 + x.isiCRM50 + x.isiCRM20, x.isiATM100 + x.isiATM50 + x.isiATM20),
                              }).OrderByDescending(x => x.RasioGabungan).ToList();
-            realisasiGridView.DataSource = realisasi;
+
+            var toView = (from x in realisasi
+                          group x by x.kodePkt into g
+                          select new
+                          {
+                              kodePkt = g.Key,
+                              saldoAwal100 = g.Average(x => x.saldoAwal100),
+                              saldoAwal50 = g.Average(x => x.saldoAwal50),
+                              saldoAwal20 = g.Average(x => x.saldoAwal20),
+
+                              sislokATM100 = g.Average(x => x.sislokATM100),
+                              sislokATM50 = g.Average(x => x.sislokATM50),
+                              sislokATM20 = g.Average(x => x.sislokATM20),
+
+                              sislokCDM100 = g.Average(x => x.sislokCDM100),
+                              sislokCDM50 = g.Average(x => x.sislokCDM50),
+                              sislokCDM20 = g.Average(x => x.sislokCDM20),
+
+                              sislokCRM100 = g.Average(x => x.sislokCRM100),
+                              sislokCRM50 = g.Average(x => x.sislokCRM50),
+                              sislokCRM20 = g.Average(x => x.sislokCRM20),
+
+                              isiATM100 = g.Average(x => x.isiATM100),
+                              isiATM50 = g.Average(x => x.isiATM50),
+                              isiATM20 = g.Average(x => x.isiATM20),
+
+                              isiCRM100 = g.Average(x => x.isiCRM100),
+                              isiCRM50 = g.Average(x => x.isiCRM50),
+                              isiCRM20 = g.Average(x => x.isiCRM20),
+
+
+                              Rasio100 = g.Average(x => x.Rasio100),
+                              Rasio50 = g.Average(x => x.Rasio50),
+                              Rasio20 = g.Average(x => x.Rasio20),
+
+                              RasioGabungan = g.Average(x => x.RasioGabungan)
+                          }).ToList();
+            realisasiGridView.DataSource = toView.OrderByDescending(x=>x.RasioGabungan).ToList();
             this.realisasi = realisasi;
-            for (int a = 2; a < realisasiGridView.Columns.Count - 3; a++)
+            for (int a = 1; a < realisasiGridView.Columns.Count; a++)
             {
+                
                 realisasiGridView.Columns[a].DefaultCellStyle.Format = "C";
                 realisasiGridView.Columns[a].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
+                if (a >= realisasiGridView.ColumnCount - 4)
+                {
+                    realisasiGridView.Columns[a].DefaultCellStyle.Format = "N2";
+                }
             }
         }
         private void loadApprovalKanwil()
@@ -121,11 +163,52 @@ namespace testProjectBCA
                     listApproval.AddRange(realisasi);
                 }
             }
-            approvalGridView.DataSource = listApproval;
-            for (int a = 2; a < approvalGridView.Columns.Count - 3; a++)
+            var toView = (from x in listApproval
+                          group x by x.kodePkt into g
+                          select new
+                          {
+                              kodePkt = g.Key,
+                              saldoAwal100 = g.Average(x => x.saldoAwal100),
+                              saldoAwal50 = g.Average(x => x.saldoAwal50),
+                              saldoAwal20 = g.Average(x => x.saldoAwal20),
+
+                              sislokATM100 = g.Average(x => x.sislokATM100),
+                              sislokATM50 = g.Average(x => x.sislokATM50),
+                              sislokATM20 = g.Average(x => x.sislokATM20),
+
+                              sislokCDM100 = g.Average(x => x.sislokCDM100),
+                              sislokCDM50 = g.Average(x => x.sislokCDM50),
+                              sislokCDM20 = g.Average(x => x.sislokCDM20),
+
+                              sislokCRM100 = g.Average(x => x.sislokCRM100),
+                              sislokCRM50 = g.Average(x => x.sislokCRM50),
+                              sislokCRM20 = g.Average(x => x.sislokCRM20),
+
+                              isiATM100 = g.Average(x => x.isiATM100),
+                              isiATM50 = g.Average(x => x.isiATM50),
+                              isiATM20 = g.Average(x => x.isiATM20),
+
+                              isiCRM100 = g.Average(x => x.isiCRM100),
+                              isiCRM50 = g.Average(x => x.isiCRM50),
+                              isiCRM20 = g.Average(x => x.isiCRM20),
+
+
+                              Rasio100 = g.Average(x => x.Rasio100),
+                              Rasio50 = g.Average(x => x.Rasio50),
+                              Rasio20 = g.Average(x => x.Rasio20),
+
+                              RasioGabungan = g.Average(x => x.RasioGabungan)
+                          }).ToList();
+            approvalGridView.DataSource = toView.OrderByDescending(x=>x.RasioGabungan).ToList();
+            for (int a = 1; a < approvalGridView.Columns.Count; a++)
             {
+                
                 approvalGridView.Columns[a].DefaultCellStyle.Format = "C";
                 approvalGridView.Columns[a].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
+                if (a >= approvalGridView.ColumnCount - 4)
+                {
+                    approvalGridView.Columns[a].DefaultCellStyle.Format = "N2";
+                }
             }
         }
         private void loadRealisasiE2E()
@@ -160,12 +243,53 @@ namespace testProjectBCA
                                  Rasio50 = calculateRasio(x.saldoAwal50, x.isiCRM50, x.isiATM50),
                                  Rasio20 = calculateRasio(x.saldoAwal20, x.isiCRM20, x.isiATM20),
                              }).ToList();
-            realisasiGridView.DataSource = realisasi;
+            var toView = (from x in realisasi
+                          group x by x.kodePkt into g
+                          select new
+                          {
+                              kodePkt = g.Key,
+                              saldoAwal100 = g.Average(x => x.saldoAwal100),
+                              saldoAwal50 = g.Average(x => x.saldoAwal50),
+                              saldoAwal20 = g.Average(x => x.saldoAwal20),
+
+                              sislokATM100 = g.Average(x => x.sislokATM100),
+                              sislokATM50 = g.Average(x => x.sislokATM50),
+                              sislokATM20 = g.Average(x => x.sislokATM20),
+
+                              sislokCDM100 = g.Average(x => x.sislokCDM100),
+                              sislokCDM50 = g.Average(x => x.sislokCDM50),
+                              sislokCDM20 = g.Average(x => x.sislokCDM20),
+
+                              sislokCRM100 = g.Average(x => x.sislokCRM100),
+                              sislokCRM50 = g.Average(x => x.sislokCRM50),
+                              sislokCRM20 = g.Average(x => x.sislokCRM20),
+
+                              isiATM100 = g.Average(x => x.isiATM100),
+                              isiATM50 = g.Average(x => x.isiATM50),
+                              isiATM20 = g.Average(x => x.isiATM20),
+
+                              isiCRM100 = g.Average(x => x.isiCRM100),
+                              isiCRM50 = g.Average(x => x.isiCRM50),
+                              isiCRM20 = g.Average(x => x.isiCRM20),
+
+
+                              Rasio100 = g.Average(x => x.Rasio100),
+                              Rasio50 = g.Average(x => x.Rasio50),
+                              Rasio20 = g.Average(x => x.Rasio20),
+
+                              RasioGabungan = g.Average(x => x.RasioGabungan)
+                          }).ToList();
+            realisasiGridView.DataSource = toView.OrderByDescending(x => x.RasioGabungan).ToList();
             this.realisasi = realisasi;
-            for (int a = 2; a < realisasiGridView.Columns.Count - 3; a++)
+            for (int a = 1; a < realisasiGridView.Columns.Count; a++)
             {
+              
                 realisasiGridView.Columns[a].DefaultCellStyle.Format = "C";
                 realisasiGridView.Columns[a].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
+                if (a >= realisasiGridView.ColumnCount - 4)
+                {
+                    realisasiGridView.Columns[a].DefaultCellStyle.Format = "N2";
+                }
             }
         }
         private void loadApprovalE2E()
@@ -211,10 +335,15 @@ namespace testProjectBCA
                 }
             }
             approvalGridView.DataSource = listApproval;
-            for (int a = 2; a < approvalGridView.Columns.Count - 3; a++)
+            for (int a = 1; a < approvalGridView.Columns.Count; a++)
             {
+                
                 approvalGridView.Columns[a].DefaultCellStyle.Format = "C";
                 approvalGridView.Columns[a].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
+                if (a >= approvalGridView.ColumnCount - 4)
+                {
+                    approvalGridView.Columns[a].DefaultCellStyle.Format = "N2";
+                }
             }
         }
         private void loadRealisasiPkt()
@@ -250,13 +379,16 @@ namespace testProjectBCA
                                  Rasio20 = calculateRasio(x.saldoAwal20, x.isiCRM20, x.isiATM20),
                                  RasioGabungan = calculateRasio(x.saldoAwal100 + x.saldoAwal50 + x.saldoAwal20, x.isiCRM100 + x.isiCRM50 + x.isiCRM20, x.isiATM100 + x.isiATM50 +x.isiATM20),
                              }).ToList();
+
+
             realisasiGridView.DataSource = realisasi;
             this.realisasi = realisasi;
-            for (int a = 2; a < realisasiGridView.Columns.Count - 3; a++)
+            for (int a = 2; a < realisasiGridView.Columns.Count - 4; a++)
             {
                 realisasiGridView.Columns[a].DefaultCellStyle.Format = "C";
                 realisasiGridView.Columns[a].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
             }
+
         }
         private void loadApprovalPkt()
         {
@@ -323,8 +455,44 @@ namespace testProjectBCA
                   );
                 }
             }
-            approvalGridView.DataSource = listApproval;
-            for (int a = 2; a < approvalGridView.Columns.Count - 3; a++)
+            var toView = (from x in listApproval
+                          group x by x.kodePkt into g
+                          select new
+                          {
+                              kodePkt = g.Key,
+                              saldoAwal100 = g.Average(x => x.saldoAwal100),
+                              saldoAwal50 = g.Average(x => x.saldoAwal50),
+                              saldoAwal20 = g.Average(x => x.saldoAwal20),
+
+                              sislokATM100 = g.Average(x => x.sislokATM100),
+                              sislokATM50 = g.Average(x => x.sislokATM50),
+                              sislokATM20 = g.Average(x => x.sislokATM20),
+
+                              sislokCDM100 = g.Average(x => x.sislokCDM100),
+                              sislokCDM50 = g.Average(x => x.sislokCDM50),
+                              sislokCDM20 = g.Average(x => x.sislokCDM20),
+
+                              sislokCRM100 = g.Average(x => x.sislokCRM100),
+                              sislokCRM50 = g.Average(x => x.sislokCRM50),
+                              sislokCRM20 = g.Average(x => x.sislokCRM20),
+
+                              isiATM100 = g.Average(x => x.isiATM100),
+                              isiATM50 = g.Average(x => x.isiATM50),
+                              isiATM20 = g.Average(x => x.isiATM20),
+
+                              isiCRM100 = g.Average(x => x.isiCRM100),
+                              isiCRM50 = g.Average(x => x.isiCRM50),
+                              isiCRM20 = g.Average(x => x.isiCRM20),
+
+
+                              Rasio100 = g.Average(x => x.Rasio100),
+                              Rasio50 = g.Average(x => x.Rasio50),
+                              Rasio20 = g.Average(x => x.Rasio20),
+
+                              RasioGabungan = g.Average(x => x.RasioGabungan)
+                          }).ToList();
+            approvalGridView.DataSource = toView.OrderByDescending(x => x.RasioGabungan).ToList();
+            for (int a = 1; a < approvalGridView.Columns.Count - 4; a++)
             {
                 approvalGridView.Columns[a].DefaultCellStyle.Format = "C";
                 approvalGridView.Columns[a].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
@@ -395,25 +563,25 @@ namespace testProjectBCA
                                {
                                    kodePkt = g.Key,
 
-                                   sislokATM100 = g.Sum(a => a.realisasiSislokATM100) / g.Sum(a => a.forecastSislokATM100),
-                                   sislokATM50 = g.Sum(a => a.realisasiSislokATM50) / g.Sum(a => a.forecastSislokATM50),
-                                   sislokATM20 = g.Sum(a => a.realisasiSislokATM20) / g.Sum(a => a.forecastSislokATM20),
+                                   sislokATM100 = g.Sum(a => a.forecastSislokATM100) / g.Sum(a => a.realisasiSislokATM100),
+                                   sislokATM50 = g.Sum(a => a.forecastSislokATM50) / g.Sum(a => a.realisasiSislokATM50),
+                                   sislokATM20 = g.Sum(a => a.forecastSislokATM20) / g.Sum(a => a.realisasiSislokATM20),
 
-                                   sislokCRM100 = g.Sum(a => a.realisasiSislokCRM100) / g.Sum(a => a.forecastSislokCRM100),
-                                   sislokCRM50 = g.Sum(a => a.realisasiSislokCRM50) / g.Sum(a => a.forecastSislokCRM50),
-                                   sislokCRM20 = g.Sum(a => a.realisasiSislokCRM100) / g.Sum(a => a.forecastSislokCRM20),
+                                   sislokCRM100 = g.Sum(a => a.forecastSislokCRM100) / g.Sum(a => a.realisasiSislokCRM100),
+                                   sislokCRM50 = g.Sum(a => a.forecastSislokCRM50) / g.Sum(a => a.realisasiSislokCRM50),
+                                   sislokCRM20 = g.Sum(a => a.forecastSislokCRM100) / g.Sum(a => a.realisasiSislokCRM20),
 
-                                   sislokCDM100 = g.Sum(a => a.realisasiSislokCDM100) / g.Sum(a => a.forecastSislokCDM100),
-                                   sislokCDM50 = g.Sum(a => a.realisasiSislokCDM50) / g.Sum(a => a.forecastSislokCDM50),
-                                   sislokCDM20 = g.Sum(a => a.realisasiSislokCDM20) / g.Sum(a => a.forecastSislokCDM20),
+                                   sislokCDM100 = g.Sum(a => a.forecastSislokCDM100) / g.Sum(a => a.realisasiSislokCDM100),
+                                   sislokCDM50 = g.Sum(a => a.forecastSislokCDM50) / g.Sum(a => a.realisasiSislokCDM50),
+                                   sislokCDM20 = g.Sum(a => a.forecastSislokCDM20) / g.Sum(a => a.realisasiSislokCDM20),
 
-                                   isiATM100 = g.Sum(a => a.realisasiIsiATM100) / g.Sum(a => a.forecastIsiATM100),
-                                   isiATM50 = g.Sum(a => a.realisasiIsiATM50) / g.Sum(a => a.forecastIsiATM50),
-                                   isiATM20 = g.Sum(a => a.realisasiIsiATM20) / g.Sum(a => a.forecastIsiATM20),
+                                   isiATM100 = g.Sum(a => a.forecastIsiATM100) / g.Sum(a => a.realisasiIsiATM100),
+                                   isiATM50 = g.Sum(a => a.forecastIsiATM50) / g.Sum(a => a.realisasiIsiATM50),
+                                   isiATM20 = g.Sum(a => a.forecastIsiATM20) / g.Sum(a => a.realisasiIsiATM20),
 
-                                   isiCRM100 = g.Sum(a => a.realisasiIsiCRM100) / g.Sum(a => a.forecastIsiCRM100),
-                                   isiCRM50 = g.Sum(a => a.realisasiIsiCRM50) / g.Sum(a => a.forecastIsiCRM50),
-                                   isiCRM20 = g.Sum(a => a.realisasiIsiCRM20) / g.Sum(a => a.forecastIsiCRM20),
+                                   isiCRM100 = g.Sum(a => a.forecastIsiCRM100) / g.Sum(a => a.realisasiIsiCRM100),
+                                   isiCRM50 = g.Sum(a => a.forecastIsiCRM50) / g.Sum(a => a.realisasiIsiCRM50),
+                                   isiCRM20 = g.Sum(a => a.forecastIsiCRM20) / g.Sum(a => a.realisasiIsiCRM20),
 
                                    rasio100 = g.Sum(a => a.realisasiIsiATM100 + a.realisasiIsiCRM100) == 0 ? 0 : g.Sum(a => (Double)a.saldoAwal100) / g.Sum(a => a.realisasiIsiATM100 + a.realisasiIsiCRM100),
                                    rasio50 = g.Sum(a => a.realisasiIsiATM50 + a.realisasiIsiCRM50) == 0 ? 0 : g.Sum(a => (Double)a.saldoAwal50) / g.Sum(a => a.realisasiIsiATM50 + a.realisasiIsiCRM50),

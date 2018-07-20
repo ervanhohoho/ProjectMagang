@@ -139,9 +139,9 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "select kodepkt, avg(sislokcrm100+sislokcrm50+sislokcrm20) from transaksiatms"
-                                      + " where tanggal between '" + dateTimePicker1.Value.ToShortDateString() + "' and '" + dateTimePicker2.Value.ToShortDateString() + "'"
-                                      + " group by kodepkt";
+                    cmd.CommandText = "select transaksiatms.kodepkt, avg(sislokcrm100+sislokcrm50+sislokcrm20) from transaksiatms join Pkt on TransaksiAtms.kodePkt = Pkt.kodePkt"
+                                      + " where tanggal between '" + dateTimePicker1.Value.ToShortDateString() + "' and '" + dateTimePicker2.Value.ToShortDateString() + "' and kanwil = '"+ comboKanwil.SelectedValue.ToString() +"'"
+                                      + " group by transaksiatms.kodepkt";
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
@@ -152,6 +152,12 @@ namespace testProjectBCA
                         });
                     }
                     dataGridView3.DataSource = sca;
+
+                    for (int i = 0; i < dataGridView3.Columns.Count; i++)
+                    {
+                        dataGridView3.Columns[i].DefaultCellStyle.Format = "c0";
+                        dataGridView3.Columns[i].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
+                    }
 
                 }
             }
@@ -167,9 +173,9 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "select kodepkt, avg(sislokatm100+sislokatm50+sislokatm20) from transaksiatms"
-                                      + " where tanggal between '" + dateTimePicker1.Value.ToShortDateString() + "' and '" + dateTimePicker2.Value.ToShortDateString() + "'"
-                                      + " group by kodepkt";
+                    cmd.CommandText = "select transaksiatms.kodepkt, avg(sislokatm100+sislokatm50+sislokatm20) from transaksiatms join Pkt on TransaksiAtms.kodePkt = Pkt.kodePkt"
+                                      + " where tanggal between '" + dateTimePicker1.Value.ToShortDateString() + "' and '" + dateTimePicker2.Value.ToShortDateString() + "' and kanwil = '" + comboKanwil.SelectedValue.ToString() + "'"
+                                      + " group by transaksiatms.kodepkt";
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
@@ -180,6 +186,12 @@ namespace testProjectBCA
                         });
                     }
                     dataGridView4.DataSource = sta;
+
+                    for (int i = 0; i < dataGridView4.Columns.Count; i++)
+                    {
+                        dataGridView4.Columns[i].DefaultCellStyle.Format = "c0";
+                        dataGridView4.Columns[i].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
+                    }
 
                 }
             }
