@@ -221,6 +221,12 @@
     <Compile Include="ExportForm.Designer.cs">
       <DependentUpon>ExportForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ExportOpti.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ExportOpti.Designer.cs">
+      <DependentUpon>ExportOpti.cs</DependentUpon>
+    </Compile>
     <Compile Include="ForecastAtmForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -501,6 +507,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ExportForm.resx">
       <DependentUpon>ExportForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ExportOpti.resx">
+      <DependentUpon>ExportOpti.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ForecastAtmForm.resx">
       <DependentUpon>ForecastAtmForm.cs</DependentUpon>

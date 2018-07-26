@@ -20,7 +20,7 @@ namespace testProjectBCA
 
         Denom saldoAwal = new Denom();
         List<Denom> saldo = new List<Denom>();
-        
+
         List<Denom> sislokCrm = new List<Denom>();
         List<Denom> sislokCrmDenganStdDeviasi = new List<Denom>();
         List<Denom> sislokCdm = new List<Denom>();
@@ -47,7 +47,7 @@ namespace testProjectBCA
         List<DateTime> tanggalSkip;
         DateTime tanggalSetorLama;
         int pktIndex;
-        DateTime tanggalOptiMin ,tanggalOptiMax, tanggalKalenderMax; 
+        DateTime tanggalOptiMin, tanggalOptiMax, tanggalKalenderMax;
         /**
             Opti itu datanya pasti selalu H, H+1,...
             Belom tentu semua pkt ada data opti
@@ -55,7 +55,6 @@ namespace testProjectBCA
         public RevisiInformationBoard()
         {
             InitializeComponent();
-            tglSetor.Value = DateTime.Today.AddDays(1);
             pktComboBox.MouseWheel += new MouseEventHandler(pktComboBox_MouseWheel);
             pktIndex = 0;
             loadComboBox();
@@ -75,10 +74,10 @@ namespace testProjectBCA
                         Console.WriteLine("Min Date: " + minTanggal.ToShortDateString());
                         Console.WriteLine("Max Date: " + maxTanggal.ToShortDateString());
 
-                        DateTime tempTanggal = new DateTime(minTanggal.Year, minTanggal.Month,1) ;
+                        DateTime tempTanggal = new DateTime(minTanggal.Year, minTanggal.Month, 1);
                         int counter = 0;
                         bool firstRun = true;
-                        while(tempTanggal<=maxTanggal)
+                        while (tempTanggal <= maxTanggal)
                         {
                             treeView1.Nodes.Add(tempTanggal.Year.ToString());
                             int monthCounter;
@@ -89,7 +88,7 @@ namespace testProjectBCA
                             }
                             else
                                 monthCounter = 1;
-                            while(tempTanggal<=maxTanggal && monthCounter <= 12)
+                            while (tempTanggal <= maxTanggal && monthCounter <= 12)
                             {
                                 Console.WriteLine(monthCounter);
                                 treeView1.Nodes[counter].Nodes.Add((monthCounter++).ToString());
@@ -111,14 +110,15 @@ namespace testProjectBCA
             //    dataGridView1.Columns[i].DefaultCellStyle.Format = "c";
             //    dataGridView1.Columns[i].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
             //}
-            if(KodePkt.Count<=0)
+            if (KodePkt.Count <= 0)
                 MessageBox.Show("Data Laporan Belum Ada Yang Approved");
 
             pktIndex = 0;
             loadE2E();
             MetodePrediksiComboBox.SelectedIndex = 0;
             MetodeHitungLainnyaComboBox.SelectedIndex = 0;
-            /*tanggalOpti = (DateTime) query[0].tanggal*/;
+            /*tanggalOpti = (DateTime) query[0].tanggal*/
+            ;
             //Console.WriteLine(query[0]);
             //MessageBox.Show(tanggalOpti.ToShortDateString());
             tanggalPrediksiMaxPicker.MinDate = DateTime.Today.AddDays(2);
@@ -134,7 +134,7 @@ namespace testProjectBCA
                                                 select x.kodePkt).Distinct().ToList();
 
                 KodePkt = tempListKodePkt;
-                
+
                 pktComboBox.DataSource = KodePkt;
                 tanggalKalenderMax = (from x in db.EventTanggals select x).Max(x => x.tanggal);
             }
@@ -149,10 +149,10 @@ namespace testProjectBCA
         {
             //dataGridView1.Rows.Clear();
             //dataGridView1.Refresh();
-            
+
             //init
             prediksiIsiAtmOpti = new List<Denom>();
-            
+
             using (SqlConnection sqlConnection1 = new SqlConnection(Variables.connectionString))
             {
                 using (SqlCommand cmd = new SqlCommand())
@@ -182,7 +182,7 @@ namespace testProjectBCA
                         DateTime minDate = (DateTime)reader[0];
                         DateTime maxDate = (DateTime)reader[1];
                         reader.Close();
-                        while(minDate<=maxDate)
+                        while (minDate <= maxDate)
                         {
                             DataGridViewRow row = new DataGridViewRow();
                             DataGridViewTextBoxCell cell = new DataGridViewTextBoxCell();
@@ -243,15 +243,15 @@ namespace testProjectBCA
                             //dataGridView1.Rows.Add(row);
                         }
                     }
-                   
+
                     sqlConnection1.Close();
                 }
-                
+
             }
             // Data is accessible through the DataReader object here.
             Console.WriteLine("Prediksi isi ATM Opti");
             Console.WriteLine("===================");
-            foreach(var temp in prediksiIsiAtmOpti)
+            foreach (var temp in prediksiIsiAtmOpti)
             {
                 Console.WriteLine(temp.tgl + " " + temp.d100 + " " + temp.d50 + " " + temp.d20);
             }
@@ -1235,13 +1235,13 @@ namespace testProjectBCA
                         tempDate = tempDate.AddDays(1);
                         reader.Close();
                     }
-                    if(isError)
+                    if (isError)
                     {
                         MessageBox.Show(errMsg);
                     }
                 }
                 sql.Close();
-               
+
                 Console.WriteLine("CDM");
                 foreach (var temp in sislokCdm)
                 {
@@ -2414,7 +2414,7 @@ namespace testProjectBCA
             //    bonGridView.Columns[i].DefaultCellStyle.Format = "c";
             //    bonGridView.Columns[i].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
             //}
-            DateTime tempDate = tanggalOptiMin.AddDays(1+jumlahBonLaporan-1);
+            DateTime tempDate = tanggalOptiMin.AddDays(1 + jumlahBonLaporan - 1);
             Database1Entities db = new Database1Entities();
             var query = (from x in db.Approvals.AsEnumerable()
                          join y in db.DetailApprovals.AsEnumerable() on x.idApproval equals y.idApproval
@@ -2434,7 +2434,7 @@ namespace testProjectBCA
                 row.Cells.Add(cell);
                 cell = new DataGridViewTextBoxCell();
                 cell.Value = 0;
-                cell.Value = (Int64)query.Where(x=>x.tanggal == tempDate).Select(x=>x.bon100).FirstOrDefault();
+                cell.Value = (Int64)query.Where(x => x.tanggal == tempDate).Select(x => x.bon100).FirstOrDefault();
                 row.Cells.Add(cell);
                 cell = new DataGridViewTextBoxCell();
                 cell.Value = 0;
@@ -2448,7 +2448,7 @@ namespace testProjectBCA
                 bonGridView.Rows.Add(row);
                 tempDate = tempDate.AddDays(1);
 
-                
+
                 counter++;
             }
             bonGridView.Columns["100"].DefaultCellStyle.Format = "c";
@@ -2468,14 +2468,14 @@ namespace testProjectBCA
 
             for (int a = 0; a < bonGridView.Rows.Count; a++)
             {
-                String s100 = bonGridView[1, a].Value.ToString().Replace("Rp", "").Replace(".", "").Trim(' '), 
-                       s50 = bonGridView[2, a].Value.ToString().Replace("Rp", "").Replace(".", "").Trim(' '), 
-                       s20 = bonGridView[3, a].Value.ToString().Replace("Rp", "").Replace(".", "").Trim(' '), 
+                String s100 = bonGridView[1, a].Value.ToString().Replace("Rp", "").Replace(".", "").Trim(' '),
+                       s50 = bonGridView[2, a].Value.ToString().Replace("Rp", "").Replace(".", "").Trim(' '),
+                       s20 = bonGridView[3, a].Value.ToString().Replace("Rp", "").Replace(".", "").Trim(' '),
                        sdate = bonGridView[0, a].Value.ToString();
 
                 Console.WriteLine(s100 + " " + s50 + " " + s20);
-                Int64 d100 = Int64.Parse(s100), 
-                      d50 = Int64.Parse(s50), 
+                Int64 d100 = Int64.Parse(s100),
+                      d50 = Int64.Parse(s50),
                       d20 = Int64.Parse(s20);
                 DateTime tgl = Convert.ToDateTime(sdate);
 
@@ -2499,7 +2499,7 @@ namespace testProjectBCA
             DateTime tanggalAkhir = tanggalPrediksiMaxPicker.Value.Date;
             List<Denom> bonFromGridView = loadBonFromGridView();
 
-            listRasio.RemoveAll(x=>true);
+            listRasio.RemoveAll(x => true);
 
             Console.WriteLine(saldoAwal.d100 + " " + saldoAwal.d50 + " " + saldoAwal.d20);
             //Bon Adhoc
@@ -2511,7 +2511,8 @@ namespace testProjectBCA
 
             DateTime tgl = saldoAwal.tgl;
 
-            Denom saldoAkhir = new Denom() {
+            Denom saldoAkhir = new Denom()
+            {
                 tgl = saldoAwal.tgl,
                 d100 = saldoAwal.d100,
                 d50 = saldoAwal.d50,
@@ -2519,7 +2520,7 @@ namespace testProjectBCA
             };
 
             Console.WriteLine("Load Saldo Awal\n=================");
-            while(tgl <= tanggalAkhir)
+            while (tgl <= tanggalAkhir)
             {
                 Console.WriteLine(tgl.ToShortDateString());
                 Denom tIsiAtm = prediksiIsiAtm.Where(x => x.tgl.Date == tgl).FirstOrDefault(),
@@ -2539,7 +2540,7 @@ namespace testProjectBCA
                 Console.WriteLine("Sislok Crm: " + tSislokCrm.tgl + " " + tSislokCrm.d100 + " " + tSislokCrm.d50 + " " + tSislokCrm.d50);
                 Console.WriteLine("Sislok Cdm: " + tSislokCdm.tgl + " " + tSislokCdm.d100 + " " + tSislokCdm.d50 + " " + tSislokCdm.d50);
 
-                
+
 
 
                 saldo.Add(new Denom()
@@ -2557,7 +2558,7 @@ namespace testProjectBCA
                     d20 = saldoAkhir.d20 / ((Double)(tIsiAtm.d20 + tIsiCrm.d20)),
                 });
 
-                
+
 
                 if (tIsiAtm == null)
                     Console.WriteLine("T Isi ATM NULL");
@@ -2568,9 +2569,9 @@ namespace testProjectBCA
                 if (tSislokCdm == null)
                     Console.WriteLine("T Sislok CDM NULL");
 
-                saldoAkhir.d100 = saldoAkhir.d100 - tIsiAtm.d100 - tIsiCrm.d100 + tSislokCrm.d100 + tSislokCdm.d100 + ((Int64)Math.Round((tSislokAtm.d100 * tIsiAtm.d100),0));
-                saldoAkhir.d50 = saldoAkhir.d50 - tIsiAtm.d50 - tIsiCrm.d50 + tSislokCrm.d50 + tSislokCdm.d50 + ((Int64)Math.Round((tSislokAtm.d50 * tIsiAtm.d50),0));
-                saldoAkhir.d20 = saldoAkhir.d20 - tIsiAtm.d20 - tIsiCrm.d20 + tSislokCrm.d20 + tSislokCdm.d20 + ((Int64)Math.Round((tSislokAtm.d20 * tIsiAtm.d20),0));
+                saldoAkhir.d100 = saldoAkhir.d100 - tIsiAtm.d100 - tIsiCrm.d100 + tSislokCrm.d100 + tSislokCdm.d100 + ((Int64)Math.Round((tSislokAtm.d100 * tIsiAtm.d100), 0));
+                saldoAkhir.d50 = saldoAkhir.d50 - tIsiAtm.d50 - tIsiCrm.d50 + tSislokCrm.d50 + tSislokCdm.d50 + ((Int64)Math.Round((tSislokAtm.d50 * tIsiAtm.d50), 0));
+                saldoAkhir.d20 = saldoAkhir.d20 - tIsiAtm.d20 - tIsiCrm.d20 + tSislokCrm.d20 + tSislokCdm.d20 + ((Int64)Math.Round((tSislokAtm.d20 * tIsiAtm.d20), 0));
 
                 if (tgl == saldoAwal.tgl)
                 {
@@ -2583,7 +2584,7 @@ namespace testProjectBCA
                     saldoAkhir.d20 -= setorAdhoc.d20;
                 }
 
-                if(setorBaru.tgl == tgl)
+                if (setorBaru.tgl == tgl)
                 {
                     saldoAkhir.d100 -= setorBaru.d100;
                     saldoAkhir.d50 -= setorBaru.d50;
@@ -2595,14 +2596,14 @@ namespace testProjectBCA
                     saldoAkhir.d50 -= tSetor.d50;
                     saldoAkhir.d20 -= tSetor.d20;
                 }
-                if(tBon != null)
+                if (tBon != null)
                 {
                     Console.WriteLine("Bon: " + tBon.tgl + " " + tBon.d100 + " " + tBon.d50 + " " + tBon.d20);
                     saldoAkhir.d100 += tBon.d100;
                     saldoAkhir.d50 += tBon.d50;
                     saldoAkhir.d20 += tBon.d20;
                 }
-                else if(tBonGridView != null)
+                else if (tBonGridView != null)
                 {
                     Console.WriteLine("BonGridView: " + tBonGridView.tgl + " " + tBonGridView.d100 + " " + tBonGridView.d50 + " " + tBonGridView.d20);
                     saldoAkhir.d100 += tBonGridView.d100;
@@ -2611,14 +2612,14 @@ namespace testProjectBCA
                 }
                 else
                 {
-                   
+
                 }
                 tgl = tgl.AddDays(1);
-                
+
             }
 
-                    
-            
+
+
         }
         void loadTableRasio()
         {
@@ -2629,28 +2630,28 @@ namespace testProjectBCA
             rasioGridView.Columns.Add("100", "100");
             rasioGridView.Columns.Add("50", "50");
             rasioGridView.Columns.Add("20", "20");
-            foreach(var temp in listRasio)
+            foreach (var temp in listRasio)
             {
                 DataGridViewRow row = new DataGridViewRow();
                 DataGridViewTextBoxCell cell = new DataGridViewTextBoxCell();
                 cell.Value = temp.tgl.ToShortDateString();
                 row.Cells.Add(cell);
                 cell = new DataGridViewTextBoxCell();
-                cell.Value = Math.Round(temp.d100,2);
+                cell.Value = Math.Round(temp.d100, 2);
                 row.Cells.Add(cell);
                 cell = new DataGridViewTextBoxCell();
-                cell.Value = Math.Round(temp.d50,2);
+                cell.Value = Math.Round(temp.d50, 2);
                 row.Cells.Add(cell);
                 cell = new DataGridViewTextBoxCell();
-                cell.Value = Math.Round(temp.d20,2);
+                cell.Value = Math.Round(temp.d20, 2);
                 row.Cells.Add(cell);
                 rasioGridView.Rows.Add(row);
             }
         }
         void loadTableSaldo()
-        {   
+        {
             DataTable table = new DataTable();
-            using (var reader = ObjectReader.Create(saldo, "tgl","d100","d50","d20"))
+            using (var reader = ObjectReader.Create(saldo, "tgl", "d100", "d50", "d20"))
             {
                 table.Load(reader);
             }
@@ -2861,18 +2862,18 @@ namespace testProjectBCA
         void loadCheckedDariSkipPrediksiTreeView()
         {
             tanggalSkip = new List<DateTime>();
-            for(int a=0;a<skipPrediksiTreeView.Nodes.Count;a++)
+            for (int a = 0; a < skipPrediksiTreeView.Nodes.Count; a++)
             {
-                for(int b=0;b<skipPrediksiTreeView.Nodes[a].Nodes.Count;b++)
+                for (int b = 0; b < skipPrediksiTreeView.Nodes[a].Nodes.Count; b++)
                 {
-                    for(int c = 0;c < skipPrediksiTreeView.Nodes[a].Nodes[b].Nodes.Count;c++)
+                    for (int c = 0; c < skipPrediksiTreeView.Nodes[a].Nodes[b].Nodes.Count; c++)
                     {
                         if (skipPrediksiTreeView.Nodes[a].Nodes[b].Nodes[c].Checked == true)
                             tanggalSkip.Add(new DateTime(Int32.Parse(skipPrediksiTreeView.Nodes[a].Text), Int32.Parse(skipPrediksiTreeView.Nodes[a].Nodes[b].Text), Int32.Parse(skipPrediksiTreeView.Nodes[a].Nodes[b].Nodes[c].Text)));
                     }
                 }
             }
-            foreach(var temp in tanggalSkip)
+            foreach (var temp in tanggalSkip)
             {
                 Console.WriteLine(temp);
             }
@@ -2881,9 +2882,9 @@ namespace testProjectBCA
         {
             Database1Entities db = new Database1Entities();
             var listPermintaanAdhoc = (from x in db.LaporanPermintaanAdhocs.AsEnumerable()
-                                                                where x.tanggal == DateTime.Today.Date
-                                                                && x.kodePkt == KodePkt[pktIndex]
-                                                                select new { x.tanggal,  x.C100, x.C50, x.C20 }).ToList();
+                                       where x.tanggal == DateTime.Today.Date
+                                       && x.kodePkt == KodePkt[pktIndex]
+                                       select new { x.tanggal, x.C100, x.C50, x.C20 }).ToList();
             permintaanAdhocGridView.DataSource = listPermintaanAdhoc;
             permintaanAdhocGridView.Columns[1].DefaultCellStyle.Format = "C";
             permintaanAdhocGridView.Columns[2].DefaultCellStyle.Format = "C";
@@ -2897,8 +2898,6 @@ namespace testProjectBCA
         {
             Double buf;
             loadPrediksiOpti();
-
-            tglSetor.Value = DateTime.Today.AddDays(1);
             loadCheckedDariSkipPrediksiTreeView();
             tanggalOptiMax = tanggalPrediksiMaxPicker.Value.Date;
             tanggalOptiMin = DateTime.Today.Date;
@@ -2906,24 +2905,24 @@ namespace testProjectBCA
             {
                 MessageBox.Show("Data tanggal di table kalender kurang");
             }
-            else if ((!Double.TryParse(rasio100Txt.Text, out buf) || !Double.TryParse(rasio50Txt.Text, out buf) || !Double.TryParse(rasio20Txt.Text,out buf)) && (!String.IsNullOrEmpty(rasio100Txt.Text) && !String.IsNullOrEmpty(rasio50Txt.Text) && !String.IsNullOrEmpty(rasio20Txt.Text) ))
+            else if ((!Double.TryParse(rasio100Txt.Text, out buf) || !Double.TryParse(rasio50Txt.Text, out buf) || !Double.TryParse(rasio20Txt.Text, out buf)) && (!String.IsNullOrEmpty(rasio100Txt.Text) && !String.IsNullOrEmpty(rasio50Txt.Text) && !String.IsNullOrEmpty(rasio20Txt.Text)))
             {
                 MessageBox.Show("Target rasio harus berupa angka!");
             }
             else
             {
-            //loadSislokCrm();
-            //try
-            //{
-                if(MetodePrediksiComboBox.SelectedIndex == 0)
+                //loadSislokCrm();
+                //try
+                //{
+                if (MetodePrediksiComboBox.SelectedIndex == 0)
                 {
                     Database1Entities db = new Database1Entities();
-                    if(!(from x in db.Optis select x).Any())
+                    if (!(from x in db.Optis select x).Any())
                     {
                         MessageBox.Show("Data Opti Tidak Ada!");
                         return;
                     }
-                    if(prediksiIsiAtmOpti[prediksiIsiAtmOpti.Count-1].tgl < tanggalOptiMax)
+                    if (prediksiIsiAtmOpti[prediksiIsiAtmOpti.Count - 1].tgl < tanggalOptiMax)
                     {
                         MessageBox.Show("Data Opti Salah");
                         return;
@@ -2938,7 +2937,7 @@ namespace testProjectBCA
                 if (MetodePrediksiComboBox.SelectedIndex == 2)
                 {
                     loadIsiAtmHistoris();
-                    for(int a=0;a<prediksiIsiAtmOpti.Count;a++)
+                    for (int a = 0; a < prediksiIsiAtmOpti.Count; a++)
                     {
                         prediksiIsiAtm[a].d100 = (prediksiIsiAtm[a].d100 + prediksiIsiAtmOpti[a].d100) / 2;
                         prediksiIsiAtm[a].d50 = (prediksiIsiAtm[a].d50 + prediksiIsiAtmOpti[a].d50) / 2;
@@ -2965,8 +2964,8 @@ namespace testProjectBCA
 
                 }
                 loadSislokCdm();
-             
-                    
+
+
                 loadRasioSislokAtm();
                 loadRasioSislokAtmDenganStdDeviasi();
 
@@ -2977,11 +2976,11 @@ namespace testProjectBCA
                 loadIsiCrm();
 
                 loadSislokCrm();
-                   
+
                 loadSetor();
 
                 //Hitungan dengan metode kedua
-                if(MetodeHitungLainnyaComboBox.SelectedIndex == 1)
+                if (MetodeHitungLainnyaComboBox.SelectedIndex == 1)
                 {
                     loadSislokCdmDenganStdDeviasi();
                     loadIsiCrmDenganStdDeviasi();
@@ -2993,7 +2992,7 @@ namespace testProjectBCA
                     rasioSislokAtm = rasioSislokATMDenganStdDeviasi;
                 }
                 //Hitungan dengan metode ketiga
-                if(MetodeHitungLainnyaComboBox.SelectedIndex == 2)
+                if (MetodeHitungLainnyaComboBox.SelectedIndex == 2)
                 {
                     loadSislokCdmDenganStdDeviasi();
                     loadIsiCrmDenganStdDeviasi();
@@ -3074,19 +3073,19 @@ namespace testProjectBCA
                     select x).ToList();
             Approval lastApproval = q[0];
             List<DetailApproval> res = (from x in db.DetailApprovals
-                                  where x.idApproval == lastApproval.idApproval
-                                  select x).ToList();
+                                        where x.idApproval == lastApproval.idApproval
+                                        select x).ToList();
             return res;
         }
         void loadSetorFromApproval(List<DetailApproval> list)
         {
             var temp = list.Where(x => !String.IsNullOrEmpty(x.setor100.ToString()) && (x.setor100 > 0 || x.setor50 > 0 || x.setor20 > 0)).ToList();
-            if(temp.Any())
+            if (temp.Any())
             {
                 setor100Txt.Value = (decimal)temp[0].setor100;
                 setor50Txt.Value = (decimal)temp[0].setor50;
                 setor20Txt.Value = (decimal)temp[0].setor20;
-                tanggalSetorLama = (DateTime) temp[0].tanggal;
+                tanggalSetorLama = (DateTime)temp[0].tanggal;
                 tglSetor.Value = (DateTime)temp[0].tanggal;
             }
         }
@@ -3120,7 +3119,7 @@ namespace testProjectBCA
         }
         private void treeView1_ParentChanged(object sender, EventArgs e)
         {
-            
+
         }
         void pktComboBox_MouseWheel(object sender, MouseEventArgs e)
         {
@@ -3141,14 +3140,14 @@ namespace testProjectBCA
         private void approveButton_Click(object sender, EventArgs e)
         {
             Database1Entities db = new Database1Entities();
-            if(MessageBox.Show("Approve Bon?", "Approve Bon", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (MessageBox.Show("Approve Bon?", "Approve Bon", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 loadForm.ShowSplashScreen();
                 List<Denom> bonYangDisetujui = loadBonYangDisetujuiFromTable();
                 Denom bonAdhoc = loadBonAdhocFromTxt();
                 Denom setorAdhoc = loadSetorAdhocFromTxt();
                 Denom setor = loadSetorFromTxt();
-                
+
                 Approval newA = new Approval();
                 newA.tanggal = tanggalOptiMin;
                 newA.kodePkt = KodePkt[pktIndex];
@@ -3162,29 +3161,29 @@ namespace testProjectBCA
 
                 for (int i = 0; i < bon.Count; i++)
                 {
-                    if(tempTanggal.Date == DateTime.Today.Date)
+                    if (tempTanggal.Date == DateTime.Today.Date)
                     {
                         Int64 saldoLama100 = saldo[i + 1].d100,
-                            saldoLama50 = saldo[i + 1].d50, 
+                            saldoLama50 = saldo[i + 1].d50,
                             saldoLama20 = saldo[i + 1].d20;
                         saldo[i + 1].d100 = saldo[i].d100 + (Int64)bonAdhoc100Txt.Value - (Int64)setorAdhoc100Txt.Value;
                         saldo[i + 1].d50 = saldo[i].d50 + (Int64)bonAdhoc50Txt.Value - (Int64)setorAdhoc100Txt.Value;
                         saldo[i + 1].d20 = saldo[i].d20 + (Int64)bonAdhoc20Txt.Value - (Int64)setorAdhoc100Txt.Value;
 
-                        Int64 selisih100 = saldo[i + 1].d100 - saldoLama100, 
-                            selisih50 = saldo[i + 1].d50 - saldoLama50, 
+                        Int64 selisih100 = saldo[i + 1].d100 - saldoLama100,
+                            selisih50 = saldo[i + 1].d50 - saldoLama50,
                             selisih20 = saldo[i + 1].d20 - saldoLama20;
-                        for (int j = i+1; j < saldo.Count; j++)
+                        for (int j = i + 1; j < saldo.Count; j++)
                         {
                             saldo[j].d100 += selisih100;
-                            saldo[j].d50  += selisih50;
+                            saldo[j].d50 += selisih50;
                             saldo[j].d20 += selisih20;
                         }
                     }
                     DetailApproval newDetailA = (from x in db.DetailApprovals.AsEnumerable()
-                                                where x.idApproval == lastApproval[lastApproval.Count - 1].idApproval
-                                                && x.tanggal == tempTanggal
-                                                select x).FirstOrDefault();
+                                                 where x.idApproval == lastApproval[lastApproval.Count - 1].idApproval
+                                                 && x.tanggal == tempTanggal
+                                                 select x).FirstOrDefault();
                     if (tanggalSetorLama == tempTanggal && tanggalSetorLama.Date != tglSetor.Value.Date)
                     {
                         Int64 selisih100 = (Int64)newDetailA.setor100,
@@ -3194,7 +3193,7 @@ namespace testProjectBCA
                         newDetailA.setor50 = 0;
                         newDetailA.setor20 = 0;
 
-                      
+
                     }
 
                     if (newDetailA.tanggal.Value.ToShortDateString() == tglSetor.Value.ToShortDateString())
@@ -3202,14 +3201,14 @@ namespace testProjectBCA
                         newDetailA.setor100 = setor.d100;
                         newDetailA.setor50 = setor.d50;
                         newDetailA.setor20 = setor.d20;
-                        
+
                     }
-                  
+
                     tempTanggal = tempTanggal.AddDays(1);
                     jumlahBon++;
                     count++;
                 }
-                for (int i=0;i<=bonYangDisetujui.Count ;i++)
+                for (int i = 0; i <= bonYangDisetujui.Count; i++)
                 {
                     DetailApproval newDetailA = (from x in db.DetailApprovals.AsEnumerable()
                                                  where x.idApproval == lastApproval[lastApproval.Count - 1].idApproval
@@ -3218,30 +3217,30 @@ namespace testProjectBCA
                     newDetailA.idApproval = lastApproval[lastApproval.Count - 1].idApproval;
                     newDetailA.tanggal = tempTanggal;
 
-                    if(tanggalSetorLama == tempTanggal && tanggalSetorLama.Date != tglSetor.Value.Date)
+                    if (tanggalSetorLama == tempTanggal && tanggalSetorLama.Date != tglSetor.Value.Date)
                     {
-                        Int64 selisih100 = (Int64) newDetailA.setor100, 
-                            selisih50 = (Int64)newDetailA.setor50, 
+                        Int64 selisih100 = (Int64)newDetailA.setor100,
+                            selisih50 = (Int64)newDetailA.setor50,
                             selisih20 = (Int64)newDetailA.setor20;
                         newDetailA.setor100 = 0;
                         newDetailA.setor50 = 0;
                         newDetailA.setor20 = 0;
                     }
 
-                    if(newDetailA.tanggal.Value.ToShortDateString()==tglSetor.Value.ToShortDateString())
+                    if (newDetailA.tanggal.Value.ToShortDateString() == tglSetor.Value.ToShortDateString())
                     {
                         newDetailA.setor100 = setor.d100;
                         newDetailA.setor50 = setor.d50;
                         newDetailA.setor20 = setor.d20;
                     }
-                    
-                    if(i  <bonYangDisetujui.Count)
+
+                    if (i < bonYangDisetujui.Count)
                     {
                         //Bon
                         newDetailA.bon100 = bonYangDisetujui[i].d100;
                         newDetailA.bon50 = bonYangDisetujui[i].d50;
                         newDetailA.bon20 = bonYangDisetujui[i].d20;
-                    }                              
+                    }
                     else
                     {
                         newDetailA.bon100 = -1;
@@ -3261,7 +3260,7 @@ namespace testProjectBCA
                     newDetailA.sislokCDM100 = sislokCdm[count].d100;
                     newDetailA.sislokCDM50 = sislokCdm[count].d50;
                     newDetailA.sislokCDM20 = sislokCdm[count].d20;
-                    newDetailA.sislokATM100 =(Int64)(rasioSislokAtm[count].d100 * prediksiIsiAtm[count].d100);
+                    newDetailA.sislokATM100 = (Int64)(rasioSislokAtm[count].d100 * prediksiIsiAtm[count].d100);
                     newDetailA.sislokATM50 = (Int64)(rasioSislokAtm[count].d50 * prediksiIsiAtm[count].d50);
                     newDetailA.sislokATM20 = (Int64)(rasioSislokAtm[count].d20 * prediksiIsiAtm[count].d20);
 
@@ -3274,7 +3273,7 @@ namespace testProjectBCA
                     newDetailA.isiCRM20 = isiCrm[count].d20;
 
                     tempTanggal = tempTanggal.AddDays(1);
-                    
+
                     count++;
                 }
                 DateTime today = DateTime.Today.Date;
@@ -3282,7 +3281,7 @@ namespace testProjectBCA
                               where x.idApproval == lastApproval[lastApproval.Count - 1].idApproval
                               && x.tanggal == today
                               select x).FirstOrDefault();
-                if(adhocs!=null)
+                if (adhocs != null)
                 {
                     adhocs.adhoc100 = bonAdhoc.d100;
                     adhocs.adhoc50 = bonAdhoc.d50;
@@ -3294,10 +3293,10 @@ namespace testProjectBCA
 
 
                 db.SaveChanges();
-                
+
                 loadForm.CloseForm();
                 loadComboBox();
-                
+
                 MessageBox.Show("Approved!");
                 bonAdhoc100Txt.Value = 0;
                 bonAdhoc50Txt.Value = 0;
@@ -3310,14 +3309,14 @@ namespace testProjectBCA
                 setorAdhoc100Txt.Value = 0;
                 setorAdhoc50Txt.Value = 0;
                 setorAdhoc20Txt.Value = 0;
-              
+
                 cleanGridViews();
             }
             else
             {
 
             }
-            
+
         }
         void cleanGridViews()
         {
@@ -3337,8 +3336,8 @@ namespace testProjectBCA
         Denom loadBonAdhocFromTxt()
         {
             Denom bonAdhoc = new Denom();
-            bonAdhoc.d100 = (Int64) bonAdhoc100Txt.Value;
-            bonAdhoc.d50 = (Int64) bonAdhoc50Txt.Value;
+            bonAdhoc.d100 = (Int64)bonAdhoc100Txt.Value;
+            bonAdhoc.d50 = (Int64)bonAdhoc50Txt.Value;
             bonAdhoc.d20 = (Int64)bonAdhoc20Txt.Value;
             return bonAdhoc;
         }
@@ -3384,7 +3383,7 @@ namespace testProjectBCA
                     if (bonGridView.Rows[a].Cells[b].Value.ToString().Trim() != "")
                     {
                         Int64 buf;
-                        if(Int64.TryParse(bonGridView.Rows[a].Cells[b].Value.ToString(), out buf))
+                        if (Int64.TryParse(bonGridView.Rows[a].Cells[b].Value.ToString(), out buf))
                             bonGridView.Rows[a].Cells[b].Value = Int64.Parse(bonGridView.Rows[a].Cells[b].Value.ToString().Trim());
                     }
                 }
@@ -3393,19 +3392,19 @@ namespace testProjectBCA
             loadTableRasio();
             loadTableSaldo();
         }
-       
+
         private void Txt_TextChanged(object sender, EventArgs e)
         {
-            
+
         }
         private void tglSetor_ValueChanged(object sender, EventArgs e)
         {
-            Console.WriteLine(tglSetor.Value.ToShortDateString() == new DateTime(2018,3,23).ToShortDateString());
+            Console.WriteLine(tglSetor.Value.ToShortDateString() == new DateTime(2018, 3, 23).ToShortDateString());
             loadRasio();
         }
         private void bonGridView_CellEnter(object sender, DataGridViewCellEventArgs e)
         {
-            int rowidx = e.RowIndex , colidx = e.ColumnIndex;
+            int rowidx = e.RowIndex, colidx = e.ColumnIndex;
             bonGridView.Rows[rowidx].Cells[colidx].Value = bonGridView.Rows[rowidx].Cells[colidx].Value.ToString();
         }
         private void rekomendasiBonGridView_SelectionChanged(object sender, EventArgs e)
@@ -3413,7 +3412,7 @@ namespace testProjectBCA
             sumLabel.Text = "SUM: ";
             var temp = rekomendasiBonGridView.SelectedCells;
             Int64 sum = 0;
-            for(int a=0;a<temp.Count;a++)
+            for (int a = 0; a < temp.Count; a++)
             {
                 var temp2 = temp[a].Value;
                 Int64 buf;
@@ -3425,26 +3424,6 @@ namespace testProjectBCA
             }
             sumLabel.Text += "Rp. ";
             sumLabel.Text += sum.ToString("#,##0");
-
-            DataGridViewSelectedCellCollection cells = rekomendasiBonGridView.SelectedCells;
-            foreach (DataGridViewCell cell in cells)
-            {
-                int rowidx = cell.RowIndex;
-                int colidx = cell.ColumnIndex;
-                rekomendasiBonGridView.Rows[rowidx].Cells[colidx].Value = rekomendasiBonGridView.Rows[rowidx].Cells[colidx].Value.ToString();
-            }
-            for (int a = 0; a < rekomendasiBonGridView.Rows.Count; a++)
-            {
-                for (int b = 0; b < rekomendasiBonGridView.Columns.Count; b++)
-                {
-                    if (!cells.Contains(rekomendasiBonGridView.Rows[a].Cells[b]))
-                    {
-                        Int64 buf;
-                        if (Int64.TryParse(rekomendasiBonGridView.Rows[a].Cells[b].Value.ToString(), out buf))
-                            rekomendasiBonGridView.Rows[a].Cells[b].Value = Int64.Parse(rekomendasiBonGridView.Rows[a].Cells[b].Value.ToString().Replace("Rp.", "").Replace(".", "").Trim());
-                    }
-                }
-            }
         }
         private void tanggalPrediksiMaxPicker_ValueChanged(object sender, EventArgs e)
         {
@@ -3472,8 +3451,8 @@ namespace testProjectBCA
                     skipPrediksiTreeView.Nodes[year - DateTime.Today.Year].Nodes.Add(month.ToString());
                     if (DateTime.Today.Month == month && DateTime.Today.Year == year)
                         loadDayNodes(year, month, true, true);
-                    else if(DateTime.Today.Year == year)
-                        loadDayNodes(year, month, false ,true);
+                    else if (DateTime.Today.Year == year)
+                        loadDayNodes(year, month, false, true);
                     else
                         loadDayNodes(year, month, false, false);
                 }
@@ -3497,67 +3476,67 @@ namespace testProjectBCA
         }
         void loadDayNodes(int year, int month, bool todayMonth, bool todayYear)
         {
-            
-                if (year < tanggalPrediksiMaxPicker.Value.Year)
+
+            if (year < tanggalPrediksiMaxPicker.Value.Year)
+            {
+                int fday = DateTime.Today.Day;
+                if (!todayMonth || !todayYear)
+                    fday = 1;
+                for (int day = fday; day <= DateTime.DaysInMonth(year, month); day++)
                 {
-                    int fday = DateTime.Today.Day;
-                    if (!todayMonth || !todayYear)
-                        fday = 1;
-                    for (int day = fday; day <= DateTime.DaysInMonth(year, month); day++)
-                    {
-                        skipPrediksiTreeView.Nodes[year - DateTime.Today.Year].Nodes[month - DateTime.Today.Month].Nodes.Add(day.ToString());
-                    }
+                    skipPrediksiTreeView.Nodes[year - DateTime.Today.Year].Nodes[month - DateTime.Today.Month].Nodes.Add(day.ToString());
                 }
-                else
+            }
+            else
+            {
+                if (year == DateTime.Today.Year)
                 {
-                    if (year == DateTime.Today.Year)
+                    if (month < tanggalPrediksiMaxPicker.Value.Month)
                     {
-                        if (month < tanggalPrediksiMaxPicker.Value.Month)
+                        int fday = DateTime.Today.Day;
+                        if (!todayMonth || !todayYear)
+                            fday = 1;
+                        for (int day = fday; day <= DateTime.DaysInMonth(year, month); day++)
                         {
-                            int fday = DateTime.Today.Day;
-                            if (!todayMonth || !todayYear)
-                                fday = 1;
-                            for (int day = fday; day <= DateTime.DaysInMonth(year, month); day++)
-                            {
-                                skipPrediksiTreeView.Nodes[year - DateTime.Today.Year].Nodes[month - DateTime.Today.Month].Nodes.Add(day.ToString());
-                            }
-                        }
-                        else
-                        {
-                            int fday = DateTime.Today.Day;
-                            if (!todayMonth || !todayYear)
-                                fday = 1;
-                            for (int day = fday; day <= tanggalPrediksiMaxPicker.Value.Day; day++)
-                            {
-                                skipPrediksiTreeView.Nodes[year - DateTime.Today.Year].Nodes[month - DateTime.Today.Month].Nodes.Add(day.ToString());
-                            }
+                            skipPrediksiTreeView.Nodes[year - DateTime.Today.Year].Nodes[month - DateTime.Today.Month].Nodes.Add(day.ToString());
                         }
                     }
                     else
                     {
-                        if (month < tanggalPrediksiMaxPicker.Value.Month)
+                        int fday = DateTime.Today.Day;
+                        if (!todayMonth || !todayYear)
+                            fday = 1;
+                        for (int day = fday; day <= tanggalPrediksiMaxPicker.Value.Day; day++)
                         {
-                            int fday = DateTime.Today.Day;
-                            if (!todayMonth || !todayYear)
-                                fday = 1;
-                            for (int day = fday; day <= DateTime.DaysInMonth(year, month); day++)
-                            {
-                                skipPrediksiTreeView.Nodes[year - DateTime.Today.Year].Nodes[month - 1].Nodes.Add(day.ToString());
-                            }
-                        }
-                        else
-                        {
-                            int fday = DateTime.Today.Day;
-                            if (!todayMonth || !todayYear)
-                                fday = 1;
-                            for (int day = fday; day <= tanggalPrediksiMaxPicker.Value.Day; day++)
-                            {
-                                skipPrediksiTreeView.Nodes[year - DateTime.Today.Year].Nodes[month - 1].Nodes.Add(day.ToString());
-                            }
+                            skipPrediksiTreeView.Nodes[year - DateTime.Today.Year].Nodes[month - DateTime.Today.Month].Nodes.Add(day.ToString());
                         }
                     }
                 }
-           
+                else
+                {
+                    if (month < tanggalPrediksiMaxPicker.Value.Month)
+                    {
+                        int fday = DateTime.Today.Day;
+                        if (!todayMonth || !todayYear)
+                            fday = 1;
+                        for (int day = fday; day <= DateTime.DaysInMonth(year, month); day++)
+                        {
+                            skipPrediksiTreeView.Nodes[year - DateTime.Today.Year].Nodes[month - 1].Nodes.Add(day.ToString());
+                        }
+                    }
+                    else
+                    {
+                        int fday = DateTime.Today.Day;
+                        if (!todayMonth || !todayYear)
+                            fday = 1;
+                        for (int day = fday; day <= tanggalPrediksiMaxPicker.Value.Day; day++)
+                        {
+                            skipPrediksiTreeView.Nodes[year - DateTime.Today.Year].Nodes[month - 1].Nodes.Add(day.ToString());
+                        }
+                    }
+                }
+            }
+
         }
 
         private void bonGridView_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
@@ -3575,11 +3554,11 @@ namespace testProjectBCA
                 int colidx = cell.ColumnIndex;
                 bonGridView.Rows[rowidx].Cells[colidx].Value = bonGridView.Rows[rowidx].Cells[colidx].Value.ToString();
             }
-            for(int a=0;a<bonGridView.Rows.Count;a++)
+            for (int a = 0; a < bonGridView.Rows.Count; a++)
             {
-                for(int b=0;b<bonGridView.Columns.Count;b++)
+                for (int b = 0; b < bonGridView.Columns.Count; b++)
                 {
-                    if(!cells.Contains(bonGridView.Rows[a].Cells[b]))
+                    if (!cells.Contains(bonGridView.Rows[a].Cells[b]))
                     {
                         Int64 buf;
                         if (Int64.TryParse(bonGridView.Rows[a].Cells[b].Value.ToString(), out buf))
@@ -3596,7 +3575,7 @@ namespace testProjectBCA
             loadE2E();
         }
 
-       
+
 
         private void bonGridView_SelectionChanged_1(object sender, EventArgs e)
         {
@@ -3621,6 +3600,12 @@ namespace testProjectBCA
             }
         }
 
+        private void Txt_ValueChanged(object sender, EventArgs e)
+        {
+            loadRasio();
+            loadTableRasio();
+            loadTableSaldo();
+        }
         private void permintaanBonGridView_SelectionChanged(object sender, EventArgs e)
         {
             DataGridViewSelectedCellCollection cells = permintaanBonGridView.SelectedCells;
@@ -3688,13 +3673,6 @@ namespace testProjectBCA
                     }
                 }
             }
-        }
-
-        private void Txt_ValueChanged(object sender, EventArgs e)
-        {
-            loadRasio();
-            loadTableRasio();
-            loadTableSaldo();
         }
 
         private void textBox1_KeyPress(object sender, KeyPressEventArgs e)

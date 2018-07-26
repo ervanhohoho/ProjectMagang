@@ -691,15 +691,12 @@ namespace testProjectBCA
             Double buf;
 
             var tempSlaBesar = (from x in slapav
-                                where !Double.IsNaN(x.slaProsesBesar)
                                 group x by new { x.namaPkt,x.tanggal} into g
                                 select new { namaPkt = g.Key.namaPkt, slaBesar = g.Average(x => x.slaProsesBesar), tanggal = g.Key.tanggal }).ToList();
             var tempSlaKecil = (from x in slapav
-                                where !Double.IsNaN(x.slaProsesKecil)
                                 group x by new { x.namaPkt, x.tanggal } into g
                                 select new { namaPkt = g.Key.namaPkt, slaKecil = g.Average(x => x.slaProsesKecil), tanggal = g.Key.tanggal }).ToList();
             var tempSlaGabung = (from x in slapav
-                                 where !Double.IsNaN(x.slaGabung)
                                  group x by new { x.namaPkt, x.tanggal } into g
                                  select new { namaPkt = g.Key.namaPkt, slaGabung = g.Average(x => x.slaGabung), tanggal = g.Key.tanggal }).ToList();
             
@@ -1023,22 +1020,23 @@ namespace testProjectBCA
         }
         public Double hitungTotalProsesBulanDpn(Double totalProses, DateTime tanggal , String namapkt, String bk)
         {
+
             DateTime tgl = tanggal.AddDays(1);
-            var query = (from x in db.StokPosisis
+            Console.WriteLine("Tanggal Bulan Depan: " + tgl);
+            var query = (from x in db.StokPosisis.AsEnumerable()
                          where x.namaPkt.Contains(namapkt)
-                         && ((DateTime)x.tanggal) == tgl
+                         && ((DateTime)x.tanggal).Date == tgl.Date
                          select x
                          ).ToList();
-            Console.WriteLine("Bln Depan" + tgl);
             if (query.Any())
             {
                 if(bk == "Besar")
                 {
-                    return (Double) query.Where(x => x.denom == "100000" || x.denom == "50000").Select(x => new { unprocessesed = hitungPcs((Int64) x.unprocessed,x.denom) }).Select(x=>x.unprocessesed).FirstOrDefault();
+                    return totalProses - (Double) query.Where(x => x.denom == "100000" || x.denom == "50000").Select(x => new { unprocessesed = hitungPcs((Int64) x.unprocessed,x.denom) }).Select(x=>x.unprocessesed).Sum();
                 }
                 else
                 {
-                    return (Double)query.Where(x => !(x.denom == "100000" || x.denom == "50000")).Select(x => new { unprocessesed = hitungPcs((Int64)x.unprocessed, x.denom) }).Select(x => x.unprocessesed).FirstOrDefault();
+                    return totalProses - (Double)query.Where(x => !(x.denom == "100000" || x.denom == "50000")).Select(x => new { unprocessesed = hitungPcs((Int64)x.unprocessed, x.denom) }).Select(x => x.unprocessesed).Sum();
                 }
             }
             else
@@ -1219,15 +1217,12 @@ namespace testProjectBCA
                 else
                 {
                     var tempSlaBesar = (from x in slapav
-                                        where !Double.IsNaN(x.slaProsesBesar)
                                         group x by new { x.namaPkt, x.tanggal } into g
                                         select new { namaPkt = g.Key.namaPkt, slaBesar = g.Average(x => x.slaProsesBesar), tanggal = g.Key.tanggal }).ToList();
                     var tempSlaKecil = (from x in slapav
-                                        where !Double.IsNaN(x.slaProsesKecil)
                                         group x by new { x.namaPkt, x.tanggal } into g
                                         select new { namaPkt = g.Key.namaPkt, slaKecil = g.Average(x => x.slaProsesKecil), tanggal = g.Key.tanggal }).ToList();
                     var tempSlaGabung = (from x in slapav
-                                         where !Double.IsNaN(x.slaGabung)
                                          group x by new { x.namaPkt, x.tanggal } into g
                                          select new { namaPkt = g.Key.namaPkt, slaGabung = g.Average(x => x.slaGabung), tanggal = g.Key.tanggal }).ToList();
                     var qt = (from x in slapav

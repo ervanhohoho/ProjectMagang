@@ -256,7 +256,7 @@ namespace testProjectBCA
 
             //preparing data for pivot pervendor bon
             var query = (from x in en.RekonSaldoPerVendors
-                         where x.actionRekon.Contains("Delivery") && ((DateTime)x.dueDate) >= dateTimePicker1.Value.Date && ((DateTime)x.dueDate) <= dateTimePicker2.Value.Date
+                         where x.actionRekon.Contains("Delivery") && x.statusRekon.Equals("Confirmed") && ((DateTime)x.dueDate) >= dateTimePicker1.Value.Date && ((DateTime)x.dueDate) <= dateTimePicker2.Value.Date
                          select x).ToList();
             
             //generating pivotbon
@@ -295,7 +295,7 @@ namespace testProjectBCA
 
             //preparing data for pivot pervendor setoran
             var querysetoran = (from x in en.RekonSaldoPerVendors
-                         where x.actionRekon.Contains("Return") && ((DateTime)x.dueDate) >= dateTimePicker1.Value.Date && ((DateTime)x.dueDate) <= dateTimePicker2.Value.Date
+                         where x.actionRekon.Contains("Return") && x.statusRekon.Equals("In Transit") && ((DateTime)x.dueDate) >= dateTimePicker1.Value.Date && ((DateTime)x.dueDate) <= dateTimePicker2.Value.Date
                                 select x).ToList();
 
             //generating pivot
@@ -947,7 +947,7 @@ namespace testProjectBCA
             foreach (var item in rsv)
             {
                 var query4 = (from x in query3
-                              where x.confId == item.confId && x.dueDate == item.dueDate
+                              where x.confId == item.confId && x.dueDate == item.dueDate 
                               select x).FirstOrDefault();
                 if (query4 != null)
                 {
@@ -1010,10 +1010,21 @@ namespace testProjectBCA
             foreach (var item in rspv)
             {
                 var query2 = (from x in query
-                              where x.confId == item.confId && x.dueDate == item.dueDate
+                              where x.cashPointtId == item.cashPointtId 
+                              && x.confId == item.confId 
+                              && x.orderDate == item.orderDate 
+                              //&& x.vendor == item.vendor
+                              && x.actionRekon == item.actionRekon 
+                              && x.statusRekon == item.statusRekon 
+                              //&& ((DateTime)x.dueDate).Date == item.dueDate 
+                              //&& (DateTime)x.blogTime == item.blogTime 
+                              //&& x.currencyAmmount == item.currencyAmmount 
+                              //&& ((DateTime)x.realDate).Date == item.realDate 
+                              //&& x.validation == item.validation
                               select x).FirstOrDefault();
                 if (query2!=null)
                 {
+                    Console.WriteLine("UPDATE");
                     query2.cashPointtId = item.cashPointtId;
                     query2.confId = item.confId;
                     query2.orderDate = item.orderDate;
@@ -1030,6 +1041,10 @@ namespace testProjectBCA
 
                     rspvToRemove.Add(item);
 
+                }
+                else
+                {
+                    Console.WriteLine("ELSE RSPV");
                 }
             }
 
@@ -1051,7 +1066,9 @@ namespace testProjectBCA
             {
                 int rowidx = cell.RowIndex;
                 int colidx = cell.ColumnIndex;
-                dataGridView2.Rows[rowidx].Cells[colidx].Value = dataGridView2.Rows[rowidx].Cells[colidx].Value.ToString();
+                Console.WriteLine(rowidx + ", " + colidx);
+                Console.WriteLine(dataGridView2.Rows[rowidx].Cells[colidx].Value.ToString().Replace("Rp.", "").Replace(".", ""));
+                dataGridView2.Rows[rowidx].Cells[colidx].Style.Format = "F0";
             }
             for (int a = 0; a < dataGridView2.Rows.Count; a++)
             {
@@ -1060,8 +1077,8 @@ namespace testProjectBCA
                     if (!cells.Contains(dataGridView2.Rows[a].Cells[b]))
                     {
                         Int64 buf;
-                        if (Int64.TryParse(dataGridView2.Rows[a].Cells[b].Value.ToString(), out buf))
-                            dataGridView2.Rows[a].Cells[b].Value = Int64.Parse(dataGridView2.Rows[a].Cells[b].Value.ToString().Replace("Rp.", "").Replace(".", "").Trim());
+                        dataGridView2.Rows[a].Cells[b].Style.Format = "C0";
+                        dataGridView2.Rows[a].Cells[b].Style.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
                     }
                 }
             }
@@ -1074,7 +1091,9 @@ namespace testProjectBCA
             {
                 int rowidx = cell.RowIndex;
                 int colidx = cell.ColumnIndex;
-                dataGridView3.Rows[rowidx].Cells[colidx].Value = dataGridView3.Rows[rowidx].Cells[colidx].Value.ToString();
+                Console.WriteLine(rowidx + ", " + colidx);
+                Console.WriteLine(dataGridView3.Rows[rowidx].Cells[colidx].Value.ToString().Replace("Rp.", "").Replace(".", ""));
+                dataGridView3.Rows[rowidx].Cells[colidx].Style.Format = "F0";
             }
             for (int a = 0; a < dataGridView3.Rows.Count; a++)
             {
@@ -1083,8 +1102,8 @@ namespace testProjectBCA
                     if (!cells.Contains(dataGridView3.Rows[a].Cells[b]))
                     {
                         Int64 buf;
-                        if (Int64.TryParse(dataGridView3.Rows[a].Cells[b].Value.ToString(), out buf))
-                            dataGridView3.Rows[a].Cells[b].Value = Int64.Parse(dataGridView3.Rows[a].Cells[b].Value.ToString().Replace("Rp.", "").Replace(".", "").Trim());
+                        dataGridView3.Rows[a].Cells[b].Style.Format = "C0";
+                        dataGridView3.Rows[a].Cells[b].Style.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
                     }
                 }
             }
@@ -1097,7 +1116,9 @@ namespace testProjectBCA
             {
                 int rowidx = cell.RowIndex;
                 int colidx = cell.ColumnIndex;
-                dataGridView6.Rows[rowidx].Cells[colidx].Value = dataGridView6.Rows[rowidx].Cells[colidx].Value.ToString();
+                Console.WriteLine(rowidx + ", " + colidx);
+                Console.WriteLine(dataGridView6.Rows[rowidx].Cells[colidx].Value.ToString().Replace("Rp.", "").Replace(".", ""));
+                dataGridView6.Rows[rowidx].Cells[colidx].Style.Format = "F0";
             }
             for (int a = 0; a < dataGridView6.Rows.Count; a++)
             {
@@ -1106,8 +1127,8 @@ namespace testProjectBCA
                     if (!cells.Contains(dataGridView6.Rows[a].Cells[b]))
                     {
                         Int64 buf;
-                        if (Int64.TryParse(dataGridView6.Rows[a].Cells[b].Value.ToString(), out buf))
-                            dataGridView6.Rows[a].Cells[b].Value = Int64.Parse(dataGridView6.Rows[a].Cells[b].Value.ToString().Replace("Rp.", "").Replace(".", "").Trim());
+                        dataGridView6.Rows[a].Cells[b].Style.Format = "C0";
+                        dataGridView6.Rows[a].Cells[b].Style.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
                     }
                 }
             }
@@ -1120,7 +1141,9 @@ namespace testProjectBCA
             {
                 int rowidx = cell.RowIndex;
                 int colidx = cell.ColumnIndex;
-                dataGridView5.Rows[rowidx].Cells[colidx].Value = dataGridView5.Rows[rowidx].Cells[colidx].Value.ToString();
+                Console.WriteLine(rowidx + ", " + colidx);
+                Console.WriteLine(dataGridView5.Rows[rowidx].Cells[colidx].Value.ToString().Replace("Rp.", "").Replace(".", ""));
+                dataGridView5.Rows[rowidx].Cells[colidx].Style.Format = "F0";
             }
             for (int a = 0; a < dataGridView5.Rows.Count; a++)
             {
@@ -1129,8 +1152,8 @@ namespace testProjectBCA
                     if (!cells.Contains(dataGridView5.Rows[a].Cells[b]))
                     {
                         Int64 buf;
-                        if (Int64.TryParse(dataGridView5.Rows[a].Cells[b].Value.ToString(), out buf))
-                            dataGridView5.Rows[a].Cells[b].Value = Int64.Parse(dataGridView5.Rows[a].Cells[b].Value.ToString().Replace("Rp.", "").Replace(".", "").Trim());
+                        dataGridView5.Rows[a].Cells[b].Style.Format = "C0";
+                        dataGridView5.Rows[a].Cells[b].Style.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
                     }
                 }
             }
@@ -1143,7 +1166,9 @@ namespace testProjectBCA
             {
                 int rowidx = cell.RowIndex;
                 int colidx = cell.ColumnIndex;
-                dataGridView4.Rows[rowidx].Cells[colidx].Value = dataGridView4.Rows[rowidx].Cells[colidx].Value.ToString();
+                Console.WriteLine(rowidx + ", " + colidx);
+                Console.WriteLine(dataGridView4.Rows[rowidx].Cells[colidx].Value.ToString().Replace("Rp.", "").Replace(".", ""));
+                dataGridView4.Rows[rowidx].Cells[colidx].Style.Format = "F0";
             }
             for (int a = 0; a < dataGridView4.Rows.Count; a++)
             {
@@ -1152,8 +1177,8 @@ namespace testProjectBCA
                     if (!cells.Contains(dataGridView4.Rows[a].Cells[b]))
                     {
                         Int64 buf;
-                        if (Int64.TryParse(dataGridView4.Rows[a].Cells[b].Value.ToString(), out buf))
-                            dataGridView4.Rows[a].Cells[b].Value = Int64.Parse(dataGridView4.Rows[a].Cells[b].Value.ToString().Replace("Rp.", "").Replace(".", "").Trim());
+                        dataGridView4.Rows[a].Cells[b].Style.Format = "C0";
+                        dataGridView4.Rows[a].Cells[b].Style.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
                     }
                 }
             }
@@ -1166,7 +1191,9 @@ namespace testProjectBCA
             {
                 int rowidx = cell.RowIndex;
                 int colidx = cell.ColumnIndex;
-                dataGridView7.Rows[rowidx].Cells[colidx].Value = dataGridView7.Rows[rowidx].Cells[colidx].Value.ToString();
+                Console.WriteLine(rowidx + ", " + colidx);
+                Console.WriteLine(dataGridView7.Rows[rowidx].Cells[colidx].Value.ToString().Replace("Rp.", "").Replace(".", ""));
+                dataGridView7.Rows[rowidx].Cells[colidx].Style.Format = "F0";
             }
             for (int a = 0; a < dataGridView7.Rows.Count; a++)
             {
@@ -1175,8 +1202,8 @@ namespace testProjectBCA
                     if (!cells.Contains(dataGridView7.Rows[a].Cells[b]))
                     {
                         Int64 buf;
-                        if (Int64.TryParse(dataGridView7.Rows[a].Cells[b].Value.ToString(), out buf))
-                            dataGridView7.Rows[a].Cells[b].Value = Int64.Parse(dataGridView7.Rows[a].Cells[b].Value.ToString().Replace("Rp.", "").Replace(".", "").Trim());
+                        dataGridView7.Rows[a].Cells[b].Style.Format = "C0";
+                        dataGridView7.Rows[a].Cells[b].Style.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
                     }
                 }
             }

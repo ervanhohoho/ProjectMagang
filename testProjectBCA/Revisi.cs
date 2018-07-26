@@ -154,6 +154,7 @@ namespace testProjectBCA
                                                        join da in db.DetailApprovals.AsEnumerable() on a.idApproval equals da.idApproval
                                                        join lb in pkt.bonAtmYangDisetujui.AsEnumerable() on ((DateTime)da.tanggal).Date equals ((DateTime)lb.tgl).Date
                                                        where a.kodePkt == pkt.kodePkt && pkt.tanggalPengajuan == ((DateTime)da.tanggal).Date
+                                                       && da.bon100 !=-1
                                                        select new { Approval = a, DetailApproval = da, LaporanBon = lb }).ToList();
                         foreach (var temp in queryApprovalLaporanBon)
                         {
@@ -184,6 +185,7 @@ namespace testProjectBCA
             List<transaksiPkt> list = new List<transaksiPkt>();
             for (int x = 0; x < data.Tables.Count; x++)
             {
+
                 var table = data.Tables[x];
                 try
                 {
@@ -209,6 +211,13 @@ namespace testProjectBCA
 
                 //tanggal pengajuan
                 pkt.tanggalPengajuan = (DateTime)table.Rows[12][5];
+
+
+                var qtemp = db.TransaksiAtms.AsEnumerable().Where(a => ((DateTime)a.tanggal).Date == pkt.tanggalPengajuan.Date && a.kodePkt == pkt.kodePkt).FirstOrDefault();
+                if(qtemp == null)
+                {
+                    MessageBox.Show("Data " + pkt.kodePkt + " " + pkt.tanggalPengajuan.AddDays(-1).ToShortDateString() + " Tidak Ada!");
+                }
 
 
                 //Pengambilan data hitungan dari db

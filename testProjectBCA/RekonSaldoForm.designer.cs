@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.buttonUploadVaultOrderBlogHistory = new System.Windows.Forms.Button();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.buttonUploadVaultOrder = new System.Windows.Forms.Button();
             this.buttonProcessVault = new System.Windows.Forms.Button();
             this.buttonUploadOrderBlogHistory = new System.Windows.Forms.Button();
@@ -56,13 +55,14 @@
             this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
             this.label10 = new System.Windows.Forms.Label();
             this.buttonSaveToDB = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView7)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonUploadVaultOrderBlogHistory
@@ -74,14 +74,6 @@
             this.buttonUploadVaultOrderBlogHistory.Text = "upload vault order blog history";
             this.buttonUploadVaultOrderBlogHistory.UseVisualStyleBackColor = true;
             this.buttonUploadVaultOrderBlogHistory.Click += new System.EventHandler(this.buttonUploadVaultOrderBlogHistory_Click);
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(928, 12);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(450, 162);
-            this.dataGridView1.TabIndex = 1;
             // 
             // buttonUploadVaultOrder
             // 
@@ -125,7 +117,7 @@
             // 
             // buttonGeneratePivot
             // 
-            this.buttonGeneratePivot.Location = new System.Drawing.Point(731, 129);
+            this.buttonGeneratePivot.Location = new System.Drawing.Point(503, 125);
             this.buttonGeneratePivot.Name = "buttonGeneratePivot";
             this.buttonGeneratePivot.Size = new System.Drawing.Size(184, 33);
             this.buttonGeneratePivot.TabIndex = 6;
@@ -205,11 +197,11 @@
             this.dataGridView6.AllowUserToResizeColumns = false;
             this.dataGridView6.AllowUserToResizeRows = false;
             this.dataGridView6.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView6.Location = new System.Drawing.Point(928, 200);
+            this.dataGridView6.Location = new System.Drawing.Point(928, 493);
             this.dataGridView6.Name = "dataGridView6";
             this.dataGridView6.ReadOnly = true;
             this.dataGridView6.RowHeadersVisible = false;
-            this.dataGridView6.Size = new System.Drawing.Size(450, 249);
+            this.dataGridView6.Size = new System.Drawing.Size(450, 288);
             this.dataGridView6.TabIndex = 11;
             this.dataGridView6.SelectionChanged += new System.EventHandler(this.dataGridView6_SelectionChanged);
             // 
@@ -221,11 +213,11 @@
             this.dataGridView7.AllowUserToResizeColumns = false;
             this.dataGridView7.AllowUserToResizeRows = false;
             this.dataGridView7.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView7.Location = new System.Drawing.Point(928, 493);
+            this.dataGridView7.Location = new System.Drawing.Point(928, 199);
             this.dataGridView7.Name = "dataGridView7";
             this.dataGridView7.ReadOnly = true;
             this.dataGridView7.RowHeadersVisible = false;
-            this.dataGridView7.Size = new System.Drawing.Size(450, 288);
+            this.dataGridView7.Size = new System.Drawing.Size(450, 250);
             this.dataGridView7.TabIndex = 12;
             this.dataGridView7.SelectionChanged += new System.EventHandler(this.dataGridView7_SelectionChanged);
             // 
@@ -241,7 +233,7 @@
             // 
             // buttonGeneratePivotPerVendor
             // 
-            this.buttonGeneratePivotPerVendor.Location = new System.Drawing.Point(503, 129);
+            this.buttonGeneratePivotPerVendor.Location = new System.Drawing.Point(731, 125);
             this.buttonGeneratePivotPerVendor.Name = "buttonGeneratePivotPerVendor";
             this.buttonGeneratePivotPerVendor.Size = new System.Drawing.Size(184, 33);
             this.buttonGeneratePivotPerVendor.TabIndex = 14;
@@ -363,11 +355,20 @@
             this.buttonSaveToDB.UseVisualStyleBackColor = true;
             this.buttonSaveToDB.Click += new System.EventHandler(this.buttonSaveToDB_Click);
             // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(970, 22);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(240, 150);
+            this.dataGridView1.TabIndex = 28;
+            // 
             // RekonSaldoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1390, 795);
+            this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.buttonSaveToDB);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.dateTimePicker2);
@@ -394,17 +395,16 @@
             this.Controls.Add(this.buttonUploadOrderBlogHistory);
             this.Controls.Add(this.buttonProcessVault);
             this.Controls.Add(this.buttonUploadVaultOrder);
-            this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.buttonUploadVaultOrderBlogHistory);
             this.Name = "RekonSaldoForm";
             this.Text = "RekonSaldoForm";
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView7)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -413,7 +413,6 @@
         #endregion
 
         private System.Windows.Forms.Button buttonUploadVaultOrderBlogHistory;
-        private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button buttonUploadVaultOrder;
         private System.Windows.Forms.Button buttonProcessVault;
         private System.Windows.Forms.Button buttonUploadOrderBlogHistory;
@@ -440,5 +439,6 @@
         private System.Windows.Forms.DateTimePicker dateTimePicker2;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Button buttonSaveToDB;
+        private System.Windows.Forms.DataGridView dataGridView1;
     }
 }

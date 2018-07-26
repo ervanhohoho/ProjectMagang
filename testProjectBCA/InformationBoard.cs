@@ -40,6 +40,7 @@ namespace testProjectBCA
 
         List<Denom> saldoAwalIdeal = new List<Denom>();
 
+        List<LaporanPermintaanBon> laporanPermintaanBon = new List<LaporanPermintaanBon>();
         List<Denom> prediksiIsiAtmOpti;
         List<Denom> prediksiIsiAtm;//dalem class denom ada 100,50,20
         List<Denom> prediksiIsiAtmDenganStdDeviasi = new List<Denom>();
@@ -286,7 +287,7 @@ namespace testProjectBCA
             permintaanBonGridView.ReadOnly = true;
             permintaanBonGridView.Rows.Clear(); permintaanBonGridView.Columns.Clear();
             String kodePkt = KodePkt[pktIndex];
-            List<LaporanPermintaanBon> laporanPermintaanBon = (from x in db.LaporanPermintaanBons where x.kodePkt == kodePkt && x.tanggal > tanggalOptiMin select x).Distinct().ToList();
+            laporanPermintaanBon= (from x in db.LaporanPermintaanBons where x.kodePkt == kodePkt && x.tanggal > tanggalOptiMin select x).Distinct().ToList();
 
             DateTime tanggalKemaren = tanggalOptiMin.AddDays(-1);
             //Delete data yang udah ada di approval
@@ -1700,6 +1701,10 @@ namespace testProjectBCA
                        }).ToList();
                 jumlahBonLaporan = bon.Count;
             }
+            if(!bon.Any())
+            {
+                bon.Add(new Denom() { tgl = DateTime.Today, d100 = 0, d20 = 0, d50 = 0 });
+            }
             Console.WriteLine("Bon yang disetujui");
             foreach (var temp in bon)
             {
@@ -2451,6 +2456,18 @@ namespace testProjectBCA
                 bonGridView.Columns["20"].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
                 firstRun = false;
             }
+
+            //for(int a=0;a<bonGridView.Rows.Count;a++)
+            //{
+            //    var row = bonGridView.Rows[a];
+            //    var q = laporanPermintaanBon.Where(x => ((DateTime)x.tanggal).Date == DateTime.Parse(row.Cells[0].ToString()).Date).FirstOrDefault();
+            //    if(q!=null)
+            //    {
+            //        row.Cells[1].Value = q.C100;
+            //        row.Cells[2].Value = q.C50;
+            //        row.Cells[3].Value = q.C20;
+            //    }
+            //}
         }
         //Sekalian load saldoAwal untuk setiap hari
         void loadRasio()

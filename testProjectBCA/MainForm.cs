@@ -823,6 +823,20 @@ namespace testProjectBCA
             uspf.MdiParent = this;
             uspf.Show();
         }
+
+        private void rekonSaldoToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            RekonSaldoForm rsf = new RekonSaldoForm();
+            rsf.MdiParent = this;
+            rsf.Show();
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            ExportOpti eo = new ExportOpti();
+            eo.MdiParent = this;
+            eo.Show();
+        }
     }
 }
 public static class SqlBulkCopyExtensions

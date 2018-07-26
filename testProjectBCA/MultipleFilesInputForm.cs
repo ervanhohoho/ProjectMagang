@@ -134,11 +134,25 @@ namespace testProjectBCA
                     String sDate = ds.Tables[a].Rows[12][5].ToString();
                     if(a==0)
                     {
-                        tempDate = Convert.ToDateTime(sDate);
+                        try {
+                            tempDate = Convert.ToDateTime(sDate);
+                        }
+                        catch(Exception ex)
+                        {
+                            MessageBox.Show(temp + " Sheet: " + ds.Tables[a].TableName + " Bermasalah");
+                        }
                     }
                     else
                     {
-                        DateTime tempDate2 = Convert.ToDateTime(sDate);
+                        DateTime tempDate2 = new DateTime(1,1,1);
+                        try
+                        {
+                            tempDate2 = Convert.ToDateTime(sDate);
+                        }
+                        catch(Exception ex)
+                        {
+                            MessageBox.Show(temp + " Sheet: " + ds.Tables[a].TableName + " Bermasalah");
+                        }
                         if (tempDate2 != tempDate.AddDays(1))
                         {
                             toDelete.Add(temp);
