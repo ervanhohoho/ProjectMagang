@@ -41,6 +41,8 @@ namespace testProjectBCA
                     sql.Open();
                     cmd.CommandText = "select distinct kanwil from pkt";
                     SqlDataReader reader = cmd.ExecuteReader();
+                    kanwil.Add("Nasional");
+                    kanwil.Add("Non-Jabo");
                     while (reader.Read())
                     {
                         kanwil.Add(reader[0].ToString());
@@ -139,9 +141,26 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "select transaksiatms.kodepkt, avg(sislokcrm100+sislokcrm50+sislokcrm20) from transaksiatms join Pkt on TransaksiAtms.kodePkt = Pkt.kodePkt"
-                                      + " where tanggal between '" + dateTimePicker1.Value.ToShortDateString() + "' and '" + dateTimePicker2.Value.ToShortDateString() + "' and kanwil = '"+ comboKanwil.SelectedValue.ToString() +"'"
-                                      + " group by transaksiatms.kodepkt";
+                    if (comboKanwil.SelectedValue.ToString() == "Nasional")
+                    {
+                        cmd.CommandText = "select transaksiatms.kodepkt, avg(sislokcrm100+sislokcrm50+sislokcrm20) from transaksiatms join Pkt on TransaksiAtms.kodePkt = Pkt.kodePkt"
+                                     + " where tanggal between '" + dateTimePicker1.Value.ToShortDateString() + "' and '" + dateTimePicker2.Value.ToShortDateString() + "'"
+                                     + " group by transaksiatms.kodepkt";
+                    }
+                    else if(comboKanwil.SelectedValue.ToString() == "Non-Jabo")
+                    {
+                        cmd.CommandText = "select transaksiatms.kodepkt, avg(sislokcrm100+sislokcrm50+sislokcrm20) from transaksiatms join Pkt on TransaksiAtms.kodePkt = Pkt.kodePkt"
+                                     + " where tanggal between '" + dateTimePicker1.Value.ToShortDateString() + "' and '" + dateTimePicker2.Value.ToShortDateString() + "' and kanwil != 'Jabotabek'"
+                                     + " group by transaksiatms.kodepkt";
+                    }
+                    else 
+                    {
+                        cmd.CommandText = "select transaksiatms.kodepkt, avg(sislokcrm100+sislokcrm50+sislokcrm20) from transaksiatms join Pkt on TransaksiAtms.kodePkt = Pkt.kodePkt"
+                                          + " where tanggal between '" + dateTimePicker1.Value.ToShortDateString() + "' and '" + dateTimePicker2.Value.ToShortDateString() + "' and kanwil = '" + comboKanwil.SelectedValue.ToString() + "'"
+                                          + " group by transaksiatms.kodepkt";
+                    }
+                    
+                    
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
@@ -173,9 +192,25 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "select transaksiatms.kodepkt, avg(sislokatm100+sislokatm50+sislokatm20) from transaksiatms join Pkt on TransaksiAtms.kodePkt = Pkt.kodePkt"
-                                      + " where tanggal between '" + dateTimePicker1.Value.ToShortDateString() + "' and '" + dateTimePicker2.Value.ToShortDateString() + "' and kanwil = '" + comboKanwil.SelectedValue.ToString() + "'"
+                    if (comboKanwil.SelectedValue.ToString() == "Nasional")
+                    {
+                        cmd.CommandText = "select transaksiatms.kodepkt, avg(sislokatm100+sislokatm50+sislokatm20) from transaksiatms join Pkt on TransaksiAtms.kodePkt = Pkt.kodePkt"
+                                      + " where tanggal between '" + dateTimePicker1.Value.ToShortDateString() + "' and '" + dateTimePicker2.Value.ToShortDateString() + "'"
                                       + " group by transaksiatms.kodepkt";
+                    }
+                    else if (comboKanwil.SelectedValue.ToString() == "Non-Jabo")
+                    {
+                        cmd.CommandText = "select transaksiatms.kodepkt, avg(sislokatm100+sislokatm50+sislokatm20) from transaksiatms join Pkt on TransaksiAtms.kodePkt = Pkt.kodePkt"
+                                     + " where tanggal between '" + dateTimePicker1.Value.ToShortDateString() + "' and '" + dateTimePicker2.Value.ToShortDateString() + "' and kanwil != 'Jabotabek'"
+                                     + " group by transaksiatms.kodepkt";
+                    }
+                    else
+                    {
+                        cmd.CommandText = "select transaksiatms.kodepkt, avg(sislokatm100+sislokatm50+sislokatm20) from transaksiatms join Pkt on TransaksiAtms.kodePkt = Pkt.kodePkt"
+                                     + " where tanggal between '" + dateTimePicker1.Value.ToShortDateString() + "' and '" + dateTimePicker2.Value.ToShortDateString() + "' and kanwil = '" + comboKanwil.SelectedValue.ToString() + "'"
+                                     + " group by transaksiatms.kodepkt";
+                    }
+                   
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
@@ -208,11 +243,31 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "select transaksiAtms.kodePkt ,[Sislok CRM] = sum(sislokCRM100+sislokCRM20+sislokCRM50)"
-                                        +" from TransaksiAtms join Pkt on TransaksiAtms.kodePkt = Pkt.kodePkt"
+                    if (comboKanwil.SelectedValue.ToString() == "Nasional")
+                    {
+                        cmd.CommandText = "select transaksiAtms.kodePkt ,[Sislok CRM] = sum(sislokCRM100+sislokCRM20+sislokCRM50)"
+                                        + " from TransaksiAtms join Pkt on TransaksiAtms.kodePkt = Pkt.kodePkt"
                                         //+" where kanwil = '"+comboKanwil.SelectedValue.ToString()+"' and year(tanggal) = "+comboTahun.SelectedValue.ToString()+" and month(tanggal) = "+comboBulan.SelectedValue.ToString()+""
-                                        + " where kanwil = '" + comboKanwil.SelectedValue.ToString() + "' and tanggal between  '" + dateTimePicker1.Value.ToShortDateString() + "' and '" + dateTimePicker2.Value.ToShortDateString() + "'"
+                                        + " where tanggal between  '" + dateTimePicker1.Value.ToShortDateString() + "' and '" + dateTimePicker2.Value.ToShortDateString() + "'"
                                         + " group by TransaksiAtms.kodePkt";
+                    }
+                    else if (comboKanwil.SelectedValue.ToString() == "Non-Jabo")
+                    {
+                        cmd.CommandText = "select transaksiAtms.kodePkt ,[Sislok CRM] = sum(sislokCRM100+sislokCRM20+sislokCRM50)"
+                                     + " from TransaksiAtms join Pkt on TransaksiAtms.kodePkt = Pkt.kodePkt"
+                                     //+" where kanwil = '"+comboKanwil.SelectedValue.ToString()+"' and year(tanggal) = "+comboTahun.SelectedValue.ToString()+" and month(tanggal) = "+comboBulan.SelectedValue.ToString()+""
+                                     + " where kanwil != 'Jabotabek' and tanggal between  '" + dateTimePicker1.Value.ToShortDateString() + "' and '" + dateTimePicker2.Value.ToShortDateString() + "'"
+                                     + " group by TransaksiAtms.kodePkt";
+                    }
+                    else
+                    {
+                        cmd.CommandText = "select transaksiAtms.kodePkt ,[Sislok CRM] = sum(sislokCRM100+sislokCRM20+sislokCRM50)"
+                                     + " from TransaksiAtms join Pkt on TransaksiAtms.kodePkt = Pkt.kodePkt"
+                                     //+" where kanwil = '"+comboKanwil.SelectedValue.ToString()+"' and year(tanggal) = "+comboTahun.SelectedValue.ToString()+" and month(tanggal) = "+comboBulan.SelectedValue.ToString()+""
+                                     + " where kanwil = '" + comboKanwil.SelectedValue.ToString() + "' and tanggal between  '" + dateTimePicker1.Value.ToShortDateString() + "' and '" + dateTimePicker2.Value.ToShortDateString() + "'"
+                                     + " group by TransaksiAtms.kodePkt";
+                    }
+                    
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
@@ -244,11 +299,31 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "select transaksiAtms.kodePkt ,[Sislok ATMPersen] = CASE WHEN SUM(isiATM100+isiATM50+isiATM20) > 0 THEN CAST(sum(sislokATM100 + sislokATM50 + sislokATM20) AS float)/ sum(isiATM100 + isiATM50 + isiATM20) ELSE 0 END"
+                    if (comboKanwil.SelectedValue.ToString() == "Nasional")
+                    {
+                        cmd.CommandText = "select transaksiAtms.kodePkt ,[Sislok ATMPersen] = CASE WHEN SUM(isiATM100+isiATM50+isiATM20) > 0 THEN CAST(sum(sislokATM100 + sislokATM50 + sislokATM20) AS float)/ sum(isiATM100 + isiATM50 + isiATM20) ELSE 0 END"
                                       + " from TransaksiAtms join Pkt on TransaksiAtms.kodePkt = Pkt.kodePkt"
-                                      + " where kanwil = '" + comboKanwil.SelectedValue.ToString() + "' and tanggal between  '" + dateTimePicker1.Value.ToShortDateString() + "' and '" + dateTimePicker2.Value.ToShortDateString() + "'"
+                                      + " where tanggal between  '" + dateTimePicker1.Value.ToShortDateString() + "' and '" + dateTimePicker2.Value.ToShortDateString() + "'"
                                       //+ " where kanwil = '" + comboKanwil.SelectedValue.ToString() + "' and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + ""
                                       + " group by TransaksiAtms.kodePkt";
+                    }
+                    else if (comboKanwil.SelectedValue.ToString() == "Non-Jabo")
+                    {
+                        cmd.CommandText = "select transaksiAtms.kodePkt ,[Sislok ATMPersen] = CASE WHEN SUM(isiATM100+isiATM50+isiATM20) > 0 THEN CAST(sum(sislokATM100 + sislokATM50 + sislokATM20) AS float)/ sum(isiATM100 + isiATM50 + isiATM20) ELSE 0 END"
+                                     + " from TransaksiAtms join Pkt on TransaksiAtms.kodePkt = Pkt.kodePkt"
+                                     + " where kanwil != 'Jabotabek' and tanggal between  '" + dateTimePicker1.Value.ToShortDateString() + "' and '" + dateTimePicker2.Value.ToShortDateString() + "'"
+                                     //+ " where kanwil = '" + comboKanwil.SelectedValue.ToString() + "' and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + ""
+                                     + " group by TransaksiAtms.kodePkt";
+                    }
+                    else
+                    {
+                        cmd.CommandText = "select transaksiAtms.kodePkt ,[Sislok ATMPersen] = CASE WHEN SUM(isiATM100+isiATM50+isiATM20) > 0 THEN CAST(sum(sislokATM100 + sislokATM50 + sislokATM20) AS float)/ sum(isiATM100 + isiATM50 + isiATM20) ELSE 0 END"
+                                     + " from TransaksiAtms join Pkt on TransaksiAtms.kodePkt = Pkt.kodePkt"
+                                     + " where kanwil = '" + comboKanwil.SelectedValue.ToString() + "' and tanggal between  '" + dateTimePicker1.Value.ToShortDateString() + "' and '" + dateTimePicker2.Value.ToShortDateString() + "'"
+                                     //+ " where kanwil = '" + comboKanwil.SelectedValue.ToString() + "' and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + ""
+                                     + " group by TransaksiAtms.kodePkt";
+                    }
+                    
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {

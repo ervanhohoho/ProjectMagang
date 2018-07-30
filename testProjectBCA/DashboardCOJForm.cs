@@ -66,7 +66,7 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "select distinct month(tanggal) from StokPosisi  where year(tanggal) = " + comboTahun.SelectedValue.ToString() + " order by month(tanggal) asc";
+                    cmd.CommandText = "select distinct month(tanggal) from StokPosisi  where year(tanggal) = "+ comboTahun.SelectedValue.ToString()+" order by month(tanggal) desc";
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     while (reader.Read())
@@ -88,7 +88,7 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "select distinct day(tanggal) from StokPosisi where year(tanggal) = " + comboTahun.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " order by day(tanggal) asc";
+                    cmd.CommandText = "select distinct day(tanggal) from StokPosisi where year(tanggal) = "+comboTahun.SelectedValue.ToString()+" and month(tanggal) = "+comboBulan.SelectedValue.ToString()+" order by day(tanggal) desc";
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     while (reader.Read())
@@ -122,7 +122,7 @@ namespace testProjectBCA
                                       " [mayor minor] = sum(RRMBaru + RRMLama + RRMNKRI + RupiahRusakMayor)," +
                                       " gress = sum(newBaru + newLama) " +
                                       " from StokPosisi " +
-                                      " where month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " ";
+                                      " where month(tanggal) = "+comboBulan.SelectedValue.ToString()+" and year(tanggal) = "+comboTahun.SelectedValue.ToString()+" and day(tanggal) = "+comboTanggal.SelectedValue.ToString()+" ";
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     while (reader.Read())
@@ -147,8 +147,8 @@ namespace testProjectBCA
                                 unprocessed
                             },
                             DataLabels = true,
-                            LabelPoint =  p=>(Math.Round((p.Y/1000000000),2)).ToString() + " M",
-
+                            LabelPoint =  p=>(Math.Round((p.Y/1000000000),0)).ToString() + " M",
+                            
                         },
                         new PieSeries
                         {
@@ -158,7 +158,7 @@ namespace testProjectBCA
                                 fit
                             },
                             DataLabels = true,
-                            LabelPoint = p=>(Math.Round((p.Y/1000000000),2)).ToString() + " M",
+                            LabelPoint = p=>(Math.Round((p.Y/1000000000),0)).ToString() + " M",
                         },
                         new PieSeries
                         {
@@ -168,7 +168,7 @@ namespace testProjectBCA
                                 unfit
                             },
                             DataLabels = true,
-                            LabelPoint = p=>(Math.Round((p.Y/1000000000),2)).ToString() + " M",
+                            LabelPoint = p=>(Math.Round((p.Y/1000000000),0)).ToString() + " M",
                         },
                         new PieSeries
                         {
@@ -178,7 +178,7 @@ namespace testProjectBCA
                                 mayorminor
                             },
                             DataLabels = true,
-                            LabelPoint = p=>(Math.Round((p.Y/1000000000),2)).ToString() + " M",
+                            LabelPoint = p=>(Math.Round((p.Y/1000000000),0)).ToString() + " M",
                         },
                         new PieSeries
                         {
@@ -188,7 +188,7 @@ namespace testProjectBCA
                                 gress
                             },
                             DataLabels = true,
-                            LabelPoint = p=>(Math.Round((p.Y/1000000000),2)).ToString() + " M",
+                            LabelPoint = p=>(Math.Round((p.Y/1000000000),0)).ToString() + " M",
                         }
                     };
 
@@ -219,7 +219,7 @@ namespace testProjectBCA
                                      + " where (denom = 100000 or denom = 50000) and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " )a, "
                                      + " (select[uangkecil] = sum(unprocessed + newBaru + newLama + fitBaru + fitLama + passThrough + unfitBaru + unfitNKRI +  unfitLama + RRMBaru+ RRMNKRI + RRMLama + RupiahRusakMayor)"
                                      + " from StokPosisi"
-                                     + " where(denom != '100000' AND denom != '50000') and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " )b";
+                                     + " where(denom != 100000 AND denom != 50000) and day(tanggal) = "+comboTanggal.SelectedValue.ToString()+" and month(tanggal) = "+comboBulan.SelectedValue.ToString()+" and year(tanggal) = "+comboTahun.SelectedValue.ToString()+" )b";
 
                     SqlDataReader reader = cmd.ExecuteReader();
 
@@ -242,7 +242,7 @@ namespace testProjectBCA
                                 ub
                             },
                             DataLabels = true,
-                            LabelPoint =  p=>(Math.Round((p.Y/1000000000),2)).ToString() + " M",
+                            LabelPoint =  p=>(Math.Round((p.Y/1000000000),0)).ToString() + " M",
                         },
                         new PieSeries
                         {
@@ -252,7 +252,7 @@ namespace testProjectBCA
                                 uk
                             },
                             DataLabels = true,
-                            LabelPoint =  p=>(Math.Round((p.Y/1000000000),2)).ToString() + " M",
+                            LabelPoint =  p=>(Math.Round((p.Y/1000000000),0)).ToString() + " M",
                         }
                     };
 
@@ -303,10 +303,10 @@ namespace testProjectBCA
                             Title = "Sebaran Saldo COJ",
                             Values = cv,
                             DataLabels = true,
-                            LabelPoint = p=>(Math.Round((p.Y/1000000000),2)).ToString() + " M"
+                            LabelPoint = p=>(Math.Round((p.Y/1000000000),0)).ToString() + " M"
                         }
-
-
+                       
+                        
                     };
 
                     cartesianChartSebaranSaldoCoj.AxisX.Add(new Axis
@@ -316,7 +316,7 @@ namespace testProjectBCA
                         Separator = new Separator
                         {
                             Step = 1
-                        }
+                        }                        
 
                     });
 
@@ -352,12 +352,12 @@ namespace testProjectBCA
                     cmd.CommandText = "select * from("
                                        + " select[uangbesar] = sum(unprocessed + newBaru + newLama + fitBaru + fitLama + passThrough + unfitBaru + unfitNKRI + unfitLama + RRMBaru + RRMNKRI + RRMLama + RupiahRusakMayor), kodePkt, [tipe] = 'BESAR'"
                                        + " from StokPosisi s join Pkt p on s.namaPkt = p.namaPkt"
-                                       + " where (denom = 100000 or denom = 50000) and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + ""
+                                       + " where (denom = 100000 or denom = 50000) and day(tanggal) = "+comboTanggal.SelectedValue.ToString()+" and month(tanggal) = "+comboBulan.SelectedValue.ToString()+" and year(tanggal) = "+comboTahun.SelectedValue.ToString()+""
                                        + " group by p.kodePkt"
                                        + " union"
                                        + " select[uangkecil] = sum(unprocessed + newBaru + newLama + fitBaru + fitLama + passThrough + unfitBaru + unfitNKRI +  unfitLama + RRMBaru+ RRMNKRI + RRMLama + RupiahRusakMayor), kodePkt, [tipe] = 'KECIL'"
                                        + " from StokPosisi s join Pkt p on s.namaPkt = p.namaPkt"
-                                       + " where(denom != '100000' AND denom != '50000') and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + ""
+                                       + " where(denom != 100000 AND denom != 50000) and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + ""
                                        + " group by p.kodePkt)a"
                                        + " pivot(sum(uangbesar) for [tipe] in ([BESAR],[KECIL])) as asd";
 
@@ -397,7 +397,7 @@ namespace testProjectBCA
                             Values = cv,
                             StackMode = StackMode.Percentage,
                             DataLabels = true,
-                           LabelPoint = p=>(Math.Round((p.Y/1000000000),2)).ToString() + " M"
+                           LabelPoint = p=>(Math.Round((p.Y/1000000000),0)).ToString() + " M"
 
                         },
                         new StackedColumnSeries
@@ -406,7 +406,7 @@ namespace testProjectBCA
                             Values = cv2,
                             StackMode = StackMode.Percentage,
                             DataLabels = true,
-                            LabelPoint = p=>(Math.Round((p.Y/1000000000),2)).ToString() + " M"
+                            LabelPoint = p=>(Math.Round((p.Y/1000000000),0)).ToString() + " M"
                         }
                     };
 
@@ -425,7 +425,7 @@ namespace testProjectBCA
                         Title = "Persen",
                         LabelFormatter = value => value.ToString() + " %",
                         MinValue = 0,
-
+                        
                     });
 
                     cartesianChartKomposisiUbVsUk.LegendLocation = LegendLocation.Bottom;
@@ -487,14 +487,14 @@ namespace testProjectBCA
                         {
                             Title = "Unfit, MayorMinor",
                             Values = cv,
-                            LabelPoint = p=>(Math.Round((p.Y/1000000000),2)).ToString() + " M",
+                            LabelPoint = p=>(Math.Round((p.Y/1000000000),0)).ToString() + " M",
                             DataLabels = true
                         },
                         new StackedColumnSeries
                         {
                             Title = "Gress",
                             Values = cv2,
-                            LabelPoint = p=>(Math.Round((p.Y/1000000000),2)).ToString() + " M",
+                            LabelPoint = p=>(Math.Round((p.Y/1000000000),0)).ToString() + " M",
                             DataLabels = true
                         }
                     };
@@ -507,13 +507,15 @@ namespace testProjectBCA
                             Step = 1
                         }
                     });
-
+                    
 
                     cartesianChartUangBesar.AxisY.Add(new Axis
                     {
                         Title = "Uang Besar",
                         LabelFormatter = value => (value / 1000000000).ToString() + "M",
                     });
+
+                    cartesianChartUangBesar.LegendLocation = LegendLocation.Bottom;
 
                 }
             }
@@ -537,8 +539,8 @@ namespace testProjectBCA
                     cmd.Connection = sql;
                     sql.Open();
                     cmd.CommandText = "select [unprocessed] = sum(unprocessed), [unfitmayorminor] = sum(unfitBaru + unfitLama + unfitNKRI + RRMBaru + RRMLama + RRMNKRI + RupiahRusakMayor),[gress] = sum(newBaru + newLama) ,kodePkt"
-                                       + " from StokPosisi s join Pkt p on s.namaPkt = p.namaPkt"
-                                       + " where (denom != '100000' AND denom != '50000') and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " "
+                                       +" from StokPosisi s join Pkt p on s.namaPkt = p.namaPkt"
+                                       + " where (denom != 100000 AND denom != 50000) and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " "
                                        + " group by kodePkt";
 
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -582,21 +584,21 @@ namespace testProjectBCA
                             Title = "Unfit MayorMinor",
                             Values = cv,
                             DataLabels = true,
-                            LabelPoint = p=>(Math.Round((p.Y/1000000000),2)).ToString() + " M"
+                            LabelPoint = p=>(Math.Round((p.Y/1000000000),0)).ToString() + " M"
                         },
                         new StackedColumnSeries
                         {
                             Title = "Gress",
                             Values = cv2,
                             DataLabels = true,
-                            LabelPoint = p=>(Math.Round((p.Y/1000000000),2)).ToString() + " M"
+                            LabelPoint = p=>(Math.Round((p.Y/1000000000),0)).ToString() + " M"
                         },
                         new StackedColumnSeries
                         {
                             Title = "Unprocessed",
                             Values = cv4,
                             DataLabels = true,
-                            LabelPoint = p=>(Math.Round((p.Y/1000000000),2)).ToString() + " M"
+                            LabelPoint = p=>(Math.Round((p.Y/1000000000),0)).ToString() + " M"
                         }
                     };
 
@@ -614,6 +616,8 @@ namespace testProjectBCA
                         Title = "Uang Kecil",
                         LabelFormatter = value => (value / 1000000000).ToString() + "M",
                     });
+
+                    cartesianChartUangKecil.LegendLocation = LegendLocation.Bottom;
 
 
                 }
@@ -665,7 +669,7 @@ namespace testProjectBCA
 
                     //if (kodepkt[0].ToString() == null || kodepkt[0].ToString() == "")
                     //{
-
+                        
                     //}
                     //else
                     //{
@@ -693,8 +697,8 @@ namespace testProjectBCA
                     //        label7.Text = kodepkt[4];
                     //    }
                     //}
-
-
+                    
+                  
 
                     //label3.Text = kodepkt[0];
                     //label4.Text = kodepkt[1];
@@ -736,7 +740,7 @@ namespace testProjectBCA
                     if (umm != 0)
                     {
                         label15.Visible = true;
-                        label15.Text = umm.ToString("C", CultureInfo.GetCultureInfo("id-ID"));
+                        label15.Text = umm.ToString("C",CultureInfo.GetCultureInfo("id-ID"));
                     }
                     if (gress != 0)
                     {
@@ -769,7 +773,7 @@ namespace testProjectBCA
                     sql.Open();
                     cmd.CommandText = "select top 5 [total] =  sum(unprocessed) ,kodePkt"
                                       + " from StokPosisi s join Pkt p on s.namaPkt = p.namaPkt"
-                                      + " where (denom != '100000' AND denom != '50000') and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " "
+                                      + " where (denom != 100000 AND denom != 50000) and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " "
                                       + " group by kodePkt"
                                       + " order by [total] desc";
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -854,7 +858,7 @@ namespace testProjectBCA
                     sql.Open();
                     cmd.CommandText = "select [umm] =  sum(unfitBaru + unfitLama + unfitNKRI + RRMBaru + RRMLama + RRMNKRI + RupiahRusakMayor) , [gress] = sum(newBaru + newLama), [unproc] = sum(unprocessed) "
                                       + " from StokPosisi s join Pkt p on s.namaPkt = p.namaPkt"
-                                      + " where (denom != '100000' AND denom != '50000')  and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " ";
+                                      + " where (denom != 100000 AND denom != 50000)  and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " ";
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     while (reader.Read())

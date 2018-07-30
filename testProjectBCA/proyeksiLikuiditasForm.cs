@@ -126,7 +126,7 @@ namespace testProjectBCA
                                       && temp.Year == ((DateTime)x.tanggal).Year
                                       && eventT.workDay == y.workDay
                                       && eventT.@event == y.@event
-                                      select new { tanggal = (DateTime)x.tanggal, BN100K = (Int64)x.BN100K }
+                                      select new { tanggal = (DateTime)x.tanggal, BN100K = x.BN100K == null? 0:(Int64)x.BN100K }
                               ).AsEnumerable().Where(x => x.tanggal.DayOfWeek == tanggal.DayOfWeek).Select(x => x.BN100K).ToList();
 
                     if (q3.Count == 0)
@@ -179,7 +179,7 @@ namespace testProjectBCA
                                       && temp.Year == ((DateTime)x.tanggal).Year
                                       && eventT.workDay == y.workDay
                                       && eventT.@event == y.@event
-                                      select new { tanggal = (DateTime)x.tanggal, BN50K = (Int64)x.BN50K }
+                                      select new { tanggal = (DateTime)x.tanggal, BN50K = x.BN50K == null? 0:(Int64)x.BN50K }
                               ).AsEnumerable().Where(x => x.tanggal.DayOfWeek == tanggal.DayOfWeek).Select(x => x.BN50K).ToList();
 
                     if (q3.Count == 0)
@@ -232,7 +232,7 @@ namespace testProjectBCA
                                       && temp.Year == ((DateTime)x.tanggal).Year
                                       && eventT.workDay == y.workDay
                                       && eventT.@event == y.@event
-                                      select new { tanggal = (DateTime)x.tanggal, BN100K = (Int64)x.BN100K }
+                                      select new { tanggal = (DateTime)x.tanggal, BN100K = x.BN100K == null? 0:(Int64)x.BN100K }
                               ).AsEnumerable().Where(x => x.tanggal.DayOfWeek == tanggal.DayOfWeek).Select(x => x.BN100K).ToList();
 
                     if (q3.Count == 0)
@@ -285,7 +285,7 @@ namespace testProjectBCA
                                       && temp.Year == ((DateTime)x.tanggal).Year
                                       && eventT.workDay == y.workDay
                                       && eventT.@event == y.@event
-                                      select new { tanggal = (DateTime)x.tanggal, BN50K = (Int64)x.BN50K }
+                                      select new { tanggal = (DateTime)x.tanggal, BN50K = x.BN50K == null? 0:(Int64)x.BN50K }
                               ).AsEnumerable().Where(x => x.tanggal.DayOfWeek == tanggal.DayOfWeek).Select(x => x.BN50K).ToList();
 
                     if (q3.Count == 0)
@@ -338,7 +338,7 @@ namespace testProjectBCA
                                       && temp.Year == ((DateTime)x.tanggal).Year
                                       && eventT.workDay == y.workDay
                                       && eventT.@event == y.@event
-                                      select new { tanggal = (DateTime)x.tanggal, BN100K = (Int64)x.BN100K }
+                                      select new { tanggal = (DateTime)x.tanggal, BN100K = x.BN100K == null? 0:(Int64)x.BN100K }
                               ).AsEnumerable().Where(x => x.tanggal.DayOfWeek == tanggal.DayOfWeek).Select(x => x.BN100K).ToList();
 
                     if (q3.Count == 0)
@@ -391,7 +391,7 @@ namespace testProjectBCA
                                       && temp.Year == ((DateTime)x.tanggal).Year
                                       && eventT.workDay == y.workDay
                                       && eventT.@event == y.@event
-                                      select new { tanggal = (DateTime)x.tanggal, BN50K = (Int64)x.BN50K }
+                                      select new { tanggal = (DateTime)x.tanggal, BN50K = x.BN50K == null? 0:(Int64)x.BN50K }
                               ).AsEnumerable().Where(x => x.tanggal.DayOfWeek == tanggal.DayOfWeek).Select(x => x.BN50K).ToList();
 
                     if (q3.Count == 0)
@@ -448,7 +448,7 @@ namespace testProjectBCA
                 List<TransaksiAtm> query = new List<TransaksiAtm>();
                 var eventT = (from x in et
                               where x.tanggal == tanggal
-                              select new { x.workDay, x.@event }).FirstOrDefault();
+                              select new { x.tanggal, x.workDay, x.@event }).FirstOrDefault();
 
 
                 foreach (var temp in listTanggalHistorisUntukPrediksi)
@@ -459,6 +459,7 @@ namespace testProjectBCA
                                              && temp.Year == ((DateTime)x.tanggal).Year
                                              && eventT.workDay == y.workDay
                                              && eventT.@event == y.@event
+                                             && eventT.tanggal.DayOfWeek == y.tanggal.DayOfWeek
                                              select x
                               ).AsEnumerable().Where(x => x.tanggal.DayOfWeek == tanggal.DayOfWeek).ToList();
 
@@ -469,6 +470,7 @@ namespace testProjectBCA
                               where temp.Month == ((DateTime)x.tanggal).Month
                               && temp.Year == ((DateTime)x.tanggal).Year
                               && eventT.workDay == y.workDay
+                              && eventT.@event == y.@event
                               select x
                               ).ToList();
                     }
@@ -760,7 +762,7 @@ namespace testProjectBCA
                 List<TransaksiAtm> query = new List<TransaksiAtm>();
                 var eventT = (from x in et
                               where x.tanggal == tanggal
-                              select new { x.workDay, x.@event }).FirstOrDefault();
+                              select new {x.tanggal, x.workDay, x.@event }).FirstOrDefault();
 
 
                 foreach (var temp in listTanggalHistorisUntukPrediksi)
@@ -771,6 +773,7 @@ namespace testProjectBCA
                                              && temp.Year == ((DateTime)x.tanggal).Year
                                              && eventT.workDay == y.workDay
                                              && eventT.@event == y.@event
+                                             && eventT.tanggal.DayOfWeek == y.tanggal.DayOfWeek
                                              select x
                               ).AsEnumerable().Where(x => x.tanggal.DayOfWeek == tanggal.DayOfWeek).ToList();
 
@@ -781,6 +784,7 @@ namespace testProjectBCA
                               where temp.Month == ((DateTime)x.tanggal).Month
                               && temp.Year == ((DateTime)x.tanggal).Year
                               && eventT.workDay == y.workDay
+                              && eventT.@event == y.@event
                               select x
                               ).ToList();
                     }
@@ -1022,7 +1026,7 @@ namespace testProjectBCA
                                       && temp.Year == ((DateTime)x.tanggal).Year
                                       && eventT.workDay == y.workDay
                                       && eventT.@event == y.@event
-                                      select new { tanggal = (DateTime)x.tanggal, BN100K = (Int64)x.BN100K }
+                                      select new { tanggal = (DateTime)x.tanggal, BN100K = x.BN100K == null? 0 : (Int64)x.BN100K }
                               ).AsEnumerable().Where(x => x.tanggal.DayOfWeek == tanggal.DayOfWeek).Select(x => x.BN100K).ToList();
 
                     if (q3.Count == 0)
@@ -1073,7 +1077,7 @@ namespace testProjectBCA
                                       && temp.Year == ((DateTime)x.tanggal).Year
                                       && eventT.workDay == y.workDay
                                       && eventT.@event == y.@event
-                                      select new { tanggal = (DateTime)x.tanggal, BN50K = (Int64)x.BN50K }
+                                      select new { tanggal = (DateTime)x.tanggal, BN50K = x.BN50K == null ? 0 : (Int64)x.BN50K }
                               ).AsEnumerable().Where(x => x.tanggal.DayOfWeek == tanggal.DayOfWeek).Select(x => x.BN50K).ToList();
 
                     if (q3.Count == 0)
@@ -1125,7 +1129,7 @@ namespace testProjectBCA
                                       && temp.Year == ((DateTime)x.tanggal).Year
                                       && eventT.workDay == y.workDay
                                       && eventT.@event == y.@event
-                                      select new { tanggal = (DateTime)x.tanggal, BN100K = (Int64)x.BN100K }
+                                      select new { tanggal = (DateTime)x.tanggal, BN100K = x.BN100K == null? 0: (Int64)x.BN100K }
                               ).AsEnumerable().Where(x => x.tanggal.DayOfWeek == tanggal.DayOfWeek).Select(x => x.BN100K).ToList();
 
                     if (q3.Count == 0)
@@ -1176,7 +1180,7 @@ namespace testProjectBCA
                                       && temp.Year == ((DateTime)x.tanggal).Year
                                       && eventT.workDay == y.workDay
                                       && eventT.@event == y.@event
-                                      select new { tanggal = (DateTime)x.tanggal, BN50K = (Int64)x.BN50K }
+                                      select new { tanggal = (DateTime)x.tanggal, BN50K = x.BN50K == null? 0 : (Int64)x.BN50K }
                               ).AsEnumerable().Where(x => x.tanggal.DayOfWeek == tanggal.DayOfWeek).Select(x => x.BN50K).ToList();
 
                     if (q3.Count == 0)
@@ -1228,7 +1232,7 @@ namespace testProjectBCA
                                       && temp.Year == ((DateTime)x.tanggal).Year
                                       && eventT.workDay == y.workDay
                                       && eventT.@event == y.@event
-                                      select new { tanggal = (DateTime)x.tanggal, BN100K = (Int64)x.BN100K }
+                                      select new { tanggal = (DateTime)x.tanggal, BN100K = x.BN100K == null? 0:(Int64)x.BN100K }
                               ).AsEnumerable().Where(x => x.tanggal.DayOfWeek == tanggal.DayOfWeek).Select(x => x.BN100K).ToList();
 
                     if (q3.Count == 0)
@@ -1280,7 +1284,7 @@ namespace testProjectBCA
                                       && temp.Year == ((DateTime)x.tanggal).Year
                                       && eventT.workDay == y.workDay
                                       && eventT.@event == y.@event
-                                      select new { tanggal = (DateTime)x.tanggal, BN50K = (Int64)x.BN50K }
+                                      select new { tanggal = (DateTime)x.tanggal, BN50K = x.BN50K == null? 0:(Int64)x.BN50K }
                               ).AsEnumerable().Where(x => x.tanggal.DayOfWeek == tanggal.DayOfWeek).Select(x => x.BN50K).ToList();
 
                     if (q3.Count == 0)

@@ -56,6 +56,7 @@
             this.label10 = new System.Windows.Forms.Label();
             this.buttonSaveToDB = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).BeginInit();
@@ -67,7 +68,7 @@
             // 
             // buttonUploadVaultOrderBlogHistory
             // 
-            this.buttonUploadVaultOrderBlogHistory.Location = new System.Drawing.Point(29, 34);
+            this.buttonUploadVaultOrderBlogHistory.Location = new System.Drawing.Point(29, 10);
             this.buttonUploadVaultOrderBlogHistory.Name = "buttonUploadVaultOrderBlogHistory";
             this.buttonUploadVaultOrderBlogHistory.Size = new System.Drawing.Size(184, 31);
             this.buttonUploadVaultOrderBlogHistory.TabIndex = 0;
@@ -77,9 +78,9 @@
             // 
             // buttonUploadVaultOrder
             // 
-            this.buttonUploadVaultOrder.Location = new System.Drawing.Point(263, 34);
+            this.buttonUploadVaultOrder.Location = new System.Drawing.Point(29, 57);
             this.buttonUploadVaultOrder.Name = "buttonUploadVaultOrder";
-            this.buttonUploadVaultOrder.Size = new System.Drawing.Size(175, 31);
+            this.buttonUploadVaultOrder.Size = new System.Drawing.Size(184, 31);
             this.buttonUploadVaultOrder.TabIndex = 2;
             this.buttonUploadVaultOrder.Text = "upload vault order";
             this.buttonUploadVaultOrder.UseVisualStyleBackColor = true;
@@ -97,7 +98,7 @@
             // 
             // buttonUploadOrderBlogHistory
             // 
-            this.buttonUploadOrderBlogHistory.Location = new System.Drawing.Point(503, 34);
+            this.buttonUploadOrderBlogHistory.Location = new System.Drawing.Point(459, 10);
             this.buttonUploadOrderBlogHistory.Name = "buttonUploadOrderBlogHistory";
             this.buttonUploadOrderBlogHistory.Size = new System.Drawing.Size(184, 33);
             this.buttonUploadOrderBlogHistory.TabIndex = 4;
@@ -117,7 +118,7 @@
             // 
             // buttonGeneratePivot
             // 
-            this.buttonGeneratePivot.Location = new System.Drawing.Point(503, 125);
+            this.buttonGeneratePivot.Location = new System.Drawing.Point(459, 145);
             this.buttonGeneratePivot.Name = "buttonGeneratePivot";
             this.buttonGeneratePivot.Size = new System.Drawing.Size(184, 33);
             this.buttonGeneratePivot.TabIndex = 6;
@@ -233,7 +234,7 @@
             // 
             // buttonGeneratePivotPerVendor
             // 
-            this.buttonGeneratePivotPerVendor.Location = new System.Drawing.Point(731, 125);
+            this.buttonGeneratePivotPerVendor.Location = new System.Drawing.Point(649, 145);
             this.buttonGeneratePivotPerVendor.Name = "buttonGeneratePivotPerVendor";
             this.buttonGeneratePivotPerVendor.Size = new System.Drawing.Size(184, 33);
             this.buttonGeneratePivotPerVendor.TabIndex = 14;
@@ -244,7 +245,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(36, 68);
+            this.label1.Location = new System.Drawing.Point(219, 20);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(35, 13);
             this.label1.TabIndex = 15;
@@ -253,7 +254,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(271, 68);
+            this.label2.Location = new System.Drawing.Point(219, 66);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(35, 13);
             this.label2.TabIndex = 16;
@@ -262,7 +263,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(500, 70);
+            this.label3.Location = new System.Drawing.Point(649, 20);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(35, 13);
             this.label3.TabIndex = 17;
@@ -324,14 +325,14 @@
             // 
             // dateTimePicker1
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(29, 136);
+            this.dateTimePicker1.Location = new System.Drawing.Point(29, 152);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
             this.dateTimePicker1.TabIndex = 24;
             // 
             // dateTimePicker2
             // 
-            this.dateTimePicker2.Location = new System.Drawing.Point(251, 136);
+            this.dateTimePicker2.Location = new System.Drawing.Point(251, 152);
             this.dateTimePicker2.Name = "dateTimePicker2";
             this.dateTimePicker2.Size = new System.Drawing.Size(200, 20);
             this.dateTimePicker2.TabIndex = 25;
@@ -339,7 +340,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(235, 139);
+            this.label10.Location = new System.Drawing.Point(235, 155);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(10, 13);
             this.label10.TabIndex = 26;
@@ -347,27 +348,38 @@
             // 
             // buttonSaveToDB
             // 
-            this.buttonSaveToDB.Location = new System.Drawing.Point(731, 34);
+            this.buttonSaveToDB.Location = new System.Drawing.Point(29, 104);
             this.buttonSaveToDB.Name = "buttonSaveToDB";
-            this.buttonSaveToDB.Size = new System.Drawing.Size(184, 33);
+            this.buttonSaveToDB.Size = new System.Drawing.Size(184, 31);
             this.buttonSaveToDB.TabIndex = 27;
-            this.buttonSaveToDB.Text = "save to database";
+            this.buttonSaveToDB.Text = "save to database - vault";
             this.buttonSaveToDB.UseVisualStyleBackColor = true;
             this.buttonSaveToDB.Click += new System.EventHandler(this.buttonSaveToDB_Click);
             // 
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(970, 22);
+            this.dataGridView1.Location = new System.Drawing.Point(1297, 22);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(240, 150);
+            this.dataGridView1.Size = new System.Drawing.Size(54, 150);
             this.dataGridView1.TabIndex = 28;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(459, 57);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(184, 33);
+            this.button1.TabIndex = 29;
+            this.button1.Text = "save to database - per vendor";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // RekonSaldoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1390, 795);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.buttonSaveToDB);
             this.Controls.Add(this.label10);
@@ -440,5 +452,6 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Button buttonSaveToDB;
         private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Button button1;
     }
 }

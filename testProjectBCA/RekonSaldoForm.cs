@@ -24,7 +24,7 @@ namespace testProjectBCA
             //buttonGeneratePivot.Enabled = false;
             //buttonGeneratePivotPerVendor.Enabled = false;
 
-            
+
         }
 
 
@@ -47,7 +47,7 @@ namespace testProjectBCA
             int flagUpVOBH = 0;
             OpenFileDialog of = new OpenFileDialog();
             of.Filter = Variables.csvFilter;
-            
+
             if (of.ShowDialog() == DialogResult.OK)
             {
                 String filename = of.FileName;
@@ -76,7 +76,7 @@ namespace testProjectBCA
                 }
                 label1.Text = filename.Substring(filename.LastIndexOf('\\'), filename.Length - filename.LastIndexOf('\\'));
             }
-            
+
             flagUpVOBH = 1;
         }
 
@@ -128,7 +128,7 @@ namespace testProjectBCA
                 //dataGridView1.DataSource = dt;
 
                 obh = new List<OBH>();
-                   
+
                 for (int i = 1; i < dt.Rows.Count; i++)
                 {
                     if (dt.Rows[i][6].ToString() == "Confirmed" || dt.Rows[i][6].ToString() == "In Transit")
@@ -146,10 +146,10 @@ namespace testProjectBCA
                             currencyAmmount = CurrencyFill(String.IsNullOrEmpty(dt.Rows[i][11].ToString()) ? dt.Rows[i - 1][11].ToString().Replace("IDR:", "") : dt.Rows[i][11].ToString().Replace("IDR:", ""))
                         });
                     }
-                    
+
                 }
 
-                label3.Text = filename.Substring(filename.LastIndexOf('\\'),filename.Length - filename.LastIndexOf('\\'));
+                label3.Text = filename.Substring(filename.LastIndexOf('\\'), filename.Length - filename.LastIndexOf('\\'));
                 dataGridView1.DataSource = obh;
 
             }
@@ -160,7 +160,7 @@ namespace testProjectBCA
 
             obhp = new List<OBHProcessed>();
 
-            var cabangs = en.Cabangs.Select(x=>x).ToList();
+            var cabangs = en.Cabangs.Select(x => x).ToList();
 
 
 
@@ -193,7 +193,7 @@ namespace testProjectBCA
         private void buttonProcessVault_Click(object sender, EventArgs e)
         {
             var query = (from x in vobh
-                         select new { x.vaultId, x.confId, x.action , x.status, x.orderDate, x.dueDate, x.timeStamp, x.currencyAmmount, fundingSource = vo.Where(y => y.confId == x.confId).Select(y => y.fundingSource).FirstOrDefault() }
+                         select new { x.vaultId, x.confId, x.action, x.status, x.orderDate, x.dueDate, x.timeStamp, x.currencyAmmount, fundingSource = vo.Where(y => y.confId == x.confId).Select(y => y.fundingSource).FirstOrDefault() }
                          ).ToList();
 
             vp = new List<VaultProcessed>();
@@ -217,7 +217,7 @@ namespace testProjectBCA
             }
             Console.WriteLine(vp.Count);
             dataGridView1.DataSource = vp;
-           
+
         }
 
         private void buttonProcessSetoranCpc_Click(object sender, EventArgs e)
@@ -258,7 +258,7 @@ namespace testProjectBCA
             var query = (from x in en.RekonSaldoPerVendors
                          where x.actionRekon.Contains("Delivery") && x.statusRekon.Equals("Confirmed") && ((DateTime)x.dueDate) >= dateTimePicker1.Value.Date && ((DateTime)x.dueDate) <= dateTimePicker2.Value.Date
                          select x).ToList();
-            
+
             //generating pivotbon
             ppvb = new List<PivotPerVendor_bon>();
 
@@ -272,8 +272,8 @@ namespace testProjectBCA
                 vendor = g.Key.vendor,
                 belumValidasi = g.Where(c => c.validation == "NOT VALIDATED").Sum(c => c.currencyAmmount),
                 sudahValidasi = g.Where(c => c.validation == "VALIDATED").Sum(c => c.currencyAmmount),
-                grandTotal = g.Where(c => c.validation == "NOT VALIDATED").Sum(c => c.currencyAmmount)+
-                             g.Where(c => c.validation == "VALIDATED").Sum(c => c.currencyAmmount) 
+                grandTotal = g.Where(c => c.validation == "NOT VALIDATED").Sum(c => c.currencyAmmount) +
+                             g.Where(c => c.validation == "VALIDATED").Sum(c => c.currencyAmmount)
 
             }).ToList();
 
@@ -295,7 +295,7 @@ namespace testProjectBCA
 
             //preparing data for pivot pervendor setoran
             var querysetoran = (from x in en.RekonSaldoPerVendors
-                         where x.actionRekon.Contains("Return") && x.statusRekon.Equals("In Transit") && ((DateTime)x.dueDate) >= dateTimePicker1.Value.Date && ((DateTime)x.dueDate) <= dateTimePicker2.Value.Date
+                                where x.actionRekon.Contains("Return") && x.statusRekon.Equals("In Transit") && ((DateTime)x.dueDate) >= dateTimePicker1.Value.Date && ((DateTime)x.dueDate) <= dateTimePicker2.Value.Date
                                 select x).ToList();
 
             //generating pivot
@@ -380,18 +380,18 @@ namespace testProjectBCA
             }
 
             //creating pivotCPC - BI dan BankLain Return
-            var pivot = pc.GroupBy(c => new { c.vaultId, c.fundingSource, c.dueDate}).Select(g => new
+            var pivot = pc.GroupBy(c => new { c.vaultId, c.fundingSource, c.dueDate }).Select(g => new
             {
                 dueDate = g.Key.dueDate,
                 vaultID = g.Key.vaultId,
                 fundingSource = g.Key.fundingSource,
                 emergencyReturn = g.Where(c => c.action == "Emergency Return").Sum(c => c.currencyAmmount),
                 plannedReturn = g.Where(c => c.action == "Planned Return").Sum(c => c.currencyAmmount)
-                
+
             }).ToList();
-            
+
             var pivot2 = (from x in pivot
-                          select new { x.dueDate, x.vaultID, x.fundingSource, x.emergencyReturn, x.plannedReturn, grandTotal =x.emergencyReturn+ x.plannedReturn });
+                          select new { x.dueDate, x.vaultID, x.fundingSource, x.emergencyReturn, x.plannedReturn, grandTotal = x.emergencyReturn + x.plannedReturn });
 
             bibl = new List<PivotCPC_BIBL>();
 
@@ -409,14 +409,14 @@ namespace testProjectBCA
                         grandTotal = item.grandTotal
                     });
                 }
-                
+
             }
 
             dataGridView2.DataSource = bibl;
 
             //preparing data for Pivot CPC - BI dan BankLain delivery
             var queryd = (from x in en.RekonSaldoVaults
-                         where (x.fundingSoure == "BI" || x.fundingSoure.Contains("OB")) && ((DateTime)x.dueDate) >= dateTimePicker1.Value.Date && ((DateTime)x.dueDate) <= dateTimePicker2.Value.Date
+                          where (x.fundingSoure == "BI" || x.fundingSoure.Contains("OB")) && ((DateTime)x.dueDate) >= dateTimePicker1.Value.Date && ((DateTime)x.dueDate) <= dateTimePicker2.Value.Date
                           select x).ToList();
 
             pc = new List<PivotCPC>();
@@ -451,9 +451,9 @@ namespace testProjectBCA
                 emergencyDelivery = g.Where(c => c.action == "Emergency Delivery").Sum(c => c.currencyAmmount),
                 plannedDelivery = g.Where(c => c.action == "Planned Delivery").Sum(c => c.currencyAmmount)
             }).ToList();
-            
+
             var pivotd2 = (from x in pivotd
-                          select new {x.dueDate, x.vaultID, x.fundingSource, x.emergencyDelivery, x.plannedDelivery, grandTotal = x.emergencyDelivery + x.plannedDelivery });
+                           select new { x.dueDate, x.vaultID, x.fundingSource, x.emergencyDelivery, x.plannedDelivery, grandTotal = x.emergencyDelivery + x.plannedDelivery });
 
             bibld = new List<PivotCPC_BIBLD>();
 
@@ -471,14 +471,14 @@ namespace testProjectBCA
                         grandTotal = item.grandTotal
                     });
                 }
-                
+
             }
 
             dataGridView3.DataSource = bibld;
 
             //preparing data for pivot - ATM delivery
             var queryad = (from x in en.RekonSaldoVaults
-                          where (x.fundingSoure != "BI" && !x.fundingSoure.Contains("OB")) && ((DateTime)x.dueDate)>= dateTimePicker1.Value.Date && ((DateTime)x.dueDate) <= dateTimePicker2.Value.Date
+                           where (x.fundingSoure != "BI" && !x.fundingSoure.Contains("OB")) && ((DateTime)x.dueDate) >= dateTimePicker1.Value.Date && ((DateTime)x.dueDate) <= dateTimePicker2.Value.Date
                            select x).ToList();
 
             pc = new List<PivotCPC>();
@@ -515,7 +515,7 @@ namespace testProjectBCA
             }).ToList();
 
             var pivotad2 = (from x in pivotad
-                           select new {x.dueDate, x.vaultID, x.fundingSource, x.emergencyDelivery, x.plannedDelivery, grandTotal = x.emergencyDelivery + x.plannedDelivery });
+                            select new { x.dueDate, x.vaultID, x.fundingSource, x.emergencyDelivery, x.plannedDelivery, grandTotal = x.emergencyDelivery + x.plannedDelivery });
 
             atmd = new List<PivotCPC_ATMD>();
 
@@ -577,7 +577,7 @@ namespace testProjectBCA
             }).ToList();
 
             var pivotar2 = (from x in pivotar
-                          select new { x.dueDate, x.vaultID, x.fundingSource, x.emergencyReturn, x.plannedReturn, grandTotal = x.emergencyReturn + x.plannedReturn });
+                            select new { x.dueDate, x.vaultID, x.fundingSource, x.emergencyReturn, x.plannedReturn, grandTotal = x.emergencyReturn + x.plannedReturn });
 
             atmr = new List<PivotCPC_ATMR>();
 
@@ -601,7 +601,7 @@ namespace testProjectBCA
             dataGridView5.DataSource = atmr;
 
             //formatting
-            if (dataGridView2.Rows.Count>0)
+            if (dataGridView2.Rows.Count > 0)
             {
                 for (int i = 3; i < dataGridView2.Columns.Count; i++)
                 {
@@ -734,7 +734,7 @@ namespace testProjectBCA
             public Int64 currencyAmmount { set; get; }
             public DateTime realDate { set; get; }
             public String validation { set; get; }
-       
+
         }
 
         class PivotCPC_BIBL //pivotCPC - BI dan BankLain return
@@ -745,7 +745,7 @@ namespace testProjectBCA
             public Int64 plannedReturn { set; get; }
             public Int64 emergencyReturn { set; get; }
             public Int64 grandTotal { set; get; }
-            
+
         }
 
         class PivotCPC_BIBLD//pivotCPC - BI dan BankLain delivery
@@ -756,7 +756,7 @@ namespace testProjectBCA
             public Int64 plannedDelivery { set; get; }
             public Int64 emergencyDelivery { set; get; }
             public Int64 grandTotal { set; get; }
-            
+
         }
 
         class PivotCPC_ATMD //pivotcpc - atm delivery
@@ -767,7 +767,7 @@ namespace testProjectBCA
             public Int64 plannedDelivery { set; get; }
             public Int64 emergencyDelivery { set; get; }
             public Int64 grandTotal { set; get; }
-            
+
         }
 
         class PivotCPC_ATMR //pivotcpc - atm return
@@ -775,10 +775,10 @@ namespace testProjectBCA
             public DateTime dueDate { set; get; }
             public String vaultId { set; get; }
             public String fundingSource { set; get; }
-            public Int64 plannedReturn{ set; get; }
-            public Int64 emergencyReturn{ set; get; }
+            public Int64 plannedReturn { set; get; }
+            public Int64 emergencyReturn { set; get; }
             public Int64 grandTotal { set; get; }
-            
+
         }
 
         class PivotPerVendor_bon
@@ -788,7 +788,7 @@ namespace testProjectBCA
             public Int64 belumValidasi { set; get; }
             public Int64 sudahValidasi { set; get; }
             public Int64 grandTotal { set; get; }
-            
+
         }
 
         class PivotPerVendor_setoran
@@ -798,7 +798,7 @@ namespace testProjectBCA
             public Int64 belumValidasi { set; get; }
             public Int64 sudahValidasi { set; get; }
             public Int64 grandTotal { set; get; }
-            
+
         }
 
         public Int64 CurrencyFill(String a)
@@ -878,7 +878,7 @@ namespace testProjectBCA
             Console.WriteLine(sc.Count);
             dataGridView1.DataSource = sc;
         }
-        
+
         public void ProsesOrderBlogHistory()
         {
             obhp = new List<OBHProcessed>();
@@ -914,6 +914,7 @@ namespace testProjectBCA
 
         private void buttonSaveToDB_Click(object sender, EventArgs e)
         {
+            loadForm.ShowSplashScreen();
             ProsesVault();
             ProsesSetoranCPC();
             //save to db rs-vault
@@ -935,11 +936,11 @@ namespace testProjectBCA
 
 
             DateTime maxdate2 = rsv.Max(x => (DateTime)x.dueDate);
-            DateTime mindate2= rsv.Min(x => (DateTime)x.dueDate);
+            DateTime mindate2 = rsv.Min(x => (DateTime)x.dueDate);
 
             var query3 = (from x in en.RekonSaldoVaults
-                         where (DateTime)x.dueDate >= mindate2 && (DateTime)x.dueDate <= maxdate2
-                         select x
+                          where (DateTime)x.dueDate >= mindate2 && (DateTime)x.dueDate <= maxdate2
+                          select x
                          ).ToList();
 
             List<RekonSaldoVault> rsvToRemove = new List<RekonSaldoVault>();
@@ -947,7 +948,7 @@ namespace testProjectBCA
             foreach (var item in rsv)
             {
                 var query4 = (from x in query3
-                              where x.confId == item.confId && x.dueDate == item.dueDate 
+                              where x.confId == item.confId && x.dueDate == item.dueDate
                               select x).FirstOrDefault();
                 if (query4 != null)
                 {
@@ -978,24 +979,201 @@ namespace testProjectBCA
 
             en.RekonSaldoVaults.AddRange(rsv);
             en.SaveChanges();
+            loadForm.CloseForm();
 
+            //-------------------------=======================---------------------------//
+
+        }
+
+        private void dataGridView2_SelectionChanged(object sender, EventArgs e)
+        {
+            DataGridViewSelectedCellCollection cells = dataGridView2.SelectedCells;
+            foreach (DataGridViewCell cell in cells)
+            {
+                int rowidx = cell.RowIndex;
+                int colidx = cell.ColumnIndex;
+                Console.WriteLine(rowidx + ", " + colidx);
+                Console.WriteLine(dataGridView2.Rows[rowidx].Cells[colidx].Value.ToString().Replace("Rp.", "").Replace(".", ""));
+                if (colidx > 3)
+                {
+                    dataGridView2.Rows[rowidx].Cells[colidx].Style.Format = "F0";
+                }
+
+            }
+            for (int a = 0; a < dataGridView2.Rows.Count; a++)
+            {
+                for (int b = 3; b < dataGridView2.Columns.Count; b++)
+                {
+                    if (!cells.Contains(dataGridView2.Rows[a].Cells[b]))
+                    {
+                        Int64 buf;
+                        dataGridView2.Rows[a].Cells[b].Style.Format = "C0";
+                        dataGridView2.Rows[a].Cells[b].Style.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
+                    }
+                }
+            }
+        }
+
+        private void dataGridView3_SelectionChanged(object sender, EventArgs e)
+        {
+            DataGridViewSelectedCellCollection cells = dataGridView3.SelectedCells;
+            foreach (DataGridViewCell cell in cells)
+            {
+                int rowidx = cell.RowIndex;
+                int colidx = cell.ColumnIndex;
+                Console.WriteLine(rowidx + ", " + colidx);
+                Console.WriteLine(dataGridView3.Rows[rowidx].Cells[colidx].Value.ToString().Replace("Rp.", "").Replace(".", ""));
+                if (colidx > 3)
+                {
+                    dataGridView3.Rows[rowidx].Cells[colidx].Style.Format = "F0";
+                }
+            }
+            for (int a = 0; a < dataGridView3.Rows.Count; a++)
+            {
+                for (int b = 3; b < dataGridView3.Columns.Count; b++)
+                {
+                    if (!cells.Contains(dataGridView3.Rows[a].Cells[b]))
+                    {
+                        Int64 buf;
+                        dataGridView3.Rows[a].Cells[b].Style.Format = "C0";
+                        dataGridView3.Rows[a].Cells[b].Style.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
+                    }
+                }
+            }
+        }
+
+        private void dataGridView6_SelectionChanged(object sender, EventArgs e)
+        {
+            DataGridViewSelectedCellCollection cells = dataGridView6.SelectedCells;
+            foreach (DataGridViewCell cell in cells)
+            {
+                int rowidx = cell.RowIndex;
+                int colidx = cell.ColumnIndex;
+                Console.WriteLine(rowidx + ", " + colidx);
+                Console.WriteLine(dataGridView6.Rows[rowidx].Cells[colidx].Value.ToString().Replace("Rp.", "").Replace(".", ""));
+                if (colidx > 2)
+                {
+                    dataGridView6.Rows[rowidx].Cells[colidx].Style.Format = "F0";
+                }
+            }
+            for (int a = 0; a < dataGridView6.Rows.Count; a++)
+            {
+                for (int b = 3; b < dataGridView6.Columns.Count; b++)
+                {
+                    if (!cells.Contains(dataGridView6.Rows[a].Cells[b]))
+                    {
+                        Int64 buf;
+                        dataGridView6.Rows[a].Cells[b].Style.Format = "C0";
+                        dataGridView6.Rows[a].Cells[b].Style.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
+                    }
+                }
+            }
+        }
+
+        private void dataGridView5_SelectionChanged(object sender, EventArgs e)
+        {
+            DataGridViewSelectedCellCollection cells = dataGridView5.SelectedCells;
+            foreach (DataGridViewCell cell in cells)
+            {
+                int rowidx = cell.RowIndex;
+                int colidx = cell.ColumnIndex;
+                Console.WriteLine(rowidx + ", " + colidx);
+                Console.WriteLine(dataGridView5.Rows[rowidx].Cells[colidx].Value.ToString().Replace("Rp.", "").Replace(".", ""));
+                if (colidx > 3)
+                {
+                    dataGridView5.Rows[rowidx].Cells[colidx].Style.Format = "F0";
+                }
+            }
+            for (int a = 0; a < dataGridView5.Rows.Count; a++)
+            {
+                for (int b = 3; b < dataGridView5.Columns.Count; b++)
+                {
+                    if (!cells.Contains(dataGridView5.Rows[a].Cells[b]))
+                    {
+                        Int64 buf;
+                        dataGridView5.Rows[a].Cells[b].Style.Format = "C0";
+                        dataGridView5.Rows[a].Cells[b].Style.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
+                    }
+                }
+            }
+        }
+
+        private void dataGridView4_SelectionChanged(object sender, EventArgs e)
+        {
+            DataGridViewSelectedCellCollection cells = dataGridView4.SelectedCells;
+            foreach (DataGridViewCell cell in cells)
+            {
+                int rowidx = cell.RowIndex;
+                int colidx = cell.ColumnIndex;
+                Console.WriteLine(rowidx + ", " + colidx);
+                Console.WriteLine(dataGridView4.Rows[rowidx].Cells[colidx].Value.ToString().Replace("Rp.", "").Replace(".", ""));
+                if (colidx > 3)
+                {
+                    dataGridView4.Rows[rowidx].Cells[colidx].Style.Format = "F0";
+                }
+            }
+            for (int a = 0; a < dataGridView4.Rows.Count; a++)
+            {
+                for (int b = 3; b < dataGridView4.Columns.Count; b++)
+                {
+                    if (!cells.Contains(dataGridView4.Rows[a].Cells[b]))
+                    {
+                        Int64 buf;
+                        dataGridView4.Rows[a].Cells[b].Style.Format = "C0";
+                        dataGridView4.Rows[a].Cells[b].Style.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
+                    }
+                }
+            }
+        }
+
+        private void dataGridView7_SelectionChanged(object sender, EventArgs e)
+        {
+            DataGridViewSelectedCellCollection cells = dataGridView7.SelectedCells;
+            foreach (DataGridViewCell cell in cells)
+            {
+                int rowidx = cell.RowIndex;
+                int colidx = cell.ColumnIndex;
+                Console.WriteLine(rowidx + ", " + colidx);
+                Console.WriteLine(dataGridView7.Rows[rowidx].Cells[colidx].Value.ToString().Replace("Rp.", "").Replace(".", ""));
+                if (colidx > 2)
+                {
+                    dataGridView7.Rows[rowidx].Cells[colidx].Style.Format = "F0";
+                }
+            }
+            for (int a = 0; a < dataGridView7.Rows.Count; a++)
+            {
+                for (int b = 3; b < dataGridView7.Columns.Count; b++)
+                {
+                    if (!cells.Contains(dataGridView7.Rows[a].Cells[b]))
+                    {
+                        Int64 buf;
+                        dataGridView7.Rows[a].Cells[b].Style.Format = "C0";
+                        dataGridView7.Rows[a].Cells[b].Style.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
+                    }
+                }
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            loadForm.ShowSplashScreen();
             //save to db rs-pervendor
             ProsesOrderBlogHistory();
             List<RekonSaldoPerVendor> rspv = (from x in obhp
-                                         select new RekonSaldoPerVendor()
-                                         {
-                                             cashPointtId = x.cashpointId,
-                                             confId = x.confId,
-                                             orderDate = x.orderDate,
-                                             vendor = x.vendor,
-                                             actionRekon = x.action,
-                                             statusRekon = x.status,
-                                             dueDate = x.dueDate,
-                                             blogTime = x.blogTime,
-                                             currencyAmmount = x.currencyAmmount,
-                                             realDate = x.realDate,
-                                             validation = x.validation
-                                         }).ToList();
+                                              select new RekonSaldoPerVendor()
+                                              {
+                                                  cashPointtId = x.cashpointId,
+                                                  confId = x.confId,
+                                                  orderDate = x.orderDate,
+                                                  vendor = x.vendor,
+                                                  actionRekon = x.action,
+                                                  statusRekon = x.status,
+                                                  dueDate = x.dueDate,
+                                                  blogTime = x.blogTime,
+                                                  currencyAmmount = x.currencyAmmount,
+                                                  realDate = x.realDate,
+                                                  validation = x.validation
+                                              }).ToList();
 
             DateTime maxdate = rspv.Max(x => (DateTime)x.dueDate);
             DateTime mindate = rspv.Min(x => (DateTime)x.dueDate);
@@ -1010,19 +1188,19 @@ namespace testProjectBCA
             foreach (var item in rspv)
             {
                 var query2 = (from x in query
-                              where x.cashPointtId == item.cashPointtId 
-                              && x.confId == item.confId 
-                              && x.orderDate == item.orderDate 
+                              where x.cashPointtId == item.cashPointtId
+                              && x.confId == item.confId
+                              && x.orderDate == item.orderDate
                               //&& x.vendor == item.vendor
-                              && x.actionRekon == item.actionRekon 
-                              && x.statusRekon == item.statusRekon 
+                              && x.actionRekon == item.actionRekon
+                              //&& x.statusRekon == item.statusRekon
                               //&& ((DateTime)x.dueDate).Date == item.dueDate 
                               //&& (DateTime)x.blogTime == item.blogTime 
                               //&& x.currencyAmmount == item.currencyAmmount 
                               //&& ((DateTime)x.realDate).Date == item.realDate 
                               //&& x.validation == item.validation
                               select x).FirstOrDefault();
-                if (query2!=null)
+                if (query2 != null)
                 {
                     Console.WriteLine("UPDATE");
                     query2.cashPointtId = item.cashPointtId;
@@ -1055,158 +1233,7 @@ namespace testProjectBCA
 
             en.RekonSaldoPerVendors.AddRange(rspv);
             en.SaveChanges();
-
-
-        }
-
-        private void dataGridView2_SelectionChanged(object sender, EventArgs e)
-        {
-            DataGridViewSelectedCellCollection cells = dataGridView2.SelectedCells;
-            foreach (DataGridViewCell cell in cells)
-            {
-                int rowidx = cell.RowIndex;
-                int colidx = cell.ColumnIndex;
-                Console.WriteLine(rowidx + ", " + colidx);
-                Console.WriteLine(dataGridView2.Rows[rowidx].Cells[colidx].Value.ToString().Replace("Rp.", "").Replace(".", ""));
-                dataGridView2.Rows[rowidx].Cells[colidx].Style.Format = "F0";
-            }
-            for (int a = 0; a < dataGridView2.Rows.Count; a++)
-            {
-                for (int b = 0; b < dataGridView2.Columns.Count; b++)
-                {
-                    if (!cells.Contains(dataGridView2.Rows[a].Cells[b]))
-                    {
-                        Int64 buf;
-                        dataGridView2.Rows[a].Cells[b].Style.Format = "C0";
-                        dataGridView2.Rows[a].Cells[b].Style.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
-                    }
-                }
-            }
-        }
-
-        private void dataGridView3_SelectionChanged(object sender, EventArgs e)
-        {
-            DataGridViewSelectedCellCollection cells = dataGridView3.SelectedCells;
-            foreach (DataGridViewCell cell in cells)
-            {
-                int rowidx = cell.RowIndex;
-                int colidx = cell.ColumnIndex;
-                Console.WriteLine(rowidx + ", " + colidx);
-                Console.WriteLine(dataGridView3.Rows[rowidx].Cells[colidx].Value.ToString().Replace("Rp.", "").Replace(".", ""));
-                dataGridView3.Rows[rowidx].Cells[colidx].Style.Format = "F0";
-            }
-            for (int a = 0; a < dataGridView3.Rows.Count; a++)
-            {
-                for (int b = 0; b < dataGridView3.Columns.Count; b++)
-                {
-                    if (!cells.Contains(dataGridView3.Rows[a].Cells[b]))
-                    {
-                        Int64 buf;
-                        dataGridView3.Rows[a].Cells[b].Style.Format = "C0";
-                        dataGridView3.Rows[a].Cells[b].Style.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
-                    }
-                }
-            }
-        }
-
-        private void dataGridView6_SelectionChanged(object sender, EventArgs e)
-        {
-            DataGridViewSelectedCellCollection cells = dataGridView6.SelectedCells;
-            foreach (DataGridViewCell cell in cells)
-            {
-                int rowidx = cell.RowIndex;
-                int colidx = cell.ColumnIndex;
-                Console.WriteLine(rowidx + ", " + colidx);
-                Console.WriteLine(dataGridView6.Rows[rowidx].Cells[colidx].Value.ToString().Replace("Rp.", "").Replace(".", ""));
-                dataGridView6.Rows[rowidx].Cells[colidx].Style.Format = "F0";
-            }
-            for (int a = 0; a < dataGridView6.Rows.Count; a++)
-            {
-                for (int b = 0; b < dataGridView6.Columns.Count; b++)
-                {
-                    if (!cells.Contains(dataGridView6.Rows[a].Cells[b]))
-                    {
-                        Int64 buf;
-                        dataGridView6.Rows[a].Cells[b].Style.Format = "C0";
-                        dataGridView6.Rows[a].Cells[b].Style.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
-                    }
-                }
-            }
-        }
-
-        private void dataGridView5_SelectionChanged(object sender, EventArgs e)
-        {
-            DataGridViewSelectedCellCollection cells = dataGridView5.SelectedCells;
-            foreach (DataGridViewCell cell in cells)
-            {
-                int rowidx = cell.RowIndex;
-                int colidx = cell.ColumnIndex;
-                Console.WriteLine(rowidx + ", " + colidx);
-                Console.WriteLine(dataGridView5.Rows[rowidx].Cells[colidx].Value.ToString().Replace("Rp.", "").Replace(".", ""));
-                dataGridView5.Rows[rowidx].Cells[colidx].Style.Format = "F0";
-            }
-            for (int a = 0; a < dataGridView5.Rows.Count; a++)
-            {
-                for (int b = 0; b < dataGridView5.Columns.Count; b++)
-                {
-                    if (!cells.Contains(dataGridView5.Rows[a].Cells[b]))
-                    {
-                        Int64 buf;
-                        dataGridView5.Rows[a].Cells[b].Style.Format = "C0";
-                        dataGridView5.Rows[a].Cells[b].Style.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
-                    }
-                }
-            }
-        }
-
-        private void dataGridView4_SelectionChanged(object sender, EventArgs e)
-        {
-            DataGridViewSelectedCellCollection cells = dataGridView4.SelectedCells;
-            foreach (DataGridViewCell cell in cells)
-            {
-                int rowidx = cell.RowIndex;
-                int colidx = cell.ColumnIndex;
-                Console.WriteLine(rowidx + ", " + colidx);
-                Console.WriteLine(dataGridView4.Rows[rowidx].Cells[colidx].Value.ToString().Replace("Rp.", "").Replace(".", ""));
-                dataGridView4.Rows[rowidx].Cells[colidx].Style.Format = "F0";
-            }
-            for (int a = 0; a < dataGridView4.Rows.Count; a++)
-            {
-                for (int b = 0; b < dataGridView4.Columns.Count; b++)
-                {
-                    if (!cells.Contains(dataGridView4.Rows[a].Cells[b]))
-                    {
-                        Int64 buf;
-                        dataGridView4.Rows[a].Cells[b].Style.Format = "C0";
-                        dataGridView4.Rows[a].Cells[b].Style.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
-                    }
-                }
-            }
-        }
-
-        private void dataGridView7_SelectionChanged(object sender, EventArgs e)
-        {
-            DataGridViewSelectedCellCollection cells = dataGridView7.SelectedCells;
-            foreach (DataGridViewCell cell in cells)
-            {
-                int rowidx = cell.RowIndex;
-                int colidx = cell.ColumnIndex;
-                Console.WriteLine(rowidx + ", " + colidx);
-                Console.WriteLine(dataGridView7.Rows[rowidx].Cells[colidx].Value.ToString().Replace("Rp.", "").Replace(".", ""));
-                dataGridView7.Rows[rowidx].Cells[colidx].Style.Format = "F0";
-            }
-            for (int a = 0; a < dataGridView7.Rows.Count; a++)
-            {
-                for (int b = 0; b < dataGridView7.Columns.Count; b++)
-                {
-                    if (!cells.Contains(dataGridView7.Rows[a].Cells[b]))
-                    {
-                        Int64 buf;
-                        dataGridView7.Rows[a].Cells[b].Style.Format = "C0";
-                        dataGridView7.Rows[a].Cells[b].Style.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
-                    }
-                }
-            }
+            loadForm.CloseForm();
         }
 
         //BELUM SELSAI MASIH DI MINUS 1 DARI YG ATAS
