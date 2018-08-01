@@ -210,6 +210,9 @@ namespace testProjectBCA
                             RupiahRusakMayor = RupiahRusakMayor,
                             cekLaporan = cekLaporan,
                             jenis = jenisS,
+                            inCabang = 0,
+                            inRetail = 0,
+                            outCabang = 0
                         });
                         var harisebelom = tanggal.AddDays(-1);
                         var datasebelom = (from x in db.StokPosisis.AsEnumerable()

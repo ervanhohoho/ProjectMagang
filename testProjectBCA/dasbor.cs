@@ -44,7 +44,7 @@ namespace testProjectBCA
             List<String> comboarea = new List<String>();
             List<String> combomode = new List<String>();
 
-
+            comboBox1.SelectedIndex = 0;
 
             comboarea.Add("Nasional");
             comboarea.Add("Jabo");
@@ -854,6 +854,7 @@ namespace testProjectBCA
             List<Int64> adhoc = new List<Int64>();
             List<Int64> isi = new List<Int64>();
             List<String> hari = new List<String>();
+            List<String> namahari = new List<String>();
 
             using (SqlConnection sql = new SqlConnection(Variables.connectionString))
             {
@@ -861,7 +862,7 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "select saldo = sum(saldoAwal20 + saldoAwal50 + saldoAwal100), bon = SUM(bon20 + bon50 + bon100), adhoc = SUM(adhoc100+ adhoc50+adhoc20), isi = SUM(isiATM100 + isiATM50 + isiATM20 + isiCRM100+ isiCRM50+ isiCRM20) ,hari= DAY(tanggal) from TransaksiAtms ta join Pkt p on ta.kodePkt = p.kodePkt where year(tanggal) = " + comboTahun3.SelectedValue.ToString() + areaChoose(comboArea.SelectedValue.ToString()) + " and month(tanggal) = " + comboBulan3.SelectedValue.ToString() + " group by DAY(tanggal) order by day(tanggal)";
+                    cmd.CommandText = "select saldo = sum(saldoAwal20 + saldoAwal50 + saldoAwal100), bon = SUM(bon20 + bon50 + bon100), adhoc = SUM(adhoc100+ adhoc50+adhoc20), isi = SUM(isiATM100 + isiATM50 + isiATM20 + isiCRM100+ isiCRM50+ isiCRM20) ,hari= DAY(tanggal), [namahari]  = datename(weekday,tanggal) from TransaksiAtms ta join Pkt p on ta.kodePkt = p.kodePkt where year(tanggal) = " + comboTahun3.SelectedValue.ToString() + areaChoose(comboArea.SelectedValue.ToString()) + " and month(tanggal) = " + comboBulan3.SelectedValue.ToString() + " group by DAY(tanggal), datename(weekday,tanggal) order by day(tanggal)";
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
@@ -869,9 +870,15 @@ namespace testProjectBCA
                         bon.Add((Int64)reader[1]);
                         adhoc.Add((Int64)reader[2]);
                         isi.Add((Int64)reader[3]);
-                        hari.Add(reader[4].ToString());
+                        hari.Add(reader[5].ToString() +" - "+ reader[4].ToString());
+                        namahari.Add(reader[5].ToString());
                     }
 
+                    ChartValues<String> cvhari = new ChartValues<String>();
+                    foreach (String temp in namahari)
+                    {
+                        cvhari.Add(temp);
+                    }
                     ChartValues<String> cv = new ChartValues<String>();
                     foreach (String temp in hari)
                     {
@@ -942,6 +949,7 @@ namespace testProjectBCA
                     {
                         Title = "Saldo ATM Nasional",
                         Labels = hari,
+                        LabelsRotation = 30,
                         //Separator = DefaultAxes.CleanSeparator,
                         Separator = new Separator // force the separator step to 1, so it always display all labels
                         {
@@ -990,12 +998,13 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "SELECT [Hari] = day(tanggal),[Rasio] = CAST(SUM(saldoAwal100 + saldoAwal50 + saldoAwal20) AS FLOAT)/(SUM(isiATM100+isiATM50+isiATM20+isiCRM100+isiCRM50+isiCRM20)) FROM TransaksiAtms ta join Pkt p on ta.kodePkt = p.kodePkt WHERE YEAR(tanggal) = " + comboTahun4.SelectedValue.ToString() + areaChoose(comboArea.SelectedValue.ToString()) + "and Month(tanggal) = " + comboBulan4.SelectedValue.ToString() + " GROUP BY day(tanggal) ORDER BY Hari ";
+                    cmd.CommandText = "SELECT [Hari] = day(tanggal),[Rasio] = CAST(SUM(saldoAwal100 + saldoAwal50 + saldoAwal20) AS FLOAT)/(SUM(isiATM100+isiATM50+isiATM20+isiCRM100+isiCRM50+isiCRM20)), [namahari]  = datename(weekday,tanggal) FROM TransaksiAtms ta join Pkt p on ta.kodePkt = p.kodePkt WHERE YEAR(tanggal) = " + comboTahun4.SelectedValue.ToString() + areaChoose(comboArea.SelectedValue.ToString()) + "and Month(tanggal) = " + comboBulan4.SelectedValue.ToString() + " GROUP BY day(tanggal), datename(weekday,tanggal) ORDER BY Hari ";
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
-                        tanggal.Add(reader[0].ToString());
+                        tanggal.Add(reader[2].ToString() +" - "+reader[0].ToString());
                         rasio.Add((Double)reader[1]);
+
 
                     }
                     ChartValues<Double> cv = new ChartValues<Double>();
@@ -1017,6 +1026,7 @@ namespace testProjectBCA
                     {
                         Title = "Tanggal",
                         Labels = tanggal,
+                        LabelsRotation = 30,
                         Separator = new Separator // force the separator step to 1, so it always display all labels
                         {
                             Step = 1,
@@ -1494,14 +1504,16 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "SELECT day(tanggal), (DATEPART(WEEK, tanggal) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM, 0, tanggal), 0)) + 1 ), DATENAME(dw,Tanggal),[Rasio] = CAST(SUM(saldoAwal100 + saldoAwal50 + saldoAwal20) AS FLOAT)/(SUM(isiATM100+isiATM50+isiATM20+isiCRM100+isiCRM50+isiCRM20))  FROM TransaksiAtms ta join Pkt p on ta.kodePkt = p.kodePkt WHERE YEAR(tanggal) = " + comboTahun7.SelectedValue.ToString() + " and p.kodePkt = '" + comboPkt7.SelectedValue.ToString() + "' and MONTH(tanggal) = " + comboBulan7.SelectedValue.ToString() + " GROUP BY DATENAME(dw, tanggal), DATENAME(WEEK, tanggal), day(tanggal), (DATEPART(WEEK, tanggal) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM, 0, tanggal), 0)) + 1 ) order by day(tanggal)";
+                    cmd.CommandText = "SELECT day(tanggal), (DATEPART(WEEK, tanggal) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM, 0, tanggal), 0)) + 1 ), DATENAME(dw,Tanggal),[Rasio] = CAST(SUM(saldoAwal100 + saldoAwal50 + saldoAwal20) AS FLOAT)/NULLIF(SUM(isiATM100+isiATM50+isiATM20+isiCRM100+isiCRM50+isiCRM20),0)  FROM TransaksiAtms ta join Pkt p on ta.kodePkt = p.kodePkt WHERE YEAR(tanggal) = " + comboTahun7.SelectedValue.ToString() + " and p.kodePkt = '" + comboPkt7.SelectedValue.ToString() + "' and MONTH(tanggal) = " + comboBulan7.SelectedValue.ToString() + " GROUP BY DATENAME(dw, tanggal), DATENAME(WEEK, tanggal), day(tanggal), (DATEPART(WEEK, tanggal) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM, 0, tanggal), 0)) + 1 ) order by day(tanggal)";
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
                         tanggal.Add(reader[0].ToString());
-                        hari.Add(reader[2].ToString() + " (" + reader[1].ToString() + ") - " + reader[0].ToString() + "");
-                        rasio.Add((Double)reader[3]);
-
+                        hari.Add(reader[2].ToString() + " - " + reader[0].ToString() + "");
+                        if (!String.IsNullOrEmpty(reader[3].ToString()))
+                            rasio.Add((Double)reader[3]);
+                        else
+                            rasio.Add(0);
                     }
                     Console.WriteLine(tanggal.Count);
                     ChartValues<Double> cv = new ChartValues<Double>();
@@ -1524,7 +1536,7 @@ namespace testProjectBCA
 
                     cartesianChart6.AxisX.Add(new Axis
                     {
-                        Title = "Hari (Minggu) - Tanggal",
+                        Title = "Hari - Tanggal",
                         Labels = hari,
                         Separator = new Separator // force the separator step to 1, so it always display all labels
                         {
@@ -1570,7 +1582,7 @@ namespace testProjectBCA
                     while (reader.Read())
                     {
                         rasio.Add((int)reader[0]);
-                        tanggal.Add(reader[1].ToString() + " (" + reader[3].ToString() + ")  - " + reader[2].ToString() + "");
+                        tanggal.Add(reader[1].ToString() + " - " + reader[2].ToString() + "");
 
                     }
                     ChartValues<Double> cv = new ChartValues<Double>();
@@ -1593,7 +1605,151 @@ namespace testProjectBCA
 
                     cartesianChart7.AxisX.Add(new Axis
                     {
-                        Title = "Hari (Minggu)- Tanggal",
+                        Title = "Hari - Tanggal",
+                        Labels = tanggal,
+
+                        Separator = new Separator // force the separator step to 1, so it always display all labels
+                        {
+                            Step = 1,
+                            IsEnabled = false //disable it to make it invisible.
+                        },
+                        LabelsRotation = 30,
+
+                        //Labels = new[] { "Jan", "Feb", "Mar", "Apr", "May" }
+                    }
+
+                    );
+
+                    cartesianChart7.AxisY.Add(new Axis
+                    {
+                        Title = "Jumlah Ad-Hoc",
+                        LabelFormatter = value => value.ToString(),
+                        MinValue = 0
+
+                    });
+
+                    cartesianChart7.LegendLocation = LegendLocation.Right;
+
+                }
+            }
+        }
+
+        public void reloadtambahancc7Jabo()
+        {
+            cartesianChart7.AxisX.Clear();
+            cartesianChart7.AxisY.Clear();
+            cartesianChart7.Series.Clear();
+
+            List<int> rasio = new List<int>();
+            List<String> tanggal = new List<String>();
+            List<String> hari = new List<String>();
+            using (SqlConnection sql = new SqlConnection(Variables.connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = sql;
+                    sql.Open();
+                    cmd.CommandText = "select [Jumlah adhoc] = count (adhoc100+adhoc50+adhoc20), [hari]  = datename(weekday,tanggal), [tanggal] = day(tanggal), [Minggu] = (DATEPART(WEEK, tanggal) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM, 0, tanggal), 0)) + 1 ) from TransaksiAtms t join Pkt p on t.kodePkt = p.kodePkt where ((adhoc100 + adhoc50 + adhoc20) != 0) AND MONTH(tanggal) =  " + comboBulan8.SelectedValue.ToString() + " and YEAR(tanggal) = " + comboTahun8.SelectedValue.ToString() + "and p.kanwil like '%Jabo%'  group by datename(weekday,tanggal), (DATEPART(WEEK, tanggal) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM, 0, tanggal), 0)) + 1 ), day(tanggal) order by [Minggu], day(tanggal)";
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        rasio.Add((int)reader[0]);
+                        tanggal.Add(reader[1].ToString() + " - " + reader[2].ToString() + "");
+
+                    }
+                    ChartValues<Double> cv = new ChartValues<Double>();
+                    foreach (Double temp in rasio)
+                    {
+                        cv.Add(Math.Round(temp, 2));
+                    }
+
+                    cartesianChart7.Series = new SeriesCollection
+                    {
+                        new LineSeries
+                        {
+
+                            Title = comboTahun8.SelectedValue.ToString() + " - " + bulan[(Int32)comboBulan8.SelectedIndex],
+                            Values = cv,
+                            LineSmoothness = 0,
+                            DataLabels = true
+                        }
+                    };
+
+                    cartesianChart7.AxisX.Add(new Axis
+                    {
+                        Title = "Hari - Tanggal",
+                        Labels = tanggal,
+
+                        Separator = new Separator // force the separator step to 1, so it always display all labels
+                        {
+                            Step = 1,
+                            IsEnabled = false //disable it to make it invisible.
+                        },
+                        LabelsRotation = 30,
+
+                        //Labels = new[] { "Jan", "Feb", "Mar", "Apr", "May" }
+                    }
+
+                    );
+
+                    cartesianChart7.AxisY.Add(new Axis
+                    {
+                        Title = "Jumlah Ad-Hoc",
+                        LabelFormatter = value => value.ToString(),
+                        MinValue = 0
+
+                    });
+
+                    cartesianChart7.LegendLocation = LegendLocation.Right;
+
+                }
+            }
+        }
+
+        public void reloadtambahancc7nonjabo()
+        {
+            cartesianChart7.AxisX.Clear();
+            cartesianChart7.AxisY.Clear();
+            cartesianChart7.Series.Clear();
+
+            List<int> rasio = new List<int>();
+            List<String> tanggal = new List<String>();
+            List<String> hari = new List<String>();
+            using (SqlConnection sql = new SqlConnection(Variables.connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = sql;
+                    sql.Open();
+                    cmd.CommandText = "select [Jumlah adhoc] = count (adhoc100+adhoc50+adhoc20), [hari]  = datename(weekday,tanggal), [tanggal] = day(tanggal), [Minggu] = (DATEPART(WEEK, tanggal) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM, 0, tanggal), 0)) + 1 ) from TransaksiAtms t join Pkt p on t.kodePkt = p.kodePkt where ((adhoc100 + adhoc50 + adhoc20) != 0) AND MONTH(tanggal) =  " + comboBulan8.SelectedValue.ToString() + " and YEAR(tanggal) = " + comboTahun8.SelectedValue.ToString() + "and p.kanwil not like '%Jabo%'  group by datename(weekday,tanggal), (DATEPART(WEEK, tanggal) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM, 0, tanggal), 0)) + 1 ), day(tanggal) order by [Minggu], day(tanggal)";
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        rasio.Add((int)reader[0]);
+                        tanggal.Add(reader[1].ToString() + " - " + reader[2].ToString() + "");
+
+                    }
+                    ChartValues<Double> cv = new ChartValues<Double>();
+                    foreach (Double temp in rasio)
+                    {
+                        cv.Add(Math.Round(temp, 2));
+                    }
+
+                    cartesianChart7.Series = new SeriesCollection
+                    {
+                        new LineSeries
+                        {
+
+                            Title = comboTahun8.SelectedValue.ToString() + " - " + bulan[(Int32)comboBulan8.SelectedIndex],
+                            Values = cv,
+                            LineSmoothness = 0,
+                            DataLabels = true
+                        }
+                    };
+
+                    cartesianChart7.AxisX.Add(new Axis
+                    {
+                        Title = "Hari - Tanggal",
                         Labels = tanggal,
 
                         Separator = new Separator // force the separator step to 1, so it always display all labels
@@ -2545,7 +2701,19 @@ namespace testProjectBCA
 
         private void comboTahun8_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            reload10();
+            if (comboBox1.SelectedIndex == 0)
+            {
+                reload10();
+            }
+            if (comboBox1.SelectedIndex == 1)
+            {
+                reloadtambahancc7Jabo();
+            }
+            if (comboBox1.SelectedIndex == 2)
+            {
+                reloadtambahancc7nonjabo();
+            }
+            
         }
 
         private void checkAvg1_CheckedChanged(object sender, EventArgs e)
@@ -2671,6 +2839,11 @@ namespace testProjectBCA
 
             this.dataGridView2.FirstDisplayedScrollingRowIndex = this.dataGridView3.FirstDisplayedScrollingRowIndex;
             this.dataGridView1.FirstDisplayedScrollingRowIndex = this.dataGridView3.FirstDisplayedScrollingRowIndex;
+
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
 
         }
     }

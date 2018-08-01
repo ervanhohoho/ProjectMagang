@@ -143,7 +143,7 @@ namespace testProjectBCA
             var q = (from x in db.TransaksiAtms
                      where x.kodePkt == kodePkt && ((DateTime)x.tanggal).Month == month && ((DateTime)x.tanggal).Year == year
                      select new
-                     { Rasio = (Double)(x.saldoAwal100 + x.saldoAwal50 + x.saldoAwal20) / (x.isiATM100 + x.isiATM20 + x.isiATM50 + x.isiCRM100 + x.isiCRM20 + x.isiCRM50) }
+                     { Rasio = (x.isiATM100 + x.isiATM20 + x.isiATM50 + x.isiCRM100 + x.isiCRM20 + x.isiCRM50) == 0 ? 0 : (Double)(x.saldoAwal100 + x.saldoAwal50 + x.saldoAwal20) / (x.isiATM100 + x.isiATM20 + x.isiATM50 + x.isiCRM100 + x.isiCRM20 + x.isiCRM50) }
                      ).ToList();
             rasioChart.Series.Clear();
             ChartValues<Double> values = new ChartValues<Double>();

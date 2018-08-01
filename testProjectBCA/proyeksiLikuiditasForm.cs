@@ -860,7 +860,7 @@ namespace testProjectBCA
                       + (Int64)bon[a].C50
                       - (listApproval.Where(x => x.Key == tanggal).Select(x => x.setor50).Any() ? (Int64)listApproval.Where(x => x.Key == today.AddDays(a)).Select(x => x.setor50).ToList()[listApproval.Where(x => x.Key == today.AddDays(a)).Select(x => x.setor50).ToList().Count - 1] : 0)
                 });
-                if (a > 0)
+                if (a >= 0)
                     result.Add(new tanggalValue() { tanggal = bon[a].Key, value = (Int64)bon[a].C50 });
             }
 
@@ -896,7 +896,8 @@ namespace testProjectBCA
                       && y.bon100 != -1
                       && z.kanwil.ToUpper().Contains("JABO")
                       select new { A = x, DA = y }).ToList();
-            if(saldo50.Max(x=>x.tanggal) < q2.Max(x=>x.DA.tanggal))
+            
+            if (saldo50.Max(x=>x.tanggal) < q2.Max(x=>x.DA.tanggal))
             {
                 DateTime tempT = saldo50.Max(x => x.tanggal);
                 tanggalLastApproval = q2.Max(x => x.A.tanggal);
@@ -1309,8 +1310,27 @@ namespace testProjectBCA
         {
             Database1Entities db = new Database1Entities();
             DateTime newestApprovalDate = db.Approvals.Max(x => x.tanggal);
-            var query = (from x in db.Approvals join y in db.DetailApprovals on x.idApproval equals y.idApproval)
+
             List<tanggalValue> res = new List<tanggalValue>();
+            if (denom == "100000")
+            {
+                res = (from x in db.Approvals
+                       join y in db.DetailApprovals on x.idApproval equals y.idApproval
+                       join z in db.Pkts on x.kodePkt equals z.kodePkt
+                       where z.kanwil.ToUpper().Contains("JABO")
+                       group y by y.tanggal into g
+                       select new tanggalValue() { tanggal = (DateTime)g.Key, value = (Int64)g.Sum(o => o.setor100) }).ToList();
+
+            }
+            if (denom == "50000")
+            {
+                res = (from x in db.Approvals
+                       join y in db.DetailApprovals on x.idApproval equals y.idApproval
+                       join z in db.Pkts on x.kodePkt equals z.kodePkt
+                       where z.kanwil.ToUpper().Contains("JABO")
+                       group y by y.tanggal into g
+                       select new tanggalValue() { tanggal = (DateTime)g.Key, value = (Int64)g.Sum(o => o.setor50) }).ToList();
+            }
             return res;
         }
         List<tanggalValue> loadMorningBalance100SP()
@@ -1325,16 +1345,16 @@ namespace testProjectBCA
                       where x.tanggal == today
                       select x).ToList();
 
-            tanggalValue adhocATM100 = new tanggalValue() { tanggal = Variables.todayDate.AddDays(1), value = (Int64)adhocATM100Num.Value },
-                adhocCabang100 = new tanggalValue() { tanggal = Variables.todayDate.AddDays(1), value = (Int64)adhocCabang100Num.Value },
-                adhocTukab100 = new tanggalValue() { tanggal = Variables.todayDate.AddDays(1), value = (Int64)adhocTukab100Num.Value },
+            tanggalValue adhocATM100 = new tanggalValue() { tanggal = Variables.todayDate, value = (Int64)adhocATM100Num.Value },
+                adhocCabang100 = new tanggalValue() { tanggal = Variables.todayDate, value = (Int64)adhocCabang100Num.Value },
+                adhocTukab100 = new tanggalValue() { tanggal = Variables.todayDate, value = (Int64)adhocTukab100Num.Value },
                 inBITukab100 = new tanggalValue() { tanggal = inBITukabDateTimePicker.Value.Date, value = (Int64)inBITukab100Num.Value },
                 outBITukab100 = new tanggalValue() { tanggal = outBITukabDateTimePicker.Value.Date, value = (Int64)outBITukab100Num.Value };
-
+            List<tanggalValue> listInAtm100 = loadInATM("100000");
             //Morning Balance Hari Pertama
             listMorningBalance.Add(new tanggalValue() {
                 tanggal = today,
-                value = (Int64) q2.Sum(x=>(x.fitBaru + x.fitLama + x.fitNKRI + x.newBaru + x.newLama + x.RRMBaru + x.RRMLama + x.RRMNKRI + x.RupiahRusakMayor + x.unfitBaru + x.unfitLama + x.unfitNKRI + x.unprocessed + x.passThrough))
+                value = (Int64) q2.Sum(x=>(x.fitBaru + x.fitLama + x.fitNKRI + x.newBaru + x.newLama + x.RRMBaru + x.RRMLama + x.RRMNKRI + x.RupiahRusakMayor + x.unfitBaru + x.unfitLama + x.unfitNKRI + x.unprocessed + x.passThrough + x.cekLaporan))
               });
 
             //Hitung Ending Balance + Morning Balance Selanjutnya
@@ -1354,7 +1374,13 @@ namespace testProjectBCA
                     endBal = endBal - adhocCabang100.value;
                 if (temp == adhocTukab100.tanggal)
                     endBal = endBal - adhocTukab100.value;
+                if (temp == inBITukab100.tanggal)
+                    endBal += inBITukab100.value;
+                if (temp == outBITukab100.tanggal)
+                    endBal -= outBITukab100.value;
 
+                var inAtm100 = listInAtm100.Where(x => x.tanggal == temp).Select(x => x.value).FirstOrDefault();
+                endBal += inAtm100;
 
                 listEndingBalance.Add(new tanggalValue() {
                     tanggal = temp,
@@ -1367,7 +1393,7 @@ namespace testProjectBCA
                 {
                     DateTime temph1 = temp.AddDays(1);
                     Int64 totalOut = (from x in prediksiOutAtm100
-                                      join y in prediksiOutAtm50 on x.tanggal equals y.tanggal
+                                      join y in prediksiOutCabang100 on x.tanggal equals y.tanggal
                                       select x.value + y.value).First();
                     Int64 morningBalh1 = endBal - totalOut;
                     listMorningBalance.Add(new tanggalValue() { tanggal = temph1, value = morningBalh1});
@@ -1387,18 +1413,18 @@ namespace testProjectBCA
             var q2 = (from x in query
                       where x.tanggal == today
                       select x).ToList();
-            tanggalValue adhocATM50 = new tanggalValue() { tanggal = Variables.todayDate.AddDays(1), value = (Int64)adhocATM50Num.Value },
-                adhocCabang50 = new tanggalValue() { tanggal = Variables.todayDate.AddDays(1), value = (Int64)adhocCabang50Num.Value },
-                adhocTukab50 = new tanggalValue() { tanggal = Variables.todayDate.AddDays(1), value = (Int64)adhocTukab50Num.Value },
+            tanggalValue adhocATM50 = new tanggalValue() { tanggal = Variables.todayDate, value = (Int64)adhocATM50Num.Value },
+                adhocCabang50 = new tanggalValue() { tanggal = Variables.todayDate, value = (Int64)adhocCabang50Num.Value },
+                adhocTukab50 = new tanggalValue() { tanggal = Variables.todayDate, value = (Int64)adhocTukab50Num.Value },
                 inBITukab50 = new tanggalValue() { tanggal = inBITukabDateTimePicker.Value.Date, value = (Int64)inBITukab50Num.Value },
                 outBITukab50 = new tanggalValue() { tanggal = outBITukabDateTimePicker.Value.Date, value = (Int64)outBITukab50Num.Value };
-
+            List<tanggalValue> listInAtm50 = loadInATM("50000");
 
             //Morning Balance Hari Pertama
             listMorningBalance.Add(new tanggalValue()
             {
                 tanggal = today,
-                value = (Int64)q2.Sum(x => (x.fitBaru + x.fitLama + x.fitNKRI + x.newBaru + x.newLama + x.RRMBaru + x.RRMLama + x.RRMNKRI + x.RupiahRusakMayor + x.unfitBaru + x.unfitLama + x.unfitNKRI + x.unprocessed + x.passThrough))
+                value = (Int64)q2.Sum(x => (x.fitBaru + x.fitLama + x.fitNKRI + x.newBaru + x.newLama + x.RRMBaru + x.RRMLama + x.RRMNKRI + x.RupiahRusakMayor + x.unfitBaru + x.unfitLama + x.unfitNKRI + x.unprocessed + x.passThrough + x.cekLaporan))
             });
 
             //Hitung Ending Balance + Morning Balance Selanjutnya
@@ -1419,6 +1445,12 @@ namespace testProjectBCA
                     endBal = endBal - adhocCabang50.value;
                 if (temp == adhocTukab50.tanggal)
                     endBal = endBal - adhocTukab50.value;
+                if (temp == inBITukab50.tanggal)
+                    endBal += inBITukab50.value;
+                if (temp == outBITukab50.tanggal)
+                    endBal -= outBITukab50.value;
+                var inAtm50 = listInAtm50.Where(x => x.tanggal == temp).Select(x => x.value).FirstOrDefault();
+                endBal += inAtm50;
 
                 listEndingBalance.Add(new tanggalValue()
                 {
@@ -1432,7 +1464,7 @@ namespace testProjectBCA
                 {
                     DateTime temph1 = temp.AddDays(1);
                     Int64 totalOut = (from x in prediksiOutAtm50
-                                      join y in prediksiOutAtm50 on x.tanggal equals y.tanggal
+                                      join y in prediksiOutCabang50 on x.tanggal equals y.tanggal
                                       select x.value + y.value).First();
                     Int64 morningBalh1 = endBal - totalOut;
                     listMorningBalance.Add(new tanggalValue() { tanggal = temph1, value = morningBalh1 });

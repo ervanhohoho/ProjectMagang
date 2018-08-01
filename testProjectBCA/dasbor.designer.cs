@@ -79,6 +79,7 @@
             this.comboArea = new System.Windows.Forms.ComboBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
@@ -307,7 +308,7 @@
             // 
             // buttonRefresh8
             // 
-            this.buttonRefresh8.Location = new System.Drawing.Point(263, 34);
+            this.buttonRefresh8.Location = new System.Drawing.Point(536, 36);
             this.buttonRefresh8.Name = "buttonRefresh8";
             this.buttonRefresh8.Size = new System.Drawing.Size(75, 23);
             this.buttonRefresh8.TabIndex = 43;
@@ -633,6 +634,7 @@
             // 
             // groupBox9
             // 
+            this.groupBox9.Controls.Add(this.comboBox1);
             this.groupBox9.Controls.Add(this.comboTahun8);
             this.groupBox9.Controls.Add(this.comboBulan8);
             this.groupBox9.Controls.Add(this.buttonRefresh8);
@@ -643,6 +645,21 @@
             this.groupBox9.TabIndex = 57;
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "Jumlah Adhoc";
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "Nasional",
+            "Jabo",
+            "Non-Jabo"});
+            this.comboBox1.Location = new System.Drawing.Point(267, 36);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(121, 21);
+            this.comboBox1.TabIndex = 44;
+            this.comboBox1.Text = "area";
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            this.comboBox1.SelectionChangeCommitted += new System.EventHandler(this.comboTahun8_SelectionChangeCommitted);
             // 
             // dasbor
             // 
@@ -728,5 +745,6 @@
         private System.Windows.Forms.Button buttonTambah2;
         private System.Windows.Forms.GroupBox groupBox9;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ComboBox comboBox1;
     }
 }

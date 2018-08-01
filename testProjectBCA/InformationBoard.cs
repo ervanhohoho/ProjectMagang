@@ -1723,7 +1723,9 @@ namespace testProjectBCA
             var q2 = (from x in db.Approvals
                       join y in db.DetailApprovals on x.idApproval equals y.idApproval
                       where x.kodePkt == kodepkt && (y.tanggal >= tanggalOptiMin) && ((DateTime)x.tanggal) < today select new {Approval = x, DetailApproval = y}).ToList();
-            int maxIdApproval = q2.Max(x => x.Approval.idApproval);
+            int maxIdApproval = 0;
+            if(q2.Any())
+                maxIdApproval = q2.Max(x => x.Approval.idApproval);
             q2 = (from x in q2
                   where x.Approval.idApproval == maxIdApproval
                   select x).ToList();
@@ -2644,6 +2646,7 @@ namespace testProjectBCA
                         d20 = saldoAkhir.d20
                     }
                 );
+                Console.WriteLine(counter);
                 rasio.d100 = saldoAkhir.d100 / ((Double)prediksiIsiAtm[counter].d100 + (Double)isiCrm[counter].d100);
                 rasio.d50 = saldoAkhir.d50 / ((Double)prediksiIsiAtm[counter].d50 + (Double)isiCrm[counter].d50);
                 rasio.d20 = saldoAkhir.d20 / ((Double)prediksiIsiAtm[counter].d20 + (Double)isiCrm[counter].d20);
@@ -2686,9 +2689,15 @@ namespace testProjectBCA
             }
             rasio = new Rasio();
             rasio.tgl = tempTgl.AddDays(counter);
-            rasio.d100 = saldoAkhir.d100 / ((Double)prediksiIsiAtm[counter].d100 + (Double)isiCrm[counter].d100);
-            rasio.d50 = saldoAkhir.d50 / ((Double)prediksiIsiAtm[counter].d50 + (Double)isiCrm[counter].d50);
-            rasio.d20 = saldoAkhir.d20 / ((Double)prediksiIsiAtm[counter].d20 + (Double)isiCrm[counter].d20);
+            rasio.d100 = Double.NaN;
+            rasio.d50 = Double.NaN;
+            rasio.d20 = Double.NaN;
+            if (counter < isiCrm.Count)
+            {
+                rasio.d100 = saldoAkhir.d100 / ((Double)prediksiIsiAtm[counter].d100 + (Double)isiCrm[counter].d100);
+                rasio.d50 = saldoAkhir.d50 / ((Double)prediksiIsiAtm[counter].d50 + (Double)isiCrm[counter].d50);
+                rasio.d20 = saldoAkhir.d20 / ((Double)prediksiIsiAtm[counter].d20 + (Double)isiCrm[counter].d20);
+            }
             listRasio.Add(rasio);
             saldo.Add(
                     new Denom
@@ -3366,26 +3375,49 @@ namespace testProjectBCA
                     newDetailA.saldoAwal100 = saldo[jumlahbon + i].d100;
                     newDetailA.saldoAwal50 = saldo[jumlahbon + i].d50;
                     newDetailA.saldoAwal20 = saldo[jumlahbon + i].d20;
-
-                    //Sislok
-                    newDetailA.sislokCRM100 = sislokCrm[count].d100;
-                    newDetailA.sislokCRM50 = sislokCrm[count].d50;
-                    newDetailA.sislokCRM20 = sislokCrm[count].d20;
-                    newDetailA.sislokCDM100 = sislokCdm[count].d100;
-                    newDetailA.sislokCDM50 = sislokCdm[count].d50;
-                    newDetailA.sislokCDM20 = sislokCdm[count].d20;
-                    newDetailA.sislokATM100 =(Int64)(rasioSislokAtm[count].d100 * prediksiIsiAtm[count].d100);
-                    newDetailA.sislokATM50 = (Int64)(rasioSislokAtm[count].d50 * prediksiIsiAtm[count].d50);
-                    newDetailA.sislokATM20 = (Int64)(rasioSislokAtm[count].d20 * prediksiIsiAtm[count].d20);
-
-                    //Isi
-                    newDetailA.isiATM100 = prediksiIsiAtm[count].d100;
-                    newDetailA.isiATM50 = prediksiIsiAtm[count].d50;
-                    newDetailA.isiATM20 = prediksiIsiAtm[count].d20;
-                    newDetailA.isiCRM100 = isiCrm[count].d100;
-                    newDetailA.isiCRM50 = isiCrm[count].d50;
-                    newDetailA.isiCRM20 = isiCrm[count].d20;
-
+                    
+                    if (count < sislokCrm.Count)
+                    {
+                        
+                        newDetailA.sislokCRM100 = sislokCrm[count].d100;
+                        newDetailA.sislokCRM50 = sislokCrm[count].d50;
+                        newDetailA.sislokCRM20 = sislokCrm[count].d20;
+                        newDetailA.sislokCDM100 = sislokCdm[count].d100;
+                        newDetailA.sislokCDM50 = sislokCdm[count].d50;
+                        newDetailA.sislokCDM20 = sislokCdm[count].d20;
+                        newDetailA.sislokATM100 = (Int64)(rasioSislokAtm[count].d100 * prediksiIsiAtm[count].d100);
+                        newDetailA.sislokATM50 = (Int64)(rasioSislokAtm[count].d50 * prediksiIsiAtm[count].d50);
+                        newDetailA.sislokATM20 = (Int64)(rasioSislokAtm[count].d20 * prediksiIsiAtm[count].d20);
+                        //Isi
+                        newDetailA.isiATM100 = prediksiIsiAtm[count].d100;
+                        newDetailA.isiATM50 = prediksiIsiAtm[count].d50;
+                        newDetailA.isiATM20 = prediksiIsiAtm[count].d20;
+                        newDetailA.isiCRM100 = isiCrm[count].d100;
+                        newDetailA.isiCRM50 = isiCrm[count].d50;
+                        newDetailA.isiCRM20 = isiCrm[count].d20;
+                    }
+                    else
+                    {
+                        //Sislok
+                        newDetailA.sislokCRM100 = 0;
+                        newDetailA.sislokCRM50 = 0;
+                        newDetailA.sislokCRM20 = 0;
+                        newDetailA.sislokCDM100 = 0;
+                        newDetailA.sislokCDM50 = 0;
+                        newDetailA.sislokCDM20 = 0;
+                        newDetailA.sislokATM100 = 0;
+                        newDetailA.sislokATM50 = 0;
+                        newDetailA.sislokATM20 = 0;
+                        //Isi
+                        newDetailA.isiATM100 =0;
+                        newDetailA.isiATM50 = 0;
+                        newDetailA.isiATM20 = 0;
+                        newDetailA.isiCRM100 =0;
+                        newDetailA.isiCRM50 = 0;
+                        newDetailA.isiCRM20 = 0;
+                    }
+                    
+                  
 
                     if(setor.Where(x=>((DateTime)x.tgl).Date == tempTanggal.Date).FirstOrDefault()!=null)
                     {

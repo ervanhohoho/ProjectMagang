@@ -293,6 +293,11 @@
             // 
             // adhocCabang100Num
             // 
+            this.adhocCabang100Num.Increment = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
             this.adhocCabang100Num.Location = new System.Drawing.Point(508, 118);
             this.adhocCabang100Num.Maximum = new decimal(new int[] {
             -1981284353,
@@ -302,6 +307,7 @@
             this.adhocCabang100Num.Name = "adhocCabang100Num";
             this.adhocCabang100Num.Size = new System.Drawing.Size(120, 20);
             this.adhocCabang100Num.TabIndex = 17;
+            this.adhocCabang100Num.ThousandsSeparator = true;
             // 
             // label11
             // 
@@ -314,6 +320,11 @@
             // 
             // adhocCabang50Num
             // 
+            this.adhocCabang50Num.Increment = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
             this.adhocCabang50Num.Location = new System.Drawing.Point(508, 151);
             this.adhocCabang50Num.Maximum = new decimal(new int[] {
             -1981284353,
@@ -323,6 +334,7 @@
             this.adhocCabang50Num.Name = "adhocCabang50Num";
             this.adhocCabang50Num.Size = new System.Drawing.Size(120, 20);
             this.adhocCabang50Num.TabIndex = 17;
+            this.adhocCabang50Num.ThousandsSeparator = true;
             // 
             // label12
             // 
@@ -345,6 +357,11 @@
             // 
             // adhocTukab100Num
             // 
+            this.adhocTukab100Num.Increment = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
             this.adhocTukab100Num.Location = new System.Drawing.Point(508, 179);
             this.adhocTukab100Num.Maximum = new decimal(new int[] {
             -1981284353,
@@ -354,9 +371,15 @@
             this.adhocTukab100Num.Name = "adhocTukab100Num";
             this.adhocTukab100Num.Size = new System.Drawing.Size(120, 20);
             this.adhocTukab100Num.TabIndex = 17;
+            this.adhocTukab100Num.ThousandsSeparator = true;
             // 
             // adhocTukab50Num
             // 
+            this.adhocTukab50Num.Increment = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
             this.adhocTukab50Num.Location = new System.Drawing.Point(508, 212);
             this.adhocTukab50Num.Maximum = new decimal(new int[] {
             -1981284353,
@@ -366,6 +389,7 @@
             this.adhocTukab50Num.Name = "adhocTukab50Num";
             this.adhocTukab50Num.Size = new System.Drawing.Size(120, 20);
             this.adhocTukab50Num.TabIndex = 17;
+            this.adhocTukab50Num.ThousandsSeparator = true;
             // 
             // label14
             // 
@@ -388,6 +412,11 @@
             // 
             // inBITukab100Num
             // 
+            this.inBITukab100Num.Increment = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
             this.inBITukab100Num.Location = new System.Drawing.Point(752, 80);
             this.inBITukab100Num.Maximum = new decimal(new int[] {
             -1981284353,
@@ -397,9 +426,15 @@
             this.inBITukab100Num.Name = "inBITukab100Num";
             this.inBITukab100Num.Size = new System.Drawing.Size(120, 20);
             this.inBITukab100Num.TabIndex = 17;
+            this.inBITukab100Num.ThousandsSeparator = true;
             // 
             // inBITukab50Num
             // 
+            this.inBITukab50Num.Increment = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
             this.inBITukab50Num.Location = new System.Drawing.Point(752, 116);
             this.inBITukab50Num.Maximum = new decimal(new int[] {
             -1981284353,
@@ -409,6 +444,7 @@
             this.inBITukab50Num.Name = "inBITukab50Num";
             this.inBITukab50Num.Size = new System.Drawing.Size(120, 20);
             this.inBITukab50Num.TabIndex = 17;
+            this.inBITukab50Num.ThousandsSeparator = true;
             // 
             // inBITukabDateTimePicker
             // 
@@ -438,6 +474,11 @@
             // 
             // outBITukab100Num
             // 
+            this.outBITukab100Num.Increment = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
             this.outBITukab100Num.Location = new System.Drawing.Point(752, 175);
             this.outBITukab100Num.Maximum = new decimal(new int[] {
             -1981284353,
@@ -447,9 +488,15 @@
             this.outBITukab100Num.Name = "outBITukab100Num";
             this.outBITukab100Num.Size = new System.Drawing.Size(120, 20);
             this.outBITukab100Num.TabIndex = 17;
+            this.outBITukab100Num.ThousandsSeparator = true;
             // 
             // outBITukab50Num
             // 
+            this.outBITukab50Num.Increment = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
             this.outBITukab50Num.Location = new System.Drawing.Point(752, 211);
             this.outBITukab50Num.Maximum = new decimal(new int[] {
             -1981284353,
@@ -459,6 +506,7 @@
             this.outBITukab50Num.Name = "outBITukab50Num";
             this.outBITukab50Num.Size = new System.Drawing.Size(120, 20);
             this.outBITukab50Num.TabIndex = 17;
+            this.outBITukab50Num.ThousandsSeparator = true;
             // 
             // outBITukabDateTimePicker
             // 
