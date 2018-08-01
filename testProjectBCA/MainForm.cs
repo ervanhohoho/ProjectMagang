@@ -287,6 +287,8 @@ namespace testProjectBCA
                         // Updating destination table, and dropping temp table
                         command.CommandTimeout = 300;
                         //Filtering data di temptable
+
+                        //Ini DELETE yang TAGT sama AMRT, yang dipake TAGT2 dan AMRT2, ini karena CPC Alsut
                         command.CommandText = "DELETE FROM #TempTable WHERE kodePkt = 'AMRT' OR kodePkt = 'TAGT'";
                         command.ExecuteNonQuery();
                         command.CommandText = "UPDATE #TempTable SET kodePkt = 'AMRT' WHERE kodePkt = 'AMRT2'";

@@ -24,7 +24,7 @@ namespace testProjectBCA
             //buttonGeneratePivot.Enabled = false;
             //buttonGeneratePivotPerVendor.Enabled = false;
 
-
+            
         }
 
 
@@ -47,7 +47,7 @@ namespace testProjectBCA
             int flagUpVOBH = 0;
             OpenFileDialog of = new OpenFileDialog();
             of.Filter = Variables.csvFilter;
-
+            
             if (of.ShowDialog() == DialogResult.OK)
             {
                 String filename = of.FileName;
@@ -76,7 +76,7 @@ namespace testProjectBCA
                 }
                 label1.Text = filename.Substring(filename.LastIndexOf('\\'), filename.Length - filename.LastIndexOf('\\'));
             }
-
+            
             flagUpVOBH = 1;
         }
 
@@ -128,7 +128,7 @@ namespace testProjectBCA
                 //dataGridView1.DataSource = dt;
 
                 obh = new List<OBH>();
-
+                   
                 for (int i = 1; i < dt.Rows.Count; i++)
                 {
                     if (dt.Rows[i][6].ToString() == "Confirmed" || dt.Rows[i][6].ToString() == "In Transit")
@@ -146,10 +146,10 @@ namespace testProjectBCA
                             currencyAmmount = CurrencyFill(String.IsNullOrEmpty(dt.Rows[i][11].ToString()) ? dt.Rows[i - 1][11].ToString().Replace("IDR:", "") : dt.Rows[i][11].ToString().Replace("IDR:", ""))
                         });
                     }
-
+                    
                 }
 
-                label3.Text = filename.Substring(filename.LastIndexOf('\\'), filename.Length - filename.LastIndexOf('\\'));
+                label3.Text = filename.Substring(filename.LastIndexOf('\\'),filename.Length - filename.LastIndexOf('\\'));
                 dataGridView1.DataSource = obh;
 
             }
@@ -160,7 +160,7 @@ namespace testProjectBCA
 
             obhp = new List<OBHProcessed>();
 
-            var cabangs = en.Cabangs.Select(x => x).ToList();
+            var cabangs = en.Cabangs.Select(x=>x).ToList();
 
 
 
@@ -193,7 +193,7 @@ namespace testProjectBCA
         private void buttonProcessVault_Click(object sender, EventArgs e)
         {
             var query = (from x in vobh
-                         select new { x.vaultId, x.confId, x.action, x.status, x.orderDate, x.dueDate, x.timeStamp, x.currencyAmmount, fundingSource = vo.Where(y => y.confId == x.confId).Select(y => y.fundingSource).FirstOrDefault() }
+                         select new { x.vaultId, x.confId, x.action , x.status, x.orderDate, x.dueDate, x.timeStamp, x.currencyAmmount, fundingSource = vo.Where(y => y.confId == x.confId).Select(y => y.fundingSource).FirstOrDefault() }
                          ).ToList();
 
             vp = new List<VaultProcessed>();
@@ -217,7 +217,7 @@ namespace testProjectBCA
             }
             Console.WriteLine(vp.Count);
             dataGridView1.DataSource = vp;
-
+           
         }
 
         private void buttonProcessSetoranCpc_Click(object sender, EventArgs e)
@@ -258,7 +258,7 @@ namespace testProjectBCA
             var query = (from x in en.RekonSaldoPerVendors
                          where x.actionRekon.Contains("Delivery") && x.statusRekon.Equals("Confirmed") && ((DateTime)x.dueDate) >= dateTimePicker1.Value.Date && ((DateTime)x.dueDate) <= dateTimePicker2.Value.Date
                          select x).ToList();
-
+            
             //generating pivotbon
             ppvb = new List<PivotPerVendor_bon>();
 
@@ -272,8 +272,8 @@ namespace testProjectBCA
                 vendor = g.Key.vendor,
                 belumValidasi = g.Where(c => c.validation == "NOT VALIDATED").Sum(c => c.currencyAmmount),
                 sudahValidasi = g.Where(c => c.validation == "VALIDATED").Sum(c => c.currencyAmmount),
-                grandTotal = g.Where(c => c.validation == "NOT VALIDATED").Sum(c => c.currencyAmmount) +
-                             g.Where(c => c.validation == "VALIDATED").Sum(c => c.currencyAmmount)
+                grandTotal = g.Where(c => c.validation == "NOT VALIDATED").Sum(c => c.currencyAmmount)+
+                             g.Where(c => c.validation == "VALIDATED").Sum(c => c.currencyAmmount) 
 
             }).ToList();
 
@@ -295,7 +295,7 @@ namespace testProjectBCA
 
             //preparing data for pivot pervendor setoran
             var querysetoran = (from x in en.RekonSaldoPerVendors
-                                where x.actionRekon.Contains("Return") && x.statusRekon.Equals("In Transit") && ((DateTime)x.dueDate) >= dateTimePicker1.Value.Date && ((DateTime)x.dueDate) <= dateTimePicker2.Value.Date
+                         where x.actionRekon.Contains("Return") && x.statusRekon.Equals("In Transit") && ((DateTime)x.dueDate) >= dateTimePicker1.Value.Date && ((DateTime)x.dueDate) <= dateTimePicker2.Value.Date
                                 select x).ToList();
 
             //generating pivot
@@ -380,18 +380,18 @@ namespace testProjectBCA
             }
 
             //creating pivotCPC - BI dan BankLain Return
-            var pivot = pc.GroupBy(c => new { c.vaultId, c.fundingSource, c.dueDate }).Select(g => new
+            var pivot = pc.GroupBy(c => new { c.vaultId, c.fundingSource, c.dueDate}).Select(g => new
             {
                 dueDate = g.Key.dueDate,
                 vaultID = g.Key.vaultId,
                 fundingSource = g.Key.fundingSource,
                 emergencyReturn = g.Where(c => c.action == "Emergency Return").Sum(c => c.currencyAmmount),
                 plannedReturn = g.Where(c => c.action == "Planned Return").Sum(c => c.currencyAmmount)
-
+                
             }).ToList();
-
+            
             var pivot2 = (from x in pivot
-                          select new { x.dueDate, x.vaultID, x.fundingSource, x.emergencyReturn, x.plannedReturn, grandTotal = x.emergencyReturn + x.plannedReturn });
+                          select new { x.dueDate, x.vaultID, x.fundingSource, x.emergencyReturn, x.plannedReturn, grandTotal =x.emergencyReturn+ x.plannedReturn });
 
             bibl = new List<PivotCPC_BIBL>();
 
@@ -409,14 +409,14 @@ namespace testProjectBCA
                         grandTotal = item.grandTotal
                     });
                 }
-
+                
             }
 
             dataGridView2.DataSource = bibl;
 
             //preparing data for Pivot CPC - BI dan BankLain delivery
             var queryd = (from x in en.RekonSaldoVaults
-                          where (x.fundingSoure == "BI" || x.fundingSoure.Contains("OB")) && ((DateTime)x.dueDate) >= dateTimePicker1.Value.Date && ((DateTime)x.dueDate) <= dateTimePicker2.Value.Date
+                         where (x.fundingSoure == "BI" || x.fundingSoure.Contains("OB")) && ((DateTime)x.dueDate) >= dateTimePicker1.Value.Date && ((DateTime)x.dueDate) <= dateTimePicker2.Value.Date
                           select x).ToList();
 
             pc = new List<PivotCPC>();
@@ -451,9 +451,9 @@ namespace testProjectBCA
                 emergencyDelivery = g.Where(c => c.action == "Emergency Delivery").Sum(c => c.currencyAmmount),
                 plannedDelivery = g.Where(c => c.action == "Planned Delivery").Sum(c => c.currencyAmmount)
             }).ToList();
-
+            
             var pivotd2 = (from x in pivotd
-                           select new { x.dueDate, x.vaultID, x.fundingSource, x.emergencyDelivery, x.plannedDelivery, grandTotal = x.emergencyDelivery + x.plannedDelivery });
+                          select new {x.dueDate, x.vaultID, x.fundingSource, x.emergencyDelivery, x.plannedDelivery, grandTotal = x.emergencyDelivery + x.plannedDelivery });
 
             bibld = new List<PivotCPC_BIBLD>();
 
@@ -471,14 +471,14 @@ namespace testProjectBCA
                         grandTotal = item.grandTotal
                     });
                 }
-
+                
             }
 
             dataGridView3.DataSource = bibld;
 
             //preparing data for pivot - ATM delivery
             var queryad = (from x in en.RekonSaldoVaults
-                           where (x.fundingSoure != "BI" && !x.fundingSoure.Contains("OB")) && ((DateTime)x.dueDate) >= dateTimePicker1.Value.Date && ((DateTime)x.dueDate) <= dateTimePicker2.Value.Date
+                          where (x.fundingSoure != "BI" && !x.fundingSoure.Contains("OB")) && ((DateTime)x.dueDate)>= dateTimePicker1.Value.Date && ((DateTime)x.dueDate) <= dateTimePicker2.Value.Date
                            select x).ToList();
 
             pc = new List<PivotCPC>();
@@ -515,7 +515,7 @@ namespace testProjectBCA
             }).ToList();
 
             var pivotad2 = (from x in pivotad
-                            select new { x.dueDate, x.vaultID, x.fundingSource, x.emergencyDelivery, x.plannedDelivery, grandTotal = x.emergencyDelivery + x.plannedDelivery });
+                           select new {x.dueDate, x.vaultID, x.fundingSource, x.emergencyDelivery, x.plannedDelivery, grandTotal = x.emergencyDelivery + x.plannedDelivery });
 
             atmd = new List<PivotCPC_ATMD>();
 
@@ -577,7 +577,7 @@ namespace testProjectBCA
             }).ToList();
 
             var pivotar2 = (from x in pivotar
-                            select new { x.dueDate, x.vaultID, x.fundingSource, x.emergencyReturn, x.plannedReturn, grandTotal = x.emergencyReturn + x.plannedReturn });
+                          select new { x.dueDate, x.vaultID, x.fundingSource, x.emergencyReturn, x.plannedReturn, grandTotal = x.emergencyReturn + x.plannedReturn });
 
             atmr = new List<PivotCPC_ATMR>();
 
@@ -601,7 +601,7 @@ namespace testProjectBCA
             dataGridView5.DataSource = atmr;
 
             //formatting
-            if (dataGridView2.Rows.Count > 0)
+            if (dataGridView2.Rows.Count>0)
             {
                 for (int i = 3; i < dataGridView2.Columns.Count; i++)
                 {
@@ -734,7 +734,7 @@ namespace testProjectBCA
             public Int64 currencyAmmount { set; get; }
             public DateTime realDate { set; get; }
             public String validation { set; get; }
-
+       
         }
 
         class PivotCPC_BIBL //pivotCPC - BI dan BankLain return
@@ -745,7 +745,7 @@ namespace testProjectBCA
             public Int64 plannedReturn { set; get; }
             public Int64 emergencyReturn { set; get; }
             public Int64 grandTotal { set; get; }
-
+            
         }
 
         class PivotCPC_BIBLD//pivotCPC - BI dan BankLain delivery
@@ -756,7 +756,7 @@ namespace testProjectBCA
             public Int64 plannedDelivery { set; get; }
             public Int64 emergencyDelivery { set; get; }
             public Int64 grandTotal { set; get; }
-
+            
         }
 
         class PivotCPC_ATMD //pivotcpc - atm delivery
@@ -767,7 +767,7 @@ namespace testProjectBCA
             public Int64 plannedDelivery { set; get; }
             public Int64 emergencyDelivery { set; get; }
             public Int64 grandTotal { set; get; }
-
+            
         }
 
         class PivotCPC_ATMR //pivotcpc - atm return
@@ -775,10 +775,10 @@ namespace testProjectBCA
             public DateTime dueDate { set; get; }
             public String vaultId { set; get; }
             public String fundingSource { set; get; }
-            public Int64 plannedReturn { set; get; }
-            public Int64 emergencyReturn { set; get; }
+            public Int64 plannedReturn{ set; get; }
+            public Int64 emergencyReturn{ set; get; }
             public Int64 grandTotal { set; get; }
-
+            
         }
 
         class PivotPerVendor_bon
@@ -788,7 +788,7 @@ namespace testProjectBCA
             public Int64 belumValidasi { set; get; }
             public Int64 sudahValidasi { set; get; }
             public Int64 grandTotal { set; get; }
-
+            
         }
 
         class PivotPerVendor_setoran
@@ -798,7 +798,7 @@ namespace testProjectBCA
             public Int64 belumValidasi { set; get; }
             public Int64 sudahValidasi { set; get; }
             public Int64 grandTotal { set; get; }
-
+            
         }
 
         public Int64 CurrencyFill(String a)
@@ -878,7 +878,7 @@ namespace testProjectBCA
             Console.WriteLine(sc.Count);
             dataGridView1.DataSource = sc;
         }
-
+        
         public void ProsesOrderBlogHistory()
         {
             obhp = new List<OBHProcessed>();
@@ -936,11 +936,11 @@ namespace testProjectBCA
 
 
             DateTime maxdate2 = rsv.Max(x => (DateTime)x.dueDate);
-            DateTime mindate2 = rsv.Min(x => (DateTime)x.dueDate);
+            DateTime mindate2= rsv.Min(x => (DateTime)x.dueDate);
 
             var query3 = (from x in en.RekonSaldoVaults
-                          where (DateTime)x.dueDate >= mindate2 && (DateTime)x.dueDate <= maxdate2
-                          select x
+                         where (DateTime)x.dueDate >= mindate2 && (DateTime)x.dueDate <= maxdate2
+                         select x
                          ).ToList();
 
             List<RekonSaldoVault> rsvToRemove = new List<RekonSaldoVault>();
@@ -948,7 +948,7 @@ namespace testProjectBCA
             foreach (var item in rsv)
             {
                 var query4 = (from x in query3
-                              where x.confId == item.confId && x.dueDate == item.dueDate
+                              where x.confId == item.confId && x.dueDate == item.dueDate 
                               select x).FirstOrDefault();
                 if (query4 != null)
                 {
@@ -998,7 +998,7 @@ namespace testProjectBCA
                 {
                     dataGridView2.Rows[rowidx].Cells[colidx].Style.Format = "F0";
                 }
-
+                
             }
             for (int a = 0; a < dataGridView2.Rows.Count; a++)
             {
@@ -1193,7 +1193,7 @@ namespace testProjectBCA
                               && x.orderDate == item.orderDate
                               //&& x.vendor == item.vendor
                               && x.actionRekon == item.actionRekon
-                              //&& x.statusRekon == item.statusRekon
+                              && x.statusRekon == item.statusRekon
                               //&& ((DateTime)x.dueDate).Date == item.dueDate 
                               //&& (DateTime)x.blogTime == item.blogTime 
                               //&& x.currencyAmmount == item.currencyAmmount 

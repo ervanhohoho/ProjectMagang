@@ -1305,7 +1305,14 @@ namespace testProjectBCA
             return result;
         }
 
-
+        List<tanggalValue> loadInATM(String denom)
+        {
+            Database1Entities db = new Database1Entities();
+            DateTime newestApprovalDate = db.Approvals.Max(x => x.tanggal);
+            var query = (from x in db.Approvals join y in db.DetailApprovals on x.idApproval equals y.idApproval)
+            List<tanggalValue> res = new List<tanggalValue>();
+            return res;
+        }
         List<tanggalValue> loadMorningBalance100SP()
         {
             List<tanggalValue> listMorningBalance = new List<tanggalValue>();
@@ -1317,6 +1324,12 @@ namespace testProjectBCA
             var q2 = (from x in query
                       where x.tanggal == today
                       select x).ToList();
+
+            tanggalValue adhocATM100 = new tanggalValue() { tanggal = Variables.todayDate.AddDays(1), value = (Int64)adhocATM100Num.Value },
+                adhocCabang100 = new tanggalValue() { tanggal = Variables.todayDate.AddDays(1), value = (Int64)adhocCabang100Num.Value },
+                adhocTukab100 = new tanggalValue() { tanggal = Variables.todayDate.AddDays(1), value = (Int64)adhocTukab100Num.Value },
+                inBITukab100 = new tanggalValue() { tanggal = inBITukabDateTimePicker.Value.Date, value = (Int64)inBITukab100Num.Value },
+                outBITukab100 = new tanggalValue() { tanggal = outBITukabDateTimePicker.Value.Date, value = (Int64)outBITukab100Num.Value };
 
             //Morning Balance Hari Pertama
             listMorningBalance.Add(new tanggalValue() {
@@ -1333,12 +1346,15 @@ namespace testProjectBCA
                                  join y in prediksiInCabang100 on x.tanggal equals y.tanggal
                                  where x.tanggal == temp
                                  select x.value+y.value).First();
-                Int64 adhoc100 = (Int64) adhoc100Num.Value;
                 Int64 endBal;
-                if (temp == today)
-                    endBal = morningBal + totalIn - adhoc100;
-                else
-                    endBal = morningBal + totalIn;
+                endBal = morningBal + totalIn;
+                if (temp == adhocATM100.tanggal)
+                    endBal = endBal - adhocATM100.value;
+                if (temp == adhocCabang100.tanggal)
+                    endBal = endBal - adhocCabang100.value;
+                if (temp == adhocTukab100.tanggal)
+                    endBal = endBal - adhocTukab100.value;
+
 
                 listEndingBalance.Add(new tanggalValue() {
                     tanggal = temp,
@@ -1371,6 +1387,12 @@ namespace testProjectBCA
             var q2 = (from x in query
                       where x.tanggal == today
                       select x).ToList();
+            tanggalValue adhocATM50 = new tanggalValue() { tanggal = Variables.todayDate.AddDays(1), value = (Int64)adhocATM50Num.Value },
+                adhocCabang50 = new tanggalValue() { tanggal = Variables.todayDate.AddDays(1), value = (Int64)adhocCabang50Num.Value },
+                adhocTukab50 = new tanggalValue() { tanggal = Variables.todayDate.AddDays(1), value = (Int64)adhocTukab50Num.Value },
+                inBITukab50 = new tanggalValue() { tanggal = inBITukabDateTimePicker.Value.Date, value = (Int64)inBITukab50Num.Value },
+                outBITukab50 = new tanggalValue() { tanggal = outBITukabDateTimePicker.Value.Date, value = (Int64)outBITukab50Num.Value };
+
 
             //Morning Balance Hari Pertama
             listMorningBalance.Add(new tanggalValue()
@@ -1388,12 +1410,15 @@ namespace testProjectBCA
                                  join y in prediksiInCabang50 on x.tanggal equals y.tanggal
                                  where x.tanggal == temp
                                  select x.value + y.value).First();
-                Int64 adhoc50 = (Int64)adhoc50Num.Value;
+                Int64 adhoc50 = (Int64)adhocATM50Num.Value;
                 Int64 endBal;
-                if (temp == today)
-                    endBal = morningBal + totalIn - adhoc50;
-                else
-                    endBal = morningBal + totalIn;
+                endBal = morningBal + totalIn;
+                if (temp == adhocATM50.tanggal)
+                    endBal = endBal - adhocATM50.value;
+                if (temp == adhocCabang50.tanggal)
+                    endBal = endBal - adhocCabang50.value;
+                if (temp == adhocTukab50.tanggal)
+                    endBal = endBal - adhocTukab50.value;
 
                 listEndingBalance.Add(new tanggalValue()
                 {
@@ -1416,6 +1441,8 @@ namespace testProjectBCA
             }
             return listMorningBalance;
         }
+        
+   
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -1502,6 +1529,11 @@ namespace testProjectBCA
             }
             db.ForecastDetails.AddRange(list);
             db.SaveChanges();
+        }
+
+        private void label10_Click(object sender, EventArgs e)
+        {
+
         }
     }
     
