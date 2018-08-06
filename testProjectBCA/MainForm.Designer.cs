@@ -61,6 +61,7 @@
             this.rekonSaldoToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.sLAProsesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.proyeksiLikuiditaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.orderTrackingToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.nasabahToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inputDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.abacasToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -69,12 +70,12 @@
             this.masterNasabahToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inputDataSubsidiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.invoiceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.dashboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.dashboardCOJToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.adminToolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inputDataKalenderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadMasterPKTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.orderTrackingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dashboardToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.aTMToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.saldoKasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -84,10 +85,8 @@
             this.aTMToolStripMenuItem,
             this.cabangToolStripMenuItem,
             this.nasabahToolStripMenuItem,
-            this.dashboardToolStripMenuItem,
-            this.dashboardCOJToolStripMenuItem,
-            this.adminToolsToolStripMenuItem,
-            this.orderTrackingToolStripMenuItem});
+            this.dashboardToolStripMenuItem1,
+            this.adminToolsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1004, 24);
@@ -253,7 +252,8 @@
             this.dailyStockToolStripMenuItem,
             this.rekonSaldoToolStripMenuItem1,
             this.sLAProsesToolStripMenuItem,
-            this.proyeksiLikuiditaToolStripMenuItem});
+            this.proyeksiLikuiditaToolStripMenuItem,
+            this.orderTrackingToolStripMenuItem1});
             this.cabangToolStripMenuItem.Name = "cabangToolStripMenuItem";
             this.cabangToolStripMenuItem.Size = new System.Drawing.Size(60, 20);
             this.cabangToolStripMenuItem.Text = "Cabang";
@@ -348,6 +348,13 @@
             this.proyeksiLikuiditaToolStripMenuItem.Text = "Proyeksi Likuiditas";
             this.proyeksiLikuiditaToolStripMenuItem.Click += new System.EventHandler(this.proyeksiLikuiditaToolStripMenuItem_Click);
             // 
+            // orderTrackingToolStripMenuItem1
+            // 
+            this.orderTrackingToolStripMenuItem1.Name = "orderTrackingToolStripMenuItem1";
+            this.orderTrackingToolStripMenuItem1.Size = new System.Drawing.Size(171, 22);
+            this.orderTrackingToolStripMenuItem1.Text = "Order Tracking";
+            this.orderTrackingToolStripMenuItem1.Click += new System.EventHandler(this.orderTrackingToolStripMenuItem1_Click);
+            // 
             // nasabahToolStripMenuItem
             // 
             this.nasabahToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -367,7 +374,7 @@
             this.masterNasabahToolStripMenuItem,
             this.inputDataSubsidiToolStripMenuItem});
             this.inputDataToolStripMenuItem.Name = "inputDataToolStripMenuItem";
-            this.inputDataToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.inputDataToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.inputDataToolStripMenuItem.Text = "Input Data";
             // 
             // abacasToolStripMenuItem1
@@ -408,23 +415,9 @@
             // invoiceToolStripMenuItem
             // 
             this.invoiceToolStripMenuItem.Name = "invoiceToolStripMenuItem";
-            this.invoiceToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.invoiceToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.invoiceToolStripMenuItem.Text = "Invoice";
             this.invoiceToolStripMenuItem.Click += new System.EventHandler(this.invoiceToolStripMenuItem_Click);
-            // 
-            // dashboardToolStripMenuItem
-            // 
-            this.dashboardToolStripMenuItem.Name = "dashboardToolStripMenuItem";
-            this.dashboardToolStripMenuItem.Size = new System.Drawing.Size(104, 20);
-            this.dashboardToolStripMenuItem.Text = "Dashboard ATM";
-            this.dashboardToolStripMenuItem.Click += new System.EventHandler(this.dashboardToolStripMenuItem_Click);
-            // 
-            // dashboardCOJToolStripMenuItem
-            // 
-            this.dashboardCOJToolStripMenuItem.Name = "dashboardCOJToolStripMenuItem";
-            this.dashboardCOJToolStripMenuItem.Size = new System.Drawing.Size(129, 20);
-            this.dashboardCOJToolStripMenuItem.Text = "Dashboard Saldo Kas";
-            this.dashboardCOJToolStripMenuItem.Click += new System.EventHandler(this.dashboardCOJToolStripMenuItem_Click);
             // 
             // adminToolsToolStripMenuItem
             // 
@@ -450,12 +443,28 @@
             this.loadMasterPKTToolStripMenuItem.Text = "Load Master PKT";
             this.loadMasterPKTToolStripMenuItem.Click += new System.EventHandler(this.loadMasterPKTToolStripMenuItem_Click);
             // 
-            // orderTrackingToolStripMenuItem
+            // dashboardToolStripMenuItem1
             // 
-            this.orderTrackingToolStripMenuItem.Name = "orderTrackingToolStripMenuItem";
-            this.orderTrackingToolStripMenuItem.Size = new System.Drawing.Size(97, 20);
-            this.orderTrackingToolStripMenuItem.Text = "Order Tracking";
-            this.orderTrackingToolStripMenuItem.Click += new System.EventHandler(this.orderTrackingToolStripMenuItem_Click);
+            this.dashboardToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.aTMToolStripMenuItem1,
+            this.saldoKasToolStripMenuItem});
+            this.dashboardToolStripMenuItem1.Name = "dashboardToolStripMenuItem1";
+            this.dashboardToolStripMenuItem1.Size = new System.Drawing.Size(76, 20);
+            this.dashboardToolStripMenuItem1.Text = "Dashboard";
+            // 
+            // aTMToolStripMenuItem1
+            // 
+            this.aTMToolStripMenuItem1.Name = "aTMToolStripMenuItem1";
+            this.aTMToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.aTMToolStripMenuItem1.Text = "ATM";
+            this.aTMToolStripMenuItem1.Click += new System.EventHandler(this.aTMToolStripMenuItem1_Click);
+            // 
+            // saldoKasToolStripMenuItem
+            // 
+            this.saldoKasToolStripMenuItem.Name = "saldoKasToolStripMenuItem";
+            this.saldoKasToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saldoKasToolStripMenuItem.Text = "Saldo Kas";
+            this.saldoKasToolStripMenuItem.Click += new System.EventHandler(this.saldoKasToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -470,7 +479,7 @@
             this.IsMdiContainer = true;
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
-            this.Text = "MainForm";
+            this.Text = "CAC";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -488,7 +497,6 @@
         private System.Windows.Forms.ToolStripMenuItem rekapApprovalToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem adminToolsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cabangToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem dashboardToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dailyStockToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem rekapApprovalToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem masterDataToolStripMenuItem;
@@ -512,10 +520,8 @@
         private System.Windows.Forms.ToolStripMenuItem inputDataKalenderToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadMasterPKTToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem initTransaksiToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem orderTrackingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem abacasToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem proyeksiLikuiditaToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem dashboardCOJToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem inputDataSubsidiToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem revisiInformationBoardToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem inputTukaranDanDeliveryToolStripMenuItem;
@@ -528,5 +534,9 @@
         private System.Windows.Forms.ToolStripMenuItem updateStokPosisiToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem rekonSaldoToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem orderTrackingToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem dashboardToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem aTMToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem saldoKasToolStripMenuItem;
     }
 }

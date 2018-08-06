@@ -39,10 +39,10 @@ namespace testProjectBCA
             DataSet ds = Util.openExcel(path);
 
             foreach (DataTable temp in ds.Tables)
-                processTable(temp);
+                processTable(temp, path);
 
         }
-        void processTable(DataTable table)
+        void processTable(DataTable table, String path)
         {
             GC.Collect();
 
@@ -69,7 +69,14 @@ namespace testProjectBCA
                 COL_RRM_LAMA = 39,
                 COL_RUPIAH_RUSAK_MAYOR = 40,
                 COL_CEK_LAPORAN = 41;
-            String namaPkt = table.Rows[5]['L' - 'A'].ToString();
+
+            String namaPkt = "";
+            try {
+                namaPkt = table.Rows[5]['L' - 'A'].ToString();
+            }catch(Exception p)
+            {
+                MessageBox.Show(path + " Sheet " + table.TableName + " tidak benar");
+            }
             String tanggalS = table.Rows[8]['B' - 'A'].ToString();
 
             DateTime buf, tanggal = new DateTime(1, 1, 1);
@@ -82,6 +89,7 @@ namespace testProjectBCA
                                        where x.namaPkt == namaPkt
                                        && ((DateTime)x.tanggal).Date == tanggal.Date
                                        select x).ToList();
+            bool firstUpdateIN= true;
             if (dataDb.Any())
             {
                 DataRowCollection rows = table.Rows;
@@ -219,6 +227,40 @@ namespace testProjectBCA
                         datasebelom.outCabang = outCabang;
                         db.SaveChanges();
                     }
+                    else
+                    {
+                        if (firstUpdateIN)
+                        {
+                            MessageBox.Show("Data tanggal " + tanggal.AddDays(-1).Date.ToShortDateString() + " " + namaPkt + " tidak ada");
+                            firstUpdateIN = false;
+                        }
+                        db.StokPosisis.Add(new StokPosisi()
+                        {
+                            tanggal = tanggal.AddDays(-1),
+                            namaPkt = namaPkt,
+                            denom = denomS,
+                            jenis = "Kertas",
+                            cekLaporan = 0,
+                            fitBaru = 0,
+                            fitLama = 0,
+                            fitNKRI = 0,
+                            newBaru = 0,
+                            newLama = 0,
+                            passThrough = 0,
+                            RRMBaru = 0,
+                            RRMLama = 0,
+                            RRMNKRI = 0,
+                            RupiahRusakMayor = 0,
+                            unfitBaru = 0,
+                            unfitLama = 0,
+                            unfitNKRI = 0,
+                            unprocessed = 0,
+                            inCabang = inCabang,
+                            inRetail = inRetail,
+                            outCabang = outCabang
+                        });
+                        db.SaveChanges();
+                    }
                 }
                 for (int a = ROWSTARTKOIN; a <= ROWENDKOIN; a++)
                 {
@@ -352,6 +394,35 @@ namespace testProjectBCA
                         datasebelom.outCabang = outCabang;
                         db.SaveChanges();
                     }
+                    else
+                    {
+                        db.StokPosisis.Add(new StokPosisi()
+                        {
+                            tanggal = tanggal.AddDays(-1),
+                            namaPkt = namaPkt,
+                            denom = denomS,
+                            jenis = "Koin",
+                            cekLaporan = 0,
+                            fitBaru = 0,
+                            fitLama = 0,
+                            fitNKRI = 0,
+                            newBaru = 0,
+                            newLama = 0,
+                            passThrough = 0,
+                            RRMBaru = 0,
+                            RRMLama = 0,
+                            RRMNKRI = 0,
+                            RupiahRusakMayor = 0,
+                            unfitBaru = 0,
+                            unfitLama = 0,
+                            unfitNKRI = 0,
+                            unprocessed = 0,
+                            inCabang = inCabang,
+                            inRetail = inRetail,
+                            outCabang = outCabang
+                        });
+                        db.SaveChanges();
+                    }
                 }
                 db.SaveChanges();
                 db.Dispose();
@@ -359,8 +430,6 @@ namespace testProjectBCA
             else
             {
                 return;
-
-                
             }
         }
     }

@@ -55,6 +55,7 @@ namespace testProjectBCA
                         nasabah.segmentasiNasabah = row[11].ToString();
                         nasabah.sentralisasi= row[12].ToString();
                         nasabah.subsidiCabang = row[13].ToString();
+                        db.SaveChanges();
                     }
                     else
                     {
@@ -74,7 +75,22 @@ namespace testProjectBCA
                         //    subsidiCabang = row[13].ToString(),
                         //    ring = row[14].ToString()
                         //});
-
+                        var temp = listNasabah.Where(x => x.kodeNasabah == row[0].ToString()).FirstOrDefault();
+                        if (temp!=null)
+                        {
+                            temp.fasilitasLayanan = row[1].ToString();
+                            temp.metodeLayanan = row[2].ToString();
+                            temp.kodeCabang = row[3].ToString();
+                            temp.kodePktCabang = row[6].ToString();
+                            temp.NomorRekening = row[7].ToString();
+                            temp.GroupNasabah = row[8].ToString();
+                            temp.namaNasabah = row[9].ToString();
+                            temp.ring = row[10].ToString();
+                            temp.segmentasiNasabah = row[11].ToString();
+                            temp.sentralisasi = row[12].ToString();
+                            temp.subsidiCabang = row[13].ToString();
+                            continue;
+                        }
                         //Yang tidak ada segmentasi
                         listNasabah.Add(new Nasabah()
                         {
@@ -99,7 +115,10 @@ namespace testProjectBCA
                     temp.kodeCabang = temp.kodeCabang.TrimStart('0');
                 }
                 db.Nasabahs.AddRange(listNasabah);
+
                 db.SaveChanges();
+                
+
 
                 //Bersihin N/A
                 var q = (from x in db.Nasabahs where x.segmentasiNasabah.ToUpper().Contains("N/A") select x).ToList();

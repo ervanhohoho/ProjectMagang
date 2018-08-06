@@ -49,11 +49,11 @@ namespace testProjectBCA
             for(int a = 0; a<dt.Rows.Count;a++)
             {
                 DataRow row = dt.Rows[a];
-                Nasabah toUpdate = listNasabah.Where(x => x.kodeNasabah == row[1].ToString().TrimStart('0')).FirstOrDefault();
+                Nasabah toUpdate = listNasabah.Where(x => x.kodeNasabah == row[1].ToString()).FirstOrDefault();
                 if(toUpdate == null)
                 {
                     db.Nasabahs.Add(new Nasabah() {
-                        kodeNasabah = row[1].ToString().TrimStart('0'),
+                        kodeNasabah = row[1].ToString(),
                         persentaseSubsidi = Double.Parse(row[6].ToString()),
                         subsidi = "GBKF"
                     });
@@ -75,13 +75,13 @@ namespace testProjectBCA
             for (int a = 0; a < dt.Rows.Count; a++)
             {
                 DataRow row = dt.Rows[a];
-                Nasabah toUpdate = listNasabah.Where(x => x.kodeNasabah == row[1].ToString().TrimStart('0')).FirstOrDefault();
+                Nasabah toUpdate = listNasabah.Where(x => x.kodeNasabah == row[1].ToString()).FirstOrDefault();
                 Console.WriteLine(row[5].ToString());
                 if (toUpdate == null)
                 {
                     db.Nasabahs.Add(new Nasabah()
                     {
-                        kodeNasabah = row[1].ToString().TrimStart('0'),
+                        kodeNasabah = row[1].ToString(),
                         persentaseSubsidi = 1,
                         subsidi = "SCM - " + (String.IsNullOrEmpty(row[5].ToString())?"Gereja": row[5].ToString()),
                         kuota = row[5].ToString().Contains("12X") ? 12 : 0

@@ -81,11 +81,16 @@ namespace testProjectBCA
                         else
                         {
                             Console.WriteLine(row[COL_TANGGAL].ToString());
+                            Int64 totalamount = 0, buf;
+                            if(!String.IsNullOrEmpty(row[COL_TOTAL_AMOUNT].ToString()))
+                                if (Int64.TryParse(row[COL_TOTAL_AMOUNT].ToString(), out buf))
+                                    totalamount = buf;
+                            
                             listAbacas.Add(new Abaca()
                             {
                                 CustomerCode = row[COL_CUSTOMER_CODE].ToString().ToUpper(),
                                 tanggal = DateTime.Parse(row[COL_TANGGAL].ToString()),
-                                totalAmount = Int64.Parse(row[COL_TOTAL_AMOUNT].ToString()),
+                                totalAmount = totalamount,
                                 CustomerName = row[COL_NAMA_NASABAH].ToString(),
                                 TotalUangBesar = totalUangBesar
                             });

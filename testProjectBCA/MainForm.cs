@@ -582,18 +582,7 @@ namespace testProjectBCA
 
         private void dashboardToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            loadForm.ShowSplashScreen();
-            dasbor d = new dasbor();
-            dasborExtension de = new dasborExtension();
-            //popupsementara ps = new popupsementara();
-            loadForm.CloseForm();
-            d.MdiParent = this;
-            //d.WindowState = FormWindowState.Maximized;
-            d.Show();
-            de.MdiParent = this;
-            de.Show();
-            //ps.MdiParent = this;
-            //ps.Show();
+            
         }
 
         private void dailyStockToolStripMenuItem_Click(object sender, EventArgs e)
@@ -725,9 +714,7 @@ namespace testProjectBCA
 
         private void orderTrackingToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            InputOrderTrackingForm iotf = new InputOrderTrackingForm();
-            iotf.MdiParent = this;
-            iotf.Show();
+            
         }
 
         private void proyeksiLikuiditaToolStripMenuItem_Click(object sender, EventArgs e)
@@ -739,9 +726,7 @@ namespace testProjectBCA
 
         private void dashboardCOJToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DashboardCOJForm dcf = new DashboardCOJForm();
-            dcf.MdiParent = this;
-            dcf.Show();
+            
         }
 
         private void inputDataSubsidiToolStripMenuItem_Click(object sender, EventArgs e)
@@ -838,6 +823,36 @@ namespace testProjectBCA
             ExportOpti eo = new ExportOpti();
             eo.MdiParent = this;
             eo.Show();
+        }
+
+        private void orderTrackingToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            InputOrderTrackingForm iotf = new InputOrderTrackingForm();
+            iotf.MdiParent = this;
+            iotf.Show();
+        }
+
+        private void aTMToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            loadForm.ShowSplashScreen();
+            dasbor d = new dasbor();
+            dasborExtension de = new dasborExtension();
+            //popupsementara ps = new popupsementara();
+            loadForm.CloseForm();
+            d.MdiParent = this;
+            //d.WindowState = FormWindowState.Maximized;
+            d.Show();
+            de.MdiParent = this;
+            de.Show();
+            //ps.MdiParent = this;
+            //ps.Show();
+        }
+
+        private void saldoKasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DashboardCOJForm dcf = new DashboardCOJForm();
+            dcf.MdiParent = this;
+            dcf.Show();
         }
     }
 }

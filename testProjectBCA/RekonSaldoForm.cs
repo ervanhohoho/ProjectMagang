@@ -994,7 +994,7 @@ namespace testProjectBCA
                 int colidx = cell.ColumnIndex;
                 Console.WriteLine(rowidx + ", " + colidx);
                 Console.WriteLine(dataGridView2.Rows[rowidx].Cells[colidx].Value.ToString().Replace("Rp.", "").Replace(".", ""));
-                if (colidx > 3)
+                if (colidx > 2)
                 {
                     dataGridView2.Rows[rowidx].Cells[colidx].Style.Format = "F0";
                 }
@@ -1023,7 +1023,7 @@ namespace testProjectBCA
                 int colidx = cell.ColumnIndex;
                 Console.WriteLine(rowidx + ", " + colidx);
                 Console.WriteLine(dataGridView3.Rows[rowidx].Cells[colidx].Value.ToString().Replace("Rp.", "").Replace(".", ""));
-                if (colidx > 3)
+                if (colidx > 2)
                 {
                     dataGridView3.Rows[rowidx].Cells[colidx].Style.Format = "F0";
                 }
@@ -1051,14 +1051,14 @@ namespace testProjectBCA
                 int colidx = cell.ColumnIndex;
                 Console.WriteLine(rowidx + ", " + colidx);
                 Console.WriteLine(dataGridView6.Rows[rowidx].Cells[colidx].Value.ToString().Replace("Rp.", "").Replace(".", ""));
-                if (colidx > 2)
+                if (colidx >= 2)
                 {
                     dataGridView6.Rows[rowidx].Cells[colidx].Style.Format = "F0";
                 }
             }
             for (int a = 0; a < dataGridView6.Rows.Count; a++)
             {
-                for (int b = 3; b < dataGridView6.Columns.Count; b++)
+                for (int b = 2; b < dataGridView6.Columns.Count; b++)
                 {
                     if (!cells.Contains(dataGridView6.Rows[a].Cells[b]))
                     {
@@ -1079,7 +1079,7 @@ namespace testProjectBCA
                 int colidx = cell.ColumnIndex;
                 Console.WriteLine(rowidx + ", " + colidx);
                 Console.WriteLine(dataGridView5.Rows[rowidx].Cells[colidx].Value.ToString().Replace("Rp.", "").Replace(".", ""));
-                if (colidx > 3)
+                if (colidx > 2)
                 {
                     dataGridView5.Rows[rowidx].Cells[colidx].Style.Format = "F0";
                 }
@@ -1107,7 +1107,7 @@ namespace testProjectBCA
                 int colidx = cell.ColumnIndex;
                 Console.WriteLine(rowidx + ", " + colidx);
                 Console.WriteLine(dataGridView4.Rows[rowidx].Cells[colidx].Value.ToString().Replace("Rp.", "").Replace(".", ""));
-                if (colidx > 3)
+                if (colidx > 2)
                 {
                     dataGridView4.Rows[rowidx].Cells[colidx].Style.Format = "F0";
                 }
@@ -1135,14 +1135,14 @@ namespace testProjectBCA
                 int colidx = cell.ColumnIndex;
                 Console.WriteLine(rowidx + ", " + colidx);
                 Console.WriteLine(dataGridView7.Rows[rowidx].Cells[colidx].Value.ToString().Replace("Rp.", "").Replace(".", ""));
-                if (colidx > 2)
+                if (colidx >= 2)
                 {
                     dataGridView7.Rows[rowidx].Cells[colidx].Style.Format = "F0";
                 }
             }
             for (int a = 0; a < dataGridView7.Rows.Count; a++)
             {
-                for (int b = 3; b < dataGridView7.Columns.Count; b++)
+                for (int b = 2; b < dataGridView7.Columns.Count; b++)
                 {
                     if (!cells.Contains(dataGridView7.Rows[a].Cells[b]))
                     {

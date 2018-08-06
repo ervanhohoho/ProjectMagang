@@ -847,15 +847,15 @@ namespace testProjectBCA
                         Int64 inCabangBesar = (Int64)(from x in allDenom
                                                       where x.denom == "100000"
                                                       || x.denom == "50000"
-                                                      select new { value = hitungPcs((Int64)x.inCabang, x.denom) }).Sum(x => x.value);
+                                                      select new { value = hitungPcs(x.inCabang == null ? 0: (Int64)x.inCabang, x.denom) }).Sum(x => x.value);
 
                         Int64 inCabangKecil = (Int64)(from x in allDenom
                                                       where !(x.denom == "100000" || x.denom == "50000")
-                                                      select new { value = hitungPcs((Int64)x.inCabang, x.denom) }).Sum(x => x.value);
+                                                      select new { value = hitungPcs(x.inCabang == null ? 0 : (Int64)x.inCabang, x.denom) }).Sum(x => x.value);
                         Int64 inRetailBesar = (Int64)(from x in allDenom
                                                       where x.denom == "100000"
                                                       || x.denom == "50000"
-                                                      select new { value = hitungPcs((Int64)x.inRetail, x.denom) }).Sum(x => x.value);
+                                                      select new { value = hitungPcs(x.inRetail == null ? 0 : (Int64) x.inRetail, x.denom) }).Sum(x => x.value);
 
                         Int64 inRetailKecil = (Int64)(from x in allDenom
                                                       where x.denom == "20000"
@@ -868,7 +868,7 @@ namespace testProjectBCA
                                                       || x.denom == "100"
                                                       || x.denom == "50"
                                                       || x.denom == "25"
-                                                      select new { value = hitungPcs((Int64)x.inRetail, x.denom) }).Sum(x => x.value);
+                                                      select new { value = hitungPcs(x.inRetail == null ? 0 : (Int64)x.inRetail, x.denom) }).Sum(x => x.value);
                         Console.WriteLine(thn + " " + bln + " " + tgl);
                         sla.Add(new slaProsesDisplay()
                         {
@@ -907,6 +907,8 @@ namespace testProjectBCA
                                              && x.namaPkt.Contains(comboNamaPkt.SelectedValue.ToString())
                                              select new { value = hitungPcs((Int64)x.unprocessed, x.denom) }
                              ).Sum(x => x.value);
+
+
 
                     sla[i].totalProsesUangBesar = sla[i].unprocUangBesar + sla[i].inCabangUangBesar + sla[i].inRetailUangBesar;
                     sla[i].totalProsesUangKecil = sla[i].unprocUangKecil + sla[i].inCabangUangKecil + sla[i].inRetailUangKecil;

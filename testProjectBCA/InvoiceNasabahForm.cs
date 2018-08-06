@@ -205,8 +205,8 @@ namespace testProjectBCA
                               g.Key.NamaPkt,
                               g.Key.GrupNasabah,
                               g.Key.NamaNasabah,
-                              g.Key.NomorRekening,
-                              g.Key.KodeCabang,
+                              NomorRekening = (String)g.Key.NomorRekening,
+                              KodeCabang = (String)g.Key.KodeCabang,
                               g.Key.StatusCabang,
                               g.Key.NamaCabang,
                               g.Key.SegmentasiNasabah,
@@ -241,8 +241,8 @@ namespace testProjectBCA
                               TotalBiayaNasabah = g.Sum(x => x.BiayaTripNasabah + x.AsuransiNasabah + x.PPNNasabah),
                           }).ToList();
 
-            dataGridView1.DataSource = query5;
-            q3 = query5;
+            dataGridView1.DataSource = query5.OrderBy(x=>x.KodeNasabah).ToList();
+            q3 = query5.OrderBy(x=>x.KodeNasabah).ToList();
         }
        String getJenisLayanan(String customerCode, DateTime? date, String vendor)
         {
@@ -346,6 +346,7 @@ namespace testProjectBCA
             sv.Filter = Variables.csvFilter;
             if (sv.ShowDialog() == DialogResult.OK)
             {
+
                 String csv = ServiceStack.Text.CsvSerializer.SerializeToString(q3);
                 File.WriteAllText(sv.FileName, csv);
             }
