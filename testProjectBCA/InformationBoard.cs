@@ -1684,6 +1684,10 @@ namespace testProjectBCA
                          join da in db.DetailApprovals on a.idApproval equals da.idApproval
                          where a.kodePkt == kodePkt
                          select new { Approval = a, DetailApproval = da }).ToList();
+            if (!query.Any())
+            {
+                bon.Add(new Denom() { tgl = Variables.todayDate, d100 = 0, d20 = 0, d50 = 0 });
+            }
             int maxIdApproval = query.Max(x => x.Approval.idApproval);
             Console.WriteLine("Max Id Approval = " + maxIdApproval);
             query = query.Where(x => x.Approval.idApproval == maxIdApproval).ToList();
@@ -1699,6 +1703,10 @@ namespace testProjectBCA
                            d50 = (Int64)x.DetailApproval.bon50,
                            d20 = (Int64)x.DetailApproval.bon20,
                        }).ToList();
+                if (!bon.Any())
+                {
+                    bon.Add(new Denom() { tgl = Variables.todayDate, d100 = 0, d20 = 0, d50 = 0 });
+                }
                 jumlahBonLaporan = bon.Count;
             }
             if(!bon.Any())

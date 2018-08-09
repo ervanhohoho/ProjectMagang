@@ -853,6 +853,16 @@ namespace testProjectBCA
             DashboardCOJForm dcf = new DashboardCOJForm();
             dcf.MdiParent = this;
             dcf.Show();
+            dashboardCojExtension dcfe = new dashboardCojExtension();
+            dcfe.MdiParent = this;
+            dcfe.Show();
+        }
+
+        private void perbandinganSaldoAwalToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            PerbandinganSaldoForm psf = new PerbandinganSaldoForm();
+            psf.MdiParent = this;
+            psf.Show();
         }
     }
 }

@@ -1677,6 +1677,11 @@ namespace testProjectBCA
                          where a.kodePkt == kodePkt
                          && ((DateTime)a.tanggal) < tanggalOptiMin
                          select new { Approval = a, DetailApproval = da }).ToList();
+            if(!query.Any())
+            {
+                bon.Add(new Denom() { tgl = Variables.todayDate, d100 = 0, d50 = 0, d20 = 0 });
+                return;
+            }
             int maxIdApproval = query.Max(x => x.Approval.idApproval);
             Console.WriteLine("Max Id Approval = " + maxIdApproval);
             query = query.Where(x => x.Approval.idApproval == maxIdApproval).ToList();
@@ -1692,6 +1697,8 @@ namespace testProjectBCA
                            d50 = (Int64)x.DetailApproval.bon50,
                            d20 = (Int64)x.DetailApproval.bon20,
                        }).ToList();
+                if (!bon.Any())
+                    bon.Add(new Denom() { tgl = Variables.todayDate, d100 = 0, d20 = 0, d50 = 0 });
                 jumlahBonLaporan = bon.Count;
             }
             Console.WriteLine("Bon yang disetujui");
@@ -1713,6 +1720,8 @@ namespace testProjectBCA
                       join y in db.DetailApprovals on x.idApproval equals y.idApproval
                       where x.kodePkt == kodepkt && (y.tanggal >= tanggalOptiMin) && ((DateTime)x.tanggal) < today
                       select new { Approval = x, DetailApproval = y }).ToList();
+            if (!q2.Any())
+                return;
             int maxIdApproval = q2.Max(x => x.Approval.idApproval);
             q2 = (from x in q2
                   where x.Approval.idApproval == maxIdApproval

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.aTMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.laporanPKTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -48,6 +49,7 @@
             this.forecastATMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportDataHistorisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.perbandinganSaldoAwalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cabangToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inputDataToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.inputTransaksiCabangToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -70,12 +72,12 @@
             this.masterNasabahToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inputDataSubsidiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.invoiceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.adminToolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.inputDataKalenderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loadMasterPKTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dashboardToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.aTMToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.saldoKasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.adminToolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.inputDataKalenderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadMasterPKTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -108,7 +110,8 @@
             this.initTransaksiToolStripMenuItem,
             this.forecastATMToolStripMenuItem,
             this.exportDataHistorisToolStripMenuItem,
-            this.toolStripMenuItem1});
+            this.toolStripMenuItem1,
+            this.perbandinganSaldoAwalToolStripMenuItem});
             this.aTMToolStripMenuItem.Name = "aTMToolStripMenuItem";
             this.aTMToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.aTMToolStripMenuItem.Text = "ATM";
@@ -120,7 +123,7 @@
             this.revisiDataToolStripMenuItem1,
             this.inputUpdateDataToolStripMenuItem});
             this.laporanPKTToolStripMenuItem.Name = "laporanPKTToolStripMenuItem";
-            this.laporanPKTToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.laporanPKTToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
             this.laporanPKTToolStripMenuItem.Text = "Laporan PKT";
             // 
             // inputDataToolStripMenuItem2
@@ -150,7 +153,7 @@
             this.dataPKTToolStripMenuItem,
             this.dataDenomToolStripMenuItem});
             this.inputDataCashpointToolStripMenuItem.Name = "inputDataCashpointToolStripMenuItem";
-            this.inputDataCashpointToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.inputDataCashpointToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
             this.inputDataCashpointToolStripMenuItem.Text = "Input Data Cashpoint";
             // 
             // dataPKTToolStripMenuItem
@@ -170,79 +173,86 @@
             // inputBonYangDisetujuiToolStripMenuItem
             // 
             this.inputBonYangDisetujuiToolStripMenuItem.Name = "inputBonYangDisetujuiToolStripMenuItem";
-            this.inputBonYangDisetujuiToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.inputBonYangDisetujuiToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
             this.inputBonYangDisetujuiToolStripMenuItem.Text = "Input Bon Yang Disetujui";
             this.inputBonYangDisetujuiToolStripMenuItem.Click += new System.EventHandler(this.inputBonYangDisetujuiToolStripMenuItem_Click);
             // 
             // inputOptiToolStripMenuItem
             // 
             this.inputOptiToolStripMenuItem.Name = "inputOptiToolStripMenuItem";
-            this.inputOptiToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.inputOptiToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
             this.inputOptiToolStripMenuItem.Text = "Input OptiCash";
             this.inputOptiToolStripMenuItem.Click += new System.EventHandler(this.inputOptiToolStripMenuItem_Click);
             // 
             // informationBoardToolStripMenuItem
             // 
             this.informationBoardToolStripMenuItem.Name = "informationBoardToolStripMenuItem";
-            this.informationBoardToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.informationBoardToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
             this.informationBoardToolStripMenuItem.Text = "Information Board";
             this.informationBoardToolStripMenuItem.Click += new System.EventHandler(this.informationBoardToolStripMenuItem_Click);
             // 
             // revisiInformationBoardToolStripMenuItem
             // 
             this.revisiInformationBoardToolStripMenuItem.Name = "revisiInformationBoardToolStripMenuItem";
-            this.revisiInformationBoardToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.revisiInformationBoardToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
             this.revisiInformationBoardToolStripMenuItem.Text = "Revisi Information Board";
             this.revisiInformationBoardToolStripMenuItem.Click += new System.EventHandler(this.revisiInformationBoardToolStripMenuItem_Click);
             // 
             // rekapApprovalToolStripMenuItem
             // 
             this.rekapApprovalToolStripMenuItem.Name = "rekapApprovalToolStripMenuItem";
-            this.rekapApprovalToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.rekapApprovalToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
             this.rekapApprovalToolStripMenuItem.Text = "Akurasi Prediksi";
             this.rekapApprovalToolStripMenuItem.Click += new System.EventHandler(this.rekapApprovalToolStripMenuItem_Click);
             // 
             // rekapApprovalToolStripMenuItem1
             // 
             this.rekapApprovalToolStripMenuItem1.Name = "rekapApprovalToolStripMenuItem1";
-            this.rekapApprovalToolStripMenuItem1.Size = new System.Drawing.Size(204, 22);
+            this.rekapApprovalToolStripMenuItem1.Size = new System.Drawing.Size(209, 22);
             this.rekapApprovalToolStripMenuItem1.Text = "Rekap Approval";
             this.rekapApprovalToolStripMenuItem1.Click += new System.EventHandler(this.rekapApprovalToolStripMenuItem1_Click);
             // 
             // rasioApprovalToolStripMenuItem
             // 
             this.rasioApprovalToolStripMenuItem.Name = "rasioApprovalToolStripMenuItem";
-            this.rasioApprovalToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.rasioApprovalToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
             this.rasioApprovalToolStripMenuItem.Text = "Rasio Approval";
             this.rasioApprovalToolStripMenuItem.Click += new System.EventHandler(this.rasioApprovalToolStripMenuItem_Click);
             // 
             // initTransaksiToolStripMenuItem
             // 
             this.initTransaksiToolStripMenuItem.Name = "initTransaksiToolStripMenuItem";
-            this.initTransaksiToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.initTransaksiToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
             this.initTransaksiToolStripMenuItem.Text = "Init Transaksi";
             this.initTransaksiToolStripMenuItem.Click += new System.EventHandler(this.initTransToolStripMenuItem_Click);
             // 
             // forecastATMToolStripMenuItem
             // 
             this.forecastATMToolStripMenuItem.Name = "forecastATMToolStripMenuItem";
-            this.forecastATMToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.forecastATMToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
             this.forecastATMToolStripMenuItem.Text = "Forecast ATM";
             this.forecastATMToolStripMenuItem.Click += new System.EventHandler(this.forecastATMToolStripMenuItem_Click);
             // 
             // exportDataHistorisToolStripMenuItem
             // 
             this.exportDataHistorisToolStripMenuItem.Name = "exportDataHistorisToolStripMenuItem";
-            this.exportDataHistorisToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.exportDataHistorisToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
             this.exportDataHistorisToolStripMenuItem.Text = "Export Data Historis";
             this.exportDataHistorisToolStripMenuItem.Click += new System.EventHandler(this.exportDataHistorisToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(204, 22);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(209, 22);
             this.toolStripMenuItem1.Text = "Export Data Opti";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            // 
+            // perbandinganSaldoAwalToolStripMenuItem
+            // 
+            this.perbandinganSaldoAwalToolStripMenuItem.Name = "perbandinganSaldoAwalToolStripMenuItem";
+            this.perbandinganSaldoAwalToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
+            this.perbandinganSaldoAwalToolStripMenuItem.Text = "Perbandingan Saldo Awal";
+            this.perbandinganSaldoAwalToolStripMenuItem.Click += new System.EventHandler(this.perbandinganSaldoAwalToolStripMenuItem_Click);
             // 
             // cabangToolStripMenuItem
             // 
@@ -374,7 +384,7 @@
             this.masterNasabahToolStripMenuItem,
             this.inputDataSubsidiToolStripMenuItem});
             this.inputDataToolStripMenuItem.Name = "inputDataToolStripMenuItem";
-            this.inputDataToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.inputDataToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.inputDataToolStripMenuItem.Text = "Input Data";
             // 
             // abacasToolStripMenuItem1
@@ -415,9 +425,32 @@
             // invoiceToolStripMenuItem
             // 
             this.invoiceToolStripMenuItem.Name = "invoiceToolStripMenuItem";
-            this.invoiceToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.invoiceToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.invoiceToolStripMenuItem.Text = "Invoice";
             this.invoiceToolStripMenuItem.Click += new System.EventHandler(this.invoiceToolStripMenuItem_Click);
+            // 
+            // dashboardToolStripMenuItem1
+            // 
+            this.dashboardToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.aTMToolStripMenuItem1,
+            this.saldoKasToolStripMenuItem});
+            this.dashboardToolStripMenuItem1.Name = "dashboardToolStripMenuItem1";
+            this.dashboardToolStripMenuItem1.Size = new System.Drawing.Size(76, 20);
+            this.dashboardToolStripMenuItem1.Text = "Dashboard";
+            // 
+            // aTMToolStripMenuItem1
+            // 
+            this.aTMToolStripMenuItem1.Name = "aTMToolStripMenuItem1";
+            this.aTMToolStripMenuItem1.Size = new System.Drawing.Size(124, 22);
+            this.aTMToolStripMenuItem1.Text = "ATM";
+            this.aTMToolStripMenuItem1.Click += new System.EventHandler(this.aTMToolStripMenuItem1_Click);
+            // 
+            // saldoKasToolStripMenuItem
+            // 
+            this.saldoKasToolStripMenuItem.Name = "saldoKasToolStripMenuItem";
+            this.saldoKasToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.saldoKasToolStripMenuItem.Text = "Saldo Kas";
+            this.saldoKasToolStripMenuItem.Click += new System.EventHandler(this.saldoKasToolStripMenuItem_Click);
             // 
             // adminToolsToolStripMenuItem
             // 
@@ -443,29 +476,6 @@
             this.loadMasterPKTToolStripMenuItem.Text = "Load Master PKT";
             this.loadMasterPKTToolStripMenuItem.Click += new System.EventHandler(this.loadMasterPKTToolStripMenuItem_Click);
             // 
-            // dashboardToolStripMenuItem1
-            // 
-            this.dashboardToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.aTMToolStripMenuItem1,
-            this.saldoKasToolStripMenuItem});
-            this.dashboardToolStripMenuItem1.Name = "dashboardToolStripMenuItem1";
-            this.dashboardToolStripMenuItem1.Size = new System.Drawing.Size(76, 20);
-            this.dashboardToolStripMenuItem1.Text = "Dashboard";
-            // 
-            // aTMToolStripMenuItem1
-            // 
-            this.aTMToolStripMenuItem1.Name = "aTMToolStripMenuItem1";
-            this.aTMToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
-            this.aTMToolStripMenuItem1.Text = "ATM";
-            this.aTMToolStripMenuItem1.Click += new System.EventHandler(this.aTMToolStripMenuItem1_Click);
-            // 
-            // saldoKasToolStripMenuItem
-            // 
-            this.saldoKasToolStripMenuItem.Name = "saldoKasToolStripMenuItem";
-            this.saldoKasToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.saldoKasToolStripMenuItem.Text = "Saldo Kas";
-            this.saldoKasToolStripMenuItem.Click += new System.EventHandler(this.saldoKasToolStripMenuItem_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -476,6 +486,7 @@
             this.ClientSize = new System.Drawing.Size(1004, 502);
             this.Controls.Add(this.menuStrip1);
             this.DoubleBuffered = true;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.IsMdiContainer = true;
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
@@ -538,5 +549,6 @@
         private System.Windows.Forms.ToolStripMenuItem dashboardToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem aTMToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem saldoKasToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem perbandinganSaldoAwalToolStripMenuItem;
     }
 }

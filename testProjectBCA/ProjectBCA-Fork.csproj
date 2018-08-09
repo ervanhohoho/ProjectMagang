@@ -203,6 +203,12 @@
     <Compile Include="dasborExtension.designer.cs">
       <DependentUpon>dasborExtension.cs</DependentUpon>
     </Compile>
+    <Compile Include="dashboardCojExtension.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="dashboardCojExtension.designer.cs">
+      <DependentUpon>dashboardCojExtension.cs</DependentUpon>
+    </Compile>
     <Compile Include="DashboardCOJForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -304,6 +310,12 @@
     </Compile>
     <Compile Include="OrderTracking.cs">
       <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PerbandinganSaldoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PerbandinganSaldoForm.Designer.cs">
+      <DependentUpon>PerbandinganSaldoForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Pkt.cs">
       <DependentUpon>Model1.tt</DependentUpon>
@@ -502,6 +514,9 @@
     <EmbeddedResource Include="dasborExtension.resx">
       <DependentUpon>dasborExtension.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="dashboardCojExtension.resx">
+      <DependentUpon>dashboardCojExtension.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DashboardCOJForm.resx">
       <DependentUpon>DashboardCOJForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -528,6 +543,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MultipleFilesInputUpdateForm.resx">
       <DependentUpon>MultipleFilesInputUpdateForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PerbandinganSaldoForm.resx">
+      <DependentUpon>PerbandinganSaldoForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PopupInformationBoard.resx">
       <DependentUpon>PopupInformationBoard.cs</DependentUpon>

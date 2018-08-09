@@ -133,7 +133,17 @@ namespace testProjectBCA
                 {
                     if (dt.Rows[i][6].ToString() == "Confirmed" || dt.Rows[i][6].ToString() == "In Transit")
                     {
-                        Console.WriteLine(i);
+                        String cashpointId = dt.Rows[i][0].ToString();
+                        String confId = dt.Rows[i][5].ToString();
+                        DateTime orderDate = Convert.ToDateTime(dt.Rows[i][3].ToString()).Date;
+                        DateTime dueDate = Convert.ToDateTime(dt.Rows[i][4].ToString()).Date;
+                        DateTime blogTime = DateTime.ParseExact(dt.Rows[i][9].ToString(), "M/d/yyyy H:mm", System.Globalization.CultureInfo.InvariantCulture);
+                        String action = dt.Rows[i][2].ToString();
+                        String status = dt.Rows[i][6].ToString();
+                        Int64 currencyAmmount = CurrencyFill(String.IsNullOrEmpty(dt.Rows[i][11].ToString()) ? dt.Rows[i - 1][11].ToString().Replace("IDR:", "") : dt.Rows[i][11].ToString().Replace("IDR:", ""));
+                        Console.WriteLine("currency: " + currencyAmmount);
+
+                        Console.WriteLine("a" + i);
                         obh.Add(new OBH
                         {
                             cashpointId = dt.Rows[i][0].ToString(),
@@ -811,7 +821,11 @@ namespace testProjectBCA
             }
             else
             {
-                result = Int64.Parse(a);
+                Console.WriteLine("a: " + a);
+                if (String.IsNullOrEmpty(a))
+                { result = 0; }
+                else
+                    result = Int64.Parse(a);
             }
 
             return result;
