@@ -61,6 +61,8 @@
             this.inputDataKanwilCabangToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dailyStockToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rekonSaldoToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.cabangToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.rekonSaldoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sLAProsesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.proyeksiLikuiditaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.orderTrackingToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -339,10 +341,27 @@
             // 
             // rekonSaldoToolStripMenuItem1
             // 
+            this.rekonSaldoToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cabangToolStripMenuItem1,
+            this.rekonSaldoToolStripMenuItem});
             this.rekonSaldoToolStripMenuItem1.Name = "rekonSaldoToolStripMenuItem1";
             this.rekonSaldoToolStripMenuItem1.Size = new System.Drawing.Size(171, 22);
             this.rekonSaldoToolStripMenuItem1.Text = "Rekon Saldo";
             this.rekonSaldoToolStripMenuItem1.Click += new System.EventHandler(this.rekonSaldoToolStripMenuItem1_Click);
+            // 
+            // cabangToolStripMenuItem1
+            // 
+            this.cabangToolStripMenuItem1.Name = "cabangToolStripMenuItem1";
+            this.cabangToolStripMenuItem1.Size = new System.Drawing.Size(166, 22);
+            this.cabangToolStripMenuItem1.Text = "Transaksi Cabang";
+            this.cabangToolStripMenuItem1.Click += new System.EventHandler(this.cabangToolStripMenuItem1_Click);
+            // 
+            // rekonSaldoToolStripMenuItem
+            // 
+            this.rekonSaldoToolStripMenuItem.Name = "rekonSaldoToolStripMenuItem";
+            this.rekonSaldoToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.rekonSaldoToolStripMenuItem.Text = "Rekon Saldo";
+            this.rekonSaldoToolStripMenuItem.Click += new System.EventHandler(this.rekonSaldoToolStripMenuItem_Click_1);
             // 
             // sLAProsesToolStripMenuItem
             // 
@@ -550,5 +569,7 @@
         private System.Windows.Forms.ToolStripMenuItem aTMToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem saldoKasToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem perbandinganSaldoAwalToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cabangToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem rekonSaldoToolStripMenuItem;
     }
 }

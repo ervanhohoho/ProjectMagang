@@ -100,3 +100,4 @@ C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\test
 C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.ExportOpti.resources
 C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.PerbandinganSaldoForm.resources
 C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.dashboardCojExtension.resources
+C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.rekonSaldoTrxCabang.resources

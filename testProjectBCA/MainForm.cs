@@ -369,7 +369,7 @@ namespace testProjectBCA
                 }
             }
         }
-        public static void UpdateDataBranchPkt(DataTable dt)
+        public  void UpdateDataBranchPkt(DataTable dt)
         {
             using (SqlConnection sql = new SqlConnection(Variables.connectionString))
             {
@@ -379,13 +379,14 @@ namespace testProjectBCA
                 sql.Open();
                 cmd.ExecuteNonQuery();
 
+
                 using (var sbc = new SqlBulkCopy(sql))
                 {
                     sbc.DestinationTableName = "#TEMP";
                     sbc.BatchSize = 1000;
 
                     sbc.ColumnMappings.Add(0, 0);
-                    sbc.ColumnMappings.Add(4, 1);
+                    sbc.ColumnMappings.Add(5, 1);
                     sbc.WriteToServer(dt);
                 }
 
@@ -620,9 +621,10 @@ namespace testProjectBCA
                 {
                     branch.Columns.Add();
                 }
-                DataRow[] rows = dt.Select("Column0 like 'B%' AND Column2 like 'CAC'");
+                DataRow[] rows = dt.Select("Column0 like 'B%' AND Column3 like 'CAC'");
                 foreach (DataRow row in rows)
                 {
+                    Console.WriteLine(rows[0]);
                     branch.Rows.Add(row.ItemArray);
                 }
                 rows = ds.Tables[0].Select("Column0 not like 'A%' OR LEN(Column0) > 5");
@@ -645,6 +647,7 @@ namespace testProjectBCA
                     dt.Rows.Remove(row);
                 }
                 UpdateDataCashpointPkt(dt);
+
                 UpdateDataBranchPkt(branch);
                 loadForm.CloseForm();
             }
@@ -813,9 +816,7 @@ namespace testProjectBCA
 
         private void rekonSaldoToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            RekonSaldoForm rsf = new RekonSaldoForm();
-            rsf.MdiParent = this;
-            rsf.Show();
+            
         }
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
@@ -863,6 +864,20 @@ namespace testProjectBCA
             PerbandinganSaldoForm psf = new PerbandinganSaldoForm();
             psf.MdiParent = this;
             psf.Show();
+        }
+
+        private void cabangToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            rekonSaldoTrxCabang rstf = new rekonSaldoTrxCabang();
+            rstf.MdiParent = this;
+            rstf.Show();
+        }
+
+        private void rekonSaldoToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            RekonSaldoForm rsf = new RekonSaldoForm();
+            rsf.MdiParent = this;
+            rsf.Show();
         }
     }
 }

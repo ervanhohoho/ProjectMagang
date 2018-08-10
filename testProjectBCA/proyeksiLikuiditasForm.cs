@@ -1407,6 +1407,7 @@ namespace testProjectBCA
                          select x).ToList();
             var q2 = (from x in query
                       where x.tanggal == today
+                      && x.denom == "100000"
                       select x).ToList();
 
             tanggalValue adhocATM100 = new tanggalValue() { tanggal = Variables.todayDate, value = (Int64)adhocATM100Num.Value },
@@ -1476,6 +1477,7 @@ namespace testProjectBCA
                          select x).ToList();
             var q2 = (from x in query
                       where x.tanggal == today
+                      && x.denom == "50000"
                       select x).ToList();
             tanggalValue adhocATM50 = new tanggalValue() { tanggal = Variables.todayDate, value = (Int64)adhocATM50Num.Value },
                 adhocCabang50 = new tanggalValue() { tanggal = Variables.todayDate, value = (Int64)adhocCabang50Num.Value },

@@ -350,6 +350,12 @@
     <Compile Include="RekonSaldoPerVendor.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="rekonSaldoTrxCabang.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="rekonSaldoTrxCabang.designer.cs">
+      <DependentUpon>rekonSaldoTrxCabang.cs</DependentUpon>
+    </Compile>
     <Compile Include="RekonSaldoVault.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -558,6 +564,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="RekonSaldoForm.resx">
       <DependentUpon>RekonSaldoForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="rekonSaldoTrxCabang.resx">
+      <DependentUpon>rekonSaldoTrxCabang.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="RevisiInformationBoard.resx">
       <DependentUpon>RevisiInformationBoard.cs</DependentUpon>
