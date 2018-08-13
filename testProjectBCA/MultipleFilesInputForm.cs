@@ -210,16 +210,16 @@ namespace testProjectBCA
                     MessageBox.Show("Sheet " + table.TableName + " Tidak ada bon yang disetujui!");
                     break;
                 }
-                
-                //try
-                //{
+
+                try
+                {
                     //tanggal pengajuan
                     DateTime testanggal = (DateTime)table.Rows[12][5];
-                //}
-                //catch (Exception e)
-                //{
-                    //continue;
-                //}
+                }
+                catch (Exception e)
+                {
+                    continue;
+                }
 
                 Console.WriteLine(table.TableName);
                 transaksiPkt pkt = new transaksiPkt();

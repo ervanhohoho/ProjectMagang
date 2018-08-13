@@ -68,15 +68,29 @@ namespace testProjectBCA
                      ).ToList();
             if (rasioChart.Series.Count == 0)
             {
+                rasioChart.AxisX.Clear();
+                rasioChart.Series.Clear();
                 ChartValues<Double> values = new ChartValues<Double>();
+                List<String> tgl = new List<String>();
+                int counter = 1;
                 foreach (var temp in q)
-                    values.Add((Double)Math.Round((Double)temp.Rasio,2));
+                {
+                    values.Add((Double)Math.Round((Double)temp.Rasio, 2));
+                    tgl.Add(counter++.ToString());
+                }
+                rasioChart.AxisX.Add(new Axis()
+                {
+                    Title = "Tanggal",
+                    Labels = tgl,
+                    Separator = new Separator() { Step = 1 },
+                    
+                });
                 rasioChart.Series.Add(
                     new LineSeries()
                     {
                         Values = values,
                         Title = "Rasio " + month + " - " + year,
-                        DataLabels = true
+                        DataLabels = false
                     });
             }
             else
@@ -90,17 +104,23 @@ namespace testProjectBCA
                     rasioChart.Series.Add(new LineSeries() { Values = tempValues, Title = tempTitle, DataLabels = false });
                 }
                 ChartValues<Double> values = new ChartValues<Double>();
+                List<String> tgl = new List<String>();
+                int counter = 1;
                 foreach (var temp in q)
-                    values.Add(Math.Round((Double)temp.Rasio));
-                List<String> listTgl = new List<String>();
-                for(int a= 1; a<= values.Count; a++)
                 {
-                    listTgl.Add(a.ToString());
+                    values.Add(Math.Round((Double)temp.Rasio, 2));
+                    tgl.Add(counter++.ToString());
                 }
-                if(rasioChart.AxisX.Count == 0)
+                
+                if(rasioChart.AxisX.Count>0)
                 {
-                    rasioChart.AxisX.Add(new Axis() { Labels = listTgl});
+                    if(rasioChart.AxisX[0].Labels.Count < tgl.Count)
+                    {
+                        rasioChart.AxisX.RemoveAt(0);
+                        rasioChart.AxisX.Add(new Axis() { Labels = tgl, Separator = new Separator() { Step = 1 },Title = "Tanggal"});
+                    }
                 }
+                
                 rasioChart.Series.Add(
                     new LineSeries()
                     {
@@ -147,8 +167,22 @@ namespace testProjectBCA
                      ).ToList();
             rasioChart.Series.Clear();
             ChartValues<Double> values = new ChartValues<Double>();
+            int counter = 1;
+            List<String> tgl = new List<String>();
             foreach (var temp in q)
-                values.Add(Math.Round((Double)temp.Rasio,2));
+            {
+                tgl.Add(counter++.ToString());
+                values.Add(Math.Round((Double)temp.Rasio, 2));
+            }
+            for (int a = 0; a < rasioChart.AxisX.Count; a++)
+                rasioChart.AxisX.RemoveAt(a);
+
+            rasioChart.AxisX.Add(new Axis()
+            {
+                Title = "Tanggal",
+                Labels = tgl,
+                Separator = new Separator() { Step = 1 },
+            });
             rasioChart.Series.Add(
                 new LineSeries()
                 {

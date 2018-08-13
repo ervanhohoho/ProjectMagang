@@ -32,7 +32,6 @@ namespace testProjectBCA
             {
                 
             }
-           
             Application.Run(new MainForm());
            
         }

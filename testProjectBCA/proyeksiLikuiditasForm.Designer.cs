@@ -67,6 +67,11 @@
             this.outBITukab100Num = new System.Windows.Forms.NumericUpDown();
             this.outBITukab50Num = new System.Windows.Forms.NumericUpDown();
             this.outBITukabDateTimePicker = new System.Windows.Forms.DateTimePicker();
+            this.newNoteCheckBox = new System.Windows.Forms.CheckBox();
+            this.label18 = new System.Windows.Forms.Label();
+            this.persenUnprocessedNum = new System.Windows.Forms.NumericUpDown();
+            this.stokMorningBalanceDataGridView = new System.Windows.Forms.DataGridView();
+            this.label19 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fit100Num)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fit50Num)).BeginInit();
@@ -80,11 +85,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.inBITukab50Num)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.outBITukab100Num)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.outBITukab50Num)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.persenUnprocessedNum)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.stokMorningBalanceDataGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // rasio100TextBox
             // 
-            this.rasio100TextBox.Location = new System.Drawing.Point(264, 75);
+            this.rasio100TextBox.Location = new System.Drawing.Point(264, 87);
             this.rasio100TextBox.Name = "rasio100TextBox";
             this.rasio100TextBox.Size = new System.Drawing.Size(120, 20);
             this.rasio100TextBox.TabIndex = 4;
@@ -92,7 +99,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(143, 78);
+            this.label1.Location = new System.Drawing.Point(143, 90);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(115, 13);
             this.label1.TabIndex = 1;
@@ -101,7 +108,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(143, 115);
+            this.label2.Location = new System.Drawing.Point(143, 116);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(109, 13);
             this.label2.TabIndex = 2;
@@ -109,7 +116,7 @@
             // 
             // rasio50TextBox
             // 
-            this.rasio50TextBox.Location = new System.Drawing.Point(264, 112);
+            this.rasio50TextBox.Location = new System.Drawing.Point(264, 113);
             this.rasio50TextBox.Name = "rasio50TextBox";
             this.rasio50TextBox.Size = new System.Drawing.Size(120, 20);
             this.rasio50TextBox.TabIndex = 5;
@@ -117,16 +124,16 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(12, 238);
+            this.dataGridView1.Location = new System.Drawing.Point(16, 236);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(1039, 357);
+            this.dataGridView1.Size = new System.Drawing.Size(1042, 336);
             this.dataGridView1.TabIndex = 4;
             // 
             // bulanPrediksiTreeView
             // 
-            this.bulanPrediksiTreeView.Location = new System.Drawing.Point(16, 82);
+            this.bulanPrediksiTreeView.Location = new System.Drawing.Point(16, 67);
             this.bulanPrediksiTreeView.Name = "bulanPrediksiTreeView";
-            this.bulanPrediksiTreeView.Size = new System.Drawing.Size(121, 145);
+            this.bulanPrediksiTreeView.Size = new System.Drawing.Size(121, 148);
             this.bulanPrediksiTreeView.TabIndex = 3;
             this.bulanPrediksiTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.bulanPrediksiTreeView_AfterCheck);
             // 
@@ -149,7 +156,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(16, 63);
+            this.label4.Location = new System.Drawing.Point(16, 48);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(103, 13);
             this.label4.TabIndex = 8;
@@ -177,9 +184,9 @@
             // 
             // ForecastButton
             // 
-            this.ForecastButton.Location = new System.Drawing.Point(878, 54);
+            this.ForecastButton.Location = new System.Drawing.Point(878, 39);
             this.ForecastButton.Name = "ForecastButton";
-            this.ForecastButton.Size = new System.Drawing.Size(173, 78);
+            this.ForecastButton.Size = new System.Drawing.Size(180, 78);
             this.ForecastButton.TabIndex = 6;
             this.ForecastButton.Text = "Forecast";
             this.ForecastButton.UseVisualStyleBackColor = true;
@@ -187,9 +194,9 @@
             // 
             // saveButton
             // 
-            this.saveButton.Location = new System.Drawing.Point(878, 149);
+            this.saveButton.Location = new System.Drawing.Point(878, 134);
             this.saveButton.Name = "saveButton";
-            this.saveButton.Size = new System.Drawing.Size(173, 78);
+            this.saveButton.Size = new System.Drawing.Size(180, 78);
             this.saveButton.TabIndex = 11;
             this.saveButton.Text = "Save";
             this.saveButton.UseVisualStyleBackColor = true;
@@ -198,7 +205,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(145, 150);
+            this.label6.Location = new System.Drawing.Point(197, 146);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(61, 13);
             this.label6.TabIndex = 12;
@@ -207,7 +214,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(145, 187);
+            this.label7.Location = new System.Drawing.Point(203, 168);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(55, 13);
             this.label7.TabIndex = 12;
@@ -215,7 +222,7 @@
             // 
             // fit100Num
             // 
-            this.fit100Num.Location = new System.Drawing.Point(264, 148);
+            this.fit100Num.Location = new System.Drawing.Point(264, 139);
             this.fit100Num.Name = "fit100Num";
             this.fit100Num.Size = new System.Drawing.Size(120, 20);
             this.fit100Num.TabIndex = 13;
@@ -227,7 +234,7 @@
             // 
             // fit50Num
             // 
-            this.fit50Num.Location = new System.Drawing.Point(264, 180);
+            this.fit50Num.Location = new System.Drawing.Point(264, 165);
             this.fit50Num.Name = "fit50Num";
             this.fit50Num.Size = new System.Drawing.Size(120, 20);
             this.fit50Num.TabIndex = 13;
@@ -240,7 +247,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(402, 91);
+            this.label8.Location = new System.Drawing.Point(399, 90);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(79, 13);
             this.label8.TabIndex = 14;
@@ -249,7 +256,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(402, 57);
+            this.label9.Location = new System.Drawing.Point(399, 65);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(85, 13);
             this.label9.TabIndex = 14;
@@ -257,7 +264,7 @@
             // 
             // adhocATM100Num
             // 
-            this.adhocATM100Num.Location = new System.Drawing.Point(508, 54);
+            this.adhocATM100Num.Location = new System.Drawing.Point(505, 62);
             this.adhocATM100Num.Maximum = new decimal(new int[] {
             -1981284353,
             -1966660860,
@@ -270,7 +277,7 @@
             // 
             // adhocATM50Num
             // 
-            this.adhocATM50Num.Location = new System.Drawing.Point(508, 89);
+            this.adhocATM50Num.Location = new System.Drawing.Point(505, 88);
             this.adhocATM50Num.Maximum = new decimal(new int[] {
             1874919423,
             2328306,
@@ -284,7 +291,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(403, 122);
+            this.label10.Location = new System.Drawing.Point(400, 118);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(99, 13);
             this.label10.TabIndex = 16;
@@ -298,7 +305,7 @@
             0,
             0,
             0});
-            this.adhocCabang100Num.Location = new System.Drawing.Point(508, 118);
+            this.adhocCabang100Num.Location = new System.Drawing.Point(505, 114);
             this.adhocCabang100Num.Maximum = new decimal(new int[] {
             -1981284353,
             -1966660860,
@@ -312,7 +319,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(403, 154);
+            this.label11.Location = new System.Drawing.Point(400, 143);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(93, 13);
             this.label11.TabIndex = 16;
@@ -325,7 +332,7 @@
             0,
             0,
             0});
-            this.adhocCabang50Num.Location = new System.Drawing.Point(508, 151);
+            this.adhocCabang50Num.Location = new System.Drawing.Point(505, 140);
             this.adhocCabang50Num.Maximum = new decimal(new int[] {
             -1981284353,
             -1966660860,
@@ -339,7 +346,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(403, 183);
+            this.label12.Location = new System.Drawing.Point(400, 170);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(93, 13);
             this.label12.TabIndex = 16;
@@ -349,7 +356,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(403, 215);
+            this.label13.Location = new System.Drawing.Point(400, 195);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(87, 13);
             this.label13.TabIndex = 16;
@@ -362,7 +369,7 @@
             0,
             0,
             0});
-            this.adhocTukab100Num.Location = new System.Drawing.Point(508, 179);
+            this.adhocTukab100Num.Location = new System.Drawing.Point(505, 166);
             this.adhocTukab100Num.Maximum = new decimal(new int[] {
             -1981284353,
             -1966660860,
@@ -380,7 +387,7 @@
             0,
             0,
             0});
-            this.adhocTukab50Num.Location = new System.Drawing.Point(508, 212);
+            this.adhocTukab50Num.Location = new System.Drawing.Point(505, 192);
             this.adhocTukab50Num.Maximum = new decimal(new int[] {
             -1981284353,
             -1966660860,
@@ -394,7 +401,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(647, 84);
+            this.label14.Location = new System.Drawing.Point(647, 92);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(84, 13);
             this.label14.TabIndex = 16;
@@ -404,7 +411,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(647, 119);
+            this.label15.Location = new System.Drawing.Point(647, 117);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(78, 13);
             this.label15.TabIndex = 16;
@@ -417,7 +424,7 @@
             0,
             0,
             0});
-            this.inBITukab100Num.Location = new System.Drawing.Point(752, 80);
+            this.inBITukab100Num.Location = new System.Drawing.Point(752, 88);
             this.inBITukab100Num.Maximum = new decimal(new int[] {
             -1981284353,
             -1966660860,
@@ -435,7 +442,7 @@
             0,
             0,
             0});
-            this.inBITukab50Num.Location = new System.Drawing.Point(752, 116);
+            this.inBITukab50Num.Location = new System.Drawing.Point(752, 114);
             this.inBITukab50Num.Maximum = new decimal(new int[] {
             -1981284353,
             -1966660860,
@@ -448,7 +455,7 @@
             // 
             // inBITukabDateTimePicker
             // 
-            this.inBITukabDateTimePicker.Location = new System.Drawing.Point(650, 54);
+            this.inBITukabDateTimePicker.Location = new System.Drawing.Point(650, 62);
             this.inBITukabDateTimePicker.Name = "inBITukabDateTimePicker";
             this.inBITukabDateTimePicker.Size = new System.Drawing.Size(222, 20);
             this.inBITukabDateTimePicker.TabIndex = 18;
@@ -456,7 +463,7 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(647, 179);
+            this.label16.Location = new System.Drawing.Point(647, 173);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(92, 13);
             this.label16.TabIndex = 16;
@@ -466,7 +473,7 @@
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(647, 214);
+            this.label17.Location = new System.Drawing.Point(647, 198);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(86, 13);
             this.label17.TabIndex = 16;
@@ -479,7 +486,7 @@
             0,
             0,
             0});
-            this.outBITukab100Num.Location = new System.Drawing.Point(752, 175);
+            this.outBITukab100Num.Location = new System.Drawing.Point(752, 169);
             this.outBITukab100Num.Maximum = new decimal(new int[] {
             -1981284353,
             -1966660860,
@@ -497,7 +504,7 @@
             0,
             0,
             0});
-            this.outBITukab50Num.Location = new System.Drawing.Point(752, 211);
+            this.outBITukab50Num.Location = new System.Drawing.Point(752, 195);
             this.outBITukab50Num.Maximum = new decimal(new int[] {
             -1981284353,
             -1966660860,
@@ -510,16 +517,69 @@
             // 
             // outBITukabDateTimePicker
             // 
-            this.outBITukabDateTimePicker.Location = new System.Drawing.Point(650, 149);
+            this.outBITukabDateTimePicker.Location = new System.Drawing.Point(650, 143);
             this.outBITukabDateTimePicker.Name = "outBITukabDateTimePicker";
             this.outBITukabDateTimePicker.Size = new System.Drawing.Size(222, 20);
             this.outBITukabDateTimePicker.TabIndex = 18;
+            // 
+            // newNoteCheckBox
+            // 
+            this.newNoteCheckBox.AutoSize = true;
+            this.newNoteCheckBox.Location = new System.Drawing.Point(310, 63);
+            this.newNoteCheckBox.Name = "newNoteCheckBox";
+            this.newNoteCheckBox.Size = new System.Drawing.Size(74, 17);
+            this.newNoteCheckBox.TabIndex = 19;
+            this.newNoteCheckBox.Text = "New Note";
+            this.newNoteCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(171, 193);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(87, 13);
+            this.label18.TabIndex = 20;
+            this.label18.Text = "Unprocessed (%)";
+            // 
+            // persenUnprocessedNum
+            // 
+            this.persenUnprocessedNum.Location = new System.Drawing.Point(264, 191);
+            this.persenUnprocessedNum.Name = "persenUnprocessedNum";
+            this.persenUnprocessedNum.Size = new System.Drawing.Size(120, 20);
+            this.persenUnprocessedNum.TabIndex = 21;
+            this.persenUnprocessedNum.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            // 
+            // stokMorningBalanceDataGridView
+            // 
+            this.stokMorningBalanceDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.stokMorningBalanceDataGridView.Location = new System.Drawing.Point(16, 595);
+            this.stokMorningBalanceDataGridView.Name = "stokMorningBalanceDataGridView";
+            this.stokMorningBalanceDataGridView.Size = new System.Drawing.Size(1042, 103);
+            this.stokMorningBalanceDataGridView.TabIndex = 22;
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(16, 579);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(145, 13);
+            this.label19.TabIndex = 23;
+            this.label19.Text = "Stok Morning Balance Hari H";
             // 
             // proyeksiLikuiditasForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1063, 607);
+            this.ClientSize = new System.Drawing.Size(1077, 703);
+            this.Controls.Add(this.label19);
+            this.Controls.Add(this.stokMorningBalanceDataGridView);
+            this.Controls.Add(this.persenUnprocessedNum);
+            this.Controls.Add(this.label18);
+            this.Controls.Add(this.newNoteCheckBox);
             this.Controls.Add(this.outBITukabDateTimePicker);
             this.Controls.Add(this.outBITukab50Num);
             this.Controls.Add(this.inBITukabDateTimePicker);
@@ -574,6 +634,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.inBITukab50Num)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.outBITukab100Num)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.outBITukab50Num)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.persenUnprocessedNum)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.stokMorningBalanceDataGridView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -620,5 +682,10 @@
         private System.Windows.Forms.NumericUpDown outBITukab100Num;
         private System.Windows.Forms.NumericUpDown outBITukab50Num;
         private System.Windows.Forms.DateTimePicker outBITukabDateTimePicker;
+        private System.Windows.Forms.CheckBox newNoteCheckBox;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.NumericUpDown persenUnprocessedNum;
+        private System.Windows.Forms.DataGridView stokMorningBalanceDataGridView;
+        private System.Windows.Forms.Label label19;
     }
 }

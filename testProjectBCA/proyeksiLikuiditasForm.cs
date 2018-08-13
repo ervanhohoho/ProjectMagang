@@ -1403,6 +1403,9 @@ namespace testProjectBCA
             List<tanggalValue> listEndingBalance = new List<tanggalValue>();
             DateTime today = DateTime.Today.Date;
             DateTime maxTanggal = tanggalMaxPrediksiPicker.Value.Date;
+            bool newNote = newNoteCheckBox.Checked;
+            Double persenUnprocessed = (Double)persenUnprocessedNum.Value / 100;
+
             var query = (from x in db.StokPosisis
                          select x).ToList();
             var q2 = (from x in query
@@ -1419,7 +1422,7 @@ namespace testProjectBCA
             //Morning Balance Hari Pertama
             listMorningBalance.Add(new tanggalValue() {
                 tanggal = today,
-                value = (Int64) q2.Sum(x=>(x.fitBaru + x.fitLama + x.fitNKRI + x.newBaru + x.newLama + x.RRMBaru + x.RRMLama + x.RRMNKRI + x.RupiahRusakMayor + x.unfitBaru + x.unfitLama + x.unfitNKRI + x.unprocessed + x.passThrough + x.cekLaporan))
+                value = (Int64) q2.Sum(x=>(x.fitBaru + x.fitLama + x.fitNKRI + (newNote == true ? (x.newBaru + x.newLama ) : 0) + (x.unprocessed * persenUnprocessed) + x.passThrough ))
               });
 
             //Hitung Ending Balance + Morning Balance Selanjutnya
@@ -1473,6 +1476,8 @@ namespace testProjectBCA
             List<tanggalValue> listEndingBalance = new List<tanggalValue>();
             DateTime today = DateTime.Today.Date;
             DateTime maxTanggal = tanggalMaxPrediksiPicker.Value.Date;
+            bool newNote = newNoteCheckBox.Checked;
+            Double persenUnprocessed = (Double)persenUnprocessedNum.Value / 100;
             var query = (from x in db.StokPosisis
                          select x).ToList();
             var q2 = (from x in query
@@ -1490,7 +1495,7 @@ namespace testProjectBCA
             listMorningBalance.Add(new tanggalValue()
             {
                 tanggal = today,
-                value = (Int64)q2.Sum(x => (x.fitBaru + x.fitLama + x.fitNKRI + x.newBaru + x.newLama + x.RRMBaru + x.RRMLama + x.RRMNKRI + x.RupiahRusakMayor + x.unfitBaru + x.unfitLama + x.unfitNKRI + x.unprocessed + x.passThrough + x.cekLaporan))
+                value = (Int64)q2.Sum(x => (x.fitBaru + x.fitLama + x.fitNKRI + (newNote == true ? (x.newBaru + x.newLama) : 0) + (x.unprocessed * persenUnprocessed) + x.passThrough))
             });
 
             //Hitung Ending Balance + Morning Balance Selanjutnya
@@ -1539,7 +1544,29 @@ namespace testProjectBCA
             }
             return listMorningBalance;
         }
-        
+        void loadTableStokMorningBalance()
+        {
+            var query = (from x in db.StokPosisis
+                         select x).ToList();
+            var q2 = (from x in query
+                      where x.tanggal == Variables.todayDate
+                      && (x.denom == "100000" || x.denom == "50000")
+                      select x).ToList();
+
+            var toShow = (from x in q2
+                          group x by x.denom into g
+                          select new {
+                              denom = g.Key,
+                              unprocessed = g.Sum(x => x.unprocessed),
+                              newBaru = g.Sum(x => x.newBaru),
+                              newLama = g.Sum(x => x.newLama),
+                              fitBaru = g.Sum(x => x.fitBaru),
+                              fitNKRI = g.Sum(x => x.fitNKRI),
+                              fitLama = g.Sum(x => x.fitLama),
+                              passtrough = g.Sum(x => x.passThrough),
+                          }).ToList();
+            stokMorningBalanceDataGridView.DataSource = toShow;
+        }
    
 
         private void button1_Click(object sender, EventArgs e)
@@ -1613,6 +1640,7 @@ namespace testProjectBCA
             //    dataGridView1.Columns[a].DefaultCellStyle.Format = "C";
             //    dataGridView1.Columns[a].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
             //}
+            loadTableStokMorningBalance();
             loadForm.CloseForm();
         }
 

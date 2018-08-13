@@ -643,17 +643,89 @@ namespace testProjectBCA
             var transaksiAtms = (from x in db.TransaksiAtms
                                  where x.tanggal <= endDate && x.tanggal >= startDate
                                  select x).ToList();
-            for (int a = 0; a < listApproval.Count; a++)
-            {
-                TableApproval tempApproval = listApproval[a];
 
-                var tempRealisasi = realisasi.Where(x => x.tanggal == tempApproval.tanggal && x.kodePkt == tempApproval.kodePkt).FirstOrDefault();
+            var listRealisasi = (from x in realisasi
+                                 group x by x.kodePkt into g
+                                 select new
+                                 {
+                                     kodePkt = g.Key,
+                                     saldoAwal100 = g.Average(x => x.saldoAwal100),
+                                     saldoAwal50 = g.Average(x => x.saldoAwal50),
+                                     saldoAwal20 = g.Average(x => x.saldoAwal20),
+
+                                     sislokATM100 = g.Average(x => x.sislokATM100),
+                                     sislokATM50 = g.Average(x => x.sislokATM50),
+                                     sislokATM20 = g.Average(x => x.sislokATM20),
+
+                                     sislokCDM100 = g.Average(x => x.sislokCDM100),
+                                     sislokCDM50 = g.Average(x => x.sislokCDM50),
+                                     sislokCDM20 = g.Average(x => x.sislokCDM20),
+
+                                     sislokCRM100 = g.Average(x => x.sislokCRM100),
+                                     sislokCRM50 = g.Average(x => x.sislokCRM50),
+                                     sislokCRM20 = g.Average(x => x.sislokCRM20),
+
+                                     isiATM100 = g.Average(x => x.isiATM100),
+                                     isiATM50 = g.Average(x => x.isiATM50),
+                                     isiATM20 = g.Average(x => x.isiATM20),
+
+                                     isiCRM100 = g.Average(x => x.isiCRM100),
+                                     isiCRM50 = g.Average(x => x.isiCRM50),
+                                     isiCRM20 = g.Average(x => x.isiCRM20),
+
+
+                                     Rasio100 = g.Average(x => x.Rasio100),
+                                     Rasio50 = g.Average(x => x.Rasio50),
+                                     Rasio20 = g.Average(x => x.Rasio20),
+
+                                     RasioGabungan = g.Average(x => x.RasioGabungan)
+                                 }).ToList();
+            var listApproval2 = (from x in listApproval
+                                 group x by x.kodePkt into g
+                                 select new
+                                 {
+                                     kodePkt = g.Key,
+                                     saldoAwal100 = g.Average(x => x.saldoAwal100),
+                                     saldoAwal50 = g.Average(x => x.saldoAwal50),
+                                     saldoAwal20 = g.Average(x => x.saldoAwal20),
+
+                                     sislokATM100 = g.Average(x => x.sislokATM100),
+                                     sislokATM50 = g.Average(x => x.sislokATM50),
+                                     sislokATM20 = g.Average(x => x.sislokATM20),
+
+                                     sislokCDM100 = g.Average(x => x.sislokCDM100),
+                                     sislokCDM50 = g.Average(x => x.sislokCDM50),
+                                     sislokCDM20 = g.Average(x => x.sislokCDM20),
+
+                                     sislokCRM100 = g.Average(x => x.sislokCRM100),
+                                     sislokCRM50 = g.Average(x => x.sislokCRM50),
+                                     sislokCRM20 = g.Average(x => x.sislokCRM20),
+
+                                     isiATM100 = g.Average(x => x.isiATM100),
+                                     isiATM50 = g.Average(x => x.isiATM50),
+                                     isiATM20 = g.Average(x => x.isiATM20),
+
+                                     isiCRM100 = g.Average(x => x.isiCRM100),
+                                     isiCRM50 = g.Average(x => x.isiCRM50),
+                                     isiCRM20 = g.Average(x => x.isiCRM20),
+
+
+                                     Rasio100 = g.Average(x => x.Rasio100),
+                                     Rasio50 = g.Average(x => x.Rasio50),
+                                     Rasio20 = g.Average(x => x.Rasio20),
+
+                                     RasioGabungan = g.Average(x => x.RasioGabungan)
+                                 }).ToList();
+            for (int a = 0; a < listApproval2.Count; a++)
+            {
+                var tempApproval = listApproval2[a];
+
+                var tempRealisasi = listRealisasi.Where(x => x.kodePkt == tempApproval.kodePkt).FirstOrDefault();
                 
                 if(tempRealisasi != null)
                 {
                     TempSelisih temp = new TempSelisih()
                     {
-                        tanggal = tempRealisasi.tanggal,
                         kodePkt = tempRealisasi.kodePkt,
 
                         sislokATM100 = (Int64)tempApproval.sislokATM100 - (Int64)tempRealisasi.sislokATM100,
@@ -683,10 +755,9 @@ namespace testProjectBCA
                         realisasiIsiCRM50 = tempRealisasi.isiCRM50,
                         realisasiIsiCRM20 = tempRealisasi.isiCRM20,
 
-                        saldoAwal100 = (Int64) transaksiAtms.Where(c => c.kodePkt == tempRealisasi.kodePkt && c.tanggal == tempRealisasi.tanggal).Select(c => c.saldoAwal100).FirstOrDefault(),
-                        saldoAwal50 =  (Int64) transaksiAtms.Where(c => c.kodePkt == tempRealisasi.kodePkt && c.tanggal == tempRealisasi.tanggal).Select(c => c.saldoAwal50).FirstOrDefault(),
-                        saldoAwal20 =  (Int64) transaksiAtms.Where(c => c.kodePkt == tempRealisasi.kodePkt && c.tanggal == tempRealisasi.tanggal).Select(c => c.saldoAwal20).FirstOrDefault(),
-
+                        saldoAwal100 = (Int64) transaksiAtms.Where(c => c.kodePkt == tempRealisasi.kodePkt && (DateTime) c.tanggal >= startDate  && (DateTime)c.tanggal <= endDate).Select(c => c.saldoAwal100).Sum(),
+                        saldoAwal50 =  (Int64) transaksiAtms.Where(c => c.kodePkt == tempRealisasi.kodePkt && (DateTime) c.tanggal >= startDate  && (DateTime)c.tanggal <= endDate).Select(c => c.saldoAwal50).Sum(),
+                        saldoAwal20 =  (Int64) transaksiAtms.Where(c => c.kodePkt == tempRealisasi.kodePkt && (DateTime) c.tanggal >= startDate  && (DateTime)c.tanggal <= endDate).Select(c => c.saldoAwal20).Sum(),
                     };
                     selisihPrediksi.Add(temp);
                 }

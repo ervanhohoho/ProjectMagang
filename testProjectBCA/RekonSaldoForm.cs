@@ -1242,11 +1242,11 @@ namespace testProjectBCA
                         query2[i].vendor = item.vendor;
                         query2[i].actionRekon = item.actionRekon;
                         //query2[i].statusRekon = item.statusRekon;
-                        query2[i].dueDate = item.dueDate;
-                        query2[i].blogTime = item.blogTime;
+                        //query2[i].dueDate = item.dueDate;
+                        //query2[i].blogTime = item.blogTime;
                         query2[i].currencyAmmount = item.currencyAmmount;
-                        query2[i].realDate = item.realDate;
-                        query2[i].validation = item.validation;
+                        //query2[i].realDate = item.realDate;
+                        //query2[i].validation = item.validation;
 
                         en.SaveChanges();
 
