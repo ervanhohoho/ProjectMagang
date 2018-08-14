@@ -32,12 +32,12 @@
             this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.comboSetBon = new System.Windows.Forms.ComboBox();
+            this.buttonGenerate = new System.Windows.Forms.Button();
             this.comboVal = new System.Windows.Forms.ComboBox();
+            this.comboSetBon = new System.Windows.Forms.ComboBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.textBoxSearch = new System.Windows.Forms.TextBox();
             this.buttonSearch = new System.Windows.Forms.Button();
-            this.buttonGenerate = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -79,16 +79,15 @@
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             // 
-            // comboSetBon
+            // buttonGenerate
             // 
-            this.comboSetBon.FormattingEnabled = true;
-            this.comboSetBon.Items.AddRange(new object[] {
-            "Setoran",
-            "Bon"});
-            this.comboSetBon.Location = new System.Drawing.Point(212, 18);
-            this.comboSetBon.Name = "comboSetBon";
-            this.comboSetBon.Size = new System.Drawing.Size(207, 21);
-            this.comboSetBon.TabIndex = 3;
+            this.buttonGenerate.Location = new System.Drawing.Point(307, 93);
+            this.buttonGenerate.Name = "buttonGenerate";
+            this.buttonGenerate.Size = new System.Drawing.Size(112, 23);
+            this.buttonGenerate.TabIndex = 5;
+            this.buttonGenerate.Text = "Generate Pivot";
+            this.buttonGenerate.UseVisualStyleBackColor = true;
+            this.buttonGenerate.Click += new System.EventHandler(this.buttonGenerate_Click);
             // 
             // comboVal
             // 
@@ -101,11 +100,29 @@
             this.comboVal.Size = new System.Drawing.Size(207, 21);
             this.comboVal.TabIndex = 4;
             // 
+            // comboSetBon
+            // 
+            this.comboSetBon.FormattingEnabled = true;
+            this.comboSetBon.Items.AddRange(new object[] {
+            "Setoran",
+            "Bon"});
+            this.comboSetBon.Location = new System.Drawing.Point(212, 18);
+            this.comboSetBon.Name = "comboSetBon";
+            this.comboSetBon.Size = new System.Drawing.Size(207, 21);
+            this.comboSetBon.TabIndex = 3;
+            // 
             // dataGridView1
             // 
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.AllowUserToResizeColumns = false;
+            this.dataGridView1.AllowUserToResizeRows = false;
+            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(12, 146);
             this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.Size = new System.Drawing.Size(425, 442);
             this.dataGridView1.TabIndex = 4;
             // 
@@ -124,16 +141,6 @@
             this.buttonSearch.TabIndex = 6;
             this.buttonSearch.Text = "Search";
             this.buttonSearch.UseVisualStyleBackColor = true;
-            // 
-            // buttonGenerate
-            // 
-            this.buttonGenerate.Location = new System.Drawing.Point(307, 93);
-            this.buttonGenerate.Name = "buttonGenerate";
-            this.buttonGenerate.Size = new System.Drawing.Size(112, 23);
-            this.buttonGenerate.TabIndex = 5;
-            this.buttonGenerate.Text = "Generate Pivot";
-            this.buttonGenerate.UseVisualStyleBackColor = true;
-            this.buttonGenerate.Click += new System.EventHandler(this.buttonGenerate_Click);
             // 
             // rekonSaldoTrxCabang
             // 

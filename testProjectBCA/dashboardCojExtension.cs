@@ -22,6 +22,7 @@ namespace testProjectBCA
             InitializeComponent();
             reloadArea();
             reloadnasional();
+            reloadPieChartSaldoPerGroup();
             comboBox1.Visible = false;
         }
    
@@ -80,6 +81,56 @@ namespace testProjectBCA
             }
         }
 
+        public void reloadPieChartSaldoPerGroup()
+        {
+            pieChart1.Series.Clear();
+            using (SqlConnection sql = new SqlConnection(Variables.connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    List<PieChartTotalperVendor> pie = new List<PieChartTotalperVendor>();
+               
+                    cmd.Connection = sql;
+                    sql.Open();
+                    cmd.CommandText = "select sum(unprocessed + newBaru + newLama+ fitBaru+ fitLama+ passThrough+ unfitBaru+ unfitLama+ unfitNKRI+ RRMBaru + RRMLama + RupiahRusakMayor + cekLaporan ), p.vendor"
+                                      +" from stokposisi s join pkt p on s.namapkt = p.namapkt where tanggal between '"+dateTimePicker3.Value.ToString() +"' and '"+dateTimePicker4.Value.ToString()+"'"
+                                      +" group by  p.vendor order by p.vendor";
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        pie.Add(new PieChartTotalperVendor
+                        {
+                            nominalTotal = Int64.Parse(reader[0].ToString()),
+                            vendor = reader[1].ToString()
+                        });
+                    }
+
+                    Func<ChartPoint, string> labelPoint = chartPoint => string.Format("{0} ({1:P})", chartPoint.Y, chartPoint.Participation);
+
+                    List<PieSeries> ps = new List<PieSeries>();
+
+                    foreach (var item in pie)
+                    {
+                        ps.Add(new PieSeries
+                        {
+                            Title = item.vendor,
+                            Values =new ChartValues<Int64>
+                            {
+                                item.nominalTotal
+                            },
+                            DataLabels = true,
+                            LabelPoint = p => (Math.Round((p.Y / 1000000000), 0)).ToString() + " M",
+                        });
+                    }
+
+                    pieChart1.Series.AddRange(ps);
+
+                    pieChart1.LegendLocation = LegendLocation.Bottom;
+
+                }
+            }
+        }
+
         public void reloadArea()
         {
             List<String> area = new List<String>();
@@ -117,6 +168,12 @@ namespace testProjectBCA
             public Int64 nominalTotal { set; get; }
         }
 
+        public class PieChartTotalperVendor
+        {
+            public String vendor { set; get; }
+            public Int64 nominalTotal { set; get; }
+        }
+
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
             reloadnasional();
@@ -126,6 +183,16 @@ namespace testProjectBCA
         private void dateTimePicker2_ValueChanged(object sender, EventArgs e)
         {
             reloadnasional();
+        }
+
+        private void dateTimePicker3_ValueChanged(object sender, EventArgs e)
+        {
+            reloadPieChartSaldoPerGroup();
+        }
+
+        private void dateTimePicker4_ValueChanged(object sender, EventArgs e)
+        {
+            reloadPieChartSaldoPerGroup();
         }
     }
 }

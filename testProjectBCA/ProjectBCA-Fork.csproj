@@ -203,6 +203,12 @@
     <Compile Include="dasborExtension.designer.cs">
       <DependentUpon>dasborExtension.cs</DependentUpon>
     </Compile>
+    <Compile Include="dasborPerformancePktf.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="dasborPerformancePktf.designer.cs">
+      <DependentUpon>dasborPerformancePktf.cs</DependentUpon>
+    </Compile>
     <Compile Include="dashboardCojExtension.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -310,6 +316,12 @@
     </Compile>
     <Compile Include="OrderTracking.cs">
       <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PembagianSaldoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PembagianSaldoForm.Designer.cs">
+      <DependentUpon>PembagianSaldoForm.cs</DependentUpon>
     </Compile>
     <Compile Include="PerbandinganSaldoForm.cs">
       <SubType>Form</SubType>
@@ -520,6 +532,9 @@
     <EmbeddedResource Include="dasborExtension.resx">
       <DependentUpon>dasborExtension.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="dasborPerformancePktf.resx">
+      <DependentUpon>dasborPerformancePktf.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="dashboardCojExtension.resx">
       <DependentUpon>dashboardCojExtension.cs</DependentUpon>
     </EmbeddedResource>
@@ -549,6 +564,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MultipleFilesInputUpdateForm.resx">
       <DependentUpon>MultipleFilesInputUpdateForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PembagianSaldoForm.resx">
+      <DependentUpon>PembagianSaldoForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PerbandinganSaldoForm.resx">
       <DependentUpon>PerbandinganSaldoForm.cs</DependentUpon>

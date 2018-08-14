@@ -32,6 +32,7 @@ namespace testProjectBCA
             reloadUangBesarSum();
             reloadTop5UangKecil();
             reloadUangKecilSum();
+            reloadLabelTotalCoj();
         }
 
         public void reloadTahun()
@@ -196,6 +197,30 @@ namespace testProjectBCA
 
                 }
             }
+        }
+
+        public void reloadLabelTotalCoj()
+        {
+
+            using (SqlConnection sql = new SqlConnection(Variables.connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    float a = 0;
+
+                    cmd.Connection = sql;
+                    sql.Open();
+                    cmd.CommandText = "select sum(unprocessed + newBaru + newLama + fitBaru + fitLama + passThrough + unfitBaru + unfitNKRI + unfitLama + RRMBaru + RRMNKRI + RRMLama + RupiahRusakMayor) from stokposisi"
+                        + " where day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + "";
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        a = Int64.Parse(reader[0].ToString());
+                    }
+                    label36.Text = Math.Round((a/1000000000),0).ToString() + " M";
+                }
+            }
+            
         }
 
         public void reloadUbVsUk()
@@ -905,6 +930,7 @@ namespace testProjectBCA
             reloadUangBesarSum();
             reloadTop5UangKecil();
             reloadUangKecilSum();
+            reloadLabelTotalCoj();
         }
 
         private void comboBulan_SelectionChangeCommitted(object sender, EventArgs e)
@@ -920,6 +946,7 @@ namespace testProjectBCA
             reloadUangBesarSum();
             reloadTop5UangKecil();
             reloadUangKecilSum();
+            reloadLabelTotalCoj();
         }
 
         private void comboTanggal_SelectionChangeCommitted(object sender, EventArgs e)
@@ -934,6 +961,7 @@ namespace testProjectBCA
             reloadUangBesarSum();
             reloadTop5UangKecil();
             reloadUangKecilSum();
+            reloadLabelTotalCoj();
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)

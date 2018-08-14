@@ -72,6 +72,7 @@
             this.persenUnprocessedNum = new System.Windows.Forms.NumericUpDown();
             this.stokMorningBalanceDataGridView = new System.Windows.Forms.DataGridView();
             this.label19 = new System.Windows.Forms.Label();
+            this.nextButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fit100Num)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fit50Num)).BeginInit();
@@ -184,9 +185,9 @@
             // 
             // ForecastButton
             // 
-            this.ForecastButton.Location = new System.Drawing.Point(878, 39);
+            this.ForecastButton.Location = new System.Drawing.Point(878, 69);
             this.ForecastButton.Name = "ForecastButton";
-            this.ForecastButton.Size = new System.Drawing.Size(180, 78);
+            this.ForecastButton.Size = new System.Drawing.Size(180, 43);
             this.ForecastButton.TabIndex = 6;
             this.ForecastButton.Text = "Forecast";
             this.ForecastButton.UseVisualStyleBackColor = true;
@@ -194,9 +195,9 @@
             // 
             // saveButton
             // 
-            this.saveButton.Location = new System.Drawing.Point(878, 134);
+            this.saveButton.Location = new System.Drawing.Point(878, 118);
             this.saveButton.Name = "saveButton";
-            this.saveButton.Size = new System.Drawing.Size(180, 78);
+            this.saveButton.Size = new System.Drawing.Size(180, 43);
             this.saveButton.TabIndex = 11;
             this.saveButton.Text = "Save";
             this.saveButton.UseVisualStyleBackColor = true;
@@ -570,11 +571,22 @@
             this.label19.TabIndex = 23;
             this.label19.Text = "Stok Morning Balance Hari H";
             // 
+            // nextButton
+            // 
+            this.nextButton.Location = new System.Drawing.Point(878, 168);
+            this.nextButton.Name = "nextButton";
+            this.nextButton.Size = new System.Drawing.Size(180, 41);
+            this.nextButton.TabIndex = 24;
+            this.nextButton.Text = "Next";
+            this.nextButton.UseVisualStyleBackColor = true;
+            this.nextButton.Click += new System.EventHandler(this.nextButton_Click);
+            // 
             // proyeksiLikuiditasForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1077, 703);
+            this.Controls.Add(this.nextButton);
             this.Controls.Add(this.label19);
             this.Controls.Add(this.stokMorningBalanceDataGridView);
             this.Controls.Add(this.persenUnprocessedNum);
@@ -687,5 +699,6 @@
         private System.Windows.Forms.NumericUpDown persenUnprocessedNum;
         private System.Windows.Forms.DataGridView stokMorningBalanceDataGridView;
         private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Button nextButton;
     }
 }

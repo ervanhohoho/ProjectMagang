@@ -75,12 +75,14 @@
             this.label27 = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
+            this.label33 = new System.Windows.Forms.Label();
+            this.label34 = new System.Windows.Forms.Label();
             this.label29 = new System.Windows.Forms.Label();
             this.label30 = new System.Windows.Forms.Label();
             this.label31 = new System.Windows.Forms.Label();
             this.label32 = new System.Windows.Forms.Label();
-            this.label33 = new System.Windows.Forms.Label();
-            this.label34 = new System.Windows.Forms.Label();
+            this.label35 = new System.Windows.Forms.Label();
+            this.label36 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -575,6 +577,27 @@
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "UANG KECIL";
             // 
+            // label33
+            // 
+            this.label33.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label33.AutoSize = true;
+            this.label33.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label33.Location = new System.Drawing.Point(63, 340);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(52, 16);
+            this.label33.TabIndex = 6;
+            this.label33.Text = "label33";
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label34.Location = new System.Drawing.Point(61, 300);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(112, 16);
+            this.label34.TabIndex = 5;
+            this.label34.Text = "UNPROCESSED";
+            // 
             // label29
             // 
             this.label29.Anchor = System.Windows.Forms.AnchorStyles.Top;
@@ -617,26 +640,23 @@
             this.label32.TabIndex = 1;
             this.label32.Text = "UNFIT MAYOR MINOR";
             // 
-            // label33
+            // label35
             // 
-            this.label33.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.label33.AutoSize = true;
-            this.label33.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label33.Location = new System.Drawing.Point(63, 340);
-            this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(52, 16);
-            this.label33.TabIndex = 6;
-            this.label33.Text = "label33";
+            this.label35.AutoSize = true;
+            this.label35.Location = new System.Drawing.Point(408, 15);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(90, 13);
+            this.label35.TabIndex = 19;
+            this.label35.Text = "Total Saldo COJ: ";
             // 
-            // label34
+            // label36
             // 
-            this.label34.AutoSize = true;
-            this.label34.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label34.Location = new System.Drawing.Point(61, 300);
-            this.label34.Name = "label34";
-            this.label34.Size = new System.Drawing.Size(112, 16);
-            this.label34.TabIndex = 5;
-            this.label34.Text = "UNPROCESSED";
+            this.label36.AutoSize = true;
+            this.label36.Location = new System.Drawing.Point(504, 15);
+            this.label36.Name = "label36";
+            this.label36.Size = new System.Drawing.Size(41, 13);
+            this.label36.TabIndex = 20;
+            this.label36.Text = "label36";
             // 
             // DashboardCOJForm
             // 
@@ -644,7 +664,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.ClientSize = new System.Drawing.Size(1186, 781);
+            this.ClientSize = new System.Drawing.Size(1202, 874);
+            this.Controls.Add(this.label36);
+            this.Controls.Add(this.label35);
             this.Controls.Add(this.groupBox10);
             this.Controls.Add(this.groupBox9);
             this.Controls.Add(this.groupBox8);
@@ -676,6 +698,7 @@
             this.groupBox10.ResumeLayout(false);
             this.groupBox10.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -734,5 +757,7 @@
         private System.Windows.Forms.Label label30;
         private System.Windows.Forms.Label label31;
         private System.Windows.Forms.Label label32;
+        private System.Windows.Forms.Label label35;
+        private System.Windows.Forms.Label label36;
     }
 }

@@ -627,7 +627,7 @@ namespace testProjectBCA
                 if (a == 0)
                     continue;
                 AkurasiForecastGridView.Columns[a].DefaultCellStyle.Format = "0.00%";
-                if (a >= AkurasiForecastGridView.ColumnCount - 3)
+                if (a >= AkurasiForecastGridView.ColumnCount - 4)
                     AkurasiForecastGridView.Columns[a].DefaultCellStyle.Format = "N2";
             }
 
