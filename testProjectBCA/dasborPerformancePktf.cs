@@ -17,8 +17,10 @@ namespace testProjectBCA
         public dasborPerformancePktf()
         {
             InitializeComponent();
+            comboArea.SelectedIndex = 0;
             reloadDataPerformancePkt();
         }
+
 
         public void reloadDataPerformancePkt()
         {
@@ -29,20 +31,58 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "select "
-                                     +" kodePkt, "
-                                     +" [Rasio] = CAST(SUM(saldoAwal100 + saldoAwal50 + saldoAwal20) AS FLOAT)/(SUM(isiATM100+isiATM50+isiATM20+isiCRM100+isiCRM50+isiCRM20)),"
-                                     +" [Jumlah adhoc] = count(adhoc100+adhoc50+adhoc20),"
-                                     +" [Persen] = cast(sum(adhoc100+adhoc50+adhoc20)as float)/ cast(sum(adhoc100+adhoc50+adhoc20+bon100+bon50+bon20) as float)"
-                                     +" from"
-                                     +" transaksiatms"
-                                     +" where"
-                                     +" tanggal between '"+dateTimePicker1.Value.ToString()+"' and '"+dateTimePicker2.Value.ToString()+"'"
-                                     +" and(adhoc100 + adhoc20 + adhoc50) != 0"
-                                     +" group by"
-                                     +" kodePkt"
-                                     +" order by"
-                                     +" [Rasio]";
+                    
+                    if (comboArea.SelectedIndex == 0)
+                    {
+                        cmd.CommandText = "select "
+                                     + " kodePkt, "
+                                     + " [Rasio] = CAST(SUM(saldoAwal100 + saldoAwal50 + saldoAwal20) AS FLOAT)/(SUM(isiATM100+isiATM50+isiATM20+isiCRM100+isiCRM50+isiCRM20)),"
+                                     + " [Jumlah adhoc] = count(adhoc100+adhoc50+adhoc20),"
+                                     + " [Persen] = cast(sum(adhoc100+adhoc50+adhoc20)as float)/ cast(sum(adhoc100+adhoc50+adhoc20+bon100+bon50+bon20) as float)"
+                                     + " from"
+                                     + " transaksiatms"
+                                     + " where"
+                                     + " tanggal between '" + dateTimePicker1.Value.ToString() + "' and '" + dateTimePicker2.Value.ToString() + "'"
+                                     + " and(adhoc100 + adhoc20 + adhoc50) != 0"
+                                     + " group by"
+                                     + " kodePkt"
+                                     + " order by"
+                                     + " [Rasio]";
+                    }
+                    else if (comboArea.SelectedIndex == 1)
+                    {
+                        cmd.CommandText = "select "
+                                     + " t.kodePkt, "
+                                     + " [Rasio] = CAST(SUM(saldoAwal100 + saldoAwal50 + saldoAwal20) AS FLOAT)/(SUM(isiATM100+isiATM50+isiATM20+isiCRM100+isiCRM50+isiCRM20)),"
+                                     + " [Jumlah adhoc] = count(adhoc100+adhoc50+adhoc20),"
+                                     + " [Persen] = cast(sum(adhoc100+adhoc50+adhoc20)as float)/ cast(sum(adhoc100+adhoc50+adhoc20+bon100+bon50+bon20) as float)"
+                                     + " from"
+                                     + " transaksiatms t join pkt p on t.kodepkt = p.kodepkt"
+                                     + " where"
+                                     + " tanggal between '" + dateTimePicker1.Value.ToString() + "' and '" + dateTimePicker2.Value.ToString() + "' and p.kanwil like 'Jabo%'"
+                                     + " and(adhoc100 + adhoc20 + adhoc50) != 0"
+                                     + " group by"
+                                     + " t.kodePkt"
+                                     + " order by"
+                                     + " [Rasio]";
+                    }
+                    else if (comboArea.SelectedIndex == 2)
+                    {
+                        cmd.CommandText = "select "
+                                     + " t.kodePkt, "
+                                     + " [Rasio] = CAST(SUM(saldoAwal100 + saldoAwal50 + saldoAwal20) AS FLOAT)/(SUM(isiATM100+isiATM50+isiATM20+isiCRM100+isiCRM50+isiCRM20)),"
+                                     + " [Jumlah adhoc] = count(adhoc100+adhoc50+adhoc20),"
+                                     + " [Persen] = cast(sum(adhoc100+adhoc50+adhoc20)as float)/ cast(sum(adhoc100+adhoc50+adhoc20+bon100+bon50+bon20) as float)"
+                                     + " from"
+                                     + " transaksiatms t join pkt p on t.kodepkt = p.kodepkt"
+                                     + " where"
+                                     + " tanggal between '" + dateTimePicker1.Value.ToString() + "' and '" + dateTimePicker2.Value.ToString() + "' and p.kanwil not like 'Jabo%'"
+                                     + " and(adhoc100 + adhoc20 + adhoc50) != 0"
+                                     + " group by"
+                                     + " t.kodePkt"
+                                     + " order by"
+                                     + " [Rasio]";
+                    }
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
@@ -79,6 +119,11 @@ namespace testProjectBCA
         }
 
         private void dateTimePicker2_ValueChanged(object sender, EventArgs e)
+        {
+            reloadDataPerformancePkt();
+        }
+
+        private void comboArea_SelectionChangeCommitted(object sender, EventArgs e)
         {
             reloadDataPerformancePkt();
         }

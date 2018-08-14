@@ -32,6 +32,7 @@
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
             this.label1 = new System.Windows.Forms.Label();
+            this.comboArea = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -47,7 +48,7 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.Size = new System.Drawing.Size(584, 534);
+            this.dataGridView1.Size = new System.Drawing.Size(618, 534);
             this.dataGridView1.TabIndex = 0;
             // 
             // dateTimePicker1
@@ -75,11 +76,25 @@
             this.label1.TabIndex = 4;
             this.label1.Text = "sampai dengan";
             // 
+            // comboArea
+            // 
+            this.comboArea.FormattingEnabled = true;
+            this.comboArea.Items.AddRange(new object[] {
+            "Nasional",
+            "Jabo",
+            "Non-Jabo"});
+            this.comboArea.Location = new System.Drawing.Point(509, 12);
+            this.comboArea.Name = "comboArea";
+            this.comboArea.Size = new System.Drawing.Size(121, 21);
+            this.comboArea.TabIndex = 5;
+            this.comboArea.SelectionChangeCommitted += new System.EventHandler(this.comboArea_SelectionChangeCommitted);
+            // 
             // dasborPerformancePktf
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(608, 580);
+            this.ClientSize = new System.Drawing.Size(641, 580);
+            this.Controls.Add(this.comboArea);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dateTimePicker2);
             this.Controls.Add(this.dateTimePicker1);
@@ -98,5 +113,6 @@
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.DateTimePicker dateTimePicker2;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ComboBox comboArea;
     }
 }

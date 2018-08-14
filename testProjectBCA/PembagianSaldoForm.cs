@@ -12,8 +12,13 @@ namespace testProjectBCA
 {
     public partial class PembagianSaldoForm : Form
     {
-        List<DataSisaPermintaan> listDataSisaPermintaan;
+        List<DataPermintaanDanSumber> listDataPermintaan;
         List<String> listNamaPkt;
+        List<String> listNamaPktSumber;
+        List<DataPermintaanDanSumber> listDataSumber;
+        List<StoreClass> morningbalance100;
+        List<StoreClass> morningbalance50;
+
         public PembagianSaldoForm()
         {
             InitializeComponent();
@@ -21,17 +26,37 @@ namespace testProjectBCA
         public PembagianSaldoForm(List<StoreClass> morningBalance100, List<StoreClass> morningBalance50)
         {
             InitializeComponent();
+
+            this.morningbalance100 = morningBalance100;
+            this.morningbalance50 = morningBalance50;
+
             initPembagianGridView();
             initListSisaPermintaan();
+            initListSumber();
+        }
+        public void initListSumber()
+        {
+            var q = (from x in morningbalance100
+                     from y in morningbalance50.Where(y=>y.kodePkt == x.kodePkt && y.tanggal == x.tanggal)
+                     select new DataPermintaanDanSumber()
+                     {
+                         tanggal = x.tanggal,
+                         namaPkt = x.kodePkt,
+                         d100 = x.val,
+                         d50 = y.val,
+                         d20 = 0
+                     }).ToList();
+            sumberDanaGridView.DataSource = q.OrderBy(x=>x.namaPkt).OrderBy(x=>x.tanggal).ToList();
+            listDataSumber = q;
         }
         public void initPembagianGridView()
         {
             Database1Entities db = new Database1Entities();
             //Nama PKT yang ada di ComboBox
             var listNamaPkt = db.Pkts.Where(x => x.kanwil.ToUpper().Contains("JABO") && !x.namaPkt.Contains("Alam Sutera")).Select(x => x.namaPkt).ToList();
-            DataGridViewComboBoxColumn pkt = new DataGridViewComboBoxColumn() {
+            DataGridViewComboBoxColumn pktTujuan = new DataGridViewComboBoxColumn() {
                 DataSource = listNamaPkt,
-                HeaderText = "namaPkt",
+                HeaderText = "Nama Pkt Tujuan",
                 ValueType = typeof(String)
             };
             this.listNamaPkt = listNamaPkt;
@@ -39,15 +64,25 @@ namespace testProjectBCA
             DataGridViewComboBoxColumn tgl = new DataGridViewComboBoxColumn()
             {
                 DataSource = listTanggal,
-                HeaderText = "tanggal",
+                HeaderText = "Tanggal",
                 ValueType = typeof(String)
             };
-
+            var listNamaPktSumber = morningbalance100.Select(x => x.kodePkt).Distinct().OrderBy(x=> x).ToList();
+            DataGridViewComboBoxColumn pktSumber = new DataGridViewComboBoxColumn()
+            {
+                DataSource = listNamaPktSumber,
+                HeaderText = "Nama Pkt Sumber",
+                ValueType = typeof(String)
+            };
+            this.listNamaPktSumber = listNamaPktSumber;
             pembagianGridView.Columns.Add(tgl);
             pembagianGridView.Columns[0].Width = 100;
 
-            pembagianGridView.Columns.Add(pkt);
+            pembagianGridView.Columns.Add(pktSumber);
             pembagianGridView.Columns[1].Width = 200;
+
+            pembagianGridView.Columns.Add(pktTujuan);
+            pembagianGridView.Columns[2].Width = 200;
 
             pembagianGridView.Columns.Add("100000", "100000");
             pembagianGridView.Columns.Add("50000", "50000");
@@ -65,7 +100,7 @@ namespace testProjectBCA
         }
         public void initListSisaPermintaan()
         {
-            listDataSisaPermintaan = new List<DataSisaPermintaan>();
+            listDataPermintaan = new List<DataPermintaanDanSumber>();
             Database1Entities db = new Database1Entities();
             var q = (from x in db.Approvals
                      join y in db.DetailApprovals on x.idApproval equals y.idApproval
@@ -75,9 +110,9 @@ namespace testProjectBCA
                      select new { z.namaPkt, tanggal = (DateTime)y.tanggal, y.bon100, y.bon50,y.bon20, y.adhoc100, y.adhoc50, y.adhoc20 }).ToList();
             
             //Adhoc
-            listDataSisaPermintaan.AddRange(
+            listDataPermintaan.AddRange(
                 q.Where(x => (DateTime)x.tanggal == Variables.todayDate)
-                .Select(x => new DataSisaPermintaan() {
+                .Select(x => new DataPermintaanDanSumber() {
                     tanggal = x.tanggal,
                     namaPkt = x.namaPkt,
                     d100 = (Int64) x.adhoc100,
@@ -86,9 +121,9 @@ namespace testProjectBCA
                 }).ToList());
             
             //Bon Reguler
-            listDataSisaPermintaan.AddRange(
+            listDataPermintaan.AddRange(
                 q.Where(x => (DateTime)x.tanggal > Variables.todayDate)
-                .Select(x => new DataSisaPermintaan() {
+                .Select(x => new DataPermintaanDanSumber() {
                     tanggal = x.tanggal,
                     namaPkt = x.namaPkt,
                     d100 = (Int64) x.bon100,
@@ -96,7 +131,7 @@ namespace testProjectBCA
                     d20 = (Int64) x.bon20
                 }).ToList());
 
-            sisaGridView.DataSource = listDataSisaPermintaan.OrderBy(x=>x.namaPkt).OrderBy(x=> x.tanggal).ToList();
+            sisaGridView.DataSource = listDataPermintaan.OrderBy(x=>x.namaPkt).OrderBy(x=> x.tanggal).ToList();
             sisaGridView.Columns["tanggal"].Width = 70;
             sisaGridView.Columns["namaPkt"].Width = 200;
             sisaGridView.Columns["d100"].DefaultCellStyle.Format = "N0";
@@ -135,20 +170,23 @@ namespace testProjectBCA
                 DataGridViewRow row = pembagianGridView.Rows[a];
                 listDataInputanUser.Add(new DataInputanUser() {
                     tanggal = DateTime.Parse(row.Cells[0].Value.ToString()),
-                    namaPkt = row.Cells[1].Value.ToString(),
-                    d100 = Int64.Parse(row.Cells[2].Value.ToString()),
-                    d50 = Int64.Parse(row.Cells[3].Value.ToString()),
-                    d20 = Int64.Parse(row.Cells[4].Value.ToString())
+                    namaPktSumber = row.Cells[1].Value.ToString(),
+                    namaPktTujuan = row.Cells[2].Value.ToString(),
+                    d100 = Int64.Parse(row.Cells[3].Value.ToString()),
+                    d50 = Int64.Parse(row.Cells[4].Value.ToString()),
+                    d20 = Int64.Parse(row.Cells[5].Value.ToString())
                 });
             }
+
+            //Kurangin dari tabel permintaan
             initListSisaPermintaan();
-            List<DataSisaPermintaan> tempListDataSisa = new List<DataSisaPermintaan>(listDataSisaPermintaan);
+            List<DataPermintaanDanSumber> tempListDataSisa = new List<DataPermintaanDanSumber>(listDataPermintaan);
             foreach(var temp in listDataInputanUser)
             {
-                Console.WriteLine(temp.tanggal.ToShortDateString() + " " + temp.namaPkt);
+                Console.WriteLine(temp.tanggal.ToShortDateString() + " " + temp.namaPktTujuan);
                 
                 var q = (from x in tempListDataSisa
-                         where x.namaPkt == temp.namaPkt && x.tanggal == temp.tanggal
+                         where x.namaPkt == temp.namaPktTujuan && x.tanggal == temp.tanggal
                          select x).FirstOrDefault();
                 if (q != null)
                 {
@@ -160,15 +198,33 @@ namespace testProjectBCA
                     sisaGridView.Refresh();
                 }
             }
+            //Kurangin dari tabel sumber
+            initListSumber();
+            List<DataPermintaanDanSumber> tempListDataSumber = new List<DataPermintaanDanSumber>(listDataSumber);
+            foreach (var temp in listDataInputanUser)
+            {
+                var q = (from x in tempListDataSumber
+                         where x.namaPkt == temp.namaPktSumber && x.tanggal == temp.tanggal
+                         select x).FirstOrDefault();
+                if (q != null)
+                {
+                    q.d100 -= temp.d100;
+                    q.d50 -= temp.d50;
+                    q.d20 -= temp.d20;
+                    sumberDanaGridView.DataSource = tempListDataSisa.OrderBy(x => x.namaPkt).OrderBy(x => x.tanggal).ToList();
+                    sumberDanaGridView.Refresh();
+                }
+            }
         }
 
         private void pembagianGridView_DefaultValuesNeeded(object sender, DataGridViewRowEventArgs e)
         {
             e.Row.Cells[0].Value = Variables.todayDate.ToShortDateString();
-            e.Row.Cells[1].Value = listNamaPkt[0];
-            e.Row.Cells[2].Value = 0;
+            e.Row.Cells[1].Value = listNamaPktSumber[0];
+            e.Row.Cells[2].Value = listNamaPkt[0];
             e.Row.Cells[3].Value = 0;
             e.Row.Cells[4].Value = 0;
+            e.Row.Cells[5].Value = 0;
 
         }
 
@@ -180,7 +236,7 @@ namespace testProjectBCA
         }
     }
 
-    public class DataSisaPermintaan
+    public class DataPermintaanDanSumber
     {
         public DateTime tanggal { set; get; }
         public String namaPkt { set; get; }
@@ -191,7 +247,8 @@ namespace testProjectBCA
     public class DataInputanUser
     {
         public DateTime tanggal { set; get; }
-        public String namaPkt { set; get; }
+        public String namaPktTujuan { set; get; }
+        public String namaPktSumber { set; get; }
         public Int64 d100 { set; get; }
         public Int64 d50 { set; get; }
         public Int64 d20 { set; get; }

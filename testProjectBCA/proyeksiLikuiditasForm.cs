@@ -1091,7 +1091,7 @@ namespace testProjectBCA
             //Load semua in Cabang 100
             var q = (from x in db.StokPosisis
                      where x.denom == "100000"
-                     select new { x.tanggal, BN100K = x.inCabang });
+                     select new { x.namaPkt, x.tanggal, BN100K = x.inCabang });
 
             
             List<EventTanggal> et = (from x in db.EventTanggals.AsEnumerable().AsEnumerable()
@@ -1100,41 +1100,51 @@ namespace testProjectBCA
 
             DateTime tanggal = DateTime.Today;
             DateTime maxTanggal = tanggalMaxPrediksiPicker.Value;
-
+            inCabangUntukKirim100 = new List<StoreClass>();
             while (tanggal <= maxTanggal)
             {
-                List<Int64> query = new List<Int64>();
+                List<StoreClass> query = new List<StoreClass>();
                 var eventT = (from x in et
                               where x.tanggal == tanggal
                               select new { x.workDay, x.@event }).FirstOrDefault();
 
                 foreach (var temp in listTanggalHistorisUntukPrediksi)
                 {
-                    List<Int64> q3 = (from x in q
+                    List<StoreClass> q3 = (from x in q
                                       join y in db.EventTanggals.AsEnumerable() on x.tanggal equals y.tanggal
                                       where temp.Month == ((DateTime)x.tanggal).Month
                                       && temp.Year == ((DateTime)x.tanggal).Year
                                       && eventT.workDay == y.workDay
                                       && eventT.@event == y.@event
-                                      select new { tanggal = (DateTime)x.tanggal, BN100K = x.BN100K == null ? 0 : (Int64)x.BN100K }
-                              ).AsEnumerable().Where(x => x.tanggal.DayOfWeek == tanggal.DayOfWeek).Select(x => x.BN100K).ToList();
+                                      select new { tanggal = (DateTime)x.tanggal, BN100K = x.BN100K == null ? 0 : (Int64)x.BN100K, x.namaPkt }
+                              ).AsEnumerable().Where(x => x.tanggal.DayOfWeek == tanggal.DayOfWeek).Select(x => new StoreClass() { tanggal = x.tanggal, kodePkt = x.namaPkt, val = x.BN100K }).ToList();
                     query.AddRange(q3);
                 }
                 if (!query.Any())
                 {
                     foreach (var temp in listTanggalHistorisUntukPrediksi)
                     {
-                        List<Int64> q3 = (from x in q
-                                          join y in db.EventTanggals.AsEnumerable() on x.tanggal equals y.tanggal
-                                          where temp.Month == ((DateTime)x.tanggal).Month
-                                          && temp.Year == ((DateTime)x.tanggal).Year
-                                          && eventT.workDay == y.workDay
-                                          select (Int64)x.BN100K
+                        List<StoreClass> q3 = (from x in q
+                                               join y in db.EventTanggals.AsEnumerable() on x.tanggal equals y.tanggal
+                                               where temp.Month == ((DateTime)x.tanggal).Month
+                                               && temp.Year == ((DateTime)x.tanggal).Year
+                                               && eventT.workDay == y.workDay
+                                               select new StoreClass()
+                                               {
+                                                   tanggal = (DateTime)x.tanggal,
+                                                   kodePkt = x.namaPkt,
+                                                   val = (Int64)x.BN100K
+                                               }
                                   ).ToList();
                         query.AddRange(q3);
                     }
                 }
-                result.Add(new tanggalValue() { tanggal = tanggal, value = (Int64)Math.Round(query.Any() ? query.Average(x => x) : 0, 0) });
+
+                var query2 = (from x in query
+                              group x by x.tanggal into g
+                              select new { g.Key, val = g.Sum(x => x.val) });
+                result.Add(new tanggalValue() { tanggal = tanggal, value = (Int64)Math.Round(query.Any() ? query2.Average(x => x.val) : 0, 0) });
+                inCabangUntukKirim100.AddRange(query.GroupBy(x => x.kodePkt).Select(x => new StoreClass() { tanggal = tanggal, kodePkt = x.Key, val = (Int64)x.Average(y => y.val) }).ToList());
                 tanggal = tanggal.AddDays(1);
             }
             return result;
@@ -1146,49 +1156,57 @@ namespace testProjectBCA
 
             var q = (from x in db.StokPosisis
                      where x.denom == "50000"
-                     select new { x.tanggal, BN50K = x.inCabang });
+                     select new { x.tanggal, BN50K = x.inCabang, x.namaPkt });
             List<EventTanggal> et = (from x in db.EventTanggals.AsEnumerable().AsEnumerable()
                                      select x).ToList();
 
 
             DateTime tanggal = DateTime.Today;
             DateTime maxTanggal = tanggalMaxPrediksiPicker.Value;
-
+            inCabangUntukKirim50 = new List<StoreClass>();
             while (tanggal <= maxTanggal)
             {
-                List<Int64> query = new List<Int64>();
+                List<StoreClass> query = new List<StoreClass>();
                 var eventT = (from x in et
                               where x.tanggal == tanggal
                               select new { x.workDay, x.@event }).FirstOrDefault();
 
-
                 foreach (var temp in listTanggalHistorisUntukPrediksi)
                 {
-                    List<Int64> q3 = (from x in q
-                                      join y in db.EventTanggals.AsEnumerable() on x.tanggal equals y.tanggal
-                                      where temp.Month == ((DateTime)x.tanggal).Month
-                                      && temp.Year == ((DateTime)x.tanggal).Year
-                                      && eventT.workDay == y.workDay
-                                      && eventT.@event == y.@event
-                                      select new { tanggal = (DateTime)x.tanggal, BN50K = x.BN50K == null ? 0 : (Int64)x.BN50K }
-                              ).AsEnumerable().Where(x => x.tanggal.DayOfWeek == tanggal.DayOfWeek).Select(x => x.BN50K).ToList();
+                    List<StoreClass> q3 = (from x in q
+                                           join y in db.EventTanggals.AsEnumerable() on x.tanggal equals y.tanggal
+                                           where temp.Month == ((DateTime)x.tanggal).Month
+                                           && temp.Year == ((DateTime)x.tanggal).Year
+                                           && eventT.workDay == y.workDay
+                                           && eventT.@event == y.@event
+                                           select new { tanggal = (DateTime)x.tanggal, BN50K = x.BN50K == null ? 0 : (Int64)x.BN50K, x.namaPkt }
+                              ).AsEnumerable().Where(x => x.tanggal.DayOfWeek == tanggal.DayOfWeek).Select(x => new StoreClass() { tanggal = x.tanggal, kodePkt = x.namaPkt, val = x.BN50K }).ToList();
                     query.AddRange(q3);
                 }
                 if (!query.Any())
                 {
                     foreach (var temp in listTanggalHistorisUntukPrediksi)
                     {
-                        List<Int64> q3 = (from x in q
-                                          join y in db.EventTanggals.AsEnumerable() on x.tanggal equals y.tanggal
-                                          where temp.Month == ((DateTime)x.tanggal).Month
-                                          && temp.Year == ((DateTime)x.tanggal).Year
-                                          && eventT.workDay == y.workDay
-                                          select (Int64)x.BN50K
+                        List<StoreClass> q3 = (from x in q
+                                               join y in db.EventTanggals.AsEnumerable() on x.tanggal equals y.tanggal
+                                               where temp.Month == ((DateTime)x.tanggal).Month
+                                               && temp.Year == ((DateTime)x.tanggal).Year
+                                               && eventT.workDay == y.workDay
+                                               select new StoreClass()
+                                               {
+                                                   tanggal = (DateTime)x.tanggal,
+                                                   kodePkt = x.namaPkt,
+                                                   val = (Int64)x.BN50K
+                                               }
                                   ).ToList();
                         query.AddRange(q3);
                     }
                 }
-                result.Add(new tanggalValue() { tanggal = tanggal, value = (Int64)Math.Round(query.Any() ? query.Average(x => x) : 0, 0) });
+                var query2 = (from x in query
+                              group x by x.tanggal into g
+                              select new { g.Key, val = g.Sum(x => x.val) });
+                result.Add(new tanggalValue() { tanggal = tanggal, value = (Int64)Math.Round(query.Any() ? query2.Average(x => x.val) : 0, 0) });
+                inCabangUntukKirim50.AddRange(query.GroupBy(x => x.kodePkt).Select(x => new StoreClass() { tanggal = tanggal, kodePkt = x.Key, val = (Int64)x.Average(y => y.val) }).ToList());
                 tanggal = tanggal.AddDays(1);
             }
             return result;
@@ -1201,49 +1219,57 @@ namespace testProjectBCA
             //Load semua in Cabang 100
             var q = (from x in db.StokPosisis
                      where x.denom == "100000"
-                     select new { x.tanggal, BN100K = x.inRetail});
+                     select new { x.tanggal, BN100K = x.inRetail, x.namaPkt});
             List<EventTanggal> et = (from x in db.EventTanggals.AsEnumerable().AsEnumerable()
                                      select x).ToList();
 
 
             DateTime tanggal = DateTime.Today;
             DateTime maxTanggal = tanggalMaxPrediksiPicker.Value;
-
+            inRetailUntukKirim100 = new List<StoreClass>();
             while (tanggal <= maxTanggal)
             {
-                List<Int64> query = new List<Int64>();
+                List<StoreClass> query = new List<StoreClass>();
                 var eventT = (from x in et
                               where x.tanggal == tanggal
                               select new { x.workDay, x.@event }).FirstOrDefault();
 
-
                 foreach (var temp in listTanggalHistorisUntukPrediksi)
                 {
-                    List<Int64> q3 = (from x in q
-                                      join y in db.EventTanggals.AsEnumerable() on x.tanggal equals y.tanggal
-                                      where temp.Month == ((DateTime)x.tanggal).Month
-                                      && temp.Year == ((DateTime)x.tanggal).Year
-                                      && eventT.workDay == y.workDay
-                                      && eventT.@event == y.@event
-                                      select new { tanggal = (DateTime)x.tanggal, BN100K = x.BN100K == null ? 0 : (Int64)x.BN100K }
-                              ).AsEnumerable().Where(x => x.tanggal.DayOfWeek == tanggal.DayOfWeek).Select(x => x.BN100K).ToList();
+                    List<StoreClass> q3 = (from x in q
+                                           join y in db.EventTanggals.AsEnumerable() on x.tanggal equals y.tanggal
+                                           where temp.Month == ((DateTime)x.tanggal).Month
+                                           && temp.Year == ((DateTime)x.tanggal).Year
+                                           && eventT.workDay == y.workDay
+                                           && eventT.@event == y.@event
+                                           select new { tanggal = (DateTime)x.tanggal, BN100K = x.BN100K == null ? 0 : (Int64)x.BN100K, x.namaPkt }
+                              ).AsEnumerable().Where(x => x.tanggal.DayOfWeek == tanggal.DayOfWeek).Select(x => new StoreClass() { tanggal = x.tanggal, kodePkt = x.namaPkt, val = x.BN100K }).ToList();
                     query.AddRange(q3);
                 }
                 if (!query.Any())
                 {
                     foreach (var temp in listTanggalHistorisUntukPrediksi)
                     {
-                        List<Int64> q3 = (from x in q
-                                          join y in db.EventTanggals.AsEnumerable() on x.tanggal equals y.tanggal
-                                          where temp.Month == ((DateTime)x.tanggal).Month
-                                          && temp.Year == ((DateTime)x.tanggal).Year
-                                          && eventT.workDay == y.workDay
-                                          select (Int64)x.BN100K
+                        List<StoreClass> q3 = (from x in q
+                                               join y in db.EventTanggals.AsEnumerable() on x.tanggal equals y.tanggal
+                                               where temp.Month == ((DateTime)x.tanggal).Month
+                                               && temp.Year == ((DateTime)x.tanggal).Year
+                                               && eventT.workDay == y.workDay
+                                               select new StoreClass()
+                                               {
+                                                   tanggal = (DateTime)x.tanggal,
+                                                   kodePkt = x.namaPkt,
+                                                   val = (Int64)x.BN100K
+                                               }
                                   ).ToList();
                         query.AddRange(q3);
                     }
                 }
-                result.Add(new tanggalValue() { tanggal = tanggal, value = (Int64)Math.Round(query.Any() ? query.Average(x => x) : 0, 0) });
+                var query2 = (from x in query
+                              group x by x.tanggal into g
+                              select new { g.Key, val = g.Sum(x => x.val) });
+                result.Add(new tanggalValue() { tanggal = tanggal, value = (Int64)Math.Round(query.Any() ? query2.Average(x => x.val) : 0, 0) });
+                inRetailUntukKirim100.AddRange(query.GroupBy(x => x.kodePkt).Select(x => new StoreClass() { tanggal = tanggal, kodePkt = x.Key, val = (Int64)x.Average(y => y.val) }).ToList());
                 tanggal = tanggal.AddDays(1);
             }
             return result;
@@ -1255,49 +1281,57 @@ namespace testProjectBCA
 
             var q = (from x in db.StokPosisis
                      where x.denom == "50000"
-                     select new { x.tanggal, BN50K = x.inRetail});
+                     select new { x.tanggal, BN50K = x.inRetail, x.namaPkt});
             List<EventTanggal> et = (from x in db.EventTanggals.AsEnumerable().AsEnumerable()
                                      select x).ToList();
 
 
             DateTime tanggal = DateTime.Today;
             DateTime maxTanggal = tanggalMaxPrediksiPicker.Value;
-
+            inRetailUntukKirim50 = new List<StoreClass>();
             while (tanggal <= maxTanggal)
             {
-                List<Int64> query = new List<Int64>();
+                List<StoreClass> query = new List<StoreClass>();
                 var eventT = (from x in et
                               where x.tanggal == tanggal
                               select new { x.workDay, x.@event }).FirstOrDefault();
 
-
                 foreach (var temp in listTanggalHistorisUntukPrediksi)
                 {
-                    List<Int64> q3 = (from x in q
-                                      join y in db.EventTanggals.AsEnumerable() on x.tanggal equals y.tanggal
-                                      where temp.Month == ((DateTime)x.tanggal).Month
-                                      && temp.Year == ((DateTime)x.tanggal).Year
-                                      && eventT.workDay == y.workDay
-                                      && eventT.@event == y.@event
-                                      select new { tanggal = (DateTime)x.tanggal, BN50K = x.BN50K == null ? 0 : (Int64)x.BN50K }
-                              ).AsEnumerable().Where(x => x.tanggal.DayOfWeek == tanggal.DayOfWeek).Select(x => x.BN50K).ToList();
+                    List<StoreClass> q3 = (from x in q
+                                           join y in db.EventTanggals.AsEnumerable() on x.tanggal equals y.tanggal
+                                           where temp.Month == ((DateTime)x.tanggal).Month
+                                           && temp.Year == ((DateTime)x.tanggal).Year
+                                           && eventT.workDay == y.workDay
+                                           && eventT.@event == y.@event
+                                           select new { tanggal = (DateTime)x.tanggal, BN50K = x.BN50K == null ? 0 : (Int64)x.BN50K, x.namaPkt }
+                              ).AsEnumerable().Where(x => x.tanggal.DayOfWeek == tanggal.DayOfWeek).Select(x => new StoreClass() { tanggal = x.tanggal, kodePkt = x.namaPkt, val = x.BN50K }).ToList();
                     query.AddRange(q3);
                 }
                 if (!query.Any())
                 {
                     foreach (var temp in listTanggalHistorisUntukPrediksi)
                     {
-                        List<Int64> q3 = (from x in q
-                                          join y in db.EventTanggals.AsEnumerable() on x.tanggal equals y.tanggal
-                                          where temp.Month == ((DateTime)x.tanggal).Month
-                                          && temp.Year == ((DateTime)x.tanggal).Year
-                                          && eventT.workDay == y.workDay
-                                          select (Int64)x.BN50K
+                        List<StoreClass> q3 = (from x in q
+                                               join y in db.EventTanggals.AsEnumerable() on x.tanggal equals y.tanggal
+                                               where temp.Month == ((DateTime)x.tanggal).Month
+                                               && temp.Year == ((DateTime)x.tanggal).Year
+                                               && eventT.workDay == y.workDay
+                                               select new StoreClass()
+                                               {
+                                                   tanggal = (DateTime)x.tanggal,
+                                                   kodePkt = x.namaPkt,
+                                                   val = (Int64)x.BN50K
+                                               }
                                   ).ToList();
                         query.AddRange(q3);
                     }
                 }
-                result.Add(new tanggalValue() { tanggal = tanggal, value = (Int64)Math.Round(query.Any() ? query.Average(x => x) : 0, 0) });
+                var query2 = (from x in query
+                              group x by x.tanggal into g
+                              select new { g.Key, val = g.Sum(x => x.val) });
+                result.Add(new tanggalValue() { tanggal = tanggal, value = (Int64)Math.Round(query.Any() ? query2.Average(x => x.val) : 0, 0) });
+                inRetailUntukKirim50.AddRange(query.GroupBy(x => x.kodePkt).Select(x => new StoreClass() { tanggal = tanggal, kodePkt = x.Key, val = (Int64)x.Average(y => y.val) }).ToList());
                 tanggal = tanggal.AddDays(1);
             }
             return result;
@@ -1310,49 +1344,57 @@ namespace testProjectBCA
             //Load semua in Cabang 100
             var q = (from x in db.StokPosisis
                      where x.denom == "100000"
-                     select new { x.tanggal, BN100K = x.outCabang});
+                     select new { x.tanggal, BN100K = x.outCabang, x.namaPkt});
             List<EventTanggal> et = (from x in db.EventTanggals.AsEnumerable().AsEnumerable()
                                      select x).ToList();
 
 
             DateTime tanggal = DateTime.Today;
             DateTime maxTanggal = tanggalMaxPrediksiPicker.Value;
-
+            outCabangUntukKirim100 = new List<StoreClass>();
             while (tanggal <= maxTanggal)
             {
-                List<Int64> query = new List<Int64>();
+                List<StoreClass> query = new List<StoreClass>();
                 var eventT = (from x in et
                               where x.tanggal == tanggal
                               select new { x.workDay, x.@event }).FirstOrDefault();
 
-
                 foreach (var temp in listTanggalHistorisUntukPrediksi)
                 {
-                    List<Int64> q3 = (from x in q
-                                      join y in db.EventTanggals.AsEnumerable() on x.tanggal equals y.tanggal
-                                      where temp.Month == ((DateTime)x.tanggal).Month
-                                      && temp.Year == ((DateTime)x.tanggal).Year
-                                      && eventT.workDay == y.workDay
-                                      && eventT.@event == y.@event
-                                      select new { tanggal = (DateTime)x.tanggal, BN100K = x.BN100K == null ? 0 : (Int64)x.BN100K }
-                              ).AsEnumerable().Where(x => x.tanggal.DayOfWeek == tanggal.DayOfWeek).Select(x => x.BN100K).ToList();
+                    List<StoreClass> q3 = (from x in q
+                                           join y in db.EventTanggals.AsEnumerable() on x.tanggal equals y.tanggal
+                                           where temp.Month == ((DateTime)x.tanggal).Month
+                                           && temp.Year == ((DateTime)x.tanggal).Year
+                                           && eventT.workDay == y.workDay
+                                           && eventT.@event == y.@event
+                                           select new { tanggal = (DateTime)x.tanggal, BN100K = x.BN100K == null ? 0 : (Int64)x.BN100K, x.namaPkt }
+                              ).AsEnumerable().Where(x => x.tanggal.DayOfWeek == tanggal.DayOfWeek).Select(x => new StoreClass() { tanggal = x.tanggal, kodePkt = x.namaPkt, val = x.BN100K }).ToList();
                     query.AddRange(q3);
                 }
                 if (!query.Any())
                 {
                     foreach (var temp in listTanggalHistorisUntukPrediksi)
                     {
-                        List<Int64> q3 = (from x in q
-                                          join y in db.EventTanggals.AsEnumerable() on x.tanggal equals y.tanggal
-                                          where temp.Month == ((DateTime)x.tanggal).Month
-                                          && temp.Year == ((DateTime)x.tanggal).Year
-                                          && eventT.workDay == y.workDay
-                                          select (Int64)x.BN100K
+                        List<StoreClass> q3 = (from x in q
+                                               join y in db.EventTanggals.AsEnumerable() on x.tanggal equals y.tanggal
+                                               where temp.Month == ((DateTime)x.tanggal).Month
+                                               && temp.Year == ((DateTime)x.tanggal).Year
+                                               && eventT.workDay == y.workDay
+                                               select new StoreClass()
+                                               {
+                                                   tanggal = (DateTime)x.tanggal,
+                                                   kodePkt = x.namaPkt,
+                                                   val = (Int64)x.BN100K
+                                               }
                                   ).ToList();
                         query.AddRange(q3);
                     }
                 }
-                result.Add(new tanggalValue() { tanggal = tanggal, value = (Int64)Math.Round(query.Any() ? query.Average(x => x) : 0, 0) });
+                var query2 = (from x in query
+                              group x by x.tanggal into g
+                              select new { g.Key, val = g.Sum(x => x.val) });
+                result.Add(new tanggalValue() { tanggal = tanggal, value = (Int64)Math.Round(query.Any() ? query2.Average(x => x.val) : 0, 0) });
+                outCabangUntukKirim100.AddRange(query.GroupBy(x => x.kodePkt).Select(x => new StoreClass() { tanggal = tanggal, kodePkt = x.Key, val = (Int64)x.Average(y => y.val) }).ToList());
                 tanggal = tanggal.AddDays(1);
             }
             return result;
@@ -1365,49 +1407,57 @@ namespace testProjectBCA
             //Load semua in Cabang 50
             var q = (from x in db.StokPosisis
                      where x.denom == "50000"
-                     select new { x.tanggal, BN50K = x.outCabang});
+                     select new { x.tanggal, BN50K = x.outCabang, x.namaPkt });
             List<EventTanggal> et = (from x in db.EventTanggals.AsEnumerable().AsEnumerable()
                                      select x).ToList();
 
 
             DateTime tanggal = DateTime.Today;
             DateTime maxTanggal = tanggalMaxPrediksiPicker.Value;
-
+            outCabangUntukKirim50 = new List<StoreClass>();
             while (tanggal <= maxTanggal)
             {
-                List<Int64> query = new List<Int64>();
+                List<StoreClass> query = new List<StoreClass>();
                 var eventT = (from x in et
                               where x.tanggal == tanggal
                               select new { x.workDay, x.@event }).FirstOrDefault();
 
-
                 foreach (var temp in listTanggalHistorisUntukPrediksi)
                 {
-                    List<Int64> q3 = (from x in q
-                                      join y in db.EventTanggals.AsEnumerable() on x.tanggal equals y.tanggal
-                                      where temp.Month == ((DateTime)x.tanggal).Month
-                                      && temp.Year == ((DateTime)x.tanggal).Year
-                                      && eventT.workDay == y.workDay
-                                      && eventT.@event == y.@event
-                                      select new { tanggal = (DateTime)x.tanggal, BN50K = x.BN50K == null ? 0 : (Int64)x.BN50K }
-                              ).AsEnumerable().Where(x => x.tanggal.DayOfWeek == tanggal.DayOfWeek).Select(x => x.BN50K).ToList();
+                    List<StoreClass> q3 = (from x in q
+                                           join y in db.EventTanggals.AsEnumerable() on x.tanggal equals y.tanggal
+                                           where temp.Month == ((DateTime)x.tanggal).Month
+                                           && temp.Year == ((DateTime)x.tanggal).Year
+                                           && eventT.workDay == y.workDay
+                                           && eventT.@event == y.@event
+                                           select new { tanggal = (DateTime)x.tanggal, BN50K = x.BN50K == null ? 0 : (Int64)x.BN50K, x.namaPkt }
+                              ).AsEnumerable().Where(x => x.tanggal.DayOfWeek == tanggal.DayOfWeek).Select(x => new StoreClass() { tanggal = x.tanggal, kodePkt = x.namaPkt, val = x.BN50K }).ToList();
                     query.AddRange(q3);
                 }
                 if (!query.Any())
                 {
                     foreach (var temp in listTanggalHistorisUntukPrediksi)
                     {
-                        List<Int64> q3 = (from x in q
-                                          join y in db.EventTanggals.AsEnumerable() on x.tanggal equals y.tanggal
-                                          where temp.Month == ((DateTime)x.tanggal).Month
-                                          && temp.Year == ((DateTime)x.tanggal).Year
-                                          && eventT.workDay == y.workDay
-                                          select (Int64)x.BN50K
+                        List<StoreClass> q3 = (from x in q
+                                               join y in db.EventTanggals.AsEnumerable() on x.tanggal equals y.tanggal
+                                               where temp.Month == ((DateTime)x.tanggal).Month
+                                               && temp.Year == ((DateTime)x.tanggal).Year
+                                               && eventT.workDay == y.workDay
+                                               select new StoreClass()
+                                               {
+                                                   tanggal = (DateTime)x.tanggal,
+                                                   kodePkt = x.namaPkt,
+                                                   val = (Int64)x.BN50K
+                                               }
                                   ).ToList();
                         query.AddRange(q3);
                     }
                 }
-                result.Add(new tanggalValue() { tanggal = tanggal, value = (Int64)Math.Round(query.Any() ? query.Average(x => x) : 0, 0) });
+                var query2 = (from x in query
+                              group x by x.tanggal into g
+                              select new { g.Key, val = g.Sum(x => x.val) });
+                result.Add(new tanggalValue() { tanggal = tanggal, value = (Int64)Math.Round(query.Any() ? query2.Average(x => x.val) : 0, 0) });
+                outCabangUntukKirim50.AddRange(query.GroupBy(x => x.kodePkt).Select(x => new StoreClass() { tanggal = tanggal, kodePkt = x.Key, val = (Int64)x.Average(y => y.val) }).ToList());
                 tanggal = tanggal.AddDays(1);
             }
             return result;
@@ -1722,7 +1772,69 @@ namespace testProjectBCA
 
         private void nextButton_Click(object sender, EventArgs e)
         {
-            PembagianSaldoForm psf = new PembagianSaldoForm(morningBalance100HariH, morningBalance50HariH);
+            List<StoreClass> morningBalance100UntukKirim = new List<StoreClass>(), 
+                morningBalance50UntukKirim = new List<StoreClass>();
+
+
+
+            morningBalance100UntukKirim.AddRange(morningBalance100HariH);
+            morningBalance50UntukKirim.AddRange(morningBalance50HariH);
+
+            var qOutAtm100 = (from x in db.Approvals
+                              join y in db.DetailApprovals on x.idApproval equals y.idApproval
+                              join z in db.Pkts on x.kodePkt equals z.kodePkt
+                              where x.tanggal == Variables.todayDate
+                              && z.kanwil.ToUpper().Contains("JABO")
+                              select new StoreClass()
+                              {
+                                  tanggal = (DateTime)y.tanggal,
+                                  kodePkt = z.namaPkt,
+                                  val = (Int64)y.bon100 + (Int64)y.adhoc100
+                              }).ToList();
+            var qOutAtm50 = (from x in db.Approvals
+                              join y in db.DetailApprovals on x.idApproval equals y.idApproval
+                              join z in db.Pkts on x.kodePkt equals z.kodePkt
+                              where x.tanggal == Variables.todayDate
+                              && z.kanwil.ToUpper().Contains("JABO")
+                              select new StoreClass()
+                              {
+                                  tanggal = (DateTime)y.tanggal,
+                                  kodePkt = z.namaPkt,
+                                  val = (Int64)y.bon50 + (Int64)y.adhoc50
+                              }).ToList();
+
+            DateTime tanggal = Variables.todayDate.AddDays(1);
+            DateTime maxTgl = morningBalance100.Max(x => x.tanggal);
+            while (tanggal <= maxTgl)
+            {
+                var toAdd = (from mb in morningBalance100UntukKirim
+                             from oc in outCabangUntukKirim100.Where(x => x.kodePkt == mb.kodePkt && x.tanggal == mb.tanggal)
+                             from ir in inRetailUntukKirim100.Where(x => x.kodePkt == mb.kodePkt && x.tanggal == mb.tanggal)
+                             from ic in inCabangUntukKirim100.Where(x => x.kodePkt == mb.kodePkt && x.tanggal == mb.tanggal)
+                             from oa in qOutAtm100.Where(x=>x.kodePkt == mb.kodePkt && x.tanggal == mb.tanggal)
+                             select new StoreClass {
+                                 kodePkt = mb.kodePkt,
+                                 tanggal = tanggal.AddDays(1),
+                                 val = mb.val + ir.val + ic.val - oc.val + oa.val
+                             }).ToList();
+                morningBalance100UntukKirim.AddRange(toAdd);
+                var toAdd50 = (from mb in morningBalance50UntukKirim
+                               from oc in outCabangUntukKirim50.Where(x => x.kodePkt == mb.kodePkt && x.tanggal == mb.tanggal)
+                               from ir in inRetailUntukKirim50.Where(x => x.kodePkt == mb.kodePkt && x.tanggal == mb.tanggal)
+                               from ic in inCabangUntukKirim50.Where(x => x.kodePkt == mb.kodePkt && x.tanggal == mb.tanggal)
+                               from oa in qOutAtm50.Where(x => x.kodePkt == mb.kodePkt && x.tanggal == mb.tanggal)
+                               select new StoreClass
+                               {
+                                   kodePkt = mb.kodePkt,
+                                   tanggal = tanggal.AddDays(1),
+                                   val = mb.val + ir.val + ic.val - oc.val + oa.val
+                               }).ToList();
+                morningBalance50UntukKirim.AddRange(toAdd50);
+                tanggal = tanggal.AddDays(1);
+            }
+            Console.WriteLine("Open Form!");
+            PembagianSaldoForm psf = new PembagianSaldoForm(morningBalance100UntukKirim, morningBalance50UntukKirim);
+
             psf.MdiParent = this.ParentForm;
             psf.Show();
         }
