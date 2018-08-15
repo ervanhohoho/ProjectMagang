@@ -221,11 +221,28 @@ namespace testProjectBCA
                                     join y in listApproval on x.tanggal equals y.tanggal
                                     join z in listBon on x.tanggal equals z.tanggal
                                     select new GVDisplay() {
-                                        tanggalForecast = x.tanggal , saldoAwalForecast = y.value, saldoAwalRealisasi = x.value, bonYangDisetujui = z.value
+                                        tanggalForecast = x.tanggal ,
+                                        saldoAwalForecast = y.value,
+                                        saldoAwalRealisasi = x.value,
+                                        bonYangDisetujui = z.value
                                     }).ToList();
-            dataGridView1.DataSource = disp;
+            var toDisp1 = (from x in disp
+                          select new
+                          {
+                              tanggalForecast = x.tanggalForecast,
+                              saldoAwalForecast = x.saldoAwalForecast,
+                              saldoAwalRealisasi = x.saldoAwalRealisasi,
+                              bonYangDisetujui = x.bonYangDisetujui,
+                              persentaseForecastPerRealisasi = (Double)x.saldoAwalForecast / x.saldoAwalRealisasi
+                          }).ToList();
+
+            dataGridView1.DataSource = toDisp1;
             for (int a = 1; a < dataGridView1.ColumnCount; a++)
+            {
                 dataGridView1.Columns[a].DefaultCellStyle.Format = "N0";
+                if (a == dataGridView1.ColumnCount - 1)
+                    dataGridView1.Columns[a].DefaultCellStyle.Format = "0.00%";
+            }
         }
     }
 

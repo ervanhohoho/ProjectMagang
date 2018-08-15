@@ -58,6 +58,10 @@ namespace testProjectBCA
             }
             adhocATM100Num.ThousandsSeparator = true;
             adhocATM50Num.ThousandsSeparator = true;
+            adhocATM100Num.Visible = false;
+            adhocATM50Num.Visible  = false;
+            label8.Visible = false;
+            label9.Visible = false;
         }
 
         void loadBulanPrediksiTreeView()
@@ -1562,6 +1566,7 @@ namespace testProjectBCA
                     DateTime temph1 = temp.AddDays(1);
                     Int64 totalOut = (from x in prediksiOutAtm100
                                       join y in prediksiOutCabang100 on x.tanggal equals y.tanggal
+                                      where x.tanggal == temph1
                                       select x.value + y.value).First();
                     Int64 morningBalh1 = endBal - totalOut;
                     listMorningBalance.Add(new tanggalValue() { tanggal = temph1, value = morningBalh1});
@@ -1643,6 +1648,7 @@ namespace testProjectBCA
                     DateTime temph1 = temp.AddDays(1);
                     Int64 totalOut = (from x in prediksiOutAtm50
                                       join y in prediksiOutCabang50 on x.tanggal equals y.tanggal
+                                      where x.tanggal == temph1
                                       select x.value + y.value).First();
                     Int64 morningBalh1 = endBal - totalOut;
                     listMorningBalance.Add(new tanggalValue() { tanggal = temph1, value = morningBalh1 });
@@ -1808,26 +1814,22 @@ namespace testProjectBCA
             while (tanggal <= maxTgl)
             {
                 var toAdd = (from mb in morningBalance100UntukKirim
-                             from oc in outCabangUntukKirim100.Where(x => x.kodePkt == mb.kodePkt && x.tanggal == mb.tanggal)
                              from ir in inRetailUntukKirim100.Where(x => x.kodePkt == mb.kodePkt && x.tanggal == mb.tanggal)
                              from ic in inCabangUntukKirim100.Where(x => x.kodePkt == mb.kodePkt && x.tanggal == mb.tanggal)
-                             from oa in qOutAtm100.Where(x=>x.kodePkt == mb.kodePkt && x.tanggal == mb.tanggal)
                              select new StoreClass {
                                  kodePkt = mb.kodePkt,
                                  tanggal = tanggal.AddDays(1),
-                                 val = mb.val + ir.val + ic.val - oc.val + oa.val
+                                 val = mb.val + ir.val + ic.val
                              }).ToList();
                 morningBalance100UntukKirim.AddRange(toAdd);
                 var toAdd50 = (from mb in morningBalance50UntukKirim
-                               from oc in outCabangUntukKirim50.Where(x => x.kodePkt == mb.kodePkt && x.tanggal == mb.tanggal)
                                from ir in inRetailUntukKirim50.Where(x => x.kodePkt == mb.kodePkt && x.tanggal == mb.tanggal)
                                from ic in inCabangUntukKirim50.Where(x => x.kodePkt == mb.kodePkt && x.tanggal == mb.tanggal)
-                               from oa in qOutAtm50.Where(x => x.kodePkt == mb.kodePkt && x.tanggal == mb.tanggal)
                                select new StoreClass
                                {
                                    kodePkt = mb.kodePkt,
                                    tanggal = tanggal.AddDays(1),
-                                   val = mb.val + ir.val + ic.val - oc.val + oa.val
+                                   val = mb.val + ir.val + ic.val
                                }).ToList();
                 morningBalance50UntukKirim.AddRange(toAdd50);
                 tanggal = tanggal.AddDays(1);
