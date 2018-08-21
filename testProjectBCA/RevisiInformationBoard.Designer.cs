@@ -38,6 +38,7 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RevisiInformationBoard));
             this.pktComboBox = new System.Windows.Forms.ComboBox();
             this.rasio100Txt = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -63,9 +64,7 @@
             this.bufferIsiAtm100Num = new System.Windows.Forms.NumericUpDown();
             this.skipPrediksiTreeView = new System.Windows.Forms.TreeView();
             this.label31 = new System.Windows.Forms.Label();
-            this.sumLabel = new System.Windows.Forms.Label();
             this.label30 = new System.Windows.Forms.Label();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.label20 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.rasio20Lbl = new System.Windows.Forms.Label();
@@ -119,6 +118,7 @@
             this.label25 = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
             this.tanggalPrediksiMaxPicker = new System.Windows.Forms.DateTimePicker();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.rekomendasiBonGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bonGridView)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -145,6 +145,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.sislokCrmGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.isiAtmGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.isiCrmGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // pktComboBox
@@ -358,9 +359,7 @@
             this.groupBox1.Controls.Add(this.bufferIsiAtm100Num);
             this.groupBox1.Controls.Add(this.skipPrediksiTreeView);
             this.groupBox1.Controls.Add(this.label31);
-            this.groupBox1.Controls.Add(this.sumLabel);
             this.groupBox1.Controls.Add(this.label30);
-            this.groupBox1.Controls.Add(this.statusStrip1);
             this.groupBox1.Controls.Add(this.label20);
             this.groupBox1.Controls.Add(this.rekomendasiAdhoc20Lbl);
             this.groupBox1.Controls.Add(this.rekomendasiAdhoc50Lbl);
@@ -429,15 +428,6 @@
             this.label31.TabIndex = 110;
             this.label31.Text = "Buffer Isi ATM 50 (%)";
             // 
-            // sumLabel
-            // 
-            this.sumLabel.AutoSize = true;
-            this.sumLabel.Location = new System.Drawing.Point(1054, 247);
-            this.sumLabel.Name = "sumLabel";
-            this.sumLabel.Size = new System.Drawing.Size(37, 13);
-            this.sumLabel.TabIndex = 101;
-            this.sumLabel.Text = "SUM: ";
-            // 
             // label30
             // 
             this.label30.AutoSize = true;
@@ -446,14 +436,6 @@
             this.label30.Size = new System.Drawing.Size(112, 13);
             this.label30.TabIndex = 109;
             this.label30.Text = "Buffer Isi ATM 100 (%)";
-            // 
-            // statusStrip1
-            // 
-            this.statusStrip1.Location = new System.Drawing.Point(3, 242);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1360, 22);
-            this.statusStrip1.TabIndex = 100;
-            this.statusStrip1.Text = "statusStrip1";
             // 
             // label20
             // 
@@ -592,6 +574,7 @@
             this.groupBox2.Controls.Add(this.label10);
             this.groupBox2.Controls.Add(this.label18);
             this.groupBox2.Controls.Add(this.rasioGridView);
+            this.groupBox2.Controls.Add(this.pictureBox1);
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox2.Location = new System.Drawing.Point(9, 297);
             this.groupBox2.Name = "groupBox2";
@@ -603,10 +586,10 @@
             // approveButton
             // 
             this.approveButton.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.approveButton.Font = new System.Drawing.Font("Adobe Fan Heiti Std B", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.approveButton.Location = new System.Drawing.Point(909, 268);
+            this.approveButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.approveButton.Location = new System.Drawing.Point(945, 296);
             this.approveButton.Name = "approveButton";
-            this.approveButton.Size = new System.Drawing.Size(441, 170);
+            this.approveButton.Size = new System.Drawing.Size(160, 53);
             this.approveButton.TabIndex = 15;
             this.approveButton.Text = "Approve";
             this.approveButton.UseVisualStyleBackColor = false;
@@ -1214,6 +1197,17 @@
             this.tanggalPrediksiMaxPicker.TabIndex = 110;
             this.tanggalPrediksiMaxPicker.ValueChanged += new System.EventHandler(this.tanggalPrediksiMaxPicker_ValueChanged);
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(1063, 279);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(114, 187);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 101;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.approveButton_Click);
+            // 
             // RevisiInformationBoard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1266,6 +1260,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.sislokCrmGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.isiAtmGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.isiCrmGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1325,8 +1320,6 @@
         private System.Windows.Forms.ComboBox e2eComboBox;
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.Label label24;
-        private System.Windows.Forms.Label sumLabel;
-        private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.ComboBox MetodePrediksiComboBox;
         private System.Windows.Forms.ComboBox MetodeHitungLainnyaComboBox;
@@ -1354,5 +1347,6 @@
         private System.Windows.Forms.DataGridView sislokAtmGridView;
         private System.Windows.Forms.DataGridView isiAtmGridView;
         private System.Windows.Forms.Label label32;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }

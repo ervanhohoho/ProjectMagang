@@ -245,6 +245,12 @@
           <Property Name="tanggal" Type="date" />
           <Property Name="nominalDispute" Type="bigint" />
         </EntityType>
+        <EntityType Name="Password">
+          <Key>
+            <PropertyRef Name="password" />
+          </Key>
+          <Property Name="password" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
         <EntityType Name="Pkt">
           <Key>
             <PropertyRef Name="kodePkt" />
@@ -473,6 +479,7 @@
           <EntitySet Name="Nasabah" EntityType="Self.Nasabah" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Opti" EntityType="Self.Opti" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OrderTracking" EntityType="Self.OrderTracking" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Password" EntityType="Self.Password" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pkt" EntityType="Self.Pkt" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RekapSelisihAmbilSetor" EntityType="Self.RekapSelisihAmbilSetor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RekonSaldoPerVendor" EntityType="Self.RekonSaldoPerVendor" Schema="dbo" store:Type="Tables" />
@@ -908,6 +915,7 @@
           </FunctionImport>
           <EntitySet Name="RekonSaldoPerVendors" EntityType="CACModel.RekonSaldoPerVendor" />
           <EntitySet Name="RekonSaldoVaults" EntityType="CACModel.RekonSaldoVault" />
+          <EntitySet Name="Passwords" EntityType="CACModel.Password" />
         </EntityContainer>
         <EntityType Name="SaveRekap">
           <Key>
@@ -984,6 +992,12 @@
           <Property Name="currencyAmmount" Type="Int64" />
           <Property Name="realDate" Type="DateTime" Precision="0" />
           <Property Name="valdiation" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Password">
+          <Key>
+            <PropertyRef Name="password1" />
+          </Key>
+          <Property Name="password1" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1428,6 +1442,13 @@
                 <ScalarProperty Name="confId" ColumnName="confId" />
                 <ScalarProperty Name="vaultId" ColumnName="vaultId" />
                 <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Passwords">
+            <EntityTypeMapping TypeName="CACModel.Password">
+              <MappingFragment StoreEntitySet="Password">
+                <ScalarProperty Name="password1" ColumnName="password" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -65,8 +65,6 @@
             this.label30 = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
             this.skipPrediksiTreeView = new System.Windows.Forms.TreeView();
-            this.sumLabel = new System.Windows.Forms.Label();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.label20 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.rasio20Lbl = new System.Windows.Forms.Label();
@@ -362,8 +360,6 @@
             this.groupBox1.Controls.Add(this.label30);
             this.groupBox1.Controls.Add(this.label28);
             this.groupBox1.Controls.Add(this.skipPrediksiTreeView);
-            this.groupBox1.Controls.Add(this.sumLabel);
-            this.groupBox1.Controls.Add(this.statusStrip1);
             this.groupBox1.Controls.Add(this.label20);
             this.groupBox1.Controls.Add(this.rekomendasiAdhoc20Lbl);
             this.groupBox1.Controls.Add(this.rekomendasiAdhoc50Lbl);
@@ -441,23 +437,6 @@
             this.skipPrediksiTreeView.Name = "skipPrediksiTreeView";
             this.skipPrediksiTreeView.Size = new System.Drawing.Size(142, 187);
             this.skipPrediksiTreeView.TabIndex = 102;
-            // 
-            // sumLabel
-            // 
-            this.sumLabel.AutoSize = true;
-            this.sumLabel.Location = new System.Drawing.Point(1054, 247);
-            this.sumLabel.Name = "sumLabel";
-            this.sumLabel.Size = new System.Drawing.Size(37, 13);
-            this.sumLabel.TabIndex = 101;
-            this.sumLabel.Text = "SUM: ";
-            // 
-            // statusStrip1
-            // 
-            this.statusStrip1.Location = new System.Drawing.Point(3, 242);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1360, 22);
-            this.statusStrip1.TabIndex = 100;
-            this.statusStrip1.Text = "statusStrip1";
             // 
             // label20
             // 
@@ -608,8 +587,8 @@
             // approveButton
             // 
             this.approveButton.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.approveButton.Font = new System.Drawing.Font("Adobe Fan Heiti Std B", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.approveButton.Location = new System.Drawing.Point(911, 332);
+            this.approveButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.approveButton.Location = new System.Drawing.Point(945, 296);
             this.approveButton.Name = "approveButton";
             this.approveButton.Size = new System.Drawing.Size(160, 53);
             this.approveButton.TabIndex = 15;
@@ -952,12 +931,13 @@
             // pictureBox1
             // 
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(1029, 315);
+            this.pictureBox1.Location = new System.Drawing.Point(1063, 279);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(114, 187);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 100;
             this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.approveButton_Click);
             // 
             // groupBox4
             // 
@@ -1352,8 +1332,6 @@
         private System.Windows.Forms.ComboBox e2eComboBox;
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.Label label24;
-        private System.Windows.Forms.Label sumLabel;
-        private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.ComboBox MetodePrediksiComboBox;
         private System.Windows.Forms.ComboBox MetodeHitungLainnyaComboBox;

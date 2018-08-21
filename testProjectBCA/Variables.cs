@@ -15,6 +15,7 @@ namespace testProjectBCA
         public static string parentFolder = "C:\\";
         public static string excelFilter = "Microsoft Excel | *.xls; *.xlsx; *.xlsm;";
         public static string csvFilter = "CSV | *.csv";
+        public static string txtFilter = "TXT | *.txt";
         public static string connectionString = "Data Source=MSI;Initial Catalog=CAC;Persist Security Info=True;User ID=TEST;Password=1234;";
 
         /**Bekas SLA Proses

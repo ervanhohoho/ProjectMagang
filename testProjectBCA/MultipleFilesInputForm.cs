@@ -225,6 +225,11 @@ namespace testProjectBCA
                 transaksiPkt pkt = new transaksiPkt();
                 //Kode Pkt
                 pkt.kodePkt = table.Rows[5][5].ToString();
+                if(db.Pkts.Where(z=>z.kodePkt == pkt.kodePkt).FirstOrDefault() == null)
+                {
+                    MessageBox.Show("Sheet " + table.TableName + " Kode PKT tidak ada di master PKT");
+                    continue;
+                }
                 //tanggal pengajuan
                 pkt.tanggalPengajuan = (DateTime)table.Rows[12][5];
 

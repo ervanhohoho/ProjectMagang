@@ -24,6 +24,7 @@ namespace testProjectBCA
             Database1Entities db = new Database1Entities();
             var q = (from x in db.Pkts
                      select x.kanwil).OrderBy(x => x).Distinct().ToList();
+            q.Add("ALL VENDOR");
             kanwilComboBox.DataSource = q;
         }
 
@@ -40,7 +41,14 @@ namespace testProjectBCA
                          join y in db.Cashpoints on x.idCashpoint equals y.idCashpoint
                          join z in db.Pkts on y.kodePkt equals z.kodePkt
                          where z.kanwil == kanwil
-                         select new { kodePkt = z.kodePkt, tanggal = x.tanggal, y.denom, x.prediksi}).ToList();
+                         select new { kodePkt = z.kodePkt, tanggal = x.tanggal, z.koordinator, y.denom, x.prediksi}).ToList();
+                if(kanwil == "ALL VENDOR")
+                {
+                    q = (from x in db.Optis
+                         join y in db.Cashpoints on x.idCashpoint equals y.idCashpoint
+                         join z in db.Pkts on y.kodePkt equals z.kodePkt
+                         select new { kodePkt = z.kodePkt, tanggal = x.tanggal,z.koordinator, y.denom, x.prediksi }).ToList();
+                }
 
                 String csv = ServiceStack.Text.CsvSerializer.SerializeToCsv(q);
 

@@ -55,6 +55,7 @@ namespace testProjectBCA
         public RevisiInformationBoard()
         {
             InitializeComponent();
+            tglSetor.MinDate = Variables.todayDate.AddDays(1);
             pktComboBox.MouseWheel += new MouseEventHandler(pktComboBox_MouseWheel);
             pktIndex = 0;
             loadComboBox();
@@ -297,11 +298,15 @@ namespace testProjectBCA
                 permintaanBonGridView.Columns[i].DefaultCellStyle.Format = "c";
                 permintaanBonGridView.Columns[i].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
             }
-            foreach (var temp in laporanPermintaanBon)
+            var tempLaporanPermintaanBon = new List<LaporanPermintaanBon>(laporanPermintaanBon);
+            tempLaporanPermintaanBon.Add(new LaporanPermintaanBon() { tanggal = new DateTime(1, 1, 1), C100 = laporanPermintaanBon.Sum(x => x.C100), C50 = laporanPermintaanBon.Sum(x => x.C50), C20 = laporanPermintaanBon.Sum(x => x.C20) });
+            foreach (var temp in tempLaporanPermintaanBon)
             {
                 DataGridViewRow row = new DataGridViewRow();
                 DataGridViewTextBoxCell cell = new DataGridViewTextBoxCell();
                 cell.Value = ((DateTime)temp.tanggal).ToShortDateString();
+                if (temp.tanggal == new DateTime(1, 1, 1))
+                    cell.Value = "SUM";
                 row.Cells.Add(cell);
                 cell = new DataGridViewTextBoxCell();
                 cell.Value = temp.C100;
@@ -313,6 +318,10 @@ namespace testProjectBCA
                 cell.Value = temp.C20;
                 row.Cells.Add(cell);
                 permintaanBonGridView.Rows.Add(row);
+            }
+            if (permintaanBonGridView.Rows.Count > 1)
+            {
+                permintaanBonGridView.Rows[1].DefaultCellStyle.BackColor = Color.PapayaWhip;
             }
         }
         void loadSaldoAwal()
@@ -1744,6 +1753,8 @@ namespace testProjectBCA
                 temp.tgl = (DateTime)s.DetailApproval.tanggal;
                 setor.Add(temp);
             }
+            if (!setor.Any())
+                setor.Add(new Denom() { tgl = Variables.todayDate.AddDays(1), d100 = 0, d20 = 0, d50 = 0 });
         }
         void loadRekomendasiBonNonE2E()
         {
@@ -2404,6 +2415,34 @@ namespace testProjectBCA
                 row.Cells.Add(cell2);
                 DataGridViewTextBoxCell cell3 = new DataGridViewTextBoxCell();
                 cell3.Value = temp.d20;
+                row.Cells.Add(cell3);
+                rekomendasiBonGridView.Rows.Add(row);
+            }
+            //Add Average
+            var avg = (from x in rekomendasiBon
+                       group x by true into g
+                       select new
+                       {
+                           tgl = new DateTime(1, 1, 1),
+                           d100 = g.Sum(x => x.d100),
+                           d50 = g.Sum(x => x.d50),
+                           d20 = g.Sum(x => x.d20)
+                       }).FirstOrDefault();
+            if (avg != null)
+            {
+                DataGridViewRow row = new DataGridViewRow();
+                row.DefaultCellStyle.BackColor = Color.PapayaWhip;
+                DataGridViewTextBoxCell cell = new DataGridViewTextBoxCell();
+                cell.Value = "SUM";
+                row.Cells.Add(cell);
+                DataGridViewTextBoxCell cell1 = new DataGridViewTextBoxCell();
+                cell1.Value = avg.d100;
+                row.Cells.Add(cell1);
+                DataGridViewTextBoxCell cell2 = new DataGridViewTextBoxCell();
+                cell2.Value = avg.d50;
+                row.Cells.Add(cell2);
+                DataGridViewTextBoxCell cell3 = new DataGridViewTextBoxCell();
+                cell3.Value = avg.d20;
                 row.Cells.Add(cell3);
                 rekomendasiBonGridView.Rows.Add(row);
             }
@@ -3408,8 +3447,9 @@ namespace testProjectBCA
         }
         private void tglSetor_ValueChanged(object sender, EventArgs e)
         {
-            Console.WriteLine(tglSetor.Value.ToShortDateString() == new DateTime(2018, 3, 23).ToShortDateString());
-            loadRasio();
+            Console.WriteLine("BON GRID VIEW COUNT = " + bonGridView.RowCount);
+            if(setor100Txt.Value != 0 && setor50Txt.Value != 0 && setor20Txt.Value != 0 && bonGridView.RowCount == 0)
+                loadRasio();
         }
         private void bonGridView_CellEnter(object sender, DataGridViewCellEventArgs e)
         {
@@ -3418,21 +3458,21 @@ namespace testProjectBCA
         }
         private void rekomendasiBonGridView_SelectionChanged(object sender, EventArgs e)
         {
-            sumLabel.Text = "SUM: ";
-            var temp = rekomendasiBonGridView.SelectedCells;
-            Int64 sum = 0;
-            for (int a = 0; a < temp.Count; a++)
-            {
-                var temp2 = temp[a].Value;
-                Int64 buf;
-                if (Int64.TryParse(temp2.ToString(), out buf))
-                {
-                    Console.WriteLine(temp2);
-                    sum += Int64.Parse(temp2.ToString());
-                }
-            }
-            sumLabel.Text += "Rp. ";
-            sumLabel.Text += sum.ToString("#,##0");
+            //sumLabel.Text = "SUM: ";
+            //var temp = rekomendasiBonGridView.SelectedCells;
+            //Int64 sum = 0;
+            //for (int a = 0; a < temp.Count; a++)
+            //{
+            //    var temp2 = temp[a].Value;
+            //    Int64 buf;
+            //    if (Int64.TryParse(temp2.ToString(), out buf))
+            //    {
+            //        Console.WriteLine(temp2);
+            //        sum += Int64.Parse(temp2.ToString());
+            //    }
+            //}
+            //sumLabel.Text += "Rp. ";
+            //sumLabel.Text += sum.ToString("#,##0");
         }
         private void tanggalPrediksiMaxPicker_ValueChanged(object sender, EventArgs e)
         {

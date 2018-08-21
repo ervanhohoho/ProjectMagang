@@ -31,7 +31,7 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    
+
                     if (comboArea.SelectedIndex == 0)
                     {
                         cmd.CommandText = "select "
@@ -89,9 +89,9 @@ namespace testProjectBCA
                         per.Add(new performancePkt
                         {
                             pkt = reader[0].ToString(),
-                            ratio = Math.Round(double.Parse(reader[1].ToString()),1),
+                            ratio = Math.Round(double.Parse(reader[1].ToString()), 1),
                             frekuensiAdhoc = Int64.Parse(reader[2].ToString()),
-                            persenAdhoc = Math.Round(double.Parse(reader[3].ToString()),1)
+                            persenAdhoc = Math.Round(double.Parse(reader[3].ToString()) * 100, 0).ToString() + " %"
                         });
                     }
                     dataGridView1.DataSource = per;
@@ -109,7 +109,7 @@ namespace testProjectBCA
             public String pkt { set; get; }
             public double ratio { set; get; }
             public Int64 frekuensiAdhoc { set; get; }
-            public double persenAdhoc { set; get; }
+            public String persenAdhoc { set; get; }
 
         }
 

@@ -24,8 +24,11 @@ namespace testProjectBCA
         List<TempSelisih> selisihPrediksi;
         public AkurasiPrediksiForm()
         {
+            Database1Entities db = new Database1Entities();
             InitializeComponent();
             loadGroupCombo();
+            endDatePicker.MaxDate = db.TransaksiAtms.Max(x => x.tanggal);
+            startDatePicker.MaxDate = db.TransaksiAtms.Max(x => x.tanggal);
         }
         private void loadGroupCombo()
         {
@@ -556,8 +559,56 @@ namespace testProjectBCA
                              forecastIsiATM50 = y != null ? y.isiATM50 : Double.NaN,
                              forecastIsiATM20 = y != null ? y.isiATM20 : Double.NaN,
                          }).ToList();
+            var query2 = (from x in query
+                          group x by x.kodePkt into g
+                          select new {
+                              kodePkt = g.Key,
 
-            var resultQuery = (from x in query
+                              realisasiSislokATM100 = g.Average(x => x.realisasiSislokATM100),
+                              realisasiSislokATM50 = g.Average(x => x.realisasiSislokATM50),
+                              realisasiSislokATM20 = g.Average(x => x.realisasiSislokATM20),
+
+                              realisasiSislokCDM100 = g.Average(x => x.realisasiSislokCDM100),
+                              realisasiSislokCDM50 = g.Average(x => x.realisasiSislokCDM50),
+                              realisasiSislokCDM20 = g.Average(x => x.realisasiSislokCDM20),
+
+                              realisasiSislokCRM100 = g.Average(x => x.realisasiSislokCRM100),
+                              realisasiSislokCRM50 = g.Average(x => x.realisasiSislokCRM50),
+                              realisasiSislokCRM20 = g.Average(x => x.realisasiSislokCRM20),
+
+                              realisasiIsiCRM100 = g.Average(x => x.realisasiIsiCRM100),
+                              realisasiIsiCRM50 = g.Average(x => x.realisasiIsiCRM50),
+                              realisasiIsiCRM20 = g.Average(x => x.realisasiIsiCRM20),
+
+                              realisasiIsiATM100 = g.Average(x => x.realisasiIsiATM100),
+                              realisasiIsiATM50 = g.Average(x => x.realisasiIsiATM50),
+                              realisasiIsiATM20 = g.Average(x => x.realisasiIsiATM20),
+
+                              forecastSislokATM100 = g.Average(x => x.forecastSislokATM100),
+                              forecastSislokATM50 = g.Average(x => x.forecastSislokATM50),
+                              forecastSislokATM20 = g.Average(x => x.forecastSislokATM20),
+
+                              forecastSislokCDM100 = g.Average(x => x.forecastSislokATM100),
+                              forecastSislokCDM50 = g.Average(x => x.forecastSislokATM50),
+                              forecastSislokCDM20 = g.Average(x => x.forecastSislokATM20),
+
+                              forecastSislokCRM100 = g.Average(x => x.forecastSislokATM100),
+                              forecastSislokCRM50 = g.Average(x => x.forecastSislokATM50),
+                              forecastSislokCRM20 = g.Average(x => x.forecastSislokATM20),
+
+                              forecastIsiCRM100 = g.Average(x => x.forecastIsiCRM100),
+                              forecastIsiCRM50 = g.Average(x => x.forecastIsiCRM50),
+                              forecastIsiCRM20 = g.Average(x => x.forecastIsiCRM20),
+
+                              forecastIsiATM100 = g.Average(x => x.forecastIsiATM100),
+                              forecastIsiATM50 = g.Average(x => x.forecastIsiATM50),
+                              forecastIsiATM20 = g.Average(x => x.forecastIsiATM20),
+
+                              saldoAwal100 = query.Where(x => x.kodePkt == g.Key).Sum(x => x.saldoAwal100),
+                              saldoAwal50 = query.Where(x => x.kodePkt == g.Key).Sum(x => x.saldoAwal50),
+                              saldoAwal20 = query.Where(x => x.kodePkt == g.Key).Sum(x => x.saldoAwal20),
+                          }).ToList();
+            var resultQuery = (from x in query2
                                group x by x.kodePkt into g
                                select new RasioApproval()
                                {
@@ -586,7 +637,7 @@ namespace testProjectBCA
                                    rasio100 = g.Sum(a => a.realisasiIsiATM100 + a.realisasiIsiCRM100) == 0 ? 0 : g.Sum(a => (Double)a.saldoAwal100) / g.Sum(a => a.realisasiIsiATM100 + a.realisasiIsiCRM100),
                                    rasio50 = g.Sum(a => a.realisasiIsiATM50 + a.realisasiIsiCRM50) == 0 ? 0 : g.Sum(a => (Double)a.saldoAwal50) / g.Sum(a => a.realisasiIsiATM50 + a.realisasiIsiCRM50),
                                    rasio20 = g.Sum(a => a.realisasiIsiATM20 + a.realisasiIsiCRM20) == 0 ? 0 : g.Sum(a => (Double)a.saldoAwal20) / g.Sum(a => a.realisasiIsiATM20 + a.realisasiIsiCRM20),
-                                   RasioGabungan = g.Sum(a => a.realisasiIsiATM100 + a.realisasiIsiATM20 + a.realisasiIsiATM50 + a.realisasiIsiCRM100 + a.realisasiIsiCRM20 + a.realisasiIsiCRM50) == 0 ? 0 : g.Sum(a => (Double) (a.saldoAwal50 + a.saldoAwal100 + a.saldoAwal20)) / g.Sum(a => a.realisasiIsiATM100 + a.realisasiIsiATM20 + a.realisasiIsiATM50 + a.realisasiIsiCRM100 + a.realisasiIsiCRM20 + a.realisasiIsiCRM50),
+                                   RasioGabungan = query.Where(x=>x.kodePkt == g.Key).Sum(a => a.realisasiIsiATM100 + a.realisasiIsiATM20 + a.realisasiIsiATM50 + a.realisasiIsiCRM100 + a.realisasiIsiCRM20 + a.realisasiIsiCRM50) == 0 ? 0 : g.Sum(a => (Double) (a.saldoAwal50 + a.saldoAwal100 + a.saldoAwal20)) / query.Where(x => x.kodePkt == g.Key).Sum(a => a.realisasiIsiATM100 + a.realisasiIsiATM20 + a.realisasiIsiATM50 + a.realisasiIsiCRM100 + a.realisasiIsiCRM20 + a.realisasiIsiCRM50),
                                }).ToList();
 
             Console.WriteLine("Query: " + query.Count);
@@ -797,7 +848,7 @@ namespace testProjectBCA
                                    isiCRM100 = g.Sum(x => x.isiCRM100),
                                    isiCRM50 = g.Sum(x => x.isiCRM50),
                                    isiCRM20 = g.Sum(x => x.isiCRM20),
-                                   rasioGabungan = calculateRasio(g.Sum(x => x.saldoAwal100 + x.saldoAwal50 + x.saldoAwal20), g.Sum(x =>(Int64) (x.realisasiIsiCRM100 + x.realisasiIsiCRM50 + x.realisasiIsiCRM20)), g.Sum(x=>(Int64)(x.realisasiIsiATM100 + x.realisasiIsiATM50 + x.realisasiIsiATM20)))
+                                   rasioGabungan = calculateRasio(g.Sum(x => x.saldoAwal100 + x.saldoAwal50 + x.saldoAwal20), realisasi.Where(x=>x.kodePkt == g.Key).Sum(x =>(Int64) (x.isiCRM100 + x.isiCRM50 + x.isiCRM20)), realisasi.Where(x => x.kodePkt == g.Key).Sum(x=>(Int64)(x.isiATM100 + x.isiATM50 + x.isiATM20)))
                                }).OrderByDescending(x=>x.rasioGabungan).ToList();
             if (resultQuery.Any())
             {

@@ -251,6 +251,12 @@
     <Compile Include="ForecastHeader.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="graphSaldoATM.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="graphSaldoATM.designer.cs">
+      <DependentUpon>graphSaldoATM.cs</DependentUpon>
+    </Compile>
     <Compile Include="HargaLayanan.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -271,6 +277,12 @@
     </Compile>
     <Compile Include="InputOrderTrackingForm.designer.cs">
       <DependentUpon>InputOrderTrackingForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InputPromptForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InputPromptForm.Designer.cs">
+      <DependentUpon>InputPromptForm.cs</DependentUpon>
     </Compile>
     <Compile Include="InsertStokPosisiForm.cs">
       <SubType>Form</SubType>
@@ -317,6 +329,9 @@
     <Compile Include="OrderTracking.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Password.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="PembagianSaldoForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -349,6 +364,12 @@
     </Compile>
     <Compile Include="RasioApprovalForm.Designer.cs">
       <DependentUpon>RasioApprovalForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ReadBeehiveForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ReadBeehiveForm.Designer.cs">
+      <DependentUpon>ReadBeehiveForm.cs</DependentUpon>
     </Compile>
     <Compile Include="RekapSelisihAmbilSetor.cs">
       <DependentUpon>Model1.tt</DependentUpon>
@@ -550,6 +571,9 @@
     <EmbeddedResource Include="ForecastAtmForm.resx">
       <DependentUpon>ForecastAtmForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="graphSaldoATM.resx">
+      <DependentUpon>graphSaldoATM.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="InputBonYangDisetujuiForm.resx">
       <DependentUpon>InputBonYangDisetujuiForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -558,6 +582,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="InputOrderTrackingForm.resx">
       <DependentUpon>InputOrderTrackingForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InputPromptForm.resx">
+      <DependentUpon>InputPromptForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InsertStokPosisiForm.resx">
       <DependentUpon>InsertStokPosisiForm.cs</DependentUpon>
@@ -579,6 +606,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="RasioApprovalForm.resx">
       <DependentUpon>RasioApprovalForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ReadBeehiveForm.resx">
+      <DependentUpon>ReadBeehiveForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="RekonSaldoForm.resx">
       <DependentUpon>RekonSaldoForm.cs</DependentUpon>

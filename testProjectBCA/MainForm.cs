@@ -845,6 +845,12 @@ namespace testProjectBCA
             d.Show();
             de.MdiParent = this;
             de.Show();
+            dasborPerformancePktf dppf= new dasborPerformancePktf(); ;
+            dppf.MdiParent = this;
+            dppf.Show();
+            graphSaldoATM gsa = new graphSaldoATM();
+            gsa.MdiParent = this;
+            gsa.Show();
             //ps.MdiParent = this;
             //ps.Show();
         }
@@ -878,6 +884,13 @@ namespace testProjectBCA
             RekonSaldoForm rsf = new RekonSaldoForm();
             rsf.MdiParent = this;
             rsf.Show();
+        }
+
+        private void readBeehiveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ReadBeehiveForm rbf = new ReadBeehiveForm();
+            rbf.MdiParent = this;
+            rbf.Show();
         }
     }
 }

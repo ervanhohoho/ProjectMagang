@@ -61,8 +61,8 @@
             this.inputDataKanwilCabangToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dailyStockToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rekonSaldoToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.cabangToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.rekonSaldoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cabangToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.sLAProsesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.proyeksiLikuiditaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.orderTrackingToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -80,6 +80,7 @@
             this.adminToolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inputDataKalenderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadMasterPKTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.readBeehiveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -90,7 +91,8 @@
             this.cabangToolStripMenuItem,
             this.nasabahToolStripMenuItem,
             this.dashboardToolStripMenuItem1,
-            this.adminToolsToolStripMenuItem});
+            this.adminToolsToolStripMenuItem,
+            this.readBeehiveToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1004, 24);
@@ -342,19 +344,12 @@
             // rekonSaldoToolStripMenuItem1
             // 
             this.rekonSaldoToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.cabangToolStripMenuItem1,
-            this.rekonSaldoToolStripMenuItem});
+            this.rekonSaldoToolStripMenuItem,
+            this.cabangToolStripMenuItem1});
             this.rekonSaldoToolStripMenuItem1.Name = "rekonSaldoToolStripMenuItem1";
             this.rekonSaldoToolStripMenuItem1.Size = new System.Drawing.Size(171, 22);
             this.rekonSaldoToolStripMenuItem1.Text = "Rekon Saldo";
             this.rekonSaldoToolStripMenuItem1.Click += new System.EventHandler(this.rekonSaldoToolStripMenuItem1_Click);
-            // 
-            // cabangToolStripMenuItem1
-            // 
-            this.cabangToolStripMenuItem1.Name = "cabangToolStripMenuItem1";
-            this.cabangToolStripMenuItem1.Size = new System.Drawing.Size(166, 22);
-            this.cabangToolStripMenuItem1.Text = "Transaksi Cabang";
-            this.cabangToolStripMenuItem1.Click += new System.EventHandler(this.cabangToolStripMenuItem1_Click);
             // 
             // rekonSaldoToolStripMenuItem
             // 
@@ -362,6 +357,13 @@
             this.rekonSaldoToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.rekonSaldoToolStripMenuItem.Text = "Rekon Saldo";
             this.rekonSaldoToolStripMenuItem.Click += new System.EventHandler(this.rekonSaldoToolStripMenuItem_Click_1);
+            // 
+            // cabangToolStripMenuItem1
+            // 
+            this.cabangToolStripMenuItem1.Name = "cabangToolStripMenuItem1";
+            this.cabangToolStripMenuItem1.Size = new System.Drawing.Size(166, 22);
+            this.cabangToolStripMenuItem1.Text = "Transaksi Cabang";
+            this.cabangToolStripMenuItem1.Click += new System.EventHandler(this.cabangToolStripMenuItem1_Click);
             // 
             // sLAProsesToolStripMenuItem
             // 
@@ -495,6 +497,13 @@
             this.loadMasterPKTToolStripMenuItem.Text = "Load Master PKT";
             this.loadMasterPKTToolStripMenuItem.Click += new System.EventHandler(this.loadMasterPKTToolStripMenuItem_Click);
             // 
+            // readBeehiveToolStripMenuItem
+            // 
+            this.readBeehiveToolStripMenuItem.Name = "readBeehiveToolStripMenuItem";
+            this.readBeehiveToolStripMenuItem.Size = new System.Drawing.Size(89, 20);
+            this.readBeehiveToolStripMenuItem.Text = "Read Beehive";
+            this.readBeehiveToolStripMenuItem.Click += new System.EventHandler(this.readBeehiveToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -571,5 +580,6 @@
         private System.Windows.Forms.ToolStripMenuItem perbandinganSaldoAwalToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cabangToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem rekonSaldoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem readBeehiveToolStripMenuItem;
     }
 }

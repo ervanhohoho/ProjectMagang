@@ -301,11 +301,15 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "select p.kodePkt, sum(unprocessed + newBaru + newLama + fitBaru + fitLama + passThrough + unfitBaru + unfitNKRI +  unfitLama + RRMBaru+ RRMNKRI + RRMLama + RupiahRusakMayor)"
-                                        + " from StokPosisi s join Pkt p on s.namaPkt = p.namaPkt"
-                                        + " where month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " "
-                                        + " group by p.kodePkt"
-                                        + " order by kodePkt desc";
+                    cmd.CommandText = " select[kodepkt], sum([total]) from"
+                                    + " (select[kodepkt] = case when p.kodePkt like '%CCAS%' then 'CCAS' else p.kodePkt end, [total] = sum(unprocessed + newBaru + newLama + fitBaru + fitLama + passThrough + unfitBaru + unfitNKRI + unfitLama + RRMBaru + RRMNKRI + RRMLama + RupiahRusakMayor)"
+                                    + " from StokPosisi s join Pkt p on s.namaPkt = p.namaPkt"
+                                    + " where month(tanggal) = "+comboBulan.SelectedValue.ToString()+" and year(tanggal) = "+comboTahun.SelectedValue.ToString()+" and day(tanggal) = "+comboTanggal.SelectedValue.ToString()+""
+                                    + " group by p.kodePkt"
+                                    + " ) as a"
+                                    + " group by a.kodepkt"
+                                    + " order by a.kodePkt desc";
+
 
                     SqlDataReader reader = cmd.ExecuteReader();
 
@@ -375,12 +379,12 @@ namespace testProjectBCA
                     cmd.Connection = sql;
                     sql.Open();
                     cmd.CommandText = "select * from("
-                                       + " select[uangbesar] = sum(unprocessed + newBaru + newLama + fitBaru + fitLama + passThrough + unfitBaru + unfitNKRI + unfitLama + RRMBaru + RRMNKRI + RRMLama + RupiahRusakMayor), kodePkt, [tipe] = 'BESAR'"
+                                       + " select[uangbesar] = sum(unprocessed + newBaru + newLama + fitBaru + fitLama + passThrough + unfitBaru + unfitNKRI + unfitLama + RRMBaru + RRMNKRI + RRMLama + RupiahRusakMayor), [KodePkt] = case when kodePkt like '%CCAS%' then 'CCAS' else kodePkt end, [tipe] = 'BESAR'"
                                        + " from StokPosisi s join Pkt p on s.namaPkt = p.namaPkt"
                                        + " where (denom = 100000 or denom = 50000) and day(tanggal) = "+comboTanggal.SelectedValue.ToString()+" and month(tanggal) = "+comboBulan.SelectedValue.ToString()+" and year(tanggal) = "+comboTahun.SelectedValue.ToString()+""
                                        + " group by p.kodePkt"
                                        + " union"
-                                       + " select[uangkecil] = sum(unprocessed + newBaru + newLama + fitBaru + fitLama + passThrough + unfitBaru + unfitNKRI +  unfitLama + RRMBaru+ RRMNKRI + RRMLama + RupiahRusakMayor), kodePkt, [tipe] = 'KECIL'"
+                                       + " select[uangkecil] = sum(unprocessed + newBaru + newLama + fitBaru + fitLama + passThrough + unfitBaru + unfitNKRI +  unfitLama + RRMBaru+ RRMNKRI + RRMLama + RupiahRusakMayor), [KodePkt] = case when kodePkt like '%CCAS%' then 'CCAS' else kodePkt end, [tipe] = 'KECIL'"
                                        + " from StokPosisi s join Pkt p on s.namaPkt = p.namaPkt"
                                        + " where(denom != 100000 AND denom != 50000) and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + ""
                                        + " group by p.kodePkt)a"
@@ -475,10 +479,12 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "select [unfitmayorminor] = sum(unfitBaru + unfitLama + unfitNKRI + RRMBaru + RRMLama + RRMNKRI + RupiahRusakMayor),[gress] = sum(newBaru + newLama) ,kodePkt"
-                                      + " from StokPosisi s join Pkt p on s.namaPkt = p.namaPkt"
-                                      + " where (denom = 100000 or denom = 50000) and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " "
-                                      + " group by kodePkt";
+                    cmd.CommandText = "select sum([unfitmayorminor]), sum([gress]), [kodepkt] from"
+                                     + " (select[unfitmayorminor] = sum(unfitBaru + unfitLama + unfitNKRI + RRMBaru + RRMLama + RRMNKRI + RupiahRusakMayor), [gress] = sum(newBaru + newLama), [kodepkt] = case when p.kodePkt like '%CCAS%' then 'CCAS' else p.kodePkt end"
+                                     + " from StokPosisi s join Pkt p on s.namaPkt = p.namaPkt"
+                                     + " where (denom = 100000 or denom = 50000) and day(tanggal) = "+comboTanggal.SelectedValue.ToString()+" and month(tanggal) = "+comboBulan.SelectedValue.ToString()+" and year(tanggal) = "+comboTahun.SelectedValue.ToString()+""
+                                     + " group by kodePkt) as a"
+                                     + " group by[kodepkt]";
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     while (reader.Read())
@@ -563,10 +569,13 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "select [unprocessed] = sum(unprocessed), [unfitmayorminor] = sum(unfitBaru + unfitLama + unfitNKRI + RRMBaru + RRMLama + RRMNKRI + RupiahRusakMayor),[gress] = sum(newBaru + newLama) ,kodePkt"
-                                       +" from StokPosisi s join Pkt p on s.namaPkt = p.namaPkt"
-                                       + " where (denom != 100000 AND denom != 50000) and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " "
-                                       + " group by kodePkt";
+                    cmd.CommandText = "select sum([unprocessed]), sum(unfitmayorminor), sum(gress),kodepkt from"
+
+                                    + " (select[unprocessed] = sum(unprocessed), [unfitmayorminor] = sum(unfitBaru + unfitLama + unfitNKRI + RRMBaru + RRMLama + RRMNKRI + RupiahRusakMayor),[gress] = sum(newBaru + newLama),[kodepkt] = case when p.kodePkt like '%CCAS%' then 'CCAS' else p.kodePkt end"
+                                    + " from StokPosisi s join Pkt p on s.namaPkt = p.namaPkt"
+                                    + " where (denom != 100000 AND denom != 50000) and day(tanggal) = "+comboTanggal.SelectedValue.ToString()+" and month(tanggal) = "+comboBulan.SelectedValue.ToString()+" and year(tanggal) = "+comboTahun.SelectedValue.ToString()+""
+                                    + " group by kodePkt) as a"
+                                    + " group by kodepkt";
 
                     SqlDataReader reader = cmd.ExecuteReader();
 
@@ -649,16 +658,9 @@ namespace testProjectBCA
             }
         }
 
-        public void reloadTop5UangBesar()
+        public Double reloadToDivideUangBesar()
         {
-            List<Int64> gress = new List<Int64>();
-            List<String> kodepkt = new List<String>();
-
-            label3.Visible = false;
-            label4.Visible = false;
-            label5.Visible = false;
-            label6.Visible = false;
-            label7.Visible = false;
+            Double tampugan = 1;
 
             using (SqlConnection sql = new SqlConnection(Variables.connectionString))
             {
@@ -666,17 +668,65 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "select top 5 [total] =  sum(unfitBaru + unfitLama + unfitNKRI + RRMBaru + RRMLama + RRMNKRI + RupiahRusakMayor) + sum(newBaru + newLama) ,kodePkt"
-                                      + " from StokPosisi s join Pkt p on s.namaPkt = p.namaPkt"
-                                      + " where (denom = 100000 or denom = 50000) and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " "
-                                      + " group by kodePkt"
-                                      + " order by [total] desc";
+                    cmd.CommandText = "select "
+                                     +" [tobedivide] = sum(unfitBaru + unfitLama + unfitNKRI + RRMBaru + RRMLama + RRMNKRI + RupiahRusakMayor)"
+                                     +" from"
+                                     +" StokPosisi"
+                                     +" where"
+                                     +" (denom = 100000 or denom = 50000) and day(tanggal) = "+comboTanggal.SelectedValue.ToString()+" and month(tanggal) = "+comboBulan.SelectedValue.ToString()+" and year(tanggal) = "+comboTahun.SelectedValue.ToString()+"";
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        tampugan = Double.Parse(reader[0].ToString());
+                    }
+                    
+                }
+            }
+            return tampugan;
+        }
+
+        public void reloadTop5UangBesar()
+        {
+            reloadToDivideUangBesar();
+            List<Double> gress = new List<Double>();
+            List<String> kodepkt = new List<String>();
+
+            label3.Visible = false;
+            label4.Visible = false;
+            label5.Visible = false;
+            label6.Visible = false;
+            label7.Visible = false;
+            label37.Visible = false;
+            label38.Visible = false;
+            label39.Visible = false;
+            label40.Visible = false;
+            label41.Visible = false;
+            label47.Visible = false;
+            label48.Visible = false;
+            label49.Visible = false;
+            label50.Visible = false;
+            label51.Visible = false;
+
+            using (SqlConnection sql = new SqlConnection(Variables.connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = sql;
+                    sql.Open();
+                    cmd.CommandText = "select sum(total), kodepkt from"
+                                       + " (select top 6[total] = sum(unfitBaru + unfitLama + unfitNKRI + RRMBaru + RRMLama + RRMNKRI + RupiahRusakMayor),[kodepkt] = case when p.kodePkt like '%CCAS%' then 'CCAS' else p.kodePkt end"
+                                       + " from StokPosisi s join Pkt p on s.namaPkt = p.namaPkt"
+                                       + " where (denom = 100000 or denom = 50000) and day(tanggal) = "+comboTanggal.SelectedValue.ToString()+" and month(tanggal) = "+comboBulan.SelectedValue.ToString()+" and year(tanggal) = "+comboTahun.SelectedValue.ToString()+""
+                                       + " group by kodePkt"
+                                       + " order by[total] desc) as a"
+                                       + " group by kodepkt order by sum(total)desc";
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     while (reader.Read())
                     {
                         kodepkt.Add(reader[1].ToString());
-                        gress.Add(Int64.Parse(reader[0].ToString()));
+                        gress.Add(Double.Parse(reader[0].ToString()));
                     }
 
                     List<Label> asd = new List<Label>();
@@ -685,13 +735,34 @@ namespace testProjectBCA
                     asd.Add(label5);
                     asd.Add(label6);
                     asd.Add(label7);
+                    List<Label> dsa = new List<Label>();
+                    dsa.Add(label37);
+                    dsa.Add(label38);
+                    dsa.Add(label39);
+                    dsa.Add(label40);
+                    dsa.Add(label41);
+                    List<Label> persen = new List<Label>();
+                    persen.Add(label47);
+                    persen.Add(label48);
+                    persen.Add(label49);
+                    persen.Add(label50);
+                    persen.Add(label51);
 
                     for (int i = 0; i < kodepkt.Count; i++)
                     {
                         asd[i].Visible = true;
                         asd[i].Text = kodepkt[i];
                     }
-
+                    for (int i = 0; i < gress.Count; i++)
+                    {
+                        dsa[i].Visible = true;
+                        dsa[i].Text = (Math.Round(gress[i]/1000000000)).ToString() + " M";
+                    }
+                    for (int i = 0; i < gress.Count; i++)
+                    {
+                        persen[i].Visible = true;
+                        persen[i].Text = (Math.Round(((Double)gress[i] / reloadToDivideUangBesar()),2) * 100).ToString() + " %";
+                    }
                     //if (kodepkt[0].ToString() == null || kodepkt[0].ToString() == "")
                     //{
                         
@@ -778,17 +849,9 @@ namespace testProjectBCA
             }
         }
 
-
-        public void reloadTop5UangKecil()
+        public Double reloadToDivideUangKecil()
         {
-            List<Int64> gress = new List<Int64>();
-            List<String> kodepkt = new List<String>();
-
-            label26.Visible = false;
-            label25.Visible = false;
-            label24.Visible = false;
-            label23.Visible = false;
-            label22.Visible = false;
+            Double tampugan = 1;
 
             using (SqlConnection sql = new SqlConnection(Variables.connectionString))
             {
@@ -796,17 +859,67 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "select top 5 [total] =  sum(unprocessed) ,kodePkt"
-                                      + " from StokPosisi s join Pkt p on s.namaPkt = p.namaPkt"
-                                      + " where (denom != 100000 AND denom != 50000) and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " "
-                                      + " group by kodePkt"
-                                      + " order by [total] desc";
+                    cmd.CommandText = "select "
+                                     + " [tobedivide] = sum(unprocessed)"
+                                     + " from"
+                                     + " StokPosisi"
+                                     + " where"
+                                     + " (denom != 100000 and denom != 50000) and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + "";
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        tampugan = Double.Parse(reader[0].ToString());
+                    }
+
+                }
+            }
+            Console.WriteLine(tampugan);
+            return tampugan;
+
+            
+        }
+
+        public void reloadTop5UangKecil()
+        {
+            List<Double> gress = new List<Double>();
+            List<String> kodepkt = new List<String>();
+
+            label26.Visible = false;
+            label25.Visible = false;
+            label24.Visible = false;
+            label23.Visible = false;
+            label22.Visible = false;
+            label42.Visible = false;
+            label43.Visible = false;
+            label44.Visible = false;
+            label45.Visible = false;
+            label46.Visible = false;
+            label52.Visible = false;
+            label53.Visible = false;
+            label54.Visible = false;
+            label55.Visible = false;
+            label56.Visible = false;
+
+            using (SqlConnection sql = new SqlConnection(Variables.connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = sql;
+                    sql.Open();
+                    cmd.CommandText = "select sum(total), kodepkt from"
+                                    + " (select top 5[total] = sum(unprocessed),[kodepkt] = case when p.kodePkt like '%CCAS%' then 'CCAS' else p.kodePkt end"
+                                    + " from StokPosisi s join Pkt p on s.namaPkt = p.namaPkt"
+                                    + " where (denom != 100000 AND denom != 50000) and day(tanggal) = "+comboTanggal.SelectedValue.ToString()+" and month(tanggal) = "+comboBulan.SelectedValue.ToString()+" and year(tanggal) = "+comboTahun.SelectedValue.ToString()+""
+                                    + " group by kodePkt"
+                                    + " order by[total] desc) as a"
+                                    + " group by kodepkt order by sum(total)desc";
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     while (reader.Read())
                     {
                         kodepkt.Add(reader[1].ToString());
-                        gress.Add(Int64.Parse(reader[0].ToString()));
+                        gress.Add(Double.Parse(reader[0].ToString()));
                     }
 
                     List<Label> asd = new List<Label>();
@@ -820,6 +933,32 @@ namespace testProjectBCA
                     {
                         asd[i].Visible = true;
                         asd[i].Text = kodepkt[i];
+                    }
+
+                    List<Label> dsa = new List<Label>();
+                    dsa.Add(label42);
+                    dsa.Add(label43);
+                    dsa.Add(label44);
+                    dsa.Add(label45);
+                    dsa.Add(label46);
+
+                    for (int i = 0; i < gress.Count; i++)
+                    {
+                        dsa[i].Visible = true;
+                        dsa[i].Text = (Math.Round(gress[i]/1000000000)).ToString() + " M";
+                    }
+
+                    List<Label> persen = new List<Label>();
+                    persen.Add(label52);
+                    persen.Add(label53);
+                    persen.Add(label54);
+                    persen.Add(label55);
+                    persen.Add(label56);
+
+                    for (int i = 0; i < gress.Count; i++)
+                    {
+                        persen[i].Visible = true;
+                        persen[i].Text = (Math.Round(((Double)gress[i] / reloadToDivideUangKecil()), 2) * 100).ToString() + " %";
                     }
 
                     //if (kodepkt[0].ToString() == null || kodepkt[0].ToString() == "")

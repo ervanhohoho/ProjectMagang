@@ -46,8 +46,10 @@ namespace testProjectBCA
 
             var q = (from x in db.Approvals
                      join y in db.DetailApprovals on x.idApproval equals y.idApproval
+                     join z in db.Pkts on x.kodePkt equals z.kodePkt
                      where (DateTime)x.tanggal == Variables.todayDate
                      && (DateTime)y.tanggal == Variables.todayDate
+                     && z.kanwil.ToUpper().Contains("JABO")
                      select y).ToList();
             if(q.Any())
             {
@@ -58,10 +60,10 @@ namespace testProjectBCA
             }
             adhocATM100Num.ThousandsSeparator = true;
             adhocATM50Num.ThousandsSeparator = true;
-            adhocATM100Num.Visible = false;
-            adhocATM50Num.Visible  = false;
-            label8.Visible = false;
-            label9.Visible = false;
+            //adhocATM100Num.Visible = false;
+            //adhocATM50Num.Visible  = false;
+            //label8.Visible = false;
+            //label9.Visible = false;
         }
 
         void loadBulanPrediksiTreeView()
@@ -609,9 +611,15 @@ namespace testProjectBCA
             //hitung saldo tiap hari dari laporan bon dan prediksi
 
             Console.WriteLine("Mulai Add Saldo Awal");
+
+            Console.WriteLine("Isi ATM COUNT: " + isiAtm100.Count);
+            Console.WriteLine("Sislok ATM COUNT: " + sislokAtm100.Count);
             for (int a = 0; a < bon.Count; a++)
             {
                 Console.WriteLine("A: " + a);
+
+
+
                 Int64 tSaldo = saldo100.Where(x => x.tanggal == today.AddDays(a)).Select(x => x.value).FirstOrDefault(),
                     tSislokAtm = (Int64)Math.Round(sislokAtm100.Where(x => x.tanggal == today.AddDays(a)).Select(x => x.value).First() * isiAtm100.Where(x => x.tanggal == today.AddDays(a)).Select(x => x.value).First(), 0),
                     tSislokCdm = sislokCdm100.Where(x => x.tanggal == today.AddDays(a)).Select(x => x.value).First(),
@@ -1479,8 +1487,9 @@ namespace testProjectBCA
                        join y in db.DetailApprovals on x.idApproval equals y.idApproval
                        join z in db.Pkts on x.kodePkt equals z.kodePkt
                        where z.kanwil.ToUpper().Contains("JABO")
+                       && (DateTime)x.tanggal == Variables.todayDate
                        group y by y.tanggal into g
-                       select new tanggalValue() { tanggal = (DateTime)g.Key, value = (Int64)g.Sum(o => o.setor100) }).ToList();
+                       select new tanggalValue() { tanggal = (DateTime)g.Key, value = (Int64)g.Sum(o => o.setor100 + o.setorAdhoc100) }).ToList();
 
             }
             if (denom == "50000")
@@ -1489,8 +1498,9 @@ namespace testProjectBCA
                        join y in db.DetailApprovals on x.idApproval equals y.idApproval
                        join z in db.Pkts on x.kodePkt equals z.kodePkt
                        where z.kanwil.ToUpper().Contains("JABO")
+                       && (DateTime)x.tanggal == Variables.todayDate
                        group y by y.tanggal into g
-                       select new tanggalValue() { tanggal = (DateTime)g.Key, value = (Int64)g.Sum(o => o.setor50) }).ToList();
+                       select new tanggalValue() { tanggal = (DateTime)g.Key, value = (Int64)g.Sum(o => o.setor50 + o.setorAdhoc50) }).ToList();
             }
             return res;
         }
@@ -1533,27 +1543,43 @@ namespace testProjectBCA
             DateTime temp = today;
             while(temp<=maxTanggal)
             {
+                String debugText = "Tanggal Morning Balance " + temp.AddDays(1) + " = ";
                 Int64 morningBal = listMorningBalance.Where(x => x.tanggal == temp).Select(x => x.value).First();
+                debugText += morningBal;
+
                 Int64 totalIn = (from x in prediksiInRetail100
                                  join y in prediksiInCabang100 on x.tanggal equals y.tanggal
                                  where x.tanggal == temp
                                  select x.value+y.value).First();
                 Int64 endBal;
                 endBal = morningBal + totalIn;
-                if (temp == adhocATM100.tanggal)
-                    endBal = endBal - adhocATM100.value;
-                if (temp == adhocCabang100.tanggal)
-                    endBal = endBal - adhocCabang100.value;
-                if (temp == adhocTukab100.tanggal)
-                    endBal = endBal - adhocTukab100.value;
-                if (temp == inBITukab100.tanggal)
-                    endBal += inBITukab100.value;
-                if (temp == outBITukab100.tanggal)
-                    endBal -= outBITukab100.value;
+                debugText += " + " + totalIn;
 
+                if (temp == adhocATM100.tanggal)
+                {
+                    endBal = endBal - adhocATM100.value;
+                    debugText += " - " + (Int64) adhocATM100.value;
+                }
+                if (temp == adhocCabang100.tanggal)
+                {
+                    endBal = endBal - adhocCabang100.value;
+                }
+                if (temp == adhocTukab100.tanggal)
+                {
+                    endBal = endBal - adhocTukab100.value;
+                }
+                if (temp == inBITukab100.tanggal)
+                {
+                    endBal += inBITukab100.value;
+                }
+                if (temp == outBITukab100.tanggal)
+                {
+                    endBal -= outBITukab100.value;
+                }
                 var inAtm100 = listInAtm100.Where(x => x.tanggal == temp).Select(x => x.value).FirstOrDefault();
                 endBal += inAtm100;
-
+                debugText += " + " + inAtm100 + "(In ATM)";
+                
                 listEndingBalance.Add(new tanggalValue() {
                     tanggal = temp,
                     value = endBal
@@ -1561,16 +1587,16 @@ namespace testProjectBCA
 
                 if (temp == maxTanggal)
                     break;
-                else
-                {
-                    DateTime temph1 = temp.AddDays(1);
-                    Int64 totalOut = (from x in prediksiOutAtm100
-                                      join y in prediksiOutCabang100 on x.tanggal equals y.tanggal
-                                      where x.tanggal == temph1
-                                      select x.value + y.value).First();
-                    Int64 morningBalh1 = endBal - totalOut;
-                    listMorningBalance.Add(new tanggalValue() { tanggal = temph1, value = morningBalh1});
-                }
+
+                DateTime temph1 = temp.AddDays(1);
+                Int64 totalOut = (from x in prediksiOutAtm100
+                                    join y in prediksiOutCabang100 on x.tanggal equals y.tanggal
+                                    where x.tanggal == temph1
+                                    select x.value + y.value).First();
+                Int64 morningBalh1 = endBal - totalOut;
+                debugText += " - " + totalOut;
+                Console.WriteLine(debugText);
+                listMorningBalance.Add(new tanggalValue() { tanggal = temph1, value = morningBalh1});
                 temp = temp.AddDays(1);
             }
             return listMorningBalance;

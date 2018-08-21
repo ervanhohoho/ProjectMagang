@@ -214,124 +214,135 @@ namespace testProjectBCA
 
         private void InputButton_Click(object sender, EventArgs e)
         {
-            loadForm.ShowSplashScreen();
-            foreach(var temp in listRekapApproval)
+            InputPromptForm ipf = new InputPromptForm("Input Password", "Input");
+            if (ipf.ShowDialog() == DialogResult.OK)
             {
-                Approval ap = (from x in db.Approvals where x.idApproval == temp.id select x).FirstOrDefault();
-                ap.inputOpr = temp.inputOpr;
-                ap.inputSpv = temp.inputSpv;
-                ap.inputNoTxn = temp.inputNoTxn;
-                ap.validasiOpr = temp.validasiOpr;
-                ap.validasiSpv = temp.validasiSpv;
-                ap.validasiNoTxn = temp.validasiNoTxn;
-
-
-                DetailApproval da = (from x in db.DetailApprovals where x.idApproval == temp.id && x.idDetailApproval == temp.idDetailApproval select x).FirstOrDefault();
-                if(temp.order.ToLower() == "setor")
+                if (ipf.value != db.Passwords.Select(x => x.password1).FirstOrDefault())
                 {
-                    if(temp.orderType.ToLower() == "adhoc")
-                    {
-                        Int64 selisih100 = (Int64) da.setorAdhoc100 - temp.d100, 
-                            selisih50 = (Int64)da.setorAdhoc50 - temp.d50, 
-                            selisih20 = (Int64)da.setorAdhoc20 - temp.d20;
-                        da.setorAdhoc100 = temp.d100;
-                        da.setorAdhoc50 = temp.d50;
-                        da.setorAdhoc20 = temp.d20;
-                        DetailApproval dah1 = (from x in db.DetailApprovals where x.idApproval == temp.id && x.idDetailApproval == temp.idDetailApproval + 1 select x).FirstOrDefault();
-                        int counter = 1;
-                        while (dah1 != null)
-                        {
-                            dah1 = (from x in db.DetailApprovals where x.idApproval == temp.id && x.idDetailApproval == temp.idDetailApproval + counter select x).FirstOrDefault();
-                            if (dah1 != null)
-                            {
-                                dah1.saldoAwal100 += selisih100;
-                                dah1.saldoAwal50 += selisih50;
-                                dah1.saldoAwal20 += selisih20;
-                            }
-                            counter++;
-                        }
-                    }
-                    else
-                    {
-                        Int64 selisih100 = (Int64)da.setor100 - temp.d100,
-                            selisih50 = (Int64)da.setor50 - temp.d50,
-                            selisih20 = (Int64)da.setor20 - temp.d20;
-                        da.setor100 = temp.d100;
-                        da.setor50 = temp.d50;
-                        da.setor20 = temp.d20;
-                        DetailApproval dah1 = (from x in db.DetailApprovals where x.idApproval == temp.id && x.idDetailApproval == temp.idDetailApproval + 1 select x).FirstOrDefault();
-                        int counter = 1;
-                        while (dah1 != null)
-                        {
-                            dah1 = (from x in db.DetailApprovals where x.idApproval == temp.id && x.idDetailApproval == temp.idDetailApproval + counter select x).FirstOrDefault();
-                            if (dah1 != null)
-                            {
-                                dah1.saldoAwal100 += selisih100;
-                                dah1.saldoAwal50 += selisih50;
-                                dah1.saldoAwal20 += selisih20;
-                            }
-                            counter++;
-                        }
-                    }
+                    MessageBox.Show("Password Salah");
                 }
-                if(temp.order.ToLower() == "bon cit")
+                else
                 {
-                    if (temp.orderType.ToLower() == "adhoc")
+                    loadForm.ShowSplashScreen();
+                    foreach (var temp in listRekapApproval)
                     {
-                        Int64 selisih100 = temp.d100 - (Int64)da.adhoc100,
-                           selisih50 = temp.d50 - (Int64)da.adhoc50,
-                           selisih20 = temp.d20 - (Int64)da.adhoc20 ;
+                        Approval ap = (from x in db.Approvals where x.idApproval == temp.id select x).FirstOrDefault();
+                        ap.inputOpr = temp.inputOpr;
+                        ap.inputSpv = temp.inputSpv;
+                        ap.inputNoTxn = temp.inputNoTxn;
+                        ap.validasiOpr = temp.validasiOpr;
+                        ap.validasiSpv = temp.validasiSpv;
+                        ap.validasiNoTxn = temp.validasiNoTxn;
 
-                        da.adhoc100 = temp.d100;
-                        da.adhoc50 = temp.d50;
-                        da.adhoc20 = temp.d20;
 
-                        DetailApproval dah1 = (from x in db.DetailApprovals where x.idApproval == temp.id && x.idDetailApproval == temp.idDetailApproval + 1 select x).FirstOrDefault();
-                        int counter = 1;
-                         while (dah1 != null)
+                        DetailApproval da = (from x in db.DetailApprovals where x.idApproval == temp.id && x.idDetailApproval == temp.idDetailApproval select x).FirstOrDefault();
+                        if (temp.order.ToLower() == "setor")
                         {
-                            dah1 = (from x in db.DetailApprovals where x.idApproval == temp.id && x.idDetailApproval == temp.idDetailApproval + counter select x).FirstOrDefault();
-                            if (dah1 != null)
+                            if (temp.orderType.ToLower() == "adhoc")
                             {
-                                dah1.saldoAwal100 += selisih100;
-                                dah1.saldoAwal50 += selisih50;
-                                dah1.saldoAwal20 += selisih20;
+                                Int64 selisih100 = (Int64)da.setorAdhoc100 - temp.d100,
+                                    selisih50 = (Int64)da.setorAdhoc50 - temp.d50,
+                                    selisih20 = (Int64)da.setorAdhoc20 - temp.d20;
+                                da.setorAdhoc100 = temp.d100;
+                                da.setorAdhoc50 = temp.d50;
+                                da.setorAdhoc20 = temp.d20;
+                                DetailApproval dah1 = (from x in db.DetailApprovals where x.idApproval == temp.id && x.idDetailApproval == temp.idDetailApproval + 1 select x).FirstOrDefault();
+                                int counter = 1;
+                                while (dah1 != null)
+                                {
+                                    dah1 = (from x in db.DetailApprovals where x.idApproval == temp.id && x.idDetailApproval == temp.idDetailApproval + counter select x).FirstOrDefault();
+                                    if (dah1 != null)
+                                    {
+                                        dah1.saldoAwal100 += selisih100;
+                                        dah1.saldoAwal50 += selisih50;
+                                        dah1.saldoAwal20 += selisih20;
+                                    }
+                                    counter++;
+                                }
                             }
-                            counter++;
+                            else
+                            {
+                                Int64 selisih100 = (Int64)da.setor100 - temp.d100,
+                                    selisih50 = (Int64)da.setor50 - temp.d50,
+                                    selisih20 = (Int64)da.setor20 - temp.d20;
+                                da.setor100 = temp.d100;
+                                da.setor50 = temp.d50;
+                                da.setor20 = temp.d20;
+                                DetailApproval dah1 = (from x in db.DetailApprovals where x.idApproval == temp.id && x.idDetailApproval == temp.idDetailApproval + 1 select x).FirstOrDefault();
+                                int counter = 1;
+                                while (dah1 != null)
+                                {
+                                    dah1 = (from x in db.DetailApprovals where x.idApproval == temp.id && x.idDetailApproval == temp.idDetailApproval + counter select x).FirstOrDefault();
+                                    if (dah1 != null)
+                                    {
+                                        dah1.saldoAwal100 += selisih100;
+                                        dah1.saldoAwal50 += selisih50;
+                                        dah1.saldoAwal20 += selisih20;
+                                    }
+                                    counter++;
+                                }
+                            }
                         }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Temp: " + temp);
-                        Console.WriteLine("Temp 100: " + temp.d100);
-                        Console.WriteLine("Temp 50: " + temp.d50);
-                        Console.WriteLine("Temp 20: " + temp.d20);
-                        Int64 selisih100 = temp.d100 - (Int64)da.bon100,
-                           selisih50 = temp.d50 - (Int64)da.bon50,
-                           selisih20 = temp.d20 - (Int64)da.bon20;
-                        da.bon100 = temp.d100;
-                        da.bon50 = temp.d50;
-                        da.bon20 = temp.d20;
-                        DetailApproval dah1 = (from x in db.DetailApprovals where x.idApproval == temp.id && x.idDetailApproval == temp.idDetailApproval + 1 select x).FirstOrDefault();
-                        int counter = 1;
-                        while (dah1 != null)
+                        if (temp.order.ToLower() == "bon cit")
                         {
-
-                            dah1 = (from x in db.DetailApprovals where x.idApproval == temp.id && x.idDetailApproval == temp.idDetailApproval + counter select x).FirstOrDefault();
-                            if (dah1 != null)
+                            if (temp.orderType.ToLower() == "adhoc")
                             {
-                                dah1.saldoAwal100 += selisih100;
-                                dah1.saldoAwal50 += selisih50;
-                                dah1.saldoAwal20 += selisih20;
+                                Int64 selisih100 = temp.d100 - (Int64)da.adhoc100,
+                                   selisih50 = temp.d50 - (Int64)da.adhoc50,
+                                   selisih20 = temp.d20 - (Int64)da.adhoc20;
+
+                                da.adhoc100 = temp.d100;
+                                da.adhoc50 = temp.d50;
+                                da.adhoc20 = temp.d20;
+
+                                DetailApproval dah1 = (from x in db.DetailApprovals where x.idApproval == temp.id && x.idDetailApproval == temp.idDetailApproval + 1 select x).FirstOrDefault();
+                                int counter = 1;
+                                while (dah1 != null)
+                                {
+                                    dah1 = (from x in db.DetailApprovals where x.idApproval == temp.id && x.idDetailApproval == temp.idDetailApproval + counter select x).FirstOrDefault();
+                                    if (dah1 != null)
+                                    {
+                                        dah1.saldoAwal100 += selisih100;
+                                        dah1.saldoAwal50 += selisih50;
+                                        dah1.saldoAwal20 += selisih20;
+                                    }
+                                    counter++;
+                                }
                             }
-                            counter++;
+                            else
+                            {
+                                Console.WriteLine("Temp: " + temp);
+                                Console.WriteLine("Temp 100: " + temp.d100);
+                                Console.WriteLine("Temp 50: " + temp.d50);
+                                Console.WriteLine("Temp 20: " + temp.d20);
+                                Int64 selisih100 = temp.d100 - (Int64)da.bon100,
+                                   selisih50 = temp.d50 - (Int64)da.bon50,
+                                   selisih20 = temp.d20 - (Int64)da.bon20;
+                                da.bon100 = temp.d100;
+                                da.bon50 = temp.d50;
+                                da.bon20 = temp.d20;
+                                DetailApproval dah1 = (from x in db.DetailApprovals where x.idApproval == temp.id && x.idDetailApproval == temp.idDetailApproval + 1 select x).FirstOrDefault();
+                                int counter = 1;
+                                while (dah1 != null)
+                                {
+
+                                    dah1 = (from x in db.DetailApprovals where x.idApproval == temp.id && x.idDetailApproval == temp.idDetailApproval + counter select x).FirstOrDefault();
+                                    if (dah1 != null)
+                                    {
+                                        dah1.saldoAwal100 += selisih100;
+                                        dah1.saldoAwal50 += selisih50;
+                                        dah1.saldoAwal20 += selisih20;
+                                    }
+                                    counter++;
+                                }
+                            }
                         }
+
+                        db.SaveChanges();
                     }
+                    loadForm.CloseForm();
                 }
-
-                db.SaveChanges();
             }
-            loadForm.CloseForm();
         }
 
         private void InputGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
