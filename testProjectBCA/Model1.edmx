@@ -247,8 +247,9 @@
         </EntityType>
         <EntityType Name="Password">
           <Key>
-            <PropertyRef Name="password" />
+            <PropertyRef Name="id" />
           </Key>
+          <Property Name="id" Type="smallint" Nullable="false" />
           <Property Name="password" Type="varchar" MaxLength="255" Nullable="false" />
         </EntityType>
         <EntityType Name="Pkt">
@@ -995,9 +996,10 @@
         </EntityType>
         <EntityType Name="Password">
           <Key>
-            <PropertyRef Name="password1" />
+            <PropertyRef Name="id" />
           </Key>
           <Property Name="password1" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="id" Type="Int16" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1448,6 +1450,7 @@
           <EntitySetMapping Name="Passwords">
             <EntityTypeMapping TypeName="CACModel.Password">
               <MappingFragment StoreEntitySet="Password">
+                <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="password1" ColumnName="password" />
               </MappingFragment>
             </EntityTypeMapping>

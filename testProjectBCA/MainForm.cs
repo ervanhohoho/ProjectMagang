@@ -892,6 +892,27 @@ namespace testProjectBCA
             rbf.MdiParent = this;
             rbf.Show();
         }
+
+        private void gantiPasswordToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            InputPromptForm ipf = new InputPromptForm("Old Password", "Input");
+            if(ipf.ShowDialog() == DialogResult.OK)
+            {
+                String oldPassword = ipf.value;
+                Database1Entities db = new Database1Entities();
+                var password= db.Passwords.FirstOrDefault();
+                if(password.password1 == oldPassword)
+                {
+                    InputPromptForm ipf2 = new InputPromptForm("New Password", "Input");
+                    if (ipf2.ShowDialog() == DialogResult.OK)
+                    {
+                        password.password1 = ipf2.value;
+                        db.SaveChanges();
+                        MessageBox.Show("Password Changed!");
+                    }
+                }
+            }
+        }
     }
 }
 public static class SqlBulkCopyExtensions

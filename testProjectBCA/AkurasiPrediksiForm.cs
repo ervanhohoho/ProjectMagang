@@ -634,9 +634,9 @@ namespace testProjectBCA
                                    isiCRM50 = g.Sum(a => a.forecastIsiCRM50) / g.Sum(a => a.realisasiIsiCRM50),
                                    isiCRM20 = g.Sum(a => a.forecastIsiCRM20) / g.Sum(a => a.realisasiIsiCRM20),
 
-                                   rasio100 = g.Sum(a => a.realisasiIsiATM100 + a.realisasiIsiCRM100) == 0 ? 0 : g.Sum(a => (Double)a.saldoAwal100) / g.Sum(a => a.realisasiIsiATM100 + a.realisasiIsiCRM100),
-                                   rasio50 = g.Sum(a => a.realisasiIsiATM50 + a.realisasiIsiCRM50) == 0 ? 0 : g.Sum(a => (Double)a.saldoAwal50) / g.Sum(a => a.realisasiIsiATM50 + a.realisasiIsiCRM50),
-                                   rasio20 = g.Sum(a => a.realisasiIsiATM20 + a.realisasiIsiCRM20) == 0 ? 0 : g.Sum(a => (Double)a.saldoAwal20) / g.Sum(a => a.realisasiIsiATM20 + a.realisasiIsiCRM20),
+                                   rasio100 = g.Sum(a => a.realisasiIsiATM100 + a.realisasiIsiCRM100) == 0 ? 0 : g.Sum(a => (Double)a.saldoAwal100) / query.Where(x => x.kodePkt == g.Key).Sum(a => a.realisasiIsiATM100 + a.realisasiIsiCRM100),
+                                   rasio50 = g.Sum(a => a.realisasiIsiATM50 + a.realisasiIsiCRM50) == 0 ? 0 : g.Sum(a => (Double)a.saldoAwal50) / query.Where(x => x.kodePkt == g.Key).Sum(a => a.realisasiIsiATM50 + a.realisasiIsiCRM50),
+                                   rasio20 = g.Sum(a => a.realisasiIsiATM20 + a.realisasiIsiCRM20) == 0 ? 0 : g.Sum(a => (Double)a.saldoAwal20) / query.Where(x => x.kodePkt == g.Key).Sum(a => a.realisasiIsiATM20 + a.realisasiIsiCRM20),
                                    RasioGabungan = query.Where(x=>x.kodePkt == g.Key).Sum(a => a.realisasiIsiATM100 + a.realisasiIsiATM20 + a.realisasiIsiATM50 + a.realisasiIsiCRM100 + a.realisasiIsiCRM20 + a.realisasiIsiCRM50) == 0 ? 0 : g.Sum(a => (Double) (a.saldoAwal50 + a.saldoAwal100 + a.saldoAwal20)) / query.Where(x => x.kodePkt == g.Key).Sum(a => a.realisasiIsiATM100 + a.realisasiIsiATM20 + a.realisasiIsiATM50 + a.realisasiIsiCRM100 + a.realisasiIsiCRM20 + a.realisasiIsiCRM50),
                                }).ToList();
 

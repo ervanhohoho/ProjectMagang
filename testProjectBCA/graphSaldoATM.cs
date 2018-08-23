@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using System.Windows.Media;
 using LiveCharts;
 using LiveCharts.Wpf;
+using System.Globalization;
 
 namespace testProjectBCA
 {
@@ -49,11 +50,11 @@ namespace testProjectBCA
                                           + " from"
                                           + " TransaksiAtms t join pkt p on t.kodePkt = p.kodePkt"
                                           + " where"
-                                          + " tanggal between '"+dateTimePicker1.Value.ToString()+"' and '"+dateTimePicker2.Value.ToString()+"' "
+                                          + " tanggal between '" + dateTimePicker1.Value.ToString() + "' and '" + dateTimePicker2.Value.ToString() + "' "
                                           + " group by"
                                           + " tanggal order by tanggal";
                     }
-                    else if(comboBox2.SelectedIndex == 1)
+                    else if (comboBox2.SelectedIndex == 1)
                     {
                         cmd.CommandText = "select"
                                           + " tanggal,"
@@ -91,11 +92,13 @@ namespace testProjectBCA
                             tanggal = DateTime.Parse(reader[0].ToString()).Date,
                             saldoAwal = Int64.Parse(reader[1].ToString()),
                             sislokCRM = Int64.Parse(reader[2].ToString()),
-                            sislokATM = Math.Round(Double.Parse(reader[3].ToString())*100,2).ToString() + " %",
+                            sislokATM = Math.Round(Double.Parse(reader[3].ToString()) * 100, 2).ToString() + " %",
                             totalIsi = Int64.Parse(reader[4].ToString())
                         });
                     }
                     dataGridView1.DataSource = aio;
+
+                    formatting();
 
                     //ChartValues<Int64> cvSaldoAwal = new ChartValues<Int64>();
                     //foreach (var item in aio)
@@ -123,7 +126,7 @@ namespace testProjectBCA
                     //{
                     //    cartesianChart1.Series = new SeriesCollection
                     //    {
-                            
+
                     //        new LineSeries
                     //        {
                     //            Title = "Saldo Awal",
@@ -210,7 +213,22 @@ namespace testProjectBCA
                 }
             }
         }
-        
+
+        public void formatting()
+        {
+            if (dataGridView1.Rows.Count > 0)
+            {
+                dataGridView1.Columns[1].DefaultCellStyle.Format = "c";
+                dataGridView1.Columns[1].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("ID-id");
+
+                dataGridView1.Columns[2].DefaultCellStyle.Format = "c";
+                dataGridView1.Columns[2].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("ID-id");
+
+                dataGridView1.Columns[4].DefaultCellStyle.Format = "c";
+                dataGridView1.Columns[4].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("ID-id");
+            }
+        }
+
         public class allInOne
         {
             public DateTime tanggal { set; get; }

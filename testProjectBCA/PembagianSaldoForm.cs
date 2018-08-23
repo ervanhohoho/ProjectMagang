@@ -30,6 +30,10 @@ namespace testProjectBCA
             this.morningbalance100 = morningBalance100;
             this.morningbalance50 = morningBalance50;
 
+            Database1Entities db = new Database1Entities();
+            DateTime maxDateDetailApproval = (DateTime) db.DetailApprovals.Where(x => x.bon100 != -1).Max(x => x.tanggal);
+            this.morningbalance100 = this.morningbalance100.Where(x => x.tanggal <= maxDateDetailApproval).ToList();
+            this.morningbalance50 = this.morningbalance50.Where(x => x.tanggal <= maxDateDetailApproval).ToList();
             initPembagianGridView();
             initListSisaPermintaan();
             initListSumber();
@@ -37,7 +41,7 @@ namespace testProjectBCA
         public void initListSumber()
         {
             var q = (from x in morningbalance100
-                     from y in morningbalance50.Where(y=>y.kodePkt == x.kodePkt && y.tanggal == x.tanggal)
+                     from y in morningbalance50.Where(y => y.kodePkt == x.kodePkt && y.tanggal == x.tanggal)
                      select new DataPermintaanDanSumber()
                      {
                          tanggal = x.tanggal,
@@ -46,8 +50,14 @@ namespace testProjectBCA
                          d50 = y.val,
                          d20 = 0
                      }).ToList();
-            sumberDanaGridView.DataSource = q.OrderBy(x=>x.namaPkt).OrderBy(x=>x.tanggal).ToList();
+            sumberDanaGridView.DataSource = q.OrderBy(x => x.namaPkt).OrderBy(x => x.tanggal).ToList();
             listDataSumber = q;
+
+            sumberDanaGridView.Columns[0].Width = 70;
+            sumberDanaGridView.Columns[1].Width = 200;
+            sumberDanaGridView.Columns[2].DefaultCellStyle.Format = "N0";
+            sumberDanaGridView.Columns[3].DefaultCellStyle.Format = "N0";
+            sumberDanaGridView.Columns[4].DefaultCellStyle.Format = "N0";
         }
         public void initPembagianGridView()
         {
@@ -211,7 +221,7 @@ namespace testProjectBCA
                     q.d100 -= temp.d100;
                     q.d50 -= temp.d50;
                     q.d20 -= temp.d20;
-                    sumberDanaGridView.DataSource = tempListDataSisa.OrderBy(x => x.namaPkt).OrderBy(x => x.tanggal).ToList();
+                    sumberDanaGridView.DataSource = tempListDataSumber.OrderBy(x => x.namaPkt).OrderBy(x => x.tanggal).ToList();
                     sumberDanaGridView.Refresh();
                 }
             }

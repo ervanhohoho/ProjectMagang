@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -82,11 +83,99 @@ namespace testProjectBCA
             }
             dataGridView1.DataSource = listHasil;
         }
+
+        private void inputButtonMCS_Click(object sender, EventArgs e)
+        {
+            String kodePkt = "";
+            String tanggal = "";
+            Int64 temp = 0;
+
+            List<Mcs> mcs = new List<Mcs>();
+
+            OpenFileDialog of = new OpenFileDialog();
+            of.Filter = Variables.excelFilter;
+            if (of.ShowDialog() == DialogResult.OK)
+            {
+                String filename = of.FileName;
+                DataSet ds = Util.openExcel(filename);
+                DataTable dt = ds.Tables[0];
+
+                DataTable dtCloned = dt.Clone();
+                dtCloned.Columns[0].DataType = typeof(String);
+                foreach (DataRow row in dt.Rows)
+                {
+                    dtCloned.ImportRow(row);
+                }
+
+                DataRow[] results = dtCloned.Select("Column0 like ' '");
+
+                foreach (var item in results)
+                {
+                    dtCloned.Rows.Remove(item);
+                }
+                dataGridView1.DataSource = dtCloned;
+
+                for (int i = 0; i < dtCloned.Rows.Count; i++)
+                {
+                    if (dtCloned.Rows[i][0].ToString() == "Transaction Date")
+                    {
+                        tanggal = dtCloned.Rows[i][2].ToString().Trim(':').Trim(' ');
+                        Console.WriteLine(tanggal);
+                    }
+                    if (dtCloned.Rows[i][0].ToString() == "Vendor Code")
+                    {
+                        kodePkt = dtCloned.Rows[i][2].ToString().Trim(':').Trim(' ');
+                        Console.WriteLine(kodePkt);
+                    }
+                    if (Int64.TryParse(dtCloned.Rows[i][0].ToString(), out temp))
+                    {
+                        Console.WriteLine(temp);
+                        mcs.Add(new Mcs
+                        {
+                            tanggal = DateTime.ParseExact(tanggal, "dd/MM/yyyy", CultureInfo.InvariantCulture),
+                            kodePkt = kodePkt,
+                            time = DateTime.Parse(dtCloned.Rows[i][1].ToString()),
+                            customerCode = dtCloned.Rows[i][3].ToString().Trim('\''),
+                            amountTotal = Int64.Parse(dtCloned.Rows[i][5].ToString()),
+                            d100k = Int64.Parse(dtCloned.Rows[i][6].ToString()),
+                            d50k = Int64.Parse(dtCloned.Rows[i][7].ToString()),
+                            d20k = Int64.Parse(dtCloned.Rows[i][8].ToString()),
+                            d10k = Int64.Parse(dtCloned.Rows[i][9].ToString()),
+                            d5k = Int64.Parse(dtCloned.Rows[i][10].ToString()),
+                            d2k = Int64.Parse(dtCloned.Rows[i][11].ToString()),
+                            d1k = Int64.Parse(dtCloned.Rows[i][12].ToString()),
+                            amountCoin = Int64.Parse(dtCloned.Rows[i][13].ToString()),
+                        });
+                    }
+
+                }
+                dataGridView1.DataSource = mcs;
+
+            }
+        }
     }
     public class BeeHive
     {
         public DateTime tanggal { set; get; }
         public String kodePerusahaan { set; get; }
         public Int64 totalNominal { set; get; }
+    }
+
+    public class Mcs
+    {
+        public DateTime tanggal { set; get; }
+        public String kodePkt { set; get; }
+        public DateTime time { set; get; }
+        public String customerCode { set; get; }
+        public Int64 amountTotal { set; get; }
+        public Int64 d100k { set; get; }
+        public Int64 d50k { set; get; }
+        public Int64 d20k { set; get; }
+        public Int64 d10k { set; get; }
+        public Int64 d5k { set; get; }
+        public Int64 d2k { set; get; }
+        public Int64 d1k { set; get; }
+        public Int64 amountCoin { set; get; }
+
     }
 }

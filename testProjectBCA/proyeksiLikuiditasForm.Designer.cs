@@ -73,6 +73,7 @@
             this.stokMorningBalanceDataGridView = new System.Windows.Forms.DataGridView();
             this.label19 = new System.Windows.Forms.Label();
             this.nextButton = new System.Windows.Forms.Button();
+            this.dataGridView2 = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fit100Num)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fit50Num)).BeginInit();
@@ -88,6 +89,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.outBITukab50Num)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.persenUnprocessedNum)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.stokMorningBalanceDataGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.SuspendLayout();
             // 
             // rasio100TextBox
@@ -581,11 +583,20 @@
             this.nextButton.UseVisualStyleBackColor = true;
             this.nextButton.Click += new System.EventHandler(this.nextButton_Click);
             // 
+            // dataGridView2
+            // 
+            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView2.Location = new System.Drawing.Point(1095, 65);
+            this.dataGridView2.Name = "dataGridView2";
+            this.dataGridView2.Size = new System.Drawing.Size(315, 350);
+            this.dataGridView2.TabIndex = 25;
+            // 
             // proyeksiLikuiditasForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1074, 703);
+            this.ClientSize = new System.Drawing.Size(1434, 703);
+            this.Controls.Add(this.dataGridView2);
             this.Controls.Add(this.nextButton);
             this.Controls.Add(this.label19);
             this.Controls.Add(this.stokMorningBalanceDataGridView);
@@ -648,6 +659,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.outBITukab50Num)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.persenUnprocessedNum)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.stokMorningBalanceDataGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -700,5 +712,6 @@
         private System.Windows.Forms.DataGridView stokMorningBalanceDataGridView;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Button nextButton;
+        private System.Windows.Forms.DataGridView dataGridView2;
     }
 }

@@ -97,8 +97,14 @@ namespace testProjectBCA
                     dataGridView1.DataSource = per;
                     if (dataGridView1.Rows.Count != 0)
                     {
-                        dataGridView1.Rows[0].DefaultCellStyle.BackColor = Color.Yellow;
-                        dataGridView1.Rows[1].DefaultCellStyle.BackColor = Color.Yellow;
+                        for (int i = 0; i < dataGridView1.Rows.Count; i++)
+                        {
+                            if (Double.Parse(dataGridView1.Rows[i].Cells[1].Value.ToString()) >= 1.2)
+                            {
+                                dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.Yellow;
+                            }
+                        }
+
                     }
                 }
             }

@@ -49,6 +49,7 @@
             this.valueTextBox.Name = "valueTextBox";
             this.valueTextBox.Size = new System.Drawing.Size(323, 20);
             this.valueTextBox.TabIndex = 1;
+            this.valueTextBox.UseSystemPasswordChar = true;
             // 
             // okButton
             // 

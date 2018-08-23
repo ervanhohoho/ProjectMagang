@@ -444,6 +444,7 @@
     <EntitySetMapping Name="Passwords">
       <EntityTypeMapping TypeName="CACModel.Password">
         <MappingFragment StoreEntitySet="Password">
+          <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="password1" ColumnName="password" />
         </MappingFragment>
       </EntityTypeMapping>

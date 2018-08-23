@@ -242,8 +242,9 @@
   </EntityType>
   <EntityType Name="Password">
     <Key>
-      <PropertyRef Name="password" />
+      <PropertyRef Name="id" />
     </Key>
+    <Property Name="id" Type="smallint" Nullable="false" />
     <Property Name="password" Type="varchar" MaxLength="255" Nullable="false" />
   </EntityType>
   <EntityType Name="Pkt">
