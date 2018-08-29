@@ -74,6 +74,8 @@
             this.label19 = new System.Windows.Forms.Label();
             this.nextButton = new System.Windows.Forms.Button();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.InputAdhocBtn = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fit100Num)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fit50Num)).BeginInit();
@@ -586,16 +588,37 @@
             // dataGridView2
             // 
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Location = new System.Drawing.Point(1095, 65);
+            this.dataGridView2.Location = new System.Drawing.Point(1102, 67);
             this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.Size = new System.Drawing.Size(315, 350);
+            this.dataGridView2.Size = new System.Drawing.Size(240, 150);
             this.dataGridView2.TabIndex = 25;
+            // 
+            // InputAdhocBtn
+            // 
+            this.InputAdhocBtn.Location = new System.Drawing.Point(1064, 239);
+            this.InputAdhocBtn.Name = "InputAdhocBtn";
+            this.InputAdhocBtn.Size = new System.Drawing.Size(90, 23);
+            this.InputAdhocBtn.TabIndex = 26;
+            this.InputAdhocBtn.Text = "Input Adhoc";
+            this.InputAdhocBtn.UseVisualStyleBackColor = true;
+            this.InputAdhocBtn.Click += new System.EventHandler(this.InputAdhocBtn_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(1064, 268);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(90, 23);
+            this.button1.TabIndex = 27;
+            this.button1.Text = "Input Delivery";
+            this.button1.UseVisualStyleBackColor = true;
             // 
             // proyeksiLikuiditasForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1434, 703);
+            this.ClientSize = new System.Drawing.Size(1374, 703);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.InputAdhocBtn);
             this.Controls.Add(this.dataGridView2);
             this.Controls.Add(this.nextButton);
             this.Controls.Add(this.label19);
@@ -713,5 +736,7 @@
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Button nextButton;
         private System.Windows.Forms.DataGridView dataGridView2;
+        private System.Windows.Forms.Button InputAdhocBtn;
+        private System.Windows.Forms.Button button1;
     }
 }

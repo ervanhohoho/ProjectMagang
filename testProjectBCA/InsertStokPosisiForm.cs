@@ -16,7 +16,8 @@ namespace testProjectBCA
         {
             InitializeComponent();
         }
-
+        DateTime lastDate;
+        bool first;
         private void selectButton_Click(object sender, EventArgs e)
         {
             OpenFileDialog of = new OpenFileDialog();
@@ -38,12 +39,16 @@ namespace testProjectBCA
             GC.Collect();
             DataSet ds = Util.openExcel(path);
             Console.WriteLine("Ganti Excel: " + path.Substring(path.LastIndexOf('\\'), path.Length - path.LastIndexOf('\\')));
+            first = true;
             foreach (DataTable temp in ds.Tables)
-                processTable(temp);
-
+            {
+                if(!processTable(temp))
+                    break;
+            }
         }
-        void processTable(DataTable table)
+        bool processTable(DataTable table)
         {
+            
             Console.WriteLine("Ganti Table: " + table.TableName);
             int ROWSTARTKERTAS = 12, 
                 ROWENDKERTAS = 19, 
@@ -75,7 +80,19 @@ namespace testProjectBCA
 
             if (DateTime.TryParse(tanggalS, out buf))
                 tanggal = buf;
-
+            if (first)
+            {
+                lastDate = buf;
+                first = false;
+            }
+            else
+            {
+                if((buf - lastDate).TotalDays > 1)
+                {
+                    MessageBox.Show(table.TableName + " skip 1 tanggal");
+                }
+                return false;
+            }
             using (Database1Entities db = new Database1Entities())
             {
                 List<StokPosisi> dataDb = (from x in db.StokPosisis.AsEnumerable()
@@ -84,7 +101,7 @@ namespace testProjectBCA
                                            select x).ToList();
                 if (dataDb.Any())
                 {
-                    return;
+                    return false;
                 }
                 else
                 {
@@ -372,6 +389,7 @@ namespace testProjectBCA
                     GC.Collect();
                 }
             }
+            return true;
         }
         int alphabetToNumber(char alpha)
         {

@@ -21,6 +21,7 @@ namespace testProjectBCA
             buttonProcessSetoranCpc.Visible = false;
             buttonProsesOrderBlogHistory.Visible = false;
             dataGridView1.Visible = false;
+            dateTimePicker1.Visible = false;
             //buttonGeneratePivot.Enabled = false;
             //buttonGeneratePivotPerVendor.Enabled = false;
 
@@ -69,6 +70,7 @@ namespace testProjectBCA
                         orderDate = Convert.ToDateTime(dt.Rows[i][5].ToString()).Date,
                         dueDate = Convert.ToDateTime(dt.Rows[i][6].ToString()).Date,
                         timeStamp = DateTime.ParseExact(dt.Rows[i][7].ToString(), "M/d/yyyy H:mm", System.Globalization.CultureInfo.InvariantCulture),
+                        blogMessage = dt.Rows[i][9].ToString(),
                         action = dt.Rows[i][2].ToString(),
                         status = dt.Rows[i][3].ToString(),
                         currencyAmmount = String.IsNullOrEmpty(dt.Rows[i][11].ToString()) ? Int64.Parse(dt.Rows[i - 1][11].ToString().Replace("IDR:", "")) : Int64.Parse(dt.Rows[i][11].ToString().Replace("IDR:", ""))
@@ -140,6 +142,7 @@ namespace testProjectBCA
                         DateTime blogTime = DateTime.ParseExact(dt.Rows[i][9].ToString(), "M/d/yyyy H:mm", System.Globalization.CultureInfo.InvariantCulture);
                         String action = dt.Rows[i][2].ToString();
                         String status = dt.Rows[i][6].ToString();
+                        String blogMessage = dt.Rows[i][10].ToString();
                         Int64 currencyAmmount = CurrencyFill(String.IsNullOrEmpty(dt.Rows[i][11].ToString()) ? dt.Rows[i - 1][11].ToString().Replace("IDR:", "") : dt.Rows[i][11].ToString().Replace("IDR:", ""));
                         Console.WriteLine("currency: " + currencyAmmount);
 
@@ -150,6 +153,7 @@ namespace testProjectBCA
                             confId = dt.Rows[i][5].ToString(),
                             orderDate = Convert.ToDateTime(dt.Rows[i][3].ToString()).Date,
                             dueDate = Convert.ToDateTime(dt.Rows[i][4].ToString()).Date,
+                            blogMessage = dt.Rows[i][10].ToString(),
                             blogTime = DateTime.ParseExact(dt.Rows[i][9].ToString(), "M/d/yyyy H:mm", System.Globalization.CultureInfo.InvariantCulture),
                             action = dt.Rows[i][2].ToString(),
                             status = dt.Rows[i][6].ToString(),
@@ -252,7 +256,7 @@ namespace testProjectBCA
                     timeStamp = item.timeStamp,
                     currencyAmmount = item.currencyAmmount,
                     fundingSource = item.fundingSource,
-                    realDate = item.timeStamp.Hour < 21 ? item.timeStamp.Date : item.timeStamp.AddDays(1).Date,
+                    realDate = item.timeStamp.Hour < 21 ? item.timeStamp : item.timeStamp.AddDays(1),
                     validation = (item.timeStamp.Hour < 21 ? item.timeStamp : item.timeStamp.AddDays(1)).Date <= item.dueDate.Date ? "VALIDATED" : "NOT VALIDATED"
                 });
             }
@@ -263,11 +267,27 @@ namespace testProjectBCA
         private void buttonGeneratePivotPerVendor_Click(object sender, EventArgs e)
         {
             //ProsesOrderBlogHistory();
-
             //preparing data for pivot pervendor bon
-            var query = (from x in en.RekonSaldoPerVendors
-                         where x.actionRekon.Contains("Delivery") && x.statusRekon.Equals("Confirmed") && ((DateTime)x.dueDate) >= dateTimePicker1.Value.Date && ((DateTime)x.dueDate) <= dateTimePicker2.Value.Date
-                         select x).ToList();
+            var query = (from x in en.RekonSaldoPerVendors.AsEnumerable()
+                         where (x.actionRekon.Contains("Delivery") && x.statusRekon.Equals("Confirmed")) && (((DateTime)x.dueDate).Date == dateTimePicker2.Value.Date || ((DateTime)x.realDate).Date == dateTimePicker2.Value.Date)
+                         select new
+                         {
+                             cashPointId = x.cashPointtId,
+                             confId = x.confId,
+                             orderDate = x.orderDate,
+                             vendor = x.vendor,
+                             actionRekon = x.actionRekon,
+                             statusRekon = x.statusRekon,
+                             dueDate = x.dueDate,
+                             blogTime = x.blogTime,
+                             currencyAmmount = x.currencyAmmount,
+                             realDate = x.realDate,
+                             blogMessage = x.blogMessage,
+                             validation = x.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(x.blogTime.ToString()).Hour < 21 ? x.blogTime : DateTime.Parse(x.blogTime.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(dateTimePicker2.Value.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
+                             // x.realDate <= dateTimePicker2.Value ? "VALIDATED" : "NOT VALIDATED"
+                             //&& x.blogMessage.Contains("GL Processed")
+                             //DateTime.Parse((DateTime.Parse(x.blogTime.ToString()).Hour < 21 ? x.blogTime : DateTime.Parse(x.blogTime.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(x.dueDate.ToString()).Date ? "VALIDATED" : "NOT VALIDATED"
+                         }).ToList();
 
             //generating pivotbon
             ppvb = new List<PivotPerVendor_bon>();
@@ -276,9 +296,10 @@ namespace testProjectBCA
 
             Console.WriteLine(query.Count);
 
-            var pivot = query.GroupBy(c => new { c.vendor, c.dueDate }).Select(g => new
+            var pivot = query.GroupBy(c => new { c.vendor, c.dueDate, c.realDate }).Select(g => new
             {
                 dueDate = g.Key.dueDate,
+                valDate = g.Key.realDate,
                 vendor = g.Key.vendor,
                 belumValidasi = g.Where(c => c.validation == "NOT VALIDATED").Sum(c => c.currencyAmmount),
                 sudahValidasi = g.Where(c => c.validation == "VALIDATED").Sum(c => c.currencyAmmount),
@@ -294,6 +315,7 @@ namespace testProjectBCA
                 ppvb.Add(new PivotPerVendor_bon
                 {
                     dueDate = ((DateTime)item.dueDate).Date,
+                    valDate = ((DateTime)item.valDate).Date,
                     vendor = item.vendor,
                     belumValidasi = (Int64)item.belumValidasi,
                     sudahValidasi = (Int64)item.sudahValidasi,
@@ -304,16 +326,32 @@ namespace testProjectBCA
             dataGridView6.DataSource = ppvb;
 
             //preparing data for pivot pervendor setoran
-            var querysetoran = (from x in en.RekonSaldoPerVendors
-                                where x.actionRekon.Contains("Return") && x.statusRekon.Equals("In Transit") && ((DateTime)x.dueDate) >= dateTimePicker1.Value.Date && ((DateTime)x.dueDate) <= dateTimePicker2.Value.Date
-                                select x).ToList();
+            var querysetoran = (from x in en.RekonSaldoPerVendors.AsEnumerable()
+                                where (x.actionRekon.Contains("Return") && x.statusRekon.Equals("In Transit")) && (((DateTime)x.dueDate).Date == dateTimePicker2.Value.Date || ((DateTime)x.realDate).Date == dateTimePicker2.Value.Date)
+                                select new
+                                {
+                                    cashPointId = x.cashPointtId,
+                                    confId = x.confId,
+                                    orderDate = x.orderDate,
+                                    vendor = x.vendor,
+                                    actionRekon = x.actionRekon,
+                                    statusRekon = x.statusRekon,
+                                    dueDate = x.dueDate,
+                                    blogTime = x.blogTime,
+                                    currencyAmmount = x.currencyAmmount,
+                                    realDate = x.realDate,
+                                    blogMessage = x.blogMessage,
+                                    validation = x.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(x.blogTime.ToString()).Hour < 21 ? x.blogTime : DateTime.Parse(x.blogTime.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(dateTimePicker2.Value.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
+                                    //DateTime.Parse((DateTime.Parse(x.blogTime.ToString()).Hour < 21 ? x.blogTime : DateTime.Parse(x.blogTime.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(x.dueDate.ToString()).Date ? "VALIDATED" : "NOT VALIDATED"
+                                }).ToList();
 
             //generating pivot
             ppvs = new List<PivotPerVendor_setoran>();
 
-            var pivotsetoran = querysetoran.GroupBy(c => new { c.vendor, c.dueDate }).Select(g => new
+            var pivotsetoran = querysetoran.GroupBy(c => new { c.vendor, c.dueDate, c.realDate }).Select(g => new
             {
                 dueDate = g.Key.dueDate,
+                valDate = g.Key.realDate,
                 vendor = g.Key.vendor,
                 belumValidasi = g.Where(c => c.validation == "NOT VALIDATED").Sum(c => c.currencyAmmount),
                 sudahValidasi = g.Where(c => c.validation == "VALIDATED").Sum(c => c.currencyAmmount),
@@ -327,6 +365,7 @@ namespace testProjectBCA
                 ppvs.Add(new PivotPerVendor_setoran
                 {
                     dueDate = ((DateTime)item.dueDate).Date,
+                    valDate = ((DateTime)item.valDate).Date,
                     vendor = item.vendor,
                     belumValidasi = (Int64)item.belumValidasi,
                     sudahValidasi = (Int64)item.sudahValidasi,
@@ -362,8 +401,8 @@ namespace testProjectBCA
             //ProsesVault();
             //ProsesSetoranCPC();
             //preparing data for pivotCPC - BI dan BankLain Return
-            var query = (from x in en.RekonSaldoVaults
-                         where (x.fundingSoure == "BI" || x.fundingSoure.Contains("OB")) && ((DateTime)x.dueDate) >= dateTimePicker1.Value.Date && ((DateTime)x.dueDate) <= dateTimePicker2.Value.Date
+            var query = (from x in en.RekonSaldoVaults.AsEnumerable()
+                         where (x.fundingSoure == "BI" || x.fundingSoure.Contains("OB")) && (((DateTime)x.dueDate).Date == dateTimePicker2.Value.Date || ((DateTime)x.realDate).Date == dateTimePicker2.Value.Date)
                          select x).ToList();
 
             pc = new List<PivotCPC>();
@@ -378,30 +417,36 @@ namespace testProjectBCA
                     confId = item.confId,
                     action = item.actionRekon,
                     status = item.statusRekon,
+                    blogMessage = item.blogMessage,
                     orderDate = ((DateTime)item.orderDate).Date,
                     dueDate = ((DateTime)item.dueDate).Date,
                     timeStamp = (DateTime)item.timeStampRekon,
                     currencyAmmount = Int64.Parse(item.currencyAmmount.ToString()),
                     fundingSource = item.fundingSoure,
                     realDate = ((DateTime)item.timeStampRekon).Hour < 21 ? ((DateTime)item.timeStampRekon).Date : ((DateTime)item.timeStampRekon).AddDays(1).Date,
-                    validation = (((DateTime)item.timeStampRekon).Hour < 21 ? (DateTime)item.timeStampRekon : ((DateTime)item.timeStampRekon).AddDays(1)).Date <= ((DateTime)item.dueDate).Date ? "VALIDATED" : "NOT VALIDATED"
+                    validation = item.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(item.timeStampRekon.ToString()).Hour < 21 ? item.timeStampRekon : DateTime.Parse(item.timeStampRekon.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(dateTimePicker2.Value.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
                 });
 
             }
 
             //creating pivotCPC - BI dan BankLain Return
-            var pivot = pc.GroupBy(c => new { c.vaultId, c.fundingSource, c.dueDate }).Select(g => new
+            var pivot = pc.GroupBy(c => new { c.vaultId, c.fundingSource, c.dueDate, c.realDate }).Select(g => new
             {
                 dueDate = g.Key.dueDate,
+                realDate = g.Key.realDate,
                 vaultID = g.Key.vaultId,
                 fundingSource = g.Key.fundingSource,
                 emergencyReturn = g.Where(c => c.action == "Emergency Return").Sum(c => c.currencyAmmount),
-                plannedReturn = g.Where(c => c.action == "Planned Return").Sum(c => c.currencyAmmount)
+                emergencyReturnVal = g.Where(c => c.action == "Emergency Return" && c.validation == "VALIDATED").Sum(c => c.currencyAmmount),
+                emergencyReturnNotVal = g.Where(c => c.action == "Emergency Return" && c.validation == "NOT VALIDATED").Sum(c => c.currencyAmmount),
+                plannedReturn = g.Where(c => c.action == "Planned Return").Sum(c => c.currencyAmmount),
+                plannedReturnVal = g.Where(c => c.action == "Planned Return" && c.validation == "VALIDATED").Sum(c => c.currencyAmmount),
+                plannedReturnNotVal = g.Where(c => c.action == "Planned Return" && c.validation == "NOT VALIDATED").Sum(c => c.currencyAmmount)
 
             }).ToList();
 
             var pivot2 = (from x in pivot
-                          select new { x.dueDate, x.vaultID, x.fundingSource, x.emergencyReturn, x.plannedReturn, grandTotal = x.emergencyReturn + x.plannedReturn });
+                          select new { x.dueDate, x.vaultID, x.fundingSource, x.emergencyReturn, x.emergencyReturnVal, x.emergencyReturnNotVal, x.plannedReturn, x.plannedReturnVal, x.plannedReturnNotVal, grandTotal = x.emergencyReturn + x.plannedReturn, x.realDate });
 
             bibl = new List<PivotCPC_BIBL>();
 
@@ -412,10 +457,15 @@ namespace testProjectBCA
                     bibl.Add(new PivotCPC_BIBL
                     {
                         dueDate = item.dueDate,
+                        realDate = item.realDate,
                         vaultId = item.vaultID,
                         fundingSource = item.fundingSource,
-                        emergencyReturn = item.emergencyReturn,
-                        plannedReturn = item.plannedReturn,
+                        //emergencyReturn = item.emergencyReturn,
+                        emergencyReturnVal = item.emergencyReturnVal,
+                        emergencyReturnNotVal = item.emergencyReturnNotVal,
+                        //plannedReturn = item.plannedReturn,
+                        plannedReturnVal = item.plannedReturnVal,
+                        plannedReturnNotVal = item.plannedReturnNotVal,
                         grandTotal = item.grandTotal
                     });
                 }
@@ -425,8 +475,8 @@ namespace testProjectBCA
             dataGridView2.DataSource = bibl;
 
             //preparing data for Pivot CPC - BI dan BankLain delivery
-            var queryd = (from x in en.RekonSaldoVaults
-                          where (x.fundingSoure == "BI" || x.fundingSoure.Contains("OB")) && ((DateTime)x.dueDate) >= dateTimePicker1.Value.Date && ((DateTime)x.dueDate) <= dateTimePicker2.Value.Date
+            var queryd = (from x in en.RekonSaldoVaults.AsEnumerable()
+                          where (x.fundingSoure == "BI" || x.fundingSoure.Contains("OB")) && (((DateTime)x.dueDate).Date == dateTimePicker2.Value.Date || ((DateTime)x.realDate).Date == dateTimePicker2.Value.Date)
                           select x).ToList();
 
             pc = new List<PivotCPC>();
@@ -441,29 +491,35 @@ namespace testProjectBCA
                     confId = item.confId,
                     action = item.actionRekon,
                     status = item.statusRekon,
+                    blogMessage = item.blogMessage,
                     orderDate = ((DateTime)item.orderDate).Date,
                     dueDate = ((DateTime)item.dueDate).Date,
                     timeStamp = (DateTime)item.timeStampRekon,
                     currencyAmmount = Int64.Parse(item.currencyAmmount.ToString()),
                     fundingSource = item.fundingSoure,
                     realDate = ((DateTime)item.timeStampRekon).Hour < 21 ? ((DateTime)item.timeStampRekon).Date : ((DateTime)item.timeStampRekon).AddDays(1).Date,
-                    validation = (((DateTime)item.timeStampRekon).Hour < 21 ? (DateTime)item.timeStampRekon : ((DateTime)item.timeStampRekon).AddDays(1)).Date <= ((DateTime)item.dueDate).Date ? "VALIDATED" : "NOT VALIDATED"
+                    validation = item.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(item.timeStampRekon.ToString()).Hour < 21 ? item.timeStampRekon : DateTime.Parse(item.timeStampRekon.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(dateTimePicker2.Value.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
                 });
 
             }
 
             //creating pivotCPC - BI dan BankLain Delivery
-            var pivotd = pc.GroupBy(c => new { c.vaultId, c.fundingSource, c.dueDate }).Select(g => new
+            var pivotd = pc.GroupBy(c => new { c.vaultId, c.fundingSource, c.dueDate, c.realDate }).Select(g => new
             {
                 dueDate = g.Key.dueDate,
+                realDate = g.Key.realDate,
                 vaultID = g.Key.vaultId,
                 fundingSource = g.Key.fundingSource,
                 emergencyDelivery = g.Where(c => c.action == "Emergency Delivery").Sum(c => c.currencyAmmount),
-                plannedDelivery = g.Where(c => c.action == "Planned Delivery").Sum(c => c.currencyAmmount)
+                emergencyDeliveryVal = g.Where(c => c.action == "Emergency Delivery" && c.validation == "VALIDATED").Sum(c => c.currencyAmmount),
+                emergencyDeliveryNotVal = g.Where(c => c.action == "Emergency Delivery" && c.validation == "NOT VALIDATED").Sum(c => c.currencyAmmount),
+                plannedDelivery = g.Where(c => c.action == "Planned Delivery").Sum(c => c.currencyAmmount),
+                plannedDeliveryVal = g.Where(c => c.action == "Planned Delivery" && c.validation == "VALIDATED").Sum(c => c.currencyAmmount),
+                plannedDeliveryNotVal = g.Where(c => c.action == "Planned Delivery" && c.validation == "NOT VALIDATED").Sum(c => c.currencyAmmount)
             }).ToList();
 
             var pivotd2 = (from x in pivotd
-                           select new { x.dueDate, x.vaultID, x.fundingSource, x.emergencyDelivery, x.plannedDelivery, grandTotal = x.emergencyDelivery + x.plannedDelivery });
+                           select new { x.dueDate, x.vaultID, x.fundingSource, x.emergencyDelivery, x.plannedDelivery, grandTotal = x.emergencyDelivery + x.plannedDelivery, x.plannedDeliveryVal, x.plannedDeliveryNotVal, x.emergencyDeliveryNotVal, x.emergencyDeliveryVal, x.realDate });
 
             bibld = new List<PivotCPC_BIBLD>();
 
@@ -474,10 +530,15 @@ namespace testProjectBCA
                     bibld.Add(new PivotCPC_BIBLD
                     {
                         dueDate = item.dueDate,
+                        realDate = item.realDate,
                         vaultId = item.vaultID,
                         fundingSource = item.fundingSource,
-                        emergencyDelivery = item.emergencyDelivery,
-                        plannedDelivery = item.plannedDelivery,
+                        // emergencyDelivery = item.emergencyDelivery,
+                        emergencyDeliveryVal = item.emergencyDeliveryVal,
+                        emergencyDeliveryNotVal = item.emergencyDeliveryNotVal,
+                        //  plannedDelivery = item.plannedDelivery,
+                        plannedDeliveryVal = item.plannedDeliveryVal,
+                        plannedDeliveryNotVal = item.plannedDeliveryNotVal,
                         grandTotal = item.grandTotal
                     });
                 }
@@ -487,8 +548,8 @@ namespace testProjectBCA
             dataGridView3.DataSource = bibld;
 
             //preparing data for pivot - ATM delivery
-            var queryad = (from x in en.RekonSaldoVaults
-                           where (x.fundingSoure != "BI" && !x.fundingSoure.Contains("OB")) && ((DateTime)x.dueDate) >= dateTimePicker1.Value.Date && ((DateTime)x.dueDate) <= dateTimePicker2.Value.Date
+            var queryad = (from x in en.RekonSaldoVaults.AsEnumerable()
+                           where (x.fundingSoure != "BI" && !x.fundingSoure.Contains("OB")) && (((DateTime)x.dueDate).Date == dateTimePicker2.Value.Date || ((DateTime)x.realDate).Date == dateTimePicker2.Value.Date)
                            select x).ToList();
 
             pc = new List<PivotCPC>();
@@ -502,6 +563,7 @@ namespace testProjectBCA
                     vaultId = item.vaultId,
                     confId = item.confId,
                     action = item.actionRekon,
+                    blogMessage = item.blogMessage,
                     status = item.statusRekon,
                     orderDate = ((DateTime)item.orderDate).Date,
                     dueDate = ((DateTime)item.dueDate).Date,
@@ -509,23 +571,28 @@ namespace testProjectBCA
                     currencyAmmount = Int64.Parse(item.currencyAmmount.ToString()),
                     fundingSource = item.fundingSoure,
                     realDate = ((DateTime)item.timeStampRekon).Hour < 21 ? ((DateTime)item.timeStampRekon).Date : ((DateTime)item.timeStampRekon).AddDays(1).Date,
-                    validation = (((DateTime)item.timeStampRekon).Hour < 21 ? ((DateTime)item.timeStampRekon) : ((DateTime)item.timeStampRekon).AddDays(1)).Date <= ((DateTime)item.dueDate).Date ? "VALIDATED" : "NOT VALIDATED"
+                    validation = item.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(item.timeStampRekon.ToString()).Hour < 21 ? item.timeStampRekon : DateTime.Parse(item.timeStampRekon.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(dateTimePicker2.Value.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
                 });
 
             }
 
             //creating pivot - atm delivery
-            var pivotad = pc.GroupBy(c => new { c.vaultId, c.fundingSource, c.dueDate }).Select(g => new
+            var pivotad = pc.GroupBy(c => new { c.vaultId, c.fundingSource, c.dueDate, c.realDate }).Select(g => new
             {
                 dueDate = g.Key.dueDate,
+                realDate = g.Key.realDate,
                 vaultID = g.Key.vaultId,
                 fundingSource = g.Key.fundingSource,
                 emergencyDelivery = g.Where(c => c.action == "Emergency Delivery").Sum(c => c.currencyAmmount),
-                plannedDelivery = g.Where(c => c.action == "Planned Delivery").Sum(c => c.currencyAmmount)
+                emergencyDeliveryVal = g.Where(c => c.action == "Emergency Delivery" && c.validation == "VALIDATED").Sum(c => c.currencyAmmount),
+                emergencyDeliveryNotVal = g.Where(c => c.action == "Emergency Delivery" && c.validation == "NOT VALIDATED").Sum(c => c.currencyAmmount),
+                plannedDelivery = g.Where(c => c.action == "Planned Delivery").Sum(c => c.currencyAmmount),
+                plannedDeliveryVal = g.Where(c => c.action == "Planned Delivery" && c.validation == "VALIDATED").Sum(c => c.currencyAmmount),
+                plannedDeliveryNotVal = g.Where(c => c.action == "Planned Delivery" && c.validation == "NOT VALIDATED").Sum(c => c.currencyAmmount)
             }).ToList();
 
             var pivotad2 = (from x in pivotad
-                            select new { x.dueDate, x.vaultID, x.fundingSource, x.emergencyDelivery, x.plannedDelivery, grandTotal = x.emergencyDelivery + x.plannedDelivery });
+                            select new { x.dueDate, x.vaultID, x.fundingSource, x.emergencyDelivery, x.plannedDelivery, grandTotal = x.emergencyDelivery + x.plannedDelivery, x.plannedDeliveryNotVal, x.plannedDeliveryVal, x.emergencyDeliveryNotVal, x.emergencyDeliveryVal, x.realDate });
 
             atmd = new List<PivotCPC_ATMD>();
 
@@ -536,10 +603,15 @@ namespace testProjectBCA
                     atmd.Add(new PivotCPC_ATMD
                     {
                         dueDate = item.dueDate,
+                        realDate = item.realDate,
                         vaultId = item.vaultID,
                         fundingSource = item.fundingSource,
-                        emergencyDelivery = item.emergencyDelivery,
-                        plannedDelivery = item.plannedDelivery,
+                        //  emergencyDelivery = item.emergencyDelivery,
+                        emergencyDeliveryVal = item.emergencyDeliveryVal,
+                        emergencyDeliveryNotVal = item.emergencyDeliveryNotVal,
+                        //  plannedDelivery = item.plannedDelivery,
+                        plannedDeliveryVal = item.plannedDeliveryVal,
+                        plannedDeliveryNotVal = item.plannedDeliveryNotVal,
                         grandTotal = item.grandTotal
                     });
                 }
@@ -549,8 +621,8 @@ namespace testProjectBCA
             dataGridView4.DataSource = atmd;
 
             //preparing data for pivot - atm return
-            var queryar = (from x in en.RekonSaldoVaults
-                           where (x.fundingSoure != "BI" && !x.fundingSoure.Contains("OB")) && ((DateTime)x.dueDate) >= dateTimePicker1.Value.Date && ((DateTime)x.dueDate) <= dateTimePicker2.Value.Date
+            var queryar = (from x in en.RekonSaldoVaults.AsEnumerable()
+                           where (x.fundingSoure != "BI" && !x.fundingSoure.Contains("OB")) && (((DateTime)x.dueDate).Date == dateTimePicker2.Value.Date || ((DateTime)x.realDate).Date == dateTimePicker2.Value.Date)
                            select x).ToList();
 
             pc = new List<PivotCPC>();
@@ -564,6 +636,7 @@ namespace testProjectBCA
                     vaultId = item.vaultId,
                     confId = item.confId,
                     action = item.actionRekon,
+                    blogMessage = item.blogMessage,
                     status = item.statusRekon,
                     orderDate = ((DateTime)item.orderDate).Date,
                     dueDate = ((DateTime)item.dueDate).Date,
@@ -571,23 +644,28 @@ namespace testProjectBCA
                     currencyAmmount = Int64.Parse(item.currencyAmmount.ToString()),
                     fundingSource = item.fundingSoure,
                     realDate = ((DateTime)item.timeStampRekon).Hour < 21 ? ((DateTime)item.timeStampRekon).Date : ((DateTime)item.timeStampRekon).AddDays(1).Date,
-                    validation = (((DateTime)item.timeStampRekon).Hour < 21 ? (DateTime)item.timeStampRekon : ((DateTime)item.timeStampRekon).AddDays(1)).Date <= ((DateTime)item.dueDate).Date ? "VALIDATED" : "NOT VALIDATED"
+                    validation = item.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(item.timeStampRekon.ToString()).Hour < 21 ? item.timeStampRekon : DateTime.Parse(item.timeStampRekon.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(dateTimePicker2.Value.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
                 });
 
             }
 
             //creating pivotCPC - atm return
-            var pivotar = pc.GroupBy(c => new { c.vaultId, c.fundingSource, c.dueDate }).Select(g => new
+            var pivotar = pc.GroupBy(c => new { c.vaultId, c.fundingSource, c.dueDate, c.realDate }).Select(g => new
             {
                 dueDate = g.Key.dueDate,
+                realDate = g.Key.realDate,
                 vaultID = g.Key.vaultId,
                 fundingSource = g.Key.fundingSource,
                 emergencyReturn = g.Where(c => c.action == "Emergency Return").Sum(c => c.currencyAmmount),
-                plannedReturn = g.Where(c => c.action == "Planned Return").Sum(c => c.currencyAmmount)
+                emergencyReturnVal = g.Where(c => c.action == "Emergency Return" && c.validation == "VALIDATED").Sum(c => c.currencyAmmount),
+                emergencyReturnNotVal = g.Where(c => c.action == "Emergency Return" && c.validation == "NOT VALIDATED").Sum(c => c.currencyAmmount),
+                plannedReturn = g.Where(c => c.action == "Planned Return").Sum(c => c.currencyAmmount),
+                plannedReturnVal = g.Where(c => c.action == "Planned Return" && c.validation == "VALIDATED").Sum(c => c.currencyAmmount),
+                plannedReturnNotVal = g.Where(c => c.action == "Planned Return" && c.validation == "NOT VALIDATED").Sum(c => c.currencyAmmount)
             }).ToList();
 
             var pivotar2 = (from x in pivotar
-                            select new { x.dueDate, x.vaultID, x.fundingSource, x.emergencyReturn, x.plannedReturn, grandTotal = x.emergencyReturn + x.plannedReturn });
+                            select new { x.dueDate, x.vaultID, x.realDate, x.fundingSource, x.emergencyReturn, x.plannedReturn, grandTotal = x.emergencyReturn + x.plannedReturn, x.plannedReturnVal, x.plannedReturnNotVal, x.emergencyReturnVal, x.emergencyReturnNotVal });
 
             atmr = new List<PivotCPC_ATMR>();
 
@@ -598,10 +676,15 @@ namespace testProjectBCA
                     atmr.Add(new PivotCPC_ATMR
                     {
                         dueDate = item.dueDate,
+                        realDate = item.realDate,
                         vaultId = item.vaultID,
                         fundingSource = item.fundingSource,
-                        emergencyReturn = item.emergencyReturn,
-                        plannedReturn = item.plannedReturn,
+                        // emergencyReturn = item.emergencyReturn,
+                        emergencyReturnVal = item.emergencyReturnVal,
+                        emergencyReturnNotVal = item.emergencyReturnNotVal,
+                        // plannedReturn = item.plannedReturn,
+                        plannedReturnVal = item.plannedReturnVal,
+                        plannedReturnNotVal = item.plannedReturnNotVal,
                         grandTotal = item.grandTotal
                     });
                 }
@@ -656,6 +739,7 @@ namespace testProjectBCA
             public DateTime orderDate { set; get; }
             public DateTime dueDate { set; get; }
             public DateTime timeStamp { set; get; }
+            public String blogMessage { set; get; }
             public String action { set; get; }
             public String status { set; get; }
             public Int64 currencyAmmount { set; get; }
@@ -683,6 +767,7 @@ namespace testProjectBCA
             public DateTime orderDate { set; get; }
             public DateTime dueDate { set; get; }
             public DateTime timeStamp { set; get; }
+            public String blogMessage { set; get; }
             public Int64 currencyAmmount { set; get; }
             public DateTime realDate { set; get; }
             public String validation { set; get; }
@@ -699,9 +784,11 @@ namespace testProjectBCA
             public DateTime orderDate { set; get; }
             public DateTime dueDate { set; get; }
             public DateTime timeStamp { set; get; }
+            public String blogMessage { set; get; }
             public Int64 currencyAmmount { set; get; }
             public DateTime realDate { set; get; }
             public String validation { set; get; }
+
         }
 
         class OBH //order blog history 
@@ -714,6 +801,7 @@ namespace testProjectBCA
             public String action { set; get; }
             public String status { set; get; }
             public Int64 currencyAmmount { set; get; }
+            public String blogMessage { set; get; }
         }
 
         class OBHProcessed //obh yang di proses
@@ -724,6 +812,7 @@ namespace testProjectBCA
             public DateTime orderDate { set; get; }
             public DateTime dueDate { set; get; }
             public DateTime blogTime { set; get; }
+            public String blogMessage { set; get; }
             public String action { set; get; }
             public String status { set; get; }
             public Int64 currencyAmmount { set; get; }
@@ -741,6 +830,7 @@ namespace testProjectBCA
             public DateTime orderDate { set; get; }
             public DateTime dueDate { set; get; }
             public DateTime timeStamp { set; get; }
+            public String blogMessage { set; get; }
             public Int64 currencyAmmount { set; get; }
             public DateTime realDate { set; get; }
             public String validation { set; get; }
@@ -750,10 +840,15 @@ namespace testProjectBCA
         class PivotCPC_BIBL //pivotCPC - BI dan BankLain return
         {
             public DateTime dueDate { set; get; }
+            public DateTime realDate { set; get; }
             public String vaultId { set; get; }
             public String fundingSource { set; get; }
-            public Int64 plannedReturn { set; get; }
-            public Int64 emergencyReturn { set; get; }
+            // public Int64 plannedReturn { set; get; }
+            public Int64 plannedReturnVal { set; get; }
+            public Int64 plannedReturnNotVal { set; get; }
+            // public Int64 emergencyReturn { set; get; }
+            public Int64 emergencyReturnVal { set; get; }
+            public Int64 emergencyReturnNotVal { set; get; }
             public Int64 grandTotal { set; get; }
 
         }
@@ -761,10 +856,15 @@ namespace testProjectBCA
         class PivotCPC_BIBLD//pivotCPC - BI dan BankLain delivery
         {
             public DateTime dueDate { set; get; }
+            public DateTime realDate { set; get; }
             public String vaultId { set; get; }
             public String fundingSource { set; get; }
-            public Int64 plannedDelivery { set; get; }
-            public Int64 emergencyDelivery { set; get; }
+            // public Int64 plannedDelivery { set; get; }
+            public Int64 plannedDeliveryVal { set; get; }
+            public Int64 plannedDeliveryNotVal { set; get; }
+            // public Int64 emergencyDelivery { set; get; }
+            public Int64 emergencyDeliveryVal { set; get; }
+            public Int64 emergencyDeliveryNotVal { set; get; }
             public Int64 grandTotal { set; get; }
 
         }
@@ -772,10 +872,15 @@ namespace testProjectBCA
         class PivotCPC_ATMD //pivotcpc - atm delivery
         {
             public DateTime dueDate { set; get; }
+            public DateTime realDate { set; get; }
             public String vaultId { set; get; }
             public String fundingSource { set; get; }
-            public Int64 plannedDelivery { set; get; }
-            public Int64 emergencyDelivery { set; get; }
+            // public Int64 plannedDelivery { set; get; }
+            public Int64 plannedDeliveryVal { set; get; }
+            public Int64 plannedDeliveryNotVal { set; get; }
+            //  public Int64 emergencyDelivery { set; get; }
+            public Int64 emergencyDeliveryVal { set; get; }
+            public Int64 emergencyDeliveryNotVal { set; get; }
             public Int64 grandTotal { set; get; }
 
         }
@@ -783,10 +888,15 @@ namespace testProjectBCA
         class PivotCPC_ATMR //pivotcpc - atm return
         {
             public DateTime dueDate { set; get; }
+            public DateTime realDate { set; get; }
             public String vaultId { set; get; }
             public String fundingSource { set; get; }
-            public Int64 plannedReturn { set; get; }
-            public Int64 emergencyReturn { set; get; }
+            //public Int64 plannedReturn { set; get; }
+            public Int64 plannedReturnVal { set; get; }
+            public Int64 plannedReturnNotVal { set; get; }
+            //public Int64 emergencyReturn { set; get; }
+            public Int64 emergencyReturnVal { set; get; }
+            public Int64 emergencyReturnNotVal { set; get; }
             public Int64 grandTotal { set; get; }
 
         }
@@ -794,6 +904,7 @@ namespace testProjectBCA
         class PivotPerVendor_bon
         {
             public DateTime dueDate { set; get; }
+            public DateTime valDate { set; get; }
             public String vendor { set; get; }
             public Int64 belumValidasi { set; get; }
             public Int64 sudahValidasi { set; get; }
@@ -804,6 +915,7 @@ namespace testProjectBCA
         class PivotPerVendor_setoran
         {
             public DateTime dueDate { set; get; }
+            public DateTime valDate { set; get; }
             public String vendor { set; get; }
             public Int64 belumValidasi { set; get; }
             public Int64 sudahValidasi { set; get; }
@@ -825,7 +937,7 @@ namespace testProjectBCA
                 if (String.IsNullOrEmpty(a))
                 { result = 0; }
                 else
-                    result = Int64.Parse(a);
+                    result = (Int64)Double.Parse(a);
             }
 
             return result;
@@ -835,7 +947,7 @@ namespace testProjectBCA
         {
             {
                 var query = (from x in vobh
-                             select new { x.vaultId, x.confId, x.action, x.status, x.orderDate, x.dueDate, x.timeStamp, x.currencyAmmount, fundingSource = vo.Where(y => y.confId == x.confId).Select(y => y.fundingSource).FirstOrDefault() }
+                             select new { x.vaultId, x.confId, x.action, x.status, x.orderDate, x.dueDate, x.blogMessage, x.timeStamp, x.currencyAmmount, fundingSource = vo.Where(y => y.confId == x.confId).Select(y => y.fundingSource).FirstOrDefault() }
                              ).ToList();
 
                 vp = new List<VaultProcessed>();
@@ -851,15 +963,15 @@ namespace testProjectBCA
                         orderDate = item.orderDate,
                         dueDate = item.dueDate,
                         timeStamp = item.timeStamp,
+                        blogMessage = item.blogMessage,
                         currencyAmmount = item.currencyAmmount,
                         fundingSource = item.fundingSource,
                         realDate = item.timeStamp.Hour < 21 ? item.timeStamp.Date : item.timeStamp.AddDays(1).Date,
-                        validation = (item.timeStamp.Hour < 21 ? item.timeStamp : item.timeStamp.AddDays(1)).Date <= item.dueDate.Date ? "VALIDATED" : "NOT VALIDATED"
+
                     });
                 }
                 Console.WriteLine(vp.Count);
                 dataGridView1.DataSource = vp;
-
             }
         }
 
@@ -886,7 +998,8 @@ namespace testProjectBCA
                     currencyAmmount = item.currencyAmmount,
                     fundingSource = item.fundingSource,
                     realDate = item.timeStamp.Hour < 21 ? item.timeStamp.Date : item.timeStamp.AddDays(1).Date,
-                    validation = (item.timeStamp.Hour < 21 ? item.timeStamp : item.timeStamp.AddDays(1)).Date <= item.dueDate.Date ? "VALIDATED" : "NOT VALIDATED"
+                    blogMessage = item.blogMessage
+
                 });
             }
             Console.WriteLine(sc.Count);
@@ -903,7 +1016,19 @@ namespace testProjectBCA
 
             var query = (from x in obh
                          join y in cabangs on x.cashpointId.TrimStart('B').TrimStart('0') equals y.kodeCabang
-                         select new { x.cashpointId, x.confId, x.orderDate, x.dueDate, x.blogTime, x.action, x.status, x.currencyAmmount, y.kodePkt }
+                         select new
+                         {
+                             x.cashpointId,
+                             x.confId,
+                             x.orderDate,
+                             x.dueDate,
+                             x.blogTime,
+                             x.action,
+                             x.status,
+                             x.currencyAmmount,
+                             x.blogMessage,
+                             y.kodePkt
+                         }
                          ).ToList();
 
             foreach (var item in query)
@@ -916,6 +1041,7 @@ namespace testProjectBCA
                     orderDate = item.orderDate,
                     dueDate = item.dueDate,
                     blogTime = item.blogTime,
+                    blogMessage = item.blogMessage,
                     action = item.action,
                     status = item.status,
                     currencyAmmount = item.currencyAmmount,
@@ -945,7 +1071,7 @@ namespace testProjectBCA
                                              timeStampRekon = x.timeStamp,
                                              currencyAmmount = x.currencyAmmount,
                                              realDate = x.realDate,
-                                             valdiation = x.validation
+                                             blogMessage = x.blogMessage
                                          }).ToList();
 
 
@@ -976,8 +1102,7 @@ namespace testProjectBCA
                     query4.timeStampRekon = item.timeStampRekon;
                     query4.currencyAmmount = item.currencyAmmount;
                     query4.realDate = item.realDate;
-                    query4.valdiation = item.valdiation;
-
+                    query4.blogMessage = item.blogMessage;
                     en.SaveChanges();
 
                     rsvToRemove.Add(item);
@@ -1183,10 +1308,10 @@ namespace testProjectBCA
                                                   actionRekon = x.action,
                                                   statusRekon = x.status,
                                                   dueDate = x.dueDate,
+                                                  blogMessage = x.blogMessage,
                                                   blogTime = x.blogTime,
                                                   currencyAmmount = x.currencyAmmount,
-                                                  realDate = x.realDate,
-                                                  validation = x.validation
+                                                  realDate = x.realDate
                                               }).ToList();
 
             DateTime maxdate = rspv.Max(x => (DateTime)x.dueDate);

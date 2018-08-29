@@ -17,6 +17,8 @@ namespace testProjectBCA
         public rekonSaldoTrxCabang()
         {
             InitializeComponent();
+            reloadComboPkt();
+            //dateTimePicker1.Visible = false;
             buttonSearch.Visible = false;
             textBoxSearch.Visible = false;
             comboSetBon.SelectedIndex = 0;
@@ -24,35 +26,46 @@ namespace testProjectBCA
             reloadBonBelum();
         }
 
-        private void buttonGenerate_Click(object sender, EventArgs e)
-        {
-            if (comboSetBon.SelectedIndex == 0 && comboVal.SelectedIndex == 0)
-            {
-                reloadSetoranSudah();
-            }
-            else if (comboSetBon.SelectedIndex == 0 && comboVal.SelectedIndex == 1)
-            {
-                reloadSetoranBelum();
-            }
-            else if (comboSetBon.SelectedIndex == 1 && comboVal.SelectedIndex == 0)
-            {
-                reloadBonSudah();
-            }
-            else if (comboSetBon.SelectedIndex == 1 && comboVal.SelectedIndex == 1)
-            {
-                reloadBonBelum();
-            }
-        }
 
+        public void reloadComboPkt()
+        {
+            List<String> vendor = new List<string>();
+
+            var query = (from x in en.RekonSaldoPerVendors
+                         select x.vendor).Distinct().ToList();
+
+            foreach (var item in query)
+            {
+                vendor.Add(item.ToString());
+            }
+
+            comboPkt.DataSource = vendor;
+        }
+        
         public void reloadSetoranBelum()
         {
-            DateTime date1 = dateTimePicker1.Value.Date;
+           
             DateTime date2 = dateTimePicker2.Value.Date;
-            var query = (from x in en.RekonSaldoPerVendors
+            var prepare = (from x in en.RekonSaldoPerVendors.AsEnumerable()
+                           where (x.actionRekon.Contains("Return") && x.statusRekon.Equals("In Transit")) &&  (DateTime.Parse(x.dueDate.ToString()).Date == dateTimePicker2.Value.Date || DateTime.Parse(x.realDate.ToString())  == dateTimePicker2.Value.Date) && x.vendor == comboPkt.SelectedValue.ToString()
+                           group x by new { x.dueDate, x.cashPointtId, x.blogTime, x.actionRekon, x.statusRekon, x.blogMessage } into z
+                           select new
+                           {
+                               blogTime = z.Key.blogTime,
+                               actionRekon = z.Key.actionRekon,
+                               statusRekon = z.Key.statusRekon,
+                               blogMessage = z.Key.blogMessage,
+                               dueDate = z.Key.dueDate,
+                               cashPointtId = z.Key.cashPointtId,
+                               currencyAmmount = z.Sum(x => x.currencyAmmount),
+                               //x.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(x.blogTime.ToString()).Hour < 21 ? x.blogTime : DateTime.Parse(x.blogTime.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(x.dueDate.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
+                               validation = z.Key.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(z.Key.blogTime.ToString()).Hour < 21 ? z.Key.blogTime : DateTime.Parse(z.Key.blogTime.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(dateTimePicker2.Value.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
+                           }).ToList();
+
+            var query = (from x in prepare
                          where x.actionRekon.Contains("Return") && x.validation.Equals("NOT VALIDATED") && x.statusRekon.Equals("In Transit")
-                         && x.dueDate >= date1 && x.dueDate <= date2
-                         group x by new { x.dueDate, x.cashPointtId } into z
-                         select new { dueDate = z.Key.dueDate, cashPointId = z.Key.cashPointtId, currencyAmmount = z.Sum(x => x.currencyAmmount) }).ToList();
+                         group x by new { x.dueDate, x.cashPointtId, x.blogTime } into z
+                         select new { dueDate = z.Key.dueDate, blogTime = z.Key.blogTime, cashPointId = z.Key.cashPointtId, currencyAmmount = z.Sum(x => x.currencyAmmount) }).ToList();
 
             dataGridView1.DataSource = query;
 
@@ -61,13 +74,27 @@ namespace testProjectBCA
         }
         public void reloadSetoranSudah()
         {
-            DateTime date1 = dateTimePicker1.Value.Date;
+         
             DateTime date2 = dateTimePicker2.Value.Date;
-            var query = (from x in en.RekonSaldoPerVendors
+            var prepare = (from x in en.RekonSaldoPerVendors.AsEnumerable()
+                           where (x.actionRekon.Contains("Return") && x.statusRekon.Equals("In Transit")) && (DateTime.Parse(x.dueDate.ToString()).Date == dateTimePicker2.Value.Date || DateTime.Parse(x.realDate.ToString()) == dateTimePicker2.Value.Date) && x.vendor == comboPkt.SelectedValue.ToString()
+                           group x by new { x.dueDate, x.cashPointtId, x.blogTime, x.actionRekon, x.statusRekon, x.blogMessage } into z
+                           select new
+                           {
+                               blogTime = z.Key.blogTime,
+                               actionRekon = z.Key.actionRekon,
+                               statusRekon = z.Key.statusRekon,
+                               blogMessage = z.Key.blogMessage,
+                               dueDate = z.Key.dueDate,
+                               cashPointtId = z.Key.cashPointtId,
+                               currencyAmmount = z.Sum(x => x.currencyAmmount),
+                               validation = z.Key.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(z.Key.blogTime.ToString()).Hour < 21 ? z.Key.blogTime : DateTime.Parse(z.Key.blogTime.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(dateTimePicker2.Value.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
+                           }).ToList();
+
+            var query = (from x in prepare
                          where x.actionRekon.Contains("Return") && x.validation.Equals("VALIDATED") && x.statusRekon.Equals("In Transit")
-                         && x.dueDate >= date1 && x.dueDate <= date2
-                         group x by new { x.dueDate, x.cashPointtId } into z
-                         select new { dueDate = z.Key.dueDate, cashPointId = z.Key.cashPointtId, currencyAmmount = z.Sum(x => x.currencyAmmount) }).ToList();
+                         group x by new { x.dueDate, x.cashPointtId, x.blogTime } into z
+                         select new { dueDate = z.Key.dueDate, blogTime = z.Key.blogTime, cashPointId = z.Key.cashPointtId, currencyAmmount = z.Sum(x => x.currencyAmmount) }).ToList();
 
             dataGridView1.DataSource = query;
 
@@ -76,13 +103,25 @@ namespace testProjectBCA
         }
         public void reloadBonSudah()
         {
-            DateTime date1 = dateTimePicker1.Value.Date;
             DateTime date2 = dateTimePicker2.Value.Date;
-            var query = (from x in en.RekonSaldoPerVendors
-                         where x.actionRekon.Contains("Delivery") && x.validation.Equals("NOT VALIDATED") && x.statusRekon.Equals("Confirmed")
-                         && x.dueDate >= date1 && x.dueDate <= date2
-                         group x by new { x.dueDate, x.cashPointtId } into z
-                         select new { dueDate = z.Key.dueDate, cashPointId = z.Key.cashPointtId, currencyAmmount = z.Sum(x => x.currencyAmmount) }).ToList();
+            var prepare = (from x in en.RekonSaldoPerVendors.AsEnumerable()
+                           where (x.actionRekon.Contains("Delivery") && x.statusRekon.Equals("Confirmed")) && (DateTime.Parse(x.dueDate.ToString()).Date == dateTimePicker2.Value.Date || DateTime.Parse(x.realDate.ToString()) == dateTimePicker2.Value.Date) && x.vendor == comboPkt.SelectedValue.ToString()
+                           group x by new { x.dueDate, x.cashPointtId, x.blogTime, x.actionRekon, x.statusRekon, x.blogMessage } into z
+                           select new
+                           {
+                               blogTime = z.Key.blogTime,
+                               actionRekon = z.Key.actionRekon,
+                               statusRekon = z.Key.statusRekon,
+                               dueDate = z.Key.dueDate,
+                               cashPointtId = z.Key.cashPointtId,
+                               currencyAmmount = z.Sum(x => x.currencyAmmount),
+                               validation = z.Key.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(z.Key.blogTime.ToString()).Hour < 21 ? z.Key.blogTime : DateTime.Parse(z.Key.blogTime.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(dateTimePicker2.Value.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
+                           }).ToList();
+
+            var query = (from x in prepare
+                         where x.actionRekon.Contains("Delivery") && x.validation.Equals("VALIDATED") && x.statusRekon.Equals("Confirmed")
+                         group x by new { x.dueDate, x.cashPointtId, x.blogTime } into z
+                         select new {dueDate = z.Key.dueDate ,blogTime = z.Key.blogTime, cashPointId = z.Key.cashPointtId ,currencyAmmount = z.Sum(x => x.currencyAmmount) } ).ToList();
 
             dataGridView1.DataSource = query;
 
@@ -91,13 +130,26 @@ namespace testProjectBCA
         }
         public void reloadBonBelum()
         {
-            DateTime date1 = dateTimePicker1.Value.Date;
+ 
             DateTime date2 = dateTimePicker2.Value.Date;
-            var query = (from x in en.RekonSaldoPerVendors
-                         where x.actionRekon.Contains("Delivery") && x.validation.Equals("VALIDATED") && x.statusRekon.Equals("Confirmed")
-                         && x.dueDate >= date1 && x.dueDate <= date2
-                         group x by new { x.dueDate, x.cashPointtId } into z
-                         select new { dueDate = z.Key.dueDate, cashPointId = z.Key.cashPointtId, currencyAmmount = z.Sum(x => x.currencyAmmount) }).ToList();
+            var prepare = (from x in en.RekonSaldoPerVendors.AsEnumerable()
+                           where (x.actionRekon.Contains("Delivery") && x.statusRekon.Equals("Confirmed")) && (DateTime.Parse(x.dueDate.ToString()).Date == dateTimePicker2.Value.Date || DateTime.Parse(x.realDate.ToString()) == dateTimePicker2.Value.Date) && x.vendor == comboPkt.SelectedValue.ToString()
+                           group x by new { x.dueDate, x.cashPointtId, x.blogTime, x.actionRekon, x.statusRekon, x.blogMessage } into z
+                           select new
+                           {
+                               blogTime = z.Key.blogTime,
+                               actionRekon = z.Key.actionRekon,
+                               statusRekon = z.Key.statusRekon,
+                               dueDate = z.Key.dueDate,
+                               cashPointtId = z.Key.cashPointtId,
+                               currencyAmmount = z.Sum(x => x.currencyAmmount),
+                               validation = z.Key.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(z.Key.blogTime.ToString()).Hour < 21 ? z.Key.blogTime : DateTime.Parse(z.Key.blogTime.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(dateTimePicker2.Value.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
+                           }).ToList();
+
+            var query = (from x in prepare
+                         where x.actionRekon.Contains("Delivery") && x.validation.Equals("NOT VALIDATED") && x.statusRekon.Equals("Confirmed")
+                         group x by new { x.dueDate, x.cashPointtId, x.blogTime } into z
+                         select new { dueDate = z.Key.dueDate, blogTime = z.Key.blogTime, cashPointId = z.Key.cashPointtId, currencyAmmount = z.Sum(x => x.currencyAmmount) }).ToList();
 
             dataGridView1.DataSource = query;
 
@@ -115,16 +167,16 @@ namespace testProjectBCA
         public void formatting()
         {
             if (dataGridView1.Rows.Count > 0)
-            {
-                dataGridView1.Columns[2].DefaultCellStyle.Format = "c";
-                dataGridView1.Columns[2].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("ID-id");
+            { 
+                    dataGridView1.Columns[2].DefaultCellStyle.Format = "c";
+                    dataGridView1.Columns[2].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("ID-id");
             }
         }
 
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
         {
             DataGridViewSelectedCellCollection cells = dataGridView1.SelectedCells;
-
+           
             foreach (DataGridViewCell cell in cells)
             {
                 int rowidx = cell.RowIndex;
@@ -147,6 +199,96 @@ namespace testProjectBCA
                         dataGridView1.Rows[a].Cells[b].Style.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
                     }
                 }
+            }
+        }
+
+        private void searchTextBox_TextChanged(object sender, EventArgs e)
+        {
+            //(dataGridView1.DataSource as DataTable).DefaultView.RowFilter = string.Format("cashPointId LIKE '%{0}%'", textBoxSearch.Text);
+        }
+
+        private void buttonSearch_Click(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void comboPkt_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (comboSetBon.SelectedIndex == 0 && comboVal.SelectedIndex == 0)
+            {
+                reloadSetoranSudah();
+            }
+            else if (comboSetBon.SelectedIndex == 0 && comboVal.SelectedIndex == 1)
+            {
+                reloadSetoranBelum();
+            }
+            else if (comboSetBon.SelectedIndex == 1 && comboVal.SelectedIndex == 0)
+            {
+                reloadBonSudah();
+            }
+            else if (comboSetBon.SelectedIndex == 1 && comboVal.SelectedIndex == 1)
+            {
+                reloadBonBelum();
+            }
+        }
+
+        private void comboVal_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (comboSetBon.SelectedIndex == 0 && comboVal.SelectedIndex == 0)
+            {
+                reloadSetoranSudah();
+            }
+            else if (comboSetBon.SelectedIndex == 0 && comboVal.SelectedIndex == 1)
+            {
+                reloadSetoranBelum();
+            }
+            else if (comboSetBon.SelectedIndex == 1 && comboVal.SelectedIndex == 0)
+            {
+                reloadBonSudah();
+            }
+            else if (comboSetBon.SelectedIndex == 1 && comboVal.SelectedIndex == 1)
+            {
+                reloadBonBelum();
+            }
+        }
+
+        private void comboSetBon_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (comboSetBon.SelectedIndex == 0 && comboVal.SelectedIndex == 0)
+            {
+                reloadSetoranSudah();
+            }
+            else if (comboSetBon.SelectedIndex == 0 && comboVal.SelectedIndex == 1)
+            {
+                reloadSetoranBelum();
+            }
+            else if (comboSetBon.SelectedIndex == 1 && comboVal.SelectedIndex == 0)
+            {
+                reloadBonSudah();
+            }
+            else if (comboSetBon.SelectedIndex == 1 && comboVal.SelectedIndex == 1)
+            {
+                reloadBonBelum();
+            }
+        }
+
+        private void dateTimePicker2_ValueChanged(object sender, EventArgs e)
+        {
+            if (comboSetBon.SelectedIndex == 0 && comboVal.SelectedIndex == 0)
+            {
+                reloadSetoranSudah();
+            }
+            else if (comboSetBon.SelectedIndex == 0 && comboVal.SelectedIndex == 1)
+            {
+                reloadSetoranBelum();
+            }
+            else if (comboSetBon.SelectedIndex == 1 && comboVal.SelectedIndex == 0)
+            {
+                reloadBonSudah();
+            }
+            else if (comboSetBon.SelectedIndex == 1 && comboVal.SelectedIndex == 1)
+            {
+                reloadBonBelum();
             }
         }
     }

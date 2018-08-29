@@ -25,6 +25,6 @@ namespace testProjectBCA
         public Nullable<System.DateTime> timeStampRekon { get; set; }
         public Nullable<long> currencyAmmount { get; set; }
         public Nullable<System.DateTime> realDate { get; set; }
-        public string valdiation { get; set; }
+        public string blogMessage { get; set; }
     }
 }

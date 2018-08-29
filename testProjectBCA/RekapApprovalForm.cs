@@ -217,7 +217,7 @@ namespace testProjectBCA
             InputPromptForm ipf = new InputPromptForm("Input Password", "Input");
             if (ipf.ShowDialog() == DialogResult.OK)
             {
-                if (ipf.value != db.Passwords.Select(x => x.password1).FirstOrDefault())
+                if (!BCrypt.Net.BCrypt.Verify(ipf.value ,db.Passwords.Select(x => x.password1).FirstOrDefault()))
                 {
                     MessageBox.Show("Password Salah");
                 }

@@ -22,17 +22,24 @@ namespace testProjectBCA
         List<String> tahun1 = new List<String>();
         List<String> tahun2 = new List<String>();
         int jumlahPkt;
+        String koordinator;
         public SLAProsesForm()
         {
             InitializeComponent();
 
+            if (loadComboSLA())
+            {
+                loadComboPkt();
 
-            loadComboPkt();
+                comboNamaPkt.SelectedIndex = 0;
 
-            comboNamaPkt.SelectedIndex = 0;
-
-            initCombos();
-
+                initCombos();
+            }
+            else
+            {
+                MessageBox.Show("Data tidak ada!");
+                this.Close();
+            }
         }
         void initCombos()
         {
@@ -214,16 +221,31 @@ namespace testProjectBCA
                 }
             }
         }
-
+        bool loadComboSLA()
+        {
+            List<String> listSLA = (from x in db.Pkts select x.koordinator).Distinct().ToList();
+            if (listSLA.Any())
+            {
+                slaComboBox.DataSource = listSLA;
+                slaComboBox.SelectedIndex = 0;
+                koordinator = listSLA[0];
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         void loadComboPkt()
         {
-            List<String>listPkt = (from x in db.Pkts where x.kanwil.ToLower().Contains("JABO") && x.kodePktCabang != "" select x.namaPkt).ToList();
+            String koordinator = slaComboBox.SelectedItem.ToString();
+            List<String>listPkt = (from x in db.Pkts where x.koordinator == koordinator && x.kodePktCabang != "" select x.namaPkt).ToList();
             listPkt = listPkt.Select(x => x.ToUpper().Contains("CASH PROCESSING CENTER ALAM SUTERA") ? "CASH PROCESSING CENTER ALAM SUTERA" : x).Distinct().ToList();
 
             jumlahPkt = listPkt.Count;
 
-            listPkt.Add("All Vendor(JABO)");
-            listPkt.Add("All Vendor(JABO) Detail");
+            listPkt.Add("All Vendor ("+sla+")");
+            listPkt.Add("All Vendor (" + sla + ")" + " Detail");
             comboNamaPkt.DataSource = listPkt;
         }
         public void reloadData()
@@ -410,6 +432,8 @@ namespace testProjectBCA
             slapav = new List<slaProsesDisplayAllVendor>();
 
             var listAllStokPosisiData = (from x in db.StokPosisis
+                                         join z in db.Pkts on x.namaPkt equals z.namaPkt
+                                         where z.koordinator == koordinator
                                          select x).ToList();
             var toChange = listAllStokPosisiData.Where(x => x.namaPkt.Contains("CASH PROCESSING CENTER ALAM SUTERA")).ToList();
             foreach (var temp in toChange)
@@ -592,6 +616,8 @@ namespace testProjectBCA
             slapav = new List<slaProsesDisplayAllVendor>();
 
             var listAllStokPosisiData = (from x in db.StokPosisis
+                                         join z in db.Pkts on x.namaPkt equals z.namaPkt
+                                         where z.koordinator == koordinator
                                          select x).ToList();
             var toChange = listAllStokPosisiData.Where(x => x.namaPkt.Contains("CASH PROCESSING CENTER ALAM SUTERA")).ToList();
             foreach (var temp in toChange)
@@ -1271,6 +1297,12 @@ namespace testProjectBCA
                 }
                 File.WriteAllText(sv.FileName, csv);
             }
+        }
+
+        private void slaComboBox_SelectedValueChanged(object sender, EventArgs e)
+        {
+            koordinator = slaComboBox.SelectedItem.ToString();
+            loadComboPkt();
         }
     }
     public class Result

@@ -77,6 +77,12 @@ namespace testProjectBCA
                         toEdit.sentralisasi = row[8].ToString().Replace(" -", "");
                         Console.WriteLine(row[8].ToString());
                         toEdit.vendor = row[10].ToString();
+
+                        Int64 buf, kapasitasCPC = 0;
+                        if (Int64.TryParse(row[11].ToString(), out buf))
+                            kapasitasCPC = buf;
+                        toEdit.kapasitasCPC = kapasitasCPC;
+
                         if (String.IsNullOrEmpty(row[3].ToString()))
                             toEdit.kodePktCabang = "";
                         else
@@ -104,6 +110,10 @@ namespace testProjectBCA
                         newPkt.sentralisasi = row[8].ToString().Replace(" -", "");
                         Console.WriteLine(row[8].ToString());
                         newPkt.vendor = row[10].ToString();
+                        Int64 buf, kapasitasCPC = 0;
+                        if (Int64.TryParse(row[11].ToString(), out buf))
+                            kapasitasCPC = buf;
+                        toEdit.kapasitasCPC = kapasitasCPC;
                         if (String.IsNullOrEmpty(row[3].ToString()))
                             newPkt.kodePktCabang = "";
                         else

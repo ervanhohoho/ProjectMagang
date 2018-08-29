@@ -18,12 +18,13 @@ namespace testProjectBCA
         List<DataPermintaanDanSumber> listDataSumber;
         List<StoreClass> morningbalance100;
         List<StoreClass> morningbalance50;
-
+        List<StoreClass> newNote100;
+        List<StoreClass> newNote50;
         public PembagianSaldoForm()
         {
             InitializeComponent();
         }
-        public PembagianSaldoForm(List<StoreClass> morningBalance100, List<StoreClass> morningBalance50)
+        public PembagianSaldoForm(List<StoreClass> morningBalance100, List<StoreClass> morningBalance50, List<StoreClass> newNote100, List<StoreClass>newNote50)
         {
             InitializeComponent();
 
@@ -32,11 +33,70 @@ namespace testProjectBCA
 
             Database1Entities db = new Database1Entities();
             DateTime maxDateDetailApproval = (DateTime) db.DetailApprovals.Where(x => x.bon100 != -1).Max(x => x.tanggal);
+
             this.morningbalance100 = this.morningbalance100.Where(x => x.tanggal <= maxDateDetailApproval).ToList();
             this.morningbalance50 = this.morningbalance50.Where(x => x.tanggal <= maxDateDetailApproval).ToList();
+            if(newNote100.Any())
+            {
+                foreach (var temp in newNote100)
+                {
+                    var toedit = morningbalance100.Where(x => x.kodePkt == temp.kodePkt && x.tanggal == temp.tanggal).FirstOrDefault();
+                    toedit.val = toedit.val - temp.val;
+                }
+                foreach (var temp in newNote50)
+                {
+                    var toedit = morningbalance50.Where(x => x.kodePkt == temp.kodePkt && x.tanggal == temp.tanggal).FirstOrDefault();
+                    toedit.val = toedit.val - temp.val;
+                }
+                this.newNote100 = newNote100;
+                this.newNote50 = newNote50;
+            }
+            else
+            {
+                this.newNote100 = loadNewNote100();
+                this.newNote50 = loadNewNote50();
+            }
             initPembagianGridView();
             initListSisaPermintaan();
             initListSumber();
+        }
+        List<StoreClass> loadNewNote100()
+        {
+            Database1Entities db = new Database1Entities();
+            List<StoreClass> result = new List<StoreClass>();
+            var query = (from x in db.StokPosisis
+                         select x).ToList();
+            var q2 = (from x in query
+                      where x.tanggal == Variables.todayDate
+                      && x.denom == "100000"
+                      select x).ToList();
+
+            result = q2.Select(x => new StoreClass()
+            {
+                kodePkt = x.namaPkt,
+                tanggal = (DateTime)x.tanggal,
+                val = (Int64)x.newBaru
+            }).ToList();
+            return result;
+        }
+        List<StoreClass> loadNewNote50()
+        {
+            Database1Entities db = new Database1Entities();
+            List<StoreClass> result = new List<StoreClass>();
+            var query = (from x in db.StokPosisis
+                         select x).ToList();
+            var q2 = (from x in query
+                      where x.tanggal == Variables.todayDate
+                      && x.denom == "50000"
+                      select x).ToList();
+
+            result = q2.Select(x => new StoreClass()
+            {
+                kodePkt = x.namaPkt,
+                tanggal = (DateTime)x.tanggal,
+                val = (Int64)x.newBaru
+            }).ToList();
+            return result;
         }
         public void initListSumber()
         {
@@ -46,10 +106,22 @@ namespace testProjectBCA
                      {
                          tanggal = x.tanggal,
                          namaPkt = x.kodePkt,
+                         jenisUang = "FIT",
                          d100 = x.val,
                          d50 = y.val,
                          d20 = 0
                      }).ToList();
+            q.AddRange((from x in newNote100
+                       join y in newNote50 on new { x.kodePkt, x.tanggal } equals new { y.kodePkt, y.tanggal }
+                       select new DataPermintaanDanSumber()
+                       {
+                           tanggal = x.tanggal,
+                           namaPkt = x.kodePkt,
+                           jenisUang = "NEW NOTE",
+                           d100 = x.val,
+                           d50 = y.val,
+                           d20 = 0
+                       }).ToList());
             sumberDanaGridView.DataSource = q.OrderBy(x => x.namaPkt).OrderBy(x => x.tanggal).ToList();
             listDataSumber = q;
 
@@ -84,6 +156,14 @@ namespace testProjectBCA
                 HeaderText = "Nama Pkt Sumber",
                 ValueType = typeof(String)
             };
+            var listJenisUang = new List<String>() { "FIT", "NEW NOTE" };
+            DataGridViewComboBoxColumn jenisUang = new DataGridViewComboBoxColumn()
+            {
+                DataSource = listJenisUang,
+                HeaderText = "Jenis Uang",
+                ValueType = typeof(String)
+            };
+
             this.listNamaPktSumber = listNamaPktSumber;
             pembagianGridView.Columns.Add(tgl);
             pembagianGridView.Columns[0].Width = 100;
@@ -93,6 +173,9 @@ namespace testProjectBCA
 
             pembagianGridView.Columns.Add(pktTujuan);
             pembagianGridView.Columns[2].Width = 200;
+
+            pembagianGridView.Columns.Add(jenisUang);
+            pembagianGridView.Columns[3].Width = 70;
 
             pembagianGridView.Columns.Add("100000", "100000");
             pembagianGridView.Columns.Add("50000", "50000");
@@ -182,9 +265,10 @@ namespace testProjectBCA
                     tanggal = DateTime.Parse(row.Cells[0].Value.ToString()),
                     namaPktSumber = row.Cells[1].Value.ToString(),
                     namaPktTujuan = row.Cells[2].Value.ToString(),
-                    d100 = Int64.Parse(row.Cells[3].Value.ToString()),
-                    d50 = Int64.Parse(row.Cells[4].Value.ToString()),
-                    d20 = Int64.Parse(row.Cells[5].Value.ToString())
+                    jenisUang = row.Cells[3].Value.ToString(),
+                    d100 = Int64.Parse(row.Cells[4].Value.ToString()),
+                    d50 = Int64.Parse(row.Cells[5].Value.ToString()),
+                    d20 = Int64.Parse(row.Cells[6].Value.ToString())
                 });
             }
 
@@ -196,7 +280,7 @@ namespace testProjectBCA
                 Console.WriteLine(temp.tanggal.ToShortDateString() + " " + temp.namaPktTujuan);
                 
                 var q = (from x in tempListDataSisa
-                         where x.namaPkt == temp.namaPktTujuan && x.tanggal == temp.tanggal
+                         where x.namaPkt == temp.namaPktTujuan && x.tanggal == temp.tanggal 
                          select x).FirstOrDefault();
                 if (q != null)
                 {
@@ -214,7 +298,7 @@ namespace testProjectBCA
             foreach (var temp in listDataInputanUser)
             {
                 var q = (from x in tempListDataSumber
-                         where x.namaPkt == temp.namaPktSumber && x.tanggal == temp.tanggal
+                         where x.namaPkt == temp.namaPktSumber && x.tanggal == temp.tanggal && x.jenisUang == temp.jenisUang
                          select x).FirstOrDefault();
                 if (q != null)
                 {
@@ -232,9 +316,10 @@ namespace testProjectBCA
             e.Row.Cells[0].Value = Variables.todayDate.ToShortDateString();
             e.Row.Cells[1].Value = listNamaPktSumber[0];
             e.Row.Cells[2].Value = listNamaPkt[0];
-            e.Row.Cells[3].Value = 0;
+            e.Row.Cells[3].Value = "FIT";
             e.Row.Cells[4].Value = 0;
             e.Row.Cells[5].Value = 0;
+            e.Row.Cells[6].Value = 0;
 
         }
 
@@ -250,6 +335,7 @@ namespace testProjectBCA
     {
         public DateTime tanggal { set; get; }
         public String namaPkt { set; get; }
+        public String jenisUang { set; get; }
         public Int64 d100 { set; get; }
         public Int64 d50 { set; get; }
         public Int64 d20 { set; get; }
@@ -257,6 +343,7 @@ namespace testProjectBCA
     public class DataInputanUser
     {
         public DateTime tanggal { set; get; }
+        public String jenisUang { set; get; }
         public String namaPktTujuan { set; get; }
         public String namaPktSumber { set; get; }
         public Int64 d100 { set; get; }

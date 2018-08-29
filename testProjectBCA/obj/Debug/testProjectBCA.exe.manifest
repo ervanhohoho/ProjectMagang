@@ -42,6 +42,18 @@
     </dependentAssembly>
   </dependency>
   <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="BCrypt.Net-Next.dll" size="23552">
+      <assemblyIdentity name="BCrypt.Net-Next" version="3.1.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>p8rrRmOTg20KU4xUmlGBR3XCvYAY7KPS6P7U4x9pyW8=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="ClosedXML.dll" size="947712">
       <assemblyIdentity name="ClosedXML" version="0.92.1.0" publicKeyToken="FD1EB21B62AE805B" language="neutral" processorArchitecture="msil" />
       <hash>
@@ -378,6 +390,18 @@
     </dependentAssembly>
   </dependency>
   <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="MoreLinq.dll" size="262656">
+      <assemblyIdentity name="MoreLinq" version="3.0.0.0" publicKeyToken="384D532D7E88985D" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>0hDVzqr/XGnUm6XMshNR+Ka5zvphXCWCEgbusBHRkpE=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Oracle.DataAccess.dll" size="1101824">
       <assemblyIdentity name="Oracle.DataAccess" version="4.112.2.0" publicKeyToken="89B483F429C47342" language="neutral" processorArchitecture="x86" />
       <hash>
@@ -426,14 +450,26 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="testProjectBCA.exe" size="11699712">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.ValueTuple.dll" size="79208">
+      <assemblyIdentity name="System.ValueTuple" version="4.0.2.0" publicKeyToken="CC7B13FFCD2DDD51" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>4c2JuU6Ii9/Gz4zIYIc1xA1LwNNYDT+SEAIwS2lsYcM=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="testProjectBCA.exe" size="11796480">
       <assemblyIdentity name="testProjectBCA" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>lpV8oIiHK6/eDyX7w9eKPevyTCKpG8ry9v+0xEi4jWw=</dsig:DigestValue>
+        <dsig:DigestValue>CPtFrZ2JBPPcFDQBqnVJU7ECktG/DjQRn9jAK8L4d5U=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -455,13 +491,13 @@
       <dsig:DigestValue>CabSpKm6yYNT6twBZzKHKM3v3aBYMgNzK0uSDYpHoWw=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="testProjectBCA.exe.config" size="3093">
+  <file name="testProjectBCA.exe.config" size="3079">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>eGHzEJJVSPCYB8jrVZyB4aF3IYbY874tUnOMMcrmffw=</dsig:DigestValue>
+      <dsig:DigestValue>FlFF6SMJY7NT5B8y63YR/quOIM4o6h7ghXWPx+UvLDs=</dsig:DigestValue>
     </hash>
   </file>
 </asmv1:assembly>

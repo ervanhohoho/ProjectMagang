@@ -11,7 +11,8 @@
     <Property Name="jobId" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
     <Property Name="totalAmount" Type="Int64" />
     <Property Name="CustomerCode" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
-    <Property Name="CustomerName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="CustomerName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="TotalUangBesar" Type="Int64" />
   </EntityType>
   <EntityType Name="Approval">
     <Key>
@@ -27,6 +28,13 @@
     <Property Name="validasiSpv" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="validasiNoTxn" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
   </EntityType>
+  <EntityType Name="AsuransiLayanan">
+    <Key>
+      <PropertyRef Name="jenisLayanan" />
+    </Key>
+    <Property Name="jenisLayanan" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="asuransi" Type="Double" />
+  </EntityType>
   <EntityType Name="Cabang">
     <Key>
       <PropertyRef Name="kodeCabang" />
@@ -34,6 +42,10 @@
     <Property Name="kodeCabang" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="kodePkt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
     <Property Name="kanwil" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="kcu" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="area" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="namaCabang" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="tipe" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="Cashpoint">
     <Key>
@@ -119,13 +131,37 @@
     <Property Name="workDay" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
     <Property Name="event" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
   </EntityType>
+  <EntityType Name="ForecastDetail">
+    <Key>
+      <PropertyRef Name="idForecast" />
+      <PropertyRef Name="idForecastDetail" />
+    </Key>
+    <Property Name="idForecast" Type="Int32" Nullable="false" />
+    <Property Name="idForecastDetail" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="tanggal" Type="DateTime" Precision="0" />
+    <Property Name="inCabang100" Type="Int64" />
+    <Property Name="inCabang50" Type="Int64" />
+    <Property Name="inRetail100" Type="Int64" />
+    <Property Name="inRetail50" Type="Int64" />
+    <Property Name="outATM100" Type="Int64" />
+    <Property Name="outATM50" Type="Int64" />
+    <Property Name="outCabang100" Type="Int64" />
+    <Property Name="outCabang50" Type="Int64" />
+  </EntityType>
+  <EntityType Name="ForecastHeader">
+    <Key>
+      <PropertyRef Name="idForecast" />
+    </Key>
+    <Property Name="idForecast" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="tanggal" Type="DateTime" Precision="0" />
+  </EntityType>
   <EntityType Name="HargaLayanan">
     <Key>
       <PropertyRef Name="jenisLayanan" />
       <PropertyRef Name="stc_cos" />
     </Key>
     <Property Name="jenisLayanan" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="stc_cos" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="stc_cos" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="hargaRing1" Type="Int64" />
     <Property Name="hargaRing2" Type="Int64" />
     <Property Name="hargaRing3" Type="Int64" />
@@ -144,6 +180,17 @@
     <Property Name="C20" Type="Int64" />
     <NavigationProperty Name="Pkt" Relationship="Self.FK_laporanBon_Pkt" FromRole="laporanBon" ToRole="Pkt" />
   </EntityType>
+  <EntityType Name="LaporanPermintaanAdhoc">
+    <Key>
+      <PropertyRef Name="idLaporan" />
+    </Key>
+    <Property Name="idLaporan" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="kodePkt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="tanggal" Type="DateTime" Precision="0" />
+    <Property Name="C100" Type="Int64" />
+    <Property Name="C50" Type="Int64" />
+    <Property Name="C20" Type="Int64" />
+  </EntityType>
   <EntityType Name="LaporanPermintaanBon">
     <Key>
       <PropertyRef Name="idLaporan" />
@@ -161,10 +208,19 @@
     </Key>
     <Property Name="kodeNasabah" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="fasilitasLayanan" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-    <Property Name="metodeLayanan" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+    <Property Name="metodeLayanan" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
     <Property Name="kodeCabang" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
     <Property Name="kodePktCabang" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="ring" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="NomorRekening" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+    <Property Name="GroupNasabah" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="namaNasabah" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="segmentasiNasabah" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="sentralisasi" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="subsidi" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="persentaseSubsidi" Type="Double" />
+    <Property Name="kuota" Type="Int32" />
+    <Property Name="subsidiCabang" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="Opti">
     <Key>
@@ -174,6 +230,23 @@
     <Property Name="idCashpoint" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
     <Property Name="tanggal" Type="DateTime" Precision="0" />
     <Property Name="prediksi" Type="Int64" />
+  </EntityType>
+  <EntityType Name="OrderTracking">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="kodePkt" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="kodeCabang" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="tanggal" Type="DateTime" Precision="0" />
+    <Property Name="nominalDispute" Type="Int64" />
+  </EntityType>
+  <EntityType Name="Password">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int16" Nullable="false" />
+    <Property Name="password1" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
   </EntityType>
   <EntityType Name="Pkt">
     <Key>
@@ -187,8 +260,115 @@
     <Property Name="sentralisasi" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="vendor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="kodePktCabang" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="kodePktATM" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="laporanBons" Relationship="Self.FK_laporanBon_Pkt" FromRole="Pkt" ToRole="laporanBon" />
     <NavigationProperty Name="TransaksiAtms" Relationship="Self.FK_TransaksiAtms_Pkt" FromRole="Pkt" ToRole="TransaksiAtms" />
+    <Property Name="kapasitasCPC" Type="Int64" />
+  </EntityType>
+  <EntityType Name="RekapSelisihAmbilSetor">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="kodePenerimaDana" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="kodeSumberDana" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="lebih" Type="Int64" />
+    <Property Name="kurang" Type="Int64" />
+    <Property Name="palsu" Type="Int64" />
+    <Property Name="mutilasi" Type="Int64" />
+    <Property Name="total" Type="Int64" />
+    <Property Name="noTxn" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="tanggalTransaksi" Type="DateTime" Precision="0" />
+    <Property Name="tanggalTemu" Type="DateTime" Precision="0" />
+    <Property Name="noBA" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="keterangan" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="RekonSaldoPerVendor">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="cashPointtId" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="confId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="orderDate" Type="DateTime" Precision="0" />
+    <Property Name="vendor" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="actionRekon" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="statusRekon" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="dueDate" Type="DateTime" Precision="0" />
+    <Property Name="blogTime" Type="DateTime" Precision="3" />
+    <Property Name="currencyAmmount" Type="Int64" />
+    <Property Name="realDate" Type="DateTime" Precision="0" />
+    <Property Name="blogMessage" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="RekonSaldoVault">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="vaultId" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="confId" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="fundingSoure" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="actionRekon" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="statusRekon" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="orderDate" Type="DateTime" Precision="0" />
+    <Property Name="dueDate" Type="DateTime" Precision="0" />
+    <Property Name="timeStampRekon" Type="DateTime" Precision="3" />
+    <Property Name="currencyAmmount" Type="Int64" />
+    <Property Name="realDate" Type="DateTime" Precision="0" />
+    <Property Name="blogMessage" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="SaveAsk">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="tanggal" Type="DateTime" Precision="0" />
+    <Property Name="rekapAsk" Type="Int64" />
+    <Property Name="ask" Type="Int64" />
+    <Property Name="komentar" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="saveBeeHive">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="tanggal" Type="DateTime" Precision="0" />
+    <Property Name="kodePerusahaan" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="totalNominal" Type="Int64" />
+    <Property Name="namaFile" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="saveMc">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="tanggal" Type="DateTime" Precision="0" />
+    <Property Name="realDate" Type="DateTime" Precision="0" />
+    <Property Name="customerCode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="amountTotal" Type="Int64" />
+    <Property Name="d100k" Type="Int64" />
+    <Property Name="d50k" Type="Int64" />
+    <Property Name="d20k" Type="Int64" />
+    <Property Name="d10k" Type="Int64" />
+    <Property Name="d5k" Type="Int64" />
+    <Property Name="d2k" Type="Int64" />
+    <Property Name="d1k" Type="Int64" />
+    <Property Name="amountCoin" Type="Int64" />
+    <Property Name="time" Type="Time" Precision="7" />
+  </EntityType>
+  <EntityType Name="SaveRekap">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="kodePkt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="orderTracking" Type="Int64" />
+    <Property Name="rekapSelesai" Type="Int64" />
+    <Property Name="rekapBelumSelesai" Type="Int64" />
+    <Property Name="totalRekap" Type="Int64" />
+    <Property Name="keterangan" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+    <Property Name="komentar" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="tanggal" Type="DateTime" Precision="0" />
   </EntityType>
   <EntityType Name="StokPosisi">
     <Key>
@@ -214,6 +394,18 @@
     <Property Name="denom" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="tanggal" Type="DateTime" Precision="0" />
     <Property Name="namaPkt" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="inCabang" Type="Int64" />
+    <Property Name="inRetail" Type="Int64" />
+    <Property Name="outCabang" Type="Int64" />
+  </EntityType>
+  <EntityType Name="TabelTarikan">
+    <Key>
+      <PropertyRef Name="tanggal" />
+      <PropertyRef Name="wsid" />
+    </Key>
+    <Property Name="tanggal" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="wsid" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="totalTarikan" Type="Int64" Nullable="false" />
   </EntityType>
   <EntityType Name="TransaksiAtm">
     <Key>
@@ -254,6 +446,24 @@
     <Property Name="saldoAkhir100" Type="Int64" />
     <NavigationProperty Name="Pkt" Relationship="Self.FK_TransaksiAtms_Pkt" FromRole="TransaksiAtms" ToRole="Pkt" />
   </EntityType>
+  <EntityType Name="VaultOrderBlogHistory">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="vaultId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="cashPoint" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="action" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="status" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="confNum" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="orderDate" Type="DateTime" Precision="0" />
+    <Property Name="dueDate" Type="DateTime" Precision="0" />
+    <Property Name="timeStamp" Type="DateTime" Precision="3" />
+    <Property Name="taskId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="blogMessage" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="userName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="currencyAmmount" Type="Int64" />
+  </EntityType>
   <Association Name="FK_laporanBon_Pkt">
     <End Role="Pkt" Type="Self.Pkt" Multiplicity="0..1" />
     <End Role="laporanBon" Type="Self.laporanBon" Multiplicity="*" />
@@ -281,19 +491,34 @@
   <EntityContainer Name="Database1Entities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Abacas" EntityType="Self.Abaca" />
     <EntitySet Name="Approvals" EntityType="Self.Approval" />
+    <EntitySet Name="AsuransiLayanans" EntityType="Self.AsuransiLayanan" />
     <EntitySet Name="Cabangs" EntityType="Self.Cabang" />
     <EntitySet Name="Cashpoints" EntityType="Self.Cashpoint" />
     <EntitySet Name="DailyStocks" EntityType="Self.DailyStock" />
     <EntitySet Name="DetailApprovals" EntityType="Self.DetailApproval" />
     <EntitySet Name="EventTanggals" EntityType="Self.EventTanggal" />
+    <EntitySet Name="ForecastDetails" EntityType="Self.ForecastDetail" />
+    <EntitySet Name="ForecastHeaders" EntityType="Self.ForecastHeader" />
     <EntitySet Name="HargaLayanans" EntityType="Self.HargaLayanan" />
     <EntitySet Name="laporanBons" EntityType="Self.laporanBon" />
+    <EntitySet Name="LaporanPermintaanAdhocs" EntityType="Self.LaporanPermintaanAdhoc" />
     <EntitySet Name="LaporanPermintaanBons" EntityType="Self.LaporanPermintaanBon" />
     <EntitySet Name="Nasabahs" EntityType="Self.Nasabah" />
     <EntitySet Name="Optis" EntityType="Self.Opti" />
+    <EntitySet Name="OrderTrackings" EntityType="Self.OrderTracking" />
+    <EntitySet Name="Passwords" EntityType="Self.Password" />
     <EntitySet Name="Pkts" EntityType="Self.Pkt" />
+    <EntitySet Name="RekapSelisihAmbilSetors" EntityType="Self.RekapSelisihAmbilSetor" />
+    <EntitySet Name="RekonSaldoPerVendors" EntityType="Self.RekonSaldoPerVendor" />
+    <EntitySet Name="RekonSaldoVaults" EntityType="Self.RekonSaldoVault" />
+    <EntitySet Name="SaveAsks" EntityType="Self.SaveAsk" />
+    <EntitySet Name="saveBeeHives" EntityType="Self.saveBeeHive" />
+    <EntitySet Name="saveMcs" EntityType="Self.saveMc" />
+    <EntitySet Name="SaveRekaps" EntityType="Self.SaveRekap" />
     <EntitySet Name="StokPosisis" EntityType="Self.StokPosisi" />
+    <EntitySet Name="TabelTarikans" EntityType="Self.TabelTarikan" />
     <EntitySet Name="TransaksiAtms" EntityType="Self.TransaksiAtm" />
+    <EntitySet Name="VaultOrderBlogHistories" EntityType="Self.VaultOrderBlogHistory" />
     <AssociationSet Name="FK_laporanBon_Pkt" Association="Self.FK_laporanBon_Pkt">
       <End Role="Pkt" EntitySet="Pkts" />
       <End Role="laporanBon" EntitySet="laporanBons" />
@@ -302,5 +527,31 @@
       <End Role="Pkt" EntitySet="Pkts" />
       <End Role="TransaksiAtms" EntitySet="TransaksiAtms" />
     </AssociationSet>
+    <EntitySet Name="TabelTarikanSetoranCRMs" EntityType="CACModel.TabelTarikanSetoranCRM" />
+    <EntitySet Name="ApprovalPembagianSaldoes" EntityType="CACModel.ApprovalPembagianSaldo" />
   </EntityContainer>
+  <EntityType Name="TabelTarikanSetoranCRM">
+    <Key>
+      <PropertyRef Name="tanggal" />
+      <PropertyRef Name="wsid" />
+      <PropertyRef Name="jenis" />
+    </Key>
+    <Property Name="tanggal" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="wsid" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="jenis" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="nominal" Type="Int64" />
+  </EntityType>
+  <EntityType Name="ApprovalPembagianSaldo">
+    <Key>
+      <PropertyRef Name="IdTransaksi" />
+    </Key>
+    <Property Name="IdTransaksi" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Tanggal" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="PktSumber" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="PktTujuan" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="JenisTransaksi" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="JenisUang" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="D100" Type="Int64" Nullable="false" />
+    <Property Name="D50" Type="Int64" Nullable="false" />
+  </EntityType>
 </Schema>

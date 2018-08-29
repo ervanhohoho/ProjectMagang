@@ -56,6 +56,7 @@ namespace testProjectBCA
         public InformationBoard()
         {
             InitializeComponent();
+            labelKodePkt.Text = "";
             pktComboBox.MouseWheel += new MouseEventHandler(pktComboBox_MouseWheel);
             pktIndex = 0;
             loadComboBox();
@@ -152,6 +153,7 @@ namespace testProjectBCA
         private void pktComboBox_SelectionChangeCommitted(object sender, EventArgs e)
         {
             pktIndex = pktComboBox.SelectedIndex;
+            labelKodePkt.Text = KodePkt[pktIndex];
             loadE2E();
             Database1Entities db = new Database1Entities();
             firstRun = true;
@@ -731,7 +733,7 @@ namespace testProjectBCA
                         if(!event1)
                         {
                             reader.Close();
-                            cText = "SELECT ISNULL(AVG(isiCrm100),0), ISNULL(AVG(isiCrm50),0), ISNULL(AVG(isiCrm20),0) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' ";
+                            cText = "SELECT AVG(isiCrm100),AVG(isiCrm50), AVG(isiCrm20) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' ";
                             count = 0;
                             for (int i = 0; i < treeView1.Nodes.Count; i++)
                             {
@@ -753,15 +755,21 @@ namespace testProjectBCA
                             reader = cmd.ExecuteReader();
                             if (reader.Read())
                             {
-                                tempIsiCrm.d100 = (Int64)reader[0];
-                                tempIsiCrm.d50 = (Int64)reader[1];
-                                tempIsiCrm.d20 = (Int64)reader[2];
-                                tempIsiCrm.tgl = tempDate;
+                                if (String.IsNullOrEmpty(reader[0].ToString()) || String.IsNullOrEmpty(reader[1].ToString()) || String.IsNullOrEmpty(reader[2].ToString()))
+                                    event2 = false;
+                                else
+                                {
+                                    tempIsiCrm.d100 = (Int64)reader[0];
+                                    tempIsiCrm.d50 = (Int64)reader[1];
+                                    tempIsiCrm.d20 = (Int64)reader[2];
+                                    tempIsiCrm.tgl = tempDate;
+                                }
                                 reader.Close();
                             }
                         }
                         if (!event2)
                         {
+                            Console.WriteLine("ISI CRM MASUK EVENT 3");
                             reader.Close();
                             cText = "SELECT ISNULL(AVG(isiCrm100),0), ISNULL(AVG(isiCrm50),0), ISNULL(AVG(isiCrm20),0) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' ";
                             count = 0;
@@ -1022,7 +1030,7 @@ namespace testProjectBCA
                         {
                             reader.Close();
                             //QUERY UNTUK CONDITION TANPA HARI
-                            cText = "SELECT ISNULL(AVG(sislokCrm100),0), ISNULL(AVG(sislokCrm50),0), ISNULL(AVG(sislokCrm20),0) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' ";
+                            cText = "SELECT AVG(sislokCrm100), AVG(sislokCrm50), AVG(sislokCrm20) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' ";
                             count = 0;
                             for (int i = 0; i < treeView1.Nodes.Count; i++)
                             {
@@ -1361,7 +1369,7 @@ namespace testProjectBCA
                         {
                             reader.Close();
 
-                            cText = "SELECT AVG(sislokCdm100), AVG(sislokCdm50), AVG(sislokCdm20) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' ";
+                            cText = "SELECT ISNULL(AVG(sislokCdm100),0), ISNULL(AVG(sislokCdm50),0), ISNULL(AVG(sislokCdm20),0) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' ";
                             count = 0;
                             for (int i = 0; i < treeView1.Nodes.Count; i++)
                             {
@@ -1392,6 +1400,7 @@ namespace testProjectBCA
                                 {
                                     iserror = true;
                                     errMsg = errMsg + "\nPrediksi Lainnya Tanggal " + tempDate.ToShortDateString() + " Menggunakan Event 3";
+                                    Console.WriteLine("READER SISLOK CDM " + reader[0].ToString());
                                     tempSislokCdm.d100 = (Int64)reader[0];
                                     tempSislokCdm.d50 = (Int64)reader[1];
                                     tempSislokCdm.d20 = (Int64)reader[2];
@@ -1635,7 +1644,7 @@ namespace testProjectBCA
                         {
                             reader.Close();
                             //SislokCdm
-                            cText = "SELECT ISNULL(AVG(CAST(sislokAtm100 AS FLOAT)/NULLIF(isiAtm100,0)),0), ISNULL(AVG(CAST(sislokAtm50 AS FLOAT)/NULLIF(isiAtm50,0)),0), ISNULL(AVG(CAST(sislokAtm20 AS FLOAT)/NULLIF(isiAtm20,0)),0) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' ";
+                            cText = "SELECT AVG(CAST(sislokAtm100 AS FLOAT)/NULLIF(isiAtm100,0)), AVG(CAST(sislokAtm50 AS FLOAT)/NULLIF(isiAtm50,0)), AVG(CAST(sislokAtm20 AS FLOAT)/NULLIF(isiAtm20,0)) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + KodePkt[pktIndex] + "' ";
                             count = 0;
                             for (int i = 0; i < treeView1.Nodes.Count; i++)
                             {
@@ -1657,21 +1666,26 @@ namespace testProjectBCA
                             reader = cmd.ExecuteReader();
                             if (reader.Read())
                             {//Console.WriteLine(reader[2]);
-                                if (reader[0] != null)
-                                    tempSislokAtm.d100 = Convert.ToDouble(reader[0].ToString());
+                                if (String.IsNullOrEmpty(reader[0].ToString()) || String.IsNullOrEmpty(reader[1].ToString()) || String.IsNullOrEmpty(reader[2].ToString()))
+                                    event2 = false;
                                 else
-                                    tempSislokAtm.d100 = 0;
+                                {
+                                    if (reader[0] != null)
+                                        tempSislokAtm.d100 = Convert.ToDouble(reader[0].ToString());
+                                    else
+                                        tempSislokAtm.d100 = 0;
 
-                                if (reader[1] != null)
-                                    tempSislokAtm.d50 = Convert.ToDouble(reader[1].ToString());
-                                else
-                                    tempSislokAtm.d50 = 0;
+                                    if (reader[1] != null)
+                                        tempSislokAtm.d50 = Convert.ToDouble(reader[1].ToString());
+                                    else
+                                        tempSislokAtm.d50 = 0;
 
-                                if (reader[2].ToString() != "")
-                                    tempSislokAtm.d20 = Convert.ToDouble(reader[2].ToString());
-                                else
-                                    tempSislokAtm.d20 = 0;
-                                tempSislokAtm.tgl = tempDate;
+                                    if (reader[2].ToString() != "")
+                                        tempSislokAtm.d20 = Convert.ToDouble(reader[2].ToString());
+                                    else
+                                        tempSislokAtm.d20 = 0;
+                                    tempSislokAtm.tgl = tempDate;
+                                }
                                 reader.Close();
                             }
                         }
@@ -3264,6 +3278,7 @@ namespace testProjectBCA
         }
         private void loadPrediksiBtn_Click(object sender, EventArgs e)
         {
+            pktComboBox.Enabled = false;
             PopupInformationBoard pib = new PopupInformationBoard(KodePkt[pktIndex]);
             pib.Show();
             Double buf;
@@ -3340,10 +3355,13 @@ namespace testProjectBCA
                 loadBon();
                 loadTablePermintaanBon();
                 loadIsiCrm();
+                //TESTING
+
+                //ENDTESTING
                 loadSislokCrm();
                 loadSetor();
                 //Hitungan dengan metode kedua
-                if(MetodeHitungLainnyaComboBox.SelectedIndex == 1)
+                if(MetodeHitungLainnyaComboBox.SelectedItem.ToString() == "Std Deviasi")
                 {
                     loadSislokCdmDenganStdDeviasi();
                     loadIsiCrmDenganStdDeviasi();
@@ -3355,7 +3373,7 @@ namespace testProjectBCA
                     rasioSislokAtm = rasioSislokATMDenganStdDeviasi;
                 }
                 //Hitungan dengan metode ketiga
-                if(MetodeHitungLainnyaComboBox.SelectedIndex == 2)
+                if(MetodeHitungLainnyaComboBox.SelectedItem.ToString() == "Historis + Std Deviasi")
                 {
                     loadSislokCdmDenganStdDeviasi();
                     loadIsiCrmDenganStdDeviasi();
@@ -3440,8 +3458,9 @@ namespace testProjectBCA
         private void approveButton_Click(object sender, EventArgs e)
         {
             Database1Entities db = new Database1Entities();
-            if(MessageBox.Show("Approve Bon?", "Approve Bon", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if(MessageBox.Show("Approve Bon "+KodePkt[pktIndex]+"?", "Approve Bon", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
+                labelKodePkt.Text = "";
                 List<Denom> bonYangDisetujui = loadBonYangDisetujuiFromTable();
                 Denom bonAdhoc = loadBonAdhocFromTxt();
                 Denom setorAdhoc = loadSetorAdhocFromTxt();
@@ -3700,7 +3719,7 @@ namespace testProjectBCA
                 setorAdhoc20Txt.Value = 0;
 
                 cleanGridViews();
-
+                pktComboBox.Enabled = true;
             }
             else
             {
@@ -3953,6 +3972,7 @@ namespace testProjectBCA
         {
             int idx = KodePkt.IndexOf(pktComboBox.SelectedValue.ToString());
             pktIndex = idx;
+            labelKodePkt.Text = KodePkt[pktIndex];
             loadE2E();
             firstRun = true;
         }

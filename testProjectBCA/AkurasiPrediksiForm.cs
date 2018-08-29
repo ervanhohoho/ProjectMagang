@@ -66,10 +66,10 @@ namespace testProjectBCA
                                  isiCRM100 = (Int64)x.isiCRM100,
                                  isiCRM50 = (Int64)x.isiCRM50,
                                  isiCRM20 = (Int64)x.isiCRM20,
-                                 Rasio100 = calculateRasio(x.saldoAwal100, x.isiCRM100, x.isiATM100),
-                                 Rasio50 = calculateRasio(x.saldoAwal50, x.isiCRM50, x.isiATM50),
-                                 Rasio20 = calculateRasio(x.saldoAwal20, x.isiCRM20, x.isiATM20),
-                                 RasioGabungan = calculateRasio(x.saldoAwal100 + x.saldoAwal50 + x.saldoAwal20, x.isiCRM100 + x.isiCRM50 + x.isiCRM20, x.isiATM100 + x.isiATM50 + x.isiATM20),
+                                 //Rasio100 = calculateRasio(x.saldoAwal100, x.isiCRM100, x.isiATM100),
+                                 //Rasio50 = calculateRasio(x.saldoAwal50, x.isiCRM50, x.isiATM50),
+                                 //Rasio20 = calculateRasio(x.saldoAwal20, x.isiCRM20, x.isiATM20),
+                                 //RasioGabungan = calculateRasio(x.saldoAwal100 + x.saldoAwal50 + x.saldoAwal20, x.isiCRM100 + x.isiCRM50 + x.isiCRM20, x.isiATM100 + x.isiATM50 + x.isiATM20),
                              }).OrderByDescending(x => x.RasioGabungan).ToList();
 
             var toView = (from x in realisasi
@@ -102,11 +102,11 @@ namespace testProjectBCA
                               isiCRM20 = g.Average(x => x.isiCRM20),
 
 
-                              Rasio100 = g.Average(x => x.Rasio100),
-                              Rasio50 = g.Average(x => x.Rasio50),
-                              Rasio20 = g.Average(x => x.Rasio20),
+                              Rasio100 = g.Average(x => x.saldoAwal100) / g.Average(x=>x.isiATM100 + x.isiCRM100),
+                              Rasio50 = g.Average(x => x.saldoAwal50) / g.Average(x=>x.isiATM50 + x.isiCRM50),
+                              Rasio20 = g.Average(x => x.saldoAwal20) / g.Average(x=>x.isiATM20 + x.isiCRM20),
 
-                              RasioGabungan = g.Average(x => x.RasioGabungan)
+                              RasioGabungan = g.Average(x => x.saldoAwal100 + x.saldoAwal20 + x.saldoAwal50) / g.Average(x=>x.isiATM100 + x.isiATM20 + x.isiATM50 + x.isiCRM100 + x.isiCRM20 + x.isiCRM50)
                           }).ToList();
             realisasiGridView.DataSource = toView.OrderByDescending(x=>x.RasioGabungan).ToList();
             this.realisasi = realisasi;
@@ -156,10 +156,10 @@ namespace testProjectBCA
                                      isiCRM100 =    (Int64)y.isiCRM100,
                                      isiCRM50 =     (Int64)y.isiCRM50,
                                      isiCRM20 =     (Int64)y.isiCRM20,
-                                     Rasio100 = calculateRasio(y.saldoAwal100, y.isiCRM100, y.isiATM100),
-                                     Rasio50 = calculateRasio(y.saldoAwal50, y.isiCRM50, y.isiATM50),
-                                     Rasio20 = calculateRasio(y.saldoAwal20, y.isiCRM20, y.isiATM20),
-                                     RasioGabungan = calculateRasio(y.saldoAwal100 + y.saldoAwal50 + y.saldoAwal20, y.isiCRM100 + y.isiCRM50 + y.isiCRM20, y.isiATM100 + y.isiATM50 + y.isiATM20)
+                                     //Rasio100 = calculateRasio(y.saldoAwal100, y.isiCRM100, y.isiATM100),
+                                     //Rasio50 = calculateRasio(y.saldoAwal50, y.isiCRM50, y.isiATM50),
+                                     //Rasio20 = calculateRasio(y.saldoAwal20, y.isiCRM20, y.isiATM20),
+                                     //RasioGabungan = calculateRasio(y.saldoAwal100 + y.saldoAwal50 + y.saldoAwal20, y.isiCRM100 + y.isiCRM50 + y.isiCRM20, y.isiATM100 + y.isiATM50 + y.isiATM20)
                                  }).OrderByDescending(x=>x.RasioGabungan).ToList();
                 if (realisasi != null)
                 {
@@ -196,11 +196,11 @@ namespace testProjectBCA
                               isiCRM20 = g.Average(x => x.isiCRM20),
 
 
-                              Rasio100 = g.Average(x => x.Rasio100),
-                              Rasio50 = g.Average(x => x.Rasio50),
-                              Rasio20 = g.Average(x => x.Rasio20),
+                              Rasio100 = g.Average(x => x.saldoAwal100) / g.Average(x => x.isiATM100 + x.isiCRM100),
+                              Rasio50 = g.Average(x => x.saldoAwal50) / g.Average(x => x.isiATM50 + x.isiCRM50),
+                              Rasio20 = g.Average(x => x.saldoAwal20) / g.Average(x => x.isiATM20 + x.isiCRM20),
 
-                              RasioGabungan = g.Average(x => x.RasioGabungan)
+                              RasioGabungan = g.Average(x => x.saldoAwal100 + x.saldoAwal50 + x.saldoAwal20) / g.Average(x => x.isiATM100 + x.isiATM20 + x.isiATM50 + x.isiCRM100 + x.isiCRM20 + x.isiCRM50)
                           }).ToList();
             approvalGridView.DataSource = toView.OrderByDescending(x=>x.RasioGabungan).ToList();
             for (int a = 1; a < approvalGridView.Columns.Count; a++)
@@ -588,13 +588,13 @@ namespace testProjectBCA
                               forecastSislokATM50 = g.Average(x => x.forecastSislokATM50),
                               forecastSislokATM20 = g.Average(x => x.forecastSislokATM20),
 
-                              forecastSislokCDM100 = g.Average(x => x.forecastSislokATM100),
-                              forecastSislokCDM50 = g.Average(x => x.forecastSislokATM50),
-                              forecastSislokCDM20 = g.Average(x => x.forecastSislokATM20),
+                              forecastSislokCDM100 = g.Average(x => x.forecastSislokCDM100),
+                              forecastSislokCDM50 = g.Average(x => x.forecastSislokCDM50),
+                              forecastSislokCDM20 = g.Average(x => x.forecastSislokCDM20),
 
-                              forecastSislokCRM100 = g.Average(x => x.forecastSislokATM100),
-                              forecastSislokCRM50 = g.Average(x => x.forecastSislokATM50),
-                              forecastSislokCRM20 = g.Average(x => x.forecastSislokATM20),
+                              forecastSislokCRM100 = g.Average(x => x.forecastSislokCRM100),
+                              forecastSislokCRM50 = g.Average(x => x.forecastSislokCRM50),
+                              forecastSislokCRM20 = g.Average(x => x.forecastSislokCRM20),
 
                               forecastIsiCRM100 = g.Average(x => x.forecastIsiCRM100),
                               forecastIsiCRM50 = g.Average(x => x.forecastIsiCRM50),
@@ -604,44 +604,43 @@ namespace testProjectBCA
                               forecastIsiATM50 = g.Average(x => x.forecastIsiATM50),
                               forecastIsiATM20 = g.Average(x => x.forecastIsiATM20),
 
-                              saldoAwal100 = query.Where(x => x.kodePkt == g.Key).Sum(x => x.saldoAwal100),
-                              saldoAwal50 = query.Where(x => x.kodePkt == g.Key).Sum(x => x.saldoAwal50),
-                              saldoAwal20 = query.Where(x => x.kodePkt == g.Key).Sum(x => x.saldoAwal20),
+                              saldoAwal100 = g.Average(x => x.saldoAwal100),
+                              saldoAwal50 = g.Average(x => x.saldoAwal50),
+                              saldoAwal20 = g.Average(x => x.saldoAwal20)
                           }).ToList();
             var resultQuery = (from x in query2
-                               group x by x.kodePkt into g
                                select new RasioApproval()
                                {
-                                   kodePkt = g.Key,
+                                   kodePkt = x.kodePkt,
 
-                                   sislokATM100 = g.Sum(a => a.forecastSislokATM100) / g.Sum(a => a.realisasiSislokATM100),
-                                   sislokATM50 = g.Sum(a => a.forecastSislokATM50) / g.Sum(a => a.realisasiSislokATM50),
-                                   sislokATM20 = g.Sum(a => a.forecastSislokATM20) / g.Sum(a => a.realisasiSislokATM20),
+                                   sislokATM100 = x.forecastSislokATM100 / x.realisasiSislokATM100,
+                                   sislokATM50 = x.forecastSislokATM50 / x.realisasiSislokATM50,
+                                   sislokATM20 = x.forecastSislokATM20 / x.realisasiSislokATM20,
 
-                                   sislokCRM100 = g.Sum(a => a.forecastSislokCRM100) / g.Sum(a => a.realisasiSislokCRM100),
-                                   sislokCRM50 = g.Sum(a => a.forecastSislokCRM50) / g.Sum(a => a.realisasiSislokCRM50),
-                                   sislokCRM20 = g.Sum(a => a.forecastSislokCRM100) / g.Sum(a => a.realisasiSislokCRM20),
+                                   sislokCRM100 = x.forecastSislokCRM100 / x.realisasiSislokCRM100,
+                                   sislokCRM50 = x.forecastSislokCRM50 / x.realisasiSislokCRM50,
+                                   sislokCRM20 = x.forecastSislokCRM100 / x.realisasiSislokCRM20,
 
-                                   sislokCDM100 = g.Sum(a => a.forecastSislokCDM100) / g.Sum(a => a.realisasiSislokCDM100),
-                                   sislokCDM50 = g.Sum(a => a.forecastSislokCDM50) / g.Sum(a => a.realisasiSislokCDM50),
-                                   sislokCDM20 = g.Sum(a => a.forecastSislokCDM20) / g.Sum(a => a.realisasiSislokCDM20),
+                                   sislokCDM100 = x.forecastSislokCDM100 / x.realisasiSislokCDM100,
+                                   sislokCDM50 = x.forecastSislokCDM50 / x.realisasiSislokCDM50,
+                                   sislokCDM20 = x.forecastSislokCDM20 / x.realisasiSislokCDM20,
 
-                                   isiATM100 = g.Sum(a => a.forecastIsiATM100) / g.Sum(a => a.realisasiIsiATM100),
-                                   isiATM50 = g.Sum(a => a.forecastIsiATM50) / g.Sum(a => a.realisasiIsiATM50),
-                                   isiATM20 = g.Sum(a => a.forecastIsiATM20) / g.Sum(a => a.realisasiIsiATM20),
+                                   isiATM100 = x.forecastIsiATM100 / x.realisasiIsiATM100,
+                                   isiATM50 = x.forecastIsiATM50 / x.realisasiIsiATM50,
+                                   isiATM20 = x.forecastIsiATM20 / x.realisasiIsiATM20,
 
-                                   isiCRM100 = g.Sum(a => a.forecastIsiCRM100) / g.Sum(a => a.realisasiIsiCRM100),
-                                   isiCRM50 = g.Sum(a => a.forecastIsiCRM50) / g.Sum(a => a.realisasiIsiCRM50),
-                                   isiCRM20 = g.Sum(a => a.forecastIsiCRM20) / g.Sum(a => a.realisasiIsiCRM20),
+                                   isiCRM100 = x.forecastIsiCRM100 / x.realisasiIsiCRM100,
+                                   isiCRM50 = x.forecastIsiCRM50 / x.realisasiIsiCRM50,
+                                   isiCRM20 = x.forecastIsiCRM20 / x.realisasiIsiCRM20,
 
-                                   rasio100 = g.Sum(a => a.realisasiIsiATM100 + a.realisasiIsiCRM100) == 0 ? 0 : g.Sum(a => (Double)a.saldoAwal100) / query.Where(x => x.kodePkt == g.Key).Sum(a => a.realisasiIsiATM100 + a.realisasiIsiCRM100),
-                                   rasio50 = g.Sum(a => a.realisasiIsiATM50 + a.realisasiIsiCRM50) == 0 ? 0 : g.Sum(a => (Double)a.saldoAwal50) / query.Where(x => x.kodePkt == g.Key).Sum(a => a.realisasiIsiATM50 + a.realisasiIsiCRM50),
-                                   rasio20 = g.Sum(a => a.realisasiIsiATM20 + a.realisasiIsiCRM20) == 0 ? 0 : g.Sum(a => (Double)a.saldoAwal20) / query.Where(x => x.kodePkt == g.Key).Sum(a => a.realisasiIsiATM20 + a.realisasiIsiCRM20),
-                                   RasioGabungan = query.Where(x=>x.kodePkt == g.Key).Sum(a => a.realisasiIsiATM100 + a.realisasiIsiATM20 + a.realisasiIsiATM50 + a.realisasiIsiCRM100 + a.realisasiIsiCRM20 + a.realisasiIsiCRM50) == 0 ? 0 : g.Sum(a => (Double) (a.saldoAwal50 + a.saldoAwal100 + a.saldoAwal20)) / query.Where(x => x.kodePkt == g.Key).Sum(a => a.realisasiIsiATM100 + a.realisasiIsiATM20 + a.realisasiIsiATM50 + a.realisasiIsiCRM100 + a.realisasiIsiCRM20 + a.realisasiIsiCRM50),
-                               }).ToList();
+                                   rasio100 = (Double) ((x.realisasiIsiATM100 + x.realisasiIsiCRM100) == 0 ? 0 : x.saldoAwal100 / (x.realisasiIsiATM100 + x.realisasiIsiCRM100)),
+                                   rasio50 = (Double) ((x.realisasiIsiATM50 + x.realisasiIsiCRM50) == 0 ? 0 : x.saldoAwal50 / (x.realisasiIsiATM50 + x.realisasiIsiCRM50)),
+                                   rasio20 = (Double) ((x.realisasiIsiATM20 + x.realisasiIsiCRM20) == 0 ? 0 : x.saldoAwal20 / (x.realisasiIsiATM20 + x.realisasiIsiCRM20)),
+                                   RasioGabungan = (Double) ((x.realisasiIsiATM100 + x.realisasiIsiATM50 + x.realisasiIsiATM20 + x.realisasiIsiCRM100 + x.realisasiIsiCRM20 + x.realisasiIsiCRM50) == 0? 0 : (x.saldoAwal100 + x.saldoAwal50 + x.saldoAwal20) / (x.realisasiIsiATM100 + x.realisasiIsiATM50 + x.realisasiIsiATM20 + x.realisasiIsiCRM100 + x.realisasiIsiCRM20 + x.realisasiIsiCRM50))
+                                   }).ToList();
 
             Console.WriteLine("Query: " + query.Count);
-            resultQuery = resultQuery.OrderByDescending(x=> x.RasioGabungan).ToList();
+            resultQuery = resultQuery.OrderByDescending(x => x.RasioGabungan).ToList();
             if (resultQuery.Any())
             {
                 resultQuery.Add(new RasioApproval()
@@ -682,7 +681,7 @@ namespace testProjectBCA
                     AkurasiForecastGridView.Columns[a].DefaultCellStyle.Format = "N2";
             }
 
-            if(resultQuery.Count>0)
+            if (resultQuery.Count > 0)
                 AkurasiForecastGridView.Rows[AkurasiForecastGridView.Rows.Count - 1].DefaultCellStyle.BackColor = Color.Bisque;
         }
         void loadSelisihPrediksi()

@@ -47,6 +47,7 @@
             this.slaCabangBesarNum = new System.Windows.Forms.NumericUpDown();
             this.slaCabangKecilNum = new System.Windows.Forms.NumericUpDown();
             this.label7 = new System.Windows.Forms.Label();
+            this.slaComboBox = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.slaRetailBesarNum)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.slaRetailKecilNum)).BeginInit();
@@ -114,9 +115,9 @@
             this.comboNamaPkt.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.comboNamaPkt.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.comboNamaPkt.FormattingEnabled = true;
-            this.comboNamaPkt.Location = new System.Drawing.Point(12, 12);
+            this.comboNamaPkt.Location = new System.Drawing.Point(139, 12);
             this.comboNamaPkt.Name = "comboNamaPkt";
-            this.comboNamaPkt.Size = new System.Drawing.Size(248, 21);
+            this.comboNamaPkt.Size = new System.Drawing.Size(121, 21);
             this.comboNamaPkt.TabIndex = 6;
             this.comboNamaPkt.SelectionChangeCommitted += new System.EventHandler(this.comboNamaPkt_SelectionChangeCommitted);
             // 
@@ -244,11 +245,22 @@
             this.label7.TabIndex = 12;
             this.label7.Text = "-";
             // 
+            // slaComboBox
+            // 
+            this.slaComboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.slaComboBox.FormattingEnabled = true;
+            this.slaComboBox.Location = new System.Drawing.Point(12, 12);
+            this.slaComboBox.Name = "slaComboBox";
+            this.slaComboBox.Size = new System.Drawing.Size(121, 21);
+            this.slaComboBox.TabIndex = 13;
+            this.slaComboBox.SelectedValueChanged += new System.EventHandler(this.slaComboBox_SelectedValueChanged);
+            // 
             // SLAProsesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1134, 623);
+            this.Controls.Add(this.slaComboBox);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.slaCabangKecilNum);
             this.Controls.Add(this.slaCabangBesarNum);
@@ -301,5 +313,6 @@
         private System.Windows.Forms.NumericUpDown slaCabangBesarNum;
         private System.Windows.Forms.NumericUpDown slaCabangKecilNum;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.ComboBox slaComboBox;
     }
 }

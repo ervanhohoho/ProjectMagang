@@ -19,6 +19,19 @@
           <Property Name="CustomerName" Type="varchar" MaxLength="255" />
           <Property Name="TotalUangBesar" Type="bigint" />
         </EntityType>
+        <EntityType Name="ApprovalPembagianSaldo">
+          <Key>
+            <PropertyRef Name="IdTransaksi" />
+          </Key>
+          <Property Name="IdTransaksi" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Tanggal" Type="date" Nullable="false" />
+          <Property Name="PktSumber" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="PktTujuan" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="JenisTransaksi" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="JenisUang" Type="varchar" MaxLength="255" />
+          <Property Name="D100" Type="bigint" Nullable="false" />
+          <Property Name="D50" Type="bigint" Nullable="false" />
+        </EntityType>
         <EntityType Name="Approvals">
           <Key>
             <PropertyRef Name="idApproval" />
@@ -265,6 +278,7 @@
           <Property Name="vendor" Type="varchar" MaxLength="50" />
           <Property Name="kodePktCabang" Type="varchar" MaxLength="10" />
           <Property Name="kodePktATM" Type="varchar" MaxLength="10" />
+          <Property Name="kapasitasCPC" Type="bigint" />
         </EntityType>
         <EntityType Name="RekapSelisihAmbilSetor">
           <Key>
@@ -299,7 +313,7 @@
           <Property Name="blogTime" Type="datetime" />
           <Property Name="currencyAmmount" Type="bigint" />
           <Property Name="realDate" Type="date" />
-          <Property Name="validation" Type="varchar" MaxLength="255" />
+          <Property Name="blogMessage" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="RekonSaldoVault">
           <Key>
@@ -316,7 +330,7 @@
           <Property Name="timeStampRekon" Type="datetime" />
           <Property Name="currencyAmmount" Type="bigint" />
           <Property Name="realDate" Type="date" />
-          <Property Name="valdiation" Type="varchar" MaxLength="255" />
+          <Property Name="blogMessage" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="SaveAsk">
           <Key>
@@ -327,6 +341,35 @@
           <Property Name="rekapAsk" Type="bigint" />
           <Property Name="ask" Type="bigint" />
           <Property Name="komentar" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="saveBeeHive">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tanggal" Type="date" />
+          <Property Name="kodePerusahaan" Type="varchar" MaxLength="255" />
+          <Property Name="totalNominal" Type="bigint" />
+          <Property Name="namaFile" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="saveMcs">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tanggal" Type="date" />
+          <Property Name="realDate" Type="date" />
+          <Property Name="customerCode" Type="varchar" MaxLength="500" />
+          <Property Name="amountTotal" Type="bigint" />
+          <Property Name="d100k" Type="bigint" />
+          <Property Name="d50k" Type="bigint" />
+          <Property Name="d20k" Type="bigint" />
+          <Property Name="d10k" Type="bigint" />
+          <Property Name="d5k" Type="bigint" />
+          <Property Name="d2k" Type="bigint" />
+          <Property Name="d1k" Type="bigint" />
+          <Property Name="amountCoin" Type="bigint" />
+          <Property Name="time" Type="time" Precision="7" />
         </EntityType>
         <EntityType Name="SaveRekap">
           <Key>
@@ -369,6 +412,26 @@
           <Property Name="inCabang" Type="bigint" />
           <Property Name="inRetail" Type="bigint" />
           <Property Name="outCabang" Type="bigint" />
+        </EntityType>
+        <EntityType Name="TabelTarikan">
+          <Key>
+            <PropertyRef Name="tanggal" />
+            <PropertyRef Name="wsid" />
+          </Key>
+          <Property Name="tanggal" Type="date" Nullable="false" />
+          <Property Name="wsid" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="totalTarikan" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TabelTarikanSetoranCRM">
+          <Key>
+            <PropertyRef Name="tanggal" />
+            <PropertyRef Name="wsid" />
+            <PropertyRef Name="jenis" />
+          </Key>
+          <Property Name="tanggal" Type="date" Nullable="false" />
+          <Property Name="wsid" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="nominal" Type="bigint" />
+          <Property Name="jenis" Type="varchar" MaxLength="255" Nullable="false" />
         </EntityType>
         <EntityType Name="TransaksiAtms">
           <Key>
@@ -450,20 +513,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Function Name="prediksiEvent2" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="startDate" Type="date" Mode="In" />
-          <Parameter Name="endDate" Type="date" Mode="In" />
-        </Function>
-        <Function Name="prediksiHistoris" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="startDate" Type="date" Mode="In" />
-          <Parameter Name="endDate" Type="date" Mode="In" />
-        </Function>
-        <Function Name="prediksiStdDev" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="startDate" Type="date" Mode="In" />
-          <Parameter Name="endDate" Type="date" Mode="In" />
-        </Function>
         <EntityContainer Name="CACModelStoreContainer">
           <EntitySet Name="Abacas" EntityType="Self.Abacas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ApprovalPembagianSaldo" EntityType="Self.ApprovalPembagianSaldo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Approvals" EntityType="Self.Approvals" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AsuransiLayanan" EntityType="Self.AsuransiLayanan" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cabang" EntityType="Self.Cabang" Schema="dbo" store:Type="Tables" />
@@ -486,8 +538,12 @@
           <EntitySet Name="RekonSaldoPerVendor" EntityType="Self.RekonSaldoPerVendor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RekonSaldoVault" EntityType="Self.RekonSaldoVault" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SaveAsk" EntityType="Self.SaveAsk" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="saveBeeHive" EntityType="Self.saveBeeHive" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="saveMcs" EntityType="Self.saveMcs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SaveRekap" EntityType="Self.SaveRekap" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StokPosisi" EntityType="Self.StokPosisi" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TabelTarikan" EntityType="Self.TabelTarikan" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TabelTarikanSetoranCRM" EntityType="Self.TabelTarikanSetoranCRM" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TransaksiAtms" EntityType="Self.TransaksiAtms" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VaultOrderBlogHistory" EntityType="Self.VaultOrderBlogHistory" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_laporanBon_Pkt" Association="Self.FK_laporanBon_Pkt">
@@ -744,6 +800,13 @@
           <Property Name="tanggal" Type="DateTime" Precision="0" />
           <Property Name="nominalDispute" Type="Int64" />
         </EntityType>
+        <EntityType Name="Password">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int16" Nullable="false" />
+          <Property Name="password1" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
         <EntityType Name="Pkt">
           <Key>
             <PropertyRef Name="kodePkt" />
@@ -756,9 +819,10 @@
           <Property Name="sentralisasi" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="vendor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="kodePktCabang" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="kodePktATM" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="laporanBons" Relationship="Self.FK_laporanBon_Pkt" FromRole="Pkt" ToRole="laporanBon" />
           <NavigationProperty Name="TransaksiAtms" Relationship="Self.FK_TransaksiAtms_Pkt" FromRole="Pkt" ToRole="TransaksiAtms" />
-          <Property Name="kodePktATM" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="kapasitasCPC" Type="Int64" />
         </EntityType>
         <EntityType Name="RekapSelisihAmbilSetor">
           <Key>
@@ -777,6 +841,93 @@
           <Property Name="tanggalTemu" Type="DateTime" Precision="0" />
           <Property Name="noBA" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="keterangan" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="RekonSaldoPerVendor">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="cashPointtId" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="confId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="orderDate" Type="DateTime" Precision="0" />
+          <Property Name="vendor" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="actionRekon" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="statusRekon" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="dueDate" Type="DateTime" Precision="0" />
+          <Property Name="blogTime" Type="DateTime" Precision="3" />
+          <Property Name="currencyAmmount" Type="Int64" />
+          <Property Name="realDate" Type="DateTime" Precision="0" />
+          <Property Name="blogMessage" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="RekonSaldoVault">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="vaultId" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="confId" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="fundingSoure" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="actionRekon" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="statusRekon" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="orderDate" Type="DateTime" Precision="0" />
+          <Property Name="dueDate" Type="DateTime" Precision="0" />
+          <Property Name="timeStampRekon" Type="DateTime" Precision="3" />
+          <Property Name="currencyAmmount" Type="Int64" />
+          <Property Name="realDate" Type="DateTime" Precision="0" />
+          <Property Name="blogMessage" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="SaveAsk">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="tanggal" Type="DateTime" Precision="0" />
+          <Property Name="rekapAsk" Type="Int64" />
+          <Property Name="ask" Type="Int64" />
+          <Property Name="komentar" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="saveBeeHive">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="tanggal" Type="DateTime" Precision="0" />
+          <Property Name="kodePerusahaan" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="totalNominal" Type="Int64" />
+          <Property Name="namaFile" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="saveMc">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="tanggal" Type="DateTime" Precision="0" />
+          <Property Name="realDate" Type="DateTime" Precision="0" />
+          <Property Name="customerCode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="amountTotal" Type="Int64" />
+          <Property Name="d100k" Type="Int64" />
+          <Property Name="d50k" Type="Int64" />
+          <Property Name="d20k" Type="Int64" />
+          <Property Name="d10k" Type="Int64" />
+          <Property Name="d5k" Type="Int64" />
+          <Property Name="d2k" Type="Int64" />
+          <Property Name="d1k" Type="Int64" />
+          <Property Name="amountCoin" Type="Int64" />
+          <Property Name="time" Type="Time" Precision="7" />
+        </EntityType>
+        <EntityType Name="SaveRekap">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="kodePkt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="orderTracking" Type="Int64" />
+          <Property Name="rekapSelesai" Type="Int64" />
+          <Property Name="rekapBelumSelesai" Type="Int64" />
+          <Property Name="totalRekap" Type="Int64" />
+          <Property Name="keterangan" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="komentar" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="tanggal" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="StokPosisi">
           <Key>
@@ -805,6 +956,15 @@
           <Property Name="inCabang" Type="Int64" />
           <Property Name="inRetail" Type="Int64" />
           <Property Name="outCabang" Type="Int64" />
+        </EntityType>
+        <EntityType Name="TabelTarikan">
+          <Key>
+            <PropertyRef Name="tanggal" />
+            <PropertyRef Name="wsid" />
+          </Key>
+          <Property Name="tanggal" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="wsid" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="totalTarikan" Type="Int64" Nullable="false" />
         </EntityType>
         <EntityType Name="TransaksiAtm">
           <Key>
@@ -844,6 +1004,24 @@
           <Property Name="saldoAkhir50" Type="Int64" />
           <Property Name="saldoAkhir100" Type="Int64" />
           <NavigationProperty Name="Pkt" Relationship="Self.FK_TransaksiAtms_Pkt" FromRole="TransaksiAtms" ToRole="Pkt" />
+        </EntityType>
+        <EntityType Name="VaultOrderBlogHistory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="vaultId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cashPoint" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="action" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="status" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="confNum" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="orderDate" Type="DateTime" Precision="0" />
+          <Property Name="dueDate" Type="DateTime" Precision="0" />
+          <Property Name="timeStamp" Type="DateTime" Precision="3" />
+          <Property Name="taskId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="blogMessage" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="userName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="currencyAmmount" Type="Int64" />
         </EntityType>
         <Association Name="FK_laporanBon_Pkt">
           <End Role="Pkt" Type="Self.Pkt" Multiplicity="0..1" />
@@ -887,10 +1065,19 @@
           <EntitySet Name="Nasabahs" EntityType="Self.Nasabah" />
           <EntitySet Name="Optis" EntityType="Self.Opti" />
           <EntitySet Name="OrderTrackings" EntityType="Self.OrderTracking" />
+          <EntitySet Name="Passwords" EntityType="Self.Password" />
           <EntitySet Name="Pkts" EntityType="Self.Pkt" />
           <EntitySet Name="RekapSelisihAmbilSetors" EntityType="Self.RekapSelisihAmbilSetor" />
+          <EntitySet Name="RekonSaldoPerVendors" EntityType="Self.RekonSaldoPerVendor" />
+          <EntitySet Name="RekonSaldoVaults" EntityType="Self.RekonSaldoVault" />
+          <EntitySet Name="SaveAsks" EntityType="Self.SaveAsk" />
+          <EntitySet Name="saveBeeHives" EntityType="Self.saveBeeHive" />
+          <EntitySet Name="saveMcs" EntityType="Self.saveMc" />
+          <EntitySet Name="SaveRekaps" EntityType="Self.SaveRekap" />
           <EntitySet Name="StokPosisis" EntityType="Self.StokPosisi" />
+          <EntitySet Name="TabelTarikans" EntityType="Self.TabelTarikan" />
           <EntitySet Name="TransaksiAtms" EntityType="Self.TransaksiAtm" />
+          <EntitySet Name="VaultOrderBlogHistories" EntityType="Self.VaultOrderBlogHistory" />
           <AssociationSet Name="FK_laporanBon_Pkt" Association="Self.FK_laporanBon_Pkt">
             <End Role="Pkt" EntitySet="Pkts" />
             <End Role="laporanBon" EntitySet="laporanBons" />
@@ -899,107 +1086,32 @@
             <End Role="Pkt" EntitySet="Pkts" />
             <End Role="TransaksiAtms" EntitySet="TransaksiAtms" />
           </AssociationSet>
-          <EntitySet Name="SaveRekaps" EntityType="CACModel.SaveRekap" />
-          <FunctionImport Name="prediksiEvent2">
-            <Parameter Name="startDate" Mode="In" Type="DateTime" />
-            <Parameter Name="endDate" Mode="In" Type="DateTime" />
-          </FunctionImport>
-          <FunctionImport Name="prediksiHistoris">
-            <Parameter Name="startDate" Mode="In" Type="DateTime" />
-            <Parameter Name="endDate" Mode="In" Type="DateTime" />
-          </FunctionImport>
-          <EntitySet Name="SaveAsks" EntityType="CACModel.SaveAsk" />
-          <EntitySet Name="VaultOrderBlogHistories" EntityType="CACModel.VaultOrderBlogHistory" />
-          <FunctionImport Name="prediksiStdDev">
-            <Parameter Name="startDate" Mode="In" Type="DateTime" />
-            <Parameter Name="endDate" Mode="In" Type="DateTime" />
-          </FunctionImport>
-          <EntitySet Name="RekonSaldoPerVendors" EntityType="CACModel.RekonSaldoPerVendor" />
-          <EntitySet Name="RekonSaldoVaults" EntityType="CACModel.RekonSaldoVault" />
-          <EntitySet Name="Passwords" EntityType="CACModel.Password" />
+          <EntitySet Name="TabelTarikanSetoranCRMs" EntityType="CACModel.TabelTarikanSetoranCRM" />
+          <EntitySet Name="ApprovalPembagianSaldoes" EntityType="CACModel.ApprovalPembagianSaldo" />
         </EntityContainer>
-        <EntityType Name="SaveRekap">
+        <EntityType Name="TabelTarikanSetoranCRM">
           <Key>
-            <PropertyRef Name="id" />
+            <PropertyRef Name="tanggal" />
+            <PropertyRef Name="wsid" />
+            <PropertyRef Name="jenis" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="kodePkt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="orderTracking" Type="Int64" />
-          <Property Name="rekapSelesai" Type="Int64" />
-          <Property Name="rekapBelumSelesai" Type="Int64" />
-          <Property Name="totalRekap" Type="Int64" />
-          <Property Name="keterangan" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
-          <Property Name="komentar" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="tanggal" Type="DateTime" Precision="0" />
+          <Property Name="tanggal" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="wsid" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="jenis" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="nominal" Type="Int64" />
         </EntityType>
-        <EntityType Name="SaveAsk">
+        <EntityType Name="ApprovalPembagianSaldo">
           <Key>
-            <PropertyRef Name="id" />
+            <PropertyRef Name="IdTransaksi" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="tanggal" Type="DateTime" Precision="0" />
-          <Property Name="rekapAsk" Type="Int64" />
-          <Property Name="ask" Type="Int64" />
-          <Property Name="komentar" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="VaultOrderBlogHistory">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="vaultId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="cashPoint" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="action" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="status" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="confNum" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="orderDate" Type="DateTime" Precision="0" />
-          <Property Name="dueDate" Type="DateTime" Precision="0" />
-          <Property Name="timeStamp" Type="DateTime" Precision="3" />
-          <Property Name="taskId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="blogMessage" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="userName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="currencyAmmount" Type="Int64" />
-        </EntityType>
-        <EntityType Name="RekonSaldoPerVendor">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="cashPointtId" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="confId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="orderDate" Type="DateTime" Precision="0" />
-          <Property Name="vendor" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="actionRekon" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="statusRekon" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="dueDate" Type="DateTime" Precision="0" />
-          <Property Name="blogTime" Type="DateTime" Precision="3" />
-          <Property Name="currencyAmmount" Type="Int64" />
-          <Property Name="realDate" Type="DateTime" Precision="0" />
-          <Property Name="validation" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="RekonSaldoVault">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="vaultId" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="confId" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="fundingSoure" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="actionRekon" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="statusRekon" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="orderDate" Type="DateTime" Precision="0" />
-          <Property Name="dueDate" Type="DateTime" Precision="0" />
-          <Property Name="timeStampRekon" Type="DateTime" Precision="3" />
-          <Property Name="currencyAmmount" Type="Int64" />
-          <Property Name="realDate" Type="DateTime" Precision="0" />
-          <Property Name="valdiation" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="Password">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="password1" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="id" Type="Int16" Nullable="false" />
+          <Property Name="IdTransaksi" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Tanggal" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="PktSumber" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="PktTujuan" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="JenisTransaksi" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="JenisUang" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="D100" Type="Int64" Nullable="false" />
+          <Property Name="D50" Type="Int64" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1010,7 +1122,6 @@
           <EntitySetMapping Name="Abacas">
             <EntityTypeMapping TypeName="CACModel.Abaca">
               <MappingFragment StoreEntitySet="Abacas">
-                <ScalarProperty Name="TotalUangBesar" ColumnName="TotalUangBesar" />
                 <ScalarProperty Name="idTransaksi" ColumnName="idTransaksi" />
                 <ScalarProperty Name="tanggal" ColumnName="tanggal" />
                 <ScalarProperty Name="vendorCardNo" ColumnName="vendorCardNo" />
@@ -1019,6 +1130,7 @@
                 <ScalarProperty Name="totalAmount" ColumnName="totalAmount" />
                 <ScalarProperty Name="CustomerCode" ColumnName="CustomerCode" />
                 <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="TotalUangBesar" ColumnName="TotalUangBesar" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1261,10 +1373,18 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Passwords">
+            <EntityTypeMapping TypeName="CACModel.Password">
+              <MappingFragment StoreEntitySet="Password">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="password1" ColumnName="password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Pkts">
             <EntityTypeMapping TypeName="CACModel.Pkt">
               <MappingFragment StoreEntitySet="Pkt">
-                <ScalarProperty Name="kodePktATM" ColumnName="kodePktATM" />
+                <ScalarProperty Name="kapasitasCPC" ColumnName="kapasitasCPC" />
                 <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
                 <ScalarProperty Name="namaPkt" ColumnName="namaPkt" />
                 <ScalarProperty Name="e2e" ColumnName="e2e" />
@@ -1273,6 +1393,7 @@
                 <ScalarProperty Name="sentralisasi" ColumnName="sentralisasi" />
                 <ScalarProperty Name="vendor" ColumnName="vendor" />
                 <ScalarProperty Name="kodePktCabang" ColumnName="kodePktCabang" />
+                <ScalarProperty Name="kodePktATM" ColumnName="kodePktATM" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1295,10 +1416,102 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="RekonSaldoPerVendors">
+            <EntityTypeMapping TypeName="CACModel.RekonSaldoPerVendor">
+              <MappingFragment StoreEntitySet="RekonSaldoPerVendor">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="cashPointtId" ColumnName="cashPointtId" />
+                <ScalarProperty Name="confId" ColumnName="confId" />
+                <ScalarProperty Name="orderDate" ColumnName="orderDate" />
+                <ScalarProperty Name="vendor" ColumnName="vendor" />
+                <ScalarProperty Name="actionRekon" ColumnName="actionRekon" />
+                <ScalarProperty Name="statusRekon" ColumnName="statusRekon" />
+                <ScalarProperty Name="dueDate" ColumnName="dueDate" />
+                <ScalarProperty Name="blogTime" ColumnName="blogTime" />
+                <ScalarProperty Name="currencyAmmount" ColumnName="currencyAmmount" />
+                <ScalarProperty Name="realDate" ColumnName="realDate" />
+                <ScalarProperty Name="blogMessage" ColumnName="blogMessage" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RekonSaldoVaults">
+            <EntityTypeMapping TypeName="CACModel.RekonSaldoVault">
+              <MappingFragment StoreEntitySet="RekonSaldoVault">
+                <ScalarProperty Name="blogMessage" ColumnName="blogMessage" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="vaultId" ColumnName="vaultId" />
+                <ScalarProperty Name="confId" ColumnName="confId" />
+                <ScalarProperty Name="fundingSoure" ColumnName="fundingSoure" />
+                <ScalarProperty Name="actionRekon" ColumnName="actionRekon" />
+                <ScalarProperty Name="statusRekon" ColumnName="statusRekon" />
+                <ScalarProperty Name="orderDate" ColumnName="orderDate" />
+                <ScalarProperty Name="dueDate" ColumnName="dueDate" />
+                <ScalarProperty Name="timeStampRekon" ColumnName="timeStampRekon" />
+                <ScalarProperty Name="currencyAmmount" ColumnName="currencyAmmount" />
+                <ScalarProperty Name="realDate" ColumnName="realDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SaveAsks">
+            <EntityTypeMapping TypeName="CACModel.SaveAsk">
+              <MappingFragment StoreEntitySet="SaveAsk">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="tanggal" ColumnName="tanggal" />
+                <ScalarProperty Name="rekapAsk" ColumnName="rekapAsk" />
+                <ScalarProperty Name="ask" ColumnName="ask" />
+                <ScalarProperty Name="komentar" ColumnName="komentar" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="saveBeeHives">
+            <EntityTypeMapping TypeName="CACModel.saveBeeHive">
+              <MappingFragment StoreEntitySet="saveBeeHive">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="tanggal" ColumnName="tanggal" />
+                <ScalarProperty Name="kodePerusahaan" ColumnName="kodePerusahaan" />
+                <ScalarProperty Name="totalNominal" ColumnName="totalNominal" />
+                <ScalarProperty Name="namaFile" ColumnName="namaFile" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="saveMcs">
+            <EntityTypeMapping TypeName="CACModel.saveMc">
+              <MappingFragment StoreEntitySet="saveMcs">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="tanggal" ColumnName="tanggal" />
+                <ScalarProperty Name="realDate" ColumnName="realDate" />
+                <ScalarProperty Name="customerCode" ColumnName="customerCode" />
+                <ScalarProperty Name="amountTotal" ColumnName="amountTotal" />
+                <ScalarProperty Name="d100k" ColumnName="d100k" />
+                <ScalarProperty Name="d50k" ColumnName="d50k" />
+                <ScalarProperty Name="d20k" ColumnName="d20k" />
+                <ScalarProperty Name="d10k" ColumnName="d10k" />
+                <ScalarProperty Name="d5k" ColumnName="d5k" />
+                <ScalarProperty Name="d2k" ColumnName="d2k" />
+                <ScalarProperty Name="d1k" ColumnName="d1k" />
+                <ScalarProperty Name="amountCoin" ColumnName="amountCoin" />
+                <ScalarProperty Name="time" ColumnName="time" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SaveRekaps">
+            <EntityTypeMapping TypeName="CACModel.SaveRekap">
+              <MappingFragment StoreEntitySet="SaveRekap">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
+                <ScalarProperty Name="orderTracking" ColumnName="orderTracking" />
+                <ScalarProperty Name="rekapSelesai" ColumnName="rekapSelesai" />
+                <ScalarProperty Name="rekapBelumSelesai" ColumnName="rekapBelumSelesai" />
+                <ScalarProperty Name="totalRekap" ColumnName="totalRekap" />
+                <ScalarProperty Name="keterangan" ColumnName="keterangan" />
+                <ScalarProperty Name="komentar" ColumnName="komentar" />
+                <ScalarProperty Name="tanggal" ColumnName="tanggal" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="StokPosisis">
             <EntityTypeMapping TypeName="CACModel.StokPosisi">
               <MappingFragment StoreEntitySet="StokPosisi">
-                <ScalarProperty Name="outCabang" ColumnName="outCabang" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="unprocessed" ColumnName="unprocessed" />
                 <ScalarProperty Name="newBaru" ColumnName="newBaru" />
@@ -1321,6 +1534,16 @@
                 <ScalarProperty Name="namaPkt" ColumnName="namaPkt" />
                 <ScalarProperty Name="inCabang" ColumnName="inCabang" />
                 <ScalarProperty Name="inRetail" ColumnName="inRetail" />
+                <ScalarProperty Name="outCabang" ColumnName="outCabang" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TabelTarikans">
+            <EntityTypeMapping TypeName="CACModel.TabelTarikan">
+              <MappingFragment StoreEntitySet="TabelTarikan">
+                <ScalarProperty Name="tanggal" ColumnName="tanggal" />
+                <ScalarProperty Name="wsid" ColumnName="wsid" />
+                <ScalarProperty Name="totalTarikan" ColumnName="totalTarikan" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1363,95 +1586,46 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="SaveRekaps">
-            <EntityTypeMapping TypeName="CACModel.SaveRekap">
-              <MappingFragment StoreEntitySet="SaveRekap">
-                <ScalarProperty Name="tanggal" ColumnName="tanggal" />
-                <ScalarProperty Name="komentar" ColumnName="komentar" />
-                <ScalarProperty Name="keterangan" ColumnName="keterangan" />
-                <ScalarProperty Name="totalRekap" ColumnName="totalRekap" />
-                <ScalarProperty Name="rekapBelumSelesai" ColumnName="rekapBelumSelesai" />
-                <ScalarProperty Name="rekapSelesai" ColumnName="rekapSelesai" />
-                <ScalarProperty Name="orderTracking" ColumnName="orderTracking" />
-                <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="prediksiEvent2" FunctionName="CACModel.Store.prediksiEvent2" />
-          <FunctionImportMapping FunctionImportName="prediksiHistoris" FunctionName="CACModel.Store.prediksiHistoris" />
-          <EntitySetMapping Name="SaveAsks">
-            <EntityTypeMapping TypeName="CACModel.SaveAsk">
-              <MappingFragment StoreEntitySet="SaveAsk">
-                <ScalarProperty Name="komentar" ColumnName="komentar" />
-                <ScalarProperty Name="ask" ColumnName="ask" />
-                <ScalarProperty Name="rekapAsk" ColumnName="rekapAsk" />
-                <ScalarProperty Name="tanggal" ColumnName="tanggal" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="VaultOrderBlogHistories">
             <EntityTypeMapping TypeName="CACModel.VaultOrderBlogHistory">
               <MappingFragment StoreEntitySet="VaultOrderBlogHistory">
-                <ScalarProperty Name="currencyAmmount" ColumnName="currencyAmmount" />
-                <ScalarProperty Name="userName" ColumnName="userName" />
-                <ScalarProperty Name="blogMessage" ColumnName="blogMessage" />
-                <ScalarProperty Name="taskId" ColumnName="taskId" />
-                <ScalarProperty Name="timeStamp" ColumnName="timeStamp" />
-                <ScalarProperty Name="dueDate" ColumnName="dueDate" />
-                <ScalarProperty Name="orderDate" ColumnName="orderDate" />
-                <ScalarProperty Name="confNum" ColumnName="confNum" />
-                <ScalarProperty Name="status" ColumnName="status" />
-                <ScalarProperty Name="action" ColumnName="action" />
-                <ScalarProperty Name="cashPoint" ColumnName="cashPoint" />
-                <ScalarProperty Name="vaultId" ColumnName="vaultId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="prediksiStdDev" FunctionName="CACModel.Store.prediksiStdDev" />
-          <EntitySetMapping Name="RekonSaldoPerVendors">
-            <EntityTypeMapping TypeName="CACModel.RekonSaldoPerVendor">
-              <MappingFragment StoreEntitySet="RekonSaldoPerVendor">
-                <ScalarProperty Name="validation" ColumnName="validation" />
-                <ScalarProperty Name="realDate" ColumnName="realDate" />
-                <ScalarProperty Name="currencyAmmount" ColumnName="currencyAmmount" />
-                <ScalarProperty Name="blogTime" ColumnName="blogTime" />
-                <ScalarProperty Name="dueDate" ColumnName="dueDate" />
-                <ScalarProperty Name="statusRekon" ColumnName="statusRekon" />
-                <ScalarProperty Name="actionRekon" ColumnName="actionRekon" />
-                <ScalarProperty Name="vendor" ColumnName="vendor" />
-                <ScalarProperty Name="orderDate" ColumnName="orderDate" />
-                <ScalarProperty Name="confId" ColumnName="confId" />
-                <ScalarProperty Name="cashPointtId" ColumnName="cashPointtId" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="RekonSaldoVaults">
-            <EntityTypeMapping TypeName="CACModel.RekonSaldoVault">
-              <MappingFragment StoreEntitySet="RekonSaldoVault">
-                <ScalarProperty Name="valdiation" ColumnName="valdiation" />
-                <ScalarProperty Name="realDate" ColumnName="realDate" />
-                <ScalarProperty Name="currencyAmmount" ColumnName="currencyAmmount" />
-                <ScalarProperty Name="timeStampRekon" ColumnName="timeStampRekon" />
-                <ScalarProperty Name="dueDate" ColumnName="dueDate" />
-                <ScalarProperty Name="orderDate" ColumnName="orderDate" />
-                <ScalarProperty Name="statusRekon" ColumnName="statusRekon" />
-                <ScalarProperty Name="actionRekon" ColumnName="actionRekon" />
-                <ScalarProperty Name="fundingSoure" ColumnName="fundingSoure" />
-                <ScalarProperty Name="confId" ColumnName="confId" />
                 <ScalarProperty Name="vaultId" ColumnName="vaultId" />
-                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="cashPoint" ColumnName="cashPoint" />
+                <ScalarProperty Name="action" ColumnName="action" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="confNum" ColumnName="confNum" />
+                <ScalarProperty Name="orderDate" ColumnName="orderDate" />
+                <ScalarProperty Name="dueDate" ColumnName="dueDate" />
+                <ScalarProperty Name="timeStamp" ColumnName="timeStamp" />
+                <ScalarProperty Name="taskId" ColumnName="taskId" />
+                <ScalarProperty Name="blogMessage" ColumnName="blogMessage" />
+                <ScalarProperty Name="userName" ColumnName="userName" />
+                <ScalarProperty Name="currencyAmmount" ColumnName="currencyAmmount" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Passwords">
-            <EntityTypeMapping TypeName="CACModel.Password">
-              <MappingFragment StoreEntitySet="Password">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="password1" ColumnName="password" />
+          <EntitySetMapping Name="TabelTarikanSetoranCRMs">
+            <EntityTypeMapping TypeName="CACModel.TabelTarikanSetoranCRM">
+              <MappingFragment StoreEntitySet="TabelTarikanSetoranCRM">
+                <ScalarProperty Name="nominal" ColumnName="nominal" />
+                <ScalarProperty Name="jenis" ColumnName="jenis" />
+                <ScalarProperty Name="wsid" ColumnName="wsid" />
+                <ScalarProperty Name="tanggal" ColumnName="tanggal" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ApprovalPembagianSaldoes">
+            <EntityTypeMapping TypeName="CACModel.ApprovalPembagianSaldo">
+              <MappingFragment StoreEntitySet="ApprovalPembagianSaldo">
+                <ScalarProperty Name="D50" ColumnName="D50" />
+                <ScalarProperty Name="D100" ColumnName="D100" />
+                <ScalarProperty Name="JenisUang" ColumnName="JenisUang" />
+                <ScalarProperty Name="JenisTransaksi" ColumnName="JenisTransaksi" />
+                <ScalarProperty Name="PktTujuan" ColumnName="PktTujuan" />
+                <ScalarProperty Name="PktSumber" ColumnName="PktSumber" />
+                <ScalarProperty Name="Tanggal" ColumnName="Tanggal" />
+                <ScalarProperty Name="IdTransaksi" ColumnName="IdTransaksi" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

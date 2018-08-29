@@ -771,7 +771,6 @@ namespace testProjectBCA
             //    sbc.WriteToServer(dt);
             //    sbc.Close();
             //}
-            dataGridView1.DataSource = dt;
             //Masukin ke list untuk update/insert
             List<DailyStock> listDeliveryCabangDariExcel = new List<DailyStock>();
             foreach (DataRow row in dt.Rows)

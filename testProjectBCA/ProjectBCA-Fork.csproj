@@ -71,6 +71,9 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BCrypt.Net-Next, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BCrypt.Net-Next.3.1.0\lib\net452\BCrypt.Net-Next.dll</HintPath>
+    </Reference>
     <Reference Include="ClosedXML, Version=0.92.1.0, Culture=neutral, PublicKeyToken=fd1eb21b62ae805b, processorArchitecture=MSIL">
       <HintPath>..\packages\ClosedXML.0.92.1\lib\net40\ClosedXML.dll</HintPath>
       <Private>True</Private>
@@ -133,6 +136,9 @@
     <Reference Include="Microsoft.Office.Interop.Word, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
+    <Reference Include="MoreLinq, Version=3.0.0.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
+      <HintPath>..\packages\morelinq.3.0.0\lib\net451\MoreLinq.dll</HintPath>
+    </Reference>
     <Reference Include="Oracle.DataAccess, Version=4.112.2.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=AMD64" />
     <Reference Include="Oracle.ManagedDataAccess, Version=4.122.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
       <HintPath>..\packages\Oracle.ManagedDataAccess.12.2.1100\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
@@ -152,6 +158,9 @@
     <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.4.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
@@ -171,6 +180,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Approval.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ApprovalPembagianSaldo.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="AsuransiLayanan.cs">
@@ -265,6 +277,24 @@
     </Compile>
     <Compile Include="InputBonYangDisetujuiForm.Designer.cs">
       <DependentUpon>InputBonYangDisetujuiForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InputDataSetoranCRMForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InputDataSetoranCRMForm.Designer.cs">
+      <DependentUpon>InputDataSetoranCRMForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InputDataTarikanCRMForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InputDataTarikanCRMForm.Designer.cs">
+      <DependentUpon>InputDataTarikanCRMForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InputDataTarikanForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InputDataTarikanForm.Designer.cs">
+      <DependentUpon>InputDataTarikanForm.cs</DependentUpon>
     </Compile>
     <Compile Include="InputDataTukaranDanDeliveryForm.cs">
       <SubType>Form</SubType>
@@ -505,6 +535,12 @@
     <Compile Include="SaveAsk.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="saveBeeHive.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="saveMc.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="SaveRekap.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -522,6 +558,12 @@
     </Compile>
     <Compile Include="StokPosisiForm.designer.cs">
       <DependentUpon>StokPosisiForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TabelTarikan.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TabelTarikanSetoranCRM.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="TestForm.cs">
       <SubType>Form</SubType>
@@ -576,6 +618,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="InputBonYangDisetujuiForm.resx">
       <DependentUpon>InputBonYangDisetujuiForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InputDataSetoranCRMForm.resx">
+      <DependentUpon>InputDataSetoranCRMForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InputDataTarikanCRMForm.resx">
+      <DependentUpon>InputDataTarikanCRMForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InputDataTarikanForm.resx">
+      <DependentUpon>InputDataTarikanForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InputDataTukaranDanDeliveryForm.resx">
       <DependentUpon>InputDataTukaranDanDeliveryForm.cs</DependentUpon>
@@ -732,6 +783,17 @@
     <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\background-crop-layered.png" />
+    <None Include="Resources\background-crop.png" />
+    <None Include="Resources\BACKGROUND 2.png" />
+    <None Include="Resources\background.png" />
+    <None Include="Resources\2f30014e-5d8b-483c-a29a-92d1d4c896e1.jpg" />
+    <None Include="Resources\xFD40136-cr-300x300.jpg.pagespeed.ic.ipz70q516j.jpg" />
+    <None Include="Resources\Nautical-Seas-Wallpaper-Wallums.jpg" />
+    <None Include="Resources\logobca1.png" />
+    <None Include="Resources\logobca.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Model1.edmx</DependentUpon>
@@ -742,15 +804,6 @@
       <DependentUpon>Model1.edmx</DependentUpon>
       <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
-    <None Include="Resources\background-crop-layered.png" />
-    <None Include="Resources\background-crop.png" />
-    <None Include="Resources\BACKGROUND 2.png" />
-    <None Include="Resources\background.png" />
-    <None Include="Resources\2f30014e-5d8b-483c-a29a-92d1d4c896e1.jpg" />
-    <None Include="Resources\xFD40136-cr-300x300.jpg.pagespeed.ic.ipz70q516j.jpg" />
-    <None Include="Resources\Nautical-Seas-Wallpaper-Wallums.jpg" />
-    <None Include="Resources\logobca1.png" />
-    <None Include="Resources\logobca.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

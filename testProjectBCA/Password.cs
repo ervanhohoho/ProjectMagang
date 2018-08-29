@@ -14,7 +14,7 @@ namespace testProjectBCA
     
     public partial class Password
     {
-        public string password1 { get; set; }
         public short id { get; set; }
+        public string password1 { get; set; }
     }
 }

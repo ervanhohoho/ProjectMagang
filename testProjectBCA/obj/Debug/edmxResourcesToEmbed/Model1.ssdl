@@ -14,6 +14,19 @@
     <Property Name="CustomerName" Type="varchar" MaxLength="255" />
     <Property Name="TotalUangBesar" Type="bigint" />
   </EntityType>
+  <EntityType Name="ApprovalPembagianSaldo">
+    <Key>
+      <PropertyRef Name="IdTransaksi" />
+    </Key>
+    <Property Name="IdTransaksi" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Tanggal" Type="date" Nullable="false" />
+    <Property Name="PktSumber" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="PktTujuan" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="JenisTransaksi" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="JenisUang" Type="varchar" MaxLength="255" />
+    <Property Name="D100" Type="bigint" Nullable="false" />
+    <Property Name="D50" Type="bigint" Nullable="false" />
+  </EntityType>
   <EntityType Name="Approvals">
     <Key>
       <PropertyRef Name="idApproval" />
@@ -260,6 +273,7 @@
     <Property Name="vendor" Type="varchar" MaxLength="50" />
     <Property Name="kodePktCabang" Type="varchar" MaxLength="10" />
     <Property Name="kodePktATM" Type="varchar" MaxLength="10" />
+    <Property Name="kapasitasCPC" Type="bigint" />
   </EntityType>
   <EntityType Name="RekapSelisihAmbilSetor">
     <Key>
@@ -294,7 +308,7 @@
     <Property Name="blogTime" Type="datetime" />
     <Property Name="currencyAmmount" Type="bigint" />
     <Property Name="realDate" Type="date" />
-    <Property Name="validation" Type="varchar" MaxLength="255" />
+    <Property Name="blogMessage" Type="varchar" MaxLength="255" />
   </EntityType>
   <EntityType Name="RekonSaldoVault">
     <Key>
@@ -311,7 +325,7 @@
     <Property Name="timeStampRekon" Type="datetime" />
     <Property Name="currencyAmmount" Type="bigint" />
     <Property Name="realDate" Type="date" />
-    <Property Name="valdiation" Type="varchar" MaxLength="255" />
+    <Property Name="blogMessage" Type="varchar" MaxLength="255" />
   </EntityType>
   <EntityType Name="SaveAsk">
     <Key>
@@ -322,6 +336,35 @@
     <Property Name="rekapAsk" Type="bigint" />
     <Property Name="ask" Type="bigint" />
     <Property Name="komentar" Type="varchar" MaxLength="500" />
+  </EntityType>
+  <EntityType Name="saveBeeHive">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="tanggal" Type="date" />
+    <Property Name="kodePerusahaan" Type="varchar" MaxLength="255" />
+    <Property Name="totalNominal" Type="bigint" />
+    <Property Name="namaFile" Type="varchar" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="saveMcs">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="tanggal" Type="date" />
+    <Property Name="realDate" Type="date" />
+    <Property Name="customerCode" Type="varchar" MaxLength="500" />
+    <Property Name="amountTotal" Type="bigint" />
+    <Property Name="d100k" Type="bigint" />
+    <Property Name="d50k" Type="bigint" />
+    <Property Name="d20k" Type="bigint" />
+    <Property Name="d10k" Type="bigint" />
+    <Property Name="d5k" Type="bigint" />
+    <Property Name="d2k" Type="bigint" />
+    <Property Name="d1k" Type="bigint" />
+    <Property Name="amountCoin" Type="bigint" />
+    <Property Name="time" Type="time" Precision="7" />
   </EntityType>
   <EntityType Name="SaveRekap">
     <Key>
@@ -364,6 +407,26 @@
     <Property Name="inCabang" Type="bigint" />
     <Property Name="inRetail" Type="bigint" />
     <Property Name="outCabang" Type="bigint" />
+  </EntityType>
+  <EntityType Name="TabelTarikan">
+    <Key>
+      <PropertyRef Name="tanggal" />
+      <PropertyRef Name="wsid" />
+    </Key>
+    <Property Name="tanggal" Type="date" Nullable="false" />
+    <Property Name="wsid" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="totalTarikan" Type="bigint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TabelTarikanSetoranCRM">
+    <Key>
+      <PropertyRef Name="tanggal" />
+      <PropertyRef Name="wsid" />
+      <PropertyRef Name="jenis" />
+    </Key>
+    <Property Name="tanggal" Type="date" Nullable="false" />
+    <Property Name="wsid" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="nominal" Type="bigint" />
+    <Property Name="jenis" Type="varchar" MaxLength="255" Nullable="false" />
   </EntityType>
   <EntityType Name="TransaksiAtms">
     <Key>
@@ -445,20 +508,9 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Function Name="prediksiEvent2" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="startDate" Type="date" Mode="In" />
-    <Parameter Name="endDate" Type="date" Mode="In" />
-  </Function>
-  <Function Name="prediksiHistoris" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="startDate" Type="date" Mode="In" />
-    <Parameter Name="endDate" Type="date" Mode="In" />
-  </Function>
-  <Function Name="prediksiStdDev" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="startDate" Type="date" Mode="In" />
-    <Parameter Name="endDate" Type="date" Mode="In" />
-  </Function>
   <EntityContainer Name="CACModelStoreContainer">
     <EntitySet Name="Abacas" EntityType="Self.Abacas" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ApprovalPembagianSaldo" EntityType="Self.ApprovalPembagianSaldo" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Approvals" EntityType="Self.Approvals" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="AsuransiLayanan" EntityType="Self.AsuransiLayanan" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Cabang" EntityType="Self.Cabang" Schema="dbo" store:Type="Tables" />
@@ -481,8 +533,12 @@
     <EntitySet Name="RekonSaldoPerVendor" EntityType="Self.RekonSaldoPerVendor" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RekonSaldoVault" EntityType="Self.RekonSaldoVault" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SaveAsk" EntityType="Self.SaveAsk" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="saveBeeHive" EntityType="Self.saveBeeHive" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="saveMcs" EntityType="Self.saveMcs" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SaveRekap" EntityType="Self.SaveRekap" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="StokPosisi" EntityType="Self.StokPosisi" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TabelTarikan" EntityType="Self.TabelTarikan" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TabelTarikanSetoranCRM" EntityType="Self.TabelTarikanSetoranCRM" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TransaksiAtms" EntityType="Self.TransaksiAtms" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="VaultOrderBlogHistory" EntityType="Self.VaultOrderBlogHistory" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK_laporanBon_Pkt" Association="Self.FK_laporanBon_Pkt">

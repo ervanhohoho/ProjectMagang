@@ -156,6 +156,13 @@ namespace testProjectBCA
                                                        where a.kodePkt == pkt.kodePkt && pkt.tanggalPengajuan == ((DateTime)da.tanggal).Date
                                                        && da.bon100 !=-1
                                                        select new { Approval = a, DetailApproval = da, LaporanBon = lb }).ToList();
+
+
+                        if(q.saldoAwal100 != pkt.saldoAwal[0] || q.saldoAwal50 != pkt.saldoAwal[1] || q.saldoAwal20 != pkt.saldoAwal[2])
+                        {
+                            isError = true;
+                            errMsg += "Saldo awal tidak sesuai";
+                        }
                         foreach (var temp in queryApprovalLaporanBon)
                         {
                            

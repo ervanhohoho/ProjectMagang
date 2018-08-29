@@ -79,10 +79,6 @@
             // comboArea
             // 
             this.comboArea.FormattingEnabled = true;
-            this.comboArea.Items.AddRange(new object[] {
-            "Nasional",
-            "Jabo",
-            "Non-Jabo"});
             this.comboArea.Location = new System.Drawing.Point(509, 12);
             this.comboArea.Name = "comboArea";
             this.comboArea.Size = new System.Drawing.Size(121, 21);

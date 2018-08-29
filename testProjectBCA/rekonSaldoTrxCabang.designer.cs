@@ -28,11 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
-            this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.buttonGenerate = new System.Windows.Forms.Button();
+            this.comboPkt = new System.Windows.Forms.ComboBox();
             this.comboVal = new System.Windows.Forms.ComboBox();
             this.comboSetBon = new System.Windows.Forms.ComboBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
@@ -42,52 +40,34 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
-            // dateTimePicker1
-            // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(6, 19);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
-            this.dateTimePicker1.TabIndex = 0;
-            // 
             // dateTimePicker2
             // 
-            this.dateTimePicker2.Location = new System.Drawing.Point(6, 64);
+            this.dateTimePicker2.Location = new System.Drawing.Point(219, 20);
             this.dateTimePicker2.Name = "dateTimePicker2";
             this.dateTimePicker2.Size = new System.Drawing.Size(200, 20);
             this.dateTimePicker2.TabIndex = 1;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(64, 43);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(79, 13);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "sampai dengan";
+            this.dateTimePicker2.ValueChanged += new System.EventHandler(this.dateTimePicker2_ValueChanged);
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.buttonGenerate);
+            this.groupBox1.Controls.Add(this.comboPkt);
             this.groupBox1.Controls.Add(this.comboVal);
             this.groupBox1.Controls.Add(this.comboSetBon);
-            this.groupBox1.Controls.Add(this.dateTimePicker1);
-            this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.dateTimePicker2);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(425, 128);
+            this.groupBox1.Size = new System.Drawing.Size(425, 81);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             // 
-            // buttonGenerate
+            // comboPkt
             // 
-            this.buttonGenerate.Location = new System.Drawing.Point(307, 93);
-            this.buttonGenerate.Name = "buttonGenerate";
-            this.buttonGenerate.Size = new System.Drawing.Size(112, 23);
-            this.buttonGenerate.TabIndex = 5;
-            this.buttonGenerate.Text = "Generate Pivot";
-            this.buttonGenerate.UseVisualStyleBackColor = true;
-            this.buttonGenerate.Click += new System.EventHandler(this.buttonGenerate_Click);
+            this.comboPkt.FormattingEnabled = true;
+            this.comboPkt.Location = new System.Drawing.Point(219, 46);
+            this.comboPkt.Name = "comboPkt";
+            this.comboPkt.Size = new System.Drawing.Size(200, 21);
+            this.comboPkt.TabIndex = 6;
+            this.comboPkt.SelectionChangeCommitted += new System.EventHandler(this.comboPkt_SelectionChangeCommitted);
             // 
             // comboVal
             // 
@@ -95,10 +75,11 @@
             this.comboVal.Items.AddRange(new object[] {
             "Sudah Validasi",
             "Belum Validasi"});
-            this.comboVal.Location = new System.Drawing.Point(212, 63);
+            this.comboVal.Location = new System.Drawing.Point(6, 46);
             this.comboVal.Name = "comboVal";
             this.comboVal.Size = new System.Drawing.Size(207, 21);
             this.comboVal.TabIndex = 4;
+            this.comboVal.SelectionChangeCommitted += new System.EventHandler(this.comboVal_SelectionChangeCommitted);
             // 
             // comboSetBon
             // 
@@ -106,10 +87,11 @@
             this.comboSetBon.Items.AddRange(new object[] {
             "Setoran",
             "Bon"});
-            this.comboSetBon.Location = new System.Drawing.Point(212, 18);
+            this.comboSetBon.Location = new System.Drawing.Point(6, 19);
             this.comboSetBon.Name = "comboSetBon";
             this.comboSetBon.Size = new System.Drawing.Size(207, 21);
             this.comboSetBon.TabIndex = 3;
+            this.comboSetBon.SelectionChangeCommitted += new System.EventHandler(this.comboSetBon_SelectionChangeCommitted);
             // 
             // dataGridView1
             // 
@@ -119,12 +101,13 @@
             this.dataGridView1.AllowUserToResizeRows = false;
             this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(12, 146);
+            this.dataGridView1.Location = new System.Drawing.Point(12, 99);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.Size = new System.Drawing.Size(425, 442);
+            this.dataGridView1.Size = new System.Drawing.Size(425, 517);
             this.dataGridView1.TabIndex = 4;
+            this.dataGridView1.SelectionChanged += new System.EventHandler(this.dataGridView1_SelectionChanged);
             // 
             // textBoxSearch
             // 
@@ -132,6 +115,7 @@
             this.textBoxSearch.Name = "textBoxSearch";
             this.textBoxSearch.Size = new System.Drawing.Size(344, 20);
             this.textBoxSearch.TabIndex = 5;
+            this.textBoxSearch.TextChanged += new System.EventHandler(this.searchTextBox_TextChanged);
             // 
             // buttonSearch
             // 
@@ -141,6 +125,7 @@
             this.buttonSearch.TabIndex = 6;
             this.buttonSearch.Text = "Search";
             this.buttonSearch.UseVisualStyleBackColor = true;
+            this.buttonSearch.Click += new System.EventHandler(this.buttonSearch_Click);
             // 
             // rekonSaldoTrxCabang
             // 
@@ -153,8 +138,8 @@
             this.Controls.Add(this.groupBox1);
             this.Name = "rekonSaldoTrxCabang";
             this.Text = "rekonSaldoTrxCabang";
+            this.TextChanged += new System.EventHandler(this.searchTextBox_TextChanged);
             this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -162,16 +147,13 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.DateTimePicker dateTimePicker2;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.ComboBox comboVal;
         private System.Windows.Forms.ComboBox comboSetBon;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.Button buttonGenerate;
         private System.Windows.Forms.TextBox textBoxSearch;
         private System.Windows.Forms.Button buttonSearch;
+        private System.Windows.Forms.ComboBox comboPkt;
     }
 }

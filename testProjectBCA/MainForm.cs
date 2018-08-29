@@ -1,8 +1,6 @@
 ﻿using LumenWorks.Framework.IO.Csv;
-using Oracle.DataAccess.Client;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
@@ -10,9 +8,9 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using System.Security.Cryptography;
+using BCrypt.Net;
 namespace testProjectBCA
 {
     public partial class MainForm : Form
@@ -895,23 +893,63 @@ namespace testProjectBCA
 
         private void gantiPasswordToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            InputPromptForm ipf = new InputPromptForm("Old Password", "Input");
-            if(ipf.ShowDialog() == DialogResult.OK)
+            Database1Entities db = new Database1Entities();
+            if (String.IsNullOrEmpty(db.Passwords.Select(x => x.password1).FirstOrDefault()))
             {
-                String oldPassword = ipf.value;
-                Database1Entities db = new Database1Entities();
-                var password= db.Passwords.FirstOrDefault();
-                if(password.password1 == oldPassword)
+                var password = db.Passwords.FirstOrDefault();
+                InputPromptForm ipf2 = new InputPromptForm("New Password", "Input");
+                if (ipf2.ShowDialog() == DialogResult.OK)
                 {
-                    InputPromptForm ipf2 = new InputPromptForm("New Password", "Input");
-                    if (ipf2.ShowDialog() == DialogResult.OK)
+                    if (password != null)
+                        password.password1 = BCrypt.Net.BCrypt.HashPassword(ipf2.value);
+                    else
+                        db.Passwords.Add(new Password() { password1 = BCrypt.Net.BCrypt.HashPassword(ipf2.value) });
+                    db.SaveChanges();
+                    MessageBox.Show("Password Changed!");
+                }
+            }
+            else
+            {
+                InputPromptForm ipf = new InputPromptForm("Old Password", "Input");
+                if (ipf.ShowDialog() == DialogResult.OK)
+                {
+                    String oldPassword = ipf.value;
+                    String hashed = BCrypt.Net.BCrypt.HashPassword(oldPassword);
+                    Console.WriteLine(hashed);
+                    var password = db.Passwords.FirstOrDefault();
+                    if (BCrypt.Net.BCrypt.Verify(oldPassword, password.password1))
                     {
-                        password.password1 = ipf2.value;
-                        db.SaveChanges();
-                        MessageBox.Show("Password Changed!");
+                        InputPromptForm ipf2 = new InputPromptForm("New Password", "Input");
+                        if (ipf2.ShowDialog() == DialogResult.OK)
+                        {
+                            password.password1 = BCrypt.Net.BCrypt.HashPassword(ipf2.value);
+                            db.SaveChanges();
+                            MessageBox.Show("Password Changed!");
+                        }
                     }
                 }
             }
+        }
+
+        private void inputDataTarikanToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            InputDataTarikanForm idtf = new InputDataTarikanForm();
+            idtf.MdiParent = this;
+            idtf.Show();
+        }
+
+        private void cRMToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            InputDataTarikanCRMForm idtcf = new InputDataTarikanCRMForm();
+            idtcf.MdiParent = this;
+            idtcf.Show();
+        }
+
+        private void setoranCRMToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            InputDataSetoranCRMForm idscf = new InputDataSetoranCRMForm();
+            idscf.MdiParent = this;
+            idscf.Show();
         }
     }
 }

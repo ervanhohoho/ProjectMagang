@@ -55,6 +55,7 @@ namespace testProjectBCA
         public RevisiInformationBoard()
         {
             InitializeComponent();
+            labelKodePkt.Text = "";
             tglSetor.MinDate = Variables.todayDate.AddDays(1);
             pktComboBox.MouseWheel += new MouseEventHandler(pktComboBox_MouseWheel);
             pktIndex = 0;
@@ -143,6 +144,7 @@ namespace testProjectBCA
         private void pktComboBox_SelectionChangeCommitted(object sender, EventArgs e)
         {
             pktIndex = pktComboBox.SelectedIndex;
+            labelKodePkt.Text = KodePkt[pktIndex];
             loadE2E();
             Database1Entities db = new Database1Entities();
         }
@@ -3319,7 +3321,7 @@ namespace testProjectBCA
         private void approveButton_Click(object sender, EventArgs e)
         {
             Database1Entities db = new Database1Entities();
-            if (MessageBox.Show("Approve Bon?", "Approve Bon", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (MessageBox.Show("Approve Bon "+KodePkt[pktIndex]+"?", "Approve Bon", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 loadForm.ShowSplashScreen();
                 List<Denom> bonYangDisetujui = loadBonYangDisetujuiFromTable();

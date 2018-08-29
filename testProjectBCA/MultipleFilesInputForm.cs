@@ -218,6 +218,7 @@ namespace testProjectBCA
                 }
                 catch (Exception e)
                 {
+                    MessageBox.Show("Data Laporan " + data.DataSetName + " Sheet " + table.TableName + " tidak sesuai format");
                     continue;
                 }
 

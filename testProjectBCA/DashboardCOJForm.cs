@@ -748,17 +748,17 @@ namespace testProjectBCA
                     persen.Add(label50);
                     persen.Add(label51);
 
-                    for (int i = 0; i < kodepkt.Count; i++)
+                    for (int i = 0; i < kodepkt.Count && i<asd.Count; i++)
                     {
                         asd[i].Visible = true;
                         asd[i].Text = kodepkt[i];
                     }
-                    for (int i = 0; i < gress.Count; i++)
+                    for (int i = 0; i < gress.Count && i<dsa.Count; i++)
                     {
                         dsa[i].Visible = true;
                         dsa[i].Text = (Math.Round(gress[i]/1000000000)).ToString() + " M";
                     }
-                    for (int i = 0; i < gress.Count; i++)
+                    for (int i = 0; i < gress.Count && i<persen.Count; i++)
                     {
                         persen[i].Visible = true;
                         persen[i].Text = (Math.Round(((Double)gress[i] / reloadToDivideUangBesar()),2) * 100).ToString() + " %";
