@@ -86,6 +86,7 @@
             this.aTMToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.cRMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setoranCRMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.inputDataCashpointToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -523,7 +524,8 @@
             this.insertDataTarikanToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.aTMToolStripMenuItem2,
             this.cRMToolStripMenuItem,
-            this.setoranCRMToolStripMenuItem});
+            this.setoranCRMToolStripMenuItem,
+            this.inputDataCashpointToolStripMenuItem1});
             this.insertDataTarikanToolStripMenuItem.Name = "insertDataTarikanToolStripMenuItem";
             this.insertDataTarikanToolStripMenuItem.Size = new System.Drawing.Size(160, 20);
             this.insertDataTarikanToolStripMenuItem.Text = "Input Data Tarikan/Setoran";
@@ -531,23 +533,30 @@
             // aTMToolStripMenuItem2
             // 
             this.aTMToolStripMenuItem2.Name = "aTMToolStripMenuItem2";
-            this.aTMToolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
+            this.aTMToolStripMenuItem2.Size = new System.Drawing.Size(186, 22);
             this.aTMToolStripMenuItem2.Text = "ATM";
             this.aTMToolStripMenuItem2.Click += new System.EventHandler(this.inputDataTarikanToolStripMenuItem_Click);
             // 
             // cRMToolStripMenuItem
             // 
             this.cRMToolStripMenuItem.Name = "cRMToolStripMenuItem";
-            this.cRMToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.cRMToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.cRMToolStripMenuItem.Text = "Tarikan CRM";
             this.cRMToolStripMenuItem.Click += new System.EventHandler(this.cRMToolStripMenuItem_Click);
             // 
             // setoranCRMToolStripMenuItem
             // 
             this.setoranCRMToolStripMenuItem.Name = "setoranCRMToolStripMenuItem";
-            this.setoranCRMToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.setoranCRMToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.setoranCRMToolStripMenuItem.Text = "Setoran CRM";
             this.setoranCRMToolStripMenuItem.Click += new System.EventHandler(this.setoranCRMToolStripMenuItem_Click);
+            // 
+            // inputDataCashpointToolStripMenuItem1
+            // 
+            this.inputDataCashpointToolStripMenuItem1.Name = "inputDataCashpointToolStripMenuItem1";
+            this.inputDataCashpointToolStripMenuItem1.Size = new System.Drawing.Size(186, 22);
+            this.inputDataCashpointToolStripMenuItem1.Text = "Input Data Cashpoint";
+            this.inputDataCashpointToolStripMenuItem1.Click += new System.EventHandler(this.inputDataCashpointToolStripMenuItem1_Click);
             // 
             // MainForm
             // 
@@ -631,5 +640,6 @@
         private System.Windows.Forms.ToolStripMenuItem aTMToolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem cRMToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem setoranCRMToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem inputDataCashpointToolStripMenuItem1;
     }
 }

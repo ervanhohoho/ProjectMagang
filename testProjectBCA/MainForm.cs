@@ -7,10 +7,7 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using System.Security.Cryptography;
-using BCrypt.Net;
 namespace testProjectBCA
 {
     public partial class MainForm : Form
@@ -950,6 +947,48 @@ namespace testProjectBCA
             InputDataSetoranCRMForm idscf = new InputDataSetoranCRMForm();
             idscf.MdiParent = this;
             idscf.Show();
+        }
+
+        private void inputDataCashpointToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog of = new OpenFileDialog();
+            of.Filter = Variables.excelFilter;
+            if(of.ShowDialog() == DialogResult.OK)
+            {
+                loadForm.ShowSplashScreen();
+                Database1Entities db = new Database1Entities();
+                List<Cashpoint> fromDb = db.Cashpoints.ToList();
+                DataSet ds = Util.openExcel(of.FileName);
+                DataTable dt = ds.Tables[0];
+                List<Cashpoint> fromExcel = new List<Cashpoint>();
+                foreach(DataRow row in dt.Rows)
+                {
+                    if (row[0].ToString().Length != 5)
+                        continue;
+                    fromExcel.Add(new Cashpoint() {
+                        idCashpoint = row[0].ToString(),
+                        kodePkt = row[1].ToString()
+                    });
+                }
+                //
+                List<Cashpoint> toInput = new List<Cashpoint>();
+                foreach(var row in fromExcel)
+                {
+                    var q = (from x in fromDb
+                             where x.idCashpoint == row.idCashpoint
+                             select x).FirstOrDefault();
+                    if (q != null)
+                    {
+                        q.kodePkt = row.kodePkt;
+                        db.SaveChanges();
+                    }
+                    else
+                        toInput.Add(row);
+                }
+                db.Cashpoints.AddRange(toInput);
+                db.SaveChanges();
+                loadForm.CloseForm();
+            }
         }
     }
 }

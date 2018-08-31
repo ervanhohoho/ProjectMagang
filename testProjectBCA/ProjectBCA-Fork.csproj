@@ -197,40 +197,40 @@
     <Compile Include="DailyStock.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="DailyStockForm.cs">
+    <Compile Include="Cabang\DailyStockForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DailyStockForm.designer.cs">
+    <Compile Include="Cabang\DailyStockForm.designer.cs">
       <DependentUpon>DailyStockForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="dasbor.cs">
+    <Compile Include="Dashboard\dasbor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dasbor.designer.cs">
+    <Compile Include="Dashboard\dasbor.designer.cs">
       <DependentUpon>dasbor.cs</DependentUpon>
     </Compile>
-    <Compile Include="dasborExtension.cs">
+    <Compile Include="Dashboard\dasborExtension.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dasborExtension.designer.cs">
+    <Compile Include="Dashboard\dasborExtension.designer.cs">
       <DependentUpon>dasborExtension.cs</DependentUpon>
     </Compile>
-    <Compile Include="dasborPerformancePktf.cs">
+    <Compile Include="Dashboard\dasborPerformancePktf.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dasborPerformancePktf.designer.cs">
+    <Compile Include="Dashboard\dasborPerformancePktf.designer.cs">
       <DependentUpon>dasborPerformancePktf.cs</DependentUpon>
     </Compile>
-    <Compile Include="dashboardCojExtension.cs">
+    <Compile Include="Dashboard\dashboardCojExtension.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dashboardCojExtension.designer.cs">
+    <Compile Include="Dashboard\dashboardCojExtension.designer.cs">
       <DependentUpon>dashboardCojExtension.cs</DependentUpon>
     </Compile>
-    <Compile Include="DashboardCOJForm.cs">
+    <Compile Include="Dashboard\DashboardCOJForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DashboardCOJForm.designer.cs">
+    <Compile Include="Dashboard\DashboardCOJForm.designer.cs">
       <DependentUpon>DashboardCOJForm.cs</DependentUpon>
     </Compile>
     <Compile Include="DetailApproval.cs">
@@ -239,22 +239,22 @@
     <Compile Include="EventTanggal.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="ExportForm.cs">
+    <Compile Include="ATM\ExportForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ExportForm.Designer.cs">
+    <Compile Include="ATM\ExportForm.Designer.cs">
       <DependentUpon>ExportForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ExportOpti.cs">
+    <Compile Include="ATM\ExportOpti.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ExportOpti.Designer.cs">
+    <Compile Include="ATM\ExportOpti.Designer.cs">
       <DependentUpon>ExportOpti.cs</DependentUpon>
     </Compile>
-    <Compile Include="ForecastAtmForm.cs">
+    <Compile Include="ATM\ForecastAtmForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ForecastAtmForm.Designer.cs">
+    <Compile Include="ATM\ForecastAtmForm.Designer.cs">
       <DependentUpon>ForecastAtmForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ForecastDetail.cs">
@@ -263,61 +263,61 @@
     <Compile Include="ForecastHeader.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="graphSaldoATM.cs">
+    <Compile Include="Dashboard\graphSaldoATM.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="graphSaldoATM.designer.cs">
+    <Compile Include="Dashboard\graphSaldoATM.designer.cs">
       <DependentUpon>graphSaldoATM.cs</DependentUpon>
     </Compile>
     <Compile Include="HargaLayanan.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="InputBonYangDisetujuiForm.cs">
+    <Compile Include="ATM\InputBonYangDisetujuiForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="InputBonYangDisetujuiForm.Designer.cs">
+    <Compile Include="ATM\InputBonYangDisetujuiForm.Designer.cs">
       <DependentUpon>InputBonYangDisetujuiForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="InputDataSetoranCRMForm.cs">
+    <Compile Include="InputDataTarikanSetoran\InputDataSetoranCRMForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="InputDataSetoranCRMForm.Designer.cs">
+    <Compile Include="InputDataTarikanSetoran\InputDataSetoranCRMForm.Designer.cs">
       <DependentUpon>InputDataSetoranCRMForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="InputDataTarikanCRMForm.cs">
+    <Compile Include="InputDataTarikanSetoran\InputDataTarikanCRMForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="InputDataTarikanCRMForm.Designer.cs">
+    <Compile Include="InputDataTarikanSetoran\InputDataTarikanCRMForm.Designer.cs">
       <DependentUpon>InputDataTarikanCRMForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="InputDataTarikanForm.cs">
+    <Compile Include="InputDataTarikanSetoran\InputDataTarikanForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="InputDataTarikanForm.Designer.cs">
+    <Compile Include="InputDataTarikanSetoran\InputDataTarikanForm.Designer.cs">
       <DependentUpon>InputDataTarikanForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="InputDataTukaranDanDeliveryForm.cs">
+    <Compile Include="Nasabah\InputDataTukaranDanDeliveryForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="InputDataTukaranDanDeliveryForm.Designer.cs">
+    <Compile Include="Nasabah\InputDataTukaranDanDeliveryForm.Designer.cs">
       <DependentUpon>InputDataTukaranDanDeliveryForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="InputOrderTrackingForm.cs">
+    <Compile Include="Cabang\InputOrderTrackingForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="InputOrderTrackingForm.designer.cs">
+    <Compile Include="Cabang\InputOrderTrackingForm.designer.cs">
       <DependentUpon>InputOrderTrackingForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="InputPromptForm.cs">
+    <Compile Include="Support Files\InputPromptForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="InputPromptForm.Designer.cs">
+    <Compile Include="Support Files\InputPromptForm.Designer.cs">
       <DependentUpon>InputPromptForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="InsertStokPosisiForm.cs">
+    <Compile Include="Cabang\InsertStokPosisiForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="InsertStokPosisiForm.Designer.cs">
+    <Compile Include="Cabang\InsertStokPosisiForm.Designer.cs">
       <DependentUpon>InsertStokPosisiForm.cs</DependentUpon>
     </Compile>
     <Compile Include="laporanBon.cs">
@@ -344,10 +344,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
-    <Compile Include="MultipleFilesInputUpdateForm.cs">
+    <Compile Include="ATM\Unused\MultipleFilesInputUpdateForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MultipleFilesInputUpdateForm.Designer.cs">
+    <Compile Include="ATM\Unused\MultipleFilesInputUpdateForm.Designer.cs">
       <DependentUpon>MultipleFilesInputUpdateForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Nasabah.cs">
@@ -362,37 +362,37 @@
     <Compile Include="Password.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="PembagianSaldoForm.cs">
+    <Compile Include="Cabang\PembagianSaldoForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PembagianSaldoForm.Designer.cs">
+    <Compile Include="Cabang\PembagianSaldoForm.Designer.cs">
       <DependentUpon>PembagianSaldoForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PerbandinganSaldoForm.cs">
+    <Compile Include="ATM\PerbandinganSaldoForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PerbandinganSaldoForm.Designer.cs">
+    <Compile Include="ATM\PerbandinganSaldoForm.Designer.cs">
       <DependentUpon>PerbandinganSaldoForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Pkt.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="PopupInformationBoard.cs">
+    <Compile Include="Dashboard\PopupInformationBoard.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PopupInformationBoard.Designer.cs">
+    <Compile Include="Dashboard\PopupInformationBoard.Designer.cs">
       <DependentUpon>PopupInformationBoard.cs</DependentUpon>
     </Compile>
-    <Compile Include="popupsementara.cs">
+    <Compile Include="Dashboard\popupsementara.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="popupsementara.designer.cs">
+    <Compile Include="Dashboard\popupsementara.designer.cs">
       <DependentUpon>popupsementara.cs</DependentUpon>
     </Compile>
-    <Compile Include="RasioApprovalForm.cs">
+    <Compile Include="ATM\RasioApprovalForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RasioApprovalForm.Designer.cs">
+    <Compile Include="ATM\RasioApprovalForm.Designer.cs">
       <DependentUpon>RasioApprovalForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ReadBeehiveForm.cs">
@@ -404,94 +404,94 @@
     <Compile Include="RekapSelisihAmbilSetor.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="RekonSaldoForm.cs">
+    <Compile Include="Cabang\RekonSaldoForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RekonSaldoForm.designer.cs">
+    <Compile Include="Cabang\RekonSaldoForm.designer.cs">
       <DependentUpon>RekonSaldoForm.cs</DependentUpon>
     </Compile>
     <Compile Include="RekonSaldoPerVendor.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="rekonSaldoTrxCabang.cs">
+    <Compile Include="Cabang\rekonSaldoTrxCabang.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="rekonSaldoTrxCabang.designer.cs">
+    <Compile Include="Cabang\rekonSaldoTrxCabang.designer.cs">
       <DependentUpon>rekonSaldoTrxCabang.cs</DependentUpon>
     </Compile>
     <Compile Include="RekonSaldoVault.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="RevisiInformationBoard.cs">
+    <Compile Include="ATM\RevisiInformationBoard.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RevisiInformationBoard.Designer.cs">
+    <Compile Include="ATM\RevisiInformationBoard.Designer.cs">
       <DependentUpon>RevisiInformationBoard.cs</DependentUpon>
     </Compile>
-    <Compile Include="InformationBoard.cs">
+    <Compile Include="ATM\InformationBoard.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="InformationBoard.Designer.cs">
+    <Compile Include="ATM\InformationBoard.Designer.cs">
       <DependentUpon>InformationBoard.cs</DependentUpon>
     </Compile>
-    <Compile Include="initTransaksi.cs">
+    <Compile Include="Support Files\initTransaksi.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="initTransaksi.Designer.cs">
+    <Compile Include="Support Files\initTransaksi.Designer.cs">
       <DependentUpon>initTransaksi.cs</DependentUpon>
     </Compile>
-    <Compile Include="InputAbacasForm.cs">
+    <Compile Include="Nasabah\InputAbacasForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="InputAbacasForm.Designer.cs">
+    <Compile Include="Nasabah\InputAbacasForm.Designer.cs">
       <DependentUpon>InputAbacasForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="InputDataSubsidiForm.cs">
+    <Compile Include="Nasabah\InputDataSubsidiForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="InputDataSubsidiForm.Designer.cs">
+    <Compile Include="Nasabah\InputDataSubsidiForm.Designer.cs">
       <DependentUpon>InputDataSubsidiForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="InputForm.cs">
+    <Compile Include="ATM\Unused\InputForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="InputForm.Designer.cs">
+    <Compile Include="ATM\Unused\InputForm.Designer.cs">
       <DependentUpon>InputForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="InputHargaLayananForm.cs">
+    <Compile Include="Nasabah\InputHargaLayananForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="InputHargaLayananForm.Designer.cs">
+    <Compile Include="Nasabah\InputHargaLayananForm.Designer.cs">
       <DependentUpon>InputHargaLayananForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="InputMasterNasabahForm.cs">
+    <Compile Include="Nasabah\InputMasterNasabahForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="InputMasterNasabahForm.Designer.cs">
+    <Compile Include="Nasabah\InputMasterNasabahForm.Designer.cs">
       <DependentUpon>InputMasterNasabahForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="InputTransaksiCabangForm.cs">
+    <Compile Include="Cabang\InputTransaksiCabangForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="InputTransaksiCabangForm.Designer.cs">
+    <Compile Include="Cabang\InputTransaksiCabangForm.Designer.cs">
       <DependentUpon>InputTransaksiCabangForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="InvoiceNasabahForm.cs">
+    <Compile Include="Nasabah\InvoiceNasabahForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="InvoiceNasabahForm.Designer.cs">
+    <Compile Include="Nasabah\InvoiceNasabahForm.Designer.cs">
       <DependentUpon>InvoiceNasabahForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="loadForm.cs">
+    <Compile Include="Support Files\loadForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="loadForm.Designer.cs">
+    <Compile Include="Support Files\loadForm.Designer.cs">
       <DependentUpon>loadForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="loadPkt.cs">
+    <Compile Include="Support Files\loadPkt.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="loadPkt.Designer.cs">
+    <Compile Include="Support Files\loadPkt.Designer.cs">
       <DependentUpon>loadPkt.cs</DependentUpon>
     </Compile>
     <Compile Include="MainForm.cs">
@@ -500,36 +500,36 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MultipleFilesInputForm.cs">
+    <Compile Include="ATM\MultipleFilesInputForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MultipleFilesInputForm.Designer.cs">
+    <Compile Include="ATM\MultipleFilesInputForm.Designer.cs">
       <DependentUpon>MultipleFilesInputForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="AkurasiPrediksiForm.cs">
+    <Compile Include="ATM\AkurasiPrediksiForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AkurasiPrediksiForm.Designer.cs">
+    <Compile Include="ATM\AkurasiPrediksiForm.Designer.cs">
       <DependentUpon>AkurasiPrediksiForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="proyeksiLikuiditasForm.cs">
+    <Compile Include="Cabang\proyeksiLikuiditasForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="proyeksiLikuiditasForm.Designer.cs">
+    <Compile Include="Cabang\proyeksiLikuiditasForm.Designer.cs">
       <DependentUpon>proyeksiLikuiditasForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="RekapApprovalForm.cs">
+    <Compile Include="ATM\RekapApprovalForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RekapApprovalForm.Designer.cs">
+    <Compile Include="ATM\RekapApprovalForm.Designer.cs">
       <DependentUpon>RekapApprovalForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Revisi.cs">
+    <Compile Include="ATM\Revisi.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Revisi.Designer.cs">
+    <Compile Include="ATM\Revisi.Designer.cs">
       <DependentUpon>Revisi.cs</DependentUpon>
     </Compile>
     <Compile Include="SaveAsk.cs">
@@ -544,19 +544,19 @@
     <Compile Include="SaveRekap.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="SLAProsesForm.cs">
+    <Compile Include="Cabang\SLAProsesForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SLAProsesForm.designer.cs">
+    <Compile Include="Cabang\SLAProsesForm.designer.cs">
       <DependentUpon>SLAProsesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="StokPosisi.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="StokPosisiForm.cs">
+    <Compile Include="Cabang\StokPosisiForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="StokPosisiForm.designer.cs">
+    <Compile Include="Cabang\StokPosisiForm.designer.cs">
       <DependentUpon>StokPosisiForm.cs</DependentUpon>
     </Compile>
     <Compile Include="TabelTarikan.cs">
@@ -575,10 +575,10 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="transaksiPkt.cs" />
-    <Compile Include="UpdateStokPosisiForm.cs">
+    <Compile Include="Cabang\UpdateStokPosisiForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UpdateStokPosisiForm.Designer.cs">
+    <Compile Include="Cabang\UpdateStokPosisiForm.Designer.cs">
       <DependentUpon>UpdateStokPosisiForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Util.cs" />
@@ -586,127 +586,127 @@
     <Compile Include="VaultOrderBlogHistory.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="DailyStockForm.resx">
+    <EmbeddedResource Include="Cabang\DailyStockForm.resx">
       <DependentUpon>DailyStockForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="dasbor.resx">
+    <EmbeddedResource Include="Dashboard\dasbor.resx">
       <DependentUpon>dasbor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="dasborExtension.resx">
+    <EmbeddedResource Include="Dashboard\dasborExtension.resx">
       <DependentUpon>dasborExtension.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="dasborPerformancePktf.resx">
+    <EmbeddedResource Include="Dashboard\dasborPerformancePktf.resx">
       <DependentUpon>dasborPerformancePktf.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="dashboardCojExtension.resx">
+    <EmbeddedResource Include="Dashboard\dashboardCojExtension.resx">
       <DependentUpon>dashboardCojExtension.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DashboardCOJForm.resx">
+    <EmbeddedResource Include="Dashboard\DashboardCOJForm.resx">
       <DependentUpon>DashboardCOJForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ExportForm.resx">
+    <EmbeddedResource Include="ATM\ExportForm.resx">
       <DependentUpon>ExportForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ExportOpti.resx">
+    <EmbeddedResource Include="ATM\ExportOpti.resx">
       <DependentUpon>ExportOpti.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ForecastAtmForm.resx">
+    <EmbeddedResource Include="ATM\ForecastAtmForm.resx">
       <DependentUpon>ForecastAtmForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="graphSaldoATM.resx">
+    <EmbeddedResource Include="Dashboard\graphSaldoATM.resx">
       <DependentUpon>graphSaldoATM.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="InputBonYangDisetujuiForm.resx">
+    <EmbeddedResource Include="ATM\InputBonYangDisetujuiForm.resx">
       <DependentUpon>InputBonYangDisetujuiForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="InputDataSetoranCRMForm.resx">
+    <EmbeddedResource Include="InputDataTarikanSetoran\InputDataSetoranCRMForm.resx">
       <DependentUpon>InputDataSetoranCRMForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="InputDataTarikanCRMForm.resx">
+    <EmbeddedResource Include="InputDataTarikanSetoran\InputDataTarikanCRMForm.resx">
       <DependentUpon>InputDataTarikanCRMForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="InputDataTarikanForm.resx">
+    <EmbeddedResource Include="InputDataTarikanSetoran\InputDataTarikanForm.resx">
       <DependentUpon>InputDataTarikanForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="InputDataTukaranDanDeliveryForm.resx">
+    <EmbeddedResource Include="Nasabah\InputDataTukaranDanDeliveryForm.resx">
       <DependentUpon>InputDataTukaranDanDeliveryForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="InputOrderTrackingForm.resx">
+    <EmbeddedResource Include="Cabang\InputOrderTrackingForm.resx">
       <DependentUpon>InputOrderTrackingForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="InputPromptForm.resx">
+    <EmbeddedResource Include="Support Files\InputPromptForm.resx">
       <DependentUpon>InputPromptForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="InsertStokPosisiForm.resx">
+    <EmbeddedResource Include="Cabang\InsertStokPosisiForm.resx">
       <DependentUpon>InsertStokPosisiForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MultipleFilesInputUpdateForm.resx">
+    <EmbeddedResource Include="ATM\Unused\MultipleFilesInputUpdateForm.resx">
       <DependentUpon>MultipleFilesInputUpdateForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PembagianSaldoForm.resx">
+    <EmbeddedResource Include="Cabang\PembagianSaldoForm.resx">
       <DependentUpon>PembagianSaldoForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PerbandinganSaldoForm.resx">
+    <EmbeddedResource Include="ATM\PerbandinganSaldoForm.resx">
       <DependentUpon>PerbandinganSaldoForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PopupInformationBoard.resx">
+    <EmbeddedResource Include="Dashboard\PopupInformationBoard.resx">
       <DependentUpon>PopupInformationBoard.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="popupsementara.resx">
+    <EmbeddedResource Include="Dashboard\popupsementara.resx">
       <DependentUpon>popupsementara.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="RasioApprovalForm.resx">
+    <EmbeddedResource Include="ATM\RasioApprovalForm.resx">
       <DependentUpon>RasioApprovalForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ReadBeehiveForm.resx">
       <DependentUpon>ReadBeehiveForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="RekonSaldoForm.resx">
+    <EmbeddedResource Include="Cabang\RekonSaldoForm.resx">
       <DependentUpon>RekonSaldoForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="rekonSaldoTrxCabang.resx">
+    <EmbeddedResource Include="Cabang\rekonSaldoTrxCabang.resx">
       <DependentUpon>rekonSaldoTrxCabang.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="RevisiInformationBoard.resx">
+    <EmbeddedResource Include="ATM\RevisiInformationBoard.resx">
       <DependentUpon>RevisiInformationBoard.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="InformationBoard.resx">
+    <EmbeddedResource Include="ATM\InformationBoard.resx">
       <DependentUpon>InformationBoard.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="initTransaksi.resx">
+    <EmbeddedResource Include="Support Files\initTransaksi.resx">
       <DependentUpon>initTransaksi.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="InputAbacasForm.resx">
+    <EmbeddedResource Include="Nasabah\InputAbacasForm.resx">
       <DependentUpon>InputAbacasForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="InputDataSubsidiForm.resx">
+    <EmbeddedResource Include="Nasabah\InputDataSubsidiForm.resx">
       <DependentUpon>InputDataSubsidiForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="InputForm.resx">
+    <EmbeddedResource Include="ATM\Unused\InputForm.resx">
       <DependentUpon>InputForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="InputHargaLayananForm.resx">
+    <EmbeddedResource Include="Nasabah\InputHargaLayananForm.resx">
       <DependentUpon>InputHargaLayananForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="InputMasterNasabahForm.resx">
+    <EmbeddedResource Include="Nasabah\InputMasterNasabahForm.resx">
       <DependentUpon>InputMasterNasabahForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="InputTransaksiCabangForm.resx">
+    <EmbeddedResource Include="Cabang\InputTransaksiCabangForm.resx">
       <DependentUpon>InputTransaksiCabangForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="InvoiceNasabahForm.resx">
+    <EmbeddedResource Include="Nasabah\InvoiceNasabahForm.resx">
       <DependentUpon>InvoiceNasabahForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="loadForm.resx">
+    <EmbeddedResource Include="Support Files\loadForm.resx">
       <DependentUpon>loadForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="loadPkt.resx">
+    <EmbeddedResource Include="Support Files\loadPkt.resx">
       <DependentUpon>loadPkt.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MultipleFilesInputForm.resx">
+    <EmbeddedResource Include="ATM\MultipleFilesInputForm.resx">
       <DependentUpon>MultipleFilesInputForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -719,28 +719,28 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="AkurasiPrediksiForm.resx">
+    <EmbeddedResource Include="ATM\AkurasiPrediksiForm.resx">
       <DependentUpon>AkurasiPrediksiForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="proyeksiLikuiditasForm.resx">
+    <EmbeddedResource Include="Cabang\proyeksiLikuiditasForm.resx">
       <DependentUpon>proyeksiLikuiditasForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="RekapApprovalForm.resx">
+    <EmbeddedResource Include="ATM\RekapApprovalForm.resx">
       <DependentUpon>RekapApprovalForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Revisi.resx">
+    <EmbeddedResource Include="ATM\Revisi.resx">
       <DependentUpon>Revisi.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SLAProsesForm.resx">
+    <EmbeddedResource Include="Cabang\SLAProsesForm.resx">
       <DependentUpon>SLAProsesForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StokPosisiForm.resx">
+    <EmbeddedResource Include="Cabang\StokPosisiForm.resx">
       <DependentUpon>StokPosisiForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TestForm.resx">
       <DependentUpon>TestForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UpdateStokPosisiForm.resx">
+    <EmbeddedResource Include="Cabang\UpdateStokPosisiForm.resx">
       <DependentUpon>UpdateStokPosisiForm.cs</DependentUpon>
     </EmbeddedResource>
     <EntityDeploy Include="Model1.edmx">
