@@ -31,18 +31,26 @@ namespace testProjectBCA
         
         public static DataSet openExcel(string filePath)
         {
-            using (stream = File.Open(filePath, FileMode.Open, FileAccess.Read))
+            try
             {
+                using (stream = File.Open(filePath, FileMode.Open, FileAccess.Read))
                 {
+                    {
 
-                    // Auto-detect format, supports:
-                    //  - Binary Excel files (2.0-2003 format; *.xls)
-                    //  - OpenXml Excel files (2007 format; *.xlsx)
-                    using (reader = ExcelReaderFactory.CreateReader(stream))
-                    {    //return excel as tables
-                        return reader.AsDataSet();
+                        // Auto-detect format, supports:
+                        //  - Binary Excel files (2.0-2003 format; *.xls)
+                        //  - OpenXml Excel files (2007 format; *.xlsx)
+                        using (reader = ExcelReaderFactory.CreateReader(stream))
+                        {    //return excel as tables
+                            return reader.AsDataSet();
+                        }
                     }
                 }
+            }
+            catch(Exception E)
+            {
+                System.Windows.Forms.MessageBox.Show(filePath + " Sedang dibuka");
+                return new DataSet();
             }
         }
         public static DataSet openCsv(string filePath)

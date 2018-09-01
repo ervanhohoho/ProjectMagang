@@ -123,7 +123,12 @@ namespace testProjectBCA
             ;
             //Console.WriteLine(query[0]);
             //MessageBox.Show(tanggalOpti.ToShortDateString());
-            tanggalPrediksiMaxPicker.MinDate = DateTime.Today.AddDays(2);
+            Database1Entities db = new Database1Entities();
+            tanggalPrediksiMaxPicker.MinDate = ((DateTime)(from x in db.Approvals
+                                                join y in db.DetailApprovals on x.idApproval equals y.idApproval
+                                                where (DateTime)x.tanggal<Variables.todayDate
+                                                && y.bon100 == -1
+                                                select y).Max(x=>x.tanggal)).AddDays(1);
         }
         void loadComboBox()
         {
@@ -3342,25 +3347,25 @@ namespace testProjectBCA
 
                 for (int i = 0; i < bon.Count; i++)
                 {
-                    if (tempTanggal.Date == DateTime.Today.Date)
-                    {
-                        Int64 saldoLama100 = saldo[i + 1].d100,
-                            saldoLama50 = saldo[i + 1].d50,
-                            saldoLama20 = saldo[i + 1].d20;
-                        saldo[i + 1].d100 = saldo[i].d100 + (Int64)bonAdhoc100Txt.Value - (Int64)setorAdhoc100Txt.Value;
-                        saldo[i + 1].d50 = saldo[i].d50 + (Int64)bonAdhoc50Txt.Value - (Int64)setorAdhoc100Txt.Value;
-                        saldo[i + 1].d20 = saldo[i].d20 + (Int64)bonAdhoc20Txt.Value - (Int64)setorAdhoc100Txt.Value;
+                    //if (tempTanggal.Date == DateTime.Today.Date)
+                    //{
+                    //    Int64 saldoLama100 = saldo[i + 1].d100,
+                    //        saldoLama50 = saldo[i + 1].d50,
+                    //        saldoLama20 = saldo[i + 1].d20;
+                    //    saldo[i + 1].d100 = saldo[i].d100 + (Int64)bonAdhoc100Txt.Value - (Int64)setorAdhoc100Txt.Value;
+                    //    saldo[i + 1].d50 = saldo[i].d50 + (Int64)bonAdhoc50Txt.Value - (Int64)setorAdhoc100Txt.Value;
+                    //    saldo[i + 1].d20 = saldo[i].d20 + (Int64)bonAdhoc20Txt.Value - (Int64)setorAdhoc100Txt.Value;
 
-                        Int64 selisih100 = saldo[i + 1].d100 - saldoLama100,
-                            selisih50 = saldo[i + 1].d50 - saldoLama50,
-                            selisih20 = saldo[i + 1].d20 - saldoLama20;
-                        for (int j = i + 1; j < saldo.Count; j++)
-                        {
-                            saldo[j].d100 += selisih100;
-                            saldo[j].d50 += selisih50;
-                            saldo[j].d20 += selisih20;
-                        }
-                    }
+                    //    Int64 selisih100 = saldo[i + 1].d100 - saldoLama100,
+                    //        selisih50 = saldo[i + 1].d50 - saldoLama50,
+                    //        selisih20 = saldo[i + 1].d20 - saldoLama20;
+                    //    for (int j = i + 1; j < saldo.Count; j++)
+                    //    {
+                    //        saldo[j].d100 += selisih100;
+                    //        saldo[j].d50 += selisih50;
+                    //        saldo[j].d20 += selisih20;
+                    //    }
+                    //}
                     DetailApproval newDetailA = (from x in db.DetailApprovals.AsEnumerable()
                                                  where x.idApproval == lastApproval[lastApproval.Count - 1].idApproval
                                                  && x.tanggal == tempTanggal
@@ -3374,9 +3379,7 @@ namespace testProjectBCA
                         newDetailA.setor50 = 0;
                         newDetailA.setor20 = 0;
 
-
                     }
-
                     if (newDetailA.tanggal.Value.ToShortDateString() == tglSetor.Value.ToShortDateString())
                     {
                         newDetailA.setor100 = setor.d100;
@@ -3384,6 +3387,11 @@ namespace testProjectBCA
                         newDetailA.setor20 = setor.d20;
 
                     }
+
+
+                    newDetailA.saldoAwal100 = saldo.Where(x => x.tgl == tempTanggal).Select(x => x.d100).FirstOrDefault();
+                    newDetailA.saldoAwal50 = saldo.Where(x => x.tgl == tempTanggal).Select(x => x.d50).FirstOrDefault();
+                    newDetailA.saldoAwal20 = saldo.Where(x => x.tgl == tempTanggal).Select(x => x.d20).FirstOrDefault();
 
                     tempTanggal = tempTanggal.AddDays(1);
                     jumlahBon++;
@@ -3430,9 +3438,9 @@ namespace testProjectBCA
                     }
 
                     //Saldo awal
-                    newDetailA.saldoAwal100 = saldo[i + jumlahBon].d100;
-                    newDetailA.saldoAwal50 = saldo[i + jumlahBon].d50;
-                    newDetailA.saldoAwal20 = saldo[i + jumlahBon].d20;
+                    newDetailA.saldoAwal100 = saldo.Where(x => x.tgl == tempTanggal).Select(x => x.d100).FirstOrDefault();
+                    newDetailA.saldoAwal50 = saldo.Where(x => x.tgl == tempTanggal).Select(x => x.d50).FirstOrDefault();
+                    newDetailA.saldoAwal20 = saldo.Where(x => x.tgl == tempTanggal).Select(x => x.d20).FirstOrDefault();
 
                     //Sislok
                     newDetailA.sislokCRM100 = sislokCrm[count].d100;
@@ -3754,6 +3762,7 @@ namespace testProjectBCA
         {
             int idx = KodePkt.IndexOf(pktComboBox.SelectedValue.ToString());
             pktIndex = idx;
+            labelKodePkt.Text = KodePkt[pktIndex];
             loadE2E();
         }
 

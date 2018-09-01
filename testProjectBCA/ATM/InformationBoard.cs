@@ -293,7 +293,13 @@ namespace testProjectBCA
 
             DateTime tanggalKemaren = tanggalOptiMin.AddDays(-1);
             //Delete data yang udah ada di approval
-            var laporanBons = (from x in db.laporanBons where x.kodePkt == kodePkt && x.tanggal > tanggalOptiMin select x).ToList();
+            var laporanBons = (from x in db.Approvals
+                               join y in db.DetailApprovals on x.idApproval equals y.idApproval
+                               where x.kodePkt == kodePkt 
+                               && y.tanggal > tanggalOptiMin
+                               && y.bon100 != -1
+                               && x.idApproval == db.Approvals.Where(a=>a.kodePkt == kodePkt).Max(a=>a.idApproval)
+                               select y).ToList();
             List<LaporanPermintaanBon> toDelete = new List<LaporanPermintaanBon>();
             for (int a = 0; a < laporanPermintaanBon.Count; a++)
                 if(laporanBons.Where(x=>x.tanggal == laporanPermintaanBon[a].tanggal).FirstOrDefault() != null)

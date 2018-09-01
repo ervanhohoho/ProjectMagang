@@ -169,7 +169,7 @@ namespace testProjectBCA
                             if (temp.DetailApproval.bon100 != temp.LaporanBon.d100 || temp.DetailApproval.bon50 != temp.LaporanBon.d50 || temp.DetailApproval.bon20 != temp.LaporanBon.d20)
                             {
                                 isError = true;
-                                errMsg += "\nBon yang disetujui\n=========================="
+                                errMsg += "\nBon yang disetujui\n==========================" + temp.Approval.kodePkt + "\n"
                                     + "\nApproval Bon 100: " + ((Int64)temp.DetailApproval.bon100).ToString("n0") + " Laporan Bon 100: " + ((Int64)temp.LaporanBon.d100).ToString("n0")
                                     + "\nApproval Bon 50: " + ((Int64)temp.DetailApproval.bon50).ToString("n0") + " Laporan Bon 50: " + ((Int64)temp.LaporanBon.d50).ToString("n0")
                                     + "\nApproval Bon 20: " + ((Int64)temp.DetailApproval.bon20).ToString("n0") + " Laporan Bon 20: " + ((Int64)temp.LaporanBon.d20).ToString("n0");
