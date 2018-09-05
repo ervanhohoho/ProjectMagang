@@ -4159,6 +4159,65 @@
             Gets or sets the width (in points) of the <see cref="T:GemBox.Spreadsheet.ExcelDrawing" /> (picture, chart, etc.).
             </summary>
     </member>
+    <member name="T:GemBox.Spreadsheet.ExcelEmbeddedObject">
+      <summary>
+            Represents a read-only embedded object in the worksheet.
+            </summary>
+    </member>
+    <member name="P:GemBox.Spreadsheet.ExcelEmbeddedObject.ContentType">
+      <summary>
+            Gets the content type of the embedded object data.
+            </summary>
+    </member>
+    <member name="P:GemBox.Spreadsheet.ExcelEmbeddedObject.Data">
+      <summary>
+            Gets the embedded object data.
+            </summary>
+    </member>
+    <member name="P:GemBox.Spreadsheet.ExcelEmbeddedObject.Position">
+      <summary>
+            Gets the position of this embedded object in the worksheet.
+            </summary>
+    </member>
+    <member name="M:GemBox.Spreadsheet.ExcelEmbeddedObject.ToString">
+      <summary>
+            Returns a <see cref="T:System.String" /> that represents this <see cref="T:GemBox.Spreadsheet.ExcelEmbeddedObject" /> instance.
+            </summary>
+      <returns>
+            A <see cref="T:System.String" /> that represents this <see cref="T:GemBox.Spreadsheet.ExcelEmbeddedObject" /> instance.
+            </returns>
+    </member>
+    <member name="T:GemBox.Spreadsheet.ExcelEmbeddedObjectCollection">
+      <summary>
+            Represents a read-only collection of <see cref="T:GemBox.Spreadsheet.ExcelEmbeddedObject">embedded object</see>s in the worksheet.
+            </summary>
+    </member>
+    <member name="P:GemBox.Spreadsheet.ExcelEmbeddedObjectCollection.Count">
+      <summary>
+            Gets the number of <see cref="T:GemBox.Spreadsheet.ExcelEmbeddedObject" />s contained in the <see cref="T:GemBox.Spreadsheet.ExcelEmbeddedObjectCollection" />.
+            </summary>
+    </member>
+    <member name="M:GemBox.Spreadsheet.ExcelEmbeddedObjectCollection.GetEnumerator">
+      <summary>
+            Returns an enumerator that iterates through the <see cref="T:GemBox.Spreadsheet.ExcelEmbeddedObjectCollection" />.
+            </summary>
+      <returns>
+            An enumerator that can be used to iterate through the <see cref="T:GemBox.Spreadsheet.ExcelEmbeddedObjectCollection" />.
+            </returns>
+    </member>
+    <member name="P:GemBox.Spreadsheet.ExcelEmbeddedObjectCollection.Item(System.Int32)">
+      <summary>
+            Gets the <see cref="T:GemBox.Spreadsheet.ExcelEmbeddedObject" /> at the specified index.
+            </summary>
+      <param name="index">The zero-based index of the <see cref="T:GemBox.Spreadsheet.ExcelEmbeddedObject" /> to get.</param>
+      <returns>
+            The <see cref="T:GemBox.Spreadsheet.ExcelEmbeddedObject" /> at the specified index.
+            </returns>
+    </member>
+    <member name="M:GemBox.Spreadsheet.ExcelEmbeddedObjectCollection.System#Collections#IEnumerable#GetEnumerator">
+      <summary>Returns an enumerator that iterates through a collection.</summary>
+      <returns>An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.</returns>
+    </member>
     <member name="T:GemBox.Spreadsheet.ExcelFile">
       <summary>
             Excel file contains one or more worksheets (<see cref="T:GemBox.Spreadsheet.ExcelWorksheet" />)
@@ -5950,6 +6009,11 @@
     <member name="M:GemBox.Spreadsheet.ExcelWorksheet.Delete">
       <summary>
             Deletes this worksheet from the workbook.
+            </summary>
+    </member>
+    <member name="P:GemBox.Spreadsheet.ExcelWorksheet.EmbeddedObjects">
+      <summary>
+            Gets the worksheet embedded objects. Supported only in XLSX.
             </summary>
     </member>
     <member name="E:GemBox.Spreadsheet.ExcelWorksheet.ExtractDataEvent">
@@ -10946,6 +11010,12 @@
       <summary>
             Gets the axis type for <see cref="T:GemBox.Spreadsheet.Charts.CategoryAxis" /> which is <see cref="F:GemBox.Spreadsheet.Charts.AxisType.Category" />.
             </summary>
+    </member>
+    <member name="P:GemBox.Spreadsheet.Charts.CategoryAxis.LabelsInterval">
+      <summary>
+            Gets or sets the interval between labels that are drawn.
+            </summary>
+      <exception cref="T:System.ArgumentOutOfRangeException">Value is not positive number.</exception>
     </member>
     <member name="T:GemBox.Spreadsheet.Charts.ChartAxes">
       <summary>

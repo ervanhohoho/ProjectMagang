@@ -42,6 +42,18 @@
     </dependentAssembly>
   </dependency>
   <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="BCrypt.Net-Next.dll" size="23552">
+      <assemblyIdentity name="BCrypt.Net-Next" version="3.1.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>p8rrRmOTg20KU4xUmlGBR3XCvYAY7KPS6P7U4x9pyW8=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="ClosedXML.dll" size="947712">
       <assemblyIdentity name="ClosedXML" version="0.92.1.0" publicKeyToken="FD1EB21B62AE805B" language="neutral" processorArchitecture="msil" />
       <hash>
@@ -318,14 +330,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="GemBox.Spreadsheet.dll" size="2977792">
-      <assemblyIdentity name="GemBox.Spreadsheet" version="43.0.35.1020" publicKeyToken="B1B72C69714D4847" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="GemBox.Spreadsheet.dll" size="2891776">
+      <assemblyIdentity name="GemBox.Spreadsheet" version="43.0.35.1066" publicKeyToken="B1B72C69714D4847" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>5edL+3Y6I6wX01DkBdGyN99duv/Kzaa8+Nxu2NErjHc=</dsig:DigestValue>
+        <dsig:DigestValue>DXa49pQuObK8L1HTrH1ZE4gvLQTfK5/lKWpRIKc4jsQ=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -450,14 +462,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="testProjectBCA.exe" size="11688960">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="testProjectBCA.exe" size="11819008">
       <assemblyIdentity name="testProjectBCA" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>BHnGSHLaMhesYWjNlew8SWZ1T+xG4D6wxjftF4gvLjA=</dsig:DigestValue>
+        <dsig:DigestValue>FSmqGVfiOwWceAVdwyD5ynBakxvFD+pe2Lpngv9DQ1c=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -479,13 +491,13 @@
       <dsig:DigestValue>CabSpKm6yYNT6twBZzKHKM3v3aBYMgNzK0uSDYpHoWw=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="testProjectBCA.exe.config" size="3079">
+  <file name="testProjectBCA.exe.config" size="3081">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>FlFF6SMJY7NT5B8y63YR/quOIM4o6h7ghXWPx+UvLDs=</dsig:DigestValue>
+      <dsig:DigestValue>TH1kh3FpstLzotzcp9rDuJKR9Q3Bz+iliXhtP3mVohs=</dsig:DigestValue>
     </hash>
   </file>
 </asmv1:assembly>

@@ -161,7 +161,10 @@ namespace testProjectBCA
                         if(q.saldoAwal100 != pkt.saldoAwal[0] || q.saldoAwal50 != pkt.saldoAwal[1] || q.saldoAwal20 != pkt.saldoAwal[2])
                         {
                             isError = true;
-                            errMsg += "Saldo awal tidak sesuai";
+                            errMsg += "Saldo awal " + q.kodePkt + " " + q.tanggal + "tidak sesuai \n=========================="
+                                    + "\nSaldo Awal 100 DB: " + ((Int64)q.saldoAwal100).ToString("n0") + " Laporan Bon 100: " + ((Int64)pkt.saldoAwal[0]).ToString("n0")
+                                    + "\nSaldo Awal 50 DB: " + ((Int64)q.saldoAwal50).ToString("n0") + " Laporan Bon 50: " + ((Int64)pkt.saldoAwal[1]).ToString("n0")
+                                    + "\nSaldo Awal 20 DB: " + ((Int64)q.saldoAwal20).ToString("n0") + " Laporan Bon 20: " + ((Int64)pkt.saldoAwal[2]).ToString("n0");
                         }
                         foreach (var temp in queryApprovalLaporanBon)
                         {

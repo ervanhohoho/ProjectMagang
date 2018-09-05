@@ -1893,6 +1893,7 @@ namespace testProjectBCA
             of.Filter = Variables.excelFilter;
             if(of.ShowDialog() == DialogResult.OK)
             {
+                loadForm.ShowSplashScreen();
                 listAdhocCabang = new List<ApprovalPembagianSaldo>();
                 DataSet ds = Util.openExcel(of.FileName);
                 DataTable dt = ds.Tables[0];
@@ -1937,7 +1938,7 @@ namespace testProjectBCA
                         D100 = d100 * 100000,
                     });
                 }
-                dataGridView2.DataSource = listAdhocCabang;
+                loadForm.CloseForm();
             }
         }
 
@@ -2018,7 +2019,6 @@ namespace testProjectBCA
                         D100 = x.Sum(y=>y.D100),
                         D50 = x.Sum(y=>y.D50)
                     }).ToList();
-                dataGridView2.DataSource = listDeliveryCabang;
                 loadForm.CloseForm();
             }
         }
@@ -2399,10 +2399,11 @@ namespace testProjectBCA
         void loadTableStokMorningBalance()
         {
             var query = (from x in db.StokPosisis
+                         where x.tanggal == Variables.todayDate
+                         && (x.denom == "100000" || x.denom == "50000")
                          select x).ToList();
+
             var q2 = (from x in query
-                      where x.tanggal == Variables.todayDate
-                      && (x.denom == "100000" || x.denom == "50000")
                       select x).ToList();
 
             var toShow = (from x in q2
@@ -2424,7 +2425,54 @@ namespace testProjectBCA
             }
         }
    
+        void loadKuota()
+        {
+            var query = (from x in db.StokPosisis
+                         where x.tanggal == Variables.todayDate
+                         && (x.denom == "100000" || x.denom == "50000")
+                         group x by x.denom into g
+                         select new
+                         {
+                             denom = g.Key,
+                             fit = g.Sum(x => x.fitBaru + x.fitLama + x.fitNKRI),
+                         }).ToList();
+            List<tanggalValue> mbh100 = new List<tanggalValue>();
+            List<tanggalValue> mbh50 = new List<tanggalValue>();
+            mbh100.Add(new tanggalValue() { tanggal = Variables.todayDate, value = (Int64)query.Where(x => x.denom == "100000").Select(x => x.fit).FirstOrDefault() });
+            mbh50.Add(new tanggalValue(){ tanggal = Variables.todayDate, value = (Int64)query.Where(x => x.denom == "50000").Select(x => x.fit).FirstOrDefault() });
 
+            List<PenampungKuota> kuota = (from x in mbh100
+                                          join y in mbh50 on x.tanggal equals y.tanggal
+                                          select new PenampungKuota(){ tanggal = x.tanggal.AddDays(1), d100 = x.value, d50 = y.value }).ToList();
+            kuota[0].d100 += (Int64)((inCabangUntukKirim100.Where(x => x.tanggal == Variables.todayDate).Select(x => x.val).FirstOrDefault() + inCabangUntukKirim50.Where(x => x.tanggal == Variables.todayDate).Select(x => x.val).FirstOrDefault()) * (Double)inflowNum.Value / 100);
+            kuota[0].d50 += (Int64)((inCabangUntukKirim50.Where(x => x.tanggal == Variables.todayDate).Select(x => x.val).FirstOrDefault() + inCabangUntukKirim50.Where(x => x.tanggal == Variables.todayDate).Select(x => x.val).FirstOrDefault()) * (Double)inflowNum.Value / 50);
+
+            if (listAdhocCabang.Any())
+            {
+                var adhoc = (from x in listAdhocCabang
+                             group x by x.Tanggal into g
+                             select new
+                             {
+                                 d100 = g.Sum(x => x.D100),
+                                 d50 = g.Sum(x => x.D50)
+                             }).FirstOrDefault();
+                kuota[0].d100 -= adhoc.d100;
+                kuota[0].d50 -= adhoc.d50;
+            }
+            if (listDeliveryCabang.Any())
+            {
+                var adhoc = (from x in listDeliveryCabang
+                             group x by x.Tanggal into g
+                             select new
+                             {
+                                 d100 = g.Sum(x => x.D100),
+                                 d50 = g.Sum(x => x.D50)
+                             }).FirstOrDefault();
+                kuota[0].d100 -= adhoc.d100;
+                kuota[0].d50 -= adhoc.d50;
+            }
+            KuotaGridView.DataSource = kuota;
+        }
         private void button1_Click(object sender, EventArgs e)
         {
             loadForm.ShowSplashScreen();
@@ -2504,6 +2552,7 @@ namespace testProjectBCA
                 newNote100 = loadNewNote100();
                 newNote50 = loadNewNote50();
             }
+            loadKuota();
             loadForm.CloseForm();
         }
 
@@ -2608,5 +2657,11 @@ namespace testProjectBCA
         public DateTime tanggal { set; get; }
         public String kodePkt { set; get; }
         public Int64 val { set; get; }
+    }
+    public class PenampungKuota
+    {
+        public DateTime tanggal { set; get; }
+        public Int64 d100 { set; get; }
+        public Int64 d50 { set; get; }
     }
 }

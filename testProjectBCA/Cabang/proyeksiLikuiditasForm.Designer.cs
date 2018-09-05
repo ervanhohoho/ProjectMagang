@@ -73,9 +73,12 @@
             this.stokMorningBalanceDataGridView = new System.Windows.Forms.DataGridView();
             this.label19 = new System.Windows.Forms.Label();
             this.nextButton = new System.Windows.Forms.Button();
-            this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.InputAdhocBtn = new System.Windows.Forms.Button();
             this.InputDeliveryBtn = new System.Windows.Forms.Button();
+            this.KuotaGridView = new System.Windows.Forms.DataGridView();
+            this.label20 = new System.Windows.Forms.Label();
+            this.inflowNum = new System.Windows.Forms.NumericUpDown();
+            this.label21 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fit100Num)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fit50Num)).BeginInit();
@@ -91,7 +94,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.outBITukab50Num)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.persenUnprocessedNum)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.stokMorningBalanceDataGridView)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.KuotaGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.inflowNum)).BeginInit();
             this.SuspendLayout();
             // 
             // rasio100TextBox
@@ -129,7 +133,7 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(16, 236);
+            this.dataGridView1.Location = new System.Drawing.Point(16, 243);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(1042, 336);
             this.dataGridView1.TabIndex = 4;
@@ -189,9 +193,9 @@
             // 
             // ForecastButton
             // 
-            this.ForecastButton.Location = new System.Drawing.Point(878, 69);
+            this.ForecastButton.Location = new System.Drawing.Point(904, 127);
             this.ForecastButton.Name = "ForecastButton";
-            this.ForecastButton.Size = new System.Drawing.Size(180, 43);
+            this.ForecastButton.Size = new System.Drawing.Size(120, 24);
             this.ForecastButton.TabIndex = 6;
             this.ForecastButton.Text = "Forecast";
             this.ForecastButton.UseVisualStyleBackColor = true;
@@ -199,9 +203,9 @@
             // 
             // saveButton
             // 
-            this.saveButton.Location = new System.Drawing.Point(878, 118);
+            this.saveButton.Location = new System.Drawing.Point(904, 157);
             this.saveButton.Name = "saveButton";
-            this.saveButton.Size = new System.Drawing.Size(180, 43);
+            this.saveButton.Size = new System.Drawing.Size(120, 24);
             this.saveButton.TabIndex = 11;
             this.saveButton.Text = "Save";
             this.saveButton.UseVisualStyleBackColor = true;
@@ -561,7 +565,7 @@
             // stokMorningBalanceDataGridView
             // 
             this.stokMorningBalanceDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.stokMorningBalanceDataGridView.Location = new System.Drawing.Point(16, 595);
+            this.stokMorningBalanceDataGridView.Location = new System.Drawing.Point(16, 602);
             this.stokMorningBalanceDataGridView.Name = "stokMorningBalanceDataGridView";
             this.stokMorningBalanceDataGridView.Size = new System.Drawing.Size(1042, 103);
             this.stokMorningBalanceDataGridView.TabIndex = 22;
@@ -569,7 +573,7 @@
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(16, 579);
+            this.label19.Location = new System.Drawing.Point(16, 586);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(145, 13);
             this.label19.TabIndex = 23;
@@ -577,27 +581,19 @@
             // 
             // nextButton
             // 
-            this.nextButton.Location = new System.Drawing.Point(878, 168);
+            this.nextButton.Location = new System.Drawing.Point(904, 187);
             this.nextButton.Name = "nextButton";
-            this.nextButton.Size = new System.Drawing.Size(180, 41);
+            this.nextButton.Size = new System.Drawing.Size(120, 24);
             this.nextButton.TabIndex = 24;
             this.nextButton.Text = "Next";
             this.nextButton.UseVisualStyleBackColor = true;
             this.nextButton.Click += new System.EventHandler(this.nextButton_Click);
             // 
-            // dataGridView2
-            // 
-            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Location = new System.Drawing.Point(1102, 67);
-            this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.Size = new System.Drawing.Size(240, 150);
-            this.dataGridView2.TabIndex = 25;
-            // 
             // InputAdhocBtn
             // 
-            this.InputAdhocBtn.Location = new System.Drawing.Point(1064, 239);
+            this.InputAdhocBtn.Location = new System.Drawing.Point(904, 67);
             this.InputAdhocBtn.Name = "InputAdhocBtn";
-            this.InputAdhocBtn.Size = new System.Drawing.Size(90, 23);
+            this.InputAdhocBtn.Size = new System.Drawing.Size(120, 24);
             this.InputAdhocBtn.TabIndex = 26;
             this.InputAdhocBtn.Text = "Input Adhoc";
             this.InputAdhocBtn.UseVisualStyleBackColor = true;
@@ -605,22 +601,64 @@
             // 
             // InputDeliveryBtn
             // 
-            this.InputDeliveryBtn.Location = new System.Drawing.Point(1064, 268);
+            this.InputDeliveryBtn.Location = new System.Drawing.Point(904, 97);
             this.InputDeliveryBtn.Name = "InputDeliveryBtn";
-            this.InputDeliveryBtn.Size = new System.Drawing.Size(90, 23);
+            this.InputDeliveryBtn.Size = new System.Drawing.Size(120, 24);
             this.InputDeliveryBtn.TabIndex = 27;
             this.InputDeliveryBtn.Text = "Input Delivery";
             this.InputDeliveryBtn.UseVisualStyleBackColor = true;
             this.InputDeliveryBtn.Click += new System.EventHandler(this.InputDeliveryBtn_Click);
             // 
+            // KuotaGridView
+            // 
+            this.KuotaGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.KuotaGridView.Location = new System.Drawing.Point(16, 722);
+            this.KuotaGridView.Name = "KuotaGridView";
+            this.KuotaGridView.Size = new System.Drawing.Size(1042, 106);
+            this.KuotaGridView.TabIndex = 28;
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(206, 220);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(52, 13);
+            this.label20.TabIndex = 30;
+            this.label20.Text = "Inflow (%)";
+            // 
+            // inflowNum
+            // 
+            this.inflowNum.Location = new System.Drawing.Point(264, 217);
+            this.inflowNum.Name = "inflowNum";
+            this.inflowNum.Size = new System.Drawing.Size(120, 20);
+            this.inflowNum.TabIndex = 31;
+            this.inflowNum.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(16, 708);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(35, 13);
+            this.label21.TabIndex = 32;
+            this.label21.Text = "Kuota";
+            // 
             // proyeksiLikuiditasForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1374, 703);
+            this.AutoScroll = true;
+            this.ClientSize = new System.Drawing.Size(1077, 761);
+            this.Controls.Add(this.label21);
+            this.Controls.Add(this.inflowNum);
+            this.Controls.Add(this.label20);
+            this.Controls.Add(this.KuotaGridView);
             this.Controls.Add(this.InputDeliveryBtn);
             this.Controls.Add(this.InputAdhocBtn);
-            this.Controls.Add(this.dataGridView2);
             this.Controls.Add(this.nextButton);
             this.Controls.Add(this.label19);
             this.Controls.Add(this.stokMorningBalanceDataGridView);
@@ -667,7 +705,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.rasio100TextBox);
             this.Name = "proyeksiLikuiditasForm";
-            this.Text = "proyeksiLikuiditasForm";
+            this.Text = "Proyeksi Likuiditas";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.fit100Num)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.fit50Num)).EndInit();
@@ -683,7 +721,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.outBITukab50Num)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.persenUnprocessedNum)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.stokMorningBalanceDataGridView)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.KuotaGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.inflowNum)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -736,8 +775,11 @@
         private System.Windows.Forms.DataGridView stokMorningBalanceDataGridView;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Button nextButton;
-        private System.Windows.Forms.DataGridView dataGridView2;
         private System.Windows.Forms.Button InputAdhocBtn;
         private System.Windows.Forms.Button InputDeliveryBtn;
+        private System.Windows.Forms.DataGridView KuotaGridView;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.NumericUpDown inflowNum;
+        private System.Windows.Forms.Label label21;
     }
 }

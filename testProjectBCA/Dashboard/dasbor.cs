@@ -524,7 +524,7 @@ namespace testProjectBCA
             }
             else if (a.Equals("Non-Jabo"))
             {
-                b = "select kodepkt from pkt where kanwil not like 'Jabo%'";
+                b = "select kodepkt from pkt where kanwil not like 'Jabo%' and kodepktatm! = ''";
             }
             else if (a.Equals("Kanwil I"))
             {
@@ -2824,13 +2824,12 @@ namespace testProjectBCA
         }
 
 
-
         void dataGridView1_Scroll(object sender, ScrollEventArgs e)
 
         {
 
-            this.dataGridView2.FirstDisplayedScrollingRowIndex = this.dataGridView2.FirstDisplayedScrollingRowIndex;
-            this.dataGridView3.FirstDisplayedScrollingRowIndex = this.dataGridView2.FirstDisplayedScrollingRowIndex;
+            this.dataGridView2.FirstDisplayedScrollingRowIndex = this.dataGridView1.FirstDisplayedScrollingRowIndex;
+            this.dataGridView3.FirstDisplayedScrollingRowIndex = this.dataGridView1.FirstDisplayedScrollingRowIndex;
 
         }
         void dataGridView3_Scroll(object sender, ScrollEventArgs e)

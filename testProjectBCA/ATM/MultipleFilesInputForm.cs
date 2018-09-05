@@ -131,6 +131,11 @@ namespace testProjectBCA
                 DateTime tempDate = new DateTime(1,1,1);
                 for(int a=0;a<ds.Tables.Count;a++)
                 {
+                    if(ds.Tables[a].Columns.Count<12)
+                    {
+                        MessageBox.Show(ds.DataSetName + " Sheet " + ds.Tables[a].TableName + " Format excel salah");
+                        continue;
+                    }
                     String sDate = ds.Tables[a].Rows[12][5].ToString();
                     if(a==0)
                     {
@@ -203,7 +208,7 @@ namespace testProjectBCA
             {
                 var table = data.Tables[x];
                 //Validasi Sheet Kosong
-                if (table.Rows.Count < 10)
+                if (table.Rows.Count < 10 || table.Columns.Count < 12)
                     continue;
                 if(String.IsNullOrEmpty(table.Rows[22][5].ToString()) && x == data.Tables.Count-1)
                 {

@@ -135,13 +135,26 @@ namespace testProjectBCA
         {
             Database1Entities db = new Database1Entities();
             //Nama PKT yang ada di ComboBox
+
+            //Nanti ganti data dari master bank tukab
+            List<String> bankTukab = new List<string>() { "Bank A", "Bank B", "Bank C" };
             var listNamaPkt = db.Pkts.Where(x => x.kanwil.ToUpper().Contains("JABO") && !x.namaPkt.Contains("Alam Sutera")).Select(x => x.namaPkt).ToList();
+            listNamaPkt.AddRange(bankTukab);
+
             DataGridViewComboBoxColumn pktTujuan = new DataGridViewComboBoxColumn() {
                 DataSource = listNamaPkt,
                 HeaderText = "Nama Pkt Tujuan",
                 ValueType = typeof(String)
             };
-            this.listNamaPkt = listNamaPkt;
+            var listNamaPktSumber = morningbalance100.Select(x => x.kodePkt).Distinct().OrderBy(x => x).ToList();
+            listNamaPktSumber.AddRange(bankTukab);
+            DataGridViewComboBoxColumn pktSumber = new DataGridViewComboBoxColumn()
+            {
+                DataSource = listNamaPktSumber,
+                HeaderText = "Nama Pkt Sumber",
+                ValueType = typeof(String)
+            };
+
             var listTanggal = db.DetailApprovals.AsEnumerable().Where(x => x.bon100 != -1 && x.tanggal >= Variables.todayDate).Select(x => ((DateTime)x.tanggal).ToShortDateString()).Distinct().ToList();
             DataGridViewComboBoxColumn tgl = new DataGridViewComboBoxColumn()
             {
@@ -149,13 +162,7 @@ namespace testProjectBCA
                 HeaderText = "Tanggal",
                 ValueType = typeof(String)
             };
-            var listNamaPktSumber = morningbalance100.Select(x => x.kodePkt).Distinct().OrderBy(x=> x).ToList();
-            DataGridViewComboBoxColumn pktSumber = new DataGridViewComboBoxColumn()
-            {
-                DataSource = listNamaPktSumber,
-                HeaderText = "Nama Pkt Sumber",
-                ValueType = typeof(String)
-            };
+           
             var listJenisUang = new List<String>() { "FIT", "NEW NOTE" };
             DataGridViewComboBoxColumn jenisUang = new DataGridViewComboBoxColumn()
             {
@@ -165,6 +172,7 @@ namespace testProjectBCA
             };
 
             this.listNamaPktSumber = listNamaPktSumber;
+            this.listNamaPkt = listNamaPkt;
             pembagianGridView.Columns.Add(tgl);
             pembagianGridView.Columns[0].Width = 100;
 

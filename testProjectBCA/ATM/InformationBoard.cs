@@ -586,7 +586,7 @@ namespace testProjectBCA
 
                         cmd.CommandText = query;
                         reader = cmd.ExecuteReader();
-                        bool event1 = true;
+                        bool event1 = true, event2 = true;
                         if (reader.Read())
                         {
                             if (String.IsNullOrEmpty(reader[0].ToString()) || String.IsNullOrEmpty(reader[1].ToString()) || String.IsNullOrEmpty(reader[2].ToString()))
@@ -618,6 +618,55 @@ namespace testProjectBCA
                                             kondisi += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "') AND [event] = (SELECT [event] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
                                         else
                                             kondisi += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "') AND [event] = (SELECT [event] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                    }
+                                }
+                            }
+                            kondisi += ")";
+
+                            subqueryTblAverage = "(SELECT AVG(isiAtm100) AS Average100 , AVG(isiAtm50) AS Average50 , AVG(isiAtm20) AS Average20 FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal";
+                            subqueryTblAverage += kondisi;
+                            subqueryTblAverage += ") avt";
+
+                            query = "SELECT "
+                                        + "[AverageStdDeviasi100] = AVG(CAST(ABS(isiAtm100 - [Average100]) AS FLOAT) / (CASE WHEN [Average100] = 0 THEN 1 ELSE [Average100] END)), "
+                                        + "[AverageStdDeviasi50] = AVG(CAST(ABS(isiAtm50 - [Average50])AS FLOAT) / (CASE WHEN [Average50] = 0 THEN 1 ELSE [Average50] END)), "
+                                        + "[AverageStdDeviasi20] = AVG(CAST(ABS(isiAtm20 - [Average20])AS FLOAT) / (CASE WHEN [Average20] = 0 THEN 1 ELSE [Average20] END)) "
+                                        + "FROM TransaksiAtms TA JOIN EventTanggal ET ON Ta.tanggal = ET.tanggal, " + subqueryTblAverage + kondisi;
+
+                            cmd.CommandText = query;
+                            reader = cmd.ExecuteReader();
+                            if (reader.Read())
+                            {
+                                if (String.IsNullOrEmpty(reader[0].ToString()))
+                                    event2 = false;
+                                else
+                                {
+                                    tempStdDeviasi.d100 = (Double)reader[0];
+                                    tempStdDeviasi.d50 = (Double)reader[1];
+                                    tempStdDeviasi.d20 = (Double)reader[2];
+                                    tempStdDeviasi.tgl = tempDate;
+                                }
+                                reader.Close();
+                            }
+                        }
+                        if (!event2)
+                        {
+                            reader.Close();
+                            kondisi = " WHERE kodePkt = '" + KodePkt[pktIndex] + "' ";
+                            count = 0;
+
+                            for (int i = 0; i < treeView1.Nodes.Count; i++)
+                            {
+                                for (int j = 0; j < treeView1.Nodes[i].Nodes.Count; j++)
+                                {
+                                    if (treeView1.Nodes[i].Nodes[j].Checked)
+                                    {
+                                        //;
+                                        //Kalo cari minggu (DATEPART(WEEK, tanggal) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM, 0, tanggal), 0)) + 1 ) = (minggu keberapa)
+                                        if (count++ == 0)
+                                            kondisi += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                        else
+                                            kondisi += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
                                     }
                                 }
                             }
@@ -880,7 +929,7 @@ namespace testProjectBCA
                                     + "FROM TransaksiAtms TA JOIN EventTanggal ET ON Ta.tanggal = ET.tanggal, " + subqueryTblAverage + kondisi;
 
                         cmd.CommandText = query;
-                        bool event1 = true;
+                        bool event1 = true, event2 = true;
                         reader = cmd.ExecuteReader();
                         if (reader.Read())
                         {
@@ -913,6 +962,55 @@ namespace testProjectBCA
                                             kondisi += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "') AND [event] = (SELECT [event] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
                                         else
                                             kondisi += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "') AND [event] = (SELECT [event] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                    }
+                                }
+                            }
+                            kondisi += ")";
+
+                            subqueryTblAverage = "(SELECT AVG(isiCrm100) AS Average100 , AVG(isiCrm50) AS Average50 , AVG(isiCrm20) AS Average20 FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal";
+                            subqueryTblAverage += kondisi;
+                            subqueryTblAverage += ") avt";
+
+                            query = "SELECT "
+                                        + "[AverageStdDeviasi100] = AVG(CAST(ABS(isiCrm100 - [Average100]) AS FLOAT) / (CASE WHEN [Average100] = 0 THEN 1 ELSE [Average100] END)), "
+                                        + "[AverageStdDeviasi50] = AVG(CAST(ABS(isiCrm50 - [Average50])AS FLOAT) / (CASE WHEN [Average50] = 0 THEN 1 ELSE [Average50] END)), "
+                                        + "[AverageStdDeviasi20] = AVG(CAST(ABS(isiCrm20 - [Average20])AS FLOAT) / (CASE WHEN [Average20] = 0 THEN 1 ELSE [Average20] END)) "
+                                        + "FROM TransaksiAtms TA JOIN EventTanggal ET ON Ta.tanggal = ET.tanggal, " + subqueryTblAverage + kondisi;
+
+                            cmd.CommandText = query;
+                            reader = cmd.ExecuteReader();
+                            if (reader.Read())
+                            {
+                                if (String.IsNullOrEmpty(reader[0].ToString()))
+                                    event2 = false;
+                                else
+                                {
+                                    tempStdDeviasi.d100 = (Double)reader[0];
+                                    tempStdDeviasi.d50 = (Double)reader[1];
+                                    tempStdDeviasi.d20 = (Double)reader[2];
+                                    tempStdDeviasi.tgl = tempDate;
+                                }
+                                reader.Close();
+                            }
+                        }
+                        if (!event2)
+                        {
+                            reader.Close();
+                            kondisi = " WHERE kodePkt = '" + KodePkt[pktIndex] + "' ";
+                            count = 0;
+
+                            for (int i = 0; i < treeView1.Nodes.Count; i++)
+                            {
+                                for (int j = 0; j < treeView1.Nodes[i].Nodes.Count; j++)
+                                {
+                                    if (treeView1.Nodes[i].Nodes[j].Checked)
+                                    {
+                                        //;
+                                        //Kalo cari minggu (DATEPART(WEEK, tanggal) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM, 0, tanggal), 0)) + 1 ) = (minggu keberapa)
+                                        if (count++ == 0)
+                                            kondisi += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                        else
+                                            kondisi += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
                                     }
                                 }
                             }
@@ -1179,7 +1277,7 @@ namespace testProjectBCA
 
                         cmd.CommandText = query;
                         reader = cmd.ExecuteReader();
-                        bool event1 = true;
+                        bool event1 = true, event2 = true;
                         if (reader.Read())
                         {
                             if (String.IsNullOrEmpty(reader[0].ToString()) || String.IsNullOrEmpty(reader[1].ToString()) || String.IsNullOrEmpty(reader[2].ToString()))
@@ -1216,7 +1314,7 @@ namespace testProjectBCA
                             }
                             kondisi += ")";
 
-                            subqueryTblAverage = "(SELECT ISNULL(AVG(sislokCrm100),0) AS Average100 , ISNULL(AVG(sislokCrm50),0) AS Average50 , ISNULL(AVG(sislokCrm20),0) AS Average20 FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal";
+                            subqueryTblAverage = "(SELECT AVG(sislokCrm100) AS Average100 , AVG(sislokCrm50) AS Average50 , AVG(sislokCrm20) AS Average20 FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal";
                             subqueryTblAverage += kondisi;
                             subqueryTblAverage += ") avt";
 
@@ -1230,10 +1328,64 @@ namespace testProjectBCA
                             reader = cmd.ExecuteReader();
                             if (reader.Read())
                             {
-                                tempStdDeviasi.d100 = (Double)reader[0];
-                                tempStdDeviasi.d50 = (Double)reader[1];
-                                tempStdDeviasi.d20 = (Double)reader[2];
-                                tempStdDeviasi.tgl = tempDate;
+                                if (String.IsNullOrEmpty(reader[0].ToString()))
+                                    event2 = false;
+                                else
+                                {
+                                    tempStdDeviasi.d100 = (Double)reader[0];
+                                    tempStdDeviasi.d50 = (Double)reader[1];
+                                    tempStdDeviasi.d20 = (Double)reader[2];
+                                    tempStdDeviasi.tgl = tempDate;
+                                }
+                                reader.Close();
+                            }
+                        }
+                        if (!event2)
+                        {
+                            reader.Close();
+                            kondisi = " WHERE kodePkt = '" + KodePkt[pktIndex] + "' ";
+                            count = 0;
+
+                            for (int i = 0; i < treeView1.Nodes.Count; i++)
+                            {
+                                for (int j = 0; j < treeView1.Nodes[i].Nodes.Count; j++)
+                                {
+                                    if (treeView1.Nodes[i].Nodes[j].Checked)
+                                    {
+                                        //;
+                                        //Kalo cari minggu (DATEPART(WEEK, tanggal) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM, 0, tanggal), 0)) + 1 ) = (minggu keberapa)
+                                        if (count++ == 0)
+                                            kondisi += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                        else
+                                            kondisi += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                    }
+                                }
+                            }
+                            kondisi += ")";
+
+                            subqueryTblAverage = "(SELECT ISNULL(AVG(sislokCrm100),0) AS Average100 , ISNULL(AVG(sislokCrm50),0) AS Average50 , ISNULL(AVG(sislokCrm20),0) AS Average20 FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal";
+                            subqueryTblAverage += kondisi;
+                            subqueryTblAverage += ") avt";
+
+                            query = "SELECT "
+                                        + "[AverageStdDeviasi100] = ISNULL(AVG(CAST((sislokCrm100 - [Average100]) AS FLOAT) / (CASE WHEN [Average100] = 0 THEN 1 ELSE [Average100] END)),0), "
+                                        + "[AverageStdDeviasi50] = ISNULL(AVG(CAST((sislokCrm50 - [Average50])AS FLOAT) / (CASE WHEN [Average50] = 0 THEN 1 ELSE [Average50] END)),0), "
+                                        + "[AverageStdDeviasi20] = ISNULL(AVG(CAST((sislokCrm20 - [Average20])AS FLOAT) / (CASE WHEN [Average20] = 0 THEN 1 ELSE [Average20] END)),0) "
+                                        + "FROM TransaksiAtms TA JOIN EventTanggal ET ON Ta.tanggal = ET.tanggal, " + subqueryTblAverage + kondisi;
+
+                            cmd.CommandText = query;
+                            reader = cmd.ExecuteReader();
+                            if (reader.Read())
+                            {
+                                if (String.IsNullOrEmpty(reader[0].ToString()))
+                                    event2 = false;
+                                else
+                                {
+                                    tempStdDeviasi.d100 = (Double)reader[0];
+                                    tempStdDeviasi.d50 = (Double)reader[1];
+                                    tempStdDeviasi.d20 = (Double)reader[2];
+                                    tempStdDeviasi.tgl = tempDate;
+                                }
                                 reader.Close();
                             }
                         }
@@ -1498,7 +1650,7 @@ namespace testProjectBCA
 
                         cmd.CommandText = query;
                         reader = cmd.ExecuteReader();
-                        bool event1 = true;
+                        bool event1 = true, event2 = true;
                         if (reader.Read())
                         {
                             if (String.IsNullOrEmpty(reader[0].ToString()) || String.IsNullOrEmpty(reader[1].ToString()) || String.IsNullOrEmpty(reader[2].ToString()))
@@ -1543,6 +1695,55 @@ namespace testProjectBCA
                                         + "[AverageStdDeviasi100] = AVG(CAST((sislokCdm100 - [Average100]) AS FLOAT) / (CASE WHEN [Average100] = 0 THEN 1 ELSE [Average100] END)), "
                                         + "[AverageStdDeviasi50] = AVG(CAST((sislokCdm50 - [Average50])AS FLOAT) / (CASE WHEN [Average50] = 0 THEN 1 ELSE [Average50] END)), "
                                         + "[AverageStdDeviasi20] = AVG(CAST((sislokCdm20 - [Average20])AS FLOAT) / (CASE WHEN [Average20] = 0 THEN 1 ELSE [Average20] END)) "
+                                        + "FROM TransaksiAtms TA JOIN EventTanggal ET ON Ta.tanggal = ET.tanggal, " + subqueryTblAverage + kondisi;
+
+                            cmd.CommandText = query;
+                            reader = cmd.ExecuteReader();
+                            if (reader.Read())
+                            {
+                                if (String.IsNullOrEmpty(reader[0].ToString()))
+                                    event2 = false;
+                                else
+                                {
+                                    tempStdDeviasi.d100 = (Double)reader[0];
+                                    tempStdDeviasi.d50 = (Double)reader[1];
+                                    tempStdDeviasi.d20 = (Double)reader[2];
+                                    tempStdDeviasi.tgl = tempDate;
+                                }
+                                reader.Close();
+                            }
+                        }
+                        if (!event2)
+                        {
+                            reader.Close();
+                            kondisi = " WHERE kodePkt = '" + KodePkt[pktIndex] + "' ";
+                            count = 0;
+
+                            for (int i = 0; i < treeView1.Nodes.Count; i++)
+                            {
+                                for (int j = 0; j < treeView1.Nodes[i].Nodes.Count; j++)
+                                {
+                                    if (treeView1.Nodes[i].Nodes[j].Checked)
+                                    {
+                                        //;
+                                        //Kalo cari minggu (DATEPART(WEEK, tanggal) - DATEPART(WEEK, DATEADD(MM, DATEDIFF(MM, 0, tanggal), 0)) + 1 ) = (minggu keberapa)
+                                        if (count++ == 0)
+                                            kondisi += " AND ((YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                        else
+                                            kondisi += "OR (YEAR(TA.tanggal) = " + treeView1.Nodes[i].Text + " AND MONTH(TA.tanggal) = " + treeView1.Nodes[i].Nodes[j].Text + " AND [workDay] = (SELECT [workDay] FROM EventTanggal WHERE tanggal = '" + tempDate.ToShortDateString() + "')) ";
+                                    }
+                                }
+                            }
+                            kondisi += ")";
+
+                            subqueryTblAverage = "(SELECT AVG(sislokcdm100) AS Average100 , AVG(sislokCdm50) AS Average50 , AVG(sislokCdm20) AS Average20 FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal";
+                            subqueryTblAverage += kondisi;
+                            subqueryTblAverage += ") avt";
+
+                            query = "SELECT "
+                                        + "[AverageStdDeviasi100] = ISNULL(AVG(CAST((sislokCdm100 - [Average100]) AS FLOAT) / (CASE WHEN [Average100] = 0 THEN 1 ELSE [Average100] END)),0) "
+                                        + "[AverageStdDeviasi50] = ISNULL(AVG(CAST((sislokCdm50 - [Average50])AS FLOAT) / (CASE WHEN [Average50] = 0 THEN 1 ELSE [Average50] END)),0), "
+                                        + "[AverageStdDeviasi20] = ISNULL(AVG(CAST((sislokCdm20 - [Average20])AS FLOAT) / (CASE WHEN [Average20] = 0 THEN 1 ELSE [Average20] END)),0) "
                                         + "FROM TransaksiAtms TA JOIN EventTanggal ET ON Ta.tanggal = ET.tanggal, " + subqueryTblAverage + kondisi;
 
                             cmd.CommandText = query;

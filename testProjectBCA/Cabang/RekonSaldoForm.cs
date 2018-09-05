@@ -117,6 +117,7 @@ namespace testProjectBCA
             flagUpVO = 1;
         }
 
+
         private void buttonUploadOrderBlogHistory_Click(object sender, EventArgs e)
         {
             OpenFileDialog of = new OpenFileDialog();
@@ -127,7 +128,7 @@ namespace testProjectBCA
                 DataSet ds = Util.openCsv(filename);
                 DataTable dt = ds.Tables[0];
 
-                //dataGridView1.DataSource = dt;
+                dataGridView1.DataSource = dt;
 
                 obh = new List<OBH>();
 
@@ -143,10 +144,18 @@ namespace testProjectBCA
                         String action = dt.Rows[i][2].ToString();
                         String status = dt.Rows[i][6].ToString();
                         String blogMessage = dt.Rows[i][10].ToString();
-                        Int64 currencyAmmount = CurrencyFill(String.IsNullOrEmpty(dt.Rows[i][11].ToString()) ? dt.Rows[i - 1][11].ToString().Replace("IDR:", "") : dt.Rows[i][11].ToString().Replace("IDR:", ""));
-                        Console.WriteLine("currency: " + currencyAmmount);
+                        String tampungan = " ";
+                        for (int z = i; z >= 0; z--)
+                        {
+                            if (String.IsNullOrWhiteSpace(tampungan))
+                            {
+                                tampungan = dt.Rows[z][11].ToString();
+                            }
+                            else
+                                break;
+                        }
+                        Int64 currencyAmmount = CurrencyFill(String.IsNullOrWhiteSpace(dt.Rows[i][11].ToString()) ? dt.Rows[i - 1][11].ToString().Replace("IDR:", "") : dt.Rows[i][11].ToString().Replace("IDR:", ""));
 
-                        Console.WriteLine("a" + i);
                         obh.Add(new OBH
                         {
                             cashpointId = dt.Rows[i][0].ToString(),
@@ -157,8 +166,10 @@ namespace testProjectBCA
                             blogTime = DateTime.ParseExact(dt.Rows[i][9].ToString(), "M/d/yyyy H:mm", System.Globalization.CultureInfo.InvariantCulture),
                             action = dt.Rows[i][2].ToString(),
                             status = dt.Rows[i][6].ToString(),
-                            currencyAmmount = CurrencyFill(String.IsNullOrEmpty(dt.Rows[i][11].ToString()) ? dt.Rows[i - 1][11].ToString().Replace("IDR:", "") : dt.Rows[i][11].ToString().Replace("IDR:", ""))
+                            currencyAmmount = CurrencyFill(tampungan.Replace("IDR:", "")),
+                            //currencyAmmount = CurrencyFill(String.IsNullOrWhiteSpace(dt.Rows[i][11].ToString()) ? dt.Rows[i - 1][11].ToString().Replace("IDR:", "") : dt.Rows[i][11].ToString().Replace("IDR:", ""))
                         });
+                        Console.WriteLine("currency yg keluar: " + currencyAmmount);
                     }
 
                 }
@@ -923,17 +934,18 @@ namespace testProjectBCA
 
         }
 
+
+
         public Int64 CurrencyFill(String a)
         {
             Int64 result = 0;
-
+            Console.WriteLine("yang masuk: " + a);
             if (a.Contains("e") || a.Contains("E"))
             {
                 result = (Int64)Double.Parse(a, System.Globalization.NumberStyles.Float);
             }
             else
             {
-                Console.WriteLine("a: " + a);
                 if (String.IsNullOrEmpty(a))
                 { result = 0; }
                 else
@@ -1332,7 +1344,8 @@ namespace testProjectBCA
                               && x.orderDate == item.orderDate
                               //&& x.vendor == item.vendor
                               && x.actionRekon == item.actionRekon
-                              //&& x.statusRekon == item.statusRekon
+                              //&& x.blogMessage == item.blogMessage
+                              && x.statusRekon == item.statusRekon
                               //&& ((DateTime)x.dueDate).Date == item.dueDate 
                               //&& (DateTime)x.blogTime == item.blogTime 
                               //&& x.currencyAmmount == item.currencyAmmount 
@@ -1364,6 +1377,8 @@ namespace testProjectBCA
                         query2[i].cashPointtId = item.cashPointtId;
                         query2[i].confId = item.confId;
                         query2[i].orderDate = item.orderDate;
+                        query2[i].blogMessage = item.blogMessage;
+                        Console.WriteLine("update blogmessage: " + item.blogMessage);
                         query2[i].vendor = item.vendor;
                         query2[i].actionRekon = item.actionRekon;
                         //query2[i].statusRekon = item.statusRekon;
