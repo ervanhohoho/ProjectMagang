@@ -1069,7 +1069,7 @@ namespace testProjectBCA
                 Console.WriteLine(temp.tgl.ToShortDateString() + " " + temp.d100 + " " + temp.d50 + " " + temp.d20);
             }
         }
-        private void loadSislokCrm()
+        void loadSislokCrm()
         {
             Console.WriteLine();
             Console.WriteLine("Load Sislok CRM");
@@ -1741,7 +1741,7 @@ namespace testProjectBCA
                             subqueryTblAverage += ") avt";
 
                             query = "SELECT "
-                                        + "[AverageStdDeviasi100] = ISNULL(AVG(CAST((sislokCdm100 - [Average100]) AS FLOAT) / (CASE WHEN [Average100] = 0 THEN 1 ELSE [Average100] END)),0) "
+                                        + "[AverageStdDeviasi100] = ISNULL(AVG(CAST((sislokCdm100 - [Average100]) AS FLOAT) / (CASE WHEN [Average100] = 0 THEN 1 ELSE [Average100] END)),0), "
                                         + "[AverageStdDeviasi50] = ISNULL(AVG(CAST((sislokCdm50 - [Average50])AS FLOAT) / (CASE WHEN [Average50] = 0 THEN 1 ELSE [Average50] END)),0), "
                                         + "[AverageStdDeviasi20] = ISNULL(AVG(CAST((sislokCdm20 - [Average20])AS FLOAT) / (CASE WHEN [Average20] = 0 THEN 1 ELSE [Average20] END)),0) "
                                         + "FROM TransaksiAtms TA JOIN EventTanggal ET ON Ta.tanggal = ET.tanggal, " + subqueryTblAverage + kondisi;

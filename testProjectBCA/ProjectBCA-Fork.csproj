@@ -172,6 +172,7 @@
     <Compile Include="AsuransiLayanan.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="ATM\KumpulanPrediksi.cs" />
     <Compile Include="Cabang.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
