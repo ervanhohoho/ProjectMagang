@@ -37,5 +37,18 @@ namespace testProjectBCA
         public Nullable<long> inCabang { get; set; }
         public Nullable<long> inRetail { get; set; }
         public Nullable<long> outCabang { get; set; }
+        public Nullable<long> openBalance { get; set; }
+        public Nullable<long> inBI { get; set; }
+        public Nullable<long> inTUKAB { get; set; }
+        public Nullable<long> inOtherCPC { get; set; }
+        public Nullable<long> intVaultATM { get; set; }
+        public Nullable<long> inTukaran { get; set; }
+        public Nullable<long> outRetail { get; set; }
+        public Nullable<long> outBIULE { get; set; }
+        public Nullable<long> outBIUTLE { get; set; }
+        public Nullable<long> outTUKAB { get; set; }
+        public Nullable<long> outOtherCPC { get; set; }
+        public Nullable<long> outVaultATM { get; set; }
+        public Nullable<long> outTukaran { get; set; }
     }
 }

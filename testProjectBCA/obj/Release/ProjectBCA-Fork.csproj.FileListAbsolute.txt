@@ -156,8 +156,6 @@ C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\te
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.ReadBeehiveForm.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.RekonSaldoForm.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.rekonSaldoTrxCabang.resources
-C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.RevisiInformationBoard.resources
-C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.InformationBoard.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.initTransaksi.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.InputAbacasForm.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.InputDataSubsidiForm.resources
@@ -171,7 +169,6 @@ C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\te
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.MainForm.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.MultipleFilesInputForm.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.Properties.Resources.resources
-C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.AkurasiPrediksiForm.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.proyeksiLikuiditasForm.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.RekapApprovalForm.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.Revisi.resources
@@ -190,3 +187,8 @@ C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\bin\Release\BC
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\bin\Release\BCrypt.Net-Next.xml
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.InputDataTarikanCRMForm.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.InputDataSetoranCRMForm.resources
+C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.ATM.RevisiInformationBoard.resources
+C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.ATM.InformationBoard.resources
+C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.ATM.AkurasiPrediksiForm.resources
+C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.ATM.InputDataBankLainForm.resources
+C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.Dashboard.ProyeksiApproval.resources

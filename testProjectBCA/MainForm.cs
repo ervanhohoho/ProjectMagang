@@ -8,6 +8,8 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using testProjectBCA.ATM;
+using testProjectBCA.Dashboard;
 namespace testProjectBCA
 {
     public partial class MainForm : Form
@@ -828,38 +830,6 @@ namespace testProjectBCA
             iotf.Show();
         }
 
-        private void aTMToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            loadForm.ShowSplashScreen();
-            dasbor d = new dasbor();
-            dasborExtension de = new dasborExtension();
-            //popupsementara ps = new popupsementara();
-            loadForm.CloseForm();
-            d.MdiParent = this;
-            //d.WindowState = FormWindowState.Maximized;
-            d.Show();
-            de.MdiParent = this;
-            de.Show();
-            dasborPerformancePktf dppf= new dasborPerformancePktf(); ;
-            dppf.MdiParent = this;
-            dppf.Show();
-            graphSaldoATM gsa = new graphSaldoATM();
-            gsa.MdiParent = this;
-            gsa.Show();
-            //ps.MdiParent = this;
-            //ps.Show();
-        }
-
-        private void saldoKasToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            DashboardCOJForm dcf = new DashboardCOJForm();
-            dcf.MdiParent = this;
-            dcf.Show();
-            dashboardCojExtension dcfe = new dashboardCojExtension();
-            dcfe.MdiParent = this;
-            dcfe.Show();
-        }
-
         private void perbandinganSaldoAwalToolStripMenuItem_Click(object sender, EventArgs e)
         {
             PerbandinganSaldoForm psf = new PerbandinganSaldoForm();
@@ -989,6 +959,70 @@ namespace testProjectBCA
                 db.SaveChanges();
                 loadForm.CloseForm();
             }
+        }
+
+        private void inputDataBankLainToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            InputDataBankLainForm idbl = new InputDataBankLainForm();
+            idbl.MdiParent = this;
+            idbl.Show();
+        }
+
+        private void dashboardATMToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            loadForm.ShowSplashScreen();
+            dasbor ds = new dasbor();
+            loadForm.CloseForm();
+            ds.MdiParent = this;
+            ds.Show();
+        }
+
+        private void performancePKTToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            loadForm.ShowSplashScreen();
+            dasborPerformancePktf dppf = new dasborPerformancePktf();
+            loadForm.CloseForm();
+            dppf.MdiParent = this;
+            dppf.Show();
+        }
+
+        private void sislokToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            loadForm.ShowSplashScreen();
+            dasborExtension de = new dasborExtension();
+            loadForm.CloseForm();
+            de.MdiParent = this;
+            de.Show();
+        }
+
+        private void saldoATMToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            loadForm.ShowSplashScreen();
+            graphSaldoATM gsa = new graphSaldoATM();
+            loadForm.CloseForm();
+            gsa.MdiParent = this;
+            gsa.Show();
+        }
+
+        private void dashboardCOJToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            DashboardCOJForm dcf = new DashboardCOJForm();
+            dcf.MdiParent = this;
+            dcf.Show();
+        }
+
+        private void saldoPerGrupToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            dashboardCojExtension dce = new dashboardCojExtension();
+            dce.MdiParent = this;
+            dce.Show();
+        }
+
+        private void proyeksiApprovalToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ProyeksiApproval pa = new ProyeksiApproval();
+            pa.MdiParent = this;
+            pa.Show();
         }
     }
 }

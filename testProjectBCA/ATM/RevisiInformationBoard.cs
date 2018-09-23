@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace testProjectBCA
+namespace testProjectBCA.ATM
 {
     public partial class RevisiInformationBoard : Form
     {
@@ -43,7 +43,7 @@ namespace testProjectBCA
         List<Denom> prediksiIsiAtm;//dalem class denom ada 100,50,20
         List<Denom> prediksiIsiAtmDenganStdDeviasi = new List<Denom>();
         List<Rasio> listRasio = new List<Rasio>();
-
+        List<DateTime> kumpulanTanggalUntukPrediksi = new List<DateTime>();
         List<DateTime> tanggalSkip;
         DateTime tanggalSetorLama;
         int pktIndex;
@@ -3457,6 +3457,21 @@ namespace testProjectBCA
            
         }
 
+        void loadKumpulanTanggalUntukPrediksi()
+        {
+            kumpulanTanggalUntukPrediksi = new List<DateTime>();
+            for (int i = 0; i < treeView1.Nodes.Count; i++)
+            {
+                for (int j = 0; j < treeView1.Nodes[i].Nodes.Count; j++)
+                {
+                    if (treeView1.Nodes[i].Nodes[j].Checked)
+                    {
+                        kumpulanTanggalUntukPrediksi.Add(new DateTime(Int32.Parse(treeView1.Nodes[i].Text), Int32.Parse(treeView1.Nodes[i].Nodes[j].Text), 1));
+                    }
+                }
+            }
+        }
+
         void loadCheckedDariSkipPrediksiTreeView()
         {
             tanggalSkip = new List<DateTime>();
@@ -3514,122 +3529,138 @@ namespace testProjectBCA
                 //loadSislokCrm();
                 //try
                 //{
-                if (MetodePrediksiComboBox.SelectedIndex == 0)
+                //if (MetodePrediksiComboBox.SelectedIndex == 0)
+                //{
+                //    Database1Entities db = new Database1Entities();
+                //    if (!(from x in db.Optis select x).Any())
+                //    {
+                //        MessageBox.Show("Data Opti Tidak Ada!");
+                //        return;
+                //    }
+                //    if (prediksiIsiAtmOpti[prediksiIsiAtmOpti.Count - 1].tgl < tanggalOptiMax)
+                //    {
+                //        MessageBox.Show("Data Opti Salah");
+                //        return;
+                //    }
+                //    else
+                //        prediksiIsiAtm = prediksiIsiAtmOpti;
+                //}
+                //if (MetodePrediksiComboBox.SelectedIndex == 1)
+                //{
+                //    loadIsiAtmHistoris();
+                //}
+                //if (MetodePrediksiComboBox.SelectedIndex == 2)
+                //{
+                //    loadIsiAtmHistoris();
+                //    for (int a = 0; a < prediksiIsiAtmOpti.Count; a++)
+                //    {
+                //        prediksiIsiAtm[a].d100 = (prediksiIsiAtm[a].d100 + prediksiIsiAtmOpti[a].d100) / 2;
+                //        prediksiIsiAtm[a].d50 = (prediksiIsiAtm[a].d50 + prediksiIsiAtmOpti[a].d50) / 2;
+                //        prediksiIsiAtm[a].d20 = (prediksiIsiAtm[a].d20 + prediksiIsiAtmOpti[a].d20) / 2;
+                //    }
+                //}
+                //if (MetodePrediksiComboBox.SelectedIndex == 3)
+                //{
+                //    loadIsiAtmHistoris();
+                //    loadIsiAtmHistorisDenganStandarDeviasi();
+                //    prediksiIsiAtm = prediksiIsiAtmDenganStdDeviasi;
+                //}
+                //if (MetodePrediksiComboBox.SelectedIndex == 4)
+                //{
+                //    loadIsiAtmHistoris();
+                //    loadIsiAtmHistorisDenganStandarDeviasi();
+                //    prediksiIsiAtm = prediksiIsiAtmDenganStdDeviasi;
+                //    for (int a = 0; a < prediksiIsiAtmOpti.Count; a++)
+                //    {
+                //        prediksiIsiAtm[a].d100 = (prediksiIsiAtm[a].d100 + prediksiIsiAtmOpti[a].d100) / 2;
+                //        prediksiIsiAtm[a].d50 = (prediksiIsiAtm[a].d50 + prediksiIsiAtmOpti[a].d50) / 2;
+                //        prediksiIsiAtm[a].d20 = (prediksiIsiAtm[a].d20 + prediksiIsiAtmOpti[a].d20) / 2;
+                //    }
+
+                //}
+                //loadSislokCdm();
+                //loadRasioSislokAtm();
+                //loadRasioSislokAtmDenganStdDeviasi();
+                //loadIsiCrm();
+                //loadSislokCrm();
+                ////Hitungan dengan metode kedua
+                //if (MetodeHitungLainnyaComboBox.SelectedIndex == 1)
+                //{
+                //    loadSislokCdmDenganStdDeviasi();
+                //    loadIsiCrmDenganStdDeviasi();
+                //    loadSislokCrmDenganStdDeviasi();
+                //    loadRasioSislokAtmDenganStdDeviasi();
+                //    sislokCdm = sislokCdmDenganStdDeviasi;
+                //    isiCrm = isiCrmDenganStdDeviasi;
+                //    sislokCrm = sislokCrmDenganStdDeviasi;
+                //    rasioSislokAtm = rasioSislokATMDenganStdDeviasi;
+                //}
+
+                //if (MetodeHitungLainnyaComboBox.SelectedItem.ToString() == "Std Deviasi")
+                //{
+                //    loadSislokCdmDenganStdDeviasi();
+                //    loadIsiCrmDenganStdDeviasi();
+                //    loadSislokCrmDenganStdDeviasi();
+                //    loadRasioSislokAtmDenganStdDeviasi();
+                //    sislokCdm = sislokCdmDenganStdDeviasi;
+                //    isiCrm = isiCrmDenganStdDeviasi;
+                //    sislokCrm = sislokCrmDenganStdDeviasi;
+                //    rasioSislokAtm = rasioSislokATMDenganStdDeviasi;
+                //}
+                ////Hitungan dengan metode ketiga
+                //if (MetodeHitungLainnyaComboBox.SelectedItem.ToString() == "Historis + Std Deviasi")
+                //{
+                //    loadSislokCdmDenganStdDeviasi();
+                //    loadIsiCrmDenganStdDeviasi();
+                //    loadSislokCrmDenganStdDeviasi();
+                //    loadRasioSislokAtmDenganStdDeviasi();
+                //    for (int a = 0; a < sislokCdm.Count; a++)
+                //    {
+                //        sislokCdm[a].d100 = (sislokCdm[a].d100 + sislokCdmDenganStdDeviasi[a].d100) / 2;
+                //        sislokCdm[a].d50 = (sislokCdm[a].d50 + sislokCdmDenganStdDeviasi[a].d50) / 2;
+                //        sislokCdm[a].d20 = (sislokCdm[a].d20 + sislokCdmDenganStdDeviasi[a].d20) / 2;
+
+                //        isiCrm[a].d100 = (isiCrm[a].d100 + isiCrmDenganStdDeviasi[a].d100) / 2;
+                //        isiCrm[a].d50 = (isiCrm[a].d50 + isiCrmDenganStdDeviasi[a].d50) / 2;
+                //        isiCrm[a].d20 = (isiCrm[a].d20 + isiCrmDenganStdDeviasi[a].d20) / 2;
+
+                //        sislokCrm[a].d100 = (sislokCrm[a].d100 + sislokCrmDenganStdDeviasi[a].d100) / 2;
+                //        sislokCrm[a].d50 = (sislokCrm[a].d50 + sislokCrmDenganStdDeviasi[a].d50) / 2;
+                //        sislokCrm[a].d20 = (sislokCrm[a].d20 + sislokCrmDenganStdDeviasi[a].d20) / 2;
+
+                //        rasioSislokAtm[a].d100 = (rasioSislokAtm[a].d100 + rasioSislokATMDenganStdDeviasi[a].d100) / 2;
+                //        rasioSislokAtm[a].d50 = (rasioSislokAtm[a].d50 + rasioSislokATMDenganStdDeviasi[a].d50) / 2;
+                //        rasioSislokAtm[a].d20 = (rasioSislokAtm[a].d20 + rasioSislokATMDenganStdDeviasi[a].d20) / 2;
+                //    }
+                //}
+                loadKumpulanTanggalUntukPrediksi();
+                KumpulanPrediksi kumpulanPrediksi = new KumpulanPrediksi(KodePkt[pktIndex], kumpulanTanggalUntukPrediksi, tanggalOptiMin, tanggalOptiMax, MetodePrediksiComboBox.SelectedItem.ToString(), MetodeHitungLainnyaComboBox.SelectedItem.ToString());
+
+                if (kumpulanPrediksi.success)
                 {
-                    Database1Entities db = new Database1Entities();
-                    if (!(from x in db.Optis select x).Any())
+                    prediksiIsiAtm = kumpulanPrediksi.prediksiIsiAtm;
+                    isiCrm = kumpulanPrediksi.isiCrm2;
+                    sislokCrm = kumpulanPrediksi.sislokCrm;
+                    rasioSislokAtm = kumpulanPrediksi.rasioSislokAtm;
+                    sislokCdm = kumpulanPrediksi.sislokCdm;
+
+                    String eventType = "";
+                    foreach (var temp in kumpulanPrediksi.eventType)
                     {
-                        MessageBox.Show("Data Opti Tidak Ada!");
-                        return;
+                        eventType += temp + "\n";
                     }
-                    if (prediksiIsiAtmOpti[prediksiIsiAtmOpti.Count - 1].tgl < tanggalOptiMax)
-                    {
-                        MessageBox.Show("Data Opti Salah");
-                        return;
-                    }
-                    else
-                        prediksiIsiAtm = prediksiIsiAtmOpti;
-                }
-                if (MetodePrediksiComboBox.SelectedIndex == 1)
-                {
-                    loadIsiAtmHistoris();
-                }
-                if (MetodePrediksiComboBox.SelectedIndex == 2)
-                {
-                    loadIsiAtmHistoris();
-                    for (int a = 0; a < prediksiIsiAtmOpti.Count; a++)
-                    {
-                        prediksiIsiAtm[a].d100 = (prediksiIsiAtm[a].d100 + prediksiIsiAtmOpti[a].d100) / 2;
-                        prediksiIsiAtm[a].d50 = (prediksiIsiAtm[a].d50 + prediksiIsiAtmOpti[a].d50) / 2;
-                        prediksiIsiAtm[a].d20 = (prediksiIsiAtm[a].d20 + prediksiIsiAtmOpti[a].d20) / 2;
-                    }
-                }
-                if (MetodePrediksiComboBox.SelectedIndex == 3)
-                {
-                    loadIsiAtmHistoris();
-                    loadIsiAtmHistorisDenganStandarDeviasi();
-                    prediksiIsiAtm = prediksiIsiAtmDenganStdDeviasi;
-                }
-                if (MetodePrediksiComboBox.SelectedIndex == 4)
-                {
-                    loadIsiAtmHistoris();
-                    loadIsiAtmHistorisDenganStandarDeviasi();
-                    prediksiIsiAtm = prediksiIsiAtmDenganStdDeviasi;
-                    for (int a = 0; a < prediksiIsiAtmOpti.Count; a++)
-                    {
-                        prediksiIsiAtm[a].d100 = (prediksiIsiAtm[a].d100 + prediksiIsiAtmOpti[a].d100) / 2;
-                        prediksiIsiAtm[a].d50 = (prediksiIsiAtm[a].d50 + prediksiIsiAtmOpti[a].d50) / 2;
-                        prediksiIsiAtm[a].d20 = (prediksiIsiAtm[a].d20 + prediksiIsiAtmOpti[a].d20) / 2;
-                    }
+                    MessageBox.Show(eventType);
+                    Console.WriteLine("Prediksi isi atm count: " + prediksiIsiAtm.Count);
+                    Console.WriteLine("Isi crm count: " + isiCrm.Count);
+                    Console.WriteLine("Sislok crm count: " + sislokCrm.Count);
+                    Console.WriteLine("Rasio Sislok ATM count: " + rasioSislokAtm.Count);
+                    Console.WriteLine("Sislok cdm count: " + sislokCdm.Count);
 
                 }
-                loadSislokCdm();
-
-
-                loadRasioSislokAtm();
-                loadRasioSislokAtmDenganStdDeviasi();
-
                 loadSaldoAwal();
                 loadBon();
                 loadTablePermintaanBon();
-
-                loadIsiCrm();
-
-                loadSislokCrm();
-
                 loadSetor();
-
-                //Hitungan dengan metode kedua
-                if (MetodeHitungLainnyaComboBox.SelectedIndex == 1)
-                {
-                    loadSislokCdmDenganStdDeviasi();
-                    loadIsiCrmDenganStdDeviasi();
-                    loadSislokCrmDenganStdDeviasi();
-                    loadRasioSislokAtmDenganStdDeviasi();
-                    sislokCdm = sislokCdmDenganStdDeviasi;
-                    isiCrm = isiCrmDenganStdDeviasi;
-                    sislokCrm = sislokCrmDenganStdDeviasi;
-                    rasioSislokAtm = rasioSislokATMDenganStdDeviasi;
-                }
-
-                if (MetodeHitungLainnyaComboBox.SelectedItem.ToString() == "Std Deviasi")
-                {
-                    loadSislokCdmDenganStdDeviasi();
-                    loadIsiCrmDenganStdDeviasi();
-                    loadSislokCrmDenganStdDeviasi();
-                    loadRasioSislokAtmDenganStdDeviasi();
-                    sislokCdm = sislokCdmDenganStdDeviasi;
-                    isiCrm = isiCrmDenganStdDeviasi;
-                    sislokCrm = sislokCrmDenganStdDeviasi;
-                    rasioSislokAtm = rasioSislokATMDenganStdDeviasi;
-                }
-                //Hitungan dengan metode ketiga
-                if (MetodeHitungLainnyaComboBox.SelectedItem.ToString() == "Historis + Std Deviasi")
-                {
-                    loadSislokCdmDenganStdDeviasi();
-                    loadIsiCrmDenganStdDeviasi();
-                    loadSislokCrmDenganStdDeviasi();
-                    loadRasioSislokAtmDenganStdDeviasi();
-                    for (int a = 0; a < sislokCdm.Count; a++)
-                    {
-                        sislokCdm[a].d100 = (sislokCdm[a].d100 + sislokCdmDenganStdDeviasi[a].d100) / 2;
-                        sislokCdm[a].d50 = (sislokCdm[a].d50 + sislokCdmDenganStdDeviasi[a].d50) / 2;
-                        sislokCdm[a].d20 = (sislokCdm[a].d20 + sislokCdmDenganStdDeviasi[a].d20) / 2;
-
-                        isiCrm[a].d100 = (isiCrm[a].d100 + isiCrmDenganStdDeviasi[a].d100) / 2;
-                        isiCrm[a].d50 = (isiCrm[a].d50 + isiCrmDenganStdDeviasi[a].d50) / 2;
-                        isiCrm[a].d20 = (isiCrm[a].d20 + isiCrmDenganStdDeviasi[a].d20) / 2;
-
-                        sislokCrm[a].d100 = (sislokCrm[a].d100 + sislokCrmDenganStdDeviasi[a].d100) / 2;
-                        sislokCrm[a].d50 = (sislokCrm[a].d50 + sislokCrmDenganStdDeviasi[a].d50) / 2;
-                        sislokCrm[a].d20 = (sislokCrm[a].d20 + sislokCrmDenganStdDeviasi[a].d20) / 2;
-
-                        rasioSislokAtm[a].d100 = (rasioSislokAtm[a].d100 + rasioSislokATMDenganStdDeviasi[a].d100) / 2;
-                        rasioSislokAtm[a].d50 = (rasioSislokAtm[a].d50 + rasioSislokATMDenganStdDeviasi[a].d50) / 2;
-                        rasioSislokAtm[a].d20 = (rasioSislokAtm[a].d20 + rasioSislokATMDenganStdDeviasi[a].d20) / 2;
-                    }
-                }
-
                 //BUFFER ISI ATM
                 Double bufferIsiATM100 = (Double)bufferIsiAtm100Num.Value / 100;
                 Double bufferIsiATM50 = (Double)bufferIsiAtm50Num.Value / 100;

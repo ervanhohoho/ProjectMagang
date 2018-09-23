@@ -83,8 +83,6 @@ C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\test
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.ReadBeehiveForm.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.RekonSaldoForm.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.rekonSaldoTrxCabang.resources
-C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.RevisiInformationBoard.resources
-C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.InformationBoard.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.initTransaksi.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.InputAbacasForm.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.InputDataSubsidiForm.resources
@@ -98,7 +96,6 @@ C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\test
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.MainForm.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.MultipleFilesInputForm.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.Properties.Resources.resources
-C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.AkurasiPrediksiForm.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.proyeksiLikuiditasForm.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.RekapApprovalForm.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.Revisi.resources
@@ -113,3 +110,8 @@ C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\test
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\ProjectBCA-Fork.csproj.CopyComplete
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.exe
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.pdb
+C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.ATM.InformationBoard.resources
+C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.ATM.AkurasiPrediksiForm.resources
+C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.ATM.RevisiInformationBoard.resources
+C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.ATM.InputDataBankLainForm.resources
+C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.Dashboard.ProyeksiApproval.resources

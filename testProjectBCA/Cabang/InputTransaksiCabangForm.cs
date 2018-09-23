@@ -58,16 +58,22 @@ namespace testProjectBCA
 
                     Console.WriteLine(filename);
 
+                    Console.WriteLine("Collection Cabang");
                     collectionCabang = ds.Tables[0];
                     readCollectionCabang(ds);
+                    Console.WriteLine("Collection Retail");
                     collectionRetail = ds.Tables[1];
                     readCollectionRetail(ds);
+                    Console.WriteLine("Collection Lainnya");
                     collectionLainnya = ds.Tables[2];
                     readCollectionLainnya(ds);
+                    Console.WriteLine("Delivery Cabang");
                     deliveryCabang = ds.Tables[3];
                     readDeliveryCabang(ds);
+                    Console.WriteLine("Delivery Retail");
                     deliveryRetail = ds.Tables[4];
                     readDeliveryRetail(ds);
+                    Console.WriteLine("Delivery Lainnya");
                     deliveryLainnya = ds.Tables[5];
                     readDeliveryLainnya(ds);
                 }
@@ -140,7 +146,7 @@ namespace testProjectBCA
             //Ambil Nama PKT
             String namaPkt = dt.Rows[0][1].ToString().Replace("PT ","");
             kodePkt = (from x in listPkt
-                       where x.namaPkt == namaPkt
+                       where x.namaPkt.Contains(namaPkt)
                        select x.kodePktCabang).FirstOrDefault();
 
             Console.WriteLine(ds.DataSetName);
@@ -281,9 +287,9 @@ namespace testProjectBCA
                     kode = row[2].ToString(),
                     nama = row[3].ToString(),
                     keterangan = row[4].ToString(),
-                    kodePkt = row[dt.Columns.Count - 3].ToString(),
-                    in_out = row[dt.Columns.Count - 1].ToString(),
-                    jenisTransaksi = row[dt.Columns.Count - 2].ToString(),
+                    kodePkt = row["kodePkt"].ToString(),
+                    in_out = row["inout"].ToString(),
+                    jenisTransaksi = row["jenisTransaksi"].ToString(),
                     tanggal = DateTime.Parse(row[0].ToString()),
                     BN100K = BN100K,
                     BN50K = BN50K,

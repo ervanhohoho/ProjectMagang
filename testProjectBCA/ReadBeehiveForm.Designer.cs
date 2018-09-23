@@ -32,13 +32,11 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.inputButtonMCS = new System.Windows.Forms.Button();
             this.buttonProses = new System.Windows.Forms.Button();
-            this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.buttonSaveBeehive = new System.Windows.Forms.Button();
             this.buttonSaveMcs = new System.Windows.Forms.Button();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
+            this.inputButtonVa = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.SuspendLayout();
             // 
             // inputBtn
@@ -53,15 +51,23 @@
             // 
             // dataGridView1
             // 
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.AllowUserToResizeColumns = false;
+            this.dataGridView1.AllowUserToResizeRows = false;
+            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(12, 74);
+            this.dataGridView1.Location = new System.Drawing.Point(12, 69);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(379, 364);
+            this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.RowHeadersVisible = false;
+            this.dataGridView1.Size = new System.Drawing.Size(592, 453);
             this.dataGridView1.TabIndex = 1;
+            this.dataGridView1.SelectionChanged += new System.EventHandler(this.dataGridView1_SelectionChanged);
             // 
             // inputButtonMCS
             // 
-            this.inputButtonMCS.Location = new System.Drawing.Point(138, 12);
+            this.inputButtonMCS.Location = new System.Drawing.Point(260, 12);
             this.inputButtonMCS.Name = "inputButtonMCS";
             this.inputButtonMCS.Size = new System.Drawing.Size(116, 22);
             this.inputButtonMCS.TabIndex = 2;
@@ -71,7 +77,7 @@
             // 
             // buttonProses
             // 
-            this.buttonProses.Location = new System.Drawing.Point(650, 40);
+            this.buttonProses.Location = new System.Drawing.Point(480, 39);
             this.buttonProses.Name = "buttonProses";
             this.buttonProses.Size = new System.Drawing.Size(124, 23);
             this.buttonProses.TabIndex = 3;
@@ -79,27 +85,19 @@
             this.buttonProses.UseVisualStyleBackColor = true;
             this.buttonProses.Click += new System.EventHandler(this.buttonProses_Click);
             // 
-            // dataGridView2
-            // 
-            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Location = new System.Drawing.Point(397, 74);
-            this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.Size = new System.Drawing.Size(377, 364);
-            this.dataGridView2.TabIndex = 4;
-            // 
             // buttonSaveBeehive
             // 
-            this.buttonSaveBeehive.Location = new System.Drawing.Point(12, 40);
+            this.buttonSaveBeehive.Location = new System.Drawing.Point(12, 39);
             this.buttonSaveBeehive.Name = "buttonSaveBeehive";
-            this.buttonSaveBeehive.Size = new System.Drawing.Size(120, 23);
+            this.buttonSaveBeehive.Size = new System.Drawing.Size(242, 23);
             this.buttonSaveBeehive.TabIndex = 5;
-            this.buttonSaveBeehive.Text = "save beehive";
+            this.buttonSaveBeehive.Text = "save beehive dan/atau va";
             this.buttonSaveBeehive.UseVisualStyleBackColor = true;
             this.buttonSaveBeehive.Click += new System.EventHandler(this.buttonSaveBeehive_Click);
             // 
             // buttonSaveMcs
             // 
-            this.buttonSaveMcs.Location = new System.Drawing.Point(138, 40);
+            this.buttonSaveMcs.Location = new System.Drawing.Point(260, 40);
             this.buttonSaveMcs.Name = "buttonSaveMcs";
             this.buttonSaveMcs.Size = new System.Drawing.Size(116, 23);
             this.buttonSaveMcs.TabIndex = 6;
@@ -109,28 +107,30 @@
             // 
             // dateTimePicker1
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(368, 12);
+            this.dateTimePicker1.Location = new System.Drawing.Point(404, 11);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
             this.dateTimePicker1.TabIndex = 7;
             // 
-            // dateTimePicker2
+            // inputButtonVa
             // 
-            this.dateTimePicker2.Location = new System.Drawing.Point(574, 12);
-            this.dateTimePicker2.Name = "dateTimePicker2";
-            this.dateTimePicker2.Size = new System.Drawing.Size(200, 20);
-            this.dateTimePicker2.TabIndex = 8;
+            this.inputButtonVa.Location = new System.Drawing.Point(138, 12);
+            this.inputButtonVa.Name = "inputButtonVa";
+            this.inputButtonVa.Size = new System.Drawing.Size(116, 22);
+            this.inputButtonVa.TabIndex = 9;
+            this.inputButtonVa.Text = "Select File -VA";
+            this.inputButtonVa.UseVisualStyleBackColor = true;
+            this.inputButtonVa.Click += new System.EventHandler(this.inputButtonVa_Click);
             // 
             // ReadBeehiveForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(786, 450);
-            this.Controls.Add(this.dateTimePicker2);
+            this.ClientSize = new System.Drawing.Size(613, 534);
+            this.Controls.Add(this.inputButtonVa);
             this.Controls.Add(this.dateTimePicker1);
             this.Controls.Add(this.buttonSaveMcs);
             this.Controls.Add(this.buttonSaveBeehive);
-            this.Controls.Add(this.dataGridView2);
             this.Controls.Add(this.buttonProses);
             this.Controls.Add(this.inputButtonMCS);
             this.Controls.Add(this.dataGridView1);
@@ -138,7 +138,6 @@
             this.Name = "ReadBeehiveForm";
             this.Text = "ReadBeehiveForm";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -149,10 +148,9 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button inputButtonMCS;
         private System.Windows.Forms.Button buttonProses;
-        private System.Windows.Forms.DataGridView dataGridView2;
         private System.Windows.Forms.Button buttonSaveBeehive;
         private System.Windows.Forms.Button buttonSaveMcs;
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
-        private System.Windows.Forms.DateTimePicker dateTimePicker2;
+        private System.Windows.Forms.Button inputButtonVa;
     }
 }

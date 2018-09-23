@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="696c17effcfc403da0966947ba82527c" Name="Diagram1" ZoomLevel="82">
+      <Diagram DiagramId="696c17effcfc403da0966947ba82527c" Name="Diagram1" ZoomLevel="85">
         <EntityTypeShape EntityType="CACModel.Abaca" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CACModel.Approval" Width="1.5" PointX="5.75" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CACModel.AsuransiLayanan" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
@@ -39,6 +39,7 @@
         <AssociationConnector Association="CACModel.FK_TransaksiAtms_Pkt" ManuallyRouted="false" />
         <EntityTypeShape EntityType="CACModel.TabelTarikanSetoranCRM" Width="1.5" PointX="11.375" PointY="16.75" />
         <EntityTypeShape EntityType="CACModel.ApprovalPembagianSaldo" Width="1.5" PointX="18.375" PointY="0.75" />
+        <EntityTypeShape EntityType="CACModel.DataBankLain" Width="1.5" PointX="18.375" PointY="4.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

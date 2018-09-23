@@ -1,4 +1,4 @@
-﻿namespace testProjectBCA
+﻿namespace testProjectBCA.ATM
 {
     partial class RevisiInformationBoard
     {

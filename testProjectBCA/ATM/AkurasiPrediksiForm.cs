@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace testProjectBCA
+namespace testProjectBCA.ATM
 {
     public partial class AkurasiPrediksiForm : Form
     {

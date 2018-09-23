@@ -57,5 +57,6 @@ namespace testProjectBCA
         public virtual DbSet<VaultOrderBlogHistory> VaultOrderBlogHistories { get; set; }
         public virtual DbSet<TabelTarikanSetoranCRM> TabelTarikanSetoranCRMs { get; set; }
         public virtual DbSet<ApprovalPembagianSaldo> ApprovalPembagianSaldoes { get; set; }
+        public virtual DbSet<DataBankLain> DataBankLains { get; set; }
     }
 }

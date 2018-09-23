@@ -647,9 +647,9 @@ namespace testProjectBCA
                         {
                             isError = true;
                             errMsg += "\nJumlah Setor menurut Approval\n===================="
-                            + "\n Approval Setor + Setor Adhoc 100 : " + ((Int64)tempQueryApprovalSetorAdhoc.DetailApproval.setorAdhoc100 + setor100) + " Laporan Setor Adhoc 100: " + ((Int64)pkt.setorUang[0])
-                            + "\n Approval Setor + Setor Adhoc 50: " + ((Int64)tempQueryApprovalSetorAdhoc.DetailApproval.setorAdhoc50 + setor50) + " Laporan Setor Adhoc 50: " + ((Int64)pkt.setorUang[1])
-                            + "\n Approval Setor + Setor Adhoc 20: " + ((Int64)tempQueryApprovalSetorAdhoc.DetailApproval.setorAdhoc20 + setor20) + " Laporan Setor Adhoc 20: " + ((Int64)pkt.setorUang[2])
+                            + "\n Approval Setor + Setor Adhoc 100 : " + ((Int64)tempQueryApprovalSetorAdhoc.DetailApproval.setorAdhoc100 + setor100).ToString("N0") + " Laporan Setor Adhoc 100: " + ((Int64)pkt.setorUang[0]).ToString("N0")
+                            + "\n Approval Setor + Setor Adhoc 50: " + ((Int64)tempQueryApprovalSetorAdhoc.DetailApproval.setorAdhoc50 + setor50).ToString("N0") + " Laporan Setor Adhoc 50: " + ((Int64)pkt.setorUang[1]).ToString("N0")
+                            + "\n Approval Setor + Setor Adhoc 20: " + ((Int64)tempQueryApprovalSetorAdhoc.DetailApproval.setorAdhoc20 + setor20).ToString("N0") + " Laporan Setor Adhoc 20: " + ((Int64)pkt.setorUang[2]).ToString("N0")
                             ;
                             if (tempQueryApprovalSetorAdhoc.DetailApproval.setor100 + setor100 != pkt.setorUang[0])
                                 summary += "\nSetor 100 tidak sesuai";

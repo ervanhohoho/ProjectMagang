@@ -78,8 +78,8 @@
     <Property Name="in/out" Type="varchar" MaxLength="50" />
     <Property Name="jenisTransaksi" Type="varchar" MaxLength="100" />
     <Property Name="kode" Type="varchar" MaxLength="100" />
-    <Property Name="nama" Type="varchar" MaxLength="100" />
-    <Property Name="keterangan" Type="varchar" MaxLength="100" />
+    <Property Name="nama" Type="varchar" MaxLength="255" />
+    <Property Name="keterangan" Type="varchar" MaxLength="255" />
     <Property Name="BN100K" Type="bigint" />
     <Property Name="BN50K" Type="bigint" />
     <Property Name="BN20K" Type="bigint" />
@@ -96,6 +96,13 @@
     <Property Name="CN100" Type="bigint" />
     <Property Name="CN50" Type="bigint" />
     <Property Name="CN25" Type="bigint" />
+  </EntityType>
+  <EntityType Name="DataBankLain">
+    <Key>
+      <PropertyRef Name="idBank" />
+    </Key>
+    <Property Name="idBank" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="namaBank" Type="varchar" MaxLength="255" />
   </EntityType>
   <EntityType Name="DetailApprovals">
     <Key>
@@ -345,7 +352,7 @@
     <Property Name="tanggal" Type="date" />
     <Property Name="kodePerusahaan" Type="varchar" MaxLength="255" />
     <Property Name="totalNominal" Type="bigint" />
-    <Property Name="namaFile" Type="varchar" MaxLength="255" />
+    <Property Name="jenisFile" Type="varchar" MaxLength="255" />
   </EntityType>
   <EntityType Name="saveMcs">
     <Key>
@@ -516,6 +523,7 @@
     <EntitySet Name="Cabang" EntityType="Self.Cabang" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Cashpoint" EntityType="Self.Cashpoint" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DailyStock" EntityType="Self.DailyStock" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DataBankLain" EntityType="Self.DataBankLain" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DetailApprovals" EntityType="Self.DetailApprovals" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="EventTanggal" EntityType="Self.EventTanggal" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ForecastDetail" EntityType="Self.ForecastDetail" Schema="dbo" store:Type="Tables" />
