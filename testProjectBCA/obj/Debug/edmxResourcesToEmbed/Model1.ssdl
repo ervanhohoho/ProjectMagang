@@ -349,10 +349,12 @@
       <PropertyRef Name="id" />
     </Key>
     <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="tanggal" Type="date" />
+    <Property Name="tanggalTransaksi" Type="date" />
     <Property Name="kodePerusahaan" Type="varchar" MaxLength="255" />
     <Property Name="totalNominal" Type="bigint" />
     <Property Name="jenisFile" Type="varchar" MaxLength="255" />
+    <Property Name="tanggalKredit" Type="date" />
+    <Property Name="namaFile" Type="varchar" MaxLength="255" />
   </EntityType>
   <EntityType Name="saveMcs">
     <Key>
@@ -411,9 +413,22 @@
     <Property Name="denom" Type="varchar" MaxLength="50" />
     <Property Name="tanggal" Type="date" />
     <Property Name="namaPkt" Type="varchar" MaxLength="50" />
+    <Property Name="openBalance" Type="bigint" />
     <Property Name="inCabang" Type="bigint" />
     <Property Name="inRetail" Type="bigint" />
+    <Property Name="inBI" Type="bigint" />
+    <Property Name="inTUKAB" Type="bigint" />
+    <Property Name="inOtherCPC" Type="bigint" />
+    <Property Name="intVaultATM" Type="bigint" />
+    <Property Name="inTukaran" Type="bigint" />
     <Property Name="outCabang" Type="bigint" />
+    <Property Name="outRetail" Type="bigint" />
+    <Property Name="outBIULE" Type="bigint" />
+    <Property Name="outBIUTLE" Type="bigint" />
+    <Property Name="outTUKAB" Type="bigint" />
+    <Property Name="outOtherCPC" Type="bigint" />
+    <Property Name="outVaultATM" Type="bigint" />
+    <Property Name="outTukaran" Type="bigint" />
   </EntityType>
   <EntityType Name="TabelTarikan">
     <Key>

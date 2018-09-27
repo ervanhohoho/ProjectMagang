@@ -225,7 +225,17 @@ namespace testProjectBCA
                 }
                 foreach(var temp in listSeries)
                 {
-                    Double avg = temp.Average(x => x);
+                    Database1Entities db = new Database1Entities();
+                    var q = (from x in db.TransaksiAtms
+                             where x.kodePkt == kodePkt && ((DateTime)x.tanggal).Month == month && ((DateTime)x.tanggal).Year == year
+                             group x by x.kodePkt into g
+                             select new
+                             { Rasio = g.Average(x=> x.isiATM100 + x.isiATM50 + x.isiATM20 + x.isiCRM100 + x.isiCRM50 + x.isiCRM20) == 0 ? 
+                                0 : 
+                                g.Average(x=>x.saldoAwal100 + x.saldoAwal50 + x.saldoAwal20) / g.Average(x => x.isiATM100 + x.isiATM50 + x.isiATM20 + x.isiCRM100 + x.isiCRM50 + x.isiCRM20)
+                             }
+                    ).ToList();
+                    Double avg = (Double)q.Select(x => Math.Round((Double)x.Rasio,2)).FirstOrDefault();
                     ChartValues<Double> cv = new ChartValues<double>();
                     foreach(var temp2 in temp)
                     {

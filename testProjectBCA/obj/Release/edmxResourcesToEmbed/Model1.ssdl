@@ -353,7 +353,8 @@
     <Property Name="kodePerusahaan" Type="varchar" MaxLength="255" />
     <Property Name="totalNominal" Type="bigint" />
     <Property Name="jenisFile" Type="varchar" MaxLength="255" />
-    <Property Name="tanggalKredit" Type="datetime" />
+    <Property Name="tanggalKredit" Type="date" />
+    <Property Name="namaFile" Type="varchar" MaxLength="255" />
   </EntityType>
   <EntityType Name="saveMcs">
     <Key>

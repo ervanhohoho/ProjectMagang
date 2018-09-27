@@ -348,6 +348,7 @@
     <EntitySetMapping Name="saveBeeHives">
       <EntityTypeMapping TypeName="CACModel.saveBeeHive">
         <MappingFragment StoreEntitySet="saveBeeHive">
+          <ScalarProperty Name="namaFile" ColumnName="namaFile" />
           <ScalarProperty Name="tanggalKredit" ColumnName="tanggalKredit" />
           <ScalarProperty Name="tanggalTransaksi" ColumnName="tanggalTransaksi" />
           <ScalarProperty Name="jenisFile" ColumnName="jenisFile" />

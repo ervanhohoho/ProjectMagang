@@ -20,5 +20,6 @@ namespace testProjectBCA
         public string jenisFile { get; set; }
         public Nullable<System.DateTime> tanggalTransaksi { get; set; }
         public Nullable<System.DateTime> tanggalKredit { get; set; }
+        public string namaFile { get; set; }
     }
 }

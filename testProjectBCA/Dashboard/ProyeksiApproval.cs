@@ -68,6 +68,7 @@ namespace testProjectBCA.Dashboard
             LineSeries lineSeries = new LineSeries() {
                 Title = "Rasio",
                 Values = ts,
+                DataLabels = true
             };
 
             List<String> labels = data.Select(x => ((DateTime)x.tanggal).ToShortDateString()).ToList();

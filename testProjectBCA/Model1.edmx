@@ -358,7 +358,8 @@
           <Property Name="kodePerusahaan" Type="varchar" MaxLength="255" />
           <Property Name="totalNominal" Type="bigint" />
           <Property Name="jenisFile" Type="varchar" MaxLength="255" />
-          <Property Name="tanggalKredit" Type="datetime" />
+          <Property Name="tanggalKredit" Type="date" />
+          <Property Name="namaFile" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="saveMcs">
           <Key>
@@ -917,7 +918,8 @@
           <Property Name="totalNominal" Type="Int64" />
           <Property Name="jenisFile" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="tanggalTransaksi" Type="DateTime" Precision="0" />
-          <Property Name="tanggalKredit" Type="DateTime" Precision="3" />
+          <Property Name="tanggalKredit" Type="DateTime" Precision="0" />
+          <Property Name="namaFile" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="saveMc">
           <Key>
@@ -1510,6 +1512,7 @@
           <EntitySetMapping Name="saveBeeHives">
             <EntityTypeMapping TypeName="CACModel.saveBeeHive">
               <MappingFragment StoreEntitySet="saveBeeHive">
+                <ScalarProperty Name="namaFile" ColumnName="namaFile" />
                 <ScalarProperty Name="tanggalKredit" ColumnName="tanggalKredit" />
                 <ScalarProperty Name="tanggalTransaksi" ColumnName="tanggalTransaksi" />
                 <ScalarProperty Name="jenisFile" ColumnName="jenisFile" />

@@ -348,9 +348,11 @@
     <EntitySetMapping Name="saveBeeHives">
       <EntityTypeMapping TypeName="CACModel.saveBeeHive">
         <MappingFragment StoreEntitySet="saveBeeHive">
+          <ScalarProperty Name="namaFile" ColumnName="namaFile" />
+          <ScalarProperty Name="tanggalKredit" ColumnName="tanggalKredit" />
+          <ScalarProperty Name="tanggalTransaksi" ColumnName="tanggalTransaksi" />
           <ScalarProperty Name="jenisFile" ColumnName="jenisFile" />
           <ScalarProperty Name="id" ColumnName="id" />
-          <ScalarProperty Name="tanggal" ColumnName="tanggal" />
           <ScalarProperty Name="kodePerusahaan" ColumnName="kodePerusahaan" />
           <ScalarProperty Name="totalNominal" ColumnName="totalNominal" />
         </MappingFragment>
@@ -394,6 +396,19 @@
     <EntitySetMapping Name="StokPosisis">
       <EntityTypeMapping TypeName="CACModel.StokPosisi">
         <MappingFragment StoreEntitySet="StokPosisi">
+          <ScalarProperty Name="outTukaran" ColumnName="outTukaran" />
+          <ScalarProperty Name="outVaultATM" ColumnName="outVaultATM" />
+          <ScalarProperty Name="outOtherCPC" ColumnName="outOtherCPC" />
+          <ScalarProperty Name="outTUKAB" ColumnName="outTUKAB" />
+          <ScalarProperty Name="outBIUTLE" ColumnName="outBIUTLE" />
+          <ScalarProperty Name="outBIULE" ColumnName="outBIULE" />
+          <ScalarProperty Name="outRetail" ColumnName="outRetail" />
+          <ScalarProperty Name="inTukaran" ColumnName="inTukaran" />
+          <ScalarProperty Name="intVaultATM" ColumnName="intVaultATM" />
+          <ScalarProperty Name="inOtherCPC" ColumnName="inOtherCPC" />
+          <ScalarProperty Name="inTUKAB" ColumnName="inTUKAB" />
+          <ScalarProperty Name="inBI" ColumnName="inBI" />
+          <ScalarProperty Name="openBalance" ColumnName="openBalance" />
           <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="unprocessed" ColumnName="unprocessed" />
           <ScalarProperty Name="newBaru" ColumnName="newBaru" />

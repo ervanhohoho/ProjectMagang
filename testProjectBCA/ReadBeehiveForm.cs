@@ -73,34 +73,38 @@ namespace testProjectBCA
                 {
                     if (a % 2 == 1)
                     {
+                        Console.WriteLine(a);
                         String temp2 = listUntukProses[a];
-                        DateTime tanggalTransaksi = new DateTime(1, 1, 1),
+                        DateTime tanggalKredit = new DateTime(1, 1, 1),
                             bufTanggal;
-                        DateTime tanggalKredit = new DateTime(1, 1, 1);
+                        DateTime tanggalTransaksi = new DateTime(1, 1, 1);
                         String kodePerusahaan = temp2.Substring(21, 8);
                         Int64 totalNominal = 0, bufTotalNominal;
                         String formatTanggal = "dd-MM-yyyy";
                         String tanggalS = temp2.Substring(7, 10), totalNominalS = temp2.Substring(77, 32).TrimStart().Replace(".00", "").Replace(",", "");
-                        String tanggals2 = temp2.Substring(48, 6).Trim(' ');
+                        String tanggals2 = temp2.Substring(49, 6).Trim(' ');
+                        String message = temp2.Substring(33, 25).ToString();
 
                         if (DateTime.TryParseExact(tanggalS, formatTanggal, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out bufTanggal))
-                            tanggalTransaksi = bufTanggal;
+                            tanggalKredit = bufTanggal;
                         if (Int64.TryParse(totalNominalS, out bufTotalNominal))
                             totalNominal = bufTotalNominal;
                         if (DateTime.TryParseExact(tanggals2, "yyMMdd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out bufTanggal))
-                            tanggalKredit = bufTanggal;
+                        { tanggalTransaksi = bufTanggal; message = ""; Console.WriteLine("selamat kamu berhasil"); }
+
                         else
-                            tanggalKredit = tanggalTransaksi;
+                            tanggalTransaksi = tanggalKredit;
 
 
 
 
                         listHasil.Add(new BeeHive()
                         {
-                            tanggalTransaksi = tanggalKredit,
-                            tanggalKredit = tanggalTransaksi,
+                            tanggalTransaksi = tanggalTransaksi,
+                            tanggalKredit = tanggalKredit,
                             kodePerusahaan = kodePerusahaan,
                             totalNominal = totalNominal,
+                            message = message
                             //tanggalkredit
 
                         });
@@ -108,8 +112,8 @@ namespace testProjectBCA
                 }
             }
             var query = (from x in listHasil
-                         group x by new { x.kodePerusahaan, x.tanggalTransaksi, x.tanggalKredit } into g
-                         select new { tanggalKredit = g.Key.tanggalKredit, kodePerusahaan = g.Key.kodePerusahaan, tanggalTransaksi = g.Key.tanggalTransaksi, totalNominal = g.Sum(x => x.totalNominal) }).ToList();
+                         group x by new { x.kodePerusahaan, x.tanggalTransaksi, x.tanggalKredit, x.message } into g
+                         select new { message = g.Key.message, tanggalKredit = g.Key.tanggalKredit, kodePerusahaan = g.Key.kodePerusahaan, tanggalTransaksi = g.Key.tanggalTransaksi, totalNominal = g.Sum(x => x.totalNominal) }).ToList();
 
             foreach (var item in query)
             {
@@ -119,9 +123,11 @@ namespace testProjectBCA
                     tanggalTransaksi = item.tanggalTransaksi,
                     tanggalKredit = item.tanggalKredit,
                     totalNominal = item.totalNominal,
+                    namaFile = item.message,
                     jenisFile = "BEEHIVE"
                 });
             }
+            dataGridView1.DataSource = prosesBeeHive;
 
             //dataGridView1.DataSource = prosesBeeHive;
         }
@@ -253,6 +259,7 @@ namespace testProjectBCA
                 {
                     prosesVa.Add(new ProsesVa
                     {
+                        namaFile = "",
                         kodePerusahaan = item.kodePerusahaan,
                         tanggalTransaksi = item.tanggalTransaksi,
                         tanggalKredit = item.tanggalKredit,
@@ -294,6 +301,7 @@ namespace testProjectBCA
                                                  tanggalTransaksi = x.tanggalTransaksi,
                                                  tanggalKredit = x.tanggalKredit,
                                                  totalNominal = x.totalNominal,
+                                                 namaFile = x.namaFile,
                                                  jenisFile = x.jenisFile
                                              }).ToList();
 
@@ -367,6 +375,7 @@ namespace testProjectBCA
                                                 tanggalTransaksi = x.tanggalTransaksi,
                                                 tanggalKredit = x.tanggalKredit,
                                                 totalNominal = x.totalNominal,
+                                                namaFile = x.namaFile,
                                                 jenisFile = x.jenisFile
                                             }).ToList();
 
@@ -447,7 +456,7 @@ namespace testProjectBCA
             var query = (from x in en.saveBeeHives
                          join y in en.saveMcs on x.kodePerusahaan equals y.customerCode
                          join z in en.DailyStocks on y.customerCode equals "0" + z.kode
-                         where x.tanggalTransaksi == dateTimePicker1.Value.Date && y.realDate == dateTimePicker1.Value.Date && z.tanggal == dateTimePicker1.Value.Date
+                         where x.tanggalTransaksi == dateTimePicker1.Value.Date && y.realDate == dateTimePicker1.Value.Date && z.tanggal == dateTimePicker1.Value.Date && x.namaFile == ""
                          select new
                          {
                              tanggalTransaksi = y.realDate,
@@ -469,6 +478,24 @@ namespace testProjectBCA
                     dataGridView1.Columns[i].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("ID-id");
                 }
             }
+        }
+
+        private void buttonShowRusak_Click(object sender, EventArgs e)
+        {
+            var query = (from x in en.saveBeeHives
+                         where x.tanggalTransaksi == dateTimePicker1.Value.Date && x.namaFile != ""
+                         select new
+                         {
+                             tanggalTransaksi = x.tanggalTransaksi,
+                             tanggalKredit = x.tanggalKredit,
+                             kodePerusahaan = x.kodePerusahaan,
+                             totalNominal = x.totalNominal,
+                             namaFile = x.namaFile
+                         }).ToList();
+
+            dataGridView1.Columns[3].DefaultCellStyle.Format = "c";
+            dataGridView1.Columns[3].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("ID-id");
+
         }
 
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
@@ -499,6 +526,8 @@ namespace testProjectBCA
                 }
             }
         }
+
+
     }
     public class BeeHive
     {
@@ -507,6 +536,7 @@ namespace testProjectBCA
         public String kodePerusahaan { set; get; }
         public Int64 totalNominal { set; get; }
         public String jenisFile { set; get; }
+        public String message { set; get; }
 
     }
     public class Va
@@ -524,6 +554,7 @@ namespace testProjectBCA
         public DateTime tanggalKredit { set; get; }
         public String kodePerusahaan { set; get; }
         public Int64 totalNominal { set; get; }
+        public String namaFile { set; get; }
         public String jenisFile { set; get; }
 
     }
@@ -533,6 +564,7 @@ namespace testProjectBCA
         public DateTime tanggalKredit { set; get; }
         public String kodePerusahaan { set; get; }
         public Int64 totalNominal { set; get; }
+        public String namaFile { set; get; }
         public String jenisFile { set; get; }
     }
 
@@ -563,4 +595,6 @@ namespace testProjectBCA
         public Int64 nominalMCS { set; get; }
         public String keterangan { set; get; }
     }
+
+
 }

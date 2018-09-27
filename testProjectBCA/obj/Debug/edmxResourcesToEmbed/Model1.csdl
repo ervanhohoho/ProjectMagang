@@ -332,10 +332,12 @@
       <PropertyRef Name="id" />
     </Key>
     <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="tanggal" Type="DateTime" Precision="0" />
     <Property Name="kodePerusahaan" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
     <Property Name="totalNominal" Type="Int64" />
     <Property Name="jenisFile" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="tanggalTransaksi" Type="DateTime" Precision="0" />
+    <Property Name="tanggalKredit" Type="DateTime" Precision="0" />
+    <Property Name="namaFile" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="saveMc">
     <Key>
@@ -397,6 +399,19 @@
     <Property Name="inCabang" Type="Int64" />
     <Property Name="inRetail" Type="Int64" />
     <Property Name="outCabang" Type="Int64" />
+    <Property Name="openBalance" Type="Int64" />
+    <Property Name="inBI" Type="Int64" />
+    <Property Name="inTUKAB" Type="Int64" />
+    <Property Name="inOtherCPC" Type="Int64" />
+    <Property Name="intVaultATM" Type="Int64" />
+    <Property Name="inTukaran" Type="Int64" />
+    <Property Name="outRetail" Type="Int64" />
+    <Property Name="outBIULE" Type="Int64" />
+    <Property Name="outBIUTLE" Type="Int64" />
+    <Property Name="outTUKAB" Type="Int64" />
+    <Property Name="outOtherCPC" Type="Int64" />
+    <Property Name="outVaultATM" Type="Int64" />
+    <Property Name="outTukaran" Type="Int64" />
   </EntityType>
   <EntityType Name="TabelTarikan">
     <Key>

@@ -42,6 +42,7 @@ namespace testProjectBCA
             newNote50;
         List<ApprovalPembagianSaldo> listAdhocCabang;
         List<ApprovalPembagianSaldo> listDeliveryCabang;
+        List<DataPermintaanDanSumber> listBITUKABPermintaanUntukKirim, listBITUKABSumberUntukKirim;
         public proyeksiLikuiditasForm()
         {
             InitializeComponent();
@@ -143,11 +144,12 @@ namespace testProjectBCA
             List<DateTime> listTanggalHistorisUntukPrediksi = loadTanggalHistorisUntukPrediksi();
             inCabangUntukKirim100 = new List<StoreClass>();
             //Load semua in Cabang 100
-            var q = (from x in db.DailyStocks
-                     join y in db.Cabangs on x.kode.Substring(SqlFunctions.PatIndex("%[^0]%", x.kode).Value - 1) equals y.kodeCabang.Substring(SqlFunctions.PatIndex("%[^0]%", y.kodeCabang).Value - 1)
-                     join z in db.Pkts on y.kodePkt equals z.kodePktCabang
+            var q = (from x in db.DailyStocks.AsEnumerable()
+                     join y in db.Cabangs.AsEnumerable() on x.kode.TrimStart('0') equals y.kodeCabang.TrimStart('0')
+                     join z in db.Pkts on !String.IsNullOrEmpty(y.kodePkt) ? y.kodePkt.Substring(0, 4) : y.kodePkt equals z.kodePktCabang.Length >= 4 ? z.kodePktCabang.Substring(0, 4) : z.kodePktCabang
                      where x.in_out.ToUpper() == "IN"
                      && x.jenisTransaksi.Contains("Collection Cabang - Full - Process")
+                     && z.kodePktCabang != "CCASB"
                      select new { x.tanggal, x.BN100K, kodePkt = z.namaPkt });
             List<EventTanggal> et = (from x in db.EventTanggals.AsEnumerable().AsEnumerable()
                                      select x).ToList();
@@ -233,11 +235,12 @@ namespace testProjectBCA
             List<DateTime> listTanggalHistorisUntukPrediksi = loadTanggalHistorisUntukPrediksi();
             inCabangUntukKirim50 = new List<StoreClass>();
             //Load semua in Cabang 50
-            var q = (from x in db.DailyStocks
-                     join y in db.Cabangs on x.kode.Substring(SqlFunctions.PatIndex("%[^0]%", x.kode).Value - 1) equals y.kodeCabang.Substring(SqlFunctions.PatIndex("%[^0]%", y.kodeCabang).Value - 1)
-                     join z in db.Pkts on y.kodePkt equals z.kodePktCabang
+            var q = (from x in db.DailyStocks.AsEnumerable()
+                     join y in db.Cabangs.AsEnumerable() on x.kode.TrimStart('0') equals y.kodeCabang.TrimStart('0')
+                     join z in db.Pkts on !String.IsNullOrEmpty(y.kodePkt) ? y.kodePkt.Substring(0, 4) : y.kodePkt equals z.kodePktCabang.Length >= 4 ? z.kodePktCabang.Substring(0, 4) : z.kodePktCabang
                      where x.in_out.ToUpper() == "IN"
                      && x.jenisTransaksi.Contains("Collection Cabang - Full - Process")
+                     && z.kodePktCabang != "CCASB"
                      select new { x.tanggal, x.BN50K, kodePkt = z.namaPkt });
             List<EventTanggal> et = (from x in db.EventTanggals.AsEnumerable().AsEnumerable()
                                      select x).ToList();
@@ -537,10 +540,11 @@ namespace testProjectBCA
             List<DateTime> listTanggalHistorisUntukPrediksi = loadTanggalHistorisUntukPrediksi();
             outCabangUntukKirim100 = new List<StoreClass>();
             //Load semua in Cabang 50
-            var q = (from x in db.DailyStocks
-                     join y in db.Cabangs on x.kode.Substring(SqlFunctions.PatIndex("%[^0]%", x.kode).Value - 1) equals y.kodeCabang.Substring(SqlFunctions.PatIndex("%[^0]%", y.kodeCabang).Value - 1)
-                     join z in db.Pkts on y.kodePkt equals z.kodePktCabang
+            var q = (from x in db.DailyStocks.AsEnumerable()
+                     join y in db.Cabangs.AsEnumerable() on x.kode.TrimStart('0') equals y.kodeCabang.TrimStart('0')
+                     join z in db.Pkts on !String.IsNullOrEmpty(y.kodePkt) ? y.kodePkt.Substring(0, 4) : y.kodePkt equals z.kodePktCabang.Length >= 4 ? z.kodePktCabang.Substring(0, 4) : z.kodePktCabang
                      where x.in_out.ToUpper() == "OUT"
+                     && z.kodePktCabang != "CCASB"
                      && x.jenisTransaksi.Contains("Delivery Cabang")
                      select new { x.tanggal, x.BN100K, kodePkt = z.namaPkt });
             List<EventTanggal> et = (from x in db.EventTanggals.AsEnumerable().AsEnumerable()
@@ -653,11 +657,12 @@ namespace testProjectBCA
             List<DateTime> listTanggalHistorisUntukPrediksi = loadTanggalHistorisUntukPrediksi();
             outCabangUntukKirim50 = new List<StoreClass>();
             //Load semua in Cabang 50
-            var q = (from x in db.DailyStocks
-                     join y in db.Cabangs on x.kode.Substring(SqlFunctions.PatIndex("%[^0]%", x.kode).Value - 1) equals y.kodeCabang.Substring(SqlFunctions.PatIndex("%[^0]%", y.kodeCabang).Value - 1)
-                     join z in db.Pkts on y.kodePkt equals z.kodePktCabang
+            var q = (from x in db.DailyStocks.AsEnumerable()
+                     join y in db.Cabangs.AsEnumerable() on x.kode.TrimStart('0') equals y.kodeCabang.TrimStart('0')
+                     join z in db.Pkts on !String.IsNullOrEmpty(y.kodePkt) ? y.kodePkt.Substring(0, 4) : y.kodePkt equals z.kodePktCabang.Length >= 4 ? z.kodePktCabang.Substring(0, 4) : z.kodePktCabang
                      where x.in_out.ToUpper() == "OUT"
                      && x.jenisTransaksi.Contains("Delivery Cabang")
+                     && z.kodePktCabang != "CCASB"
                      select new { x.tanggal, x.BN50K, kodePkt = z.namaPkt });
             List<EventTanggal> et = (from x in db.EventTanggals.AsEnumerable().AsEnumerable()
                                      select x).ToList();
@@ -1888,6 +1893,39 @@ namespace testProjectBCA
             }
             return result;
         }
+        void loadListBITUKABuntukKirim()
+        {
+            listBITUKABPermintaanUntukKirim = new List<DataPermintaanDanSumber>();
+            listBITUKABSumberUntukKirim = new List<DataPermintaanDanSumber>();
+            for (int a = 0; a < inOutBITUKABGridView.RowCount; a++)
+            {
+                DataGridViewRow row = inOutBITUKABGridView.Rows[a];
+                if (row.Cells[0].Value == null)
+                    break;
+                if (row.Cells[2].Value.ToString().ToLower() == "out")
+                {
+                    listBITUKABPermintaanUntukKirim.Add(new DataPermintaanDanSumber()
+                    {
+                        jenisUang = "",
+                        tanggal = DateTime.Parse(row.Cells[0].Value.ToString()),
+                        namaPkt = row.Cells[1].Value.ToString(),
+                        d100 = Int64.Parse(row.Cells[3].Value.ToString()),
+                        d50 = Int64.Parse(row.Cells[4].Value.ToString()),
+                    });
+                }
+                if(row.Cells[2].Value.ToString().ToLower() == "in")
+                {
+                    listBITUKABSumberUntukKirim.Add(new DataPermintaanDanSumber()
+                    {
+                        jenisUang = "",
+                        tanggal = DateTime.Parse(row.Cells[0].Value.ToString()),
+                        namaPkt = row.Cells[1].Value.ToString(),
+                        d100 = Int64.Parse(row.Cells[3].Value.ToString()),
+                        d50 = Int64.Parse(row.Cells[4].Value.ToString()),
+                    });
+                }
+            }
+        }
 
         private void InputAdhocBtn_Click(object sender, EventArgs e)
         {
@@ -1946,7 +1984,6 @@ namespace testProjectBCA
                 loadForm.CloseForm();
             }
         }
-
         private void InputDeliveryBtn_Click(object sender, EventArgs e)
         {
             OpenFileDialog of = new OpenFileDialog();
@@ -2027,7 +2064,6 @@ namespace testProjectBCA
                 loadForm.CloseForm();
             }
         }
-
         List<tanggalValue> loadPrediksiOutCabang50SP()
         {
             List<tanggalValue> result = new List<tanggalValue>();
@@ -2119,7 +2155,6 @@ namespace testProjectBCA
             }
             return result;
         }
-
         List<tanggalValue> loadInATM(String denom)
         {
             Database1Entities db = new Database1Entities();
@@ -2429,7 +2464,64 @@ namespace testProjectBCA
                 stokMorningBalanceDataGridView.Columns[a].DefaultCellStyle.Format = "N0";
             }
         }
-   
+        void initInOutBiTukabGridView()
+        {
+            inOutBITUKABGridView.Columns.Clear();
+            inOutBITUKABGridView.Rows.Clear();
+            //Init comboboxes
+            List<String> listTanggal = new List<String>();
+            if (adhocTukab100Num.Value != 0 || adhocTukab50Num.Value != 0)
+            {
+                listTanggal.Add(Variables.todayDate.ToShortDateString());
+            }
+            if (inBITukab100Num.Value > 0 || inBITukab50Num.Value > 0)
+            {
+                listTanggal.Add(inBITukabDateTimePicker.Value.Date.ToShortDateString());
+                Console.WriteLine(inBITukabDateTimePicker.Value.Date.ToShortDateString());
+
+            }
+            if (outBITukab100Num.Value > 0 || outBITukab50Num.Value > 0)
+            {
+                listTanggal.Add(outBITukabDateTimePicker.Value.Date.ToShortDateString());
+            }
+            List<String> inOut = new List<String>() { "in", "out" };
+            List<String> listNamaBank = (from x in db.DataBankLains select x.namaBank).ToList();
+            DataGridViewComboBoxColumn colTanggal = new DataGridViewComboBoxColumn()
+            {
+                HeaderText = "Tanggal",
+                DataSource = listTanggal,
+                ValueType = typeof(String),
+                Width = 100
+            };
+            DataGridViewComboBoxColumn colNamaBank = new DataGridViewComboBoxColumn()
+            {
+                HeaderText = "Nama Bank",
+                DataSource = listNamaBank,
+                ValueType = typeof(String)
+            };
+            DataGridViewComboBoxColumn colInOut = new DataGridViewComboBoxColumn()
+            {
+                HeaderText = "IN / OUT",
+                DataSource = inOut,
+                ValueType = typeof(String)
+            };
+            DataGridViewTextBoxColumn d100 = new DataGridViewTextBoxColumn()
+            {
+                HeaderText = "D100",
+                ValueType = typeof(Int64)
+            };
+            DataGridViewTextBoxColumn d50 = new DataGridViewTextBoxColumn()
+            {
+                HeaderText = "D50",
+                ValueType = typeof(Int64)
+            };
+            inOutBITUKABGridView.Columns.Add(colTanggal);
+            inOutBITUKABGridView.Columns.Add(colNamaBank);
+            inOutBITUKABGridView.Columns.Add(colInOut);
+            inOutBITUKABGridView.Columns.Add(d100);
+            inOutBITUKABGridView.Columns.Add(d50);
+            inOutBITUKABGridView.Enabled = !(listTanggal.Count == 0);
+        }
         void loadKuota()
         {
             var query = (from x in db.StokPosisis
@@ -2605,6 +2697,7 @@ namespace testProjectBCA
                 newNote100 = loadNewNote100();
                 newNote50 = loadNewNote50();
             }
+            initInOutBiTukabGridView();
             loadKuota();
             loadForm.CloseForm();
         }
@@ -2635,6 +2728,8 @@ namespace testProjectBCA
             morningBalance100UntukKirim.AddRange(morningBalance100HariH);
             morningBalance50UntukKirim.AddRange(morningBalance50HariH);
 
+
+
             var qOutAtm100 = (from x in db.Approvals
                               join y in db.DetailApprovals on x.idApproval equals y.idApproval
                               join z in db.Pkts on x.kodePkt equals z.kodePkt
@@ -2664,7 +2759,7 @@ namespace testProjectBCA
             inCabangUntukKirim100.Remove(inCabangUntukKirim100.Where(x => String.IsNullOrWhiteSpace(x.kodePkt)).FirstOrDefault());
             inRetailUntukKirim50.Remove(inRetailUntukKirim50.Where(x => String.IsNullOrWhiteSpace(x.kodePkt)).FirstOrDefault());
             inCabangUntukKirim50.Remove(inCabangUntukKirim50.Where(x => String.IsNullOrWhiteSpace(x.kodePkt)).FirstOrDefault());
-
+            
             while (tanggal <= maxTgl)
             {
                 Console.WriteLine(tanggal);
@@ -2697,11 +2792,10 @@ namespace testProjectBCA
                 morningBalance50UntukKirim.AddRange(toAdd50);
                 tanggal = tanggal.AddDays(1);
             }
-            
 
+            loadListBITUKABuntukKirim();
             Console.WriteLine("Open Form!");
-            PembagianSaldoForm psf = new PembagianSaldoForm(morningBalance100UntukKirim, morningBalance50UntukKirim,newNote100, newNote50, (Double)persenUnprocessedNum.Value / 100, listDeliveryCabang, listAdhocCabang);
-
+            PembagianSaldoForm psf = new PembagianSaldoForm(morningBalance100UntukKirim, morningBalance50UntukKirim, newNote100, newNote50, (Double)persenUnprocessedNum.Value / 100, listDeliveryCabang, listAdhocCabang, listBITUKABSumberUntukKirim, listBITUKABPermintaanUntukKirim);
             psf.MdiParent = this.ParentForm;
             psf.Show();
         }

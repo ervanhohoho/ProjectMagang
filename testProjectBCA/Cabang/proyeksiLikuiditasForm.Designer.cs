@@ -79,6 +79,9 @@
             this.label20 = new System.Windows.Forms.Label();
             this.inflowNum = new System.Windows.Forms.NumericUpDown();
             this.label21 = new System.Windows.Forms.Label();
+            this.inOutBITUKABGridView = new System.Windows.Forms.DataGridView();
+            this.label22 = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fit100Num)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fit50Num)).BeginInit();
@@ -96,6 +99,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.stokMorningBalanceDataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.KuotaGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.inflowNum)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.inOutBITUKABGridView)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // rasio100TextBox
@@ -133,7 +138,7 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(16, 243);
+            this.dataGridView1.Location = new System.Drawing.Point(16, 413);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(1042, 336);
             this.dataGridView1.TabIndex = 4;
@@ -193,7 +198,7 @@
             // 
             // ForecastButton
             // 
-            this.ForecastButton.Location = new System.Drawing.Point(904, 127);
+            this.ForecastButton.Location = new System.Drawing.Point(6, 71);
             this.ForecastButton.Name = "ForecastButton";
             this.ForecastButton.Size = new System.Drawing.Size(120, 24);
             this.ForecastButton.TabIndex = 6;
@@ -203,7 +208,7 @@
             // 
             // saveButton
             // 
-            this.saveButton.Location = new System.Drawing.Point(904, 157);
+            this.saveButton.Location = new System.Drawing.Point(6, 101);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(120, 24);
             this.saveButton.TabIndex = 11;
@@ -256,7 +261,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(399, 90);
+            this.label8.Location = new System.Drawing.Point(158, 271);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(79, 13);
             this.label8.TabIndex = 14;
@@ -265,7 +270,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(399, 65);
+            this.label9.Location = new System.Drawing.Point(158, 246);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(85, 13);
             this.label9.TabIndex = 14;
@@ -273,7 +278,7 @@
             // 
             // adhocATM100Num
             // 
-            this.adhocATM100Num.Location = new System.Drawing.Point(505, 62);
+            this.adhocATM100Num.Location = new System.Drawing.Point(264, 243);
             this.adhocATM100Num.Maximum = new decimal(new int[] {
             -1981284353,
             -1966660860,
@@ -286,7 +291,7 @@
             // 
             // adhocATM50Num
             // 
-            this.adhocATM50Num.Location = new System.Drawing.Point(505, 88);
+            this.adhocATM50Num.Location = new System.Drawing.Point(264, 269);
             this.adhocATM50Num.Maximum = new decimal(new int[] {
             1874919423,
             2328306,
@@ -300,7 +305,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(400, 118);
+            this.label10.Location = new System.Drawing.Point(159, 299);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(99, 13);
             this.label10.TabIndex = 16;
@@ -314,7 +319,7 @@
             0,
             0,
             0});
-            this.adhocCabang100Num.Location = new System.Drawing.Point(505, 114);
+            this.adhocCabang100Num.Location = new System.Drawing.Point(264, 295);
             this.adhocCabang100Num.Maximum = new decimal(new int[] {
             -1981284353,
             -1966660860,
@@ -328,7 +333,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(400, 143);
+            this.label11.Location = new System.Drawing.Point(159, 324);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(93, 13);
             this.label11.TabIndex = 16;
@@ -341,7 +346,7 @@
             0,
             0,
             0});
-            this.adhocCabang50Num.Location = new System.Drawing.Point(505, 140);
+            this.adhocCabang50Num.Location = new System.Drawing.Point(264, 321);
             this.adhocCabang50Num.Maximum = new decimal(new int[] {
             -1981284353,
             -1966660860,
@@ -355,7 +360,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(400, 170);
+            this.label12.Location = new System.Drawing.Point(159, 351);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(93, 13);
             this.label12.TabIndex = 16;
@@ -365,7 +370,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(400, 195);
+            this.label13.Location = new System.Drawing.Point(159, 376);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(87, 13);
             this.label13.TabIndex = 16;
@@ -378,7 +383,7 @@
             0,
             0,
             0});
-            this.adhocTukab100Num.Location = new System.Drawing.Point(505, 166);
+            this.adhocTukab100Num.Location = new System.Drawing.Point(264, 347);
             this.adhocTukab100Num.Maximum = new decimal(new int[] {
             -1981284353,
             -1966660860,
@@ -396,7 +401,7 @@
             0,
             0,
             0});
-            this.adhocTukab50Num.Location = new System.Drawing.Point(505, 192);
+            this.adhocTukab50Num.Location = new System.Drawing.Point(264, 373);
             this.adhocTukab50Num.Maximum = new decimal(new int[] {
             -1981284353,
             -1966660860,
@@ -410,7 +415,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(647, 92);
+            this.label14.Location = new System.Drawing.Point(398, 117);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(84, 13);
             this.label14.TabIndex = 16;
@@ -420,7 +425,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(647, 117);
+            this.label15.Location = new System.Drawing.Point(398, 142);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(78, 13);
             this.label15.TabIndex = 16;
@@ -433,7 +438,7 @@
             0,
             0,
             0});
-            this.inBITukab100Num.Location = new System.Drawing.Point(752, 88);
+            this.inBITukab100Num.Location = new System.Drawing.Point(503, 113);
             this.inBITukab100Num.Maximum = new decimal(new int[] {
             -1981284353,
             -1966660860,
@@ -451,7 +456,7 @@
             0,
             0,
             0});
-            this.inBITukab50Num.Location = new System.Drawing.Point(752, 114);
+            this.inBITukab50Num.Location = new System.Drawing.Point(503, 139);
             this.inBITukab50Num.Maximum = new decimal(new int[] {
             -1981284353,
             -1966660860,
@@ -464,7 +469,7 @@
             // 
             // inBITukabDateTimePicker
             // 
-            this.inBITukabDateTimePicker.Location = new System.Drawing.Point(650, 62);
+            this.inBITukabDateTimePicker.Location = new System.Drawing.Point(401, 87);
             this.inBITukabDateTimePicker.Name = "inBITukabDateTimePicker";
             this.inBITukabDateTimePicker.Size = new System.Drawing.Size(222, 20);
             this.inBITukabDateTimePicker.TabIndex = 18;
@@ -472,7 +477,7 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(647, 173);
+            this.label16.Location = new System.Drawing.Point(398, 198);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(92, 13);
             this.label16.TabIndex = 16;
@@ -482,7 +487,7 @@
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(647, 198);
+            this.label17.Location = new System.Drawing.Point(398, 223);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(86, 13);
             this.label17.TabIndex = 16;
@@ -495,7 +500,7 @@
             0,
             0,
             0});
-            this.outBITukab100Num.Location = new System.Drawing.Point(752, 169);
+            this.outBITukab100Num.Location = new System.Drawing.Point(503, 194);
             this.outBITukab100Num.Maximum = new decimal(new int[] {
             -1981284353,
             -1966660860,
@@ -513,7 +518,7 @@
             0,
             0,
             0});
-            this.outBITukab50Num.Location = new System.Drawing.Point(752, 195);
+            this.outBITukab50Num.Location = new System.Drawing.Point(503, 220);
             this.outBITukab50Num.Maximum = new decimal(new int[] {
             -1981284353,
             -1966660860,
@@ -526,7 +531,7 @@
             // 
             // outBITukabDateTimePicker
             // 
-            this.outBITukabDateTimePicker.Location = new System.Drawing.Point(650, 143);
+            this.outBITukabDateTimePicker.Location = new System.Drawing.Point(401, 168);
             this.outBITukabDateTimePicker.Name = "outBITukabDateTimePicker";
             this.outBITukabDateTimePicker.Size = new System.Drawing.Size(222, 20);
             this.outBITukabDateTimePicker.TabIndex = 18;
@@ -565,7 +570,7 @@
             // stokMorningBalanceDataGridView
             // 
             this.stokMorningBalanceDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.stokMorningBalanceDataGridView.Location = new System.Drawing.Point(16, 602);
+            this.stokMorningBalanceDataGridView.Location = new System.Drawing.Point(16, 772);
             this.stokMorningBalanceDataGridView.Name = "stokMorningBalanceDataGridView";
             this.stokMorningBalanceDataGridView.Size = new System.Drawing.Size(1042, 103);
             this.stokMorningBalanceDataGridView.TabIndex = 22;
@@ -573,7 +578,7 @@
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(16, 586);
+            this.label19.Location = new System.Drawing.Point(16, 756);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(145, 13);
             this.label19.TabIndex = 23;
@@ -581,7 +586,7 @@
             // 
             // nextButton
             // 
-            this.nextButton.Location = new System.Drawing.Point(904, 187);
+            this.nextButton.Location = new System.Drawing.Point(6, 128);
             this.nextButton.Name = "nextButton";
             this.nextButton.Size = new System.Drawing.Size(120, 24);
             this.nextButton.TabIndex = 24;
@@ -591,7 +596,7 @@
             // 
             // InputAdhocBtn
             // 
-            this.InputAdhocBtn.Location = new System.Drawing.Point(904, 67);
+            this.InputAdhocBtn.Location = new System.Drawing.Point(6, 11);
             this.InputAdhocBtn.Name = "InputAdhocBtn";
             this.InputAdhocBtn.Size = new System.Drawing.Size(120, 24);
             this.InputAdhocBtn.TabIndex = 26;
@@ -601,7 +606,7 @@
             // 
             // InputDeliveryBtn
             // 
-            this.InputDeliveryBtn.Location = new System.Drawing.Point(904, 97);
+            this.InputDeliveryBtn.Location = new System.Drawing.Point(6, 41);
             this.InputDeliveryBtn.Name = "InputDeliveryBtn";
             this.InputDeliveryBtn.Size = new System.Drawing.Size(120, 24);
             this.InputDeliveryBtn.TabIndex = 27;
@@ -612,7 +617,7 @@
             // KuotaGridView
             // 
             this.KuotaGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.KuotaGridView.Location = new System.Drawing.Point(16, 722);
+            this.KuotaGridView.Location = new System.Drawing.Point(16, 892);
             this.KuotaGridView.Name = "KuotaGridView";
             this.KuotaGridView.Size = new System.Drawing.Size(1042, 106);
             this.KuotaGridView.TabIndex = 28;
@@ -641,11 +646,41 @@
             // label21
             // 
             this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(16, 708);
+            this.label21.Location = new System.Drawing.Point(16, 878);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(35, 13);
             this.label21.TabIndex = 32;
             this.label21.Text = "Kuota";
+            // 
+            // inOutBITUKABGridView
+            // 
+            this.inOutBITUKABGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.inOutBITUKABGridView.Location = new System.Drawing.Point(642, 87);
+            this.inOutBITUKABGridView.Name = "inOutBITUKABGridView";
+            this.inOutBITUKABGridView.Size = new System.Drawing.Size(407, 153);
+            this.inOutBITUKABGridView.TabIndex = 33;
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(639, 71);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(122, 13);
+            this.label22.TabIndex = 34;
+            this.label22.Text = "Daftar In/Out BI TUKAB";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.InputAdhocBtn);
+            this.groupBox1.Controls.Add(this.InputDeliveryBtn);
+            this.groupBox1.Controls.Add(this.ForecastButton);
+            this.groupBox1.Controls.Add(this.saveButton);
+            this.groupBox1.Controls.Add(this.nextButton);
+            this.groupBox1.Location = new System.Drawing.Point(401, 239);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(133, 154);
+            this.groupBox1.TabIndex = 35;
+            this.groupBox1.TabStop = false;
             // 
             // proyeksiLikuiditasForm
             // 
@@ -653,13 +688,12 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1078, 761);
+            this.Controls.Add(this.label22);
+            this.Controls.Add(this.inOutBITUKABGridView);
             this.Controls.Add(this.label21);
             this.Controls.Add(this.inflowNum);
             this.Controls.Add(this.label20);
             this.Controls.Add(this.KuotaGridView);
-            this.Controls.Add(this.InputDeliveryBtn);
-            this.Controls.Add(this.InputAdhocBtn);
-            this.Controls.Add(this.nextButton);
             this.Controls.Add(this.label19);
             this.Controls.Add(this.stokMorningBalanceDataGridView);
             this.Controls.Add(this.persenUnprocessedNum);
@@ -691,8 +725,6 @@
             this.Controls.Add(this.fit100Num);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.saveButton);
-            this.Controls.Add(this.ForecastButton);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.metodePrediksiComboBox);
             this.Controls.Add(this.label4);
@@ -704,6 +736,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.rasio100TextBox);
+            this.Controls.Add(this.groupBox1);
             this.Name = "proyeksiLikuiditasForm";
             this.Text = "Proyeksi Likuiditas";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
@@ -723,6 +756,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.stokMorningBalanceDataGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.KuotaGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.inflowNum)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.inOutBITUKABGridView)).EndInit();
+            this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -781,5 +816,8 @@
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.NumericUpDown inflowNum;
         private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.DataGridView inOutBITUKABGridView;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.GroupBox groupBox1;
     }
 }

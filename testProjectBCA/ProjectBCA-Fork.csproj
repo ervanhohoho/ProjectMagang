@@ -379,10 +379,10 @@
     <Compile Include="Pkt.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Dashboard\PopupInformationBoard.cs">
+    <Compile Include="ATM\PopupInformationBoard.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Dashboard\PopupInformationBoard.Designer.cs">
+    <Compile Include="ATM\PopupInformationBoard.Designer.cs">
       <DependentUpon>PopupInformationBoard.cs</DependentUpon>
     </Compile>
     <Compile Include="Dashboard\popupsementara.cs">
@@ -657,7 +657,7 @@
     <EmbeddedResource Include="ATM\PerbandinganSaldoForm.resx">
       <DependentUpon>PerbandinganSaldoForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Dashboard\PopupInformationBoard.resx">
+    <EmbeddedResource Include="ATM\PopupInformationBoard.resx">
       <DependentUpon>PopupInformationBoard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dashboard\popupsementara.resx">

@@ -23,12 +23,15 @@ namespace testProjectBCA
 
         List<ApprovalPembagianSaldo> deliveryCabang;
         List<ApprovalPembagianSaldo> adhocCabang;
+
+        List<DataPermintaanDanSumber> listDataTambahanSumber;
+        List<DataPermintaanDanSumber> listDataTambahanPermintaan;
         Double persenUnprocessed;
         public PembagianSaldoForm()
         {
             InitializeComponent();
         }
-        public PembagianSaldoForm(List<StoreClass> morningBalance100, List<StoreClass> morningBalance50, List<StoreClass> newNote100, List<StoreClass>newNote50, Double persenUnprocessed, List<ApprovalPembagianSaldo> deliveryCabang, List<ApprovalPembagianSaldo>adhocCabang)
+        public PembagianSaldoForm(List<StoreClass> morningBalance100, List<StoreClass> morningBalance50, List<StoreClass> newNote100, List<StoreClass>newNote50, Double persenUnprocessed, List<ApprovalPembagianSaldo> deliveryCabang, List<ApprovalPembagianSaldo>adhocCabang, List<DataPermintaanDanSumber> listDataTambahanSumber, List<DataPermintaanDanSumber>listDataTambahanPermintaan)
         {
             InitializeComponent();
 
@@ -37,6 +40,8 @@ namespace testProjectBCA
             this.persenUnprocessed = persenUnprocessed;
             this.deliveryCabang = deliveryCabang;
             this.adhocCabang = adhocCabang;
+            this.listDataTambahanPermintaan = listDataTambahanPermintaan;
+            this.listDataTambahanSumber = listDataTambahanSumber;
             Database1Entities db = new Database1Entities();
             DateTime maxDateDetailApproval = (DateTime) db.DetailApprovals.Where(x => x.bon100 != -1).Max(x => x.tanggal);
 
@@ -128,6 +133,7 @@ namespace testProjectBCA
                            d50 = y.val,
                            d20 = 0
                        }).ToList());
+            q.AddRange(listDataTambahanSumber);
             sumberDanaGridView.DataSource = q.OrderBy(x => x.namaPkt).OrderBy(x => x.tanggal).ToList();
             listDataSumber = q;
 
@@ -160,7 +166,6 @@ namespace testProjectBCA
                 HeaderText = "Nama Pkt Sumber",
                 ValueType = typeof(String)
             };
-
             var listTanggal = db.DetailApprovals.AsEnumerable().Where(x => x.bon100 != -1 && x.tanggal >= Variables.todayDate).Select(x => ((DateTime)x.tanggal).ToShortDateString()).Distinct().ToList();
             DataGridViewComboBoxColumn tgl = new DataGridViewComboBoxColumn()
             {
@@ -237,7 +242,7 @@ namespace testProjectBCA
                     d50 = (Int64) x.bon50,
                     d20 = (Int64) x.bon20
                 }).ToList());
-
+            listDataPermintaan.AddRange(listDataTambahanPermintaan);
             sisaGridView.DataSource = listDataPermintaan.Where(x => x.d100 + x.d50 != 0).OrderBy(x=>x.namaPkt).OrderBy(x=> x.tanggal).ToList();
             sisaGridView.Columns["tanggal"].Width = 70;
             sisaGridView.Columns["namaPkt"].Width = 200;
