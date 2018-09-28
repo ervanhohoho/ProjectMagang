@@ -74,6 +74,11 @@ namespace testProjectBCA
             adhocCabang50Num.Enabled = false;
             listAdhocCabang = new List<ApprovalPembagianSaldo>();
             listDeliveryCabang = new List<ApprovalPembagianSaldo>();
+            List<String> listNamaPkt = new List<String>();
+            listNamaPkt.Add("ALL VENDOR(JABO)");
+            listNamaPkt.Add("DETAIL PER VENDOR");
+            groupingStokMorningBalanceComboBox.DataSource = listNamaPkt;
+            
             //label8.Visible = false;
             //label9.Visible = false;
         }
@@ -2184,6 +2189,24 @@ namespace testProjectBCA
             }
             return res;
         }
+
+        private void inOutBITUKABGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            Int64 sum100 = 0, 
+                sum50 = 0;
+            foreach(DataGridViewRow row in inOutBITUKABGridView.Rows)
+            {
+                String s100 = row.Cells[3].Value.ToString(), 
+                    s50 = row.Cells[4].Value.ToString();
+                if (!String.IsNullOrEmpty(s100))
+                    sum100 += Int64.Parse(s100);
+                if (!String.IsNullOrEmpty(s50))
+                    sum50 += Int64.Parse(s50);
+            }
+            InOutTUKABSum100Lbl.Text = "Sum 100: " + sum100.ToString("N0");
+            InOutTUKABSum50Lbl.Text = "Sum 50: " + sum50.ToString("N0");
+        }
+
         List<tanggalValue> loadMorningBalance100SP()
         {
             List<tanggalValue> listMorningBalance = new List<tanggalValue>();
@@ -2438,6 +2461,7 @@ namespace testProjectBCA
         }
         void loadTableStokMorningBalance()
         {
+           
             var query = (from x in db.StokPosisis
                          where x.tanggal == Variables.todayDate
                          && (x.denom == "100000" || x.denom == "50000")
@@ -2445,23 +2469,48 @@ namespace testProjectBCA
 
             var q2 = (from x in query
                       select x).ToList();
-
-            var toShow = (from x in q2
-                          group x by x.denom into g
-                          select new {
-                              denom = g.Key,
-                              unprocessed = g.Sum(x => x.unprocessed),
-                              newBaru = g.Sum(x => x.newBaru),
-                              newLama = g.Sum(x => x.newLama),
-                              fitBaru = g.Sum(x => x.fitBaru),
-                              fitNKRI = g.Sum(x => x.fitNKRI),
-                              fitLama = g.Sum(x => x.fitLama),
-                              passtrough = g.Sum(x => x.passThrough),
-                          }).ToList();
-            stokMorningBalanceDataGridView.DataSource = toShow;
-            for(int a=1;a<stokMorningBalanceDataGridView.ColumnCount;a++)
+            if (groupingStokMorningBalanceComboBox.SelectedItem.ToString() == "ALL VENDOR(JABO)")
             {
-                stokMorningBalanceDataGridView.Columns[a].DefaultCellStyle.Format = "N0";
+                var toShow = (from x in q2
+                              group x by x.denom into g
+                              select new
+                              {
+                                  denom = g.Key,
+                                  unprocessed = g.Sum(x => x.unprocessed),
+                                  newBaru = g.Sum(x => x.newBaru),
+                                  newLama = g.Sum(x => x.newLama),
+                                  fitBaru = g.Sum(x => x.fitBaru),
+                                  fitNKRI = g.Sum(x => x.fitNKRI),
+                                  fitLama = g.Sum(x => x.fitLama),
+                                  passtrough = g.Sum(x => x.passThrough),
+                              }).ToList();
+                stokMorningBalanceDataGridView.DataSource = toShow;
+                for (int a = 1; a < stokMorningBalanceDataGridView.ColumnCount; a++)
+                {
+                    stokMorningBalanceDataGridView.Columns[a].DefaultCellStyle.Format = "N0";
+                }
+            }
+            else
+            {
+                var toShow = (from x in q2
+                              group x by new { x.denom, x.namaPkt } into g
+                              select new
+                              {
+                                  g.Key.denom,
+                                  g.Key.namaPkt,
+                                  unprocessed = g.Sum(x => x.unprocessed),
+                                  newBaru = g.Sum(x => x.newBaru),
+                                  newLama = g.Sum(x => x.newLama),
+                                  fitBaru = g.Sum(x => x.fitBaru),
+                                  fitNKRI = g.Sum(x => x.fitNKRI),
+                                  fitLama = g.Sum(x => x.fitLama),
+                                  passtrough = g.Sum(x => x.passThrough),
+                              }).ToList();
+                stokMorningBalanceDataGridView.DataSource = toShow;
+                for (int a = 2; a < stokMorningBalanceDataGridView.ColumnCount; a++)
+                {
+                    stokMorningBalanceDataGridView.Columns[a].DefaultCellStyle.Format = "N0";
+                }
             }
         }
         void initInOutBiTukabGridView()
@@ -2541,8 +2590,9 @@ namespace testProjectBCA
             List<PenampungKuota> kuota = (from x in mbh100
                                           join y in mbh50 on x.tanggal equals y.tanggal
                                           select new PenampungKuota(){ tanggal = x.tanggal.AddDays(1), d100 = x.value, d50 = y.value }).ToList();
-            kuota[0].d100 += (Int64)((inCabangUntukKirim100.Where(x => x.tanggal == Variables.todayDate).Select(x => x.val).FirstOrDefault() + inCabangUntukKirim100.Where(x => x.tanggal == Variables.todayDate).Select(x => x.val).FirstOrDefault()) * (Double)inflowNum.Value / 100);
-            kuota[0].d50 += (Int64)((inCabangUntukKirim50.Where(x => x.tanggal == Variables.todayDate).Select(x => x.val).FirstOrDefault() + inCabangUntukKirim50.Where(x => x.tanggal == Variables.todayDate).Select(x => x.val).FirstOrDefault()) * (Double)inflowNum.Value / 50);
+
+            kuota[0].d100 += (Int64)(((inRetailUntukKirim100.Where(x => x.tanggal == Variables.todayDate).GroupBy(x=>x.tanggal).Select(x => x.Sum(y=>y.val)).FirstOrDefault() + inCabangUntukKirim100.Where(x => x.tanggal == Variables.todayDate).GroupBy(x => x.tanggal).Select(x => x.Sum(y => y.val)).FirstOrDefault())) * (Double)inflowNum.Value / 100);
+            kuota[0].d50 += (Int64)(((inRetailUntukKirim50.Where(x => x.tanggal == Variables.todayDate).GroupBy(x => x.tanggal).Select(x => x.Sum(y => y.val)).FirstOrDefault() + inCabangUntukKirim50.Where(x => x.tanggal == Variables.todayDate).GroupBy(x => x.tanggal).Select(x => x.Sum(y => y.val)).FirstOrDefault())) * (Double)inflowNum.Value / 100);
 
             if (listAdhocCabang.Any())
             {
@@ -2559,6 +2609,7 @@ namespace testProjectBCA
             if (listDeliveryCabang.Any())
             {
                 var del = (from x in listDeliveryCabang
+                           where x.Tanggal == Variables.todayDate.AddDays(1)
                              group x by x.Tanggal into g
                              select new
                              {
@@ -2690,6 +2741,7 @@ namespace testProjectBCA
             //    dataGridView1.Columns[a].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
             //}
             loadTableStokMorningBalance();
+
             newNote100 = new List<StoreClass>();
             newNote50 = new List<StoreClass>();
             if(newNoteCheckBox.Checked)
@@ -2819,6 +2871,13 @@ namespace testProjectBCA
     public class PenampungKuota
     {
         public DateTime tanggal { set; get; }
+        public Int64 d100 { set; get; }
+        public Int64 d50 { set; get; }
+    }
+    public class PenampungKuotaDetail
+    {
+        public DateTime tanggal { set; get; }
+        public String namaPkt { set; get; }
         public Int64 d100 { set; get; }
         public Int64 d50 { set; get; }
     }

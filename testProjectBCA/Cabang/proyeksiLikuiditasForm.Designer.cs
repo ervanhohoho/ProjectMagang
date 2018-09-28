@@ -78,10 +78,13 @@
             this.KuotaGridView = new System.Windows.Forms.DataGridView();
             this.label20 = new System.Windows.Forms.Label();
             this.inflowNum = new System.Windows.Forms.NumericUpDown();
-            this.label21 = new System.Windows.Forms.Label();
+            this.Kuota = new System.Windows.Forms.Label();
             this.inOutBITUKABGridView = new System.Windows.Forms.DataGridView();
             this.label22 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupingStokMorningBalanceComboBox = new System.Windows.Forms.ComboBox();
+            this.InOutTUKABSum100Lbl = new System.Windows.Forms.Label();
+            this.InOutTUKABSum50Lbl = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fit100Num)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fit50Num)).BeginInit();
@@ -570,7 +573,7 @@
             // stokMorningBalanceDataGridView
             // 
             this.stokMorningBalanceDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.stokMorningBalanceDataGridView.Location = new System.Drawing.Point(16, 772);
+            this.stokMorningBalanceDataGridView.Location = new System.Drawing.Point(16, 779);
             this.stokMorningBalanceDataGridView.Name = "stokMorningBalanceDataGridView";
             this.stokMorningBalanceDataGridView.Size = new System.Drawing.Size(1042, 103);
             this.stokMorningBalanceDataGridView.TabIndex = 22;
@@ -578,7 +581,7 @@
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(16, 756);
+            this.label19.Location = new System.Drawing.Point(16, 760);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(145, 13);
             this.label19.TabIndex = 23;
@@ -617,7 +620,7 @@
             // KuotaGridView
             // 
             this.KuotaGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.KuotaGridView.Location = new System.Drawing.Point(16, 892);
+            this.KuotaGridView.Location = new System.Drawing.Point(15, 900);
             this.KuotaGridView.Name = "KuotaGridView";
             this.KuotaGridView.Size = new System.Drawing.Size(1042, 106);
             this.KuotaGridView.TabIndex = 28;
@@ -643,14 +646,14 @@
             0,
             0});
             // 
-            // label21
+            // Kuota
             // 
-            this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(16, 878);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(35, 13);
-            this.label21.TabIndex = 32;
-            this.label21.Text = "Kuota";
+            this.Kuota.AutoSize = true;
+            this.Kuota.Location = new System.Drawing.Point(16, 884);
+            this.Kuota.Name = "Kuota";
+            this.Kuota.Size = new System.Drawing.Size(35, 13);
+            this.Kuota.TabIndex = 32;
+            this.Kuota.Text = "Kuota";
             // 
             // inOutBITUKABGridView
             // 
@@ -659,6 +662,7 @@
             this.inOutBITUKABGridView.Name = "inOutBITUKABGridView";
             this.inOutBITUKABGridView.Size = new System.Drawing.Size(407, 153);
             this.inOutBITUKABGridView.TabIndex = 33;
+            this.inOutBITUKABGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.inOutBITUKABGridView_CellValueChanged);
             // 
             // label22
             // 
@@ -682,15 +686,45 @@
             this.groupBox1.TabIndex = 35;
             this.groupBox1.TabStop = false;
             // 
+            // groupingStokMorningBalanceComboBox
+            // 
+            this.groupingStokMorningBalanceComboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.groupingStokMorningBalanceComboBox.FormattingEnabled = true;
+            this.groupingStokMorningBalanceComboBox.Location = new System.Drawing.Point(167, 755);
+            this.groupingStokMorningBalanceComboBox.Name = "groupingStokMorningBalanceComboBox";
+            this.groupingStokMorningBalanceComboBox.Size = new System.Drawing.Size(121, 21);
+            this.groupingStokMorningBalanceComboBox.TabIndex = 36;
+            // 
+            // InOutTUKABSum100Lbl
+            // 
+            this.InOutTUKABSum100Lbl.AutoSize = true;
+            this.InOutTUKABSum100Lbl.Location = new System.Drawing.Point(803, 246);
+            this.InOutTUKABSum100Lbl.Name = "InOutTUKABSum100Lbl";
+            this.InOutTUKABSum100Lbl.Size = new System.Drawing.Size(55, 13);
+            this.InOutTUKABSum100Lbl.TabIndex = 37;
+            this.InOutTUKABSum100Lbl.Text = "Sum 100: ";
+            // 
+            // InOutTUKABSum50Lbl
+            // 
+            this.InOutTUKABSum50Lbl.AutoSize = true;
+            this.InOutTUKABSum50Lbl.Location = new System.Drawing.Point(803, 265);
+            this.InOutTUKABSum50Lbl.Name = "InOutTUKABSum50Lbl";
+            this.InOutTUKABSum50Lbl.Size = new System.Drawing.Size(46, 13);
+            this.InOutTUKABSum50Lbl.TabIndex = 38;
+            this.InOutTUKABSum50Lbl.Text = "Sum 50:";
+            // 
             // proyeksiLikuiditasForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(1078, 761);
+            this.ClientSize = new System.Drawing.Size(1112, 761);
+            this.Controls.Add(this.InOutTUKABSum50Lbl);
+            this.Controls.Add(this.InOutTUKABSum100Lbl);
+            this.Controls.Add(this.groupingStokMorningBalanceComboBox);
             this.Controls.Add(this.label22);
             this.Controls.Add(this.inOutBITUKABGridView);
-            this.Controls.Add(this.label21);
+            this.Controls.Add(this.Kuota);
             this.Controls.Add(this.inflowNum);
             this.Controls.Add(this.label20);
             this.Controls.Add(this.KuotaGridView);
@@ -815,9 +849,12 @@
         private System.Windows.Forms.DataGridView KuotaGridView;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.NumericUpDown inflowNum;
-        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Label Kuota;
         private System.Windows.Forms.DataGridView inOutBITUKABGridView;
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.ComboBox groupingStokMorningBalanceComboBox;
+        private System.Windows.Forms.Label InOutTUKABSum100Lbl;
+        private System.Windows.Forms.Label InOutTUKABSum50Lbl;
     }
 }

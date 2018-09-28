@@ -853,9 +853,7 @@ namespace testProjectBCA
 
         private void readBeehiveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ReadBeehiveForm rbf = new ReadBeehiveForm();
-            rbf.MdiParent = this;
-            rbf.Show();
+            
         }
 
         private void gantiPasswordToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1023,6 +1021,13 @@ namespace testProjectBCA
             ProyeksiApproval pa = new ProyeksiApproval();
             pa.MdiParent = this;
             pa.Show();
+        }
+
+        private void rekonNasabahToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ReadBeehiveForm rbf = new ReadBeehiveForm();
+            rbf.MdiParent = this;
+            rbf.Show();
         }
     }
 }

@@ -127,7 +127,7 @@ namespace testProjectBCA
                     jenisFile = "BEEHIVE"
                 });
             }
-            dataGridView1.DataSource = prosesBeeHive;
+            //dataGridView1.DataSource = prosesBeeHive;
 
             //dataGridView1.DataSource = prosesBeeHive;
         }
@@ -482,6 +482,7 @@ namespace testProjectBCA
 
         private void buttonShowRusak_Click(object sender, EventArgs e)
         {
+           
             var query = (from x in en.saveBeeHives
                          where x.tanggalTransaksi == dateTimePicker1.Value.Date && x.namaFile != ""
                          select new
@@ -492,9 +493,15 @@ namespace testProjectBCA
                              totalNominal = x.totalNominal,
                              namaFile = x.namaFile
                          }).ToList();
+            dataGridView2.DataSource = query;
 
-            dataGridView1.Columns[3].DefaultCellStyle.Format = "c";
-            dataGridView1.Columns[3].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("ID-id");
+            if (dataGridView2.Rows.Count > 0)
+            {
+                dataGridView2.Columns[3].DefaultCellStyle.Format = "c";
+                dataGridView2.Columns[3].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("ID-id");
+            }
+
+            
 
         }
 
