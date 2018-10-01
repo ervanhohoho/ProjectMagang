@@ -2190,14 +2190,21 @@ namespace testProjectBCA
             return res;
         }
 
+        private void groupingStokMorningBalanceComboBox_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            loadTableStokMorningBalance();
+        }
+
         private void inOutBITUKABGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             Int64 sum100 = 0, 
                 sum50 = 0;
             foreach(DataGridViewRow row in inOutBITUKABGridView.Rows)
             {
-                String s100 = row.Cells[3].Value.ToString(), 
-                    s50 = row.Cells[4].Value.ToString();
+                if (row == null)
+                    break;
+                String s100 = row.Cells[3] == null ? "0" : row.Cells[3].Value.ToString(), 
+                    s50 = row.Cells[4] == null ? "0" : row.Cells[4].Value.ToString();
                 if (!String.IsNullOrEmpty(s100))
                     sum100 += Int64.Parse(s100);
                 if (!String.IsNullOrEmpty(s50))

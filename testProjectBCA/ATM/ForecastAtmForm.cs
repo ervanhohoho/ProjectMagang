@@ -22,6 +22,14 @@ namespace testProjectBCA
             loadPkt();
             yangDilihatComboBox.SelectedIndex = 0;
             metodePenghitunganComboBox.SelectedIndex = 0;
+            DateTime maxDate = (from x in db.TransaksiAtms
+                                select x.tanggal).Max(x => x),
+                     minDate = (from x in db.TransaksiAtms
+                                select x.tanggal).Min(x => x);
+            StartDatePicker.MaxDate = maxDate;
+            StartDatePicker.MinDate = minDate;
+            EndDatePicker.MaxDate = maxDate;
+            EndDatePicker.MinDate = minDate;
         }
         void loadPkt()
         {

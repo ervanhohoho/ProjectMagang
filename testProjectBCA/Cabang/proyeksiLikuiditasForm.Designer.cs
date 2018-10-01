@@ -694,6 +694,7 @@
             this.groupingStokMorningBalanceComboBox.Name = "groupingStokMorningBalanceComboBox";
             this.groupingStokMorningBalanceComboBox.Size = new System.Drawing.Size(121, 21);
             this.groupingStokMorningBalanceComboBox.TabIndex = 36;
+            this.groupingStokMorningBalanceComboBox.SelectionChangeCommitted += new System.EventHandler(this.groupingStokMorningBalanceComboBox_SelectionChangeCommitted);
             // 
             // InOutTUKABSum100Lbl
             // 
@@ -718,7 +719,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(1112, 761);
+            this.ClientSize = new System.Drawing.Size(1095, 761);
             this.Controls.Add(this.InOutTUKABSum50Lbl);
             this.Controls.Add(this.InOutTUKABSum100Lbl);
             this.Controls.Add(this.groupingStokMorningBalanceComboBox);

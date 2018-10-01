@@ -961,9 +961,7 @@ namespace testProjectBCA
 
         private void inputDataBankLainToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            InputDataBankLainForm idbl = new InputDataBankLainForm();
-            idbl.MdiParent = this;
-            idbl.Show();
+           
         }
 
         private void dashboardATMToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1028,6 +1026,13 @@ namespace testProjectBCA
             ReadBeehiveForm rbf = new ReadBeehiveForm();
             rbf.MdiParent = this;
             rbf.Show();
+        }
+
+        private void inputDataBankLainToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            InputDataBankLainForm idbl = new InputDataBankLainForm();
+            idbl.MdiParent = this;
+            idbl.Show();
         }
     }
 }

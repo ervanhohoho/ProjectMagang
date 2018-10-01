@@ -63,18 +63,39 @@ namespace testProjectBCA.Dashboard
             ChartValues<Double> ts = new ChartValues<Double>();
             foreach(var toAdd in rasio)
             {
-                ts.Add(toAdd);
+                ts.Add(Math.Round(toAdd,2));
             }
             LineSeries lineSeries = new LineSeries() {
-                Title = "Rasio",
+                Title = "Rasio Approval",
                 Values = ts,
                 DataLabels = true
             };
+            List<Double> rasioRealisasi = db.TransaksiAtms.AsEnumerable()
+                                            .Where(x => x.tanggal >= tanggal && x.tanggal <= data.Select(y => y.tanggal).Max(y => y))
+                                            .GroupBy(x=>x.tanggal)
+                                            .Select(x=> (Double) ((Double)(x.Sum(y => y.saldoAwal100 + y.saldoAwal20 + y.saldoAwal50)) / x.Sum(y => y.isiATM100 + y.isiATM20 + y.isiATM50 + y.isiCRM100 + y.isiCRM20 + y.isiCRM50)))
+                                            .ToList();
+            
 
             List<String> labels = data.Select(x => ((DateTime)x.tanggal).ToShortDateString()).ToList();
             cartesianChart1.Series.Add(lineSeries);
-            cartesianChart1.AxisX.Add(new Axis() { Labels = labels, Separator = new Separator() {Step = 1} });
-            cartesianChart1.AxisY.Add(new Axis() { Labels = rasio.Select(x => x.ToString("N2")).ToList()});
+            cartesianChart1.AxisX.Add(new Axis() { Labels = labels, Separator = new Separator() { Step = 1 } });
+            //cartesianChart1.AxisY.Add(new Axis() { Labels = rasio.Select(x => x.ToString("N2")).ToList()});
+            if (rasioRealisasi.Any())
+            {
+                ChartValues<Double> realisasiValues = new ChartValues<Double>();
+                foreach (var temp in rasioRealisasi)
+                    realisasiValues.Add(Math.Round(temp,2));
+                LineSeries realisasiLineSeries = new LineSeries()
+                {
+                    Title = "Rasio Realisasi",
+                    Values = realisasiValues,
+                    DataLabels = true,
+                };
+                cartesianChart1.Series.Add(realisasiLineSeries);
+            }
+            cartesianChart1.LegendLocation = LegendLocation.Right;
+          
         }
 
         private void kanwilComboBox_SelectedValueChanged(object sender, EventArgs e)

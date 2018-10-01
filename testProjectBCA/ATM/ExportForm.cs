@@ -22,6 +22,15 @@ namespace testProjectBCA
                                      select x.kodePkt).OrderBy(x => x).ToList();
             kodePkts.Add("All Vendor");
             pktComboBox.DataSource = kodePkts;
+            DateTime maxTanggal = (from x in db.TransaksiAtms
+                                   select x.tanggal).Max(x=>x),
+                     minTanggal = (from x in db.TransaksiAtms
+                                   select x.tanggal).Min(x => x);
+
+            startDatePicker.MaxDate = maxTanggal;
+            startDatePicker.MinDate = minTanggal;
+            endDatePicker.MaxDate = maxTanggal;
+            endDatePicker.MinDate = minTanggal;
         }
 
         private void ExportBtn_Click(object sender, EventArgs e)
