@@ -2111,7 +2111,7 @@ namespace testProjectBCA.ATM
             bon = new List<Denom>();
             jumlahBonLaporan = 0;
             Database1Entities db = new Database1Entities();
-
+            
             String kodePkt = KodePkt[pktIndex];
             var query = (from a in db.Approvals
                          join da in db.DetailApprovals on a.idApproval equals da.idApproval
@@ -2119,6 +2119,7 @@ namespace testProjectBCA.ATM
                          select new { Approval = a, DetailApproval = da }).ToList();
             if (!query.Any())
             {
+                MessageBox.Show("Data bon tidak ada!");
                 bon.Add(new Denom() { tgl = Variables.todayDate, d100 = 0, d20 = 0, d50 = 0 });
                 return;
             }
