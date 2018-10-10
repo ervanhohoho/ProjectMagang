@@ -73,7 +73,8 @@ namespace testProjectBCA
                         blogMessage = dt.Rows[i][9].ToString(),
                         action = dt.Rows[i][2].ToString(),
                         status = dt.Rows[i][3].ToString(),
-                        currencyAmmount = String.IsNullOrEmpty(dt.Rows[i][11].ToString()) ? Int64.Parse(dt.Rows[i - 1][11].ToString().Replace("IDR:", "")) : Int64.Parse(dt.Rows[i][11].ToString().Replace("IDR:", ""))
+                        currencyAmmount = CurrencyFill(String.IsNullOrWhiteSpace(dt.Rows[i][11].ToString()) ? dt.Rows[i - 1][11].ToString().Replace("IDR:", "") : dt.Rows[i][11].ToString().Replace("IDR:", ""))
+                        //currencyAmmount = String.IsNullOrEmpty(dt.Rows[i][11].ToString()) ? Int64.Parse(dt.Rows[i - 1][11].ToString().Replace("IDR:", "")) : Int64.Parse(dt.Rows[i][11].ToString().Replace("IDR:", ""))
                     });
                 }
                 label1.Text = filename.Substring(filename.LastIndexOf('\\'), filename.Length - filename.LastIndexOf('\\'));
@@ -100,6 +101,7 @@ namespace testProjectBCA
 
                 for (int i = 1; i < dt.Rows.Count - 1; i++)
                 {
+
                     vo.Add(new VO
                     {
                         vaultId = dt.Rows[i][0].ToString(),
@@ -109,8 +111,10 @@ namespace testProjectBCA
                         dueDate = Convert.ToDateTime(dt.Rows[i][6].ToString()).Date,
                         action = dt.Rows[i][1].ToString(),
                         status = dt.Rows[i][4].ToString(),
-                        currencyAmmount = Int64.Parse(dt.Rows[i][11].ToString())
+                        currencyAmmount = CurrencyFill(String.IsNullOrWhiteSpace(dt.Rows[i][11].ToString()) ? dt.Rows[i - 1][11].ToString().Replace("IDR:", "") : dt.Rows[i][11].ToString().Replace("IDR:", ""))
+                        //currencyAmmount = Int64.Parse(dt.Rows[i][11].ToString())
                     });
+                    Console.WriteLine("data ke: " + i);
                 }
                 label2.Text = filename.Substring(filename.LastIndexOf('\\'), filename.Length - filename.LastIndexOf('\\'));
             }

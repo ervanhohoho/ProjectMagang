@@ -1,6 +1,6 @@
-﻿namespace testProjectBCA
+﻿namespace testProjectBCA.ATM
 {
-    partial class UpdateStokPosisiForm
+    partial class InputDataBankLainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,33 +28,33 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.selectFileButton = new System.Windows.Forms.Button();
+            this.SelectButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // selectFileButton
+            // SelectButton
             // 
-            this.selectFileButton.Location = new System.Drawing.Point(12, 12);
-            this.selectFileButton.Name = "selectFileButton";
-            this.selectFileButton.Size = new System.Drawing.Size(260, 23);
-            this.selectFileButton.TabIndex = 0;
-            this.selectFileButton.Text = "Select File";
-            this.selectFileButton.UseVisualStyleBackColor = true;
-            this.selectFileButton.Click += new System.EventHandler(this.selectFileButton_Click);
+            this.SelectButton.Location = new System.Drawing.Point(12, 12);
+            this.SelectButton.Name = "SelectButton";
+            this.SelectButton.Size = new System.Drawing.Size(240, 23);
+            this.SelectButton.TabIndex = 0;
+            this.SelectButton.Text = "Select File";
+            this.SelectButton.UseVisualStyleBackColor = true;
+            this.SelectButton.Click += new System.EventHandler(this.SelectButton_Click);
             // 
-            // UpdateStokPosisiForm
+            // InputDataBankLain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 47);
-            this.Controls.Add(this.selectFileButton);
-            this.Name = "UpdateStokPosisiForm";
-            this.Text = "UpdateStokPosisiForm";
+            this.ClientSize = new System.Drawing.Size(264, 49);
+            this.Controls.Add(this.SelectButton);
+            this.Name = "InputDataBankLain";
+            this.Text = "Input Data Bank Lain";
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Button selectFileButton;
+        private System.Windows.Forms.Button SelectButton;
     }
 }

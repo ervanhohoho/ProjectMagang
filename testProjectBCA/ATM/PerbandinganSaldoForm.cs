@@ -29,7 +29,13 @@ namespace testProjectBCA
                 jumlahDetailApproval = db.DetailApprovals.Where(x => x.idApproval == maxIdApproval).ToList().Count();
             }
             loadGroupingCombo();
+
             calendarSelect.MaxSelectionCount = jumlahDetailApproval;
+            calendarSelect.MaxDate = (from x in db.TransaksiAtms
+                                      select x.tanggal).Max(x => x);
+            calendarSelect.MinDate = (from x in db.TransaksiAtms
+                                      select x.tanggal).Min(x => x);
+
         }
         void loadGroupingCombo()
         {

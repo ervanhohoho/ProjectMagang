@@ -17,27 +17,33 @@ namespace testProjectBCA
         Database1Entities en = new Database1Entities();
         List<String> listDataString = new List<String>();
         List<BeeHive> listHasil = new List<BeeHive>();
+        List<ProsesBeeHive> prosesBeeHive = new List<ProsesBeeHive>();
+        List<ProsesVa> prosesVa = new List<ProsesVa>();
         List<Mcs> mcs = new List<Mcs>();
+        List<Va> va = new List<Va>();
 
 
         public ReadBeehiveForm()
         {
             InitializeComponent();
+
+
         }
 
         private void inputBtn_Click(object sender, EventArgs e)
         {
             OpenFileDialog of = new OpenFileDialog();
             of.Filter = Variables.txtFilter;
-            if(of.ShowDialog() == DialogResult.OK)
+            if (of.ShowDialog() == DialogResult.OK)
             {
+                loadForm.ShowSplashScreen();
                 listDataString = new List<String>();
                 using (StreamReader sr = File.OpenText(of.FileName))
                 {
                     String s = "", stringToAdd = "";
                     while ((s = sr.ReadLine()) != null)
                     {
-                        if(s.Contains("LAPORAN DAFTAR TRANSAKSI"))
+                        if (s.Contains("LAPORAN DAFTAR TRANSAKSI"))
                         {
 
                             listDataString.Add(stringToAdd);
@@ -47,47 +53,83 @@ namespace testProjectBCA
                     }
                 }
                 listDataString.Remove("");
+                loadForm.CloseForm();
+                MessageBox.Show("ok!");
             }
             prosesString();
         }
         void prosesString()
         {
+            prosesBeeHive = new List<ProsesBeeHive>();
             listHasil = new List<BeeHive>();
             foreach (String temp in listDataString)
             {
                 List<String> listUntukProses = temp.Split('\n').ToList();
-                listUntukProses.RemoveRange(0,6);
+                listUntukProses.RemoveRange(0, 6);
                 List<String> toDelete = listUntukProses.Where(x => String.IsNullOrEmpty(x)).ToList();
                 foreach (var tempDel in toDelete)
                     listUntukProses.Remove(tempDel);
-                for (int a=0;a<listUntukProses.Count;a++)
+                for (int a = 0; a < listUntukProses.Count; a++)
                 {
-                    if(a%2==1)
+                    if (a % 2 == 1)
                     {
+                        Console.WriteLine(a);
                         String temp2 = listUntukProses[a];
-                        DateTime tanggal = new DateTime(1,1,1), bufTanggal;
-                        String kodePerusahaan = temp2.Substring(21,8);
-                        Int64 totalNominal=0, bufTotalNominal;
+                        DateTime tanggalKredit = new DateTime(1, 1, 1),
+                            bufTanggal;
+                        DateTime tanggalTransaksi = new DateTime(1, 1, 1);
+                        String kodePerusahaan = temp2.Substring(21, 8);
+                        Int64 totalNominal = 0, bufTotalNominal;
                         String formatTanggal = "dd-MM-yyyy";
-                        String tanggalS = temp2.Substring(7, 10),totalNominalS = temp2.Substring(77,32).TrimStart().Replace(".00","").Replace(",","");
-                        String namaFile = temp2.Substring(32, 25).Trim(' ');
-
+                        String tanggalS = temp2.Substring(7, 10), totalNominalS = temp2.Substring(77, 32).TrimStart().Replace(".00", "").Replace(",", "");
+                        String tanggals2 = temp2.Substring(49, 6).Trim(' ');
+                        String message = temp2.Substring(33, 25).ToString();
 
                         if (DateTime.TryParseExact(tanggalS, formatTanggal, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out bufTanggal))
-                            tanggal = bufTanggal;
+                            tanggalKredit = bufTanggal;
                         if (Int64.TryParse(totalNominalS, out bufTotalNominal))
                             totalNominal = bufTotalNominal;
+                        if (DateTime.TryParseExact(tanggals2, "yyMMdd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out bufTanggal))
+                        { tanggalTransaksi = bufTanggal; message = ""; Console.WriteLine("selamat kamu berhasil"); }
 
-                        listHasil.Add(new BeeHive() {
-                            tanggal = tanggal,
+                        else
+                            tanggalTransaksi = tanggalKredit;
+
+
+
+
+                        listHasil.Add(new BeeHive()
+                        {
+                            tanggalTransaksi = tanggalTransaksi,
+                            tanggalKredit = tanggalKredit,
                             kodePerusahaan = kodePerusahaan,
                             totalNominal = totalNominal,
-                            namaFIle= namaFile
+                            message = message
+                            //tanggalkredit
+
                         });
                     }
                 }
             }
-            dataGridView1.DataSource = listHasil;
+            var query = (from x in listHasil
+                         group x by new { x.kodePerusahaan, x.tanggalTransaksi, x.tanggalKredit, x.message } into g
+                         select new { message = g.Key.message, tanggalKredit = g.Key.tanggalKredit, kodePerusahaan = g.Key.kodePerusahaan, tanggalTransaksi = g.Key.tanggalTransaksi, totalNominal = g.Sum(x => x.totalNominal) }).ToList();
+
+            foreach (var item in query)
+            {
+                prosesBeeHive.Add(new ProsesBeeHive
+                {
+                    kodePerusahaan = item.kodePerusahaan,
+                    tanggalTransaksi = item.tanggalTransaksi,
+                    tanggalKredit = item.tanggalKredit,
+                    totalNominal = item.totalNominal,
+                    namaFile = item.message,
+                    jenisFile = "BEEHIVE"
+                });
+            }
+            //dataGridView1.DataSource = prosesBeeHive;
+
+            //dataGridView1.DataSource = prosesBeeHive;
         }
 
         private void inputButtonMCS_Click(object sender, EventArgs e)
@@ -102,6 +144,7 @@ namespace testProjectBCA
             of.Filter = Variables.excelFilter;
             if (of.ShowDialog() == DialogResult.OK)
             {
+                loadForm.ShowSplashScreen();
                 String filename = of.FileName;
                 DataSet ds = Util.openExcel(filename);
                 DataTable dt = ds.Tables[0];
@@ -156,7 +199,79 @@ namespace testProjectBCA
                     }
 
                 }
-                dataGridView2.DataSource = mcs;
+                //dataGridView2.DataSource = mcs;
+                loadForm.CloseForm();
+                MessageBox.Show("ok!");
+            }
+        }
+
+        private void inputButtonVa_Click(object sender, EventArgs e)
+        {
+            va = new List<Va>();
+            prosesVa = new List<ProsesVa>();
+
+            OpenFileDialog of = new OpenFileDialog();
+            of.Filter = Variables.excelFilter;
+            if (of.ShowDialog() == DialogResult.OK)
+            {
+                loadForm.ShowSplashScreen();
+                String filename = of.FileName;
+                DataSet ds = Util.openExcel(filename);
+                DataTable dt = ds.Tables[0];
+
+                DataTable dtCloned = dt.Clone();
+                dtCloned.Columns[0].DataType = typeof(String);
+                foreach (DataRow row in dt.Rows)
+                {
+                    dtCloned.ImportRow(row);
+                }
+
+                DataRow[] results = dtCloned.Select("Column0 like ' '");
+
+                foreach (var item in results)
+                {
+                    dtCloned.Rows.Remove(item);
+                }
+
+                for (int i = 1; i < dtCloned.Rows.Count; i++)
+                {
+                    //input disini
+                    Console.WriteLine("i yang ke:" + i);
+                    Console.WriteLine(dt.Rows[i][2]);
+                    va.Add(new Va
+                    {
+                        kodePerusahaan = dt.Rows[i][4].ToString(),
+                        //tanggalTransaksi = DateTime.ParseExact(dt.Rows[i][2].ToString(),"M/d/yyyy", CultureInfo.InvariantCulture),
+                        //tanggalKredit = DateTime.ParseExact(dt.Rows[i][1].ToString(), "M/d/yyyy", CultureInfo.InvariantCulture),
+                        tanggalTransaksi = DateTime.Parse(dt.Rows[i][2].ToString()),
+                        tanggalKredit = DateTime.Parse(dt.Rows[i][1].ToString()),
+                        totalNominal = Int64.Parse(dt.Rows[i][6].ToString()),
+                        //tanggalkredit
+
+                    });
+                }
+
+                var query = (from x in va
+                             group x by new { x.kodePerusahaan, x.tanggalTransaksi, x.tanggalKredit } into g
+                             select new { tanggalKredit = g.Key.tanggalKredit, kodePerusahaan = g.Key.kodePerusahaan, tanggalTransaksi = g.Key.tanggalTransaksi, totalNominal = g.Sum(x => x.totalNominal) }).ToList();
+
+                foreach (var item in query)
+                {
+                    prosesVa.Add(new ProsesVa
+                    {
+                        namaFile = "",
+                        kodePerusahaan = item.kodePerusahaan,
+                        tanggalTransaksi = item.tanggalTransaksi,
+                        tanggalKredit = item.tanggalKredit,
+                        totalNominal = item.totalNominal,
+                        jenisFile = "VA",
+                        //tanggalkredit
+                    });
+                }
+
+                //dataGridView2.DataSource = prosesVa;
+                loadForm.CloseForm();
+                MessageBox.Show("ok!");
 
             }
         }
@@ -164,49 +279,109 @@ namespace testProjectBCA
         private void buttonSaveBeehive_Click(object sender, EventArgs e)
         {
             loadForm.ShowSplashScreen();
-            List<saveBeeHive> saveBeeHive = (from x in listHasil
+
+            if (prosesBeeHive.Count > 0)
+            {
+                DateTime maxdate = prosesBeeHive.Max(x => (DateTime)x.tanggalTransaksi);
+                DateTime mindate = prosesBeeHive.Min(x => (DateTime)x.tanggalTransaksi);
+
+                var query = (from x in en.saveBeeHives
+                             where x.tanggalTransaksi >= mindate && x.tanggalTransaksi <= maxdate && x.jenisFile == "BEEHIVE"
+                             select x).ToList();
+
+                if (query.Count > 0)
+                {
+                    en.saveBeeHives.RemoveRange(query);
+                }
+
+                List<saveBeeHive> saveBee = (from x in prosesBeeHive
                                              select new saveBeeHive()
                                              {
                                                  kodePerusahaan = x.kodePerusahaan,
-                                                 tanggal = x.tanggal,
+                                                 tanggalTransaksi = x.tanggalTransaksi,
+                                                 tanggalKredit = x.tanggalKredit,
                                                  totalNominal = x.totalNominal,
-                                                 namaFile = x.namaFIle
+                                                 namaFile = x.namaFile,
+                                                 jenisFile = x.jenisFile
                                              }).ToList();
 
-            DateTime maxdate = saveBeeHive.Max(x => (DateTime)x.tanggal);
-            DateTime mindate = saveBeeHive.Min(x => (DateTime)x.tanggal);
+                Console.WriteLine(saveBee.Count);
+                en.saveBeeHives.AddRange(saveBee);
+                Console.WriteLine("masuk savebeehive");
 
-            var query = (from x in en.saveBeeHives
-                         where (DateTime)x.tanggal >= mindate && (DateTime)x.tanggal <= maxdate
-                         select x).ToList();
+                //List<saveBeeHive> saveBeeHive = (from x in prosesBeeHive
+                //                                 select new saveBeeHive()
+                //                                 {
+                //                                     kodePerusahaan = x.kodePerusahaan,
+                //                                     tanggal = x.tanggal,
+                //                                     totalNominal = x.totalNominal,
+                //                                     jenisFile = x.jenisFile
+                //                                 }).ToList();
 
-            List<saveBeeHive> bhToRemove = new List<saveBeeHive>();
+                //DateTime maxdate = saveBeeHive.Max(x => (DateTime)x.tanggal);
+                //DateTime mindate = saveBeeHive.Min(x => (DateTime)x.tanggal);
 
-            foreach (var item in saveBeeHive)
+                //var query = (from x in en.saveBeeHives
+                //             where (DateTime)x.tanggal >= mindate && (DateTime)x.tanggal <= maxdate
+                //             select x).ToList();
+
+                //List<saveBeeHive> bhToRemove = new List<saveBeeHive>();
+
+                //foreach (var item in saveBeeHive)
+                //{
+                //    var query2 = (from x in query
+                //                  where x.tanggal == item.tanggal &&
+                //                        x.kodePerusahaan == item.kodePerusahaan
+                //                  select x).FirstOrDefault();
+
+                //    if (query2 != null)
+                //    {
+                //        query2.totalNominal = item.totalNominal;
+                //        en.SaveChanges();
+                //        bhToRemove.Add(item);
+                //    }
+                //    Console.WriteLine("hap");
+                //}
+
+                //foreach (var item in bhToRemove)
+                //{
+                //    saveBeeHive.Remove(item);
+                //    Console.WriteLine("hup");
+                //}
+
+                //Console.WriteLine("keluar");
+                //en.saveBeeHives.AddRange(saveBeeHive);
+                //en.SaveChanges();
+
+            }
+            if (prosesVa.Count > 0)
             {
-                var query2 = (from x in query
-                              where x.tanggal == item.tanggal && 
-                                    x.kodePerusahaan == item.kodePerusahaan &&
-                                    x.namaFile == item.namaFile
-                              select x).FirstOrDefault();
+                DateTime maxdate = prosesVa.Max(x => (DateTime)x.tanggalTransaksi);
+                DateTime mindate = prosesVa.Min(x => (DateTime)x.tanggalTransaksi);
 
-                if (query2 != null)
+                var query2 = (from x in en.saveBeeHives
+                              where x.tanggalTransaksi >= mindate && x.tanggalTransaksi <= maxdate && x.jenisFile == "VA"
+                              select x).ToList();
+
+                if (query2.Count > 0)
                 {
-                    query2.totalNominal = item.totalNominal;
-                    en.SaveChanges();
-                    bhToRemove.Add(item);
+                    en.saveBeeHives.RemoveRange(query2);
                 }
-                Console.WriteLine("hap");
-            }
 
-            foreach (var item in bhToRemove)
-            {
-                saveBeeHive.Remove(item);
-                Console.WriteLine("hup");
-            }
+                List<saveBeeHive> saveVa = (from x in prosesVa
+                                            select new saveBeeHive()
+                                            {
+                                                kodePerusahaan = "0" + x.kodePerusahaan.ToString(),
+                                                tanggalTransaksi = x.tanggalTransaksi,
+                                                tanggalKredit = x.tanggalKredit,
+                                                totalNominal = x.totalNominal,
+                                                namaFile = x.namaFile,
+                                                jenisFile = x.jenisFile
+                                            }).ToList();
 
-            Console.WriteLine("keluar");
-            en.saveBeeHives.AddRange(saveBeeHive);
+                en.saveBeeHives.AddRange(saveVa);
+                Console.WriteLine("masuk saveva");
+            }
             en.SaveChanges();
             loadForm.CloseForm();
         }
@@ -244,8 +419,8 @@ namespace testProjectBCA
             foreach (var item in saveMc)
             {
                 var query2 = (from x in query
-                              where x.tanggal == item.tanggal && 
-                                    x.customerCode == item.customerCode && 
+                              where x.tanggal == item.tanggal &&
+                                    x.customerCode == item.customerCode &&
                                     x.time == item.time
                               select x).FirstOrDefault();
 
@@ -278,17 +453,126 @@ namespace testProjectBCA
 
         private void buttonProses_Click(object sender, EventArgs e)
         {
-           
+            var query = (from x in en.saveBeeHives
+                         join y in en.saveMcs on x.kodePerusahaan equals y.customerCode
+                         join z in en.DailyStocks on y.customerCode equals "0" + z.kode
+                         where x.tanggalTransaksi == dateTimePicker1.Value.Date && y.realDate == dateTimePicker1.Value.Date && z.tanggal == dateTimePicker1.Value.Date && x.namaFile == ""
+                         select new
+                         {
+                             tanggalTransaksi = y.realDate,
+                             kodeNasabah = y.customerCode,
+                             nominalBeeHive = x.totalNominal,
+                             nominalMcs = y.amountTotal,
+                             nominalDailyStock = z.BN100K + z.BN50K + z.BN20K + z.BN10K + z.BN5K + z.BN2K + z.BN1K + z.BN500 + z.BN200 + z.BN100 + z.CN500 + z.CN200 + z.CN100 + z.CN50 + z.CN25,
+                             keterangan = (
+                                x.totalNominal == y.amountTotal && y.amountTotal == z.BN100K + z.BN50K + z.BN20K + z.BN10K + z.BN5K + z.BN2K + z.BN1K + z.BN500 + z.BN200 + z.BN100 + z.CN500 + z.CN200 + z.CN100 + z.CN50 + z.CN25 ? "SAMA" : "TIDAK SAMA"
+                             )
+                         }).ToList();
+
+            dataGridView1.DataSource = query;
+            if (dataGridView1.Rows.Count > 0)
+            {
+                for (int i = 1; i < 4; i++)
+                {
+                    dataGridView1.Columns[i].DefaultCellStyle.Format = "c";
+                    dataGridView1.Columns[i].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("ID-id");
+                }
+            }
         }
 
-       
+        private void buttonShowRusak_Click(object sender, EventArgs e)
+        {
+           
+            var query = (from x in en.saveBeeHives
+                         where x.tanggalTransaksi == dateTimePicker1.Value.Date && x.namaFile != ""
+                         select new
+                         {
+                             tanggalTransaksi = x.tanggalTransaksi,
+                             tanggalKredit = x.tanggalKredit,
+                             kodePerusahaan = x.kodePerusahaan,
+                             totalNominal = x.totalNominal,
+                             namaFile = x.namaFile
+                         }).ToList();
+            dataGridView2.DataSource = query;
+
+            if (dataGridView2.Rows.Count > 0)
+            {
+                dataGridView2.Columns[3].DefaultCellStyle.Format = "c";
+                dataGridView2.Columns[3].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("ID-id");
+            }
+
+            
+
+        }
+
+        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        {
+            DataGridViewSelectedCellCollection cells = dataGridView1.SelectedCells;
+            foreach (DataGridViewCell cell in cells)
+            {
+                int rowidx = cell.RowIndex;
+                int colidx = cell.ColumnIndex;
+                Console.WriteLine(rowidx + ", " + colidx);
+                Console.WriteLine(dataGridView1.Rows[rowidx].Cells[colidx].Value.ToString().Replace("Rp.", "").Replace(".", ""));
+                if (colidx > 0 && colidx < 4)
+                {
+                    dataGridView1.Rows[rowidx].Cells[colidx].Style.Format = "F0";
+                }
+
+            }
+            for (int a = 0; a < dataGridView1.Rows.Count; a++)
+            {
+                for (int b = 1; b < dataGridView1.Columns.Count; b++)
+                {
+                    if (!cells.Contains(dataGridView1.Rows[a].Cells[b]))
+                    {
+
+                        dataGridView1.Rows[a].Cells[b].Style.Format = "C0";
+                        dataGridView1.Rows[a].Cells[b].Style.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
+                    }
+                }
+            }
+        }
+
+
     }
     public class BeeHive
     {
-        public DateTime tanggal { set; get; }
+        public DateTime tanggalTransaksi { set; get; }
+        public DateTime tanggalKredit { set; get; }
         public String kodePerusahaan { set; get; }
         public Int64 totalNominal { set; get; }
-        public String namaFIle { set; get; }
+        public String jenisFile { set; get; }
+        public String message { set; get; }
+
+    }
+    public class Va
+    {
+        public DateTime tanggalTransaksi { set; get; }
+        public DateTime tanggalKredit { set; get; }
+        public String kodePerusahaan { set; get; }
+        public Int64 totalNominal { set; get; }
+        public String jenisFile { set; get; }
+    }
+
+    public class ProsesBeeHive
+    {
+        public DateTime tanggalTransaksi { set; get; }
+        public DateTime tanggalKredit { set; get; }
+        public String kodePerusahaan { set; get; }
+        public Int64 totalNominal { set; get; }
+        public String namaFile { set; get; }
+        public String jenisFile { set; get; }
+
+    }
+    public class ProsesVa
+    {
+        public DateTime tanggalTransaksi { set; get; }
+        public DateTime tanggalKredit { set; get; }
+        public String kodePerusahaan { set; get; }
+        public Int64 totalNominal { set; get; }
+        public String namaFile { set; get; }
+        public String jenisFile { set; get; }
     }
 
     public class Mcs
@@ -310,14 +594,14 @@ namespace testProjectBCA
 
     }
 
-    public class Processed
+    public class HasilProcessed
     {
         public DateTime realDate { set; get; }
+        public String kodeNasabah { set; get; }
         public Int64 nominalBeeHive { set; get; }
         public Int64 nominalMCS { set; get; }
         public String keterangan { set; get; }
     }
-
 
 
 }

@@ -1,6 +1,6 @@
-﻿namespace testProjectBCA
+﻿namespace testProjectBCA.CabangMenu
 {
-    partial class InsertStokPosisiForm
+    partial class UpdateStokPosisiForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,33 +28,33 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.selectButton = new System.Windows.Forms.Button();
+            this.selectFileButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // selectButton
+            // selectFileButton
             // 
-            this.selectButton.Location = new System.Drawing.Point(12, 21);
-            this.selectButton.Name = "selectButton";
-            this.selectButton.Size = new System.Drawing.Size(260, 23);
-            this.selectButton.TabIndex = 0;
-            this.selectButton.Text = "Select";
-            this.selectButton.UseVisualStyleBackColor = true;
-            this.selectButton.Click += new System.EventHandler(this.selectButton_Click);
+            this.selectFileButton.Location = new System.Drawing.Point(12, 12);
+            this.selectFileButton.Name = "selectFileButton";
+            this.selectFileButton.Size = new System.Drawing.Size(260, 23);
+            this.selectFileButton.TabIndex = 0;
+            this.selectFileButton.Text = "Select File";
+            this.selectFileButton.UseVisualStyleBackColor = true;
+            this.selectFileButton.Click += new System.EventHandler(this.selectFileButton_Click);
             // 
-            // InsertStokPosisiForm
+            // UpdateStokPosisiForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 58);
-            this.Controls.Add(this.selectButton);
-            this.Name = "InsertStokPosisiForm";
-            this.Text = "InsertStokPosisiForm";
+            this.ClientSize = new System.Drawing.Size(284, 47);
+            this.Controls.Add(this.selectFileButton);
+            this.Name = "UpdateStokPosisiForm";
+            this.Text = "UpdateStokPosisiForm";
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Button selectButton;
+        private System.Windows.Forms.Button selectFileButton;
     }
 }

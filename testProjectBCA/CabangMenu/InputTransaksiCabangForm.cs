@@ -50,19 +50,30 @@ namespace testProjectBCA
                    //Console.WriteLine(kodePkt);
                     DataSet ds = Util.openExcel(filename);
 
-                    DateTime date = (DateTime)ds.Tables[0].Rows[2][0];
-                    deleteFromDB(date, kodePkt);
+                    if (ds.Tables.Count == 0)
+                        break;
 
+                    //DateTime date = (DateTime)ds.Tables[0].Rows[2][0];
+                    //deleteFromDB(date, kodePkt);
+
+                    Console.WriteLine(filename);
+
+                    Console.WriteLine("Collection Cabang");
                     collectionCabang = ds.Tables[0];
                     readCollectionCabang(ds);
+                    Console.WriteLine("Collection Retail");
                     collectionRetail = ds.Tables[1];
                     readCollectionRetail(ds);
+                    Console.WriteLine("Collection Lainnya");
                     collectionLainnya = ds.Tables[2];
                     readCollectionLainnya(ds);
+                    Console.WriteLine("Delivery Cabang");
                     deliveryCabang = ds.Tables[3];
                     readDeliveryCabang(ds);
+                    Console.WriteLine("Delivery Retail");
                     deliveryRetail = ds.Tables[4];
                     readDeliveryRetail(ds);
+                    Console.WriteLine("Delivery Lainnya");
                     deliveryLainnya = ds.Tables[5];
                     readDeliveryLainnya(ds);
                 }
@@ -133,36 +144,43 @@ namespace testProjectBCA
         {
             DataTable dt = ds.Tables[0];
             //Ambil Nama PKT
-            String namaPkt = dt.Rows[0][1].ToString();
+            String namaPkt = dt.Rows[0][1].ToString().Replace("PT ","");
             kodePkt = (from x in listPkt
-                       where x.namaPkt == namaPkt
+                       where x.namaPkt.Contains(namaPkt)
                        select x.kodePktCabang).FirstOrDefault();
 
-            DataRow[] rows = dt.Select("not LEN(Column2) = 4 OR Column1 IN('Vendor', 'Tanggal%')");
+            Console.WriteLine(ds.DataSetName);
+            DataTable dt2 = dt.Clone();
+            dt2.Columns[2].DataType = typeof(String);
+            foreach (DataRow row in dt.Rows)
+            {
+                dt2.ImportRow(row);
+            }
+            DataRow[] rows = dt2.Select("not LEN(Column2) = 4 OR Column1 IN('Vendor', 'Tanggal%')");
             foreach (var row in rows)
             {
-                dt.Rows.Remove(row);
+                dt2.Rows.Remove(row);
             }
-            dt.Rows.Remove(dt.Rows[0]); dt.Rows.Remove(dt.Rows[dt.Rows.Count - 1]);
-            //Console.WriteLine(dt.Rows.Count);
-            //Console.WriteLine(dt.Rows[dt.Rows.Count - 1][2].ToString());
-            dt.Columns.Add("kodePkt", typeof(String));
-            dt.Columns["kodePkt"].DefaultValue = kodePkt;
-            for (int a = 0; a < dt.Rows.Count; a++)
+            dt2.Rows.Remove(dt2.Rows[0]); dt2.Rows.Remove(dt2.Rows[dt2.Rows.Count - 1]);
+            //Console.WriteLine(dt2.Rows.Count);
+            //Console.WriteLine(dt2.Rows[dt2.Rows.Count - 1][2].ToString());
+            dt2.Columns.Add("kodePkt", typeof(String));
+            dt2.Columns["kodePkt"].DefaultValue = kodePkt;
+            for (int a = 0; a < dt2.Rows.Count; a++)
             {
-                dt.Rows[a]["kodePkt"] = kodePkt;
-            }
-
-            dt.Columns.Add("jenisTransaksi", typeof(String));
-            for (int a = 0; a < dt.Rows.Count; a++)
-            {
-                dt.Rows[a]["jenisTransaksi"] = "Collection Cabang - " + dt.Rows[a][1].ToString();
+                dt2.Rows[a]["kodePkt"] = kodePkt;
             }
 
-            dt.Columns.Add("inout", typeof(String));
-            for (int a = 0; a < dt.Rows.Count; a++)
+            dt2.Columns.Add("jenisTransaksi", typeof(String));
+            for (int a = 0; a < dt2.Rows.Count; a++)
             {
-                dt.Rows[a]["inout"] = "IN";
+                dt2.Rows[a]["jenisTransaksi"] = "Collection Cabang - " + dt2.Rows[a][1].ToString();
+            }
+
+            dt2.Columns.Add("inout", typeof(String));
+            for (int a = 0; a < dt2.Rows.Count; a++)
+            {
+                dt2.Rows[a]["inout"] = "IN";
             }
             //Console.WriteLine(dt.Rows[dt.Rows.Count - 1][dt.Columns.Count - 1].ToString());
             //using (SqlBulkCopy sbc = new SqlBulkCopy(Variables.connectionString))
@@ -183,7 +201,7 @@ namespace testProjectBCA
 
             //Masukin ke list untuk update/insert
             List<DailyStock> listCollectionCabangDariExcel = new List<DailyStock>();
-            foreach(DataRow row in dt.Rows)
+            foreach(DataRow row in dt2.Rows)
             {
                 if (String.IsNullOrWhiteSpace(row[2].ToString())||String.IsNullOrEmpty(row['X'-'A'].ToString()) || row['X'-'A'].ToString() == "0")
                     continue;
@@ -269,9 +287,9 @@ namespace testProjectBCA
                     kode = row[2].ToString(),
                     nama = row[3].ToString(),
                     keterangan = row[4].ToString(),
-                    kodePkt = row[dt.Columns.Count - 3].ToString(),
-                    in_out = row[dt.Columns.Count - 1].ToString(),
-                    jenisTransaksi = row[dt.Columns.Count - 2].ToString(),
+                    kodePkt = row["kodePkt"].ToString(),
+                    in_out = row["inout"].ToString(),
+                    jenisTransaksi = row["jenisTransaksi"].ToString(),
                     tanggal = DateTime.Parse(row[0].ToString()),
                     BN100K = BN100K,
                     BN50K = BN50K,
@@ -730,13 +748,15 @@ namespace testProjectBCA
         {
             DataTable dt = ds.Tables[3];
             dt.Rows.RemoveAt(0);
-            dt.Rows.Remove(dt.Rows[0]); dt.Rows.Remove(dt.Rows[dt.Rows.Count - 1]);
-            //DataRow[] rows = dt.Select("Column2 is NULL");
-            //foreach (var row in rows)
-            //{
-            //    dt.Rows.Remove(row);
-            //}
-            
+            dt.Rows.Remove(dt.Rows[0]);
+            dt.Rows.Remove(dt.Rows[dt.Rows.Count - 1]);
+
+            DataRow[] rows = dt.Select("Column1 is NULL");
+            foreach (var row in rows)
+            {
+                dt.Rows.Remove(row);
+            }
+
             dt.Columns.Add("kodePkt", typeof(String));
             dt.Columns["kodePkt"].DefaultValue = kodePkt;
             for (int a = 0; a < dt.Rows.Count; a++)
@@ -773,8 +793,10 @@ namespace testProjectBCA
             //}
             //Masukin ke list untuk update/insert
             List<DailyStock> listDeliveryCabangDariExcel = new List<DailyStock>();
+            int rownum = 1;
             foreach (DataRow row in dt.Rows)
             {
+                Console.WriteLine(rownum++);
                 if (String.IsNullOrWhiteSpace(row[2].ToString()) || String.IsNullOrEmpty(row['W'-'A'].ToString()) || row['W'-'A'].ToString() == "0")
                     continue;
 

@@ -55,6 +55,7 @@ namespace testProjectBCA
                         nasabah.segmentasiNasabah = row[11].ToString();
                         nasabah.sentralisasi= row[12].ToString();
                         nasabah.subsidiCabang = row[13].ToString();
+                        Console.WriteLine("ROW: " + (i+1));
                         db.SaveChanges();
                     }
                     else

@@ -20,17 +20,28 @@ namespace testProjectBCA
         List<StoreClass> morningbalance50;
         List<StoreClass> newNote100;
         List<StoreClass> newNote50;
+
+        List<ApprovalPembagianSaldo> deliveryCabang;
+        List<ApprovalPembagianSaldo> adhocCabang;
+
+        List<DataPermintaanDanSumber> listDataTambahanSumber;
+        List<DataPermintaanDanSumber> listDataTambahanPermintaan;
+        Double persenUnprocessed;
         public PembagianSaldoForm()
         {
             InitializeComponent();
         }
-        public PembagianSaldoForm(List<StoreClass> morningBalance100, List<StoreClass> morningBalance50, List<StoreClass> newNote100, List<StoreClass>newNote50)
+        public PembagianSaldoForm(List<StoreClass> morningBalance100, List<StoreClass> morningBalance50, List<StoreClass> newNote100, List<StoreClass>newNote50, Double persenUnprocessed, List<ApprovalPembagianSaldo> deliveryCabang, List<ApprovalPembagianSaldo>adhocCabang, List<DataPermintaanDanSumber> listDataTambahanSumber, List<DataPermintaanDanSumber>listDataTambahanPermintaan)
         {
             InitializeComponent();
 
             this.morningbalance100 = morningBalance100;
             this.morningbalance50 = morningBalance50;
-
+            this.persenUnprocessed = persenUnprocessed;
+            this.deliveryCabang = deliveryCabang;
+            this.adhocCabang = adhocCabang;
+            this.listDataTambahanPermintaan = listDataTambahanPermintaan;
+            this.listDataTambahanSumber = listDataTambahanSumber;
             Database1Entities db = new Database1Entities();
             DateTime maxDateDetailApproval = (DateTime) db.DetailApprovals.Where(x => x.bon100 != -1).Max(x => x.tanggal);
 
@@ -122,6 +133,7 @@ namespace testProjectBCA
                            d50 = y.val,
                            d20 = 0
                        }).ToList());
+            q.AddRange(listDataTambahanSumber);
             sumberDanaGridView.DataSource = q.OrderBy(x => x.namaPkt).OrderBy(x => x.tanggal).ToList();
             listDataSumber = q;
 
@@ -137,7 +149,7 @@ namespace testProjectBCA
             //Nama PKT yang ada di ComboBox
 
             //Nanti ganti data dari master bank tukab
-            List<String> bankTukab = new List<string>() { "Bank A", "Bank B", "Bank C" };
+            List<String> bankTukab = db.DataBankLains.Select(x => x.namaBank.Replace("PT. ", "")).ToList();
             var listNamaPkt = db.Pkts.Where(x => x.kanwil.ToUpper().Contains("JABO") && !x.namaPkt.Contains("Alam Sutera")).Select(x => x.namaPkt).ToList();
             listNamaPkt.AddRange(bankTukab);
 
@@ -154,7 +166,6 @@ namespace testProjectBCA
                 HeaderText = "Nama Pkt Sumber",
                 ValueType = typeof(String)
             };
-
             var listTanggal = db.DetailApprovals.AsEnumerable().Where(x => x.bon100 != -1 && x.tanggal >= Variables.todayDate).Select(x => ((DateTime)x.tanggal).ToShortDateString()).Distinct().ToList();
             DataGridViewComboBoxColumn tgl = new DataGridViewComboBoxColumn()
             {
@@ -231,13 +242,91 @@ namespace testProjectBCA
                     d50 = (Int64) x.bon50,
                     d20 = (Int64) x.bon20
                 }).ToList());
-
-            sisaGridView.DataSource = listDataPermintaan.OrderBy(x=>x.namaPkt).OrderBy(x=> x.tanggal).ToList();
+            listDataPermintaan.AddRange(listDataTambahanPermintaan);
+            sisaGridView.DataSource = listDataPermintaan.Where(x => x.d100 + x.d50 != 0).OrderBy(x=>x.namaPkt).OrderBy(x=> x.tanggal).ToList();
             sisaGridView.Columns["tanggal"].Width = 70;
             sisaGridView.Columns["namaPkt"].Width = 200;
             sisaGridView.Columns["d100"].DefaultCellStyle.Format = "N0";
             sisaGridView.Columns["d50"].DefaultCellStyle.Format = "N0";
             sisaGridView.Columns["d20"].DefaultCellStyle.Format = "N0";
+        }
+        public List<String>cekKapasitas()
+        {
+            Database1Entities db = new Database1Entities();
+            Double persenKapasitas = (Double) kapasitasNumeric.Value / 100;
+
+            var pcsDeliveryCabang = (from x in deliveryCabang
+                                     group x by new { x.Tanggal, x.PktSumber } into g
+                                     where g.Key.Tanggal == Variables.todayDate.AddDays(1)
+                                     select new {
+                                         NamaPkt = g.Key.PktSumber,
+                                         value = g.Sum(x => (x.D100 / 100000) + (x.D50 / 50000)),
+                                     }).ToList();
+
+            var qfit = (from x in db.StokPosisis
+                        group x by new { x.namaPkt, x.tanggal, x.denom } into g
+                        where g.Key.tanggal == Variables.todayDate
+                        && (g.Key.denom == "100000" || g.Key.denom == "50000")
+                        select new
+                        {
+                            g.Key.namaPkt,
+                            g.Key.tanggal,
+                            g.Key.denom,
+                            FIT = g.Sum(x => x.fitBaru + x.fitLama + x.fitNKRI)
+                        }).ToList();
+            var fit = (from x in qfit
+                       group x by x.namaPkt into g
+                       select new
+                       {
+                           namaPkt = g.Key,
+                           FIT = g.Sum(x => x.FIT / Int32.Parse(x.denom))
+                       }).ToList();
+            var qunprocessed = (from x in db.StokPosisis
+                        group x by new { x.namaPkt, x.tanggal, x.denom } into g
+                        where g.Key.tanggal == Variables.todayDate
+                        && (g.Key.denom == "100000" || g.Key.denom == "50000")
+                        select new
+                        {
+                            g.Key.namaPkt,
+                            g.Key.tanggal,
+                            g.Key.denom,
+                            unprocessed = g.Sum(x => x.unprocessed)
+                        }).ToList();
+            var unprocessed = (from x in qunprocessed
+                       group x by x.namaPkt into g
+                       select new
+                       {
+                           namaPkt = g.Key,
+                           unprocessed = g.Sum(x => x.unprocessed / Int32.Parse(x.denom)) * persenUnprocessed
+                       }).ToList();
+            var listDataInputanUser = LoadDataInputanUser();
+            var dataDariTabelPembagian = (from x in listDataInputanUser
+                                          group x by new { x.jenisUang, x.namaPktSumber, x.tanggal } into g
+                                          where g.Key.tanggal == Variables.todayDate.AddDays(1)
+                                          && g.Key.jenisUang.ToUpper() == "FIT"
+                                          select new {
+                                              g.Key.namaPktSumber,
+                                              value = g.Sum(x=> (x.d100 / 100000) + (x.d50 / 50000))
+                                          }).ToList();
+
+            var valuePerbandingan = (from x in unprocessed
+                                     join y in dataDariTabelPembagian on x.namaPkt equals y.namaPktSumber into xy
+                                     from y in xy.DefaultIfEmpty()
+                                     join z in fit on x.namaPkt equals z.namaPkt into xz
+                                     from z in xz.DefaultIfEmpty()
+                                     join zz in pcsDeliveryCabang on x.namaPkt equals zz.NamaPkt into xzz
+                                     from zz in xzz.DefaultIfEmpty()
+                                     select new {
+                                         x.namaPkt,
+                                         value = (y == null? 0 :y.value) + (zz == null? 0 : zz.value )- z.FIT - x.unprocessed
+                                     }).ToList();
+
+            var yangKuning = (from x in valuePerbandingan
+                              join y in db.Pkts on x.namaPkt equals y.namaPkt
+                              where x.value > (y.kapasitasCPC * persenKapasitas)
+                              select x.namaPkt).ToList();
+           
+            return yangKuning;
         }
         private void pembagianGridView_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
@@ -260,16 +349,15 @@ namespace testProjectBCA
                 e.Handled = true;
             }
         }
-
-        private void pembagianGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        List<DataInputanUser> LoadDataInputanUser()
         {
-
             List<DataInputanUser> listDataInputanUser = new List<DataInputanUser>();
 
-            for (int a = 0; a<pembagianGridView.RowCount-1;a++)
+            for (int a = 0; a < pembagianGridView.RowCount - 1; a++)
             {
                 DataGridViewRow row = pembagianGridView.Rows[a];
-                listDataInputanUser.Add(new DataInputanUser() {
+                listDataInputanUser.Add(new DataInputanUser()
+                {
                     tanggal = DateTime.Parse(row.Cells[0].Value.ToString()),
                     namaPktSumber = row.Cells[1].Value.ToString(),
                     namaPktTujuan = row.Cells[2].Value.ToString(),
@@ -279,6 +367,11 @@ namespace testProjectBCA
                     d20 = Int64.Parse(row.Cells[6].Value.ToString())
                 });
             }
+            return listDataInputanUser;
+        }
+        private void pembagianGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            List<DataInputanUser> listDataInputanUser = LoadDataInputanUser();
 
             //Kurangin dari tabel permintaan
             initListSisaPermintaan();
@@ -296,7 +389,7 @@ namespace testProjectBCA
                     q.d100 -= temp.d100;
                     q.d50 -= temp.d50;
                     q.d20 -= temp.d20;
-                    sisaGridView.DataSource = tempListDataSisa.OrderBy(x=>x.namaPkt).OrderBy(x=>x.tanggal).ToList();
+                    sisaGridView.DataSource = tempListDataSisa.Where(x => x.d100 + x.d50 != 0).OrderBy(x=>x.namaPkt).OrderBy(x=>x.tanggal).ToList();
                     sisaGridView.Refresh();
                 }
             }
@@ -317,8 +410,29 @@ namespace testProjectBCA
                     sumberDanaGridView.Refresh();
                 }
             }
+            cekDanger();
         }
-
+        void cekDanger()
+        {
+            List<string> listDanger = cekKapasitas();
+            if (listDanger.Any())
+                Console.WriteLine("Yang danger");
+            foreach (var temp in listDanger)
+                Console.WriteLine(temp);
+            //[0] -> tanggal
+            for (int a = 0; a < sumberDanaGridView.RowCount; a++)
+            {
+                var row = sumberDanaGridView.Rows[a];
+                Console.WriteLine(row.Cells[0].Value.ToString());
+                if (DateTime.Parse(row.Cells[0].Value.ToString()) == Variables.todayDate.AddDays(1))
+                {
+                    Console.WriteLine("Tanggal Sama");
+                    var find = listDanger.Where(x => x == row.Cells[1].Value.ToString()).FirstOrDefault();
+                    if (find != null)
+                        row.DefaultCellStyle.BackColor = Color.Yellow;
+                }
+            }
+        }
         private void pembagianGridView_DefaultValuesNeeded(object sender, DataGridViewRowEventArgs e)
         {
             e.Row.Cells[0].Value = Variables.todayDate.ToShortDateString();
@@ -336,6 +450,27 @@ namespace testProjectBCA
             var rows = pembagianGridView.SelectedRows;
             foreach (DataGridViewRow row in rows)
                 pembagianGridView.Rows.Remove(row);
+        }
+
+        private void saveBtn_Click(object sender, EventArgs e)
+        {
+            Database1Entities db = new Database1Entities();
+            db.ApprovalPembagianSaldoes.AddRange(deliveryCabang);
+            db.ApprovalPembagianSaldoes.AddRange(adhocCabang);
+            var dataInputanUser = LoadDataInputanUser();
+
+            var dataInputanUserToInsert = (from x in dataInputanUser
+                                           select new ApprovalPembagianSaldo() {
+                                               JenisTransaksi = "Reguler",
+                                               D100 = x.d100,
+                                               D50 = x.d50,
+                                               JenisUang = x.jenisUang,
+                                               PktSumber = x.namaPktSumber,
+                                               PktTujuan = x.namaPktTujuan,
+                                               Tanggal = x.tanggal
+                                           }).ToList();
+            db.ApprovalPembagianSaldoes.AddRange(dataInputanUserToInsert);
+            db.SaveChanges();
         }
     }
 

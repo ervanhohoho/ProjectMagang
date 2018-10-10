@@ -78,9 +78,9 @@ namespace testProjectBCA
             listPkt = new List<string>();
             foreach (var temp in tempListPkt)
             {
-                
+
                 listPkt.Add(temp);
-                
+
             }
             jumlahvendor = listPkt.Count;
             listPkt.Add("All Vendor");
@@ -115,13 +115,13 @@ namespace testProjectBCA
                            + ", ISNULL(SUM(CN100),0)"
                            + ", ISNULL(SUM(CN50),0)"
                            + ", ISNULL(SUM(CN25),0)"
-                           + ", p.kodePkt"
+                           + ", p.kodePktCabang"
                            + " FROM DailyStock d"
-                           + " JOIN Pkt p ON p.kodePkt = d.kodePkt"
+                           + " JOIN Pkt p ON p.kodePktCabang = d.kodePkt"
                            + " AND [in/out] LIKE 'IN'"
                            + " AND YEAR(tanggal) = " + tahun
                            + " AND MONTH(tanggal) BETWEEN " + bulanAwal + " AND " + bulanAkhir
-                           + " GROUP BY tanggal, p.kodePkt";
+                           + " GROUP BY tanggal, p.kodePktCabang order by tanggal";
             using (SqlConnection sql = new SqlConnection(Variables.connectionString))
             {
                 using (SqlCommand cmd = new SqlCommand())
@@ -185,13 +185,13 @@ namespace testProjectBCA
                            + ", ISNULL(SUM(CN100),0)"
                            + ", ISNULL(SUM(CN50),0)"
                            + ", ISNULL(SUM(CN25),0)"
-                           + ", p.kodePkt"
+                           + ", p.kodePktCabang"
                            + " FROM DailyStock d"
-                           + " JOIN Pkt p ON p.kodePkt = d.kodePkt"
+                           + " JOIN Pkt p ON p.kodePktCabang = d.kodePkt"
                            + " AND [in/out] LIKE 'OUT'"
                            + " AND YEAR(tanggal) = " + tahun
                            + " AND MONTH(tanggal) BETWEEN " + bulanAwal + " AND " + bulanAkhir
-                           + " GROUP BY tanggal, p.kodePkt";
+                           + " GROUP BY tanggal, p.kodePktCabang order by tanggal";
 
             using (SqlConnection sql = new SqlConnection(Variables.connectionString))
             {
@@ -251,13 +251,13 @@ namespace testProjectBCA
                            + ", ISNULL(SUM(CN100),0)"
                            + ", ISNULL(SUM(CN50),0)"
                            + ", ISNULL(SUM(CN25),0)"
-                           + ", p.kodePkt"
+                           + ", p.kodePktCabang"
                            + " FROM DailyStock d"
-                           + " JOIN Pkt p ON p.kodePkt = d.kodePkt"
+                           + " JOIN Pkt p ON p.kodePktCabang = d.kodePkt"
                            + " AND jenisTransaksi like '%" + jenisTransaksi + "'"
                            + " AND YEAR(tanggal) = " + tahun
                            + " AND MONTH(tanggal) BETWEEN " + bulanAwal + " AND " + bulanAkhir
-                           + " GROUP BY tanggal, p.kodePkt";
+                           + " GROUP BY tanggal, p.kodePktCabang order by tanggal";
             return query;
         }
 
@@ -285,14 +285,14 @@ namespace testProjectBCA
                            + ", ISNULL(SUM(CN100),0)"
                            + ", ISNULL(SUM(CN50),0)"
                            + ", ISNULL(SUM(CN25),0)"
-                           + ", p.kodePkt"
+                           + ", p.kodePktCabang"
                            + " FROM DailyStock d"
-                           + " JOIN Pkt p ON p.kodePkt = d.kodePkt"
+                           + " JOIN Pkt p ON p.kodePktCabang = d.kodePkt"
                            + " WHERE vendor = '" + listPkt[comboPkt.SelectedIndex] + "'"
                            + " AND [in/out] LIKE 'OUT'"
                            + " AND YEAR(tanggal) = " + tahun
                            + " AND MONTH(tanggal) BETWEEN " + bulanAwal + " AND " + bulanAkhir
-                           + " GROUP BY tanggal, p.kodePkt";
+                           + " GROUP BY tanggal, p.kodePktCabang order by tanggal";
 
             using (SqlConnection sql = new SqlConnection(Variables.connectionString))
             {
@@ -355,14 +355,14 @@ namespace testProjectBCA
                            + ", ISNULL(SUM(CN100),0)"
                            + ", ISNULL(SUM(CN50),0)"
                            + ", ISNULL(SUM(CN25),0)"
-                           + ", p.kodePkt"
+                           + ", p.kodePktCabang"
                            + " FROM DailyStock d"
-                           + " JOIN Pkt p ON p.kodePkt = d.kodePkt"
+                           + " JOIN Pkt p ON p.kodePktCabang = d.kodePkt"
                            + " WHERE vendor = '" + listPkt[comboPkt.SelectedIndex] + "'"
                            + " AND [in/out] LIKE 'IN'"
                            + " AND YEAR(tanggal) = " + tahun
                            + " AND MONTH(tanggal) BETWEEN " + bulanAwal + " AND " + bulanAkhir
-                           + " GROUP BY tanggal, p.kodePkt";
+                           + " GROUP BY tanggal, p.kodePktCabang order by tanggal";
             using (SqlConnection sql = new SqlConnection(Variables.connectionString))
             {
                 using (SqlCommand cmd = new SqlCommand())
@@ -800,14 +800,14 @@ namespace testProjectBCA
                            + ", ISNULL(SUM(CN100),0)"
                            + ", ISNULL(SUM(CN50),0)"
                            + ", ISNULL(SUM(CN25),0)"
-                           + ", p.kodePkt"
+                           + ", p.kodePktCabang"
                            + " FROM DailyStock d"
-                           + " JOIN Pkt p ON p.kodePkt = d.kodePkt"
+                           + " JOIN Pkt p ON p.kodePktCabang = d.kodePkt"
                            + " WHERE vendor = '" + listPkt[comboPkt.SelectedIndex] + "'"
                            + " AND jenisTransaksi like '%" + jenisTransaksi + "'"
                            + " AND YEAR(tanggal) = " + tahun
                            + " AND MONTH(tanggal) BETWEEN " + bulanAwal + " AND " + bulanAkhir
-                           + " GROUP BY tanggal, p.kodePkt";
+                           + " GROUP BY tanggal, p.kodePktCabang order by tanggal";
             return query;
         }
         private void comboJenisTampilan_SelectionChangeCommitted(object sender, EventArgs e)
@@ -942,7 +942,7 @@ namespace testProjectBCA
             // Select all the cells
             dataGridView1.SelectAll();
             // Copy selected cells to DataObject
-            for(int a=4;a<dataGridView1.Columns.Count;a++)
+            for (int a = 4; a < dataGridView1.Columns.Count; a++)
             {
                 dataGridView1.Columns[a].DefaultCellStyle.Format = "";
                 //for(int b=0;b<dataGridView1.Rows.Count;b++)

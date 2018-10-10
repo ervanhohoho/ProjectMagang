@@ -19,6 +19,8 @@ namespace testProjectBCA
         {
             InitializeComponent();
             loadFilterCombo();
+            approvalDateTimePicker.MaxDate = (from x in db.Approvals
+                                              select x.tanggal).Max(x => x);
         }
         void loadFilterCombo()
         {
@@ -32,10 +34,11 @@ namespace testProjectBCA
         {
             String kanwil = filterComboBox.SelectedItem.ToString();
             DateTime tanggalApproval = approvalDateTimePicker.Value.Date;
-            
+            DateTime minTanggal = minTanggalPicker.Value.Date;
             var query = (from x in db.Approvals
                          join y in db.DetailApprovals on x.idApproval equals y.idApproval
                          where x.tanggal == tanggalApproval
+                         && y.tanggal >= minTanggal
                          orderby x.tanggal
                          orderby x.kodePkt
                          select new

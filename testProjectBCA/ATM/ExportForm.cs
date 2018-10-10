@@ -22,6 +22,15 @@ namespace testProjectBCA
                                      select x.kodePkt).OrderBy(x => x).ToList();
             kodePkts.Add("All Vendor");
             pktComboBox.DataSource = kodePkts;
+            DateTime maxTanggal = (from x in db.TransaksiAtms
+                                   select x.tanggal).Max(x=>x),
+                     minTanggal = (from x in db.TransaksiAtms
+                                   select x.tanggal).Min(x => x);
+
+            startDatePicker.MaxDate = maxTanggal;
+            startDatePicker.MinDate = minTanggal;
+            endDatePicker.MaxDate = maxTanggal;
+            endDatePicker.MinDate = minTanggal;
         }
 
         private void ExportBtn_Click(object sender, EventArgs e)
@@ -124,7 +133,7 @@ namespace testProjectBCA
                                 rasioGabungan = x.isiATM100 + x.isiATM20 + x.isiATM50 + x.isiCRM100 + x.isiCRM20 + x.isiCRM50 == 0 ? 0 : (Double)(x.saldoAwal100 + x.saldoAwal50 + x.saldoAwal20) / (Double)(x.isiATM100 + x.isiATM20 + x.isiATM50 + x.isiCRM100 + x.isiCRM20 + x.isiCRM50),
                             }).ToList();
                 }
-                String csv = "tanggal,kodePkt,saldoAwal100,saldoAwal50,saldoAwal20,sislokATM100,sislokATM50,sislokATM20,sislokCRM100,sislokCRM50,sislokCRM20,sislokCDM100,sislokCDM50,sislokCDM20,isiATM100,isiATM50,isiATM20,isiCRM100,isiCRM50,isiCRM20,bon100,bon50,bon20,adhoc100,adhoc50,adhoc20,setor100,setor50,setor20,saldoAkhir100,saldoAkhir50,saldoAkhir20,rasio100,rasio50,rasio20";
+                String csv = "tanggal,kodePkt,saldoAwal100,saldoAwal50,saldoAwal20,sislokATM100,sislokATM50,sislokATM20,sislokCRM100,sislokCRM50,sislokCRM20,sislokCDM100,sislokCDM50,sislokCDM20,isiATM100,isiATM50,isiATM20,isiCRM100,isiCRM50,isiCRM20,bon100,bon50,bon20,adhoc100,adhoc50,adhoc20,setor100,setor50,setor20,saldoAkhir100,saldoAkhir50,saldoAkhir20,rasio100,rasio50,rasio20,rasioGabungan";
                 foreach(var temp in list)
                 {
                     csv +=
@@ -140,7 +149,8 @@ namespace testProjectBCA
                         + temp.adhoc100 + "," + temp.adhoc50 + "," + temp.adhoc20 + ","
                         + temp.setor100 + "," + temp.setor50 + "," + temp.setor20 + ","
                         + temp.saldoAkhir100 + "," + temp.saldoAkhir50 + "," + temp.saldoAkhir20 + ","
-                        + temp.rasio100 + "," + temp.rasio50 + "," + temp.rasio20;
+                        + temp.rasio100 + "," + temp.rasio50 + "," + temp.rasio20 + ","
+                        + temp.rasioGabungan;
                 }
                 loadForm.CloseForm();
                 Console.WriteLine("Success");

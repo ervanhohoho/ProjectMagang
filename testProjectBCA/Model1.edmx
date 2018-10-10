@@ -83,8 +83,8 @@
           <Property Name="in/out" Type="varchar" MaxLength="50" />
           <Property Name="jenisTransaksi" Type="varchar" MaxLength="100" />
           <Property Name="kode" Type="varchar" MaxLength="100" />
-          <Property Name="nama" Type="varchar" MaxLength="100" />
-          <Property Name="keterangan" Type="varchar" MaxLength="100" />
+          <Property Name="nama" Type="varchar" MaxLength="255" />
+          <Property Name="keterangan" Type="varchar" MaxLength="255" />
           <Property Name="BN100K" Type="bigint" />
           <Property Name="BN50K" Type="bigint" />
           <Property Name="BN20K" Type="bigint" />
@@ -101,6 +101,13 @@
           <Property Name="CN100" Type="bigint" />
           <Property Name="CN50" Type="bigint" />
           <Property Name="CN25" Type="bigint" />
+        </EntityType>
+        <EntityType Name="DataBankLain">
+          <Key>
+            <PropertyRef Name="idBank" />
+          </Key>
+          <Property Name="idBank" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="namaBank" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="DetailApprovals">
           <Key>
@@ -347,9 +354,11 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="tanggal" Type="date" />
+          <Property Name="tanggalTransaksi" Type="date" />
           <Property Name="kodePerusahaan" Type="varchar" MaxLength="255" />
           <Property Name="totalNominal" Type="bigint" />
+          <Property Name="jenisFile" Type="varchar" MaxLength="255" />
+          <Property Name="tanggalKredit" Type="date" />
           <Property Name="namaFile" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="saveMcs">
@@ -409,9 +418,22 @@
           <Property Name="denom" Type="varchar" MaxLength="50" />
           <Property Name="tanggal" Type="date" />
           <Property Name="namaPkt" Type="varchar" MaxLength="50" />
+          <Property Name="openBalance" Type="bigint" />
           <Property Name="inCabang" Type="bigint" />
           <Property Name="inRetail" Type="bigint" />
+          <Property Name="inBI" Type="bigint" />
+          <Property Name="inTUKAB" Type="bigint" />
+          <Property Name="inOtherCPC" Type="bigint" />
+          <Property Name="intVaultATM" Type="bigint" />
+          <Property Name="inTukaran" Type="bigint" />
           <Property Name="outCabang" Type="bigint" />
+          <Property Name="outRetail" Type="bigint" />
+          <Property Name="outBIULE" Type="bigint" />
+          <Property Name="outBIUTLE" Type="bigint" />
+          <Property Name="outTUKAB" Type="bigint" />
+          <Property Name="outOtherCPC" Type="bigint" />
+          <Property Name="outVaultATM" Type="bigint" />
+          <Property Name="outTukaran" Type="bigint" />
         </EntityType>
         <EntityType Name="TabelTarikan">
           <Key>
@@ -521,6 +543,7 @@
           <EntitySet Name="Cabang" EntityType="Self.Cabang" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cashpoint" EntityType="Self.Cashpoint" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DailyStock" EntityType="Self.DailyStock" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DataBankLain" EntityType="Self.DataBankLain" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DetailApprovals" EntityType="Self.DetailApprovals" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EventTanggal" EntityType="Self.EventTanggal" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ForecastDetail" EntityType="Self.ForecastDetail" Schema="dbo" store:Type="Tables" />
@@ -624,8 +647,8 @@
           <Property Name="in_out" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="jenisTransaksi" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="kode" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="nama" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="keterangan" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="nama" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="keterangan" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="BN100K" Type="Int64" />
           <Property Name="BN50K" Type="Int64" />
           <Property Name="BN20K" Type="Int64" />
@@ -891,9 +914,11 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="tanggal" Type="DateTime" Precision="0" />
           <Property Name="kodePerusahaan" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="totalNominal" Type="Int64" />
+          <Property Name="jenisFile" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="tanggalTransaksi" Type="DateTime" Precision="0" />
+          <Property Name="tanggalKredit" Type="DateTime" Precision="0" />
           <Property Name="namaFile" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="saveMc">
@@ -956,6 +981,19 @@
           <Property Name="inCabang" Type="Int64" />
           <Property Name="inRetail" Type="Int64" />
           <Property Name="outCabang" Type="Int64" />
+          <Property Name="openBalance" Type="Int64" />
+          <Property Name="inBI" Type="Int64" />
+          <Property Name="inTUKAB" Type="Int64" />
+          <Property Name="inOtherCPC" Type="Int64" />
+          <Property Name="intVaultATM" Type="Int64" />
+          <Property Name="inTukaran" Type="Int64" />
+          <Property Name="outRetail" Type="Int64" />
+          <Property Name="outBIULE" Type="Int64" />
+          <Property Name="outBIUTLE" Type="Int64" />
+          <Property Name="outTUKAB" Type="Int64" />
+          <Property Name="outOtherCPC" Type="Int64" />
+          <Property Name="outVaultATM" Type="Int64" />
+          <Property Name="outTukaran" Type="Int64" />
         </EntityType>
         <EntityType Name="TabelTarikan">
           <Key>
@@ -1088,6 +1126,7 @@
           </AssociationSet>
           <EntitySet Name="TabelTarikanSetoranCRMs" EntityType="CACModel.TabelTarikanSetoranCRM" />
           <EntitySet Name="ApprovalPembagianSaldoes" EntityType="CACModel.ApprovalPembagianSaldo" />
+          <EntitySet Name="DataBankLains" EntityType="CACModel.DataBankLain" />
         </EntityContainer>
         <EntityType Name="TabelTarikanSetoranCRM">
           <Key>
@@ -1112,6 +1151,13 @@
           <Property Name="JenisUang" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="D100" Type="Int64" Nullable="false" />
           <Property Name="D50" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DataBankLain">
+          <Key>
+            <PropertyRef Name="idBank" />
+          </Key>
+          <Property Name="idBank" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="namaBank" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1466,11 +1512,13 @@
           <EntitySetMapping Name="saveBeeHives">
             <EntityTypeMapping TypeName="CACModel.saveBeeHive">
               <MappingFragment StoreEntitySet="saveBeeHive">
+                <ScalarProperty Name="namaFile" ColumnName="namaFile" />
+                <ScalarProperty Name="tanggalKredit" ColumnName="tanggalKredit" />
+                <ScalarProperty Name="tanggalTransaksi" ColumnName="tanggalTransaksi" />
+                <ScalarProperty Name="jenisFile" ColumnName="jenisFile" />
                 <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="tanggal" ColumnName="tanggal" />
                 <ScalarProperty Name="kodePerusahaan" ColumnName="kodePerusahaan" />
                 <ScalarProperty Name="totalNominal" ColumnName="totalNominal" />
-                <ScalarProperty Name="namaFile" ColumnName="namaFile" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1512,6 +1560,19 @@
           <EntitySetMapping Name="StokPosisis">
             <EntityTypeMapping TypeName="CACModel.StokPosisi">
               <MappingFragment StoreEntitySet="StokPosisi">
+                <ScalarProperty Name="outTukaran" ColumnName="outTukaran" />
+                <ScalarProperty Name="outVaultATM" ColumnName="outVaultATM" />
+                <ScalarProperty Name="outOtherCPC" ColumnName="outOtherCPC" />
+                <ScalarProperty Name="outTUKAB" ColumnName="outTUKAB" />
+                <ScalarProperty Name="outBIUTLE" ColumnName="outBIUTLE" />
+                <ScalarProperty Name="outBIULE" ColumnName="outBIULE" />
+                <ScalarProperty Name="outRetail" ColumnName="outRetail" />
+                <ScalarProperty Name="inTukaran" ColumnName="inTukaran" />
+                <ScalarProperty Name="intVaultATM" ColumnName="intVaultATM" />
+                <ScalarProperty Name="inOtherCPC" ColumnName="inOtherCPC" />
+                <ScalarProperty Name="inTUKAB" ColumnName="inTUKAB" />
+                <ScalarProperty Name="inBI" ColumnName="inBI" />
+                <ScalarProperty Name="openBalance" ColumnName="openBalance" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="unprocessed" ColumnName="unprocessed" />
                 <ScalarProperty Name="newBaru" ColumnName="newBaru" />
@@ -1626,6 +1687,14 @@
                 <ScalarProperty Name="PktSumber" ColumnName="PktSumber" />
                 <ScalarProperty Name="Tanggal" ColumnName="Tanggal" />
                 <ScalarProperty Name="IdTransaksi" ColumnName="IdTransaksi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DataBankLains">
+            <EntityTypeMapping TypeName="CACModel.DataBankLain">
+              <MappingFragment StoreEntitySet="DataBankLain">
+                <ScalarProperty Name="namaBank" ColumnName="namaBank" />
+                <ScalarProperty Name="idBank" ColumnName="idBank" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

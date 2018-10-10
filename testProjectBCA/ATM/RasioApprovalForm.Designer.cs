@@ -33,8 +33,8 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.loadButton = new System.Windows.Forms.Button();
             this.ExportButton = new System.Windows.Forms.Button();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.minTanggalPicker = new System.Windows.Forms.Label();
+            this.minTanggalPicker = new System.Windows.Forms.DateTimePicker();
+            this.lbl = new System.Windows.Forms.Label();
             this.filterComboBox = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -85,21 +85,21 @@
             this.ExportButton.UseVisualStyleBackColor = true;
             this.ExportButton.Click += new System.EventHandler(this.ExportButton_Click);
             // 
-            // dateTimePicker1
-            // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(519, 6);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
-            this.dateTimePicker1.TabIndex = 5;
-            // 
             // minTanggalPicker
             // 
-            this.minTanggalPicker.AutoSize = true;
-            this.minTanggalPicker.Location = new System.Drawing.Point(447, 9);
+            this.minTanggalPicker.Location = new System.Drawing.Point(519, 6);
             this.minTanggalPicker.Name = "minTanggalPicker";
-            this.minTanggalPicker.Size = new System.Drawing.Size(66, 13);
-            this.minTanggalPicker.TabIndex = 6;
-            this.minTanggalPicker.Text = "Min Tanggal";
+            this.minTanggalPicker.Size = new System.Drawing.Size(200, 20);
+            this.minTanggalPicker.TabIndex = 5;
+            // 
+            // lbl
+            // 
+            this.lbl.AutoSize = true;
+            this.lbl.Location = new System.Drawing.Point(447, 9);
+            this.lbl.Name = "lbl";
+            this.lbl.Size = new System.Drawing.Size(66, 13);
+            this.lbl.TabIndex = 6;
+            this.lbl.Text = "Min Tanggal";
             // 
             // filterComboBox
             // 
@@ -125,8 +125,8 @@
             this.ClientSize = new System.Drawing.Size(962, 548);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.filterComboBox);
+            this.Controls.Add(this.lbl);
             this.Controls.Add(this.minTanggalPicker);
-            this.Controls.Add(this.dateTimePicker1);
             this.Controls.Add(this.ExportButton);
             this.Controls.Add(this.loadButton);
             this.Controls.Add(this.dataGridView1);
@@ -147,8 +147,8 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button loadButton;
         private System.Windows.Forms.Button ExportButton;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
-        private System.Windows.Forms.Label minTanggalPicker;
+        private System.Windows.Forms.DateTimePicker minTanggalPicker;
+        private System.Windows.Forms.Label lbl;
         private System.Windows.Forms.ComboBox filterComboBox;
         private System.Windows.Forms.Label label2;
     }

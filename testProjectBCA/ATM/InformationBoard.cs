@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace testProjectBCA
+namespace testProjectBCA.ATM
 {
     public partial class InformationBoard : Form
     {
@@ -47,6 +47,7 @@ namespace testProjectBCA
         List<Rasio> listRasio = new List<Rasio>();
 
         List<DateTime> tanggalSkip;
+        List<DateTime> kumpulanTanggalUntukPrediksi;
         int pktIndex;
         DateTime tanggalOptiMin ,tanggalOptiMax, tanggalKalenderMax; 
         /**
@@ -152,10 +153,12 @@ namespace testProjectBCA
         }
         private void pktComboBox_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            pktIndex = pktComboBox.SelectedIndex;
-            labelKodePkt.Text = KodePkt[pktIndex];
-            loadE2E();
             Database1Entities db = new Database1Entities();
+            pktIndex = pktComboBox.SelectedIndex;
+            String kodePkt = KodePkt[pktIndex];
+            labelKodePkt.Text = kodePkt;
+            namaPktLbl.Text = db.Pkts.AsEnumerable().Where(x => x.kodePkt == kodePkt).Select(x => x.namaPkt).FirstOrDefault();
+            loadE2E();
             firstRun = true;
         }
         
@@ -1069,7 +1072,7 @@ namespace testProjectBCA
                 Console.WriteLine(temp.tgl.ToShortDateString() + " " + temp.d100 + " " + temp.d50 + " " + temp.d20);
             }
         }
-        private void loadSislokCrm()
+        void loadSislokCrm()
         {
             Console.WriteLine();
             Console.WriteLine("Load Sislok CRM");
@@ -1741,7 +1744,7 @@ namespace testProjectBCA
                             subqueryTblAverage += ") avt";
 
                             query = "SELECT "
-                                        + "[AverageStdDeviasi100] = ISNULL(AVG(CAST((sislokCdm100 - [Average100]) AS FLOAT) / (CASE WHEN [Average100] = 0 THEN 1 ELSE [Average100] END)),0) "
+                                        + "[AverageStdDeviasi100] = ISNULL(AVG(CAST((sislokCdm100 - [Average100]) AS FLOAT) / (CASE WHEN [Average100] = 0 THEN 1 ELSE [Average100] END)),0), "
                                         + "[AverageStdDeviasi50] = ISNULL(AVG(CAST((sislokCdm50 - [Average50])AS FLOAT) / (CASE WHEN [Average50] = 0 THEN 1 ELSE [Average50] END)),0), "
                                         + "[AverageStdDeviasi20] = ISNULL(AVG(CAST((sislokCdm20 - [Average20])AS FLOAT) / (CASE WHEN [Average20] = 0 THEN 1 ELSE [Average20] END)),0) "
                                         + "FROM TransaksiAtms TA JOIN EventTanggal ET ON Ta.tanggal = ET.tanggal, " + subqueryTblAverage + kondisi;
@@ -2108,7 +2111,7 @@ namespace testProjectBCA
             bon = new List<Denom>();
             jumlahBonLaporan = 0;
             Database1Entities db = new Database1Entities();
-
+            
             String kodePkt = KodePkt[pktIndex];
             var query = (from a in db.Approvals
                          join da in db.DetailApprovals on a.idApproval equals da.idApproval
@@ -2116,7 +2119,9 @@ namespace testProjectBCA
                          select new { Approval = a, DetailApproval = da }).ToList();
             if (!query.Any())
             {
+                MessageBox.Show("Data bon tidak ada!");
                 bon.Add(new Denom() { tgl = Variables.todayDate, d100 = 0, d20 = 0, d50 = 0 });
+                return;
             }
             int maxIdApproval = query.Max(x => x.Approval.idApproval);
             Console.WriteLine("Max Id Approval = " + maxIdApproval);
@@ -3419,7 +3424,20 @@ namespace testProjectBCA
             bonYangSudahDisetujuiGridView.Columns["50"].DefaultCellStyle.Format = "n0";
             bonYangSudahDisetujuiGridView.Columns["20"].DefaultCellStyle.Format = "n0";
         }
-
+        void loadKumpulanTanggalUntukPrediksi()
+        {
+            kumpulanTanggalUntukPrediksi = new List<DateTime>();
+            for (int i = 0; i < treeView1.Nodes.Count; i++)
+            {
+                for (int j = 0; j < treeView1.Nodes[i].Nodes.Count; j++)
+                {
+                    if (treeView1.Nodes[i].Nodes[j].Checked)
+                    {
+                        kumpulanTanggalUntukPrediksi.Add(new DateTime(Int32.Parse(treeView1.Nodes[i].Text), Int32.Parse(treeView1.Nodes[i].Nodes[j].Text), 1));
+                    }
+                }
+            }
+        }
         void loadCheckedDariSkipPrediksiTreeView()
         {
             tanggalSkip = new List<DateTime>();
@@ -3489,6 +3507,9 @@ namespace testProjectBCA
             PopupInformationBoard pib = new PopupInformationBoard(KodePkt[pktIndex]);
             pib.Show();
             Double buf;
+            loadKumpulanTanggalUntukPrediksi();
+
+            
             loadPrediksiOpti();
             loadCheckedDariSkipPrediksiTreeView();
             tanggalOptiMax = tanggalPrediksiMaxPicker.Value.Date;
@@ -3505,107 +3526,128 @@ namespace testProjectBCA
             {
             //loadSislokCrm();
             //try
-            //{
-                if(MetodePrediksiComboBox.SelectedIndex == 0)
+            ////{
+            //    if(MetodePrediksiComboBox.SelectedIndex == 0)
+            //    {
+            //        Database1Entities db = new Database1Entities();
+            //        if(!(from x in db.Optis select x).Any())
+            //        {
+            //            MessageBox.Show("Data Opti Tidak Ada!");
+            //            return;
+            //        }
+            //        if(prediksiIsiAtmOpti[prediksiIsiAtmOpti.Count-1].tgl < tanggalOptiMax)
+            //        {
+            //            MessageBox.Show("Data Opti Salah");
+            //            return;
+            //        }
+            //        else
+            //            prediksiIsiAtm = prediksiIsiAtmOpti;
+            //    }
+            //    if (MetodePrediksiComboBox.SelectedIndex == 1)
+            //    {
+            //        loadIsiAtmHistoris();
+            //    }
+            //    if (MetodePrediksiComboBox.SelectedIndex == 2)
+            //    {
+            //        loadIsiAtmHistoris();
+            //        for (int a = 0; a < prediksiIsiAtmOpti.Count; a++)
+            //        {
+            //            prediksiIsiAtm[a].d100 = (prediksiIsiAtm[a].d100 + prediksiIsiAtmOpti[a].d100) / 2;
+            //            prediksiIsiAtm[a].d50 = (prediksiIsiAtm[a].d50 + prediksiIsiAtmOpti[a].d50) / 2;
+            //            prediksiIsiAtm[a].d20 = (prediksiIsiAtm[a].d20 + prediksiIsiAtmOpti[a].d20) / 2;
+            //        }
+            //    }
+            //    if (MetodePrediksiComboBox.SelectedIndex == 3)
+            //    {
+            //        loadIsiAtmHistoris();
+            //        loadIsiAtmHistorisDenganStandarDeviasi();
+            //        prediksiIsiAtm = prediksiIsiAtmDenganStdDeviasi;
+            //    }
+            //    if (MetodePrediksiComboBox.SelectedIndex == 4)
+            //    {
+            //        loadIsiAtmHistoris();
+            //        loadIsiAtmHistorisDenganStandarDeviasi();
+            //        prediksiIsiAtm = prediksiIsiAtmDenganStdDeviasi;
+            //        for (int a = 0; a < prediksiIsiAtmOpti.Count; a++)
+            //        {
+            //            prediksiIsiAtm[a].d100 = (prediksiIsiAtm[a].d100 + prediksiIsiAtmOpti[a].d100) / 2;
+            //            prediksiIsiAtm[a].d50 = (prediksiIsiAtm[a].d50 + prediksiIsiAtmOpti[a].d50) / 2;
+            //            prediksiIsiAtm[a].d20 = (prediksiIsiAtm[a].d20 + prediksiIsiAtmOpti[a].d20) / 2;
+            //        }
+
+            //    }
+            //    loadSislokCdm();
+            //    loadRasioSislokAtm();
+            //    loadRasioSislokAtmDenganStdDeviasi();
+            //    loadIsiCrm();
+            //    loadSislokCrm();
+            //    //Hitungan dengan metode kedua
+            //    if (MetodeHitungLainnyaComboBox.SelectedItem.ToString() == "Std Deviasi")
+            //    {
+            //        loadSislokCdmDenganStdDeviasi();
+            //        loadIsiCrmDenganStdDeviasi();
+            //        loadSislokCrmDenganStdDeviasi();
+            //        loadRasioSislokAtmDenganStdDeviasi();
+            //        sislokCdm = sislokCdmDenganStdDeviasi;
+            //        isiCrm = isiCrmDenganStdDeviasi;
+            //        sislokCrm = sislokCrmDenganStdDeviasi;
+            //        rasioSislokAtm = rasioSislokATMDenganStdDeviasi;
+            //    }
+            //    //Hitungan dengan metode ketiga
+            //    if (MetodeHitungLainnyaComboBox.SelectedItem.ToString() == "Historis + Std Deviasi")
+            //    {
+            //        loadSislokCdmDenganStdDeviasi();
+            //        loadIsiCrmDenganStdDeviasi();
+            //        loadSislokCrmDenganStdDeviasi();
+            //        loadRasioSislokAtmDenganStdDeviasi();
+            //        for (int a = 0; a < sislokCdm.Count; a++)
+            //        {
+            //            sislokCdm[a].d100 = (sislokCdm[a].d100 + sislokCdmDenganStdDeviasi[a].d100) / 2;
+            //            sislokCdm[a].d50 = (sislokCdm[a].d50 + sislokCdmDenganStdDeviasi[a].d50) / 2;
+            //            sislokCdm[a].d20 = (sislokCdm[a].d20 + sislokCdmDenganStdDeviasi[a].d20) / 2;
+
+            //            isiCrm[a].d100 = (isiCrm[a].d100 + isiCrmDenganStdDeviasi[a].d100) / 2;
+            //            isiCrm[a].d50 = (isiCrm[a].d50 + isiCrmDenganStdDeviasi[a].d50) / 2;
+            //            isiCrm[a].d20 = (isiCrm[a].d20 + isiCrmDenganStdDeviasi[a].d20) / 2;
+
+            //            sislokCrm[a].d100 = (sislokCrm[a].d100 + sislokCrmDenganStdDeviasi[a].d100) / 2;
+            //            sislokCrm[a].d50 = (sislokCrm[a].d50 + sislokCrmDenganStdDeviasi[a].d50) / 2;
+            //            sislokCrm[a].d20 = (sislokCrm[a].d20 + sislokCrmDenganStdDeviasi[a].d20) / 2;
+
+            //            rasioSislokAtm[a].d100 = (rasioSislokAtm[a].d100 + rasioSislokATMDenganStdDeviasi[a].d100) / 2;
+            //            rasioSislokAtm[a].d50 = (rasioSislokAtm[a].d50 + rasioSislokATMDenganStdDeviasi[a].d50) / 2;
+            //            rasioSislokAtm[a].d20 = (rasioSislokAtm[a].d20 + rasioSislokATMDenganStdDeviasi[a].d20) / 2;
+            //        }
+            //    }
+
+                KumpulanPrediksi kumpulanPrediksi = new KumpulanPrediksi(KodePkt[pktIndex], kumpulanTanggalUntukPrediksi, tanggalOptiMin, tanggalOptiMax, MetodePrediksiComboBox.SelectedItem.ToString(), MetodeHitungLainnyaComboBox.SelectedItem.ToString());
+
+                if (kumpulanPrediksi.success)
                 {
-                    Database1Entities db = new Database1Entities();
-                    if(!(from x in db.Optis select x).Any())
+                    prediksiIsiAtm = kumpulanPrediksi.prediksiIsiAtm;
+                    isiCrm = kumpulanPrediksi.isiCrm2;
+                    sislokCrm = kumpulanPrediksi.sislokCrm;
+                    rasioSislokAtm = kumpulanPrediksi.rasioSislokAtm;
+                    sislokCdm = kumpulanPrediksi.sislokCdm;
+
+                    String eventType = "";
+                    foreach (var temp in kumpulanPrediksi.eventType)
                     {
-                        MessageBox.Show("Data Opti Tidak Ada!");
-                        return;
+                        eventType += temp + "\n";
                     }
-                    if(prediksiIsiAtmOpti[prediksiIsiAtmOpti.Count-1].tgl < tanggalOptiMax)
-                    {
-                        MessageBox.Show("Data Opti Salah");
-                        return;
-                    }
-                    else
-                        prediksiIsiAtm = prediksiIsiAtmOpti;
-                }
-                if (MetodePrediksiComboBox.SelectedIndex == 1)
-                {
-                    loadIsiAtmHistoris();
-                }
-                if (MetodePrediksiComboBox.SelectedIndex == 2)
-                {
-                    loadIsiAtmHistoris();
-                    for(int a=0;a<prediksiIsiAtmOpti.Count;a++)
-                    {
-                        prediksiIsiAtm[a].d100 = (prediksiIsiAtm[a].d100 + prediksiIsiAtmOpti[a].d100) / 2;
-                        prediksiIsiAtm[a].d50 = (prediksiIsiAtm[a].d50 + prediksiIsiAtmOpti[a].d50) / 2;
-                        prediksiIsiAtm[a].d20 = (prediksiIsiAtm[a].d20 + prediksiIsiAtmOpti[a].d20) / 2;
-                    }
-                }
-                if (MetodePrediksiComboBox.SelectedIndex == 3)
-                {
-                    loadIsiAtmHistoris();
-                    loadIsiAtmHistorisDenganStandarDeviasi();
-                    prediksiIsiAtm = prediksiIsiAtmDenganStdDeviasi;
-                }
-                if (MetodePrediksiComboBox.SelectedIndex == 4)
-                {
-                    loadIsiAtmHistoris();
-                    loadIsiAtmHistorisDenganStandarDeviasi();
-                    prediksiIsiAtm = prediksiIsiAtmDenganStdDeviasi;
-                    for (int a = 0; a < prediksiIsiAtmOpti.Count; a++)
-                    {
-                        prediksiIsiAtm[a].d100 = (prediksiIsiAtm[a].d100 + prediksiIsiAtmOpti[a].d100) / 2;
-                        prediksiIsiAtm[a].d50 = (prediksiIsiAtm[a].d50 + prediksiIsiAtmOpti[a].d50) / 2;
-                        prediksiIsiAtm[a].d20 = (prediksiIsiAtm[a].d20 + prediksiIsiAtmOpti[a].d20) / 2;
-                    }
+                    MessageBox.Show(eventType);
+                    Console.WriteLine("Prediksi isi atm count: " + prediksiIsiAtm.Count);
+                    Console.WriteLine("Isi crm count: " + isiCrm.Count);
+                    Console.WriteLine("Sislok crm count: " + sislokCrm.Count);
+                    Console.WriteLine("Rasio Sislok ATM count: " + rasioSislokAtm.Count);
+                    Console.WriteLine("Sislok cdm count: " + sislokCdm.Count);
 
                 }
-                loadSislokCdm();
-                loadRasioSislokAtm();
-                loadRasioSislokAtmDenganStdDeviasi();
+
                 loadSaldoAwal();
                 loadBon();
                 loadTablePermintaanBon();
-                loadIsiCrm();
-                //TESTING
-
-                //ENDTESTING
-                loadSislokCrm();
                 loadSetor();
-                //Hitungan dengan metode kedua
-                if(MetodeHitungLainnyaComboBox.SelectedItem.ToString() == "Std Deviasi")
-                {
-                    loadSislokCdmDenganStdDeviasi();
-                    loadIsiCrmDenganStdDeviasi();
-                    loadSislokCrmDenganStdDeviasi();
-                    loadRasioSislokAtmDenganStdDeviasi();
-                    sislokCdm = sislokCdmDenganStdDeviasi;
-                    isiCrm = isiCrmDenganStdDeviasi;
-                    sislokCrm = sislokCrmDenganStdDeviasi;
-                    rasioSislokAtm = rasioSislokATMDenganStdDeviasi;
-                }
-                //Hitungan dengan metode ketiga
-                if(MetodeHitungLainnyaComboBox.SelectedItem.ToString() == "Historis + Std Deviasi")
-                {
-                    loadSislokCdmDenganStdDeviasi();
-                    loadIsiCrmDenganStdDeviasi();
-                    loadSislokCrmDenganStdDeviasi();
-                    loadRasioSislokAtmDenganStdDeviasi();
-                    for (int a = 0; a < sislokCdm.Count; a++)
-                    {
-                        sislokCdm[a].d100 = (sislokCdm[a].d100 + sislokCdmDenganStdDeviasi[a].d100) / 2;
-                        sislokCdm[a].d50 = (sislokCdm[a].d50 + sislokCdmDenganStdDeviasi[a].d50) / 2;
-                        sislokCdm[a].d20 = (sislokCdm[a].d20 + sislokCdmDenganStdDeviasi[a].d20) / 2;
-
-                        isiCrm[a].d100 = (isiCrm[a].d100 + isiCrmDenganStdDeviasi[a].d100) / 2;
-                        isiCrm[a].d50 = (isiCrm[a].d50 + isiCrmDenganStdDeviasi[a].d50) / 2;
-                        isiCrm[a].d20 = (isiCrm[a].d20 + isiCrmDenganStdDeviasi[a].d20) / 2;
-
-                        sislokCrm[a].d100 = (sislokCrm[a].d100 + sislokCrmDenganStdDeviasi[a].d100) / 2;
-                        sislokCrm[a].d50 = (sislokCrm[a].d50 + sislokCrmDenganStdDeviasi[a].d50) / 2;
-                        sislokCrm[a].d20 = (sislokCrm[a].d20 + sislokCrmDenganStdDeviasi[a].d20) / 2;
-
-                        rasioSislokAtm[a].d100 = (rasioSislokAtm[a].d100 + rasioSislokATMDenganStdDeviasi[a].d100) / 2;
-                        rasioSislokAtm[a].d50 = (rasioSislokAtm[a].d50 + rasioSislokATMDenganStdDeviasi[a].d50) / 2;
-                        rasioSislokAtm[a].d20 = (rasioSislokAtm[a].d20 + rasioSislokATMDenganStdDeviasi[a].d20) / 2;
-                    }
-                }
-
                 //BUFFER ISI ATM
                 Double bufferIsiATM100 = (Double)bufferIsiAtm100Num.Value / 100;
                 Double bufferIsiATM50 = (Double)bufferIsiAtm50Num.Value / 100;
@@ -4177,9 +4219,12 @@ namespace testProjectBCA
 
         private void pktComboBox_SelectedValueChanged(object sender, EventArgs e)
         {
+            Database1Entities db = new Database1Entities();
             int idx = KodePkt.IndexOf(pktComboBox.SelectedValue.ToString());
             pktIndex = idx;
             labelKodePkt.Text = KodePkt[pktIndex];
+            String kodePkt = KodePkt[pktIndex];
+            namaPktLbl.Text = db.Pkts.AsEnumerable().Where(x => x.kodePkt == kodePkt).Select(x => x.namaPkt).FirstOrDefault();
             loadE2E();
             firstRun = true;
         }
@@ -4292,25 +4337,4 @@ namespace testProjectBCA
             }
         }
     }
-}
-public class Denom
-{
-    public Denom()
-    {
-        d100 = 0;
-        d50 = 0;
-        d20 = 0;
-    }
-
-    public DateTime tgl { set; get; }
-    public Int64 d100 { set; get; }
-    public Int64 d50 { set; get; }
-    public Int64 d20 { set; get; }
-}
-public class Rasio
-{
-    public DateTime tgl { set; get; }
-    public Double d100 { set; get; }
-    public Double d50 { set; get; }
-    public Double d20 { set; get; }
 }

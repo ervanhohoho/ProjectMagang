@@ -8,6 +8,9 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using testProjectBCA.ATM;
+using testProjectBCA.Dashboard;
+using testProjectBCA.CabangMenu;
 namespace testProjectBCA
 {
     public partial class MainForm : Form
@@ -282,32 +285,66 @@ namespace testProjectBCA
                         // Updating destination table, and dropping temp table
                         command.CommandTimeout = 300;
                         //Filtering data di temptable
+                        //Delete data yang dikelola CPC diganti dengan yang dikelola oleh pkt langsung (yang belakangnya ada 2nya)
+                        try
+                        {
+                            String fromFile = File.ReadAllText(@"listPktCPCAlsut.txt");
+                            String[] listYangDikelolaCPCAlsut = fromFile.Split('\n');
+                            foreach (String pkt in listYangDikelolaCPCAlsut)
+                            {
+                                if (String.IsNullOrWhiteSpace(pkt))
+                                    continue;
+                                //Delete yang dikelola CPC
+                                String pkt1 = pkt.Trim();
+                                command.CommandText = "DELETE FROM #TempTable WHERE kodePkt = '" + pkt1 + "'";
+                                command.ExecuteNonQuery();
+                                //Ubah dari kode baru jadi kode lama
+                                command.CommandText = "UPDATE #TempTable SET kodePkt = '" + pkt1 + "' WHERE kodePkt = '" + pkt1 + "2'";
+                                command.ExecuteNonQuery();
+                            }
+                        }
+                        catch (Exception EX) { }
 
+                        //Ganti kode pkt yang gak sesuai dengan data di table PKT
+                        try
+                        {
+                            String fromFile = File.ReadAllText(@"listKodePktYangDiubah.txt");
+                            String[] listKodePktYangDiubah = fromFile.Split('\n');
+                            foreach(var temp in listKodePktYangDiubah)
+                            {
+                                String salah = temp.Split(new String[] { "->" }, StringSplitOptions.None)[0];
+                                String benar = temp.Split(new String[] { "->" }, StringSplitOptions.None)[1];
+                                salah = salah.Trim();
+                                benar = benar.Trim();
+                                command.CommandText = "UPDATE #TempTable SET kodePkt = '"+benar+"' WHERE kodePkt = '"+salah+"'";
+                                command.ExecuteNonQuery();
+                            }
+                        }
+                        catch (Exception EX) { }
                         //Ini DELETE yang TAGT sama AMRT, yang dipake TAGT2 dan AMRT2, ini karena CPC Alsut
-                        command.CommandText = "DELETE FROM #TempTable WHERE kodePkt = 'AMRT' OR kodePkt = 'TAGT'";
-                        command.ExecuteNonQuery();
-                        command.CommandText = "UPDATE #TempTable SET kodePkt = 'AMRT' WHERE kodePkt = 'AMRT2'";
-                        command.ExecuteNonQuery();
-                        command.CommandText = "UPDATE #TempTable SET kodePkt = 'TAGT' WHERE kodePkt = 'TAGT2'";
-                        command.ExecuteNonQuery();
-                        command.CommandText = "UPDATE #TempTable SET kodePkt = 'ACBB' WHERE kodePkt = 'ACBD'";
-                        command.ExecuteNonQuery();
-                        command.CommandText = "UPDATE #TempTable SET kodePkt = 'ACMS' WHERE kodePkt = 'ACCM'";
-                        command.ExecuteNonQuery();
-                        command.CommandText = "UPDATE #TempTable SET kodePkt = 'ACKI' WHERE kodePkt = 'ACKD'";
-                        command.ExecuteNonQuery();
-                        command.CommandText = "UPDATE #TempTable SET kodePkt = 'ACMG' WHERE kodePkt = 'ACML'";
-                        command.ExecuteNonQuery();
-                        command.CommandText = "UPDATE #TempTable SET kodePkt = 'ANDB' WHERE kodePkt = 'ANBD'";
-                        command.ExecuteNonQuery();
-                        command.CommandText = "UPDATE #TempTable SET kodePkt = 'ANDJ' WHERE kodePkt = 'ANJK'";
-                        command.ExecuteNonQuery();
+                        //command.CommandText = "DELETE FROM #TempTable WHERE kodePkt = 'AMRT' OR kodePkt = 'TAGT'";
+                        //command.ExecuteNonQuery();
+                        //command.CommandText = "UPDATE #TempTable SET kodePkt = 'AMRT' WHERE kodePkt = 'AMRT2'";
+                        //command.ExecuteNonQuery();
+                        //command.CommandText = "UPDATE #TempTable SET kodePkt = 'TAGT' WHERE kodePkt = 'TAGT2'";
+                        //command.ExecuteNonQuery();
+                        //command.CommandText = "UPDATE #TempTable SET kodePkt = 'ACBB' WHERE kodePkt = 'ACBD'";
+                        //command.ExecuteNonQuery();
+                        //command.CommandText = "UPDATE #TempTable SET kodePkt = 'ACMS' WHERE kodePkt = 'ACCM'";
+                        //command.ExecuteNonQuery();
+                        //command.CommandText = "UPDATE #TempTable SET kodePkt = 'ACKI' WHERE kodePkt = 'ACKD'";
+                        //command.ExecuteNonQuery();
+                        //command.CommandText = "UPDATE #TempTable SET kodePkt = 'ACMG' WHERE kodePkt = 'ACML'";
+                        //command.ExecuteNonQuery();
+                        //command.CommandText = "UPDATE #TempTable SET kodePkt = 'ANDB' WHERE kodePkt = 'ANBD'";
+                        //command.ExecuteNonQuery();
+                        //command.CommandText = "UPDATE #TempTable SET kodePkt = 'ANDJ' WHERE kodePkt = 'ANJK'";
+                        //command.ExecuteNonQuery();
 
                         command.CommandText = "INSERT INTO Cashpoint(idCashpoint, kodePkt) SELECT TT.idCashpoint, TT.kodePkt FROM #TempTable TT LEFT JOIN Cashpoint C ON TT.idCashpoint = C.idCashpoint WHERE C.idCashpoint IS NULL";
                         command.ExecuteNonQuery();
                         command.CommandText = "UPDATE T SET T.kodePkt = TT.kodePkt FROM Cashpoint T INNER JOIN #TempTable TT ON TT.idCashpoint = T.idCashpoint; DROP TABLE #TempTable;";
                         command.ExecuteNonQuery();
-                        
                     }
                     catch (Exception ex)
                     {
@@ -797,8 +834,10 @@ namespace testProjectBCA
 
         private void inputStokPosisiToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            loadForm.ShowSplashScreen();
             InsertStokPosisiForm ispf = new InsertStokPosisiForm();
             ispf.MdiParent = this;
+            loadForm.CloseForm();
             ispf.Show();
         }
 
@@ -828,38 +867,6 @@ namespace testProjectBCA
             iotf.Show();
         }
 
-        private void aTMToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            loadForm.ShowSplashScreen();
-            dasbor d = new dasbor();
-            dasborExtension de = new dasborExtension();
-            //popupsementara ps = new popupsementara();
-            loadForm.CloseForm();
-            d.MdiParent = this;
-            //d.WindowState = FormWindowState.Maximized;
-            d.Show();
-            de.MdiParent = this;
-            de.Show();
-            dasborPerformancePktf dppf= new dasborPerformancePktf(); ;
-            dppf.MdiParent = this;
-            dppf.Show();
-            graphSaldoATM gsa = new graphSaldoATM();
-            gsa.MdiParent = this;
-            gsa.Show();
-            //ps.MdiParent = this;
-            //ps.Show();
-        }
-
-        private void saldoKasToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            DashboardCOJForm dcf = new DashboardCOJForm();
-            dcf.MdiParent = this;
-            dcf.Show();
-            dashboardCojExtension dcfe = new dashboardCojExtension();
-            dcfe.MdiParent = this;
-            dcfe.Show();
-        }
-
         private void perbandinganSaldoAwalToolStripMenuItem_Click(object sender, EventArgs e)
         {
             PerbandinganSaldoForm psf = new PerbandinganSaldoForm();
@@ -883,9 +890,7 @@ namespace testProjectBCA
 
         private void readBeehiveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ReadBeehiveForm rbf = new ReadBeehiveForm();
-            rbf.MdiParent = this;
-            rbf.Show();
+            
         }
 
         private void gantiPasswordToolStripMenuItem_Click(object sender, EventArgs e)
@@ -989,6 +994,89 @@ namespace testProjectBCA
                 db.SaveChanges();
                 loadForm.CloseForm();
             }
+        }
+
+        private void inputDataBankLainToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void dashboardATMToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            loadForm.ShowSplashScreen();
+            dasbor ds = new dasbor();
+            loadForm.CloseForm();
+            ds.MdiParent = this;
+            ds.Show();
+        }
+
+        private void performancePKTToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            loadForm.ShowSplashScreen();
+            dasborPerformancePktf dppf = new dasborPerformancePktf();
+            loadForm.CloseForm();
+            dppf.MdiParent = this;
+            dppf.Show();
+        }
+
+        private void sislokToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            loadForm.ShowSplashScreen();
+            dasborExtension de = new dasborExtension();
+            loadForm.CloseForm();
+            de.MdiParent = this;
+            de.Show();
+        }
+
+        private void saldoATMToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            loadForm.ShowSplashScreen();
+            graphSaldoATM gsa = new graphSaldoATM();
+            loadForm.CloseForm();
+            gsa.MdiParent = this;
+            gsa.Show();
+        }
+
+        private void dashboardCOJToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            DashboardCOJForm dcf = new DashboardCOJForm();
+            dcf.MdiParent = this;
+            dcf.Show();
+        }
+
+        private void saldoPerGrupToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            dashboardCojExtension dce = new dashboardCojExtension();
+            dce.MdiParent = this;
+            dce.Show();
+        }
+
+        private void proyeksiApprovalToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ProyeksiApproval pa = new ProyeksiApproval();
+            pa.MdiParent = this;
+            pa.Show();
+        }
+
+        private void rekonNasabahToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ReadBeehiveForm rbf = new ReadBeehiveForm();
+            rbf.MdiParent = this;
+            rbf.Show();
+        }
+
+        private void inputDataBankLainToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            InputDataBankLainForm idbl = new InputDataBankLainForm();
+            idbl.MdiParent = this;
+            idbl.Show();
+        }
+
+        private void viewDataStokPosisiToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            testProjectBCA.CabangMenu.ViewStokPosisiData vspd = new testProjectBCA.CabangMenu.ViewStokPosisiData();
+            vspd.MdiParent = this;
+            vspd.Show();
         }
     }
 }

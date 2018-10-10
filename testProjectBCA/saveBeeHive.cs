@@ -15,9 +15,11 @@ namespace testProjectBCA
     public partial class saveBeeHive
     {
         public int id { get; set; }
-        public Nullable<System.DateTime> tanggal { get; set; }
         public string kodePerusahaan { get; set; }
         public Nullable<long> totalNominal { get; set; }
+        public string jenisFile { get; set; }
+        public Nullable<System.DateTime> tanggalTransaksi { get; set; }
+        public Nullable<System.DateTime> tanggalKredit { get; set; }
         public string namaFile { get; set; }
     }
 }
