@@ -178,6 +178,12 @@
     <Compile Include="ATM\InputDataBankLainForm.Designer.cs">
       <DependentUpon>InputDataBankLainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="CabangMenu\ViewStokPosisiData.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CabangMenu\ViewStokPosisiData.Designer.cs">
+      <DependentUpon>ViewStokPosisiData.cs</DependentUpon>
+    </Compile>
     <Compile Include="Dashboard\ProyeksiApproval.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -199,10 +205,10 @@
     <Compile Include="DailyStock.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Cabang\DailyStockForm.cs">
+    <Compile Include="CabangMenu\DailyStockForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Cabang\DailyStockForm.designer.cs">
+    <Compile Include="CabangMenu\DailyStockForm.designer.cs">
       <DependentUpon>DailyStockForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Dashboard\dasbor.cs">
@@ -304,10 +310,10 @@
     <Compile Include="Nasabah\InputDataTukaranDanDeliveryForm.Designer.cs">
       <DependentUpon>InputDataTukaranDanDeliveryForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Cabang\InputOrderTrackingForm.cs">
+    <Compile Include="CabangMenu\InputOrderTrackingForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Cabang\InputOrderTrackingForm.designer.cs">
+    <Compile Include="CabangMenu\InputOrderTrackingForm.designer.cs">
       <DependentUpon>InputOrderTrackingForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Support Files\InputPromptForm.cs">
@@ -316,10 +322,10 @@
     <Compile Include="Support Files\InputPromptForm.Designer.cs">
       <DependentUpon>InputPromptForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Cabang\InsertStokPosisiForm.cs">
+    <Compile Include="CabangMenu\InsertStokPosisiForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Cabang\InsertStokPosisiForm.Designer.cs">
+    <Compile Include="CabangMenu\InsertStokPosisiForm.Designer.cs">
       <DependentUpon>InsertStokPosisiForm.cs</DependentUpon>
     </Compile>
     <Compile Include="laporanBon.cs">
@@ -364,10 +370,10 @@
     <Compile Include="Password.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Cabang\PembagianSaldoForm.cs">
+    <Compile Include="CabangMenu\PembagianSaldoForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Cabang\PembagianSaldoForm.Designer.cs">
+    <Compile Include="CabangMenu\PembagianSaldoForm.Designer.cs">
       <DependentUpon>PembagianSaldoForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ATM\PerbandinganSaldoForm.cs">
@@ -406,19 +412,19 @@
     <Compile Include="RekapSelisihAmbilSetor.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Cabang\RekonSaldoForm.cs">
+    <Compile Include="CabangMenu\RekonSaldoForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Cabang\RekonSaldoForm.designer.cs">
+    <Compile Include="CabangMenu\RekonSaldoForm.designer.cs">
       <DependentUpon>RekonSaldoForm.cs</DependentUpon>
     </Compile>
     <Compile Include="RekonSaldoPerVendor.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Cabang\rekonSaldoTrxCabang.cs">
+    <Compile Include="CabangMenu\rekonSaldoTrxCabang.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Cabang\rekonSaldoTrxCabang.designer.cs">
+    <Compile Include="CabangMenu\rekonSaldoTrxCabang.designer.cs">
       <DependentUpon>rekonSaldoTrxCabang.cs</DependentUpon>
     </Compile>
     <Compile Include="RekonSaldoVault.cs">
@@ -472,10 +478,10 @@
     <Compile Include="Nasabah\InputMasterNasabahForm.Designer.cs">
       <DependentUpon>InputMasterNasabahForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Cabang\InputTransaksiCabangForm.cs">
+    <Compile Include="CabangMenu\InputTransaksiCabangForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Cabang\InputTransaksiCabangForm.Designer.cs">
+    <Compile Include="CabangMenu\InputTransaksiCabangForm.Designer.cs">
       <DependentUpon>InputTransaksiCabangForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Nasabah\InvoiceNasabahForm.cs">
@@ -516,10 +522,10 @@
     <Compile Include="ATM\AkurasiPrediksiForm.Designer.cs">
       <DependentUpon>AkurasiPrediksiForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Cabang\proyeksiLikuiditasForm.cs">
+    <Compile Include="CabangMenu\proyeksiLikuiditasForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Cabang\proyeksiLikuiditasForm.Designer.cs">
+    <Compile Include="CabangMenu\proyeksiLikuiditasForm.Designer.cs">
       <DependentUpon>proyeksiLikuiditasForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ATM\RekapApprovalForm.cs">
@@ -546,19 +552,19 @@
     <Compile Include="SaveRekap.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Cabang\SLAProsesForm.cs">
+    <Compile Include="CabangMenu\SLAProsesForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Cabang\SLAProsesForm.designer.cs">
+    <Compile Include="CabangMenu\SLAProsesForm.designer.cs">
       <DependentUpon>SLAProsesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="StokPosisi.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Cabang\StokPosisiForm.cs">
+    <Compile Include="CabangMenu\StokPosisiForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Cabang\StokPosisiForm.designer.cs">
+    <Compile Include="CabangMenu\StokPosisiForm.designer.cs">
       <DependentUpon>StokPosisiForm.cs</DependentUpon>
     </Compile>
     <Compile Include="TabelTarikan.cs">
@@ -577,10 +583,10 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="transaksiPkt.cs" />
-    <Compile Include="Cabang\UpdateStokPosisiForm.cs">
+    <Compile Include="CabangMenu\UpdateStokPosisiForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Cabang\UpdateStokPosisiForm.Designer.cs">
+    <Compile Include="CabangMenu\UpdateStokPosisiForm.Designer.cs">
       <DependentUpon>UpdateStokPosisiForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Util.cs" />
@@ -591,8 +597,11 @@
     <EmbeddedResource Include="ATM\InputDataBankLainForm.resx">
       <DependentUpon>InputDataBankLainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Cabang\DailyStockForm.resx">
+    <EmbeddedResource Include="CabangMenu\DailyStockForm.resx">
       <DependentUpon>DailyStockForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CabangMenu\ViewStokPosisiData.resx">
+      <DependentUpon>ViewStokPosisiData.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dashboard\dasbor.resx">
       <DependentUpon>dasbor.cs</DependentUpon>
@@ -639,19 +648,19 @@
     <EmbeddedResource Include="Nasabah\InputDataTukaranDanDeliveryForm.resx">
       <DependentUpon>InputDataTukaranDanDeliveryForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Cabang\InputOrderTrackingForm.resx">
+    <EmbeddedResource Include="CabangMenu\InputOrderTrackingForm.resx">
       <DependentUpon>InputOrderTrackingForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Support Files\InputPromptForm.resx">
       <DependentUpon>InputPromptForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Cabang\InsertStokPosisiForm.resx">
+    <EmbeddedResource Include="CabangMenu\InsertStokPosisiForm.resx">
       <DependentUpon>InsertStokPosisiForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ATM\Unused\MultipleFilesInputUpdateForm.resx">
       <DependentUpon>MultipleFilesInputUpdateForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Cabang\PembagianSaldoForm.resx">
+    <EmbeddedResource Include="CabangMenu\PembagianSaldoForm.resx">
       <DependentUpon>PembagianSaldoForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ATM\PerbandinganSaldoForm.resx">
@@ -669,10 +678,10 @@
     <EmbeddedResource Include="ReadBeehiveForm.resx">
       <DependentUpon>ReadBeehiveForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Cabang\RekonSaldoForm.resx">
+    <EmbeddedResource Include="CabangMenu\RekonSaldoForm.resx">
       <DependentUpon>RekonSaldoForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Cabang\rekonSaldoTrxCabang.resx">
+    <EmbeddedResource Include="CabangMenu\rekonSaldoTrxCabang.resx">
       <DependentUpon>rekonSaldoTrxCabang.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ATM\RevisiInformationBoard.resx">
@@ -699,7 +708,7 @@
     <EmbeddedResource Include="Nasabah\InputMasterNasabahForm.resx">
       <DependentUpon>InputMasterNasabahForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Cabang\InputTransaksiCabangForm.resx">
+    <EmbeddedResource Include="CabangMenu\InputTransaksiCabangForm.resx">
       <DependentUpon>InputTransaksiCabangForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Nasabah\InvoiceNasabahForm.resx">
@@ -730,7 +739,7 @@
     <EmbeddedResource Include="ATM\AkurasiPrediksiForm.resx">
       <DependentUpon>AkurasiPrediksiForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Cabang\proyeksiLikuiditasForm.resx">
+    <EmbeddedResource Include="CabangMenu\proyeksiLikuiditasForm.resx">
       <DependentUpon>proyeksiLikuiditasForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ATM\RekapApprovalForm.resx">
@@ -739,16 +748,16 @@
     <EmbeddedResource Include="ATM\Revisi.resx">
       <DependentUpon>Revisi.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Cabang\SLAProsesForm.resx">
+    <EmbeddedResource Include="CabangMenu\SLAProsesForm.resx">
       <DependentUpon>SLAProsesForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Cabang\StokPosisiForm.resx">
+    <EmbeddedResource Include="CabangMenu\StokPosisiForm.resx">
       <DependentUpon>StokPosisiForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TestForm.resx">
       <DependentUpon>TestForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Cabang\UpdateStokPosisiForm.resx">
+    <EmbeddedResource Include="CabangMenu\UpdateStokPosisiForm.resx">
       <DependentUpon>UpdateStokPosisiForm.cs</DependentUpon>
     </EmbeddedResource>
     <EntityDeploy Include="Model1.edmx">

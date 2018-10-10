@@ -96,6 +96,7 @@
             this.cRMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setoranCRMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inputDataCashpointToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewDataStokPosisiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -294,7 +295,8 @@
             this.sLAProsesToolStripMenuItem,
             this.proyeksiLikuiditaToolStripMenuItem,
             this.orderTrackingToolStripMenuItem1,
-            this.inputDataBankLainToolStripMenuItem1});
+            this.inputDataBankLainToolStripMenuItem1,
+            this.viewDataStokPosisiToolStripMenuItem});
             this.cabangToolStripMenuItem.Name = "cabangToolStripMenuItem";
             this.cabangToolStripMenuItem.Size = new System.Drawing.Size(60, 20);
             this.cabangToolStripMenuItem.Text = "Cabang";
@@ -306,7 +308,7 @@
             this.inputStokPosisiToolStripMenuItem,
             this.updateStokPosisiToolStripMenuItem});
             this.inputDataToolStripMenuItem1.Name = "inputDataToolStripMenuItem1";
-            this.inputDataToolStripMenuItem1.Size = new System.Drawing.Size(183, 22);
+            this.inputDataToolStripMenuItem1.Size = new System.Drawing.Size(185, 22);
             this.inputDataToolStripMenuItem1.Text = "Input Data";
             // 
             // inputTransaksiCabangToolStripMenuItem1
@@ -336,7 +338,7 @@
             this.inputDataPktCabangToolStripMenuItem,
             this.inputDataKanwilCabangToolStripMenuItem});
             this.masterDataToolStripMenuItem.Name = "masterDataToolStripMenuItem";
-            this.masterDataToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.masterDataToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
             this.masterDataToolStripMenuItem.Text = "Input Master Data";
             // 
             // inputDataPktCabangToolStripMenuItem
@@ -356,7 +358,7 @@
             // dailyStockToolStripMenuItem
             // 
             this.dailyStockToolStripMenuItem.Name = "dailyStockToolStripMenuItem";
-            this.dailyStockToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.dailyStockToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
             this.dailyStockToolStripMenuItem.Text = "Inflow/Outflow";
             this.dailyStockToolStripMenuItem.Click += new System.EventHandler(this.dailyStockToolStripMenuItem_Click);
             // 
@@ -366,7 +368,7 @@
             this.rekonSaldoToolStripMenuItem,
             this.cabangToolStripMenuItem1});
             this.rekonSaldoToolStripMenuItem1.Name = "rekonSaldoToolStripMenuItem1";
-            this.rekonSaldoToolStripMenuItem1.Size = new System.Drawing.Size(183, 22);
+            this.rekonSaldoToolStripMenuItem1.Size = new System.Drawing.Size(185, 22);
             this.rekonSaldoToolStripMenuItem1.Text = "Rekon Saldo";
             this.rekonSaldoToolStripMenuItem1.Click += new System.EventHandler(this.rekonSaldoToolStripMenuItem1_Click);
             // 
@@ -387,28 +389,28 @@
             // sLAProsesToolStripMenuItem
             // 
             this.sLAProsesToolStripMenuItem.Name = "sLAProsesToolStripMenuItem";
-            this.sLAProsesToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.sLAProsesToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
             this.sLAProsesToolStripMenuItem.Text = "SLA Proses";
             this.sLAProsesToolStripMenuItem.Click += new System.EventHandler(this.sLAProsesToolStripMenuItem_Click);
             // 
             // proyeksiLikuiditaToolStripMenuItem
             // 
             this.proyeksiLikuiditaToolStripMenuItem.Name = "proyeksiLikuiditaToolStripMenuItem";
-            this.proyeksiLikuiditaToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.proyeksiLikuiditaToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
             this.proyeksiLikuiditaToolStripMenuItem.Text = "Proyeksi Likuiditas";
             this.proyeksiLikuiditaToolStripMenuItem.Click += new System.EventHandler(this.proyeksiLikuiditaToolStripMenuItem_Click);
             // 
             // orderTrackingToolStripMenuItem1
             // 
             this.orderTrackingToolStripMenuItem1.Name = "orderTrackingToolStripMenuItem1";
-            this.orderTrackingToolStripMenuItem1.Size = new System.Drawing.Size(183, 22);
+            this.orderTrackingToolStripMenuItem1.Size = new System.Drawing.Size(185, 22);
             this.orderTrackingToolStripMenuItem1.Text = "Order Tracking";
             this.orderTrackingToolStripMenuItem1.Click += new System.EventHandler(this.orderTrackingToolStripMenuItem1_Click);
             // 
             // inputDataBankLainToolStripMenuItem1
             // 
             this.inputDataBankLainToolStripMenuItem1.Name = "inputDataBankLainToolStripMenuItem1";
-            this.inputDataBankLainToolStripMenuItem1.Size = new System.Drawing.Size(183, 22);
+            this.inputDataBankLainToolStripMenuItem1.Size = new System.Drawing.Size(185, 22);
             this.inputDataBankLainToolStripMenuItem1.Text = "Input Data Bank Lain";
             this.inputDataBankLainToolStripMenuItem1.Click += new System.EventHandler(this.inputDataBankLainToolStripMenuItem1_Click);
             // 
@@ -633,6 +635,13 @@
             this.inputDataCashpointToolStripMenuItem1.Text = "Input Data Cashpoint";
             this.inputDataCashpointToolStripMenuItem1.Click += new System.EventHandler(this.inputDataCashpointToolStripMenuItem1_Click);
             // 
+            // viewDataStokPosisiToolStripMenuItem
+            // 
+            this.viewDataStokPosisiToolStripMenuItem.Name = "viewDataStokPosisiToolStripMenuItem";
+            this.viewDataStokPosisiToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.viewDataStokPosisiToolStripMenuItem.Text = "View Data Stok Posisi";
+            this.viewDataStokPosisiToolStripMenuItem.Click += new System.EventHandler(this.viewDataStokPosisiToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -725,5 +734,6 @@
         private System.Windows.Forms.ToolStripMenuItem proyeksiApprovalToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem rekonNasabahToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem inputDataBankLainToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem viewDataStokPosisiToolStripMenuItem;
     }
 }

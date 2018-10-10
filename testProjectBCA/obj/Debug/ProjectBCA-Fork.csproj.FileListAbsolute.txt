@@ -102,7 +102,6 @@ C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\test
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.SLAProsesForm.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.StokPosisiForm.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.TestForm.resources
-C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.UpdateStokPosisiForm.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\ProjectBCA-Fork.csproj.GenerateResource.cache
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\ProjectBCA-Fork.csproj.CoreCompileInputs.cache
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.exe.manifest
@@ -115,3 +114,5 @@ C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\test
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.ATM.RevisiInformationBoard.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.ATM.InputDataBankLainForm.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.Dashboard.ProyeksiApproval.resources
+C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.CabangMenu.ViewStokPosisiData.resources
+C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.CabangMenu.UpdateStokPosisiForm.resources
