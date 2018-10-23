@@ -324,7 +324,7 @@ namespace testProjectBCA
                             inBI = 0,
                             inTUKAB = 0,
                             inOtherCPC = 0,
-                            intVaultATM = 0,
+                            inVaultATM = 0,
                             inTukaran =0,
                             outCabang = 0,
                             outRetail = 0,
@@ -351,7 +351,7 @@ namespace testProjectBCA
                             datasebelom.inBI = inBI;
                             datasebelom.inTUKAB = inTUKAB;
                             datasebelom.inOtherCPC = inOtherCPC;
-                            datasebelom.intVaultATM = inVaultATM;
+                            datasebelom.inVaultATM = inVaultATM;
                             datasebelom.inTukaran = inTukaran;
                             //out
                             datasebelom.outCabang = outCabang;
@@ -556,7 +556,7 @@ namespace testProjectBCA
                             inBI = 0,
                             inTUKAB = 0,
                             inOtherCPC = 0,
-                            intVaultATM = 0,
+                            inVaultATM = 0,
                             inTukaran = 0,
                             outCabang = 0,
                             outRetail = 0,
@@ -583,7 +583,7 @@ namespace testProjectBCA
                             datasebelom.inBI = inBI;
                             datasebelom.inTUKAB = inTUKAB;
                             datasebelom.inOtherCPC = inOtherCPC;
-                            datasebelom.intVaultATM = inVaultATM;
+                            datasebelom.inVaultATM = inVaultATM;
                             datasebelom.inTukaran = inTukaran;
                             //out
                             datasebelom.outCabang = outCabang;

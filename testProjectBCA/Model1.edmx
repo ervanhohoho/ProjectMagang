@@ -53,6 +53,27 @@
           <Property Name="jenisLayanan" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="asuransi" Type="float" />
         </EntityType>
+        <EntityType Name="BeritaAcara">
+          <Key>
+            <PropertyRef Name="idBA" />
+          </Key>
+          <Property Name="idBA" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tanggal" Type="datetime" />
+          <Property Name="kodeCabang" Type="varchar" MaxLength="255" />
+          <Property Name="noBeritaAcara" Type="varchar" MaxLength="255" />
+          <Property Name="d100k" Type="bigint" />
+          <Property Name="d50k" Type="bigint" />
+          <Property Name="d20k" Type="bigint" />
+          <Property Name="d10k" Type="bigint" />
+          <Property Name="d5k" Type="bigint" />
+          <Property Name="d2k" Type="bigint" />
+          <Property Name="d1k" Type="bigint" />
+          <Property Name="nominal" Type="bigint" />
+          <Property Name="jenisIsi" Type="varchar" MaxLength="255" />
+          <Property Name="tanggalSetor" Type="datetime" />
+          <Property Name="noTxn" Type="varchar" MaxLength="255" />
+          <Property Name="kodePkt" Type="varchar" MaxLength="10" />
+        </EntityType>
         <EntityType Name="Cabang">
           <Key>
             <PropertyRef Name="kodeCabang" />
@@ -424,7 +445,7 @@
           <Property Name="inBI" Type="bigint" />
           <Property Name="inTUKAB" Type="bigint" />
           <Property Name="inOtherCPC" Type="bigint" />
-          <Property Name="intVaultATM" Type="bigint" />
+          <Property Name="inVaultATM" Type="bigint" />
           <Property Name="inTukaran" Type="bigint" />
           <Property Name="outCabang" Type="bigint" />
           <Property Name="outRetail" Type="bigint" />
@@ -540,6 +561,7 @@
           <EntitySet Name="ApprovalPembagianSaldo" EntityType="Self.ApprovalPembagianSaldo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Approvals" EntityType="Self.Approvals" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AsuransiLayanan" EntityType="Self.AsuransiLayanan" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BeritaAcara" EntityType="Self.BeritaAcara" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cabang" EntityType="Self.Cabang" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cashpoint" EntityType="Self.Cashpoint" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DailyStock" EntityType="Self.DailyStock" Schema="dbo" store:Type="Tables" />
@@ -985,7 +1007,6 @@
           <Property Name="inBI" Type="Int64" />
           <Property Name="inTUKAB" Type="Int64" />
           <Property Name="inOtherCPC" Type="Int64" />
-          <Property Name="intVaultATM" Type="Int64" />
           <Property Name="inTukaran" Type="Int64" />
           <Property Name="outRetail" Type="Int64" />
           <Property Name="outBIULE" Type="Int64" />
@@ -994,6 +1015,7 @@
           <Property Name="outOtherCPC" Type="Int64" />
           <Property Name="outVaultATM" Type="Int64" />
           <Property Name="outTukaran" Type="Int64" />
+          <Property Name="inVaultATM" Type="Int64" />
         </EntityType>
         <EntityType Name="TabelTarikan">
           <Key>
@@ -1127,6 +1149,7 @@
           <EntitySet Name="TabelTarikanSetoranCRMs" EntityType="CACModel.TabelTarikanSetoranCRM" />
           <EntitySet Name="ApprovalPembagianSaldoes" EntityType="CACModel.ApprovalPembagianSaldo" />
           <EntitySet Name="DataBankLains" EntityType="CACModel.DataBankLain" />
+          <EntitySet Name="BeritaAcaras" EntityType="CACModel.BeritaAcara" />
         </EntityContainer>
         <EntityType Name="TabelTarikanSetoranCRM">
           <Key>
@@ -1158,6 +1181,27 @@
           </Key>
           <Property Name="idBank" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="namaBank" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="BeritaAcara">
+          <Key>
+            <PropertyRef Name="idBA" />
+          </Key>
+          <Property Name="idBA" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="tanggal" Type="DateTime" Precision="3" />
+          <Property Name="kodeCabang" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="noBeritaAcara" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="d100k" Type="Int64" />
+          <Property Name="d50k" Type="Int64" />
+          <Property Name="d20k" Type="Int64" />
+          <Property Name="d10k" Type="Int64" />
+          <Property Name="d5k" Type="Int64" />
+          <Property Name="d2k" Type="Int64" />
+          <Property Name="d1k" Type="Int64" />
+          <Property Name="nominal" Type="Int64" />
+          <Property Name="jenisIsi" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="tanggalSetor" Type="DateTime" Precision="3" />
+          <Property Name="noTxn" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="kodePkt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1560,6 +1604,7 @@
           <EntitySetMapping Name="StokPosisis">
             <EntityTypeMapping TypeName="CACModel.StokPosisi">
               <MappingFragment StoreEntitySet="StokPosisi">
+                <ScalarProperty Name="inVaultATM" ColumnName="inVaultATM" />
                 <ScalarProperty Name="outTukaran" ColumnName="outTukaran" />
                 <ScalarProperty Name="outVaultATM" ColumnName="outVaultATM" />
                 <ScalarProperty Name="outOtherCPC" ColumnName="outOtherCPC" />
@@ -1568,7 +1613,6 @@
                 <ScalarProperty Name="outBIULE" ColumnName="outBIULE" />
                 <ScalarProperty Name="outRetail" ColumnName="outRetail" />
                 <ScalarProperty Name="inTukaran" ColumnName="inTukaran" />
-                <ScalarProperty Name="intVaultATM" ColumnName="intVaultATM" />
                 <ScalarProperty Name="inOtherCPC" ColumnName="inOtherCPC" />
                 <ScalarProperty Name="inTUKAB" ColumnName="inTUKAB" />
                 <ScalarProperty Name="inBI" ColumnName="inBI" />
@@ -1695,6 +1739,28 @@
               <MappingFragment StoreEntitySet="DataBankLain">
                 <ScalarProperty Name="namaBank" ColumnName="namaBank" />
                 <ScalarProperty Name="idBank" ColumnName="idBank" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BeritaAcaras">
+            <EntityTypeMapping TypeName="CACModel.BeritaAcara">
+              <MappingFragment StoreEntitySet="BeritaAcara">
+                <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
+                <ScalarProperty Name="noTxn" ColumnName="noTxn" />
+                <ScalarProperty Name="tanggalSetor" ColumnName="tanggalSetor" />
+                <ScalarProperty Name="jenisIsi" ColumnName="jenisIsi" />
+                <ScalarProperty Name="nominal" ColumnName="nominal" />
+                <ScalarProperty Name="d1k" ColumnName="d1k" />
+                <ScalarProperty Name="d2k" ColumnName="d2k" />
+                <ScalarProperty Name="d5k" ColumnName="d5k" />
+                <ScalarProperty Name="d10k" ColumnName="d10k" />
+                <ScalarProperty Name="d20k" ColumnName="d20k" />
+                <ScalarProperty Name="d50k" ColumnName="d50k" />
+                <ScalarProperty Name="d100k" ColumnName="d100k" />
+                <ScalarProperty Name="noBeritaAcara" ColumnName="noBeritaAcara" />
+                <ScalarProperty Name="kodeCabang" ColumnName="kodeCabang" />
+                <ScalarProperty Name="tanggal" ColumnName="tanggal" />
+                <ScalarProperty Name="idBA" ColumnName="idBA" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

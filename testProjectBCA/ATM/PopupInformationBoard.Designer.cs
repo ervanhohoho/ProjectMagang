@@ -41,6 +41,8 @@
             // 
             // rasioChart
             // 
+            this.rasioChart.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.rasioChart.Location = new System.Drawing.Point(12, 86);
             this.rasioChart.Name = "rasioChart";
             this.rasioChart.Size = new System.Drawing.Size(921, 281);

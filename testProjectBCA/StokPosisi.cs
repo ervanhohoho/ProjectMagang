@@ -41,7 +41,6 @@ namespace testProjectBCA
         public Nullable<long> inBI { get; set; }
         public Nullable<long> inTUKAB { get; set; }
         public Nullable<long> inOtherCPC { get; set; }
-        public Nullable<long> intVaultATM { get; set; }
         public Nullable<long> inTukaran { get; set; }
         public Nullable<long> outRetail { get; set; }
         public Nullable<long> outBIULE { get; set; }
@@ -50,5 +49,6 @@ namespace testProjectBCA
         public Nullable<long> outOtherCPC { get; set; }
         public Nullable<long> outVaultATM { get; set; }
         public Nullable<long> outTukaran { get; set; }
+        public Nullable<long> inVaultATM { get; set; }
     }
 }

@@ -26,7 +26,7 @@ namespace testProjectBCA
         public SLAProsesForm()
         {
             InitializeComponent();
-
+            //dataGridView1.AutoGenerateColumns = false;
             if (loadComboSLA())
             {
                 loadComboPkt();
@@ -707,8 +707,9 @@ namespace testProjectBCA
                                      tanggal = date,
                                      slaProsesBesar = hitungSLA((Int64)ub.value, (Int64)irb.value, (Int64)icb.value, ubh.value, "Besar"),
                                      slaProsesKecil = hitungSLA((Int64)uk.value, (Int64)irk.value, (Int64)ick.value, ukh.value, "Kecil"),
-                                     slaGabung = hitungSLA((Int64)ub.value, (Int64)irb.value, (Int64)icb.value, ubh.value, (Int64)uk.value, (Int64)irk.value, (Int64)ick.value, (Int64)ukh.value)
+                                     slaGabung = hitungSLA((Int64)ub.value, (Int64)irb.value, (Int64)icb.value, ubh.value, (Int64)uk.value, (Int64)irk.value, (Int64)ick.value, (Int64)ukh.value) 
                                  }).ToList();
+                        
                         slapav.AddRange(q);
                         //sampe siNI OK
                     }
@@ -1115,7 +1116,7 @@ namespace testProjectBCA
                 slaCabangKecil= (int)slaCabangKecilNum.Value,
                 slaUnprocBesar = (int)slaCabangBesarNum.Value - 1,
                 slaUnprocKecil = (int)slaCabangKecilNum.Value - 1;
-
+            Double returndata;
             if (slaUnprocBesar <= 1)
                 slaUnprocBesar = 1;
             if (slaUnprocKecil <= 1)
@@ -1126,16 +1127,17 @@ namespace testProjectBCA
             }
             else if((unprocBesar + retailBesar + cabangBesar) == 0)
             {
-                return (Double)(unprocKecil + retailKecil + cabangKecil - unprocH1Kecil) / (unprocKecil / (slaUnprocKecil) + retailKecil/slaRetailKecil + cabangKecil/slaCabangKecil);
+                returndata = (Double)(unprocKecil + retailKecil + cabangKecil - unprocH1Kecil) / (unprocKecil / (slaUnprocKecil) + retailKecil / slaRetailKecil + cabangKecil / slaCabangKecil);
             }
             else if((unprocKecil + retailKecil+cabangKecil)==0)
             {
-                return (Double)(unprocBesar + retailBesar + cabangBesar - unprocH1Besar) / (unprocBesar / (slaUnprocBesar) + retailBesar/slaRetailBesar + cabangBesar/slaCabangBesar);
+                returndata = (Double)(unprocBesar + retailBesar + cabangBesar - unprocH1Besar) / (unprocBesar / (slaUnprocBesar) + retailBesar/slaRetailBesar + cabangBesar/slaCabangBesar);
             }
             else
             {
-                return (Double)((unprocBesar + retailBesar + cabangBesar - unprocH1Besar) + (unprocKecil + retailKecil + cabangKecil - unprocH1Kecil)) / ((unprocBesar / (slaUnprocBesar) + retailBesar/slaRetailBesar + cabangBesar/slaCabangBesar)+ (unprocKecil / (slaUnprocKecil) + retailKecil/slaRetailKecil + cabangKecil / slaCabangKecil));
+                returndata = (Double)((unprocBesar + retailBesar + cabangBesar - unprocH1Besar) + (unprocKecil + retailKecil + cabangKecil - unprocH1Kecil)) / ((unprocBesar / (slaUnprocBesar) + retailBesar/slaRetailBesar + cabangBesar/slaCabangBesar)+ (unprocKecil / (slaUnprocKecil) + retailKecil/slaRetailKecil + cabangKecil / slaCabangKecil));
             }
+            return returndata < 0 ? 0 : returndata > 1 ? 1 : returndata;
         }
         public Int64 hitungPcs(Int64 value, String denom)
         {
@@ -1187,6 +1189,7 @@ namespace testProjectBCA
         private void buttonRefresh_Click(object sender, EventArgs e)
         {
             //reloadData();
+            dataGridView1.DataSource = null;
             reloadDataFromStokPosisi();
         }
 

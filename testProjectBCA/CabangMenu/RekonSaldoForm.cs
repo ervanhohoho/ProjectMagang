@@ -283,7 +283,10 @@ namespace testProjectBCA
         {
             //ProsesOrderBlogHistory();
             //preparing data for pivot pervendor bon
-            var query = (from x in en.RekonSaldoPerVendors.AsEnumerable()
+            var queryS = (from x in en.RekonSaldoPerVendors.AsEnumerable()
+                          where !String.IsNullOrEmpty(x.vendor)
+                          select x).ToList();
+            var query = (from x in queryS
                          where (x.actionRekon.Contains("Delivery") && x.statusRekon.Equals("Confirmed")) && (((DateTime)x.dueDate).Date == dateTimePicker2.Value.Date || ((DateTime)x.realDate).Date == dateTimePicker2.Value.Date)
                          select new
                          {
@@ -341,7 +344,7 @@ namespace testProjectBCA
             dataGridView6.DataSource = ppvb;
 
             //preparing data for pivot pervendor setoran
-            var querysetoran = (from x in en.RekonSaldoPerVendors.AsEnumerable()
+            var querysetoran = (from x in queryS
                                 where (x.actionRekon.Contains("Return") && x.statusRekon.Equals("In Transit")) && (((DateTime)x.dueDate).Date == dateTimePicker2.Value.Date || ((DateTime)x.realDate).Date == dateTimePicker2.Value.Date)
                                 select new
                                 {
@@ -417,6 +420,9 @@ namespace testProjectBCA
             //ProsesSetoranCPC();
             //preparing data for pivotCPC - BI dan BankLain Return
             var query = (from x in en.RekonSaldoVaults.AsEnumerable()
+                         where !String.IsNullOrEmpty(x.fundingSoure)
+                         select x).ToList();
+            query = (from x in query
                          where (x.fundingSoure == "BI" || x.fundingSoure.Contains("OB")) && (((DateTime)x.dueDate).Date == dateTimePicker2.Value.Date || ((DateTime)x.realDate).Date == dateTimePicker2.Value.Date)
                          select x).ToList();
 
@@ -491,6 +497,9 @@ namespace testProjectBCA
 
             //preparing data for Pivot CPC - BI dan BankLain delivery
             var queryd = (from x in en.RekonSaldoVaults.AsEnumerable()
+                          where !String.IsNullOrEmpty(x.fundingSoure)
+                          select x).ToList();
+            queryd = (from x in queryd
                           where (x.fundingSoure == "BI" || x.fundingSoure.Contains("OB")) && (((DateTime)x.dueDate).Date == dateTimePicker2.Value.Date || ((DateTime)x.realDate).Date == dateTimePicker2.Value.Date)
                           select x).ToList();
 
@@ -564,6 +573,9 @@ namespace testProjectBCA
 
             //preparing data for pivot - ATM delivery
             var queryad = (from x in en.RekonSaldoVaults.AsEnumerable()
+                           where !String.IsNullOrEmpty(x.fundingSoure)
+                           select x).ToList();
+            queryad = (from x in queryad
                            where (x.fundingSoure != "BI" && !x.fundingSoure.Contains("OB")) && (((DateTime)x.dueDate).Date == dateTimePicker2.Value.Date || ((DateTime)x.realDate).Date == dateTimePicker2.Value.Date)
                            select x).ToList();
 
@@ -637,6 +649,9 @@ namespace testProjectBCA
 
             //preparing data for pivot - atm return
             var queryar = (from x in en.RekonSaldoVaults.AsEnumerable()
+                           where !String.IsNullOrEmpty(x.fundingSoure)
+                           select x).ToList();
+            queryar = (from x in queryar
                            where (x.fundingSoure != "BI" && !x.fundingSoure.Contains("OB")) && (((DateTime)x.dueDate).Date == dateTimePicker2.Value.Date || ((DateTime)x.realDate).Date == dateTimePicker2.Value.Date)
                            select x).ToList();
 

@@ -178,6 +178,9 @@
     <Compile Include="ATM\InputDataBankLainForm.Designer.cs">
       <DependentUpon>InputDataBankLainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="BeritaAcara.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="CabangMenu\ViewStokPosisiData.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -419,7 +419,7 @@
     <Property Name="inBI" Type="bigint" />
     <Property Name="inTUKAB" Type="bigint" />
     <Property Name="inOtherCPC" Type="bigint" />
-    <Property Name="intVaultATM" Type="bigint" />
+    <Property Name="inVaultATM" Type="bigint" />
     <Property Name="inTukaran" Type="bigint" />
     <Property Name="outCabang" Type="bigint" />
     <Property Name="outRetail" Type="bigint" />

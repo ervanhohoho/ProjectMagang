@@ -396,6 +396,7 @@
     <EntitySetMapping Name="StokPosisis">
       <EntityTypeMapping TypeName="CACModel.StokPosisi">
         <MappingFragment StoreEntitySet="StokPosisi">
+          <ScalarProperty Name="inVaultATM" ColumnName="inVaultATM" />
           <ScalarProperty Name="outTukaran" ColumnName="outTukaran" />
           <ScalarProperty Name="outVaultATM" ColumnName="outVaultATM" />
           <ScalarProperty Name="outOtherCPC" ColumnName="outOtherCPC" />
@@ -404,7 +405,6 @@
           <ScalarProperty Name="outBIULE" ColumnName="outBIULE" />
           <ScalarProperty Name="outRetail" ColumnName="outRetail" />
           <ScalarProperty Name="inTukaran" ColumnName="inTukaran" />
-          <ScalarProperty Name="intVaultATM" ColumnName="intVaultATM" />
           <ScalarProperty Name="inOtherCPC" ColumnName="inOtherCPC" />
           <ScalarProperty Name="inTUKAB" ColumnName="inTUKAB" />
           <ScalarProperty Name="inBI" ColumnName="inBI" />

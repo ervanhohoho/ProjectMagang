@@ -1244,7 +1244,7 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox2);
             this.Name = "RevisiInformationBoard";
-            this.Text = "Revisi Information Boardd";
+            this.Text = "Revisi Information Board";
             ((System.ComponentModel.ISupportInitialize)(this.rekomendasiBonGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bonGridView)).EndInit();
             this.groupBox1.ResumeLayout(false);

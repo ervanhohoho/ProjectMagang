@@ -403,7 +403,6 @@
     <Property Name="inBI" Type="Int64" />
     <Property Name="inTUKAB" Type="Int64" />
     <Property Name="inOtherCPC" Type="Int64" />
-    <Property Name="intVaultATM" Type="Int64" />
     <Property Name="inTukaran" Type="Int64" />
     <Property Name="outRetail" Type="Int64" />
     <Property Name="outBIULE" Type="Int64" />
@@ -412,6 +411,7 @@
     <Property Name="outOtherCPC" Type="Int64" />
     <Property Name="outVaultATM" Type="Int64" />
     <Property Name="outTukaran" Type="Int64" />
+    <Property Name="inVaultATM" Type="Int64" />
   </EntityType>
   <EntityType Name="TabelTarikan">
     <Key>
@@ -545,6 +545,7 @@
     <EntitySet Name="TabelTarikanSetoranCRMs" EntityType="CACModel.TabelTarikanSetoranCRM" />
     <EntitySet Name="ApprovalPembagianSaldoes" EntityType="CACModel.ApprovalPembagianSaldo" />
     <EntitySet Name="DataBankLains" EntityType="CACModel.DataBankLain" />
+    <EntitySet Name="BeritaAcaras" EntityType="CACModel.BeritaAcara" />
   </EntityContainer>
   <EntityType Name="TabelTarikanSetoranCRM">
     <Key>
@@ -576,5 +577,25 @@
     </Key>
     <Property Name="idBank" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
     <Property Name="namaBank" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="BeritaAcara">
+    <Key>
+      <PropertyRef Name="idBA" />
+    </Key>
+    <Property Name="idBA" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="tanggal" Type="DateTime" Precision="3" />
+    <Property Name="kodeCabang" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="noBeritaAcara" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="d100k" Type="Int64" />
+    <Property Name="d50k" Type="Int64" />
+    <Property Name="d20k" Type="Int64" />
+    <Property Name="d10k" Type="Int64" />
+    <Property Name="d5k" Type="Int64" />
+    <Property Name="d2k" Type="Int64" />
+    <Property Name="d1k" Type="Int64" />
+    <Property Name="nominal" Type="Int64" />
+    <Property Name="jenisIsi" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="tanggalSetor" Type="DateTime" Precision="3" />
+    <Property Name="noTxn" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
   </EntityType>
 </Schema>

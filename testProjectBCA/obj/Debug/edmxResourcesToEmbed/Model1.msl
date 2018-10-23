@@ -396,6 +396,7 @@
     <EntitySetMapping Name="StokPosisis">
       <EntityTypeMapping TypeName="CACModel.StokPosisi">
         <MappingFragment StoreEntitySet="StokPosisi">
+          <ScalarProperty Name="inVaultATM" ColumnName="inVaultATM" />
           <ScalarProperty Name="outTukaran" ColumnName="outTukaran" />
           <ScalarProperty Name="outVaultATM" ColumnName="outVaultATM" />
           <ScalarProperty Name="outOtherCPC" ColumnName="outOtherCPC" />
@@ -404,7 +405,6 @@
           <ScalarProperty Name="outBIULE" ColumnName="outBIULE" />
           <ScalarProperty Name="outRetail" ColumnName="outRetail" />
           <ScalarProperty Name="inTukaran" ColumnName="inTukaran" />
-          <ScalarProperty Name="intVaultATM" ColumnName="intVaultATM" />
           <ScalarProperty Name="inOtherCPC" ColumnName="inOtherCPC" />
           <ScalarProperty Name="inTUKAB" ColumnName="inTUKAB" />
           <ScalarProperty Name="inBI" ColumnName="inBI" />
@@ -531,6 +531,27 @@
         <MappingFragment StoreEntitySet="DataBankLain">
           <ScalarProperty Name="namaBank" ColumnName="namaBank" />
           <ScalarProperty Name="idBank" ColumnName="idBank" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="BeritaAcaras">
+      <EntityTypeMapping TypeName="CACModel.BeritaAcara">
+        <MappingFragment StoreEntitySet="BeritaAcara">
+          <ScalarProperty Name="noTxn" ColumnName="noTxn" />
+          <ScalarProperty Name="tanggalSetor" ColumnName="tanggalSetor" />
+          <ScalarProperty Name="jenisIsi" ColumnName="jenisIsi" />
+          <ScalarProperty Name="nominal" ColumnName="nominal" />
+          <ScalarProperty Name="d1k" ColumnName="d1k" />
+          <ScalarProperty Name="d2k" ColumnName="d2k" />
+          <ScalarProperty Name="d5k" ColumnName="d5k" />
+          <ScalarProperty Name="d10k" ColumnName="d10k" />
+          <ScalarProperty Name="d20k" ColumnName="d20k" />
+          <ScalarProperty Name="d50k" ColumnName="d50k" />
+          <ScalarProperty Name="d100k" ColumnName="d100k" />
+          <ScalarProperty Name="noBeritaAcara" ColumnName="noBeritaAcara" />
+          <ScalarProperty Name="kodeCabang" ColumnName="kodeCabang" />
+          <ScalarProperty Name="tanggal" ColumnName="tanggal" />
+          <ScalarProperty Name="idBA" ColumnName="idBA" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

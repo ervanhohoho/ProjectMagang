@@ -403,7 +403,6 @@
     <Property Name="inBI" Type="Int64" />
     <Property Name="inTUKAB" Type="Int64" />
     <Property Name="inOtherCPC" Type="Int64" />
-    <Property Name="intVaultATM" Type="Int64" />
     <Property Name="inTukaran" Type="Int64" />
     <Property Name="outRetail" Type="Int64" />
     <Property Name="outBIULE" Type="Int64" />
@@ -412,6 +411,7 @@
     <Property Name="outOtherCPC" Type="Int64" />
     <Property Name="outVaultATM" Type="Int64" />
     <Property Name="outTukaran" Type="Int64" />
+    <Property Name="inVaultATM" Type="Int64" />
   </EntityType>
   <EntityType Name="TabelTarikan">
     <Key>

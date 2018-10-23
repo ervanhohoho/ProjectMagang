@@ -306,7 +306,7 @@ namespace testProjectBCA.CabangMenu
                         datasebelom.inBI = inBI;
                         datasebelom.inTUKAB = inTUKAB;
                         datasebelom.inOtherCPC = inOtherCPC;
-                        datasebelom.intVaultATM = inVaultATM;
+                        datasebelom.inVaultATM = inVaultATM;
                         datasebelom.inTukaran = inTukaran;
                         //out
                         datasebelom.outCabang = outCabang;
@@ -554,7 +554,7 @@ namespace testProjectBCA.CabangMenu
                         datasebelom.inBI = inBI;
                         datasebelom.inTUKAB = inTUKAB;
                         datasebelom.inOtherCPC = inOtherCPC;
-                        datasebelom.intVaultATM = inVaultATM;
+                        datasebelom.inVaultATM = inVaultATM;
                         datasebelom.inTukaran = inTukaran;
                         //out
                         datasebelom.outCabang = outCabang;
