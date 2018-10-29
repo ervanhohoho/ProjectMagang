@@ -827,7 +827,7 @@ namespace testProjectBCA
 
         private void rekonSaldoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            RekonSaldoForm rsf = new RekonSaldoForm();
+            OlahanOptiVault rsf = new OlahanOptiVault();
             rsf.MdiParent = this;
             rsf.Show();
         }
@@ -883,7 +883,7 @@ namespace testProjectBCA
 
         private void rekonSaldoToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
-            RekonSaldoForm rsf = new RekonSaldoForm();
+            OlahanOptiVault rsf = new OlahanOptiVault();
             rsf.MdiParent = this;
             rsf.Show();
         }
@@ -1077,6 +1077,13 @@ namespace testProjectBCA
             testProjectBCA.CabangMenu.ViewStokPosisiData vspd = new testProjectBCA.CabangMenu.ViewStokPosisiData();
             vspd.MdiParent = this;
             vspd.Show();
+        }
+
+        private void rekonSaldoToolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            RekonSaldoForm rsf = new RekonSaldoForm();
+            rsf.MdiParent = this;
+            rsf.Show();
         }
     }
 }

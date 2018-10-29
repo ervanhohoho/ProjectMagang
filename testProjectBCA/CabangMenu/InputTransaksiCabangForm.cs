@@ -1559,7 +1559,6 @@ namespace testProjectBCA
             DataRow[] toDelete = dt.Select("Column2 is null");
             foreach (DataRow row in toDelete)
                 dt.Rows.Remove(row);
-            dataGridView1.DataSource = dt;
             int COL_TANGGAL_BA = Util.ExcelColumnNameToNumber("A"),
                 COL_KODE_CABANG = Util.ExcelColumnNameToNumber("B"),
                 COL_NO_BERITA_ACARA = Util.ExcelColumnNameToNumber("C"),
@@ -1570,12 +1569,20 @@ namespace testProjectBCA
                 COL_D5K = Util.ExcelColumnNameToNumber("H"),
                 COL_D2K = Util.ExcelColumnNameToNumber("I"),
                 COL_D1K = Util.ExcelColumnNameToNumber("J"),
-                COL_NOMINAL = Util.ExcelColumnNameToNumber("K"),
-                COL_STATUS = Util.ExcelColumnNameToNumber("L"),
-                COL_TANGGAL_SETORAN = Util.ExcelColumnNameToNumber("M"),
-                COL_NO_TXN = Util.ExcelColumnNameToNumber("N"),
+                COL_C1K = Util.ExcelColumnNameToNumber("K"),
+                COL_C500 = Util.ExcelColumnNameToNumber("L"),
+                COL_C200 = Util.ExcelColumnNameToNumber("M"),
+                COL_C100 = Util.ExcelColumnNameToNumber("N"),
+                COL_C50 = Util.ExcelColumnNameToNumber("O"),
+                COL_C25 = Util.ExcelColumnNameToNumber("P"),
+                COL_NOMINAL = Util.ExcelColumnNameToNumber("Q"),
+                COL_STATUS = Util.ExcelColumnNameToNumber("R"),
+                COL_TANGGAL_SETORAN = Util.ExcelColumnNameToNumber("S"),
+                COL_NO_TXN = Util.ExcelColumnNameToNumber("T"),
+                
                 ROW_DATA_START = 1;
-            for(int a = ROW_DATA_START; a<dt.Rows.Count;a++)
+            List<BeritaAcara> fromExcel = new List<BeritaAcara>();
+            for (int a = ROW_DATA_START; a < dt.Rows.Count; a++)
             {
                 DataRow row = dt.Rows[a];
                 Int64 d100k = 0,
@@ -1585,6 +1592,12 @@ namespace testProjectBCA
                     d5k = 0,
                     d2k = 0,
                     d1k = 0,
+                    c1k = 0,
+                    c500 = 0,
+                    c200 = 0,
+                    c100 = 0,
+                    c50 = 0,
+                    c25 = 0,
                     nominal = 0,
                     buf;
                 DateTime tanggalBA = DateTime.MinValue,
@@ -1604,8 +1617,21 @@ namespace testProjectBCA
                     d2k = buf;
                 if (Int64.TryParse(row[COL_D1K].ToString(), out buf))
                     d1k = buf;
+                if (Int64.TryParse(row[COL_C1K].ToString(), out buf))
+                    c1k = buf;
+                if (Int64.TryParse(row[COL_C500].ToString(), out buf))
+                    c500 = buf;
+                if (Int64.TryParse(row[COL_C200].ToString(), out buf))
+                    c200 = buf;
+                if (Int64.TryParse(row[COL_C100].ToString(), out buf))
+                    c100 = buf;
+                if (Int64.TryParse(row[COL_C50].ToString(), out buf))
+                    c50 = buf;
+                if (Int64.TryParse(row[COL_C25].ToString(), out buf))
+                    c25 = buf;
                 if (Int64.TryParse(row[COL_NOMINAL].ToString(), out buf))
                     nominal = buf;
+
 
                 if (DateTime.TryParse(row[COL_TANGGAL_BA].ToString(), out bufTgl))
                     tanggalBA = bufTgl;
@@ -1615,26 +1641,90 @@ namespace testProjectBCA
                 BeritaAcara beritaAcara = new BeritaAcara()
                 {
                     kodePkt = kodePkt,
-                    d100k = d100k,
-                    d50k = d50k,
-                    d20k = d20k,
-                    d10k = d10k,
-                    d5k = d5k,
-                    d2k = d2k,
-                    d1k = d1k,
-                    noTxn = row[COL_NO_TXN].ToString(),
+                    bn100k = d100k,
+                    bn50k = d50k,
+                    bn20k = d20k,
+                    bn10k = d10k,
+                    bn5k = d5k,
+                    bn2k = d2k,
+                    bn1k = d1k,
+                    c1k = c1k,
+                    c500 = c500,
+                    c200 = c200,
+                    c100 = c100,
+                    c50 = c50,
+                    c25 = c25,
+                    noTxn = row[COL_NO_TXN].ToString().Trim(),
                     tanggal = tanggalBA,
                     tanggalSetor = tanggalSetor,
-                    kodeCabang = row[COL_KODE_CABANG].ToString(),
-                    noBeritaAcara = row[COL_NO_BERITA_ACARA].ToString(),
+                    kodeCabang = row[COL_KODE_CABANG].ToString().Trim(),
+                    noBeritaAcara = row[COL_NO_BERITA_ACARA].ToString().Trim(),
                     nominal = nominal,
-                    jenisIsi = row[COL_STATUS].ToString()
+                    jenisIsi = row[COL_STATUS].ToString().ToLower().Trim()
                 };
-                var checkDB = db.BeritaAcaras.Where(x => x.noBeritaAcara == beritaAcara.noBeritaAcara).FirstOrDefault();
-                db.BeritaAcaras.Add(beritaAcara);
-                db.SaveChanges();
+                fromExcel.Add(beritaAcara);
             }
 
+            fromExcel = (from x in fromExcel
+                         group x by new { x.noBeritaAcara, x.kodePkt, x.tanggal, x.tanggalSetor, x.kodeCabang, x.jenisIsi, x.noTxn } into g
+                         select new BeritaAcara()
+                         {
+                             noBeritaAcara = g.Key.noBeritaAcara,
+                             kodePkt = g.Key.kodePkt,
+                             jenisIsi = g.Key.jenisIsi,
+                             kodeCabang = g.Key.kodeCabang,
+                             noTxn = g.Key.noTxn,
+                             tanggal = g.Key.tanggal,
+                             tanggalSetor = g.Key.tanggalSetor,
+                             bn100k = g.Sum(y => y.bn100k),
+                             bn50k = g.Sum(y => y.bn50k),
+                             bn20k = g.Sum(y => y.bn20k),
+                             bn10k = g.Sum(y => y.bn10k),
+                             bn5k = g.Sum(y => y.bn5k),
+                             bn2k = g.Sum(y => y.bn2k),
+                             bn1k = g.Sum(y => y.bn1k),
+                             c1k = g.Sum(y => y.c1k),
+                             c500 = g.Sum(y => y.c500),
+                             c200 = g.Sum(y => y.c200),
+                             c100 = g.Sum(y => y.c100),
+                             c50 = g.Sum(y => y.c50),
+                             c25 = g.Sum(y => y.c25),
+                             nominal = g.Sum(y => y.nominal),
+                         }).ToList();
+            Console.WriteLine(fromExcel.Count);
+            foreach (BeritaAcara toInsertOrUpdate in fromExcel)
+            {
+                var check = db.BeritaAcaras
+                    .Where(x =>
+                        x.noBeritaAcara == toInsertOrUpdate.noBeritaAcara
+                        && x.jenisIsi == toInsertOrUpdate.jenisIsi
+                        && x.noTxn == toInsertOrUpdate.noTxn
+                        && x.tanggal == toInsertOrUpdate.tanggal
+                        && x.tanggalSetor == toInsertOrUpdate.tanggalSetor
+                        && x.kodeCabang == toInsertOrUpdate.kodeCabang
+                    ).FirstOrDefault();
+                if (check != null)
+                {
+                    check.bn100k = toInsertOrUpdate.bn100k;
+                    check.bn50k = toInsertOrUpdate.bn50k;
+                    check.bn20k = toInsertOrUpdate.bn20k;
+                    check.bn10k = toInsertOrUpdate.bn10k;
+                    check.bn5k = toInsertOrUpdate.bn5k;
+                    check.bn2k = toInsertOrUpdate.bn2k;
+                    check.bn1k = toInsertOrUpdate.bn1k;
+
+                    check.c1k = toInsertOrUpdate.c1k;
+                    check.c500 = toInsertOrUpdate.c500;
+                    check.c200 = toInsertOrUpdate.c200;
+                    check.c100 = toInsertOrUpdate.c100;
+                    check.c50 = toInsertOrUpdate.c50;
+                    check.c25 = toInsertOrUpdate.c25;
+                    check.nominal = toInsertOrUpdate.nominal;
+                }
+                else
+                    db.BeritaAcaras.Add(toInsertOrUpdate);
+                db.SaveChanges();
+            }
         }
         private void InputButton_Click(object sender, EventArgs e)
         {

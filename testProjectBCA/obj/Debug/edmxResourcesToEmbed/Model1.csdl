@@ -586,16 +586,23 @@
     <Property Name="tanggal" Type="DateTime" Precision="3" />
     <Property Name="kodeCabang" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
     <Property Name="noBeritaAcara" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-    <Property Name="d100k" Type="Int64" />
-    <Property Name="d50k" Type="Int64" />
-    <Property Name="d20k" Type="Int64" />
-    <Property Name="d10k" Type="Int64" />
-    <Property Name="d5k" Type="Int64" />
-    <Property Name="d2k" Type="Int64" />
-    <Property Name="d1k" Type="Int64" />
     <Property Name="nominal" Type="Int64" />
     <Property Name="jenisIsi" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
     <Property Name="tanggalSetor" Type="DateTime" Precision="3" />
     <Property Name="noTxn" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="kodePkt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="bn100k" Type="Int64" />
+    <Property Name="bn50k" Type="Int64" />
+    <Property Name="bn20k" Type="Int64" />
+    <Property Name="bn10k" Type="Int64" />
+    <Property Name="bn5k" Type="Int64" />
+    <Property Name="bn2k" Type="Int64" />
+    <Property Name="bn1k" Type="Int64" />
+    <Property Name="c1k" Type="Int64" />
+    <Property Name="c500" Type="Int64" />
+    <Property Name="c200" Type="Int64" />
+    <Property Name="c100" Type="Int64" />
+    <Property Name="c50" Type="Int64" />
+    <Property Name="c25" Type="Int64" />
   </EntityType>
 </Schema>

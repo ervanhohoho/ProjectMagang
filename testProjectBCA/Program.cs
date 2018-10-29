@@ -32,7 +32,7 @@ namespace testProjectBCA
             {
                 
             }
-            Application.Run(new MainForm());
+            Application.Run(new testProjectBCA.CabangMenu.RekonSaldoForm());
            
         }
     }

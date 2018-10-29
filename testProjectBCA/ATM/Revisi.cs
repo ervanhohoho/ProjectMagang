@@ -384,7 +384,7 @@ namespace testProjectBCA
                 for (int a = 0; a < 4; a++)
                 {
                     if (table.Rows[38][6 + a].ToString() != "0" && table.Rows[32][6 + a].ToString() != "")
-                        pkt.saldoAkhir.Add(Int64.Parse(table.Rows[32][6 + a].ToString()));
+                        pkt.saldoAkhir.Add((Int64) Double.Parse(table.Rows[32][6 + a].ToString()));
                     else
                         pkt.saldoAkhir.Add(0);
                 }

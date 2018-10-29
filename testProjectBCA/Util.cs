@@ -198,7 +198,7 @@ namespace testProjectBCA
             for (int i = 0; i < columnName.Length; i++)
             {
                 sum *= 26;
-                sum += (columnName[i] - 'A' + 1);
+                sum += (columnName[i] - 'A');
             }
 
             return sum;

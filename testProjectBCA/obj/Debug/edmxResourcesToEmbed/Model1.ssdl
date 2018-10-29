@@ -56,17 +56,24 @@
     <Property Name="tanggal" Type="datetime" />
     <Property Name="kodeCabang" Type="varchar" MaxLength="255" />
     <Property Name="noBeritaAcara" Type="varchar" MaxLength="255" />
-    <Property Name="d100k" Type="bigint" />
-    <Property Name="d50k" Type="bigint" />
-    <Property Name="d20k" Type="bigint" />
-    <Property Name="d10k" Type="bigint" />
-    <Property Name="d5k" Type="bigint" />
-    <Property Name="d2k" Type="bigint" />
-    <Property Name="d1k" Type="bigint" />
+    <Property Name="bn100k" Type="bigint" />
+    <Property Name="bn50k" Type="bigint" />
+    <Property Name="bn20k" Type="bigint" />
+    <Property Name="bn10k" Type="bigint" />
+    <Property Name="bn5k" Type="bigint" />
+    <Property Name="bn2k" Type="bigint" />
+    <Property Name="bn1k" Type="bigint" />
+    <Property Name="c1k" Type="bigint" />
+    <Property Name="c500" Type="bigint" />
+    <Property Name="c200" Type="bigint" />
+    <Property Name="c100" Type="bigint" />
+    <Property Name="c50" Type="bigint" />
+    <Property Name="c25" Type="bigint" />
     <Property Name="nominal" Type="bigint" />
     <Property Name="jenisIsi" Type="varchar" MaxLength="255" />
     <Property Name="tanggalSetor" Type="datetime" />
     <Property Name="noTxn" Type="varchar" MaxLength="255" />
+    <Property Name="kodePkt" Type="varchar" MaxLength="10" />
   </EntityType>
   <EntityType Name="Cabang">
     <Key>

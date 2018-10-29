@@ -3983,6 +3983,13 @@ namespace testProjectBCA.ATM
         Denom loadBonAdhocFromTxt()
         {
             Denom bonAdhoc = new Denom();
+            if(String.IsNullOrEmpty(bonAdhoc100Txt.Value.ToString()))
+                bonAdhoc.d100 = 0;
+            if (String.IsNullOrEmpty(bonAdhoc50Txt.Value.ToString()))
+                bonAdhoc.d50 = 0;
+            if(String.IsNullOrEmpty(bonAdhoc20Txt.Value.ToString()))
+                bonAdhoc.d20 = 0;
+
             bonAdhoc.d100 = (Int64)bonAdhoc100Txt.Value;
             bonAdhoc.d50 = (Int64)bonAdhoc50Txt.Value;
             bonAdhoc.d20 = (Int64)bonAdhoc20Txt.Value;
@@ -3991,6 +3998,13 @@ namespace testProjectBCA.ATM
         private Denom loadSetorAdhocFromTxt()
         {
             Denom setorAdhoc = new Denom();
+
+            if (String.IsNullOrEmpty(setorAdhoc100Txt.Value.ToString()))
+                setorAdhoc.d100 = 0; 
+            if (String.IsNullOrEmpty(setorAdhoc50Txt.Value.ToString()))
+                setorAdhoc.d50 = 0;  
+            if (String.IsNullOrEmpty(setorAdhoc20Txt.Value.ToString()))
+                setorAdhoc.d20 = 0;
             //Setor Adhoc
             setorAdhoc.d100 = (Int64)setorAdhoc100Txt.Value;
             setorAdhoc.d50 = (Int64)setorAdhoc50Txt.Value;

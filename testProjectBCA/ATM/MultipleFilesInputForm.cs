@@ -278,7 +278,7 @@ namespace testProjectBCA
                 for (int a = 0; a < 4; a++)
                 {
                     if (table.Rows[12][6 + a].ToString() != "0" && table.Rows[12][6 + a].ToString() != "")
-                        pkt.saldoAwal.Add(Int64.Parse(table.Rows[12][6 + a].ToString()));
+                        pkt.saldoAwal.Add((Int64) Double.Parse(table.Rows[12][6 + a].ToString()));
                     else
                         pkt.saldoAwal.Add(0);
                 }
@@ -286,7 +286,7 @@ namespace testProjectBCA
                 for (int a = 0; a < 4; a++)
                 {
                     if (table.Rows[14][6 + a].ToString() != "0" && table.Rows[14][6 + a].ToString() != "")
-                        pkt.setorUang.Add(Int64.Parse(table.Rows[14][6 + a].ToString()));
+                        pkt.setorUang.Add((Int64) Double.Parse(table.Rows[14][6 + a].ToString()));
                     else
                         pkt.setorUang.Add(0);
                 }
@@ -294,7 +294,7 @@ namespace testProjectBCA
                 for (int a = 0; a < 4; a++)
                 {
                     if (table.Rows[15][6 + a].ToString() != "0" && table.Rows[15][6 + a].ToString() != "")
-                        pkt.penerimaanBon.Add(Int64.Parse(table.Rows[15][6 + a].ToString()));
+                        pkt.penerimaanBon.Add((Int64) Double.Parse(table.Rows[15][6 + a].ToString()));
                     else
                         pkt.penerimaanBon.Add(0);
                 }
@@ -302,7 +302,7 @@ namespace testProjectBCA
                 for (int a = 0; a < 4; a++)
                 {
                     if (table.Rows[16][6 + a].ToString() != "0" && table.Rows[16][6 + a].ToString() != "")
-                        pkt.penerimaanBonAdhoc.Add(Int64.Parse(table.Rows[16][6 + a].ToString()));
+                        pkt.penerimaanBonAdhoc.Add((Int64) Double.Parse(table.Rows[16][6 + a].ToString()));
                     else
                         pkt.penerimaanBonAdhoc.Add(0);
                 }
@@ -310,7 +310,7 @@ namespace testProjectBCA
                 for (int a = 0; a < 4; a++)
                 {
                     if (table.Rows[17][6 + a].ToString() != "0" && table.Rows[17][6 + a].ToString() != "")
-                        pkt.pengisianAtm.Add(Int64.Parse(table.Rows[17][6 + a].ToString()));
+                        pkt.pengisianAtm.Add((Int64) Double.Parse(table.Rows[17][6 + a].ToString()));
                     else
                         pkt.pengisianAtm.Add(0);
                 }
@@ -318,7 +318,7 @@ namespace testProjectBCA
                 for (int a = 0; a < 4; a++)
                 {
                     if (table.Rows[18][6 + a].ToString() != "0" && table.Rows[18][6 + a].ToString() != "")
-                        pkt.pengisianCrm.Add(Int64.Parse(table.Rows[18][6 + a].ToString()));
+                        pkt.pengisianCrm.Add((Int64) Double.Parse(table.Rows[18][6 + a].ToString()));
                     else
                         pkt.pengisianCrm.Add(0);
                 }
@@ -326,7 +326,7 @@ namespace testProjectBCA
                 for (int a = 0; a < 4; a++)
                 {
                     if (table.Rows[19][6 + a].ToString() != "0" && table.Rows[19][6 + a].ToString() != "")
-                        pkt.bongkaranAtm.Add(Int64.Parse(table.Rows[19][6 + a].ToString()));
+                        pkt.bongkaranAtm.Add((Int64) Double.Parse(table.Rows[19][6 + a].ToString()));
                     else
                         pkt.bongkaranAtm.Add(0);
                 }
@@ -334,7 +334,7 @@ namespace testProjectBCA
                 for (int a = 0; a < 4; a++)
                 {
                     if (table.Rows[20][6 + a].ToString() != "0" && table.Rows[20][6 + a].ToString() != "")
-                        pkt.bongkaranCdm.Add(Int64.Parse(table.Rows[20][6 + a].ToString()));
+                        pkt.bongkaranCdm.Add((Int64) Double.Parse(table.Rows[20][6 + a].ToString()));
                     else
                         pkt.bongkaranCdm.Add(0);
                 }
@@ -342,7 +342,7 @@ namespace testProjectBCA
                 for (int a = 0; a < 4; a++)
                 {
                     if (table.Rows[21][6 + a].ToString() != "0" && table.Rows[21][6 + a].ToString() != "")
-                        pkt.bongkaranCrm.Add(Int64.Parse(table.Rows[21][6 + a].ToString()));
+                        pkt.bongkaranCrm.Add((Int64) Double.Parse(table.Rows[21][6 + a].ToString()));
                     else
                         pkt.bongkaranCrm.Add(0);
                 }
@@ -411,7 +411,7 @@ namespace testProjectBCA
                 for (int a = 0; a < 4; a++)
                 {
                     if (table.Rows[38][6 + a].ToString() != "0" && table.Rows[32][6 + a].ToString() != "")
-                        pkt.saldoAkhir.Add(Int64.Parse(table.Rows[32][6 + a].ToString()));
+                        pkt.saldoAkhir.Add((Int64) Double.Parse(table.Rows[32][6 + a].ToString()));
                     else
                         pkt.saldoAkhir.Add(0);
                 }

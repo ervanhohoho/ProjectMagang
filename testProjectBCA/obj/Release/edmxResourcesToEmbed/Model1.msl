@@ -534,5 +534,33 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="BeritaAcaras">
+      <EntityTypeMapping TypeName="CACModel.BeritaAcara">
+        <MappingFragment StoreEntitySet="BeritaAcara">
+          <ScalarProperty Name="c25" ColumnName="c25" />
+          <ScalarProperty Name="c50" ColumnName="c50" />
+          <ScalarProperty Name="c100" ColumnName="c100" />
+          <ScalarProperty Name="c200" ColumnName="c200" />
+          <ScalarProperty Name="c500" ColumnName="c500" />
+          <ScalarProperty Name="c1k" ColumnName="c1k" />
+          <ScalarProperty Name="bn1k" ColumnName="bn1k" />
+          <ScalarProperty Name="bn2k" ColumnName="bn2k" />
+          <ScalarProperty Name="bn5k" ColumnName="bn5k" />
+          <ScalarProperty Name="bn10k" ColumnName="bn10k" />
+          <ScalarProperty Name="bn20k" ColumnName="bn20k" />
+          <ScalarProperty Name="bn50k" ColumnName="bn50k" />
+          <ScalarProperty Name="bn100k" ColumnName="bn100k" />
+          <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
+          <ScalarProperty Name="noTxn" ColumnName="noTxn" />
+          <ScalarProperty Name="tanggalSetor" ColumnName="tanggalSetor" />
+          <ScalarProperty Name="jenisIsi" ColumnName="jenisIsi" />
+          <ScalarProperty Name="nominal" ColumnName="nominal" />
+          <ScalarProperty Name="noBeritaAcara" ColumnName="noBeritaAcara" />
+          <ScalarProperty Name="kodeCabang" ColumnName="kodeCabang" />
+          <ScalarProperty Name="tanggal" ColumnName="tanggal" />
+          <ScalarProperty Name="idBA" ColumnName="idBA" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -432,25 +433,29 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "select [kodepkt] =  isnull(kodepkt,kodepenerimadana), "
-                                      + " [kodepenerimadana] = isnull(kodepenerimadana, kodepkt), "
-                                      + " [ordertracking] = isnull(nominalDispute,0), [selesai] = isnull([Selesai],0), "
-                                      + " [belum selesai] = isnull([belum selesai],0), "
-                                      + " [total rekap] = isnull([selesai]+ [Belum Selesai]-[dibatalkan],0),"
-                                      + " [dibatalkan] = isnull([dibatalkan],0),"
-                                      + " [Keterangan] = case when isnull(nominalDispute,0) = [selesai]+ [Belum Selesai] then 'SAMA' else 'BERBEDA' end"
-                                      + " from"
-                                      + " ("
-                                      + " select kodePkt, nominalDispute = sum(nominalDispute)"
-                                      + " from OrderTracking"
-                                      + " where tanggal = '" + dateTimePicker1.Value.ToShortDateString() + "'"
-                                      + " group by kodePkt)a full outer join"
-                                      + " ("
-                                      + " select kodePenerimaDana, [Selesai] = sum(case when lower(keterangan) = 'selesai' then total else 0 end), [Belum Selesai] = sum(case when keterangan = '' then total else 0 end), [dibatalkan] = sum(case when lower(keterangan) = '%batal%' then total else 0 end)"
-                                      + " from RekapSelisihAmbilSetor"
-                                      + " where tanggalTransaksi = '" + dateTimePicker1.Value.ToShortDateString() + "' and LEN(noTxn)<=6"
-                                      + " group by kodePenerimaDana)b"
-                                      + " on a.kodePkt = b.kodePenerimaDana";
+                    cmd.CommandText =
+                                        " select[kodepkt] = isnull(kodepkt, kodepenerimadana), " +
+                                        " [kodepenerimadana] = isnull(kodepenerimadana, kodepkt), " +
+                                        " [ordertracking] = isnull(nominalDispute,0), " +
+                                        " [selesai] = isnull([Selesai],0), " +
+                                        " [belum selesai] = isnull([belum selesai],0), " +
+                                        " [total rekap] = isnull([selesai]+ [Belum Selesai]-[dibatalkan],0)," +
+                                        " [dibatalkan] = isnull([dibatalkan],0)," +
+                                        " [Keterangan] = case when isnull(nominalDispute,0) = [selesai]+ [Belum Selesai]" +
+                                        " then 'SAMA' else 'BERBEDA' end," +
+                                        " [tidak dibatalkan] = isnull([Selesai],0) + isnull([belum selesai],0)" +
+                                        " from" +
+                                        " (" +
+                                        " select kodePkt, nominalDispute = sum(nominalDispute)" +
+                                        " from OrderTracking" +
+                                        " where tanggal = '" + dateTimePicker1.Value.Date + "'" +
+                                        " group by kodePkt)a full outer join" +
+                                        " (" +
+                                        " select kodePenerimaDana, [Selesai] = sum(case when lower(keterangan) = '" + dateTimePicker1.Value.Date + "' then total else 0 end), [Belum Selesai] = sum(case when keterangan = '' then total else 0 end), [dibatalkan] = sum(case when lower(keterangan) = '%batal%' then total else 0 end)" +
+                                        " from RekapSelisihAmbilSetor" +
+                                        " where tanggalTransaksi = '" + dateTimePicker1.Value.Date + "' and LEN(noTxn)<=6" +
+                                        " group by kodePenerimaDana)b" +
+                                        " on a.kodePkt = b.kodePenerimaDana";
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     while (reader.Read())
@@ -459,9 +464,10 @@ namespace testProjectBCA
                         {
                             kodePkt = reader[0].ToString(),
                             orderTracking = Int64.Parse(reader[2].ToString()),
-                            rekapSelesai = Int64.Parse(reader[3].ToString()),
-                            rekapBelumSelesai = Int64.Parse(reader[4].ToString()),
+                            //rekapSelesai = Int64.Parse(reader[3].ToString()),
+                            //rekapBelumSelesai = Int64.Parse(reader[4].ToString()),
                             totalRekap = Int64.Parse(reader[5].ToString()),
+                            tidakDibatalkan = Int64.Parse(reader[8].ToString()),
                             dibatalkan = Int64.Parse(reader[6].ToString()),
                             keterangan = reader[7].ToString()
 
@@ -498,8 +504,9 @@ namespace testProjectBCA
                                   select x).ToList();
 
                     Int64 orderTrackingbuff = query2.Sum(x => x.orderTracking);
-                    Int64 rekapSelesaibuff = query2.Sum(x => x.rekapSelesai);
-                    Int64 rekapBelumSelesaibuff = query2.Sum(x => x.rekapBelumSelesai);
+                    //Int64 rekapSelesaibuff = query2.Sum(x => x.rekapSelesai);
+                    //Int64 rekapBelumSelesaibuff = query2.Sum(x => x.rekapBelumSelesai);
+                    Int64 tidakDibatalkanbuff = query2.Sum(x => x.tidakDibatalkan);
                     Int64 dibatalkanbuff = query2.Sum(x => x.dibatalkan);
                     Int64 totalRekapBuff = query2.Sum(x => x.totalRekap);
 
@@ -507,18 +514,40 @@ namespace testProjectBCA
                     {
                         kodePkt = "CCAS-OrderTracking",
                         orderTracking = orderTrackingbuff,
-                        rekapSelesai = rekapBelumSelesaibuff,
-                        rekapBelumSelesai = rekapBelumSelesaibuff,
+                        //rekapSelesai = rekapBelumSelesaibuff,
+                        //rekapBelumSelesai = rekapBelumSelesaibuff,
+                        tidakDibatalkan = tidakDibatalkanbuff,
                         dibatalkan = dibatalkanbuff,
                         totalRekap = totalRekapBuff,
                         keterangan = "SUM CCAS-OT"
                     });
                     //
 
+                    var check = (from x in otl
+                                 where x.kodePkt == "CCAS"
+                                 select x).FirstOrDefault();
+                    if (check != null)
+                    {
+                        if (check.totalRekap == otl[otl.Count - 1].orderTracking)
+                        {
+                            check.keterangan = "SAMA";
+                        }
+                        else
+                        {
+                            check.keterangan = "BERBEDA";
+                        }
+
+                    }
+
                     dataGridView1.DataSource = otl;
                     for (int i = 0; i < 8; i++)
                     {
-                        dataGridView1.Columns[i].ReadOnly = true;
+                        //dataGridView1.Columns[i].ReadOnly = true;
+                    }
+                    for (int i = 1; i < 5; i++)
+                    {
+                        dataGridView1.Columns[i].DefaultCellStyle.Format = "c0";
+                        dataGridView1.Columns[i].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
                     }
                     button4.Enabled = true;
 
@@ -637,8 +666,9 @@ namespace testProjectBCA
         {
             public String kodePkt { set; get; }
             public Int64 orderTracking { set; get; }
-            public Int64 rekapSelesai { set; get; }
-            public Int64 rekapBelumSelesai { set; get; }
+            //public Int64 rekapSelesai { set; get; }
+            // public Int64 rekapBelumSelesai { set; get; }
+            public Int64 tidakDibatalkan { set; get; }
             public Int64 dibatalkan { set; get; }
             public Int64 totalRekap { set; get; }
             public String keterangan { set; get; }
@@ -663,7 +693,7 @@ namespace testProjectBCA
         private void button4_Click(object sender, EventArgs e)
         {
             button4.Enabled = false;
-            dataGridView1.Columns[7].ReadOnly = false;
+            dataGridView1.Columns[8].ReadOnly = false;
             button5.Enabled = true;
             button6.Enabled = false;
         }
@@ -673,7 +703,7 @@ namespace testProjectBCA
             button4.Enabled = true;
             button5.Enabled = false;
             button6.Enabled = true;
-            dataGridView1.Columns[7].ReadOnly = true;
+            dataGridView1.Columns[8].ReadOnly = true;
         }
 
         private void button6_Click(object sender, EventArgs e)

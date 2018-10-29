@@ -18,17 +18,23 @@ namespace testProjectBCA
         public Nullable<System.DateTime> tanggal { get; set; }
         public string kodeCabang { get; set; }
         public string noBeritaAcara { get; set; }
-        public Nullable<long> d100k { get; set; }
-        public Nullable<long> d50k { get; set; }
-        public Nullable<long> d20k { get; set; }
-        public Nullable<long> d10k { get; set; }
-        public Nullable<long> d5k { get; set; }
-        public Nullable<long> d2k { get; set; }
-        public Nullable<long> d1k { get; set; }
         public Nullable<long> nominal { get; set; }
         public string jenisIsi { get; set; }
         public Nullable<System.DateTime> tanggalSetor { get; set; }
         public string noTxn { get; set; }
         public string kodePkt { get; set; }
+        public Nullable<long> bn100k { get; set; }
+        public Nullable<long> bn50k { get; set; }
+        public Nullable<long> bn20k { get; set; }
+        public Nullable<long> bn10k { get; set; }
+        public Nullable<long> bn5k { get; set; }
+        public Nullable<long> bn2k { get; set; }
+        public Nullable<long> bn1k { get; set; }
+        public Nullable<long> c1k { get; set; }
+        public Nullable<long> c500 { get; set; }
+        public Nullable<long> c200 { get; set; }
+        public Nullable<long> c100 { get; set; }
+        public Nullable<long> c50 { get; set; }
+        public Nullable<long> c25 { get; set; }
     }
 }

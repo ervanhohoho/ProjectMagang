@@ -48,6 +48,33 @@
     <Property Name="jenisLayanan" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="asuransi" Type="float" />
   </EntityType>
+  <EntityType Name="BeritaAcara">
+    <Key>
+      <PropertyRef Name="idBA" />
+    </Key>
+    <Property Name="idBA" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="tanggal" Type="datetime" />
+    <Property Name="kodeCabang" Type="varchar" MaxLength="255" />
+    <Property Name="noBeritaAcara" Type="varchar" MaxLength="255" />
+    <Property Name="bn100k" Type="bigint" />
+    <Property Name="bn50k" Type="bigint" />
+    <Property Name="bn20k" Type="bigint" />
+    <Property Name="bn10k" Type="bigint" />
+    <Property Name="bn5k" Type="bigint" />
+    <Property Name="bn2k" Type="bigint" />
+    <Property Name="bn1k" Type="bigint" />
+    <Property Name="c1k" Type="bigint" />
+    <Property Name="c500" Type="bigint" />
+    <Property Name="c200" Type="bigint" />
+    <Property Name="c100" Type="bigint" />
+    <Property Name="c50" Type="bigint" />
+    <Property Name="c25" Type="bigint" />
+    <Property Name="nominal" Type="bigint" />
+    <Property Name="jenisIsi" Type="varchar" MaxLength="255" />
+    <Property Name="tanggalSetor" Type="datetime" />
+    <Property Name="noTxn" Type="varchar" MaxLength="255" />
+    <Property Name="kodePkt" Type="varchar" MaxLength="10" />
+  </EntityType>
   <EntityType Name="Cabang">
     <Key>
       <PropertyRef Name="kodeCabang" />
@@ -535,6 +562,7 @@
     <EntitySet Name="ApprovalPembagianSaldo" EntityType="Self.ApprovalPembagianSaldo" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Approvals" EntityType="Self.Approvals" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="AsuransiLayanan" EntityType="Self.AsuransiLayanan" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="BeritaAcara" EntityType="Self.BeritaAcara" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Cabang" EntityType="Self.Cabang" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Cashpoint" EntityType="Self.Cashpoint" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DailyStock" EntityType="Self.DailyStock" Schema="dbo" store:Type="Tables" />

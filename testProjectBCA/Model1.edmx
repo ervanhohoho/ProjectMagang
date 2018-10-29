@@ -61,13 +61,19 @@
           <Property Name="tanggal" Type="datetime" />
           <Property Name="kodeCabang" Type="varchar" MaxLength="255" />
           <Property Name="noBeritaAcara" Type="varchar" MaxLength="255" />
-          <Property Name="d100k" Type="bigint" />
-          <Property Name="d50k" Type="bigint" />
-          <Property Name="d20k" Type="bigint" />
-          <Property Name="d10k" Type="bigint" />
-          <Property Name="d5k" Type="bigint" />
-          <Property Name="d2k" Type="bigint" />
-          <Property Name="d1k" Type="bigint" />
+          <Property Name="bn100k" Type="bigint" />
+          <Property Name="bn50k" Type="bigint" />
+          <Property Name="bn20k" Type="bigint" />
+          <Property Name="bn10k" Type="bigint" />
+          <Property Name="bn5k" Type="bigint" />
+          <Property Name="bn2k" Type="bigint" />
+          <Property Name="bn1k" Type="bigint" />
+          <Property Name="c1k" Type="bigint" />
+          <Property Name="c500" Type="bigint" />
+          <Property Name="c200" Type="bigint" />
+          <Property Name="c100" Type="bigint" />
+          <Property Name="c50" Type="bigint" />
+          <Property Name="c25" Type="bigint" />
           <Property Name="nominal" Type="bigint" />
           <Property Name="jenisIsi" Type="varchar" MaxLength="255" />
           <Property Name="tanggalSetor" Type="datetime" />
@@ -1190,18 +1196,24 @@
           <Property Name="tanggal" Type="DateTime" Precision="3" />
           <Property Name="kodeCabang" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="noBeritaAcara" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="d100k" Type="Int64" />
-          <Property Name="d50k" Type="Int64" />
-          <Property Name="d20k" Type="Int64" />
-          <Property Name="d10k" Type="Int64" />
-          <Property Name="d5k" Type="Int64" />
-          <Property Name="d2k" Type="Int64" />
-          <Property Name="d1k" Type="Int64" />
           <Property Name="nominal" Type="Int64" />
           <Property Name="jenisIsi" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="tanggalSetor" Type="DateTime" Precision="3" />
           <Property Name="noTxn" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="kodePkt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="bn100k" Type="Int64" />
+          <Property Name="bn50k" Type="Int64" />
+          <Property Name="bn20k" Type="Int64" />
+          <Property Name="bn10k" Type="Int64" />
+          <Property Name="bn5k" Type="Int64" />
+          <Property Name="bn2k" Type="Int64" />
+          <Property Name="bn1k" Type="Int64" />
+          <Property Name="c1k" Type="Int64" />
+          <Property Name="c500" Type="Int64" />
+          <Property Name="c200" Type="Int64" />
+          <Property Name="c100" Type="Int64" />
+          <Property Name="c50" Type="Int64" />
+          <Property Name="c25" Type="Int64" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1745,18 +1757,24 @@
           <EntitySetMapping Name="BeritaAcaras">
             <EntityTypeMapping TypeName="CACModel.BeritaAcara">
               <MappingFragment StoreEntitySet="BeritaAcara">
+                <ScalarProperty Name="c25" ColumnName="c25" />
+                <ScalarProperty Name="c50" ColumnName="c50" />
+                <ScalarProperty Name="c100" ColumnName="c100" />
+                <ScalarProperty Name="c200" ColumnName="c200" />
+                <ScalarProperty Name="c500" ColumnName="c500" />
+                <ScalarProperty Name="c1k" ColumnName="c1k" />
+                <ScalarProperty Name="bn1k" ColumnName="bn1k" />
+                <ScalarProperty Name="bn2k" ColumnName="bn2k" />
+                <ScalarProperty Name="bn5k" ColumnName="bn5k" />
+                <ScalarProperty Name="bn10k" ColumnName="bn10k" />
+                <ScalarProperty Name="bn20k" ColumnName="bn20k" />
+                <ScalarProperty Name="bn50k" ColumnName="bn50k" />
+                <ScalarProperty Name="bn100k" ColumnName="bn100k" />
                 <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
                 <ScalarProperty Name="noTxn" ColumnName="noTxn" />
                 <ScalarProperty Name="tanggalSetor" ColumnName="tanggalSetor" />
                 <ScalarProperty Name="jenisIsi" ColumnName="jenisIsi" />
                 <ScalarProperty Name="nominal" ColumnName="nominal" />
-                <ScalarProperty Name="d1k" ColumnName="d1k" />
-                <ScalarProperty Name="d2k" ColumnName="d2k" />
-                <ScalarProperty Name="d5k" ColumnName="d5k" />
-                <ScalarProperty Name="d10k" ColumnName="d10k" />
-                <ScalarProperty Name="d20k" ColumnName="d20k" />
-                <ScalarProperty Name="d50k" ColumnName="d50k" />
-                <ScalarProperty Name="d100k" ColumnName="d100k" />
                 <ScalarProperty Name="noBeritaAcara" ColumnName="noBeritaAcara" />
                 <ScalarProperty Name="kodeCabang" ColumnName="kodeCabang" />
                 <ScalarProperty Name="tanggal" ColumnName="tanggal" />

@@ -181,6 +181,12 @@
     <Compile Include="BeritaAcara.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="CabangMenu\RekonSaldoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CabangMenu\RekonSaldoForm.Designer.cs">
+      <DependentUpon>RekonSaldoForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="CabangMenu\ViewStokPosisiData.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -415,11 +421,11 @@
     <Compile Include="RekapSelisihAmbilSetor.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="CabangMenu\RekonSaldoForm.cs">
+    <Compile Include="CabangMenu\OlahanOptiVault.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CabangMenu\RekonSaldoForm.designer.cs">
-      <DependentUpon>RekonSaldoForm.cs</DependentUpon>
+    <Compile Include="CabangMenu\OlahanOptiVault.designer.cs">
+      <DependentUpon>OlahanOptiVault.cs</DependentUpon>
     </Compile>
     <Compile Include="RekonSaldoPerVendor.cs">
       <DependentUpon>Model1.tt</DependentUpon>
@@ -603,6 +609,9 @@
     <EmbeddedResource Include="CabangMenu\DailyStockForm.resx">
       <DependentUpon>DailyStockForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="CabangMenu\RekonSaldoForm.resx">
+      <DependentUpon>RekonSaldoForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CabangMenu\ViewStokPosisiData.resx">
       <DependentUpon>ViewStokPosisiData.cs</DependentUpon>
     </EmbeddedResource>
@@ -681,8 +690,8 @@
     <EmbeddedResource Include="ReadBeehiveForm.resx">
       <DependentUpon>ReadBeehiveForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CabangMenu\RekonSaldoForm.resx">
-      <DependentUpon>RekonSaldoForm.cs</DependentUpon>
+    <EmbeddedResource Include="CabangMenu\OlahanOptiVault.resx">
+      <DependentUpon>OlahanOptiVault.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CabangMenu\rekonSaldoTrxCabang.resx">
       <DependentUpon>rekonSaldoTrxCabang.cs</DependentUpon>
