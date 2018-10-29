@@ -764,196 +764,7 @@ namespace testProjectBCA
 
 
 
-        class VOBH //vault order blog history
-        {
-            public String vaultId { set; get; }
-            public String confId { set; get; }
-            public DateTime orderDate { set; get; }
-            public DateTime dueDate { set; get; }
-            public DateTime timeStamp { set; get; }
-            public String blogMessage { set; get; }
-            public String action { set; get; }
-            public String status { set; get; }
-            public Int64 currencyAmmount { set; get; }
-        }
-
-        class VO //vault order
-        {
-            public String vaultId { set; get; }
-            public String confId { set; get; }
-            public String fundingSource { set; get; }
-            public DateTime orderDate { set; get; }
-            public DateTime dueDate { set; get; }
-            public String action { set; get; }
-            public String status { set; get; }
-            public Int64 currencyAmmount { set; get; }
-        }
-
-        class VaultProcessed //class menampung proses vault 
-        {
-            public String vaultId { set; get; }
-            public String confId { set; get; }
-            public String fundingSource { set; get; }
-            public String action { set; get; }
-            public String status { set; get; }
-            public DateTime orderDate { set; get; }
-            public DateTime dueDate { set; get; }
-            public DateTime timeStamp { set; get; }
-            public String blogMessage { set; get; }
-            public Int64 currencyAmmount { set; get; }
-            public DateTime realDate { set; get; }
-            public String validation { set; get; }
-
-        }
-
-        class SetoranCPC //class menampung setoran cpc (vaultprocessed yang sudah di proses)
-        {
-            public String vaultId { set; get; }
-            public String confId { set; get; }
-            public String fundingSource { set; get; }
-            public String action { set; get; }
-            public String status { set; get; }
-            public DateTime orderDate { set; get; }
-            public DateTime dueDate { set; get; }
-            public DateTime timeStamp { set; get; }
-            public String blogMessage { set; get; }
-            public Int64 currencyAmmount { set; get; }
-            public DateTime realDate { set; get; }
-            public String validation { set; get; }
-
-        }
-
-        class OBH //order blog history 
-        {
-            public String cashpointId { set; get; }
-            public String confId { set; get; }
-            public DateTime orderDate { set; get; }
-            public DateTime dueDate { set; get; }
-            public DateTime blogTime { set; get; }
-            public String action { set; get; }
-            public String status { set; get; }
-            public Int64 currencyAmmount { set; get; }
-            public String blogMessage { set; get; }
-        }
-
-        class OBHProcessed //obh yang di proses
-        {
-            public String cashpointId { set; get; }
-            public String vendor { set; get; }
-            public String confId { set; get; }
-            public DateTime orderDate { set; get; }
-            public DateTime dueDate { set; get; }
-            public DateTime blogTime { set; get; }
-            public String blogMessage { set; get; }
-            public String action { set; get; }
-            public String status { set; get; }
-            public Int64 currencyAmmount { set; get; }
-            public DateTime realDate { set; get; }
-            public String validation { set; get; }
-        }
-
-        class PivotCPC //class pivotCPC (canvas for detailed pivot)
-        {
-            public String vaultId { set; get; }
-            public String confId { set; get; }
-            public String fundingSource { set; get; }
-            public String action { set; get; }
-            public String status { set; get; }
-            public DateTime orderDate { set; get; }
-            public DateTime dueDate { set; get; }
-            public DateTime timeStamp { set; get; }
-            public String blogMessage { set; get; }
-            public Int64 currencyAmmount { set; get; }
-            public DateTime realDate { set; get; }
-            public String validation { set; get; }
-
-        }
-
-        class PivotCPC_BIBL //pivotCPC - BI dan BankLain return
-        {
-            public DateTime dueDate { set; get; }
-            public DateTime realDate { set; get; }
-            public String vaultId { set; get; }
-            public String fundingSource { set; get; }
-            // public Int64 plannedReturn { set; get; }
-            public Int64 plannedReturnVal { set; get; }
-            public Int64 plannedReturnNotVal { set; get; }
-            // public Int64 emergencyReturn { set; get; }
-            public Int64 emergencyReturnVal { set; get; }
-            public Int64 emergencyReturnNotVal { set; get; }
-            public Int64 grandTotal { set; get; }
-
-        }
-
-        class PivotCPC_BIBLD//pivotCPC - BI dan BankLain delivery
-        {
-            public DateTime dueDate { set; get; }
-            public DateTime realDate { set; get; }
-            public String vaultId { set; get; }
-            public String fundingSource { set; get; }
-            // public Int64 plannedDelivery { set; get; }
-            public Int64 plannedDeliveryVal { set; get; }
-            public Int64 plannedDeliveryNotVal { set; get; }
-            // public Int64 emergencyDelivery { set; get; }
-            public Int64 emergencyDeliveryVal { set; get; }
-            public Int64 emergencyDeliveryNotVal { set; get; }
-            public Int64 grandTotal { set; get; }
-
-        }
-
-        class PivotCPC_ATMD //pivotcpc - atm delivery
-        {
-            public DateTime dueDate { set; get; }
-            public DateTime realDate { set; get; }
-            public String vaultId { set; get; }
-            public String fundingSource { set; get; }
-            // public Int64 plannedDelivery { set; get; }
-            public Int64 plannedDeliveryVal { set; get; }
-            public Int64 plannedDeliveryNotVal { set; get; }
-            //  public Int64 emergencyDelivery { set; get; }
-            public Int64 emergencyDeliveryVal { set; get; }
-            public Int64 emergencyDeliveryNotVal { set; get; }
-            public Int64 grandTotal { set; get; }
-
-        }
-
-        class PivotCPC_ATMR //pivotcpc - atm return
-        {
-            public DateTime dueDate { set; get; }
-            public DateTime realDate { set; get; }
-            public String vaultId { set; get; }
-            public String fundingSource { set; get; }
-            //public Int64 plannedReturn { set; get; }
-            public Int64 plannedReturnVal { set; get; }
-            public Int64 plannedReturnNotVal { set; get; }
-            //public Int64 emergencyReturn { set; get; }
-            public Int64 emergencyReturnVal { set; get; }
-            public Int64 emergencyReturnNotVal { set; get; }
-            public Int64 grandTotal { set; get; }
-
-        }
-
-        class PivotPerVendor_bon
-        {
-            public DateTime dueDate { set; get; }
-            public DateTime valDate { set; get; }
-            public String vendor { set; get; }
-            public Int64 belumValidasi { set; get; }
-            public Int64 sudahValidasi { set; get; }
-            public Int64 grandTotal { set; get; }
-
-        }
-
-        class PivotPerVendor_setoran
-        {
-            public DateTime dueDate { set; get; }
-            public DateTime valDate { set; get; }
-            public String vendor { set; get; }
-            public Int64 belumValidasi { set; get; }
-            public Int64 sudahValidasi { set; get; }
-            public Int64 grandTotal { set; get; }
-
-        }
+        
 
 
 
@@ -1431,6 +1242,196 @@ namespace testProjectBCA
         }
 
         //BELUM SELSAI MASIH DI MINUS 1 DARI YG ATAS
+
+    }
+    class VOBH //vault order blog history
+    {
+        public String vaultId { set; get; }
+        public String confId { set; get; }
+        public DateTime orderDate { set; get; }
+        public DateTime dueDate { set; get; }
+        public DateTime timeStamp { set; get; }
+        public String blogMessage { set; get; }
+        public String action { set; get; }
+        public String status { set; get; }
+        public Int64 currencyAmmount { set; get; }
+    }
+
+    class VO //vault order
+    {
+        public String vaultId { set; get; }
+        public String confId { set; get; }
+        public String fundingSource { set; get; }
+        public DateTime orderDate { set; get; }
+        public DateTime dueDate { set; get; }
+        public String action { set; get; }
+        public String status { set; get; }
+        public Int64 currencyAmmount { set; get; }
+    }
+
+    class VaultProcessed //class menampung proses vault 
+    {
+        public String vaultId { set; get; }
+        public String confId { set; get; }
+        public String fundingSource { set; get; }
+        public String action { set; get; }
+        public String status { set; get; }
+        public DateTime orderDate { set; get; }
+        public DateTime dueDate { set; get; }
+        public DateTime timeStamp { set; get; }
+        public String blogMessage { set; get; }
+        public Int64 currencyAmmount { set; get; }
+        public DateTime realDate { set; get; }
+        public String validation { set; get; }
+
+    }
+
+    class SetoranCPC //class menampung setoran cpc (vaultprocessed yang sudah di proses)
+    {
+        public String vaultId { set; get; }
+        public String confId { set; get; }
+        public String fundingSource { set; get; }
+        public String action { set; get; }
+        public String status { set; get; }
+        public DateTime orderDate { set; get; }
+        public DateTime dueDate { set; get; }
+        public DateTime timeStamp { set; get; }
+        public String blogMessage { set; get; }
+        public Int64 currencyAmmount { set; get; }
+        public DateTime realDate { set; get; }
+        public String validation { set; get; }
+
+    }
+
+    class OBH //order blog history 
+    {
+        public String cashpointId { set; get; }
+        public String confId { set; get; }
+        public DateTime orderDate { set; get; }
+        public DateTime dueDate { set; get; }
+        public DateTime blogTime { set; get; }
+        public String action { set; get; }
+        public String status { set; get; }
+        public Int64 currencyAmmount { set; get; }
+        public String blogMessage { set; get; }
+    }
+
+    class OBHProcessed //obh yang di proses
+    {
+        public String cashpointId { set; get; }
+        public String vendor { set; get; }
+        public String confId { set; get; }
+        public DateTime orderDate { set; get; }
+        public DateTime dueDate { set; get; }
+        public DateTime blogTime { set; get; }
+        public String blogMessage { set; get; }
+        public String action { set; get; }
+        public String status { set; get; }
+        public Int64 currencyAmmount { set; get; }
+        public DateTime realDate { set; get; }
+        public String validation { set; get; }
+    }
+
+    class PivotCPC //class pivotCPC (canvas for detailed pivot)
+    {
+        public String vaultId { set; get; }
+        public String confId { set; get; }
+        public String fundingSource { set; get; }
+        public String action { set; get; }
+        public String status { set; get; }
+        public DateTime orderDate { set; get; }
+        public DateTime dueDate { set; get; }
+        public DateTime timeStamp { set; get; }
+        public String blogMessage { set; get; }
+        public Int64 currencyAmmount { set; get; }
+        public DateTime realDate { set; get; }
+        public String validation { set; get; }
+
+    }
+
+    class PivotCPC_BIBL //pivotCPC - BI dan BankLain return
+    {
+        public DateTime dueDate { set; get; }
+        public DateTime realDate { set; get; }
+        public String vaultId { set; get; }
+        public String fundingSource { set; get; }
+        // public Int64 plannedReturn { set; get; }
+        public Int64 plannedReturnVal { set; get; }
+        public Int64 plannedReturnNotVal { set; get; }
+        // public Int64 emergencyReturn { set; get; }
+        public Int64 emergencyReturnVal { set; get; }
+        public Int64 emergencyReturnNotVal { set; get; }
+        public Int64 grandTotal { set; get; }
+
+    }
+
+    class PivotCPC_BIBLD//pivotCPC - BI dan BankLain delivery
+    {
+        public DateTime dueDate { set; get; }
+        public DateTime realDate { set; get; }
+        public String vaultId { set; get; }
+        public String fundingSource { set; get; }
+        // public Int64 plannedDelivery { set; get; }
+        public Int64 plannedDeliveryVal { set; get; }
+        public Int64 plannedDeliveryNotVal { set; get; }
+        // public Int64 emergencyDelivery { set; get; }
+        public Int64 emergencyDeliveryVal { set; get; }
+        public Int64 emergencyDeliveryNotVal { set; get; }
+        public Int64 grandTotal { set; get; }
+
+    }
+
+    class PivotCPC_ATMD //pivotcpc - atm delivery
+    {
+        public DateTime dueDate { set; get; }
+        public DateTime realDate { set; get; }
+        public String vaultId { set; get; }
+        public String fundingSource { set; get; }
+        // public Int64 plannedDelivery { set; get; }
+        public Int64 plannedDeliveryVal { set; get; }
+        public Int64 plannedDeliveryNotVal { set; get; }
+        //  public Int64 emergencyDelivery { set; get; }
+        public Int64 emergencyDeliveryVal { set; get; }
+        public Int64 emergencyDeliveryNotVal { set; get; }
+        public Int64 grandTotal { set; get; }
+
+    }
+
+    class PivotCPC_ATMR //pivotcpc - atm return
+    {
+        public DateTime dueDate { set; get; }
+        public DateTime realDate { set; get; }
+        public String vaultId { set; get; }
+        public String fundingSource { set; get; }
+        //public Int64 plannedReturn { set; get; }
+        public Int64 plannedReturnVal { set; get; }
+        public Int64 plannedReturnNotVal { set; get; }
+        //public Int64 emergencyReturn { set; get; }
+        public Int64 emergencyReturnVal { set; get; }
+        public Int64 emergencyReturnNotVal { set; get; }
+        public Int64 grandTotal { set; get; }
+
+    }
+
+    class PivotPerVendor_bon
+    {
+        public DateTime dueDate { set; get; }
+        public DateTime valDate { set; get; }
+        public String vendor { set; get; }
+        public Int64 belumValidasi { set; get; }
+        public Int64 sudahValidasi { set; get; }
+        public Int64 grandTotal { set; get; }
+
+    }
+
+    class PivotPerVendor_setoran
+    {
+        public DateTime dueDate { set; get; }
+        public DateTime valDate { set; get; }
+        public String vendor { set; get; }
+        public Int64 belumValidasi { set; get; }
+        public Int64 sudahValidasi { set; get; }
+        public Int64 grandTotal { set; get; }
 
     }
 }
