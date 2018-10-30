@@ -59,5 +59,6 @@ namespace testProjectBCA
         public virtual DbSet<ApprovalPembagianSaldo> ApprovalPembagianSaldoes { get; set; }
         public virtual DbSet<DataBankLain> DataBankLains { get; set; }
         public virtual DbSet<BeritaAcara> BeritaAcaras { get; set; }
+        public virtual DbSet<RekonSaldoInputanUser> RekonSaldoInputanUsers { get; set; }
     }
 }

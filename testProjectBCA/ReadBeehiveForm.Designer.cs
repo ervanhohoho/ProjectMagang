@@ -37,9 +37,7 @@
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.inputButtonVa = new System.Windows.Forms.Button();
             this.buttonShowRusak = new System.Windows.Forms.Button();
-            this.dataGridView2 = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.SuspendLayout();
             // 
             // inputBtn
@@ -80,7 +78,7 @@
             // 
             // buttonProses
             // 
-            this.buttonProses.Location = new System.Drawing.Point(404, 69);
+            this.buttonProses.Location = new System.Drawing.Point(404, 40);
             this.buttonProses.Name = "buttonProses";
             this.buttonProses.Size = new System.Drawing.Size(200, 23);
             this.buttonProses.TabIndex = 3;
@@ -110,7 +108,7 @@
             // 
             // dateTimePicker1
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(12, 12);
+            this.dateTimePicker1.Location = new System.Drawing.Point(404, 11);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
             this.dateTimePicker1.TabIndex = 7;
@@ -127,36 +125,19 @@
             // 
             // buttonShowRusak
             // 
-            this.buttonShowRusak.Location = new System.Drawing.Point(1026, 69);
+            this.buttonShowRusak.Location = new System.Drawing.Point(404, 69);
             this.buttonShowRusak.Name = "buttonShowRusak";
             this.buttonShowRusak.Size = new System.Drawing.Size(200, 23);
             this.buttonShowRusak.TabIndex = 10;
-            this.buttonShowRusak.Text = "Show Beehive Not Standard";
+            this.buttonShowRusak.Text = "Show Beehive Rusak";
             this.buttonShowRusak.UseVisualStyleBackColor = true;
             this.buttonShowRusak.Click += new System.EventHandler(this.buttonShowRusak_Click);
-            // 
-            // dataGridView2
-            // 
-            this.dataGridView2.AllowUserToAddRows = false;
-            this.dataGridView2.AllowUserToDeleteRows = false;
-            this.dataGridView2.AllowUserToOrderColumns = true;
-            this.dataGridView2.AllowUserToResizeColumns = false;
-            this.dataGridView2.AllowUserToResizeRows = false;
-            this.dataGridView2.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.ColumnHeadersVisible = false;
-            this.dataGridView2.Location = new System.Drawing.Point(610, 101);
-            this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.ReadOnly = true;
-            this.dataGridView2.Size = new System.Drawing.Size(616, 485);
-            this.dataGridView2.TabIndex = 11;
             // 
             // ReadBeehiveForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1238, 598);
-            this.Controls.Add(this.dataGridView2);
+            this.ClientSize = new System.Drawing.Size(613, 598);
             this.Controls.Add(this.buttonShowRusak);
             this.Controls.Add(this.inputButtonVa);
             this.Controls.Add(this.dateTimePicker1);
@@ -169,7 +150,6 @@
             this.Name = "ReadBeehiveForm";
             this.Text = "ReadBeehiveForm";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -185,6 +165,5 @@
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.Button inputButtonVa;
         private System.Windows.Forms.Button buttonShowRusak;
-        private System.Windows.Forms.DataGridView dataGridView2;
     }
 }

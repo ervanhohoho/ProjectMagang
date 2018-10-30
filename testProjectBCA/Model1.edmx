@@ -332,6 +332,17 @@
           <Property Name="noBA" Type="varchar" MaxLength="50" />
           <Property Name="keterangan" Type="varchar" MaxLength="200" />
         </EntityType>
+        <EntityType Name="RekonSaldoInputanUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="kodePkt" Type="varchar" MaxLength="10" />
+          <Property Name="tanggal" Type="date" />
+          <Property Name="in_out" Type="varchar" MaxLength="5" />
+          <Property Name="jenis" Type="varchar" MaxLength="50" />
+          <Property Name="value" Type="bigint" />
+        </EntityType>
         <EntityType Name="RekonSaldoPerVendor">
           <Key>
             <PropertyRef Name="id" />
@@ -586,6 +597,7 @@
           <EntitySet Name="Password" EntityType="Self.Password" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pkt" EntityType="Self.Pkt" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RekapSelisihAmbilSetor" EntityType="Self.RekapSelisihAmbilSetor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RekonSaldoInputanUser" EntityType="Self.RekonSaldoInputanUser" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RekonSaldoPerVendor" EntityType="Self.RekonSaldoPerVendor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RekonSaldoVault" EntityType="Self.RekonSaldoVault" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SaveAsk" EntityType="Self.SaveAsk" Schema="dbo" store:Type="Tables" />
@@ -1156,6 +1168,7 @@
           <EntitySet Name="ApprovalPembagianSaldoes" EntityType="CACModel.ApprovalPembagianSaldo" />
           <EntitySet Name="DataBankLains" EntityType="CACModel.DataBankLain" />
           <EntitySet Name="BeritaAcaras" EntityType="CACModel.BeritaAcara" />
+          <EntitySet Name="RekonSaldoInputanUsers" EntityType="CACModel.RekonSaldoInputanUser" />
         </EntityContainer>
         <EntityType Name="TabelTarikanSetoranCRM">
           <Key>
@@ -1214,6 +1227,17 @@
           <Property Name="c100" Type="Int64" />
           <Property Name="c50" Type="Int64" />
           <Property Name="c25" Type="Int64" />
+        </EntityType>
+        <EntityType Name="RekonSaldoInputanUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="tanggal" Type="DateTime" Precision="0" />
+          <Property Name="in_out" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="jenis" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="value" Type="Int64" />
+          <Property Name="kodePkt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1779,6 +1803,18 @@
                 <ScalarProperty Name="kodeCabang" ColumnName="kodeCabang" />
                 <ScalarProperty Name="tanggal" ColumnName="tanggal" />
                 <ScalarProperty Name="idBA" ColumnName="idBA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RekonSaldoInputanUsers">
+            <EntityTypeMapping TypeName="CACModel.RekonSaldoInputanUser">
+              <MappingFragment StoreEntitySet="RekonSaldoInputanUser">
+                <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
+                <ScalarProperty Name="value" ColumnName="value" />
+                <ScalarProperty Name="jenis" ColumnName="jenis" />
+                <ScalarProperty Name="in_out" ColumnName="in_out" />
+                <ScalarProperty Name="tanggal" ColumnName="tanggal" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -40,6 +40,7 @@
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.label3 = new System.Windows.Forms.Label();
             this.dataSistemGridView = new System.Windows.Forms.DataGridView();
+            this.saveBtn = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataTambahanGridView)).BeginInit();
@@ -104,12 +105,12 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel3, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 0);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 51);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(11, 68);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(891, 523);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(891, 538);
             this.tableLayoutPanel1.TabIndex = 4;
             // 
             // tableLayoutPanel3
@@ -122,12 +123,12 @@
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel3.Controls.Add(this.label4, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.dataTambahanGridView, 0, 1);
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 264);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 272);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 2;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.798165F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 92.20184F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(885, 256);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(885, 263);
             this.tableLayoutPanel3.TabIndex = 0;
             // 
             // label4
@@ -145,9 +146,9 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataTambahanGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataTambahanGridView.Location = new System.Drawing.Point(3, 22);
+            this.dataTambahanGridView.Location = new System.Drawing.Point(3, 23);
             this.dataTambahanGridView.Name = "dataTambahanGridView";
-            this.dataTambahanGridView.Size = new System.Drawing.Size(879, 231);
+            this.dataTambahanGridView.Size = new System.Drawing.Size(879, 237);
             this.dataTambahanGridView.TabIndex = 1;
             // 
             // tableLayoutPanel2
@@ -165,7 +166,7 @@
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.882353F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 94.11765F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(885, 255);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(885, 263);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
             // label3
@@ -183,16 +184,28 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataSistemGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataSistemGridView.Location = new System.Drawing.Point(3, 17);
+            this.dataSistemGridView.Location = new System.Drawing.Point(3, 18);
             this.dataSistemGridView.Name = "dataSistemGridView";
-            this.dataSistemGridView.Size = new System.Drawing.Size(879, 235);
+            this.dataSistemGridView.Size = new System.Drawing.Size(879, 242);
             this.dataSistemGridView.TabIndex = 1;
+            // 
+            // saveBtn
+            // 
+            this.saveBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.saveBtn.Location = new System.Drawing.Point(822, 39);
+            this.saveBtn.Name = "saveBtn";
+            this.saveBtn.Size = new System.Drawing.Size(75, 23);
+            this.saveBtn.TabIndex = 5;
+            this.saveBtn.Text = "Save";
+            this.saveBtn.UseVisualStyleBackColor = true;
+            this.saveBtn.Click += new System.EventHandler(this.saveBtn_Click);
             // 
             // RekonSaldoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(914, 586);
+            this.ClientSize = new System.Drawing.Size(914, 618);
+            this.Controls.Add(this.saveBtn);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -227,5 +240,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.DataGridView dataSistemGridView;
+        private System.Windows.Forms.Button saveBtn;
     }
 }
