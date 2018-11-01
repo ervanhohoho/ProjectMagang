@@ -546,6 +546,7 @@
     <EntitySet Name="ApprovalPembagianSaldoes" EntityType="CACModel.ApprovalPembagianSaldo" />
     <EntitySet Name="DataBankLains" EntityType="CACModel.DataBankLain" />
     <EntitySet Name="BeritaAcaras" EntityType="CACModel.BeritaAcara" />
+    <EntitySet Name="RekonSaldoInputanUsers" EntityType="CACModel.RekonSaldoInputanUser" />
   </EntityContainer>
   <EntityType Name="TabelTarikanSetoranCRM">
     <Key>
@@ -604,5 +605,16 @@
     <Property Name="c100" Type="Int64" />
     <Property Name="c50" Type="Int64" />
     <Property Name="c25" Type="Int64" />
+  </EntityType>
+  <EntityType Name="RekonSaldoInputanUser">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="tanggal" Type="DateTime" Precision="0" />
+    <Property Name="in_out" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+    <Property Name="jenis" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="value" Type="Int64" />
+    <Property Name="kodePkt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
   </EntityType>
 </Schema>

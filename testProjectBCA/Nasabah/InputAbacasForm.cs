@@ -67,8 +67,11 @@ namespace testProjectBCA
                             String vendorCardNo = dt.Rows[i + counter][2].ToString();
                             String vendorName = dt.Rows[i + counter][3].ToString();
                             String jobId = dt.Rows[i + counter][4].ToString();
-
-                            Int64 totalAmount = Int64.Parse(dt.Rows[i + counter][5].ToString());
+                            Int64 totalAmount = 0;
+                            if (String.IsNullOrEmpty(dt.Rows[i + counter][5].ToString()) || dt.Rows[i + counter][5].ToString().Trim() == "-")
+                                totalAmount = 0;
+                            else
+                                totalAmount = (Int64) Double.Parse(dt.Rows[i + counter][5].ToString());
 
                             var checkData = allAbacas.Where(x => x.jobId == jobId && x.tanggal == tanggal).FirstOrDefault();
                             if (checkData != null)

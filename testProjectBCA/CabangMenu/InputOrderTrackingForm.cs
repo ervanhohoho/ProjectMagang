@@ -187,7 +187,8 @@ namespace testProjectBCA
                              where x.tanggalTransaksi == dateTimePicker1.Value.Date
                              select x).ToList();
 
-                DataRow[] rows = dt.Select("Column17 is null or Column4 not like 'CABANG'");
+                DataRow[] rows = dt.Select("Column17 is null or (Column4 not like 'CABANG' and Column4 not like 'MEMO')");
+                //DataRow[] rows = dt.Select("Column17 is null or (Column4 not like 'CABANG' and Column4 not like 'MEMO')");
 
                 foreach (var row in rows)
                 {
@@ -434,28 +435,26 @@ namespace testProjectBCA
                     cmd.Connection = sql;
                     sql.Open();
                     cmd.CommandText =
-                                        " select[kodepkt] = isnull(kodepkt, kodepenerimadana), " +
-                                        " [kodepenerimadana] = isnull(kodepenerimadana, kodepkt), " +
-                                        " [ordertracking] = isnull(nominalDispute,0), " +
-                                        " [selesai] = isnull([Selesai],0), " +
-                                        " [belum selesai] = isnull([belum selesai],0), " +
-                                        " [total rekap] = isnull([selesai]+ [Belum Selesai]-[dibatalkan],0)," +
-                                        " [dibatalkan] = isnull([dibatalkan],0)," +
-                                        " [Keterangan] = case when isnull(nominalDispute,0) = [selesai]+ [Belum Selesai]" +
-                                        " then 'SAMA' else 'BERBEDA' end," +
-                                        " [tidak dibatalkan] = isnull([Selesai],0) + isnull([belum selesai],0)" +
-                                        " from" +
-                                        " (" +
-                                        " select kodePkt, nominalDispute = sum(nominalDispute)" +
-                                        " from OrderTracking" +
-                                        " where tanggal = '" + dateTimePicker1.Value.Date + "'" +
-                                        " group by kodePkt)a full outer join" +
-                                        " (" +
-                                        " select kodePenerimaDana, [Selesai] = sum(case when lower(keterangan) = '" + dateTimePicker1.Value.Date + "' then total else 0 end), [Belum Selesai] = sum(case when keterangan = '' then total else 0 end), [dibatalkan] = sum(case when lower(keterangan) = '%batal%' then total else 0 end)" +
-                                        " from RekapSelisihAmbilSetor" +
-                                        " where tanggalTransaksi = '" + dateTimePicker1.Value.Date + "' and LEN(noTxn)<=6" +
-                                        " group by kodePenerimaDana)b" +
-                                        " on a.kodePkt = b.kodePenerimaDana";
+                                          "select[kodepkt] = isnull(kodepkt, kodepenerimadana), "
+                                            + "  [kodepenerimadana] = isnull(kodepenerimadana, kodepkt), "
+                                            + "  [ordertracking] = isnull(nominalDispute,0), "
+                                            + "  [total rekap] = isnull(isnull([Tidak Dibatalkan],0) - isnull([dibatalkan],0) ,0),"
+                                            + "  [dibatalkan] = isnull([dibatalkan],0),"
+                                            + "  [tidak dibatalkan] = isnull([Tidak Dibatalkan],0),"
+                                            + "   [Keterangan] = case when isnull(nominalDispute,0) =  isnull(isnull([Tidak Dibatalkan],0) - isnull([dibatalkan],0) ,0)"
+                                            + "  then 'SAMA' else 'BERBEDA' end"
+                                            + "  from"
+                                            + "  ("
+                                            + "  select kodePkt, nominalDispute = sum(nominalDispute)"
+                                            + "  from OrderTracking"
+                                            + "  where tanggal = '2018-10-01'"
+                                            + "  group by kodePkt)a full outer join"
+                                            + "  ("
+                                            + "  select kodePenerimaDana, [Tidak Dibatalkan] = sum(case when lower(keterangan) not like '%batal%'  then total else 0 end), [dibatalkan] = sum(case when lower(keterangan) = '%batal%' then total else 0 end)"
+                                            + "  from RekapSelisihAmbilSetor"
+                                            + "  where tanggalTransaksi = '2018-10-01' and LEN(noTxn)<=6"
+                                            + "  group by kodePenerimaDana)b"
+                                            + "  on a.kodePkt = b.kodePenerimaDana";
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     while (reader.Read())
@@ -466,10 +465,10 @@ namespace testProjectBCA
                             orderTracking = Int64.Parse(reader[2].ToString()),
                             //rekapSelesai = Int64.Parse(reader[3].ToString()),
                             //rekapBelumSelesai = Int64.Parse(reader[4].ToString()),
-                            totalRekap = Int64.Parse(reader[5].ToString()),
-                            tidakDibatalkan = Int64.Parse(reader[8].ToString()),
-                            dibatalkan = Int64.Parse(reader[6].ToString()),
-                            keterangan = reader[7].ToString()
+                            totalRekap = Int64.Parse(reader[3].ToString()),
+                            tidakDibatalkan = Int64.Parse(reader[5].ToString()),
+                            dibatalkan = Int64.Parse(reader[4].ToString()),
+                            keterangan = reader[6].ToString()
 
                         });
                         //kodePkt.Add(reader[0].ToString());
@@ -498,6 +497,35 @@ namespace testProjectBCA
 
                     }
 
+                    var check2 = (from x in otl
+                                  where x.kodePkt.Contains("CCAS")
+                                  select x).ToList();
+                    if (check2 != null)
+                    {
+                        foreach (var item in check2)
+                        {
+                            item.keterangan = "";
+                        }
+                    }
+
+
+                    //CCAS ganti keterangan
+                    var check = (from x in otl
+                                 where x.kodePkt == "CCAS"
+                                 select x).FirstOrDefault();
+                    if (check != null)
+                    {
+                        if (check.totalRekap == otl[otl.Count - 1].orderTracking)
+                        {
+                            check.keterangan = "SAMA";
+                        }
+                        else
+                        {
+                            check.keterangan = "BERBEDA";
+                        }
+
+                    }
+
                     //adding ccas-ordertracking
                     var query2 = (from x in otl
                                   where x.kodePkt.Contains("CCAS") && x.kodePkt.Length > 4
@@ -521,23 +549,8 @@ namespace testProjectBCA
                         totalRekap = totalRekapBuff,
                         keterangan = "SUM CCAS-OT"
                     });
-                    //
+                    // 
 
-                    var check = (from x in otl
-                                 where x.kodePkt == "CCAS"
-                                 select x).FirstOrDefault();
-                    if (check != null)
-                    {
-                        if (check.totalRekap == otl[otl.Count - 1].orderTracking)
-                        {
-                            check.keterangan = "SAMA";
-                        }
-                        else
-                        {
-                            check.keterangan = "BERBEDA";
-                        }
-
-                    }
 
                     dataGridView1.DataSource = otl;
                     for (int i = 0; i < 8; i++)

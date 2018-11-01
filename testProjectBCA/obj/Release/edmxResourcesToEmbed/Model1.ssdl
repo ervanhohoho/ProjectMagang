@@ -327,6 +327,17 @@
     <Property Name="noBA" Type="varchar" MaxLength="50" />
     <Property Name="keterangan" Type="varchar" MaxLength="200" />
   </EntityType>
+  <EntityType Name="RekonSaldoInputanUser">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="kodePkt" Type="varchar" MaxLength="10" />
+    <Property Name="tanggal" Type="date" />
+    <Property Name="in_out" Type="varchar" MaxLength="5" />
+    <Property Name="jenis" Type="varchar" MaxLength="50" />
+    <Property Name="value" Type="bigint" />
+  </EntityType>
   <EntityType Name="RekonSaldoPerVendor">
     <Key>
       <PropertyRef Name="id" />
@@ -581,6 +592,7 @@
     <EntitySet Name="Password" EntityType="Self.Password" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Pkt" EntityType="Self.Pkt" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RekapSelisihAmbilSetor" EntityType="Self.RekapSelisihAmbilSetor" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RekonSaldoInputanUser" EntityType="Self.RekonSaldoInputanUser" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RekonSaldoPerVendor" EntityType="Self.RekonSaldoPerVendor" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RekonSaldoVault" EntityType="Self.RekonSaldoVault" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SaveAsk" EntityType="Self.SaveAsk" Schema="dbo" store:Type="Tables" />

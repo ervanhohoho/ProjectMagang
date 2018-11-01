@@ -36,6 +36,7 @@ namespace testProjectBCA.CabangMenu
             DateTime tanggalAkhir = tanggalAwalPicker.Value;
             List<String> listPkt = new List<String>();
             listPkt.Add("All");
+            listPkt.AddRange(db.Pkts.Select(x => x.kanwil).Distinct().ToList());
             listPkt.AddRange((from x in db.StokPosisis
                               where x.tanggal >= tanggalAwal
                               && x.tanggal <= tanggalAkhir
@@ -64,56 +65,115 @@ namespace testProjectBCA.CabangMenu
             String pkt = pktComboBox.SelectedItem.ToString(),
                 jenisUang = jenisUangComboBox.SelectedItem.ToString(),
                 denom = denomComboBox.SelectedItem.ToString();
-            var listData = (from x in db.StokPosisis
-                            where
-                            (
-                            x.tanggal >= tanggalAwal
-                            && 
-                            x.tanggal <= tanggalAkhir
-                            )&&
-                            (pkt == "All" ? 1 == 1 : x.namaPkt == pkt)
-                            &&
-                            (jenisUang == "All" ? 1 == 1 : x.jenis == jenisUang)
-                            &&
-                            (denom == "All" ? 1 == 1 : x.denom == denom)
-                            select new StokPosisiToView()
-                            {
-                                tanggal = (DateTime)x.tanggal,
-                                namaPkt = x.namaPkt,
-                                jenis = x.jenis,
-                                denom = x.denom,
-                                newBaru = (Int64)x.newBaru,
-                                newLama = (Int64)x.newLama,
-                                fitBaru = (Int64)x.fitBaru,
-                                fitNKRI = (Int64)x.fitNKRI,
-                                fitLama = (Int64)x.fitLama,
-                                passThrough = (Int64)x.passThrough,
-                                unfitBaru = (Int64)x.unfitBaru,
-                                unfitNKRI = (Int64)x.unfitNKRI,
-                                unfitLama = (Int64)x.unfitLama,
-                                RRMBaru = (Int64)x.RRMBaru,
-                                RRMNKRI = (Int64)x.RRMNKRI,
-                                RRMLama = (Int64)x.RRMLama,
-                                RupiahRusakMayor = (Int64)x.RupiahRusakMayor,
-                                cekLaporan = (Int64)x.cekLaporan,
-                                openBalance = (Int64)x.openBalance,
-                                inCabang = (Int64)x.inCabang,
-                                inRetail = (Int64)x.inRetail,
-                                inBI = (Int64)x.inBI,
-                                inTUKAB = (Int64)x.inTUKAB,
-                                inOtherCPC = (Int64)x.inOtherCPC,
-                                inVaultATM = (Int64)x.inVaultATM,
-                                inTukaran = (Int64)x.inTukaran,
-                                outCabang = (Int64)x.outCabang,
-                                outRetail = (Int64)x.outRetail,
-                                outBIULE = (Int64)x.outBIULE,
-                                outBIUTLE = (Int64)x.outBIUTLE,
-                                outTUKAB = (Int64)x.outTUKAB,
-                                outOtherCPC = (Int64)x.outOtherCPC,
-                                outVaultATM = (Int64)x.outVaultATM,
-                                outTukaran = (Int64)x.outTukaran,
-                            }).ToList();
-            return listData;
+
+            List<String> listNamaPkt = db.Pkts.Select(x => x.namaPkt).ToList();
+            if (listNamaPkt.Where(x => x == pkt).FirstOrDefault() == null)
+            {
+                var listData = (from x in db.StokPosisis
+                                join y in db.Pkts on x.namaPkt equals y.namaPkt
+                                where
+                                (
+                                x.tanggal >= tanggalAwal
+                                &&
+                                x.tanggal <= tanggalAkhir
+                                ) &&
+                                (pkt == "All" ? 1 == 1 : y.kanwil == pkt)
+                                &&
+                                (jenisUang == "All" ? 1 == 1 : x.jenis == jenisUang)
+                                &&
+                                (denom == "All" ? 1 == 1 : x.denom == denom)
+                                select new StokPosisiToView()
+                                {
+                                    tanggal = (DateTime)x.tanggal,
+                                    namaPkt = x.namaPkt,
+                                    jenis = x.jenis,
+                                    denom = x.denom,
+                                    newBaru = (Int64)x.newBaru,
+                                    newLama = (Int64)x.newLama,
+                                    fitBaru = (Int64)x.fitBaru,
+                                    fitNKRI = (Int64)x.fitNKRI,
+                                    fitLama = (Int64)x.fitLama,
+                                    passThrough = (Int64)x.passThrough,
+                                    unfitBaru = (Int64)x.unfitBaru,
+                                    unfitNKRI = (Int64)x.unfitNKRI,
+                                    unfitLama = (Int64)x.unfitLama,
+                                    RRMBaru = (Int64)x.RRMBaru,
+                                    RRMNKRI = (Int64)x.RRMNKRI,
+                                    RRMLama = (Int64)x.RRMLama,
+                                    RupiahRusakMayor = (Int64)x.RupiahRusakMayor,
+                                    cekLaporan = (Int64)x.cekLaporan,
+                                    openBalance = (Int64)x.openBalance,
+                                    inCabang = (Int64)x.inCabang,
+                                    inRetail = (Int64)x.inRetail,
+                                    inBI = (Int64)x.inBI,
+                                    inTUKAB = (Int64)x.inTUKAB,
+                                    inOtherCPC = (Int64)x.inOtherCPC,
+                                    inVaultATM = (Int64)x.inVaultATM,
+                                    inTukaran = (Int64)x.inTukaran,
+                                    outCabang = (Int64)x.outCabang,
+                                    outRetail = (Int64)x.outRetail,
+                                    outBIULE = (Int64)x.outBIULE,
+                                    outBIUTLE = (Int64)x.outBIUTLE,
+                                    outTUKAB = (Int64)x.outTUKAB,
+                                    outOtherCPC = (Int64)x.outOtherCPC,
+                                    outVaultATM = (Int64)x.outVaultATM,
+                                    outTukaran = (Int64)x.outTukaran,
+                                }).ToList();
+                return listData;
+            }
+            else
+            {
+                var listData = (from x in db.StokPosisis
+                                where
+                                (
+                                x.tanggal >= tanggalAwal
+                                &&
+                                x.tanggal <= tanggalAkhir
+                                ) &&
+                                (pkt == "All" ? 1 == 1 : x.namaPkt == pkt)
+                                &&
+                                (jenisUang == "All" ? 1 == 1 : x.jenis == jenisUang)
+                                &&
+                                (denom == "All" ? 1 == 1 : x.denom == denom)
+                                select new StokPosisiToView()
+                                {
+                                    tanggal = (DateTime)x.tanggal,
+                                    namaPkt = x.namaPkt,
+                                    jenis = x.jenis,
+                                    denom = x.denom,
+                                    newBaru = (Int64)x.newBaru,
+                                    newLama = (Int64)x.newLama,
+                                    fitBaru = (Int64)x.fitBaru,
+                                    fitNKRI = (Int64)x.fitNKRI,
+                                    fitLama = (Int64)x.fitLama,
+                                    passThrough = (Int64)x.passThrough,
+                                    unfitBaru = (Int64)x.unfitBaru,
+                                    unfitNKRI = (Int64)x.unfitNKRI,
+                                    unfitLama = (Int64)x.unfitLama,
+                                    RRMBaru = (Int64)x.RRMBaru,
+                                    RRMNKRI = (Int64)x.RRMNKRI,
+                                    RRMLama = (Int64)x.RRMLama,
+                                    RupiahRusakMayor = (Int64)x.RupiahRusakMayor,
+                                    cekLaporan = (Int64)x.cekLaporan,
+                                    openBalance = (Int64)x.openBalance,
+                                    inCabang = (Int64)x.inCabang,
+                                    inRetail = (Int64)x.inRetail,
+                                    inBI = (Int64)x.inBI,
+                                    inTUKAB = (Int64)x.inTUKAB,
+                                    inOtherCPC = (Int64)x.inOtherCPC,
+                                    inVaultATM = (Int64)x.inVaultATM,
+                                    inTukaran = (Int64)x.inTukaran,
+                                    outCabang = (Int64)x.outCabang,
+                                    outRetail = (Int64)x.outRetail,
+                                    outBIULE = (Int64)x.outBIULE,
+                                    outBIUTLE = (Int64)x.outBIUTLE,
+                                    outTUKAB = (Int64)x.outTUKAB,
+                                    outOtherCPC = (Int64)x.outOtherCPC,
+                                    outVaultATM = (Int64)x.outVaultATM,
+                                    outTukaran = (Int64)x.outTukaran,
+                                }).ToList();
+                return listData;
+            }
         }
         private void loadButton_Click(object sender, EventArgs e)
         {

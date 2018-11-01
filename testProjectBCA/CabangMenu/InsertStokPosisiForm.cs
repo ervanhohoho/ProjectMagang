@@ -57,7 +57,26 @@ namespace testProjectBCA
             List<String> listYangAda = (from x in db.StokPosisis
                                         where x.tanggal == maxTanggal
                                         select x.namaPkt).Distinct().ToList();
-            listBox1.DataSource = listYangAda;
+            List<Pkt> semuaNamaPkt = db.Pkts.Where(x => x.kodePktCabang.Length > 2).ToList();
+            foreach(var temp in listYangAda)
+            {
+                var toRemove = semuaNamaPkt.Where(x => x.namaPkt == temp).FirstOrDefault();
+                semuaNamaPkt.Remove(toRemove);
+            }
+
+            List<String> listKanwil = semuaNamaPkt.Select(x => x.kanwil).Distinct().ToList();
+            foreach(var temp in listKanwil)
+                treeView1.Nodes.Add(temp);
+            for(int a = 0; a<treeView1.Nodes.Count;a++)
+            {
+                var node = treeView1.Nodes[a];
+                var toAdd = semuaNamaPkt.Where(x => x.kanwil == node.Text).Select(x => x.namaPkt);
+                foreach(var add in toAdd)
+                {
+                    node.Nodes.Add(add);
+                }
+            }
+            
         }
         DateTime lastDate;
         bool first;
