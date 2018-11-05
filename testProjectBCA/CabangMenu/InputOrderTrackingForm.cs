@@ -509,22 +509,6 @@ namespace testProjectBCA
                     }
 
 
-                    //CCAS ganti keterangan
-                    var check = (from x in otl
-                                 where x.kodePkt == "CCAS"
-                                 select x).FirstOrDefault();
-                    if (check != null)
-                    {
-                        if (check.totalRekap == otl[otl.Count - 1].orderTracking)
-                        {
-                            check.keterangan = "SAMA";
-                        }
-                        else
-                        {
-                            check.keterangan = "BERBEDA";
-                        }
-
-                    }
 
                     //adding ccas-ordertracking
                     var query2 = (from x in otl
@@ -550,6 +534,23 @@ namespace testProjectBCA
                         keterangan = "SUM CCAS-OT"
                     });
                     // 
+
+                    //CCAS ganti keterangan
+                    var check = (from x in otl
+                                 where x.kodePkt == "CCAS"
+                                 select x).FirstOrDefault();
+                    if (check != null)
+                    {
+                        if (check.totalRekap == otl[otl.Count - 1].orderTracking)
+                        {
+                            check.keterangan = "SAMA";
+                        }
+                        else
+                        {
+                            check.keterangan = "BERBEDA";
+                        }
+
+                    }
 
 
                     dataGridView1.DataSource = otl;

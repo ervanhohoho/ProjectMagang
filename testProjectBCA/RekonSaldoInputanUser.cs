@@ -20,5 +20,6 @@ namespace testProjectBCA
         public string jenis { get; set; }
         public Nullable<long> value { get; set; }
         public string kodePkt { get; set; }
+        public string keterangan { get; set; }
     }
 }

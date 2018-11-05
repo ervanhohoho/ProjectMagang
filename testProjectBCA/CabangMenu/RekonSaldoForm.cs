@@ -291,6 +291,10 @@ namespace testProjectBCA.CabangMenu
                 ValueType = typeof(Int64),
                 DefaultCellStyle = new DataGridViewCellStyle() { Format = "C0", FormatProvider = CultureInfo.GetCultureInfo("id-ID")}
             });
+            dataTambahanGridView.Columns.Add(new DataGridViewTextBoxColumn() {
+                Name = "keterangan",
+                HeaderText = "Keterangan",
+            });
 
             //Load Data Existing
             List<RekonSaldoInputanUser> dataExisting = db.RekonSaldoInputanUsers.Where(x => x.tanggal == tanggal && x.kodePkt == kodePkt).ToList();
@@ -298,7 +302,7 @@ namespace testProjectBCA.CabangMenu
             foreach (var temp in dataExisting)
             {
                 rows.Add(new DataGridViewRow());
-                rows[rows.Count - 1].CreateCells(dataTambahanGridView, temp.Id, temp.in_out, temp.jenis, temp.value);
+                rows[rows.Count - 1].CreateCells(dataTambahanGridView, temp.Id, temp.in_out, temp.jenis, temp.value, temp.keterangan);
                 //dataTambahanGridView.Rows.Add(row);
             }
             dataTambahanGridView.Rows.AddRange(rows.ToArray());
@@ -753,7 +757,8 @@ namespace testProjectBCA.CabangMenu
                 String id = temp.Cells["id"].Value == null ? "-1" : temp.Cells["id"].Value.ToString(),
                     in_out = temp.Cells["in_out"].Value.ToString(),
                     jenis = temp.Cells["jenis"].Value.ToString(),
-                    value = temp.Cells["value"].Value.ToString();
+                    value = temp.Cells["value"].Value.ToString(),
+                    keterangan = temp.Cells["keterangan"].Value.ToString();
                 Console.WriteLine(id + " " + in_out + " " + jenis + " " + value);
                 rekonSaldoInputanUsers.Add(new RekonSaldoInputanUser() {
                     Id = Int32.Parse(id),
@@ -761,6 +766,7 @@ namespace testProjectBCA.CabangMenu
                     jenis = jenis,
                     tanggal = tanggal,
                     kodePkt = kodePkt,
+                    keterangan = keterangan,
                     value = Int64.Parse(value)
                 });
             }
@@ -773,6 +779,7 @@ namespace testProjectBCA.CabangMenu
                 datadb.in_out = toUpdate.in_out;
                 datadb.jenis = toUpdate.jenis;
                 datadb.value = toUpdate.value;
+                datadb.keterangan = toUpdate.keterangan;
             }
             db.SaveChanges();
         }

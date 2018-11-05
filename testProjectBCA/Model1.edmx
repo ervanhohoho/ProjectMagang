@@ -342,6 +342,7 @@
           <Property Name="in_out" Type="varchar" MaxLength="5" />
           <Property Name="jenis" Type="varchar" MaxLength="50" />
           <Property Name="value" Type="bigint" />
+          <Property Name="keterangan" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="RekonSaldoPerVendor">
           <Key>
@@ -1238,6 +1239,7 @@
           <Property Name="jenis" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="value" Type="Int64" />
           <Property Name="kodePkt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="keterangan" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1809,6 +1811,7 @@
           <EntitySetMapping Name="RekonSaldoInputanUsers">
             <EntityTypeMapping TypeName="CACModel.RekonSaldoInputanUser">
               <MappingFragment StoreEntitySet="RekonSaldoInputanUser">
+                <ScalarProperty Name="keterangan" ColumnName="keterangan" />
                 <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
                 <ScalarProperty Name="value" ColumnName="value" />
                 <ScalarProperty Name="jenis" ColumnName="jenis" />
