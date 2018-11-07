@@ -465,7 +465,7 @@ namespace testProjectBCA
                              nominalMcs = y.amountTotal,
                              nominalDailyStock = z.BN100K + z.BN50K + z.BN20K + z.BN10K + z.BN5K + z.BN2K + z.BN1K + z.BN500 + z.BN200 + z.BN100 + z.CN500 + z.CN200 + z.CN100 + z.CN50 + z.CN25,
                              selisihBeeHiveMcs = x.totalNominal - y.amountTotal,
-                             selisihBeeHiveDailyStock = x.totalNominal - z.BN100K + z.BN50K + z.BN20K + z.BN10K + z.BN5K + z.BN2K + z.BN1K + z.BN500 + z.BN200 + z.BN100 + z.CN500 + z.CN200 + z.CN100 + z.CN50 + z.CN25,
+                             selisihBeeHiveDailyStock = x.totalNominal - (z.BN100K + z.BN50K + z.BN20K + z.BN10K + z.BN5K + z.BN2K + z.BN1K + z.BN500 + z.BN200 + z.BN100 + z.CN500 + z.CN200 + z.CN100 + z.CN50 + z.CN25),
                              keterangan = (
                                 x.totalNominal == y.amountTotal && y.amountTotal == z.BN100K + z.BN50K + z.BN20K + z.BN10K + z.BN5K + z.BN2K + z.BN1K + z.BN500 + z.BN200 + z.BN100 + z.CN500 + z.CN200 + z.CN100 + z.CN50 + z.CN25 ? "SAMA" : "TIDAK SAMA"
                              )

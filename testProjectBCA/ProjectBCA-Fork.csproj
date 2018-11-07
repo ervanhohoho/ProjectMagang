@@ -181,11 +181,18 @@
     <Compile Include="BeritaAcara.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="CabangMenu\KumpulanQueryRekonSaldo.cs" />
     <Compile Include="CabangMenu\RekonSaldoForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="CabangMenu\RekonSaldoForm.Designer.cs">
       <DependentUpon>RekonSaldoForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CabangMenu\WPRekonSaldoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CabangMenu\WPRekonSaldoForm.Designer.cs">
+      <DependentUpon>WPRekonSaldoForm.cs</DependentUpon>
     </Compile>
     <Compile Include="CabangMenu\ViewStokPosisiData.cs">
       <SubType>Form</SubType>
@@ -614,6 +621,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CabangMenu\RekonSaldoForm.resx">
       <DependentUpon>RekonSaldoForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CabangMenu\WPRekonSaldoForm.resx">
+      <DependentUpon>WPRekonSaldoForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CabangMenu\ViewStokPosisiData.resx">
       <DependentUpon>ViewStokPosisiData.cs</DependentUpon>

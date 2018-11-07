@@ -565,6 +565,7 @@
     <EntitySetMapping Name="RekonSaldoInputanUsers">
       <EntityTypeMapping TypeName="CACModel.RekonSaldoInputanUser">
         <MappingFragment StoreEntitySet="RekonSaldoInputanUser">
+          <ScalarProperty Name="keterangan" ColumnName="keterangan" />
           <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
           <ScalarProperty Name="value" ColumnName="value" />
           <ScalarProperty Name="jenis" ColumnName="jenis" />

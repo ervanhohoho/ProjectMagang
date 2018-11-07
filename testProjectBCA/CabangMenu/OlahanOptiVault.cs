@@ -388,7 +388,6 @@ namespace testProjectBCA
                     grandTotal = (Int64)item.grandTotal
                 });
             }
-
             dataGridView7.DataSource = ppvs;
 
             if (dataGridView6.Rows.Count > 0)

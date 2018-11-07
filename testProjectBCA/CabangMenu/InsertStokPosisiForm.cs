@@ -619,6 +619,7 @@ namespace testProjectBCA
                     db.StokPosisis.AddRange(toInsert);
                     db.SaveChanges();
                     toInsert.Clear();
+                    toInsert = new List<StokPosisi>();
                     GC.Collect();
                 }
             }

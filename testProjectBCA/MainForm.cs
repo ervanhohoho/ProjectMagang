@@ -1081,6 +1081,13 @@ namespace testProjectBCA
 
         private void rekonSaldoToolStripMenuItem2_Click(object sender, EventArgs e)
         {
+            WPRekonSaldoForm rsf = new WPRekonSaldoForm();
+            rsf.MdiParent = this;
+            rsf.Show();
+        }
+
+        private void rekonSaldoToolStripMenuItem3_Click(object sender, EventArgs e)
+        {
             RekonSaldoForm rsf = new RekonSaldoForm();
             rsf.MdiParent = this;
             rsf.Show();

@@ -445,15 +445,16 @@ namespace testProjectBCA
                                             + "  then 'SAMA' else 'BERBEDA' end"
                                             + "  from"
                                             + "  ("
-                                            + "  select kodePkt, nominalDispute = sum(nominalDispute)"
-                                            + "  from OrderTracking"
-                                            + "  where tanggal = '2018-10-01'"
-                                            + "  group by kodePkt)a full outer join"
+                                            + "  select OrderTracking.kodePkt, nominalDispute = sum(nominalDispute)"
+                                            + "  from OrderTracking join Pkt on (CASE WHEN OrderTracking.kodePkt LIKE 'CCAS%' THEN 'CCASA' ELSE OrderTracking.kodePkt END) = Pkt.kodePktCabang"
+                                            + "  where tanggal = '" + dateTimePicker1.Value.Date + "' and kanwil like 'Jabotabek'"
+                                            + "  group by OrderTracking.kodePkt)a full outer join"
                                             + "  ("
                                             + "  select kodePenerimaDana, [Tidak Dibatalkan] = sum(case when lower(keterangan) not like '%batal%'  then total else 0 end), [dibatalkan] = sum(case when lower(keterangan) = '%batal%' then total else 0 end)"
-                                            + "  from RekapSelisihAmbilSetor"
-                                            + "  where tanggalTransaksi = '2018-10-01' and LEN(noTxn)<=6"
-                                            + "  group by kodePenerimaDana)b"
+                                            + "  from RekapSelisihAmbilSetor join Pkt on (CASE WHEN RekapSelisihAmbilSetor.kodePenerimaDana LIKE 'CCAS%' THEN 'CCASA' ELSE kodePenerimaDana END) = Pkt.kodePktCabang"
+                                            + "  where tanggalTransaksi = '"+dateTimePicker1.Value.Date+"' and LEN(noTxn) <= 6 and kanwil like 'Jabotabek'"
+                                            + "  group by kodePenerimaDana"
+                                            + "  )b"
                                             + "  on a.kodePkt = b.kodePenerimaDana";
                     SqlDataReader reader = cmd.ExecuteReader();
 

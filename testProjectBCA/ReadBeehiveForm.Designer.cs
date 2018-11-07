@@ -62,7 +62,7 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.Size = new System.Drawing.Size(592, 485);
+            this.dataGridView1.Size = new System.Drawing.Size(875, 485);
             this.dataGridView1.TabIndex = 1;
             this.dataGridView1.SelectionChanged += new System.EventHandler(this.dataGridView1_SelectionChanged);
             // 
@@ -78,7 +78,7 @@
             // 
             // buttonProses
             // 
-            this.buttonProses.Location = new System.Drawing.Point(404, 40);
+            this.buttonProses.Location = new System.Drawing.Point(687, 41);
             this.buttonProses.Name = "buttonProses";
             this.buttonProses.Size = new System.Drawing.Size(200, 23);
             this.buttonProses.TabIndex = 3;
@@ -108,7 +108,7 @@
             // 
             // dateTimePicker1
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(404, 11);
+            this.dateTimePicker1.Location = new System.Drawing.Point(687, 12);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
             this.dateTimePicker1.TabIndex = 7;
@@ -125,7 +125,7 @@
             // 
             // buttonShowRusak
             // 
-            this.buttonShowRusak.Location = new System.Drawing.Point(404, 69);
+            this.buttonShowRusak.Location = new System.Drawing.Point(687, 70);
             this.buttonShowRusak.Name = "buttonShowRusak";
             this.buttonShowRusak.Size = new System.Drawing.Size(200, 23);
             this.buttonShowRusak.TabIndex = 10;
@@ -137,7 +137,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(613, 598);
+            this.ClientSize = new System.Drawing.Size(899, 598);
             this.Controls.Add(this.buttonShowRusak);
             this.Controls.Add(this.inputButtonVa);
             this.Controls.Add(this.dateTimePicker1);

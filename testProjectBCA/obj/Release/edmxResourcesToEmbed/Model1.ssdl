@@ -337,6 +337,7 @@
     <Property Name="in_out" Type="varchar" MaxLength="5" />
     <Property Name="jenis" Type="varchar" MaxLength="50" />
     <Property Name="value" Type="bigint" />
+    <Property Name="keterangan" Type="varchar" MaxLength="255" />
   </EntityType>
   <EntityType Name="RekonSaldoPerVendor">
     <Key>

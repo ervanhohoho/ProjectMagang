@@ -616,5 +616,6 @@
     <Property Name="jenis" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="value" Type="Int64" />
     <Property Name="kodePkt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="keterangan" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
   </EntityType>
 </Schema>
