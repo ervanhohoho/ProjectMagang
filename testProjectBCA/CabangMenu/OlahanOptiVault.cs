@@ -61,6 +61,10 @@ namespace testProjectBCA
 
                 for (int i = 1; i < dt.Rows.Count - 1; i++)
                 {
+                    if (String.IsNullOrWhiteSpace(dt.Rows[i][3].ToString()))
+                    {
+                        continue;
+                    }
                     Console.WriteLine(i);
                     Console.WriteLine(dt.Rows[i][7].ToString());
                     vobh.Add(new VOBH
@@ -763,7 +767,7 @@ namespace testProjectBCA
 
 
 
-        
+
 
 
 
