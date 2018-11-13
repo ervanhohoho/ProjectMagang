@@ -3720,7 +3720,9 @@ namespace testProjectBCA.ATM
                 newA.kodePkt = KodePkt[pktIndex];
                 db.Approvals.Add(newA);
                 db.SaveChanges();
-                var lastApproval = (from x in db.Approvals select x).ToList();
+                var lastApproval = (from x in db.Approvals
+                                    where x.kodePkt == newA.kodePkt
+                                    select x).ToList();
                 DateTime tempTanggal = tanggalOptiMin;
                 int count = 0;
                 int jumlahbon = 0;

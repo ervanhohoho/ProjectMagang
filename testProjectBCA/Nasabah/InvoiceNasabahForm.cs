@@ -19,6 +19,7 @@ namespace testProjectBCA
         List<DateTime> listTanggalAbacas;
         List<HargaLayanan> listHargaLayanan;
         List<EventTanggal> listEventTanggal;
+        Int64 hargaCos;
         public InvoiceNasabahForm()
         {
             InitializeComponent();
@@ -61,7 +62,7 @@ namespace testProjectBCA
         public void loadData()
         {
             Double rateAsuransi = (Double) (from x in db.AsuransiLayanans select x.asuransi).FirstOrDefault();
-
+            hargaCos = (Int64) hargaCosNum.Value;
             var source = (from x in db.Abacas.AsEnumerable()
                           join y in db.Nasabahs on x.CustomerCode equals y.kodeNasabah
                           join z in db.Pkts on y.kodePktCabang equals z.kodePktCabang
@@ -75,14 +76,22 @@ namespace testProjectBCA
                               frekuensi = x.CustomerCode.ToLower().Contains("t") ? hitungFrekuensiTukaran((Int64) x.TotalUangBesar, (Int64) x.totalAmount) : hitungFrekuensi(y.metodeLayanan, (Int64)x.totalAmount),
                               jenisLayanan = getJenisLayanan(x.CustomerCode, x.tanggal, z.vendor)
                           }).ToList();
-
-            var query = (from x in source
+            var source2 = (from x in source
+                           select new
+                           {
+                               x.CustomerCode,
+                               x.totalAmount,
+                               x.frekuensi,
+                               x.jenisLayanan,
+                               biayaTambahanCos = x.jenisLayanan.ToLower() == "cos" && x.frekuensi > 1 ? (x.frekuensi - 1) * hargaCos : 0
+                           }).ToList();
+            var query = (from x in source2
                          group x by new { x.CustomerCode, x.jenisLayanan } into g
-                         select new { KodeNasabah = g.Key.CustomerCode, jenisLayanan = g.Key.jenisLayanan, Total = g.Sum(i => i.totalAmount), Frekuensi = g.Sum(i => i.frekuensi) }).ToList();
+                         select new { KodeNasabah = g.Key.CustomerCode, jenisLayanan = g.Key.jenisLayanan, Total = g.Sum(i => i.totalAmount), Frekuensi = g.Sum(i => i.frekuensi), biayaTambahanCos = g.Sum(z=>z.biayaTambahanCos)}).ToList();
             //Bikin khusus yang reguler
             var query2 = (from x in query
                           join y in db.Nasabahs on x.KodeNasabah equals y.kodeNasabah
-                          select new { x.KodeNasabah, x.Total, x.Frekuensi,y.kuota, y.fasilitasLayanan, y.metodeLayanan, y.ring, x.jenisLayanan, y.segmentasiNasabah, y.sentralisasi, y.subsidi, y.persentaseSubsidi }).ToList();
+                          select new { x.KodeNasabah, x.Total, x.Frekuensi,y.kuota, y.fasilitasLayanan, y.metodeLayanan, y.ring, x.jenisLayanan, y.segmentasiNasabah, y.sentralisasi, y.subsidi, y.persentaseSubsidi, x.biayaTambahanCos }).ToList();
             
             //Cocokin sama harga
             var query3 = (from x in query2
@@ -99,7 +108,7 @@ namespace testProjectBCA
                               x.jenisLayanan,
                               hargaRing = hitungHargaRing(x.ring, x.metodeLayanan, x.jenisLayanan),
                               AsuransiCIT = Math.Round((Double)(x.Total * rateAsuransi)),
-                              TotalBiayaTrip = x.Frekuensi * hitungHargaRing(x.ring, x.metodeLayanan, x.jenisLayanan),
+                              TotalBiayaTrip = (x.Frekuensi * hitungHargaRing(x.ring, x.metodeLayanan, x.jenisLayanan)) + x.biayaTambahanCos,
                               PPN = 0.01 * (x.Frekuensi * hitungHargaRing(x.ring, x.metodeLayanan, x.jenisLayanan) + Math.Round((Double)(x.Total * rateAsuransi))),
                               x.segmentasiNasabah,
                               x.subsidi,

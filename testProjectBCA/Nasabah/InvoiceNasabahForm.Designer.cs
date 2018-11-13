@@ -41,23 +41,29 @@
             this.label5 = new System.Windows.Forms.Label();
             this.maxTukaranKoinMax = new System.Windows.Forms.NumericUpDown();
             this.loadButton = new System.Windows.Forms.Button();
+            this.hargaCosNum = new System.Windows.Forms.NumericUpDown();
+            this.label6 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxCosNumeric)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxTukaranKertasNumeric)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxTukaranKoinMax)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.hargaCosNum)).BeginInit();
             this.SuspendLayout();
             // 
             // dataGridView1
             // 
+            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(12, 49);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(1109, 418);
+            this.dataGridView1.Size = new System.Drawing.Size(1324, 418);
             this.dataGridView1.TabIndex = 0;
             // 
             // exportButton
             // 
-            this.exportButton.Location = new System.Drawing.Point(1046, 12);
+            this.exportButton.Location = new System.Drawing.Point(1261, 15);
             this.exportButton.Name = "exportButton";
             this.exportButton.Size = new System.Drawing.Size(75, 23);
             this.exportButton.TabIndex = 1;
@@ -108,7 +114,7 @@
             0,
             0,
             0});
-            this.maxCosNumeric.Location = new System.Drawing.Point(348, 15);
+            this.maxCosNumeric.Location = new System.Drawing.Point(578, 15);
             this.maxCosNumeric.Maximum = new decimal(new int[] {
             1661992959,
             1808227885,
@@ -127,7 +133,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(290, 17);
+            this.label3.Location = new System.Drawing.Point(520, 17);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(52, 13);
             this.label3.TabIndex = 7;
@@ -140,7 +146,7 @@
             0,
             0,
             0});
-            this.maxTukaranKertasNumeric.Location = new System.Drawing.Point(583, 15);
+            this.maxTukaranKertasNumeric.Location = new System.Drawing.Point(813, 15);
             this.maxTukaranKertasNumeric.Maximum = new decimal(new int[] {
             -1981284353,
             -1966660860,
@@ -159,7 +165,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(474, 17);
+            this.label4.Location = new System.Drawing.Point(704, 17);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(103, 13);
             this.label4.TabIndex = 9;
@@ -168,7 +174,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(721, 17);
+            this.label5.Location = new System.Drawing.Point(951, 17);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(94, 13);
             this.label5.TabIndex = 10;
@@ -181,7 +187,7 @@
             0,
             0,
             0});
-            this.maxTukaranKoinMax.Location = new System.Drawing.Point(821, 15);
+            this.maxTukaranKoinMax.Location = new System.Drawing.Point(1051, 15);
             this.maxTukaranKoinMax.Maximum = new decimal(new int[] {
             -559939585,
             902409669,
@@ -199,7 +205,7 @@
             // 
             // loadButton
             // 
-            this.loadButton.Location = new System.Drawing.Point(965, 12);
+            this.loadButton.Location = new System.Drawing.Point(1180, 15);
             this.loadButton.Name = "loadButton";
             this.loadButton.Size = new System.Drawing.Size(75, 23);
             this.loadButton.TabIndex = 11;
@@ -207,11 +213,29 @@
             this.loadButton.UseVisualStyleBackColor = true;
             this.loadButton.Click += new System.EventHandler(this.loadButton_Click);
             // 
+            // hargaCosNum
+            // 
+            this.hargaCosNum.Location = new System.Drawing.Point(425, 15);
+            this.hargaCosNum.Name = "hargaCosNum";
+            this.hargaCosNum.Size = new System.Drawing.Size(89, 20);
+            this.hargaCosNum.TabIndex = 12;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(358, 17);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(61, 13);
+            this.label6.TabIndex = 13;
+            this.label6.Text = "Harga COS";
+            // 
             // InvoiceNasabahForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1133, 479);
+            this.ClientSize = new System.Drawing.Size(1348, 479);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.hargaCosNum);
             this.Controls.Add(this.loadButton);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
@@ -231,6 +255,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.maxCosNumeric)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxTukaranKertasNumeric)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxTukaranKoinMax)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.hargaCosNum)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -251,5 +276,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.NumericUpDown maxTukaranKoinMax;
         private System.Windows.Forms.Button loadButton;
+        private System.Windows.Forms.NumericUpDown hargaCosNum;
+        private System.Windows.Forms.Label label6;
     }
 }
