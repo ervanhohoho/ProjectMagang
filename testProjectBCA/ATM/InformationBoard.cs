@@ -3645,6 +3645,7 @@ namespace testProjectBCA.ATM
                 }
 
                 loadSaldoAwal();
+                
                 loadBon();
                 loadTablePermintaanBon();
                 loadSetor();
@@ -3656,28 +3657,37 @@ namespace testProjectBCA.ATM
                     temp.d100 = (Int64)(temp.d100 * (1 + bufferIsiATM100));
                     temp.d50 = (Int64)(temp.d50 * (1 + bufferIsiATM50));
                 }
+                Console.WriteLine("Jumlah Bon Laporan: " + jumlahBonLaporan);
+                Console.WriteLine("Jumlah Prediksi isi ATM: " + prediksiIsiAtm.Count);
 
-                if (e2eComboBox.SelectedIndex == 1)
-                    loadRekomendasiBonNonE2E();
+                if (jumlahBonLaporan + 1 < prediksiIsiAtm.Count)
+                {
+                    if (e2eComboBox.SelectedIndex == 1)
+                        loadRekomendasiBonNonE2E();
+                    else
+                        loadRekomendasiBonE2E();
+                    loadTableRekomendasiBon();
+
+                    loadTableBon();
+
+                    loadRasio();
+                    loadTableRasio();
+                    loadTableSaldo();
+
+                    loadTableIsiCRM();
+                    loadTableIsiATM();
+                    loadTableSislokATM();
+                    loadTableSislokCRM();
+                    loadTableBonYangDisetujui();
+
+                    loadPermintaanAdhoc();
+
+                    validasiPermintaanBon();
+                }
                 else
-                    loadRekomendasiBonE2E();
-                loadTableRekomendasiBon();
-
-                loadTableBon();
-
-                loadRasio();
-                loadTableRasio();
-                loadTableSaldo();
-
-                loadTableIsiCRM();
-                loadTableIsiATM();
-                loadTableSislokATM();
-                loadTableSislokCRM();
-                loadTableBonYangDisetujui();
-
-                loadPermintaanAdhoc();
-
-                validasiPermintaanBon();
+                {
+                    MessageBox.Show("Tanggal prediksi max terlalu pendek");
+                }
             //}catch(Exception err)
             //{
             //    MessageBox.Show(err.ToString());

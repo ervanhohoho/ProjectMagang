@@ -1,85 +1,9 @@
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\ClosedXML.dll
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\CrystalDecisions.CrystalReports.Engine.dll
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\CrystalDecisions.ReportSource.dll
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\CrystalDecisions.Shared.dll
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\DocumentFormat.OpenXml.dll
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\EntityFramework.dll
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\EntityFramework.SqlServer.dll
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\ExcelDataReader.DataSet.dll
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\ExcelDataReader.dll
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\ExcelNumberFormat.dll
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\FastMember.dll
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\LiveCharts.dll
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\LiveCharts.WinForms.dll
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\LiveCharts.Wpf.dll
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\LumenWorks.Framework.IO.dll
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\Oracle.DataAccess.dll
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\Oracle.ManagedDataAccess.dll
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\ServiceStack.Text.dll
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\CrystalDecisions.ReportAppServer.DataDefModel.dll
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\CrystalDecisions.ReportAppServer.ClientDoc.dll
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\CrystalDecisions.ReportAppServer.ReportDefModel.dll
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\CrystalDecisions.ReportAppServer.Controllers.dll
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\CrystalDecisions.ReportAppServer.CommLayer.dll
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\CrystalDecisions.ReportAppServer.DataSetConversion.dll
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\CrystalDecisions.ReportAppServer.Prompting.dll
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\CrystalDecisions.ReportAppServer.XmlSerialize.dll
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\CrystalDecisions.ReportAppServer.CubeDefModel.dll
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\CrystalDecisions.ReportAppServer.CommonObjectModel.dll
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\CrystalDecisions.ReportAppServer.ObjectFactory.dll
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\CrystalDecisions.ReportAppServer.CommonControls.dll
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\stdole.dll
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\ClosedXML.pdb
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\ClosedXML.xml
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\DocumentFormat.OpenXml.xml
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\EntityFramework.xml
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\EntityFramework.SqlServer.xml
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\ExcelDataReader.xml
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\ExcelDataReader.DataSet.xml
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\ExcelNumberFormat.xml
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\LiveCharts.pdb
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\LiveCharts.xml
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\LiveCharts.WinForms.pdb
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\LiveCharts.WinForms.xml
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\LiveCharts.Wpf.pdb
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\LiveCharts.Wpf.xml
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\LumenWorks.Framework.IO.xml
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\ServiceStack.Text.xml
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.DailyStockForm.resources
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.dasbor.resources
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.Form1.resources
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.InformationBoard.resources
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.initTransaksi.resources
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.InputForm.resources
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.InputTransaksiCabangForm.resources
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.loadForm.resources
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.loadPkt.resources
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.MainForm.resources
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.MultipleFilesInputForm.resources
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.Properties.Resources.resources
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.AkurasiPrediksiForm.resources
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.RekapApprovalForm.resources
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.Revisi.resources
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.StokPosisiForm.resources
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\obj\Release\ProjectBCA-Fork.csproj.GenerateResource.Cache
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\testProjectBCA.exe.config
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\testProjectBCA.exe.manifest
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\testProjectBCA.application
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\testProjectBCA.exe
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\bin\Release\testProjectBCA.pdb
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.InputAbacasForm.resources
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.InputHargaLayananForm.resources
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.InputMasterNasabahForm.resources
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.SLAProsesForm.resources
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.exe.manifest
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.application
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.exe
-C:\Users\Ervan\Documents\Visual Studio 2015\Projects\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.pdb
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\bin\Release\testProjectBCA.exe.config
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\bin\Release\testProjectBCA.exe.manifest
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\bin\Release\testProjectBCA.application
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\bin\Release\testProjectBCA.exe
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\bin\Release\testProjectBCA.pdb
+C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\bin\Release\BCrypt.Net-Next.dll
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\bin\Release\ClosedXML.dll
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\bin\Release\DocumentFormat.OpenXml.dll
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\bin\Release\EntityFramework.dll
@@ -110,6 +34,7 @@ C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\bin\Release\Cr
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\bin\Release\CrystalDecisions.ReportAppServer.ObjectFactory.dll
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\bin\Release\CrystalDecisions.ReportAppServer.CommonControls.dll
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\bin\Release\stdole.dll
+C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\bin\Release\BCrypt.Net-Next.xml
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\bin\Release\ClosedXML.pdb
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\bin\Release\ClosedXML.xml
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\bin\Release\DocumentFormat.OpenXml.xml
@@ -131,7 +56,11 @@ C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\bin\Release\Mo
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\bin\Release\ServiceStack.Text.xml
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\bin\Release\System.ValueTuple.xml
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\ProjectBCA-Fork.csprojAssemblyReference.cache
+C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.ATM.InputDataBankLainForm.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.DailyStockForm.resources
+C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.CabangMenu.RekonSaldoForm.resources
+C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.CabangMenu.WPRekonSaldoForm.resources
+C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.CabangMenu.ViewStokPosisiData.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.dasbor.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.dasborExtension.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.dasborPerformancePktf.resources
@@ -142,6 +71,9 @@ C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\te
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.ForecastAtmForm.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.graphSaldoATM.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.InputBonYangDisetujuiForm.resources
+C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.Dashboard.ProyeksiApproval.resources
+C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.InputDataSetoranCRMForm.resources
+C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.InputDataTarikanCRMForm.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.InputDataTarikanForm.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.InputDataTukaranDanDeliveryForm.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.InputOrderTrackingForm.resources
@@ -154,7 +86,10 @@ C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\te
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.popupsementara.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.RasioApprovalForm.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.ReadBeehiveForm.resources
+C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.OlahanOptiVault.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.rekonSaldoTrxCabang.resources
+C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.ATM.RevisiInformationBoard.resources
+C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.ATM.InformationBoard.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.initTransaksi.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.InputAbacasForm.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.InputDataSubsidiForm.resources
@@ -168,12 +103,14 @@ C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\te
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.MainForm.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.MultipleFilesInputForm.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.Properties.Resources.resources
+C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.ATM.AkurasiPrediksiForm.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.proyeksiLikuiditasForm.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.RekapApprovalForm.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.Revisi.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.SLAProsesForm.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.StokPosisiForm.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.TestForm.resources
+C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.CabangMenu.UpdateStokPosisiForm.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\ProjectBCA-Fork.csproj.GenerateResource.cache
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\ProjectBCA-Fork.csproj.CoreCompileInputs.cache
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.exe.manifest
@@ -181,17 +118,4 @@ C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\te
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\ProjectBCA-Fork.csproj.CopyComplete
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.exe
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.pdb
-C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\bin\Release\BCrypt.Net-Next.dll
-C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\bin\Release\BCrypt.Net-Next.xml
-C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.InputDataTarikanCRMForm.resources
-C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.InputDataSetoranCRMForm.resources
-C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.ATM.RevisiInformationBoard.resources
-C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.ATM.InformationBoard.resources
-C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.ATM.AkurasiPrediksiForm.resources
-C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.ATM.InputDataBankLainForm.resources
-C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.Dashboard.ProyeksiApproval.resources
-C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.CabangMenu.ViewStokPosisiData.resources
-C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.CabangMenu.UpdateStokPosisiForm.resources
-C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.CabangMenu.RekonSaldoForm.resources
-C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.OlahanOptiVault.resources
-C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.CabangMenu.WPRekonSaldoForm.resources
+C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.NasabahMenu.ExportAbacasForm.resources

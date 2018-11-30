@@ -258,7 +258,7 @@
     <Property Name="kodeCabang" Type="varchar" MaxLength="10" />
     <Property Name="kodePktCabang" Type="varchar" MaxLength="50" />
     <Property Name="ring" Type="varchar" MaxLength="10" />
-    <Property Name="NomorRekening" Type="varchar" MaxLength="15" />
+    <Property Name="NomorRekening" Type="varchar" MaxLength="100" />
     <Property Name="GroupNasabah" Type="varchar" MaxLength="255" />
     <Property Name="namaNasabah" Type="varchar" MaxLength="255" />
     <Property Name="segmentasiNasabah" Type="varchar" MaxLength="10" />

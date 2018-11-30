@@ -168,6 +168,7 @@ namespace testProjectBCA.ATM
                     reader = cmd.ExecuteReader();
                     bool event1 = true;
                     bool event2 = true;
+                    bool event3 = true;
                     if (reader.Read())
                     {
                         if (String.IsNullOrEmpty(reader[0].ToString()) || String.IsNullOrEmpty(reader[1].ToString()) || String.IsNullOrEmpty(reader[2].ToString()))
@@ -223,7 +224,7 @@ namespace testProjectBCA.ATM
                     if (!event2)
                     {
                         reader.Close();
-                        cText = "SELECT ISNULL(AVG(isiCrm100),0), ISNULL(AVG(isiCrm50),0), ISNULL(AVG(isiCrm20),0) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + kodePkt + "' ";
+                        cText = "SELECT AVG(isiCrm100), AVG(isiCrm50), AVG(isiCrm20) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + kodePkt + "' ";
                         count = 0;
 
                         //Reset Where Condition
@@ -241,9 +242,38 @@ namespace testProjectBCA.ATM
                         reader = cmd.ExecuteReader();
                         if (reader.Read())
                         {
-                            
-                            eventType.Add("Tanggal " + tempDate.ToShortDateString() + " Menggunakan Event 3");
-                            return new EventAndCondition() { eventType = "Event 3", whereCondition = whereCondition };
+                            if (String.IsNullOrEmpty(reader[0].ToString()) || String.IsNullOrEmpty(reader[1].ToString()) || String.IsNullOrEmpty(reader[2].ToString()))
+                            {
+                                Console.WriteLine("NOT EVENT 3");
+                                event3 = false;
+                            }
+                            else
+                            {
+                                reader.Close();
+                                eventType.Add("Tanggal " + tempDate.ToShortDateString() + " Menggunakan Event 3");
+                                return new EventAndCondition() { eventType = "Event 3", whereCondition = whereCondition };
+                            }
+                        }
+                        else
+                        {
+                            reader.Close();
+                        }
+                    }
+                    if (!event3)
+                    {
+                        reader.Close();
+                        cText = "SELECT AVG(isiCrm100), AVG(isiCrm50), AVG(isiCrm20) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + kodePkt +"' AND DATENAME(WEEKDAY, TA.Tanggal) = '" + tempDate.DayOfWeek.ToString() + "'";;
+                        count = 0;
+
+                        //Reset Where Condition
+                        whereCondition = "";
+                        cText += whereCondition;
+                        cmd.CommandText = cText;
+                        reader = cmd.ExecuteReader();
+                        if (reader.Read())
+                        {
+                            eventType.Add("Tanggal " + tempDate.ToShortDateString() + " Menggunakan Event 4");
+                            return new EventAndCondition() { eventType = "Event 4", whereCondition = whereCondition };
                         }
                         else
                         {
@@ -379,17 +409,20 @@ namespace testProjectBCA.ATM
                         String cText = "SELECT AVG(isiAtm100), AVG(isiAtm50), AVG(isiAtm20) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + kodePkt + "' AND DATENAME(WEEKDAY, TA.Tanggal) = '" + tempDate.DayOfWeek.ToString() + "'";
                         EventAndCondition eac = loadEventWhereCondition(tempDate);
 
+                        Console.WriteLine("EVENT EAC: " + eac.eventType);
                         if (eac.eventType!="Event 1")
                             cText = "SELECT AVG(isiAtm100), AVG(isiAtm50), AVG(isiAtm20) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + kodePkt + "'";
 
                         Console.WriteLine("Where cond: " + eac.whereCondition);
                         cText += eac.whereCondition;
-                        cText += ")";
+                        if(eac.eventType != "Event 4")
+                            cText += ")";
                         cmd.CommandText = cText;
                         Console.WriteLine(cmd.CommandText);
                         reader = cmd.ExecuteReader();
                         if (reader.Read())
                         {
+                            Console.WriteLine("READER[1]: " + reader[1]);
                             tempIsiAtm.d50 = (Int64)reader[1];
                             tempIsiAtm.d20 = (Int64)reader[2];
                             tempIsiAtm.tgl = tempDate;
@@ -449,7 +482,8 @@ namespace testProjectBCA.ATM
                             kondisi = " WHERE kodePkt = '" + kodePkt + "' ";
                         }
                         kondisi += eac.whereCondition;
-                        kondisi += ")";
+                        if (eac.eventType != "Event 4")
+                            kondisi += ")";
 
                         String subqueryTblAverage = "(SELECT ISNULL(AVG(isiAtm100),0) AS Average100 , ISNULL(AVG(isiAtm50),0) AS Average50 , ISNULL(AVG(isiAtm20),0) AS Average20 FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal";
                         subqueryTblAverage += kondisi;
@@ -533,7 +567,8 @@ namespace testProjectBCA.ATM
                             cText = "SELECT AVG(isiCrm100), AVG(isiCrm50), AVG(isiCrm20) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + kodePkt + "'";
 
                         cText += eac.whereCondition;
-                        cText += ")";
+                        if (eac.eventType != "Event 4")
+                            cText += ")";
                         cmd.CommandText = cText;
                         reader = cmd.ExecuteReader();
 
@@ -598,7 +633,8 @@ namespace testProjectBCA.ATM
                             kondisi = " WHERE kodePkt = '" + kodePkt + "' ";
                         }
                         kondisi += eac.whereCondition;
-                        kondisi += ")";
+                        if(eac.eventType != "Event 4")
+                            kondisi += ")";
 
                         String subqueryTblAverage = "(SELECT AVG(isiCrm100) AS Average100 , AVG(isiCrm50) AS Average50 , AVG(isiCrm20) AS Average20 FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal";
                         subqueryTblAverage += kondisi;
@@ -685,7 +721,8 @@ namespace testProjectBCA.ATM
                             cText = "SELECT AVG(sislokCrm100), AVG(sislokCrm50), AVG(sislokCrm20) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + kodePkt + "'";
 
                         cText += eac.whereCondition;
-                        cText += ")";
+                        if (eac.eventType != "Event 4")
+                            cText += ")";
                         cmd.CommandText = cText;
                         reader = cmd.ExecuteReader();
 
@@ -751,7 +788,8 @@ namespace testProjectBCA.ATM
                             kondisi = " WHERE kodePkt = '" + kodePkt + "' ";
                         }
                         kondisi += eac.whereCondition;
-                        kondisi += ")";
+                        if(eac.eventType != "Event 4")
+                            kondisi += ")";
 
                         String subqueryTblAverage = "(SELECT AVG(sislokCrm100) AS Average100 , AVG(sislokCrm50) AS Average50 , AVG(sislokCrm20) AS Average20 FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal";
                         subqueryTblAverage += kondisi;
@@ -838,7 +876,8 @@ namespace testProjectBCA.ATM
                             cText = "SELECT AVG(sislokcdm100), AVG(sislokcdm50), AVG(sislokcdm20) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + kodePkt + "'";
 
                         cText += eac.whereCondition;
-                        cText += ")";
+                        if (eac.eventType != "Event 4")
+                            cText += ")";
                         cmd.CommandText = cText;
                         reader = cmd.ExecuteReader();
                         if (reader.Read())
@@ -905,7 +944,8 @@ namespace testProjectBCA.ATM
                             kondisi = " WHERE kodePkt = '" + kodePkt + "' ";
                         }
                         kondisi += eac.whereCondition;
-                        kondisi += ")";
+                        if(eac.eventType != "Event 4")
+                            kondisi += ")";
 
                         String subqueryTblAverage = "(SELECT AVG(sislokcdm100) AS Average100 , AVG(sislokCdm50) AS Average50 , AVG(sislokCdm20) AS Average20 FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal";
                         subqueryTblAverage += kondisi;
@@ -992,7 +1032,8 @@ namespace testProjectBCA.ATM
                             cText = "SELECT ISNULL(AVG(CAST(sislokAtm100 AS FLOAT)/NULLIF(isiAtm100,0)),0), ISNULL(AVG(CAST(sislokAtm50 AS FLOAT)/NULLIF(isiAtm50,0)),0), ISNULL(AVG(CAST(sislokAtm20 AS FLOAT)/NULLIF(isiAtm20,0)),0) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + kodePkt + "'";
                         }
                         cText += eac.whereCondition;
-                        cText += ")";
+                        if (eac.eventType != "Event 4")
+                            cText += ")";
                         cmd.CommandText = cText;
                         reader = cmd.ExecuteReader();
                         if (reader.Read())
@@ -1053,7 +1094,8 @@ namespace testProjectBCA.ATM
                             kondisi = " WHERE kodePkt = '" + kodePkt + "' ";
                         }
                         kondisi += eac.whereCondition;
-                        kondisi += ")";
+                        if(eac.eventType != "Event 4")
+                            kondisi += ")";
 
                         String subqueryTblAverage = "(SELECT AVG(CAST(sislokAtm100 AS FLOAT)/NULLIF(isiAtm100,0)) AS Average100 ,AVG(CAST(sislokAtm50 AS FLOAT)/NULLIF(isiAtm50,0)) AS Average50 , AVG(CAST(sislokAtm20 AS FLOAT)/NULLIF(isiAtm20,0)) AS Average20 FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal";
                         subqueryTblAverage += kondisi;

@@ -212,7 +212,7 @@
     <Property Name="kodeCabang" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
     <Property Name="kodePktCabang" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="ring" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-    <Property Name="NomorRekening" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+    <Property Name="NomorRekening" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
     <Property Name="GroupNasabah" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
     <Property Name="namaNasabah" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
     <Property Name="segmentasiNasabah" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />

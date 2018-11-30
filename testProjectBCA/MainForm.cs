@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using testProjectBCA.ATM;
 using testProjectBCA.Dashboard;
 using testProjectBCA.CabangMenu;
+using testProjectBCA.NasabahMenu;
 namespace testProjectBCA
 {
     public partial class MainForm : Form
@@ -1091,6 +1092,13 @@ namespace testProjectBCA
             RekonSaldoForm rsf = new RekonSaldoForm();
             rsf.MdiParent = this;
             rsf.Show();
+        }
+
+        private void exportAbacasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ExportAbacasForm eaf = new ExportAbacasForm();
+            eaf.MdiParent = this;
+            eaf.Show();
         }
     }
 }
