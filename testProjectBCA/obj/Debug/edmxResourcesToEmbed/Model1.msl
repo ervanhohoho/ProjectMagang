@@ -575,5 +575,14 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="SaldoAwalRekonSaldoes">
+      <EntityTypeMapping TypeName="CACModel.SaldoAwalRekonSaldo">
+        <MappingFragment StoreEntitySet="SaldoAwalRekonSaldo">
+          <ScalarProperty Name="value" ColumnName="value" />
+          <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
+          <ScalarProperty Name="tanggal" ColumnName="tanggal" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

@@ -341,6 +341,9 @@
     <Compile Include="RekonSaldoInputanUser.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="SaldoAwalRekonSaldo.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Support Files\InputPromptForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -282,6 +282,7 @@
     <EntitySetMapping Name="RekapSelisihAmbilSetors">
       <EntityTypeMapping TypeName="CACModel.RekapSelisihAmbilSetor">
         <MappingFragment StoreEntitySet="RekapSelisihAmbilSetor">
+          <ScalarProperty Name="transaksi" ColumnName="transaksi" />
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="kodePenerimaDana" ColumnName="kodePenerimaDana" />
           <ScalarProperty Name="kodeSumberDana" ColumnName="kodeSumberDana" />
@@ -572,6 +573,15 @@
           <ScalarProperty Name="in_out" ColumnName="in_out" />
           <ScalarProperty Name="tanggal" ColumnName="tanggal" />
           <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SaldoAwalRekonSaldoes">
+      <EntityTypeMapping TypeName="CACModel.SaldoAwalRekonSaldo">
+        <MappingFragment StoreEntitySet="SaldoAwalRekonSaldo">
+          <ScalarProperty Name="value" ColumnName="value" />
+          <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
+          <ScalarProperty Name="tanggal" ColumnName="tanggal" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

@@ -331,6 +331,7 @@
           <Property Name="tanggalTemu" Type="date" />
           <Property Name="noBA" Type="varchar" MaxLength="50" />
           <Property Name="keterangan" Type="varchar" MaxLength="200" />
+          <Property Name="transaksi" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="RekonSaldoInputanUser">
           <Key>
@@ -377,6 +378,15 @@
           <Property Name="currencyAmmount" Type="bigint" />
           <Property Name="realDate" Type="date" />
           <Property Name="blogMessage" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="SaldoAwalRekonSaldo">
+          <Key>
+            <PropertyRef Name="tanggal" />
+            <PropertyRef Name="kodePkt" />
+          </Key>
+          <Property Name="tanggal" Type="datetime" Nullable="false" />
+          <Property Name="kodePkt" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="value" Type="bigint" />
         </EntityType>
         <EntityType Name="SaveAsk">
           <Key>
@@ -601,6 +611,7 @@
           <EntitySet Name="RekonSaldoInputanUser" EntityType="Self.RekonSaldoInputanUser" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RekonSaldoPerVendor" EntityType="Self.RekonSaldoPerVendor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RekonSaldoVault" EntityType="Self.RekonSaldoVault" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SaldoAwalRekonSaldo" EntityType="Self.SaldoAwalRekonSaldo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SaveAsk" EntityType="Self.SaveAsk" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="saveBeeHive" EntityType="Self.saveBeeHive" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="saveMcs" EntityType="Self.saveMcs" Schema="dbo" store:Type="Tables" />
@@ -905,6 +916,7 @@
           <Property Name="tanggalTemu" Type="DateTime" Precision="0" />
           <Property Name="noBA" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="keterangan" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="transaksi" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="RekonSaldoPerVendor">
           <Key>
@@ -1170,6 +1182,7 @@
           <EntitySet Name="DataBankLains" EntityType="CACModel.DataBankLain" />
           <EntitySet Name="BeritaAcaras" EntityType="CACModel.BeritaAcara" />
           <EntitySet Name="RekonSaldoInputanUsers" EntityType="CACModel.RekonSaldoInputanUser" />
+          <EntitySet Name="SaldoAwalRekonSaldoes" EntityType="CACModel.SaldoAwalRekonSaldo" />
         </EntityContainer>
         <EntityType Name="TabelTarikanSetoranCRM">
           <Key>
@@ -1240,6 +1253,15 @@
           <Property Name="value" Type="Int64" />
           <Property Name="kodePkt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="keterangan" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="SaldoAwalRekonSaldo">
+          <Key>
+            <PropertyRef Name="tanggal" />
+            <PropertyRef Name="kodePkt" />
+          </Key>
+          <Property Name="tanggal" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="kodePkt" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="value" Type="Int64" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1528,6 +1550,7 @@
           <EntitySetMapping Name="RekapSelisihAmbilSetors">
             <EntityTypeMapping TypeName="CACModel.RekapSelisihAmbilSetor">
               <MappingFragment StoreEntitySet="RekapSelisihAmbilSetor">
+                <ScalarProperty Name="transaksi" ColumnName="transaksi" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="kodePenerimaDana" ColumnName="kodePenerimaDana" />
                 <ScalarProperty Name="kodeSumberDana" ColumnName="kodeSumberDana" />
@@ -1818,6 +1841,15 @@
                 <ScalarProperty Name="in_out" ColumnName="in_out" />
                 <ScalarProperty Name="tanggal" ColumnName="tanggal" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SaldoAwalRekonSaldoes">
+            <EntityTypeMapping TypeName="CACModel.SaldoAwalRekonSaldo">
+              <MappingFragment StoreEntitySet="SaldoAwalRekonSaldo">
+                <ScalarProperty Name="value" ColumnName="value" />
+                <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
+                <ScalarProperty Name="tanggal" ColumnName="tanggal" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

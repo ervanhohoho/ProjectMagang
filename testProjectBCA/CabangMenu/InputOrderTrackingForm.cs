@@ -182,11 +182,6 @@ namespace testProjectBCA
                 DataSet ds = Util.openExcel(filename);
                 DataTable dt = ds.Tables[0];
 
-
-                var query = (from x in en.RekapSelisihAmbilSetors
-                             where x.tanggalTransaksi == dateTimePicker1.Value.Date
-                             select x).ToList();
-
                 DataRow[] rows = dt.Select("Column17 is null or (Column4 not like 'CABANG' and Column4 not like 'MEMO')");
                 //DataRow[] rows = dt.Select("Column17 is null or (Column4 not like 'CABANG' and Column4 not like 'MEMO')");
 
@@ -194,6 +189,12 @@ namespace testProjectBCA
                 {
                     dt.Rows.Remove(row);
                 }
+
+                var query = (from x in en.RekapSelisihAmbilSetors
+                             where x.tanggalTransaksi == dateTimePicker1.Value.Date
+                             select x).ToList();
+
+
 
                 if (query.Any())
                 {
@@ -216,6 +217,7 @@ namespace testProjectBCA
                             DateTime tanggalTemu = new DateTime(1 / 1 / 1);
                             String noBA = "";
                             String keterangan = "";
+                            String transaksi = "";
                             Int64 buff;
 
 
@@ -276,6 +278,10 @@ namespace testProjectBCA
                                 {
                                     keterangan = dt.Rows[i][31].ToString();
                                 }
+                                if (!String.IsNullOrEmpty(dt.Rows[i][4].ToString()))
+                                {
+                                    transaksi = dt.Rows[i][4].ToString();
+                                }
 
                                 en.RekapSelisihAmbilSetors.Add(new RekapSelisihAmbilSetor()
                                 {
@@ -290,7 +296,8 @@ namespace testProjectBCA
                                     tanggalTransaksi = tanggalTransaksi,
                                     tanggalTemu = tanggalTemu,
                                     noBA = noBA,
-                                    keterangan = keterangan
+                                    keterangan = keterangan,
+                                    transaksi = transaksi
 
                                 });
 
@@ -313,6 +320,7 @@ namespace testProjectBCA
                 {
                     for (int i = 1; i < dt.Rows.Count; i++)
                     {
+                        Console.WriteLine(i);
                         String kodePenerimaDana = "";
                         String kodeSumberDana = "";
                         Int64 lebih = 0;
@@ -325,6 +333,7 @@ namespace testProjectBCA
                         DateTime tanggalTemu = new DateTime(1 / 1 / 1);
                         String noBA = "";
                         String keterangan = "";
+                        String transaksi = "";
                         Int64 buff;
 
 
@@ -385,6 +394,10 @@ namespace testProjectBCA
                             {
                                 keterangan = dt.Rows[i][31].ToString();
                             }
+                            if (!String.IsNullOrEmpty(dt.Rows[i][4].ToString()))
+                            {
+                                transaksi = dt.Rows[i][4].ToString();
+                            }
 
                             en.RekapSelisihAmbilSetors.Add(new RekapSelisihAmbilSetor()
                             {
@@ -399,7 +412,8 @@ namespace testProjectBCA
                                 tanggalTransaksi = tanggalTransaksi,
                                 tanggalTemu = tanggalTemu,
                                 noBA = noBA,
-                                keterangan = keterangan
+                                keterangan = keterangan,
+                                transaksi = transaksi
 
                             });
 
@@ -452,7 +466,7 @@ namespace testProjectBCA
                                             + "  ("
                                             + "  select kodePenerimaDana, [Tidak Dibatalkan] = sum(case when lower(keterangan) not like '%batal%'  then total else 0 end), [dibatalkan] = sum(case when lower(keterangan) = '%batal%' then total else 0 end)"
                                             + "  from RekapSelisihAmbilSetor join Pkt on (CASE WHEN RekapSelisihAmbilSetor.kodePenerimaDana LIKE 'CCAS%' THEN 'CCASA' ELSE kodePenerimaDana END) = Pkt.kodePktCabang"
-                                            + "  where tanggalTransaksi = '"+dateTimePicker1.Value.Date+"' and LEN(noTxn) <= 6 and kanwil like 'Jabotabek'"
+                                            + "  where tanggalTransaksi = '" + dateTimePicker1.Value.Date + "' and LEN(noTxn) = 6 and kanwil like 'Jabotabek'"
                                             + "  group by kodePenerimaDana"
                                             + "  )b"
                                             + "  on a.kodePkt = b.kodePenerimaDana";
@@ -841,8 +855,6 @@ namespace testProjectBCA
 
                 if (query == null)
                 {
-                    //insert
-
                     sa.Add(new SaveAsk()
                     {
                         ask = ask,
@@ -858,14 +870,15 @@ namespace testProjectBCA
                     query.komentar = komentar;
                     query.ask = ask;
                     query.rekapAsk = rekapAsk;
-
-
                 }
-
-
             }
             en.SaveAsks.AddRange(sa);
             en.SaveChanges();
+        }
+
+        private void InputOrderTrackingForm_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

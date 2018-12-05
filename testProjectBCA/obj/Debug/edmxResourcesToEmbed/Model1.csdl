@@ -547,6 +547,7 @@
     <EntitySet Name="DataBankLains" EntityType="CACModel.DataBankLain" />
     <EntitySet Name="BeritaAcaras" EntityType="CACModel.BeritaAcara" />
     <EntitySet Name="RekonSaldoInputanUsers" EntityType="CACModel.RekonSaldoInputanUser" />
+    <EntitySet Name="SaldoAwalRekonSaldoes" EntityType="CACModel.SaldoAwalRekonSaldo" />
   </EntityContainer>
   <EntityType Name="TabelTarikanSetoranCRM">
     <Key>
@@ -617,5 +618,14 @@
     <Property Name="value" Type="Int64" />
     <Property Name="kodePkt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
     <Property Name="keterangan" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="SaldoAwalRekonSaldo">
+    <Key>
+      <PropertyRef Name="tanggal" />
+      <PropertyRef Name="kodePkt" />
+    </Key>
+    <Property Name="tanggal" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="kodePkt" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="value" Type="Int64" />
   </EntityType>
 </Schema>

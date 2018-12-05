@@ -27,5 +27,6 @@ namespace testProjectBCA
         public Nullable<System.DateTime> tanggalTemu { get; set; }
         public string noBA { get; set; }
         public string keterangan { get; set; }
+        public string transaksi { get; set; }
     }
 }

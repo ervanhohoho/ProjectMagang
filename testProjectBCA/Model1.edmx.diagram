@@ -42,6 +42,7 @@
         <EntityTypeShape EntityType="CACModel.DataBankLain" Width="1.5" PointX="18.375" PointY="4.75" />
         <EntityTypeShape EntityType="CACModel.BeritaAcara" Width="1.5" PointX="5.375" PointY="18.75" />
         <EntityTypeShape EntityType="CACModel.RekonSaldoInputanUser" Width="1.5" PointX="18.375" PointY="7.75" />
+        <EntityTypeShape EntityType="CACModel.SaldoAwalRekonSaldo" Width="1.5" PointX="18.375" PointY="11.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

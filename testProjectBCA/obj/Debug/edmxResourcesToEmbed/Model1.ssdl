@@ -373,6 +373,15 @@
     <Property Name="realDate" Type="date" />
     <Property Name="blogMessage" Type="varchar" MaxLength="255" />
   </EntityType>
+  <EntityType Name="SaldoAwalRekonSaldo">
+    <Key>
+      <PropertyRef Name="tanggal" />
+      <PropertyRef Name="kodePkt" />
+    </Key>
+    <Property Name="tanggal" Type="datetime" Nullable="false" />
+    <Property Name="kodePkt" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="value" Type="bigint" />
+  </EntityType>
   <EntityType Name="SaveAsk">
     <Key>
       <PropertyRef Name="id" />
@@ -596,6 +605,7 @@
     <EntitySet Name="RekonSaldoInputanUser" EntityType="Self.RekonSaldoInputanUser" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RekonSaldoPerVendor" EntityType="Self.RekonSaldoPerVendor" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RekonSaldoVault" EntityType="Self.RekonSaldoVault" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SaldoAwalRekonSaldo" EntityType="Self.SaldoAwalRekonSaldo" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SaveAsk" EntityType="Self.SaveAsk" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="saveBeeHive" EntityType="Self.saveBeeHive" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="saveMcs" EntityType="Self.saveMcs" Schema="dbo" store:Type="Tables" />

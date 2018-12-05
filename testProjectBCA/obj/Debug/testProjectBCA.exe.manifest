@@ -462,14 +462,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="testProjectBCA.exe" size="12115968">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="testProjectBCA.exe" size="12121088">
       <assemblyIdentity name="testProjectBCA" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>Xu5q6YaEDJgVE6XirAp23N5D8nbwOkSsOC+9GOyx36k=</dsig:DigestValue>
+        <dsig:DigestValue>K5WY2SKlec+jWrk1BHwZZ778NsfMmjpavbsNbChlJTM=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

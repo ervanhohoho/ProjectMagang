@@ -54,11 +54,42 @@ namespace testProjectBCA.CabangMenu
                 from x in db.RekonSaldoPerVendors
                 join y in db.RekonSaldoVaults on new { x.orderDate, x.vendor } equals new { y.orderDate, vendor = y.vaultId }
                 where ((DateTime)x.orderDate).Year == tahun && ((DateTime)x.orderDate).Month == bulan
-                select x.vendor
+                select x.vendor.Substring(0,4) == "CCAS" ? "CCAS" : x.vendor
                 ).Distinct().ToList();
             pktComboBox.DataSource = listPkt;
             pktComboBox.SelectedIndex = 0;
             kodePkt = pktComboBox.SelectedItem.ToString();
+        }
+        Int64 loadSaldoAwal()
+        {
+
+            Int64? saldoAwal = (from x in db.SaldoAwalRekonSaldoes
+                                where x.kodePkt.Contains(kodePkt) && x.tanggal == bulanDanTahun
+                             select x.value).FirstOrDefault();
+            return saldoAwal == null ? (Int64)0 : (Int64)saldoAwal;
+        }
+        List<tanggalValue> loadSaldoAkhirLaporan()
+        {
+            List<tanggalValue> tanggalValues = new List<tanggalValue>();
+            DateTime currDate = bulanDanTahun;
+            DateTime maxTanggal = new DateTime( bulanDanTahun.Year, bulanDanTahun.Month, DateTime.DaysInMonth(bulanDanTahun.Year, bulanDanTahun.Month));
+            while(currDate<=maxTanggal)
+            {
+                var toAdd = (from x in db.DailyStocks
+                             where x.kodePkt.Contains(kodePkt) && x.tanggal == currDate
+                             && x.jenisTransaksi.ToLower() == "ending balance"
+                             select new tanggalValue()
+                             {
+                                 tanggal = (DateTime)x.tanggal,
+                                 value = (Int64)(x.BN100K + x.BN50K + x.BN20K + x.BN10K + x.BN5K + x.BN2K + x.BN1K + x.BN500 + x.BN200 + x.BN100 + x.CN1K + x.CN500 + x.CN200 + x.CN100 + x.CN50 + x.CN25)
+                             }).FirstOrDefault();
+                if (toAdd != null)
+                    tanggalValues.Add(toAdd);
+                else
+                    tanggalValues.Add(new tanggalValue() { tanggal = currDate, value = 0 });
+                currDate = currDate.AddDays(1);
+            }
+            return tanggalValues;
         }
         private TampilanRekonSaldo loadDataUntukTampil(DateTime tanggal)
         {
@@ -131,7 +162,7 @@ namespace testProjectBCA.CabangMenu
                 "Antar CPC",
                 "Lain Lain"
             };
-            List<RekonSaldoInputanUser> rekonSaldoInputanUsers = db.RekonSaldoInputanUsers.Where(x => x.tanggal == tanggal && x.kodePkt == kodePkt).ToList();
+            List<RekonSaldoInputanUser> rekonSaldoInputanUsers = db.RekonSaldoInputanUsers.Where(x => x.tanggal == tanggal && x.kodePkt.Contains(kodePkt)).ToList();
             var groupedRekonSaldoInputanUsers = rekonSaldoInputanUsers.GroupBy(x => new { x.in_out, x.jenis }).Select(x => new { jenis = x.Key.jenis, in_out = x.Key.in_out, value = x.Sum(y => y.value) }).ToList();
 
             Int64 userInCabang = 0,
@@ -245,8 +276,10 @@ namespace testProjectBCA.CabangMenu
             DateTime maxTanggal = new DateTime(tahun, bulan, DateTime.DaysInMonth(tahun,bulan));
             DateTime minTanggal = new DateTime(tahun, bulan, 1);
             DateTime currTanggal = minTanggal;
+            bulanDanTahun = minTanggal;
             List<TampilanRekonSaldo> tampilanRekonSaldos = new List<TampilanRekonSaldo>();
-            
+            Int64 saldoAwal = loadSaldoAwal();
+            List<tanggalValue> saldoAkhirLaporan = loadSaldoAkhirLaporan();
             while(currTanggal<=maxTanggal)
             {
                 tampilanRekonSaldos.Add(loadDataUntukTampil(currTanggal));
@@ -254,7 +287,7 @@ namespace testProjectBCA.CabangMenu
 
             }
             this.tampilanRekonSaldos = tampilanRekonSaldos;
-
+            this.tampilanRekonSaldos[0].saldoAwal = saldoAwal;
             for(int a=1;a<this.tampilanRekonSaldos.Count;a++)
             {
                 var prev = this.tampilanRekonSaldos[a - 1];
@@ -279,6 +312,30 @@ namespace testProjectBCA.CabangMenu
                     - prev.outLainLain
                     - prev.outLuarKota;
             }
+            foreach(var temp in this.tampilanRekonSaldos)
+            {
+                temp.saldoAkhirLaporan = saldoAkhirLaporan.Where(x => x.tanggal == temp.tanggal).Select(x => x.value).FirstOrDefault();
+                temp.saldoAkhirHitungan = temp.saldoAwal
+                    + temp.inCabang
+                    + temp.inRetail
+                    + temp.inCurex
+                    + temp.inBi
+                    + temp.inBankLain
+                    + temp.inAntarCpc
+                    + temp.inAtmCdm
+                    + temp.inLainLain
+                    + temp.inLuarKota
+                    - temp.outCabang
+                    - temp.outRetail
+                    - temp.outCurex
+                    - temp.outBi
+                    - temp.outBankLain
+                    - temp.outAntarCpc
+                    - temp.outAtmCdm
+                    - temp.outLainLain
+                    - temp.outLuarKota;
+            }
+            
             dataGridView1.DataSource = this.tampilanRekonSaldos;
             dataGridView1.Columns[0].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
             dataGridView1.Columns[0].ReadOnly = true;
@@ -329,6 +386,28 @@ namespace testProjectBCA.CabangMenu
                     - prev.outLainLain
                     - prev.outLuarKota;
             }
+            foreach (var temp in this.tampilanRekonSaldos)
+            {
+                temp.saldoAkhirHitungan = temp.saldoAwal
+                    + temp.inCabang
+                    + temp.inRetail
+                    + temp.inCurex
+                    + temp.inBi
+                    + temp.inBankLain
+                    + temp.inAntarCpc
+                    + temp.inAtmCdm
+                    + temp.inLainLain
+                    + temp.inLuarKota
+                    - temp.outCabang
+                    - temp.outRetail
+                    - temp.outCurex
+                    - temp.outBi
+                    - temp.outBankLain
+                    - temp.outAntarCpc
+                    - temp.outAtmCdm
+                    - temp.outLainLain
+                    - temp.outLuarKota;
+            }
             dataGridView1.DataSource = this.tampilanRekonSaldos;
             dataGridView1.Refresh();
         }
@@ -356,6 +435,8 @@ namespace testProjectBCA.CabangMenu
             public Int64 outLuarKota { set; get; }
             public Int64 outAntarCpc { set; get; }
             public Int64 outLainLain { set; get; }
+            public Int64 saldoAkhirHitungan { set; get; }
+            public Int64 saldoAkhirLaporan { set; get; }
         }
     }
     
