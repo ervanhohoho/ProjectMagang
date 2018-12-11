@@ -436,12 +436,13 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="kodePkt" Type="varchar" MaxLength="10" />
           <Property Name="orderTracking" Type="bigint" />
-          <Property Name="rekapSelesai" Type="bigint" />
-          <Property Name="rekapBelumSelesai" Type="bigint" />
+          <Property Name="tidakDibatalkan" Type="bigint" />
+          <Property Name="dibatalkan" Type="bigint" />
           <Property Name="totalRekap" Type="bigint" />
           <Property Name="keterangan" Type="varchar" MaxLength="15" />
           <Property Name="komentar" Type="varchar" MaxLength="255" />
-          <Property Name="tanggal" Type="date" />
+          <Property Name="tanggal" Type="datetime" />
+          <Property Name="selisih" Type="bigint" />
         </EntityType>
         <EntityType Name="StokPosisi">
           <Key>
@@ -1000,12 +1001,13 @@
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="kodePkt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="orderTracking" Type="Int64" />
-          <Property Name="rekapSelesai" Type="Int64" />
-          <Property Name="rekapBelumSelesai" Type="Int64" />
           <Property Name="totalRekap" Type="Int64" />
           <Property Name="keterangan" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="komentar" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="tanggal" Type="DateTime" Precision="0" />
+          <Property Name="tanggal" Type="DateTime" Precision="3" />
+          <Property Name="tidakDibatalkan" Type="Int64" />
+          <Property Name="dibatalkan" Type="Int64" />
+          <Property Name="selisih" Type="Int64" />
         </EntityType>
         <EntityType Name="StokPosisi">
           <Key>
@@ -1650,11 +1652,12 @@
           <EntitySetMapping Name="SaveRekaps">
             <EntityTypeMapping TypeName="CACModel.SaveRekap">
               <MappingFragment StoreEntitySet="SaveRekap">
+                <ScalarProperty Name="selisih" ColumnName="selisih" />
+                <ScalarProperty Name="dibatalkan" ColumnName="dibatalkan" />
+                <ScalarProperty Name="tidakDibatalkan" ColumnName="tidakDibatalkan" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
                 <ScalarProperty Name="orderTracking" ColumnName="orderTracking" />
-                <ScalarProperty Name="rekapSelesai" ColumnName="rekapSelesai" />
-                <ScalarProperty Name="rekapBelumSelesai" ColumnName="rekapBelumSelesai" />
                 <ScalarProperty Name="totalRekap" ColumnName="totalRekap" />
                 <ScalarProperty Name="keterangan" ColumnName="keterangan" />
                 <ScalarProperty Name="komentar" ColumnName="komentar" />

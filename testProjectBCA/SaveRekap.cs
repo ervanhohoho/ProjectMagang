@@ -17,11 +17,12 @@ namespace testProjectBCA
         public int id { get; set; }
         public string kodePkt { get; set; }
         public Nullable<long> orderTracking { get; set; }
-        public Nullable<long> rekapSelesai { get; set; }
-        public Nullable<long> rekapBelumSelesai { get; set; }
         public Nullable<long> totalRekap { get; set; }
         public string keterangan { get; set; }
         public string komentar { get; set; }
         public Nullable<System.DateTime> tanggal { get; set; }
+        public Nullable<long> tidakDibatalkan { get; set; }
+        public Nullable<long> dibatalkan { get; set; }
+        public Nullable<long> selisih { get; set; }
     }
 }

@@ -200,7 +200,7 @@
             this.saveBtn.UseVisualStyleBackColor = true;
             this.saveBtn.Click += new System.EventHandler(this.saveBtn_Click);
             // 
-            // RekonSaldoForm
+            // WPRekonSaldoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -212,8 +212,8 @@
             this.Controls.Add(this.loadBtn);
             this.Controls.Add(this.pktComboBox);
             this.Controls.Add(this.dateTimePicker1);
-            this.Name = "RekonSaldoForm";
-            this.Text = "RekonSaldoForm";
+            this.Name = "WPRekonSaldoForm";
+            this.Text = "WP Rekon Saldo";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();

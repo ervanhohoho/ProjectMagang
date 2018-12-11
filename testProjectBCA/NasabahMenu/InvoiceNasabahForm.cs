@@ -122,7 +122,7 @@ namespace testProjectBCA
 
             var query4 = (from x in query3
                           join y in db.Nasabahs.AsEnumerable() on x.KodeNasabah equals y.kodeNasabah
-                          join z in db.Cabangs.AsEnumerable() on y.kodeCabang.TrimStart('0') equals z.kodeCabang
+                          join z in db.Cabangs.AsEnumerable() on y.kodeCabang equals z.kodeCabang
                           join aa in db.Pkts.AsEnumerable() on y.kodePktCabang equals aa.kodePktCabang
                           group x by new {
                               x.KodeNasabah,

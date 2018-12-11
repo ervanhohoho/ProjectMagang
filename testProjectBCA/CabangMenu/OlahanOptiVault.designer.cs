@@ -58,6 +58,11 @@
             this.button1 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.buttonVault = new System.Windows.Forms.Button();
+            this.buttonPerVendor = new System.Windows.Forms.Button();
+            this.buttonAll = new System.Windows.Forms.Button();
+            this.dataGridViewIn = new System.Windows.Forms.DataGridView();
+            this.dataGridViewOut = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).BeginInit();
@@ -67,6 +72,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewIn)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewOut)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonUploadVaultOrderBlogHistory
@@ -355,7 +362,7 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(928, 37);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(423, 150);
+            this.dataGridView1.Size = new System.Drawing.Size(450, 172);
             this.dataGridView1.TabIndex = 28;
             // 
             // button1
@@ -394,11 +401,75 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Per Vendor";
             // 
+            // buttonVault
+            // 
+            this.buttonVault.Location = new System.Drawing.Point(601, 198);
+            this.buttonVault.Name = "buttonVault";
+            this.buttonVault.Size = new System.Drawing.Size(123, 23);
+            this.buttonVault.TabIndex = 32;
+            this.buttonVault.Text = "new VAULT";
+            this.buttonVault.UseVisualStyleBackColor = true;
+            this.buttonVault.Click += new System.EventHandler(this.buttonVault_Click);
+            // 
+            // buttonPerVendor
+            // 
+            this.buttonPerVendor.Location = new System.Drawing.Point(730, 197);
+            this.buttonPerVendor.Name = "buttonPerVendor";
+            this.buttonPerVendor.Size = new System.Drawing.Size(121, 23);
+            this.buttonPerVendor.TabIndex = 33;
+            this.buttonPerVendor.Text = "new PER VENDOR";
+            this.buttonPerVendor.UseVisualStyleBackColor = true;
+            this.buttonPerVendor.Click += new System.EventHandler(this.buttonPerVendor_Click);
+            // 
+            // buttonAll
+            // 
+            this.buttonAll.Location = new System.Drawing.Point(601, 227);
+            this.buttonAll.Name = "buttonAll";
+            this.buttonAll.Size = new System.Drawing.Size(123, 23);
+            this.buttonAll.TabIndex = 34;
+            this.buttonAll.Text = "new ALL";
+            this.buttonAll.UseVisualStyleBackColor = true;
+            // 
+            // dataGridViewIn
+            // 
+            this.dataGridViewIn.AllowUserToAddRows = false;
+            this.dataGridViewIn.AllowUserToDeleteRows = false;
+            this.dataGridViewIn.AllowUserToOrderColumns = true;
+            this.dataGridViewIn.AllowUserToResizeColumns = false;
+            this.dataGridViewIn.AllowUserToResizeRows = false;
+            this.dataGridViewIn.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridViewIn.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewIn.Location = new System.Drawing.Point(57, 352);
+            this.dataGridViewIn.Name = "dataGridViewIn";
+            this.dataGridViewIn.ReadOnly = true;
+            this.dataGridViewIn.Size = new System.Drawing.Size(594, 325);
+            this.dataGridViewIn.TabIndex = 35;
+            // 
+            // dataGridViewOut
+            // 
+            this.dataGridViewOut.AllowUserToAddRows = false;
+            this.dataGridViewOut.AllowUserToDeleteRows = false;
+            this.dataGridViewOut.AllowUserToOrderColumns = true;
+            this.dataGridViewOut.AllowUserToResizeColumns = false;
+            this.dataGridViewOut.AllowUserToResizeRows = false;
+            this.dataGridViewOut.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridViewOut.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewOut.Location = new System.Drawing.Point(730, 352);
+            this.dataGridViewOut.Name = "dataGridViewOut";
+            this.dataGridViewOut.ReadOnly = true;
+            this.dataGridViewOut.Size = new System.Drawing.Size(609, 325);
+            this.dataGridViewOut.TabIndex = 36;
+            // 
             // OlahanOptiVault
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1390, 881);
+            this.Controls.Add(this.dataGridViewOut);
+            this.Controls.Add(this.dataGridViewIn);
+            this.Controls.Add(this.buttonAll);
+            this.Controls.Add(this.buttonPerVendor);
+            this.Controls.Add(this.buttonVault);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.dataGridView1);
@@ -434,6 +505,8 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewIn)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewOut)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -471,5 +544,10 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Button buttonVault;
+        private System.Windows.Forms.Button buttonPerVendor;
+        private System.Windows.Forms.Button buttonAll;
+        private System.Windows.Forms.DataGridView dataGridViewIn;
+        private System.Windows.Forms.DataGridView dataGridViewOut;
     }
 }

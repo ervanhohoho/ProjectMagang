@@ -10,11 +10,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace testProjectBCA
+namespace testProjectBCA.CabangMenu
 {
     public partial class InputOrderTrackingForm : Form
     {
         Database1Entities en = new Database1Entities();
+        List<String> listPkt = new List<string>();
         public InputOrderTrackingForm()
         {
             InitializeComponent();
@@ -34,6 +35,7 @@ namespace testProjectBCA
 
             if (of.ShowDialog() == DialogResult.OK)
             {
+                loadForm.ShowSplashScreen();
                 String filename = of.FileName;
                 DataSet ds = Util.openExcel(filename);
                 DataTable dt = ds.Tables[0];
@@ -167,7 +169,7 @@ namespace testProjectBCA
                     }
                 }
 
-
+                loadForm.CloseForm();
             }
         }
 
@@ -178,6 +180,7 @@ namespace testProjectBCA
 
             if (of.ShowDialog() == DialogResult.OK)
             {
+                loadForm.ShowSplashScreen();
                 String filename = of.FileName;
                 DataSet ds = Util.openExcel(filename);
                 DataTable dt = ds.Tables[0];
@@ -426,6 +429,7 @@ namespace testProjectBCA
                     }
                 }
                 en.SaveChanges();
+                loadForm.CloseForm();
             }
         }
 
@@ -440,7 +444,7 @@ namespace testProjectBCA
             //List<Int64> dibatalkan = new List<Int64>();
 
             List<orderTrackingLoad> otl = new List<orderTrackingLoad>();
-
+            listPkt = new List<string>();
 
             using (SqlConnection sql = new SqlConnection(Variables.connectionString))
             {
@@ -474,6 +478,7 @@ namespace testProjectBCA
 
                     while (reader.Read())
                     {
+                        listPkt.Add(reader[0].ToString());
                         otl.Add(new orderTrackingLoad
                         {
                             kodePkt = reader[0].ToString(),
@@ -481,6 +486,7 @@ namespace testProjectBCA
                             //rekapSelesai = Int64.Parse(reader[3].ToString()),
                             //rekapBelumSelesai = Int64.Parse(reader[4].ToString()),
                             totalRekap = Int64.Parse(reader[3].ToString()),
+                            selisih = Math.Abs(Int64.Parse(reader[3].ToString()) - Int64.Parse(reader[2].ToString())),
                             tidakDibatalkan = Int64.Parse(reader[5].ToString()),
                             dibatalkan = Int64.Parse(reader[4].ToString()),
                             keterangan = reader[6].ToString()
@@ -520,6 +526,7 @@ namespace testProjectBCA
                         foreach (var item in check2)
                         {
                             item.keterangan = "";
+                            item.selisih = 0;
                         }
                     }
 
@@ -564,6 +571,7 @@ namespace testProjectBCA
                         {
                             check.keterangan = "BERBEDA";
                         }
+                        check.selisih = Math.Abs(otl[otl.Count - 1].orderTracking - check.totalRekap);
 
                     }
 
@@ -573,7 +581,7 @@ namespace testProjectBCA
                     {
                         //dataGridView1.Columns[i].ReadOnly = true;
                     }
-                    for (int i = 1; i < 5; i++)
+                    for (int i = 1; i < 6; i++)
                     {
                         dataGridView1.Columns[i].DefaultCellStyle.Format = "c0";
                         dataGridView1.Columns[i].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
@@ -582,6 +590,8 @@ namespace testProjectBCA
 
                 }
             }
+            pktComboBox.DataSource = listPkt;
+            pktComboBox.SelectedIndex = 0;
         }
 
         void reloadGridView2()
@@ -693,6 +703,8 @@ namespace testProjectBCA
 
         class orderTrackingLoad
         {
+
+
             public String kodePkt { set; get; }
             public Int64 orderTracking { set; get; }
             //public Int64 rekapSelesai { set; get; }
@@ -700,6 +712,7 @@ namespace testProjectBCA
             public Int64 tidakDibatalkan { set; get; }
             public Int64 dibatalkan { set; get; }
             public Int64 totalRekap { set; get; }
+            public Int64 selisih { set; get; }
             public String keterangan { set; get; }
             public String komentar { set; get; }
 
@@ -722,7 +735,7 @@ namespace testProjectBCA
         private void button4_Click(object sender, EventArgs e)
         {
             button4.Enabled = false;
-            dataGridView1.Columns[8].ReadOnly = false;
+            dataGridView1.Columns[7].ReadOnly = false;
             button5.Enabled = true;
             button6.Enabled = false;
         }
@@ -732,11 +745,12 @@ namespace testProjectBCA
             button4.Enabled = true;
             button5.Enabled = false;
             button6.Enabled = true;
-            dataGridView1.Columns[8].ReadOnly = true;
+            dataGridView1.Columns[7].ReadOnly = true;
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
+            loadForm.ShowSplashScreen();
             List<SaveRekap> sr = new List<SaveRekap>();
 
             for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
@@ -745,9 +759,10 @@ namespace testProjectBCA
                 String komentar = "";
                 String kodePkt = dataGridView1.Rows[i].Cells["kodePkt"].Value.ToString();
                 Int64 orderTracking = Int64.Parse(dataGridView1.Rows[i].Cells["orderTracking"].Value.ToString());
-                Int64 rekapSelesai = Int64.Parse(dataGridView1.Rows[i].Cells["rekapSelesai"].Value.ToString());
-                Int64 rekapBelumSelesai = Int64.Parse(dataGridView1.Rows[i].Cells["rekapBelumSelesai"].Value.ToString());
+                Int64 tidakDibatalkan = Int64.Parse(dataGridView1.Rows[i].Cells["tidakDibatalkan"].Value.ToString());
+                Int64 dibatalkan = Int64.Parse(dataGridView1.Rows[i].Cells["dibatalkan"].Value.ToString());
                 Int64 totalRekap = Int64.Parse(dataGridView1.Rows[i].Cells["totalRekap"].Value.ToString());
+                Int64 selisih = Int64.Parse(dataGridView1.Rows[i].Cells["selisih"].Value.ToString());
                 String keterangan = dataGridView1.Rows[i].Cells["keterangan"].Value.ToString();
 
                 var query = (from x in en.SaveRekaps.AsEnumerable()
@@ -767,11 +782,12 @@ namespace testProjectBCA
                     {
                         kodePkt = kodePkt,
                         orderTracking = orderTracking,
-                        rekapBelumSelesai = rekapBelumSelesai,
-                        rekapSelesai = rekapSelesai,
+                        tidakDibatalkan = tidakDibatalkan,
+                        dibatalkan = dibatalkan,
                         totalRekap = totalRekap,
                         keterangan = keterangan,
                         komentar = komentar,
+                        selisih = selisih,
                         tanggal = tanggal
                     });
 
@@ -782,9 +798,10 @@ namespace testProjectBCA
                     query.komentar = komentar;
                     query.kodePkt = kodePkt;
                     query.orderTracking = orderTracking;
-                    query.rekapSelesai = rekapSelesai;
-                    query.rekapBelumSelesai = rekapBelumSelesai;
+                    query.dibatalkan = dibatalkan;
+                    query.tidakDibatalkan = tidakDibatalkan;
                     query.totalRekap = totalRekap;
+                    query.selisih = selisih;
                     query.keterangan = keterangan;
 
                 }
@@ -793,6 +810,7 @@ namespace testProjectBCA
             }
             en.SaveRekaps.AddRange(sr);
             en.SaveChanges();
+            loadForm.CloseForm();
         }
 
         private void button7_Click(object sender, EventArgs e)
@@ -832,6 +850,7 @@ namespace testProjectBCA
 
         private void button10_Click(object sender, EventArgs e)
         {
+            loadForm.ShowSplashScreen();
             List<SaveAsk> sa = new List<SaveAsk>();
 
             for (int i = 0; i < dataGridView2.Rows.Count; i++)
@@ -874,11 +893,68 @@ namespace testProjectBCA
             }
             en.SaveAsks.AddRange(sa);
             en.SaveChanges();
+            loadForm.CloseForm();
         }
 
         private void InputOrderTrackingForm_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void buttonShowDetails_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        {
+            DataGridViewSelectedCellCollection cells = dataGridView1.SelectedCells;
+            foreach (DataGridViewCell cell in cells)
+            {
+                int rowidx = cell.RowIndex;
+                int colidx = cell.ColumnIndex;
+                if (colidx > 0)
+                {
+                    dataGridView1.Rows[rowidx].Cells[colidx].Style.Format = "F0";
+                }
+
+            }
+            for (int a = 0; a < dataGridView1.Rows.Count; a++)
+            {
+                for (int b = 3; b < dataGridView1.Columns.Count; b++)
+                {
+                    if (!cells.Contains(dataGridView1.Rows[a].Cells[b]))
+                    {
+                        Int64 buf;
+                        dataGridView1.Rows[a].Cells[b].Style.Format = "C0";
+                        dataGridView1.Rows[a].Cells[b].Style.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
+                    }
+                }
+            }
+        }
+
+        private void buttonShowDetails_Click_1(object sender, EventArgs e)
+        {
+            String kodePkt = pktComboBox.SelectedItem.ToString();
+            DateTime tanggal = dateTimePicker1.Value.Date;
+            DetailsOrderTracking dot = new DetailsOrderTracking(kodePkt, tanggal);
+            dot.Show();
+        }
+
+        private void showDetailsSelisih_Click(object sender, EventArgs e)
+        {
+            String kodePkt = pktComboBox.SelectedItem.ToString();
+            DateTime tanggal = dateTimePicker1.Value.Date;
+            DetailsSelisihAmbilSetor dsas = new DetailsSelisihAmbilSetor(kodePkt, tanggal, false);
+            dsas.Show();
+        }
+
+        private void showDetailsPanjangBtn_Click(object sender, EventArgs e)
+        {
+            String kodePkt = pktComboBox.SelectedItem.ToString();
+            DateTime tanggal = dateTimePicker1.Value.Date;
+            DetailsSelisihAmbilSetor dsas = new DetailsSelisihAmbilSetor(kodePkt, tanggal, true);
+            dsas.Show();
         }
     }
 }

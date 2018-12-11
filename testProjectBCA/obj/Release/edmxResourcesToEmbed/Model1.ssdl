@@ -431,12 +431,13 @@
     <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="kodePkt" Type="varchar" MaxLength="10" />
     <Property Name="orderTracking" Type="bigint" />
-    <Property Name="rekapSelesai" Type="bigint" />
-    <Property Name="rekapBelumSelesai" Type="bigint" />
+    <Property Name="tidakDibatalkan" Type="bigint" />
+    <Property Name="dibatalkan" Type="bigint" />
     <Property Name="totalRekap" Type="bigint" />
     <Property Name="keterangan" Type="varchar" MaxLength="15" />
     <Property Name="komentar" Type="varchar" MaxLength="255" />
-    <Property Name="tanggal" Type="date" />
+    <Property Name="tanggal" Type="datetime" />
+    <Property Name="selisih" Type="bigint" />
   </EntityType>
   <EntityType Name="StokPosisi">
     <Key>

@@ -31,7 +31,7 @@ namespace testProjectBCA.CabangMenu
         void loadComboPkt()
         {
             Database1Entities db = new Database1Entities();
-            List<String> listKodePkt = db.Pkts.Where(x => x.kanwil.ToLower().Contains("jabo") && x.kodePktCabang.Length > 1).Select(x => x.kodePktCabang).OrderBy(x=>x).ToList();
+            List<String> listKodePkt = db.Pkts.Where(x => x.kanwil.ToLower().Contains("jabo") && x.kodePktCabang.Length > 1).Select(x => x.kodePktCabang.Substring(0,4) == "CCAS"? "CCAS":x.kodePktCabang).OrderBy(x=>x).ToList();
             pktComboBox.DataSource = listKodePkt;
         }
         private void loadBtn_Click(object sender, EventArgs e)
@@ -44,7 +44,7 @@ namespace testProjectBCA.CabangMenu
         private void loadTableSistem()
         {
             Database1Entities db = new Database1Entities();
-            List<String> listKodePktCabang = db.Pkts.Select(x => x.kodePktCabang).Where(x => x.Length > 1).ToList();
+            List<String> listKodePktCabang = db.Pkts.Select(x => x.kodePktCabang.Substring(0,4) == "CCAS" ? "CCAS" : x.kodePktCabang).Where(x => x.Length > 1).ToList();
             listSistem = new List<TampilanWPRekonSaldo>();
             Int64 validasiOptiSetoran = 0;
             Int64 belumValidasiOptiSetoran = 0;

@@ -181,6 +181,18 @@
     <Compile Include="BeritaAcara.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="CabangMenu\DetailsOrderTracking.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CabangMenu\DetailsOrderTracking.Designer.cs">
+      <DependentUpon>DetailsOrderTracking.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CabangMenu\DetailsSelisihAmbilSetor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CabangMenu\DetailsSelisihAmbilSetor.Designer.cs">
+      <DependentUpon>DetailsSelisihAmbilSetor.cs</DependentUpon>
+    </Compile>
     <Compile Include="CabangMenu\KumpulanQueryRekonSaldo.cs" />
     <Compile Include="CabangMenu\RekonSaldoForm.cs">
       <SubType>Form</SubType>
@@ -627,6 +639,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CabangMenu\DailyStockForm.resx">
       <DependentUpon>DailyStockForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CabangMenu\DetailsOrderTracking.resx">
+      <DependentUpon>DetailsOrderTracking.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CabangMenu\DetailsSelisihAmbilSetor.resx">
+      <DependentUpon>DetailsSelisihAmbilSetor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CabangMenu\RekonSaldoForm.resx">
       <DependentUpon>RekonSaldoForm.cs</DependentUpon>

@@ -407,7 +407,7 @@ namespace testProjectBCA
             using (SqlConnection sql = new SqlConnection(Variables.connectionString))
             {
                 SqlCommand cmd = new SqlCommand();
-                cmd.CommandText = "CREATE TABLE #TEMP (idCashpoint VARCHAR(10), kodePkt VARCHAR(10))";
+                cmd.CommandText = "CREATE TABLE #TEMP (idCashpoint VARCHAR(10), kodePkt VARCHAR(10), namaCabang VARCHAR(255))";
                 cmd.Connection = sql;
                 sql.Open();
                 cmd.ExecuteNonQuery();
@@ -420,18 +420,19 @@ namespace testProjectBCA
 
                     sbc.ColumnMappings.Add(0, 0);
                     sbc.ColumnMappings.Add(5, 1);
+                    sbc.ColumnMappings.Add(1, 2);
                     sbc.WriteToServer(dt);
                 }
 
-                cmd.CommandText = "INSERT INTO Cabang(kodeCabang, kodePkt) SELECT TT.idCashpoint, TT.kodePkt FROM #TEMP TT LEFT JOIN Cabang C ON substring(RIGHT(TT.idCashpoint,4), patindex('%[^0]%',RIGHT(TT.idCashpoint,4)), 10) = C.kodeCabang WHERE C.kodeCabang IS  NULL";
+                cmd.CommandText = "INSERT INTO Cabang(kodeCabang, kodePkt, namaCabang) SELECT TT.idCashpoint, TT.kodePkt, TT.namaCabang FROM #TEMP TT LEFT JOIN Cabang C ON substring(TT.idCashpoint, patindex('%[^B]%',TT.idCashpoint), 10) = C.kodeCabang WHERE C.kodeCabang IS NULL";
                 cmd.ExecuteNonQuery();
-                cmd.CommandText = "UPDATE T SET T.kodePkt = TT.kodePkt FROM Cabang T INNER JOIN #TEMP TT ON substring(RIGHT(TT.idCashpoint,4), patindex('%[^0]%',RIGHT(TT.idCashpoint,4)), 10) = T.kodeCabang; DROP TABLE #TEMP;";
+                cmd.CommandText = "UPDATE T SET T.kodePkt = TT.kodePkt, T.namaCabang = TT.namaCabang FROM Cabang T INNER JOIN #TEMP TT ON substring(TT.idCashpoint, patindex('%[^B]%',TT.idCashpoint), 10) = T.kodeCabang; DROP TABLE #TEMP;";
                 cmd.ExecuteNonQuery();
 
                
-                cmd.CommandText = "UPDATE CABANG SET kodeCabang = RIGHT(kodeCabang,4)";
-                cmd.ExecuteNonQuery();
-                cmd.CommandText = "UPDATE CABANG SET kodeCabang = substring(kodeCabang, patindex('%[^0]%',kodeCabang), 10)";
+                //cmd.CommandText = "UPDATE CABANG SET kodeCabang = RIGHT(kodeCabang,4)";
+                //cmd.ExecuteNonQuery();
+                cmd.CommandText = "UPDATE CABANG SET kodeCabang = substring(kodeCabang, patindex('%[^B]%',kodeCabang), 10)";
                 cmd.ExecuteNonQuery();
                 sql.Close();
             }
@@ -443,9 +444,9 @@ namespace testProjectBCA
                 {
                     sql.Open();
                     cmd.Connection = sql;
-                    cmd.CommandText = "UPDATE CABANG SET kodeCabang = RIGHT(kodeCabang,4)";
-                    cmd.ExecuteNonQuery();
-                    cmd.CommandText = "UPDATE CABANG SET kodeCabang =  substring(kodeCabang, patindex('%[^0]%',kodeCabang), 10)";
+                    //cmd.CommandText = "UPDATE CABANG SET kodeCabang = RIGHT(kodeCabang,4)";
+                    //cmd.ExecuteNonQuery();
+                    cmd.CommandText = "UPDATE CABANG SET kodeCabang =  substring(kodeCabang, patindex('%[^B]%',kodeCabang), 10)";
                     cmd.ExecuteNonQuery();
                     sql.Close();
                 }

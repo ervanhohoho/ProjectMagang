@@ -382,11 +382,12 @@
     <EntitySetMapping Name="SaveRekaps">
       <EntityTypeMapping TypeName="CACModel.SaveRekap">
         <MappingFragment StoreEntitySet="SaveRekap">
+          <ScalarProperty Name="selisih" ColumnName="selisih" />
+          <ScalarProperty Name="dibatalkan" ColumnName="dibatalkan" />
+          <ScalarProperty Name="tidakDibatalkan" ColumnName="tidakDibatalkan" />
           <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
           <ScalarProperty Name="orderTracking" ColumnName="orderTracking" />
-          <ScalarProperty Name="rekapSelesai" ColumnName="rekapSelesai" />
-          <ScalarProperty Name="rekapBelumSelesai" ColumnName="rekapBelumSelesai" />
           <ScalarProperty Name="totalRekap" ColumnName="totalRekap" />
           <ScalarProperty Name="keterangan" ColumnName="keterangan" />
           <ScalarProperty Name="komentar" ColumnName="komentar" />

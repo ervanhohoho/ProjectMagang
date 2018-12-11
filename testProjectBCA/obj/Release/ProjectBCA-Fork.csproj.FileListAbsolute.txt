@@ -76,7 +76,6 @@ C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\te
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.InputDataTarikanCRMForm.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.InputDataTarikanForm.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.InputDataTukaranDanDeliveryForm.resources
-C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.InputOrderTrackingForm.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.InputPromptForm.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.InsertStokPosisiForm.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.MultipleFilesInputUpdateForm.resources
@@ -119,3 +118,6 @@ C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\Pr
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.exe
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.pdb
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.NasabahMenu.ExportAbacasForm.resources
+C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.CabangMenu.DetailsOrderTracking.resources
+C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.CabangMenu.DetailsSelisihAmbilSetor.resources
+C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.CabangMenu.InputOrderTrackingForm.resources

@@ -1,4 +1,4 @@
-﻿namespace testProjectBCA
+﻿namespace testProjectBCA.CabangMenu
 {
     partial class InputOrderTrackingForm
     {
@@ -41,6 +41,10 @@
             this.button8 = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
+            this.buttonShowDetailsOrderTracking = new System.Windows.Forms.Button();
+            this.pktComboBox = new System.Windows.Forms.ComboBox();
+            this.showDetailsSelisihRekapBtn = new System.Windows.Forms.Button();
+            this.showDetailsBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.SuspendLayout();
@@ -137,7 +141,7 @@
             this.dataGridView2.Location = new System.Drawing.Point(12, 465);
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.RowHeadersVisible = false;
-            this.dataGridView2.Size = new System.Drawing.Size(442, 52);
+            this.dataGridView2.Size = new System.Drawing.Size(442, 81);
             this.dataGridView2.TabIndex = 8;
             // 
             // button7
@@ -180,11 +184,53 @@
             this.button10.UseVisualStyleBackColor = true;
             this.button10.Click += new System.EventHandler(this.button10_Click);
             // 
+            // buttonShowDetailsOrderTracking
+            // 
+            this.buttonShowDetailsOrderTracking.Location = new System.Drawing.Point(697, 44);
+            this.buttonShowDetailsOrderTracking.Name = "buttonShowDetailsOrderTracking";
+            this.buttonShowDetailsOrderTracking.Size = new System.Drawing.Size(121, 23);
+            this.buttonShowDetailsOrderTracking.TabIndex = 13;
+            this.buttonShowDetailsOrderTracking.Text = "Show Details Order Tracking";
+            this.buttonShowDetailsOrderTracking.UseVisualStyleBackColor = true;
+            this.buttonShowDetailsOrderTracking.Click += new System.EventHandler(this.buttonShowDetails_Click_1);
+            // 
+            // pktComboBox
+            // 
+            this.pktComboBox.FormattingEnabled = true;
+            this.pktComboBox.Location = new System.Drawing.Point(697, 17);
+            this.pktComboBox.Name = "pktComboBox";
+            this.pktComboBox.Size = new System.Drawing.Size(121, 21);
+            this.pktComboBox.TabIndex = 14;
+            // 
+            // showDetailsSelisihRekapBtn
+            // 
+            this.showDetailsSelisihRekapBtn.Location = new System.Drawing.Point(697, 69);
+            this.showDetailsSelisihRekapBtn.Name = "showDetailsSelisihRekapBtn";
+            this.showDetailsSelisihRekapBtn.Size = new System.Drawing.Size(121, 23);
+            this.showDetailsSelisihRekapBtn.TabIndex = 13;
+            this.showDetailsSelisihRekapBtn.Text = "Show Details Selisih Rekap";
+            this.showDetailsSelisihRekapBtn.UseVisualStyleBackColor = true;
+            this.showDetailsSelisihRekapBtn.Click += new System.EventHandler(this.showDetailsSelisih_Click);
+            // 
+            // showDetailsBtn
+            // 
+            this.showDetailsBtn.Location = new System.Drawing.Point(460, 523);
+            this.showDetailsBtn.Name = "showDetailsBtn";
+            this.showDetailsBtn.Size = new System.Drawing.Size(184, 23);
+            this.showDetailsBtn.TabIndex = 13;
+            this.showDetailsBtn.Text = "Show Details";
+            this.showDetailsBtn.UseVisualStyleBackColor = true;
+            this.showDetailsBtn.Click += new System.EventHandler(this.showDetailsPanjangBtn_Click);
+            // 
             // InputOrderTrackingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(837, 532);
+            this.ClientSize = new System.Drawing.Size(837, 556);
+            this.Controls.Add(this.pktComboBox);
+            this.Controls.Add(this.showDetailsBtn);
+            this.Controls.Add(this.showDetailsSelisihRekapBtn);
+            this.Controls.Add(this.buttonShowDetailsOrderTracking);
             this.Controls.Add(this.button10);
             this.Controls.Add(this.button9);
             this.Controls.Add(this.button8);
@@ -200,6 +246,7 @@
             this.Controls.Add(this.button1);
             this.Name = "InputOrderTrackingForm";
             this.Text = "InputOrderTrackingForm";
+            this.Load += new System.EventHandler(this.InputOrderTrackingForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             this.ResumeLayout(false);
@@ -221,5 +268,9 @@
         private System.Windows.Forms.Button button8;
         private System.Windows.Forms.Button button9;
         private System.Windows.Forms.Button button10;
+        private System.Windows.Forms.Button buttonShowDetailsOrderTracking;
+        private System.Windows.Forms.ComboBox pktComboBox;
+        private System.Windows.Forms.Button showDetailsSelisihRekapBtn;
+        private System.Windows.Forms.Button showDetailsBtn;
     }
 }

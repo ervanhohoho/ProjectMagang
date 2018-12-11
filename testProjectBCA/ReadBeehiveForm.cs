@@ -26,8 +26,6 @@ namespace testProjectBCA
         public ReadBeehiveForm()
         {
             InitializeComponent();
-
-
         }
 
         private void inputBtn_Click(object sender, EventArgs e)
@@ -531,7 +529,46 @@ namespace testProjectBCA
             }
         }
 
+        private void buttonExport_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sv = new SaveFileDialog();
+            sv.Filter = Variables.csvFilter;
+            if (sv.ShowDialog() == DialogResult.OK)
+            {
+                loadForm.ShowSplashScreen();
+                SaveDataGridViewToCSV(sv.FileName);
+                loadForm.CloseForm();
+            }
+        }
 
+        void SaveDataGridViewToCSV(string filename)
+        {
+            // Choose whether to write header. Use EnableWithoutHeaderText instead to omit header.
+            dataGridView1.ClipboardCopyMode = DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText;
+            // Select all the cells
+            dataGridView1.SelectAll();
+            // Copy selected cells to DataObject
+            //for (int a = 4; a < dataGridView1.Columns.Count; a++)
+            //{
+            //    dataGridView1.Columns[a].DefaultCellStyle.Format = "";
+            //    //for(int b=0;b<dataGridView1.Rows.Count;b++)
+            //    //{
+            //    //    dataGridView1.Rows[b].Cells[a].Value = (Int64)dataGridView1.Rows[b].Cells[a].Value;
+            //    //}
+            //}
+
+            DataObject dataObject = dataGridView1.GetClipboardContent();
+            // Get the text of the DataObject, and serialize it to a file
+            File.WriteAllText(filename, dataObject.GetText(TextDataFormat.CommaSeparatedValue));
+            //for (int a = 4; a < dataGridView1.Columns.Count; a++)
+            //{
+            //    dataGridView1.Columns[a].DefaultCellStyle.Format = "C";
+            //    //for(int b=0;b<dataGridView1.Rows.Count;b++)
+            //    //{
+            //    //    dataGridView1.Rows[b].Cells[a].Value = (Int64)dataGridView1.Rows[b].Cells[a].Value;
+            //    //}
+            //}
+        }
     }
     public class BeeHive
     {

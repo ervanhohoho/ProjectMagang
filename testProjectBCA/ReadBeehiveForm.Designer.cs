@@ -37,6 +37,7 @@
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.inputButtonVa = new System.Windows.Forms.Button();
             this.buttonShowRusak = new System.Windows.Forms.Button();
+            this.buttonExport = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -78,7 +79,7 @@
             // 
             // buttonProses
             // 
-            this.buttonProses.Location = new System.Drawing.Point(687, 41);
+            this.buttonProses.Location = new System.Drawing.Point(384, 41);
             this.buttonProses.Name = "buttonProses";
             this.buttonProses.Size = new System.Drawing.Size(200, 23);
             this.buttonProses.TabIndex = 3;
@@ -108,7 +109,7 @@
             // 
             // dateTimePicker1
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(687, 12);
+            this.dateTimePicker1.Location = new System.Drawing.Point(384, 12);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
             this.dateTimePicker1.TabIndex = 7;
@@ -125,7 +126,7 @@
             // 
             // buttonShowRusak
             // 
-            this.buttonShowRusak.Location = new System.Drawing.Point(687, 70);
+            this.buttonShowRusak.Location = new System.Drawing.Point(384, 70);
             this.buttonShowRusak.Name = "buttonShowRusak";
             this.buttonShowRusak.Size = new System.Drawing.Size(200, 23);
             this.buttonShowRusak.TabIndex = 10;
@@ -133,11 +134,22 @@
             this.buttonShowRusak.UseVisualStyleBackColor = true;
             this.buttonShowRusak.Click += new System.EventHandler(this.buttonShowRusak_Click);
             // 
+            // buttonExport
+            // 
+            this.buttonExport.Location = new System.Drawing.Point(651, 26);
+            this.buttonExport.Name = "buttonExport";
+            this.buttonExport.Size = new System.Drawing.Size(183, 52);
+            this.buttonExport.TabIndex = 11;
+            this.buttonExport.Text = "Export ";
+            this.buttonExport.UseVisualStyleBackColor = true;
+            this.buttonExport.Click += new System.EventHandler(this.buttonExport_Click);
+            // 
             // ReadBeehiveForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(899, 598);
+            this.Controls.Add(this.buttonExport);
             this.Controls.Add(this.buttonShowRusak);
             this.Controls.Add(this.inputButtonVa);
             this.Controls.Add(this.dateTimePicker1);
@@ -165,5 +177,6 @@
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.Button inputButtonVa;
         private System.Windows.Forms.Button buttonShowRusak;
+        private System.Windows.Forms.Button buttonExport;
     }
 }

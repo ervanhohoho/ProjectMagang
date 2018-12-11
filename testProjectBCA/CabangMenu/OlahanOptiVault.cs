@@ -24,6 +24,19 @@ namespace testProjectBCA
             dateTimePicker1.Visible = false;
             //buttonGeneratePivot.Enabled = false;
             //buttonGeneratePivotPerVendor.Enabled = false;
+            dataGridView2.Visible = false;
+            dataGridView3.Visible = false;
+            dataGridView4.Visible = false;
+            dataGridView5.Visible = false;
+            dataGridView6.Visible = false;
+            dataGridView7.Visible = false;
+            label4.Visible = false;
+            label5.Visible = false;
+            label6.Visible = false;
+            label7.Visible = false;
+
+
+
 
 
         }
@@ -42,6 +55,8 @@ namespace testProjectBCA
         List<OBHProcessed> obhp;
         List<PivotPerVendor_bon> ppvb;
         List<PivotPerVendor_setoran> ppvs;
+        
+    
 
         private void buttonUploadVaultOrderBlogHistory_Click(object sender, EventArgs e)
         {
@@ -285,12 +300,13 @@ namespace testProjectBCA
 
         private void buttonGeneratePivotPerVendor_Click(object sender, EventArgs e)
         {
-            //ProsesOrderBlogHistory();
-            //preparing data for pivot pervendor bon
+                //ProsesOrderBlogHistory();
             var queryS = (from x in en.RekonSaldoPerVendors.AsEnumerable()
                           join y in en.Pkts.AsEnumerable() on x.vendor equals y.kodePktCabang
                           where !String.IsNullOrEmpty(x.vendor) && y.kanwil.Like("Jabotabek")
                           select x).ToList();
+
+            //preparing data for pivot pervendor bon
             var query = (from x in queryS
                          join y in en.Pkts.AsEnumerable() on x.vendor equals y.kodePktCabang
                          where (!String.IsNullOrEmpty(x.vendor) && y.kanwil.Like("Jabotabek") && x.actionRekon.Contains("Delivery") && x.statusRekon.Equals("Confirmed")) && (((DateTime)x.dueDate).Date == dateTimePicker2.Value.Date || ((DateTime)x.realDate).Date == dateTimePicker2.Value.Date)
@@ -419,38 +435,7 @@ namespace testProjectBCA
         {
             //ProsesVault();
             //ProsesSetoranCPC();
-            //preparing data for pivotCPC - BI dan BankLain Return
-            var query = (from x in en.RekonSaldoVaults.AsEnumerable()
-                         join y in en.Pkts.AsEnumerable() on x.vaultId equals y.kodePktCabang
-                         where !String.IsNullOrEmpty(x.fundingSoure) && y.kanwil.Like("Jabotabek")
-                         select x).ToList();
-            query = (from x in query
-                     where (x.fundingSoure == "BI" || x.fundingSoure.Contains("OB")) && (((DateTime)x.dueDate).Date == dateTimePicker2.Value.Date || ((DateTime)x.realDate).Date == dateTimePicker2.Value.Date)
-                     select x).ToList();
-
-            pc = new List<PivotCPC>();
-
-            String bufferVaultId = "";
-
-            foreach (var item in query)
-            {
-                pc.Add(new PivotCPC
-                {
-                    vaultId = item.vaultId,
-                    confId = item.confId,
-                    action = item.actionRekon,
-                    status = item.statusRekon,
-                    blogMessage = item.blogMessage,
-                    orderDate = ((DateTime)item.orderDate).Date,
-                    dueDate = ((DateTime)item.dueDate).Date,
-                    timeStamp = (DateTime)item.timeStampRekon,
-                    currencyAmmount = Int64.Parse(item.currencyAmmount.ToString()),
-                    fundingSource = item.fundingSoure,
-                    realDate = ((DateTime)item.timeStampRekon).Hour < 21 ? ((DateTime)item.timeStampRekon).Date : ((DateTime)item.timeStampRekon).AddDays(1).Date,
-                    validation = item.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(item.timeStampRekon.ToString()).Hour < 21 ? item.timeStampRekon : DateTime.Parse(item.timeStampRekon.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(dateTimePicker2.Value.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
-                });
-
-            }
+           
 
             //creating pivotCPC - BI dan BankLain Return
             var pivot = pc.GroupBy(c => new { c.vaultId, c.fundingSource, c.dueDate, c.realDate }).Select(g => new
@@ -1244,9 +1229,323 @@ namespace testProjectBCA
             loadForm.CloseForm();
         }
 
-        //BELUM SELSAI MASIH DI MINUS 1 DARI YG ATAS
+        private void buttonVault_Click(object sender, EventArgs e)
+        {
+            //area for BI
+            var queryVaultBI = (from x in en.RekonSaldoVaults.AsEnumerable()
+                              join y in en.Pkts.AsEnumerable() on x.vaultId equals y.kodePktCabang
+                              where !String.IsNullOrEmpty(x.fundingSoure) 
+                              select x).ToList();
+            if (queryVaultBI == null)
+            {
+                Console.WriteLine("queryvaultbi kosong");
+            }
+            //area for atm
+            var queryVaultATM = (from x in en.RekonSaldoVaults.AsEnumerable()
+                                join y in en.Pkts.AsEnumerable() on x.vaultId equals y.kodePktCabang
+                                where !String.IsNullOrEmpty(x.fundingSoure) && y.kanwil.Like("Jabotabek")
+                                select x).ToList();
 
+            //QUERY VAULT IN BI- BUFFER
+            var queryInBIBuffer = (from x in queryVaultBI
+                      where (x.fundingSoure == "BI" || x.fundingSoure.Contains("OB")) && (((DateTime)x.dueDate).Date == dateTimePicker2.Value.Date || ((DateTime)x.realDate).Date == dateTimePicker2.Value.Date)
+                      select x).ToList();
+            if (queryInBIBuffer == null)
+            {
+                Console.WriteLine("queryinbibuffer kosong");
+            }
+
+            List<PivotCPC> pc = new List<PivotCPC>();
+
+            foreach (var item in queryInBIBuffer)
+            {
+                pc.Add(new PivotCPC
+                {
+                    vaultId = item.vaultId,
+                    confId = item.confId,
+                    action = item.actionRekon,
+                    status = item.statusRekon,
+                    blogMessage = item.blogMessage,
+                    orderDate = ((DateTime)item.orderDate).Date,
+                    dueDate = ((DateTime)item.dueDate).Date,
+                    timeStamp = (DateTime)item.timeStampRekon,
+                    currencyAmmount = Int64.Parse(item.currencyAmmount.ToString()),
+                    fundingSource = item.fundingSoure,
+                    realDate = ((DateTime)item.timeStampRekon).Hour < 21 ? ((DateTime)item.timeStampRekon).Date : ((DateTime)item.timeStampRekon).AddDays(1).Date,
+                    validation = item.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(item.timeStampRekon.ToString()).Hour < 21 ? item.timeStampRekon : DateTime.Parse(item.timeStampRekon.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(dateTimePicker2.Value.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
+                });
+
+            }
+
+            //PREPARING PIVOT VAULT IN BI - BUFFER // catatan: pake vaultid // 
+            if (pc == null)
+            {
+                Console.WriteLine("pc kosong");
+            }
+            var pivotInBiBuffer = pc.GroupBy(c => new { c.vaultId}).Select(g => new
+            {
+                vaultID = g.Key.vaultId,
+                sudahValidasi = g.Where(c => c.validation == "VALIDATED" && c.action.Contains("Delivery")).Sum(c => c.currencyAmmount),
+                belumValidasi = g.Where(c => c.validation == "NOT VALIDATED" && c.action.Contains("Delivery")).Sum(c => c.currencyAmmount),
+                total = g.Where(c => c.validation == "VALIDATED").Sum(c => c.currencyAmmount) + g.Where(c => c.validation == "NOT VALIDATED").Sum(c => c.currencyAmmount)
+
+            }).ToList();
+
+            var pivotInBiBufferReady = (from x in pivotInBiBuffer
+                           select new { x.vaultID, x.sudahValidasi, x.belumValidasi, x.total}).ToList();
+
+
+            //QUERY VAULT IN ATM - BUFFER
+            var queryInATMBuffer = (from x in queryVaultATM
+                                   where (x.fundingSoure != "BI" || x.fundingSoure.Contains("OB")) && (((DateTime)x.dueDate).Date == dateTimePicker2.Value.Date || ((DateTime)x.realDate).Date == dateTimePicker2.Value.Date)
+                                   select x).ToList();
+             
+
+            foreach (var item in queryInATMBuffer)
+            {
+                pc.Add(new PivotCPC
+                {
+                    vaultId = item.vaultId,
+                    confId = item.confId,
+                    action = item.actionRekon,
+                    status = item.statusRekon,
+                    blogMessage = item.blogMessage,
+                    orderDate = ((DateTime)item.orderDate).Date,
+                    dueDate = ((DateTime)item.dueDate).Date,
+                    timeStamp = (DateTime)item.timeStampRekon,
+                    currencyAmmount = Int64.Parse(item.currencyAmmount.ToString()),
+                    fundingSource = item.fundingSoure,
+                    realDate = ((DateTime)item.timeStampRekon).Hour < 21 ? ((DateTime)item.timeStampRekon).Date : ((DateTime)item.timeStampRekon).AddDays(1).Date,
+                    validation = item.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(item.timeStampRekon.ToString()).Hour < 21 ? item.timeStampRekon : DateTime.Parse(item.timeStampRekon.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(dateTimePicker2.Value.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
+                });
+
+            }
+
+            //PREPARING PIVOT VAULT IN ATM - BUFFER // catatan: pake vaultid // 
+            var pivotInAtmBuffer = pc.GroupBy(c => new { c.vaultId,}).Select(g => new
+            {
+                vaultID = g.Key.vaultId,
+                sudahValidasi = g.Where(c => c.validation == "VALIDATED" && c.action.Contains("Delivery")).Sum(c => c.currencyAmmount),
+                belumValidasi = g.Where(c => c.validation == "NOT VALIDATED" && c.action.Contains("Delivery")).Sum(c => c.currencyAmmount),
+                total = g.Where(c => c.validation == "VALIDATED").Sum(c => c.currencyAmmount) + g.Where(c => c.validation == "NOT VALIDATED").Sum(c => c.currencyAmmount)
+
+            }).ToList();
+
+            var pivotInAtmBufferReady = (from x in pivotInAtmBuffer
+                                        select new { x.vaultID, x.sudahValidasi, x.belumValidasi, x.total }).ToList();
+
+            //PENGGABUNGAN PIVOT VAULT IN
+            var unionIn = pivotInBiBufferReady.Union(pivotInAtmBufferReady).ToList();
+
+            var inReady = unionIn.GroupBy(z => new { z.vaultID }).Select(q => new
+            {
+                vaultID = q.Key.vaultID,
+                sudahValidasi = q.Sum( z => z.sudahValidasi),
+                belumValidasi = q.Sum( z => z.belumValidasi),
+                total = q.Sum( z => z.total)
+            }).ToList();
+
+            dataGridViewIn.DataSource = inReady;
+            //END OF IN
+
+            //QUERY VAULT OUT BI- BUFFER
+            var queryOutBIBuffer = (from x in queryVaultBI
+                                   where (x.fundingSoure == "BI" || x.fundingSoure.Contains("OB")) && (((DateTime)x.dueDate).Date == dateTimePicker2.Value.Date || ((DateTime)x.realDate).Date == dateTimePicker2.Value.Date)
+                                   select x).ToList();
+
+            List<PivotCPC> cp = new List<PivotCPC>();
+
+            foreach (var item in queryOutBIBuffer)
+            {
+                cp.Add(new PivotCPC
+                {
+                    vaultId = item.vaultId,
+                    confId = item.confId,
+                    action = item.actionRekon,
+                    status = item.statusRekon,
+                    blogMessage = item.blogMessage,
+                    orderDate = ((DateTime)item.orderDate).Date,
+                    dueDate = ((DateTime)item.dueDate).Date,
+                    timeStamp = (DateTime)item.timeStampRekon,
+                    currencyAmmount = Int64.Parse(item.currencyAmmount.ToString()),
+                    fundingSource = item.fundingSoure,
+                    realDate = ((DateTime)item.timeStampRekon).Hour < 21 ? ((DateTime)item.timeStampRekon).Date : ((DateTime)item.timeStampRekon).AddDays(1).Date,
+                    validation = item.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(item.timeStampRekon.ToString()).Hour < 21 ? item.timeStampRekon : DateTime.Parse(item.timeStampRekon.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(dateTimePicker2.Value.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
+                });
+
+            }
+
+            //PREPARING PIVOT VAULT OUT BI - BUFFER // catatan: pake vaultid // 
+            var pivotOutBiBuffer = cp.GroupBy(c => new { c.vaultId }).Select(g => new
+            {
+                vaultID = g.Key.vaultId,
+                sudahValidasi = g.Where(c => c.validation == "VALIDATED" && c.action.Contains("Return")).Sum(c => c.currencyAmmount),
+                belumValidasi = g.Where(c => c.validation == "NOT VALIDATED" && c.action.Contains("Return")).Sum(c => c.currencyAmmount),
+                total = g.Where(c => c.validation == "VALIDATED").Sum(c => c.currencyAmmount) + g.Where(c => c.validation == "NOT VALIDATED").Sum(c => c.currencyAmmount)
+
+            }).ToList();
+
+            var pivotOutBiBufferReady = (from x in pivotOutBiBuffer
+                                        select new { x.vaultID, x.sudahValidasi, x.belumValidasi, x.total }).ToList();
+
+
+            //QUERY VAULT OUT ATM - BUFFER
+            var queryOutAtmBuffer = (from x in queryVaultATM
+                                    where (x.fundingSoure != "BI" || x.fundingSoure.Contains("OB")) && (((DateTime)x.dueDate).Date == dateTimePicker2.Value.Date || ((DateTime)x.realDate).Date == dateTimePicker2.Value.Date)
+                                    select x).ToList();
+
+
+            foreach (var item in queryOutAtmBuffer)
+            {
+                pc.Add(new PivotCPC
+                {
+                    vaultId = item.vaultId,
+                    confId = item.confId,
+                    action = item.actionRekon,
+                    status = item.statusRekon,
+                    blogMessage = item.blogMessage,
+                    orderDate = ((DateTime)item.orderDate).Date,
+                    dueDate = ((DateTime)item.dueDate).Date,
+                    timeStamp = (DateTime)item.timeStampRekon,
+                    currencyAmmount = Int64.Parse(item.currencyAmmount.ToString()),
+                    fundingSource = item.fundingSoure,
+                    realDate = ((DateTime)item.timeStampRekon).Hour < 21 ? ((DateTime)item.timeStampRekon).Date : ((DateTime)item.timeStampRekon).AddDays(1).Date,
+                    validation = item.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(item.timeStampRekon.ToString()).Hour < 21 ? item.timeStampRekon : DateTime.Parse(item.timeStampRekon.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(dateTimePicker2.Value.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
+                });
+
+            }
+
+            //PREPARING PIVOT VAULT OUT ATM - BUFFER // catatan: pake vaultid // 
+            var pivotOutAtmBuffer = pc.GroupBy(c => new { c.vaultId, }).Select(g => new
+            {
+                vaultID = g.Key.vaultId,
+                sudahValidasi = g.Where(c => c.validation == "VALIDATED" && c.action.Contains("Return")).Sum(c => c.currencyAmmount),
+                belumValidasi = g.Where(c => c.validation == "NOT VALIDATED" && c.action.Contains("Return")).Sum(c => c.currencyAmmount),
+                total = g.Where(c => c.validation == "VALIDATED").Sum(c => c.currencyAmmount) + g.Where(c => c.validation == "NOT VALIDATED").Sum(c => c.currencyAmmount)
+
+            }).ToList();
+
+            var pivotOutAtmBufferReady = (from x in pivotOutAtmBuffer
+                                         select new { x.vaultID, x.sudahValidasi, x.belumValidasi, x.total }).ToList();
+
+            //PENGGABUNGAN PIVOT VAULT OUT
+            var unionOut = pivotOutBiBufferReady.Union(pivotOutAtmBufferReady).ToList();
+
+            var outReady = unionOut.GroupBy(z => new { z.vaultID }).Select(q => new
+            {
+                vaultID = q.Key.vaultID,
+                sudahValidasi = q.Sum(z => z.sudahValidasi),
+                belumValidasi = q.Sum(z => z.belumValidasi),
+                total = q.Sum(z => z.total)
+            }).ToList();
+
+            dataGridViewOut.DataSource = outReady;
+            //end of test 
+
+        }
+
+        private void buttonPerVendor_Click(object sender, EventArgs e)
+        {
+            var queryPerVendor = (from x in en.RekonSaldoPerVendors.AsEnumerable()
+                          join y in en.Pkts.AsEnumerable() on x.vendor equals y.kodePktCabang
+                          where !String.IsNullOrEmpty(x.vendor) && y.kanwil.Like("Jabotabek")
+                          select x).ToList();
+
+            //QUERY PER VENDOR IN
+            var queryIn= (from x in queryPerVendor
+                                where (x.actionRekon.Contains("Return") && x.statusRekon.Equals("In Transit")) && (((DateTime)x.dueDate).Date == dateTimePicker2.Value.Date || ((DateTime)x.realDate).Date == dateTimePicker2.Value.Date)
+                                select new
+                                {
+                                    cashPointId = x.cashPointtId,
+                                    confId = x.confId,
+                                    orderDate = x.orderDate,
+                                    vendor = x.vendor,
+                                    actionRekon = x.actionRekon,
+                                    statusRekon = x.statusRekon,
+                                    dueDate = x.dueDate,
+                                    blogTime = x.blogTime,
+                                    currencyAmmount = x.currencyAmmount,
+                                    realDate = x.realDate,
+                                    blogMessage = x.blogMessage,
+                                    validation = x.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(x.blogTime.ToString()).Hour < 21 ? x.blogTime : DateTime.Parse(x.blogTime.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(dateTimePicker2.Value.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
+                                }).ToList();
+
+            //GENERATING PIVOT IN
+            var pivotIn = queryIn.GroupBy(c => new { c.vendor }).Select(g => new
+            {
+                vendor = g.Key.vendor,
+                belumValidasi = g.Where(c => c.validation == "NOT VALIDATED").Sum(c => c.currencyAmmount),
+                sudahValidasi = g.Where(c => c.validation == "VALIDATED").Sum(c => c.currencyAmmount),
+                total = g.Where(c => c.validation == "NOT VALIDATED").Sum(c => c.currencyAmmount) +
+                             g.Where(c => c.validation == "VALIDATED").Sum(c => c.currencyAmmount)
+
+            }).ToList();
+
+            List<PivotPerVendor_In> pivotPerVendor_In = new List<PivotPerVendor_In>();
+
+            foreach (var item in pivotIn)
+            {
+                pivotPerVendor_In.Add(new PivotPerVendor_In
+                {
+                    vendor = item.vendor,
+                    belumValidasi = (Int64)item.belumValidasi,
+                    sudahValidasi = (Int64)item.sudahValidasi,
+                    total = (Int64)item.total,
+                });
+            }
+
+            dataGridViewIn.DataSource = pivotPerVendor_In;
+
+            //QUERY PER VENDOR OUT
+
+            var queryOut = (from x in queryPerVendor
+                         where ( x.actionRekon.Contains("Delivery") && x.statusRekon.Equals("Confirmed")) && (((DateTime)x.dueDate).Date == dateTimePicker2.Value.Date || ((DateTime)x.realDate).Date == dateTimePicker2.Value.Date)
+                         select new
+                         {
+                             cashPointId = x.cashPointtId,
+                             confId = x.confId,
+                             orderDate = x.orderDate,
+                             vendor = x.vendor,
+                             actionRekon = x.actionRekon,
+                             statusRekon = x.statusRekon,
+                             dueDate = x.dueDate,
+                             blogTime = x.blogTime,
+                             currencyAmmount = x.currencyAmmount,
+                             realDate = x.realDate,
+                             blogMessage = x.blogMessage,
+                             validation = x.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(x.blogTime.ToString()).Hour < 21 ? x.blogTime : DateTime.Parse(x.blogTime.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(dateTimePicker2.Value.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
+                         }).ToList();
+
+            //GENERATING PIVOT OUT
+            var pivotOut = queryOut.GroupBy(c => new { c.vendor }).Select(g => new
+            {
+                vendor = g.Key.vendor,
+                belumValidasi = g.Where(c => c.validation == "NOT VALIDATED").Sum(c => c.currencyAmmount),
+                sudahValidasi = g.Where(c => c.validation == "VALIDATED").Sum(c => c.currencyAmmount),
+                total = g.Where(c => c.validation == "NOT VALIDATED").Sum(c => c.currencyAmmount) +
+                             g.Where(c => c.validation == "VALIDATED").Sum(c => c.currencyAmmount)
+
+            }).ToList();
+
+            List<PivotPerVendor_Out> pivotPerVendor_Out = new List<PivotPerVendor_Out>();
+
+            foreach (var item in pivotOut)
+            {
+                pivotPerVendor_Out.Add(new PivotPerVendor_Out
+                {
+                    vendor = item.vendor,
+                    belumValidasi = (Int64)item.belumValidasi,
+                    sudahValidasi = (Int64)item.sudahValidasi,
+                    total = (Int64)item.total,
+                });
+            }
+            dataGridViewOut.DataSource = pivotPerVendor_Out;
+        }
     }
+
+
+
+ 
     class VOBH //vault order blog history
     {
         public String vaultId { set; get; }
@@ -1436,5 +1735,36 @@ namespace testProjectBCA
         public Int64 sudahValidasi { set; get; }
         public Int64 grandTotal { set; get; }
 
+    }
+
+    class PivotPerVendor_In
+    {
+        public String vendor { set; get; }
+        public Int64 belumValidasi { set; get; }
+        public Int64 sudahValidasi { set; get; }
+        public Int64 total { set; get; }
+    }
+
+    class PivotPerVendor_Out
+    {
+        public String vendor { set; get; }
+        public Int64 belumValidasi { set; get; }
+        public Int64 sudahValidasi { set; get; }
+        public Int64 total { set; get; }
+    }
+
+    class PivotVault_In
+    {
+        public String vendor { set; get; }
+        public Int64 belumValidasi { set; get; }
+        public Int64 sudahValidasi { set; get; }
+        public Int64 total { set; get; }
+    }
+    class PivotVault_Out
+    {
+        public String vendor { set; get; }
+        public Int64 belumValidasi { set; get; }
+        public Int64 sudahValidasi { set; get; }
+        public Int64 total { set; get; }
     }
 }

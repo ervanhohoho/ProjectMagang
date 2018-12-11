@@ -2199,12 +2199,19 @@ namespace testProjectBCA
         {
             Int64 sum100 = 0, 
                 sum50 = 0;
-            foreach(DataGridViewRow row in inOutBITUKABGridView.Rows)
+            for(int a= 0; a < inOutBITUKABGridView.RowCount-1;a++)
             {
+                DataGridViewRow row = inOutBITUKABGridView.Rows[a];
+                Console.WriteLine(a);
+                Console.WriteLine(row);
+                Console.WriteLine(row.Cells[3]);
+                Console.WriteLine(row.Cells[3].Value);
                 if (row == null)
                     break;
-                String s100 = row.Cells[3] == null ? "0" : row.Cells[3].Value.ToString(), 
-                    s50 = row.Cells[4] == null ? "0" : row.Cells[4].Value.ToString();
+
+
+                String s100 = row.Cells[3] == null || row.Cells[3].Value == null ? "0" : row.Cells[3].Value.ToString(), 
+                    s50 = row.Cells[4] == null || row.Cells[4].Value == null ? "0" : row.Cells[4].Value.ToString();
                 if (!String.IsNullOrEmpty(s100))
                     sum100 += Int64.Parse(s100);
                 if (!String.IsNullOrEmpty(s50))

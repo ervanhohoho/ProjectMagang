@@ -80,6 +80,7 @@
             this.inputDataSubsidiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rekonNasabahToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.invoiceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportAbacasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dashboardToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.aTMToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.dashboardATMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -93,13 +94,11 @@
             this.adminToolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inputDataKalenderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadMasterPKTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.readBeehiveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.insertDataTarikanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aTMToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.cRMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setoranCRMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inputDataCashpointToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.exportAbacasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -111,7 +110,6 @@
             this.nasabahToolStripMenuItem,
             this.dashboardToolStripMenuItem1,
             this.adminToolsToolStripMenuItem,
-            this.readBeehiveToolStripMenuItem,
             this.insertDataTarikanToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
@@ -461,7 +459,7 @@
             this.masterNasabahToolStripMenuItem,
             this.inputDataSubsidiToolStripMenuItem});
             this.inputDataToolStripMenuItem.Name = "inputDataToolStripMenuItem";
-            this.inputDataToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.inputDataToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.inputDataToolStripMenuItem.Text = "Input Data";
             // 
             // abacasToolStripMenuItem1
@@ -502,16 +500,23 @@
             // rekonNasabahToolStripMenuItem
             // 
             this.rekonNasabahToolStripMenuItem.Name = "rekonNasabahToolStripMenuItem";
-            this.rekonNasabahToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.rekonNasabahToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.rekonNasabahToolStripMenuItem.Text = "Rekon Nasabah";
             this.rekonNasabahToolStripMenuItem.Click += new System.EventHandler(this.rekonNasabahToolStripMenuItem_Click);
             // 
             // invoiceToolStripMenuItem
             // 
             this.invoiceToolStripMenuItem.Name = "invoiceToolStripMenuItem";
-            this.invoiceToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.invoiceToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.invoiceToolStripMenuItem.Text = "Invoice";
             this.invoiceToolStripMenuItem.Click += new System.EventHandler(this.invoiceToolStripMenuItem_Click);
+            // 
+            // exportAbacasToolStripMenuItem
+            // 
+            this.exportAbacasToolStripMenuItem.Name = "exportAbacasToolStripMenuItem";
+            this.exportAbacasToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
+            this.exportAbacasToolStripMenuItem.Text = "Export Abacas";
+            this.exportAbacasToolStripMenuItem.Click += new System.EventHandler(this.exportAbacasToolStripMenuItem_Click);
             // 
             // dashboardToolStripMenuItem1
             // 
@@ -616,13 +621,6 @@
             this.loadMasterPKTToolStripMenuItem.Text = "Load Master PKT";
             this.loadMasterPKTToolStripMenuItem.Click += new System.EventHandler(this.loadMasterPKTToolStripMenuItem_Click);
             // 
-            // readBeehiveToolStripMenuItem
-            // 
-            this.readBeehiveToolStripMenuItem.Name = "readBeehiveToolStripMenuItem";
-            this.readBeehiveToolStripMenuItem.Size = new System.Drawing.Size(89, 20);
-            this.readBeehiveToolStripMenuItem.Text = "Read Beehive";
-            this.readBeehiveToolStripMenuItem.Click += new System.EventHandler(this.readBeehiveToolStripMenuItem_Click);
-            // 
             // insertDataTarikanToolStripMenuItem
             // 
             this.insertDataTarikanToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -661,13 +659,6 @@
             this.inputDataCashpointToolStripMenuItem1.Size = new System.Drawing.Size(186, 22);
             this.inputDataCashpointToolStripMenuItem1.Text = "Input Data Cashpoint";
             this.inputDataCashpointToolStripMenuItem1.Click += new System.EventHandler(this.inputDataCashpointToolStripMenuItem1_Click);
-            // 
-            // exportAbacasToolStripMenuItem
-            // 
-            this.exportAbacasToolStripMenuItem.Name = "exportAbacasToolStripMenuItem";
-            this.exportAbacasToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.exportAbacasToolStripMenuItem.Text = "Export Abacas";
-            this.exportAbacasToolStripMenuItem.Click += new System.EventHandler(this.exportAbacasToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -742,7 +733,6 @@
         private System.Windows.Forms.ToolStripMenuItem perbandinganSaldoAwalToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cabangToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem rekonSaldoToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem readBeehiveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem gantiPasswordToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem insertDataTarikanToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aTMToolStripMenuItem2;
