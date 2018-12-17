@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -437,6 +438,17 @@ namespace testProjectBCA.CabangMenu
             public Int64 outLainLain { set; get; }
             public Int64 saldoAkhirHitungan { set; get; }
             public Int64 saldoAkhirLaporan { set; get; }
+        }
+
+        private void ExportBtn_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sv = new SaveFileDialog();
+            sv.Filter = Variables.csvFilter;
+            if(sv.ShowDialog() == DialogResult.OK)
+            {
+                String csv = ServiceStack.Text.CsvSerializer.SerializeToCsv(tampilanRekonSaldos);
+                File.WriteAllText(sv.FileName, csv);
+            }
         }
     }
     

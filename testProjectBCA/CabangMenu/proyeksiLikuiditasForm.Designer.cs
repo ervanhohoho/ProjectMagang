@@ -363,21 +363,21 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(159, 351);
+            this.label12.Location = new System.Drawing.Point(100, 349);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(93, 13);
+            this.label12.Size = new System.Drawing.Size(152, 13);
             this.label12.TabIndex = 16;
-            this.label12.Text = "Adhoc Tukab 100";
+            this.label12.Text = "Adhoc Tukab 100 (- Berarti IN)";
             this.label12.Click += new System.EventHandler(this.label10_Click);
             // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(159, 376);
+            this.label13.Location = new System.Drawing.Point(107, 375);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(87, 13);
+            this.label13.Size = new System.Drawing.Size(146, 13);
             this.label13.TabIndex = 16;
-            this.label13.Text = "Adhoc Tukab 50";
+            this.label13.Text = "Adhoc Tukab 50 (- Berarti IN)";
             // 
             // adhocTukab100Num
             // 
@@ -392,6 +392,11 @@
             -1966660860,
             0,
             0});
+            this.adhocTukab100Num.Minimum = new decimal(new int[] {
+            -559939585,
+            902409669,
+            54,
+            -2147483648});
             this.adhocTukab100Num.Name = "adhocTukab100Num";
             this.adhocTukab100Num.Size = new System.Drawing.Size(120, 20);
             this.adhocTukab100Num.TabIndex = 17;
@@ -410,6 +415,11 @@
             -1966660860,
             0,
             0});
+            this.adhocTukab50Num.Minimum = new decimal(new int[] {
+            -559939585,
+            902409669,
+            54,
+            -2147483648});
             this.adhocTukab50Num.Name = "adhocTukab50Num";
             this.adhocTukab50Num.Size = new System.Drawing.Size(120, 20);
             this.adhocTukab50Num.TabIndex = 17;

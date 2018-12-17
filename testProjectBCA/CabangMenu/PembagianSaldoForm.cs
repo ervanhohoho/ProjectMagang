@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -24,8 +25,8 @@ namespace testProjectBCA
         List<ApprovalPembagianSaldo> deliveryCabang;
         List<ApprovalPembagianSaldo> adhocCabang;
 
-        List<DataPermintaanDanSumber> listDataTambahanSumber;
-        List<DataPermintaanDanSumber> listDataTambahanPermintaan;
+        IReadOnlyCollection<DataPermintaanDanSumber> listDataTambahanSumber;
+        IReadOnlyCollection<DataPermintaanDanSumber> listDataTambahanPermintaan;
         Double persenUnprocessed;
         public PembagianSaldoForm()
         {
@@ -40,8 +41,8 @@ namespace testProjectBCA
             this.persenUnprocessed = persenUnprocessed;
             this.deliveryCabang = deliveryCabang;
             this.adhocCabang = adhocCabang;
-            this.listDataTambahanPermintaan = listDataTambahanPermintaan;
-            this.listDataTambahanSumber = listDataTambahanSumber;
+            this.listDataTambahanPermintaan = new ReadOnlyCollection<DataPermintaanDanSumber>(listDataTambahanPermintaan);
+            this.listDataTambahanSumber = new ReadOnlyCollection<DataPermintaanDanSumber>(listDataTambahanSumber);
             Database1Entities db = new Database1Entities();
             DateTime maxDateDetailApproval = (DateTime) db.DetailApprovals.Where(x => x.bon100 != -1).Max(x => x.tanggal);
 
@@ -133,7 +134,9 @@ namespace testProjectBCA
                            d50 = y.val,
                            d20 = 0
                        }).ToList());
-            q.AddRange(listDataTambahanSumber);
+
+            var temp = new List<DataPermintaanDanSumber>(listDataTambahanSumber);
+            q.AddRange(temp);
             sumberDanaGridView.DataSource = q.OrderBy(x => x.namaPkt).OrderBy(x => x.tanggal).ToList();
             listDataSumber = q;
 
@@ -149,9 +152,10 @@ namespace testProjectBCA
             //Nama PKT yang ada di ComboBox
 
             //Nanti ganti data dari master bank tukab
-            List<String> bankTukab = db.DataBankLains.Select(x => x.namaBank.Replace("PT. ", "")).ToList();
+            List<String> bankTukabTujuan = listDataTambahanPermintaan.Select(x=>x.namaPkt).ToList();
+
             var listNamaPkt = db.Pkts.Where(x => x.kanwil.ToUpper().Contains("JABO") && !x.namaPkt.Contains("Alam Sutera")).Select(x => x.namaPkt).ToList();
-            listNamaPkt.AddRange(bankTukab);
+            listNamaPkt.AddRange(bankTukabTujuan);
 
             DataGridViewComboBoxColumn pktTujuan = new DataGridViewComboBoxColumn() {
                 DataSource = listNamaPkt,
@@ -159,7 +163,8 @@ namespace testProjectBCA
                 ValueType = typeof(String)
             };
             var listNamaPktSumber = morningbalance100.Select(x => x.kodePkt).Distinct().OrderBy(x => x).ToList();
-            listNamaPktSumber.AddRange(bankTukab);
+            List<String> bankTukabSumber = listDataTambahanSumber.Select(x => x.namaPkt).ToList();
+            listNamaPktSumber.AddRange(bankTukabSumber);
             DataGridViewComboBoxColumn pktSumber = new DataGridViewComboBoxColumn()
             {
                 DataSource = listNamaPktSumber,
@@ -242,7 +247,23 @@ namespace testProjectBCA
                     d50 = (Int64) x.bon50,
                     d20 = (Int64) x.bon20
                 }).ToList());
-            listDataPermintaan.AddRange(listDataTambahanPermintaan);
+
+            Console.WriteLine("List Data Sisa Permintaan");
+            Console.WriteLine("==========================");
+
+            List<DataPermintaanDanSumber> temp = new List<DataPermintaanDanSumber>();
+            foreach (var t in listDataTambahanPermintaan)
+                temp.Add(new DataPermintaanDanSumber() {
+                    namaPkt = t.namaPkt,
+                    d100 = t.d100,
+                    d50 = t.d50,
+                    d20 = t.d20,
+                    jenisUang = t.jenisUang,
+                    tanggal = t.tanggal
+                });
+            foreach (var t in temp)
+                Console.WriteLine(t.namaPkt + " " + t.d100 + " " + t.d50 + " " + t.d20);
+            listDataPermintaan.AddRange(temp);
             sisaGridView.DataSource = listDataPermintaan.Where(x => x.d100 + x.d50 != 0).OrderBy(x=>x.namaPkt).OrderBy(x=> x.tanggal).ToList();
             sisaGridView.Columns["tanggal"].Width = 70;
             sisaGridView.Columns["namaPkt"].Width = 200;
@@ -379,16 +400,17 @@ namespace testProjectBCA
             foreach(var temp in listDataInputanUser)
             {
                 Console.WriteLine(temp.tanggal.ToShortDateString() + " " + temp.namaPktTujuan);
-                
+
+                //dataGridView1.DataSource = listDataTambahanPermintaan;
                 var q = (from x in tempListDataSisa
                          where x.namaPkt == temp.namaPktTujuan && x.tanggal == temp.tanggal 
-                         select x).FirstOrDefault();
-                if (q != null)
+                         select x).ToList();
+                foreach(var tempq in q)
                 {
                     Console.WriteLine("NOT NULL");
-                    q.d100 -= temp.d100;
-                    q.d50 -= temp.d50;
-                    q.d20 -= temp.d20;
+                    tempq.d100 -= temp.d100;
+                    tempq.d50 -= temp.d50;
+                    tempq.d20 -= temp.d20;
                     sisaGridView.DataSource = tempListDataSisa.Where(x => x.d100 + x.d50 != 0).OrderBy(x=>x.namaPkt).OrderBy(x=>x.tanggal).ToList();
                     sisaGridView.Refresh();
                 }
@@ -399,13 +421,13 @@ namespace testProjectBCA
             foreach (var temp in listDataInputanUser)
             {
                 var q = (from x in tempListDataSumber
-                         where x.namaPkt == temp.namaPktSumber && x.tanggal == temp.tanggal && x.jenisUang == temp.jenisUang
-                         select x).FirstOrDefault();
-                if (q != null)
+                         where x.namaPkt == temp.namaPktSumber && x.tanggal >= temp.tanggal && x.jenisUang == temp.jenisUang
+                         select x).ToList();
+                foreach (var tempq in q)
                 {
-                    q.d100 -= temp.d100;
-                    q.d50 -= temp.d50;
-                    q.d20 -= temp.d20;
+                    tempq.d100 -= temp.d100;
+                    tempq.d50 -= temp.d50;
+                    tempq.d20 -= temp.d20;
                     sumberDanaGridView.DataSource = tempListDataSumber.OrderBy(x => x.namaPkt).OrderBy(x => x.tanggal).ToList();
                     sumberDanaGridView.Refresh();
                 }
@@ -471,6 +493,7 @@ namespace testProjectBCA
                                            }).ToList();
             db.ApprovalPembagianSaldoes.AddRange(dataInputanUserToInsert);
             db.SaveChanges();
+            MessageBox.Show("Done!");
         }
     }
 

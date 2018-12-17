@@ -10,12 +10,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace testProjectBCA.CabangMenu
+namespace testProjectBCA
 {
     public partial class InputOrderTrackingForm : Form
     {
         Database1Entities en = new Database1Entities();
-        List<String> listPkt = new List<string>();
         public InputOrderTrackingForm()
         {
             InitializeComponent();
@@ -197,7 +196,7 @@ namespace testProjectBCA.CabangMenu
                              where x.tanggalTransaksi == dateTimePicker1.Value.Date
                              select x).ToList();
 
-
+                
 
                 if (query.Any())
                 {
@@ -444,7 +443,7 @@ namespace testProjectBCA.CabangMenu
             //List<Int64> dibatalkan = new List<Int64>();
 
             List<orderTrackingLoad> otl = new List<orderTrackingLoad>();
-            listPkt = new List<string>();
+
 
             using (SqlConnection sql = new SqlConnection(Variables.connectionString))
             {
@@ -470,7 +469,7 @@ namespace testProjectBCA.CabangMenu
                                             + "  ("
                                             + "  select kodePenerimaDana, [Tidak Dibatalkan] = sum(case when lower(keterangan) not like '%batal%'  then total else 0 end), [dibatalkan] = sum(case when lower(keterangan) = '%batal%' then total else 0 end)"
                                             + "  from RekapSelisihAmbilSetor join Pkt on (CASE WHEN RekapSelisihAmbilSetor.kodePenerimaDana LIKE 'CCAS%' THEN 'CCASA' ELSE kodePenerimaDana END) = Pkt.kodePktCabang"
-                                            + "  where tanggalTransaksi = '" + dateTimePicker1.Value.Date + "' and LEN(noTxn) = 6 and kanwil like 'Jabotabek'"
+                                            + "  where tanggalTransaksi = '"+dateTimePicker1.Value.Date+"' and LEN(noTxn) = 6 and kanwil like 'Jabotabek'"
                                             + "  group by kodePenerimaDana"
                                             + "  )b"
                                             + "  on a.kodePkt = b.kodePenerimaDana";
@@ -478,7 +477,6 @@ namespace testProjectBCA.CabangMenu
 
                     while (reader.Read())
                     {
-                        listPkt.Add(reader[0].ToString());
                         otl.Add(new orderTrackingLoad
                         {
                             kodePkt = reader[0].ToString(),
@@ -590,8 +588,6 @@ namespace testProjectBCA.CabangMenu
 
                 }
             }
-            pktComboBox.DataSource = listPkt;
-            pktComboBox.SelectedIndex = 0;
         }
 
         void reloadGridView2()
@@ -703,7 +699,7 @@ namespace testProjectBCA.CabangMenu
 
         class orderTrackingLoad
         {
-
+            
 
             public String kodePkt { set; get; }
             public Int64 orderTracking { set; get; }
@@ -931,30 +927,6 @@ namespace testProjectBCA.CabangMenu
                     }
                 }
             }
-        }
-
-        private void buttonShowDetails_Click_1(object sender, EventArgs e)
-        {
-            String kodePkt = pktComboBox.SelectedItem.ToString();
-            DateTime tanggal = dateTimePicker1.Value.Date;
-            DetailsOrderTracking dot = new DetailsOrderTracking(kodePkt, tanggal);
-            dot.Show();
-        }
-
-        private void showDetailsSelisih_Click(object sender, EventArgs e)
-        {
-            String kodePkt = pktComboBox.SelectedItem.ToString();
-            DateTime tanggal = dateTimePicker1.Value.Date;
-            DetailsSelisihAmbilSetor dsas = new DetailsSelisihAmbilSetor(kodePkt, tanggal, false);
-            dsas.Show();
-        }
-
-        private void showDetailsPanjangBtn_Click(object sender, EventArgs e)
-        {
-            String kodePkt = pktComboBox.SelectedItem.ToString();
-            DateTime tanggal = dateTimePicker1.Value.Date;
-            DetailsSelisihAmbilSetor dsas = new DetailsSelisihAmbilSetor(kodePkt, tanggal, true);
-            dsas.Show();
         }
     }
 }

@@ -49,7 +49,8 @@ namespace testProjectBCA
             loadBulanPrediksiTreeView();
             metodePrediksiComboBox.SelectedIndex = 0;
             tanggalMaxPrediksiPicker.MinDate = DateTime.Today.AddDays(1);
-
+            outBITukabDateTimePicker.MinDate = Variables.todayDate.AddDays(1);
+            inBITukabDateTimePicker.MinDate = Variables.todayDate.AddDays(1);
             var q = (from x in db.Approvals
                      join y in db.DetailApprovals on x.idApproval equals y.idApproval
                      join z in db.Pkts on x.kodePkt equals z.kodePkt
@@ -1914,8 +1915,8 @@ namespace testProjectBCA
                         jenisUang = "",
                         tanggal = DateTime.Parse(row.Cells[0].Value.ToString()),
                         namaPkt = row.Cells[1].Value.ToString(),
-                        d100 = Int64.Parse(row.Cells[3].Value.ToString()),
-                        d50 = Int64.Parse(row.Cells[4].Value.ToString()),
+                        d100 = row.Cells[3].Value == null ? 0 : Int64.Parse(row.Cells[3].Value.ToString()),
+                        d50 = row.Cells[4].Value == null ? 0 : Int64.Parse(row.Cells[4].Value.ToString()),
                     });
                 }
                 if(row.Cells[2].Value.ToString().ToLower() == "in")
@@ -1925,8 +1926,8 @@ namespace testProjectBCA
                         jenisUang = "",
                         tanggal = DateTime.Parse(row.Cells[0].Value.ToString()),
                         namaPkt = row.Cells[1].Value.ToString(),
-                        d100 = Int64.Parse(row.Cells[3].Value.ToString()),
-                        d50 = Int64.Parse(row.Cells[4].Value.ToString()),
+                        d100 = row.Cells[3].Value == null ? 0 : Int64.Parse(row.Cells[3].Value.ToString()),
+                        d50 = row.Cells[4].Value == null ? 0 : Int64.Parse(row.Cells[4].Value.ToString()),
                     });
                 }
             }

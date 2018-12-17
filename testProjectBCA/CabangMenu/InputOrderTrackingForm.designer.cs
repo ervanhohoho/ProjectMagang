@@ -1,4 +1,4 @@
-﻿namespace testProjectBCA.CabangMenu
+﻿namespace testProjectBCA
 {
     partial class InputOrderTrackingForm
     {
@@ -41,10 +41,8 @@
             this.button8 = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
-            this.buttonShowDetailsOrderTracking = new System.Windows.Forms.Button();
-            this.pktComboBox = new System.Windows.Forms.ComboBox();
-            this.showDetailsSelisihRekapBtn = new System.Windows.Forms.Button();
-            this.showDetailsBtn = new System.Windows.Forms.Button();
+            this.buttonShowDetails = new System.Windows.Forms.Button();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.SuspendLayout();
@@ -79,6 +77,7 @@
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.Size = new System.Drawing.Size(806, 350);
             this.dataGridView1.TabIndex = 2;
+            this.dataGridView1.SelectionChanged += new System.EventHandler(this.dataGridView1_SelectionChanged);
             // 
             // button2
             // 
@@ -141,7 +140,7 @@
             this.dataGridView2.Location = new System.Drawing.Point(12, 465);
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.RowHeadersVisible = false;
-            this.dataGridView2.Size = new System.Drawing.Size(442, 81);
+            this.dataGridView2.Size = new System.Drawing.Size(442, 52);
             this.dataGridView2.TabIndex = 8;
             // 
             // button7
@@ -184,53 +183,31 @@
             this.button10.UseVisualStyleBackColor = true;
             this.button10.Click += new System.EventHandler(this.button10_Click);
             // 
-            // buttonShowDetailsOrderTracking
+            // buttonShowDetails
             // 
-            this.buttonShowDetailsOrderTracking.Location = new System.Drawing.Point(697, 44);
-            this.buttonShowDetailsOrderTracking.Name = "buttonShowDetailsOrderTracking";
-            this.buttonShowDetailsOrderTracking.Size = new System.Drawing.Size(121, 23);
-            this.buttonShowDetailsOrderTracking.TabIndex = 13;
-            this.buttonShowDetailsOrderTracking.Text = "Show Details Order Tracking";
-            this.buttonShowDetailsOrderTracking.UseVisualStyleBackColor = true;
-            this.buttonShowDetailsOrderTracking.Click += new System.EventHandler(this.buttonShowDetails_Click_1);
+            this.buttonShowDetails.Location = new System.Drawing.Point(697, 69);
+            this.buttonShowDetails.Name = "buttonShowDetails";
+            this.buttonShowDetails.Size = new System.Drawing.Size(121, 23);
+            this.buttonShowDetails.TabIndex = 13;
+            this.buttonShowDetails.Text = "Show Details";
+            this.buttonShowDetails.UseVisualStyleBackColor = true;
+            this.buttonShowDetails.Click += new System.EventHandler(this.buttonShowDetails_Click);
             // 
-            // pktComboBox
+            // comboBox1
             // 
-            this.pktComboBox.FormattingEnabled = true;
-            this.pktComboBox.Location = new System.Drawing.Point(697, 17);
-            this.pktComboBox.Name = "pktComboBox";
-            this.pktComboBox.Size = new System.Drawing.Size(121, 21);
-            this.pktComboBox.TabIndex = 14;
-            // 
-            // showDetailsSelisihRekapBtn
-            // 
-            this.showDetailsSelisihRekapBtn.Location = new System.Drawing.Point(697, 69);
-            this.showDetailsSelisihRekapBtn.Name = "showDetailsSelisihRekapBtn";
-            this.showDetailsSelisihRekapBtn.Size = new System.Drawing.Size(121, 23);
-            this.showDetailsSelisihRekapBtn.TabIndex = 13;
-            this.showDetailsSelisihRekapBtn.Text = "Show Details Selisih Rekap";
-            this.showDetailsSelisihRekapBtn.UseVisualStyleBackColor = true;
-            this.showDetailsSelisihRekapBtn.Click += new System.EventHandler(this.showDetailsSelisih_Click);
-            // 
-            // showDetailsBtn
-            // 
-            this.showDetailsBtn.Location = new System.Drawing.Point(460, 523);
-            this.showDetailsBtn.Name = "showDetailsBtn";
-            this.showDetailsBtn.Size = new System.Drawing.Size(184, 23);
-            this.showDetailsBtn.TabIndex = 13;
-            this.showDetailsBtn.Text = "Show Details";
-            this.showDetailsBtn.UseVisualStyleBackColor = true;
-            this.showDetailsBtn.Click += new System.EventHandler(this.showDetailsPanjangBtn_Click);
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(697, 42);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(121, 21);
+            this.comboBox1.TabIndex = 14;
             // 
             // InputOrderTrackingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(837, 556);
-            this.Controls.Add(this.pktComboBox);
-            this.Controls.Add(this.showDetailsBtn);
-            this.Controls.Add(this.showDetailsSelisihRekapBtn);
-            this.Controls.Add(this.buttonShowDetailsOrderTracking);
+            this.ClientSize = new System.Drawing.Size(837, 532);
+            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.buttonShowDetails);
             this.Controls.Add(this.button10);
             this.Controls.Add(this.button9);
             this.Controls.Add(this.button8);
@@ -268,9 +245,7 @@
         private System.Windows.Forms.Button button8;
         private System.Windows.Forms.Button button9;
         private System.Windows.Forms.Button button10;
-        private System.Windows.Forms.Button buttonShowDetailsOrderTracking;
-        private System.Windows.Forms.ComboBox pktComboBox;
-        private System.Windows.Forms.Button showDetailsSelisihRekapBtn;
-        private System.Windows.Forms.Button showDetailsBtn;
+        private System.Windows.Forms.Button buttonShowDetails;
+        private System.Windows.Forms.ComboBox comboBox1;
     }
 }

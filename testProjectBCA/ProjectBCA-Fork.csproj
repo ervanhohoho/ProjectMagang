@@ -193,6 +193,12 @@
     <Compile Include="CabangMenu\DetailsSelisihAmbilSetor.Designer.cs">
       <DependentUpon>DetailsSelisihAmbilSetor.cs</DependentUpon>
     </Compile>
+    <Compile Include="CabangMenu\DetailTransaksiVault.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CabangMenu\DetailTransaksiVault.Designer.cs">
+      <DependentUpon>DetailTransaksiVault.cs</DependentUpon>
+    </Compile>
     <Compile Include="CabangMenu\KumpulanQueryRekonSaldo.cs" />
     <Compile Include="CabangMenu\RekonSaldoForm.cs">
       <SubType>Form</SubType>
@@ -645,6 +651,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CabangMenu\DetailsSelisihAmbilSetor.resx">
       <DependentUpon>DetailsSelisihAmbilSetor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CabangMenu\DetailTransaksiVault.resx">
+      <DependentUpon>DetailTransaksiVault.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CabangMenu\RekonSaldoForm.resx">
       <DependentUpon>RekonSaldoForm.cs</DependentUpon>

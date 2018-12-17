@@ -199,7 +199,7 @@ namespace testProjectBCA
                 {
                     branch.Columns.Add();
                 }
-                DataRow[] rows = dt.Select("Column0 like 'B%' AND Column2 like 'CAC'");
+                DataRow[] rows = dt.Select("Column0 like 'B%'");
                 foreach (DataRow row in rows)
                 {
                     branch.Rows.Add(row.ItemArray);
@@ -402,8 +402,9 @@ namespace testProjectBCA
                 }
             }
         }
-        public  void UpdateDataBranchPkt(DataTable dt)
+        public void UpdateDataBranchPkt(DataTable dt)
         {
+            Console.Write("DT: " + dt.Rows[0][1]);
             using (SqlConnection sql = new SqlConnection(Variables.connectionString))
             {
                 SqlCommand cmd = new SqlCommand();
@@ -424,7 +425,8 @@ namespace testProjectBCA
                     sbc.WriteToServer(dt);
                 }
 
-                cmd.CommandText = "INSERT INTO Cabang(kodeCabang, kodePkt, namaCabang) SELECT TT.idCashpoint, TT.kodePkt, TT.namaCabang FROM #TEMP TT LEFT JOIN Cabang C ON substring(TT.idCashpoint, patindex('%[^B]%',TT.idCashpoint), 10) = C.kodeCabang WHERE C.kodeCabang IS NULL";
+                cmd.CommandText = "SELECT * FROM #TEMP";
+                cmd.CommandText = "INSERT INTO Cabang(kodeCabang, kodePkt, namaCabang) SELECT substring(TT.idCashpoint, patindex('%[^B]%',TT.idCashpoint), 10), TT.kodePkt, TT.namaCabang FROM #TEMP TT LEFT JOIN Cabang C ON substring(TT.idCashpoint, patindex('%[^B]%',TT.idCashpoint), 10) = C.kodeCabang WHERE C.kodeCabang IS NULL";
                 cmd.ExecuteNonQuery();
                 cmd.CommandText = "UPDATE T SET T.kodePkt = TT.kodePkt, T.namaCabang = TT.namaCabang FROM Cabang T INNER JOIN #TEMP TT ON substring(TT.idCashpoint, patindex('%[^B]%',TT.idCashpoint), 10) = T.kodeCabang; DROP TABLE #TEMP;";
                 cmd.ExecuteNonQuery();
@@ -432,25 +434,25 @@ namespace testProjectBCA
                
                 //cmd.CommandText = "UPDATE CABANG SET kodeCabang = RIGHT(kodeCabang,4)";
                 //cmd.ExecuteNonQuery();
-                cmd.CommandText = "UPDATE CABANG SET kodeCabang = substring(kodeCabang, patindex('%[^B]%',kodeCabang), 10)";
-                cmd.ExecuteNonQuery();
+                //cmd.CommandText = "UPDATE CABANG SET kodeCabang = substring(kodeCabang, patindex('%[^B]%',kodeCabang), 10)";
+                //cmd.ExecuteNonQuery();
                 sql.Close();
             }
             
 
-            using (SqlConnection sql = new SqlConnection(Variables.connectionString))
-            {
-                using (SqlCommand cmd = new SqlCommand())
-                {
-                    sql.Open();
-                    cmd.Connection = sql;
-                    //cmd.CommandText = "UPDATE CABANG SET kodeCabang = RIGHT(kodeCabang,4)";
-                    //cmd.ExecuteNonQuery();
-                    cmd.CommandText = "UPDATE CABANG SET kodeCabang =  substring(kodeCabang, patindex('%[^B]%',kodeCabang), 10)";
-                    cmd.ExecuteNonQuery();
-                    sql.Close();
-                }
-            }
+            //using (SqlConnection sql = new SqlConnection(Variables.connectionString))
+            //{
+            //    using (SqlCommand cmd = new SqlCommand())
+            //    {
+            //        sql.Open();
+            //        cmd.Connection = sql;
+            //        //cmd.CommandText = "UPDATE CABANG SET kodeCabang = RIGHT(kodeCabang,4)";
+            //        //cmd.ExecuteNonQuery();
+            //        cmd.CommandText = "UPDATE CABANG SET kodeCabang =  substring(kodeCabang, patindex('%[^B]%',kodeCabang), 10)";
+            //        cmd.ExecuteNonQuery();
+            //        sql.Close();
+            //    }
+            //}
         }
         private void insertDataCabangToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -655,7 +657,7 @@ namespace testProjectBCA
                 {
                     branch.Columns.Add();
                 }
-                DataRow[] rows = dt.Select("Column0 like 'B%' AND Column3 like 'CAC'");
+                DataRow[] rows = dt.Select("Column0 like 'B%'");
                 foreach (DataRow row in rows)
                 {
                     Console.WriteLine(rows[0]);
@@ -1100,6 +1102,13 @@ namespace testProjectBCA
             ExportAbacasForm eaf = new ExportAbacasForm();
             eaf.MdiParent = this;
             eaf.Show();
+        }
+
+        private void transaksiVaultToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DetailTransaksiVault dtv = new DetailTransaksiVault();
+            dtv.MdiParent = this;
+            dtv.Show();
         }
     }
 }

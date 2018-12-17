@@ -120,7 +120,7 @@ namespace testProjectBCA.CabangMenu
             Database1Entities db = new Database1Entities();
             //preparing data for pivot - atm return
             var queryar = (from x in db.RekonSaldoVaults.AsEnumerable()
-                           join y in db.Pkts.AsEnumerable() on x.vaultId.Substring(0, 4) equals y.kodePktCabang.Substring(0, 4)
+                           join y in db.Pkts.AsEnumerable() on x.vaultId equals y.kodePktCabang
                            where !String.IsNullOrEmpty(x.fundingSoure) && y.kanwil.Like("Jabotabek")
                            select x).ToList();
             queryar = (from x in queryar
@@ -258,7 +258,7 @@ namespace testProjectBCA.CabangMenu
             Database1Entities db = new Database1Entities();
             //preparing data for Pivot CPC - BI dan BankLain delivery
             var queryd = (from x in db.RekonSaldoVaults.AsEnumerable()
-                          join y in db.Pkts.AsEnumerable() on x.vaultId.Substring(0, 4) equals y.kodePktCabang.Substring(0,4)
+                          join y in db.Pkts.AsEnumerable() on x.vaultId equals y.kodePktCabang
                           where !String.IsNullOrEmpty(x.fundingSoure) && y.kanwil.Like("Jabotabek")
                           select x).ToList();
             queryd = (from x in queryd
@@ -335,7 +335,7 @@ namespace testProjectBCA.CabangMenu
             Database1Entities db = new Database1Entities();
             //preparing data for pivot - ATM delivery
             var queryad = (from x in db.RekonSaldoVaults.AsEnumerable()
-                           join y in db.Pkts.AsEnumerable() on x.vaultId.Substring(0, 4) equals y.kodePktCabang.Substring(0, 4)
+                           join y in db.Pkts.AsEnumerable() on x.vaultId equals y.kodePktCabang
                            where !String.IsNullOrEmpty(x.fundingSoure) && y.kanwil.Like("Jabotabek")
                            select x).ToList();
             queryad = (from x in queryad
@@ -416,11 +416,11 @@ namespace testProjectBCA.CabangMenu
             listBonCabang = new List<PivotPerVendor_bon>();
             Database1Entities db = new Database1Entities();
             var queryS = (from x in db.RekonSaldoPerVendors.AsEnumerable()
-                          join y in db.Pkts.AsEnumerable() on x.vendor.Substring(0, 4) equals y.kodePktCabang.Substring(0, 4)
+                          join y in db.Pkts.AsEnumerable() on x.vendor equals y.kodePktCabang
                           where !String.IsNullOrEmpty(x.vendor) && y.kanwil.Like("Jabotabek")
                           select x).ToList();
             var query = (from x in queryS
-                         join y in db.Pkts.AsEnumerable() on x.vendor.Substring(0, 4) equals y.kodePktCabang.Substring(0, 4)
+                         join y in db.Pkts.AsEnumerable() on x.vendor equals y.kodePktCabang
                          where (!String.IsNullOrEmpty(x.vendor) && y.kanwil.Like("Jabotabek") && x.actionRekon.Contains("Delivery") && x.statusRekon.Equals("Confirmed")) && (((DateTime)x.dueDate).Date == tanggal || ((DateTime)x.realDate).Date == tanggal)
                          select new
                          {

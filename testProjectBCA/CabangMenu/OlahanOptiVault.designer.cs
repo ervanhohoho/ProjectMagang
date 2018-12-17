@@ -63,6 +63,8 @@
             this.buttonAll = new System.Windows.Forms.Button();
             this.dataGridViewIn = new System.Windows.Forms.DataGridView();
             this.dataGridViewOut = new System.Windows.Forms.DataGridView();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).BeginInit();
@@ -394,7 +396,7 @@
             this.groupBox2.Controls.Add(this.buttonUploadOrderBlogHistory);
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.button1);
-            this.groupBox2.Location = new System.Drawing.Point(451, 10);
+            this.groupBox2.Location = new System.Drawing.Point(445, 10);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(426, 177);
             this.groupBox2.TabIndex = 31;
@@ -403,32 +405,33 @@
             // 
             // buttonVault
             // 
-            this.buttonVault.Location = new System.Drawing.Point(601, 198);
+            this.buttonVault.Location = new System.Drawing.Point(219, 193);
             this.buttonVault.Name = "buttonVault";
-            this.buttonVault.Size = new System.Drawing.Size(123, 23);
+            this.buttonVault.Size = new System.Drawing.Size(186, 39);
             this.buttonVault.TabIndex = 32;
-            this.buttonVault.Text = "new VAULT";
+            this.buttonVault.Text = "generate VAULT";
             this.buttonVault.UseVisualStyleBackColor = true;
             this.buttonVault.Click += new System.EventHandler(this.buttonVault_Click);
             // 
             // buttonPerVendor
             // 
-            this.buttonPerVendor.Location = new System.Drawing.Point(730, 197);
+            this.buttonPerVendor.Location = new System.Drawing.Point(411, 193);
             this.buttonPerVendor.Name = "buttonPerVendor";
-            this.buttonPerVendor.Size = new System.Drawing.Size(121, 23);
+            this.buttonPerVendor.Size = new System.Drawing.Size(184, 39);
             this.buttonPerVendor.TabIndex = 33;
-            this.buttonPerVendor.Text = "new PER VENDOR";
+            this.buttonPerVendor.Text = "generate PER VENDOR";
             this.buttonPerVendor.UseVisualStyleBackColor = true;
             this.buttonPerVendor.Click += new System.EventHandler(this.buttonPerVendor_Click);
             // 
             // buttonAll
             // 
-            this.buttonAll.Location = new System.Drawing.Point(601, 227);
+            this.buttonAll.Location = new System.Drawing.Point(601, 201);
             this.buttonAll.Name = "buttonAll";
             this.buttonAll.Size = new System.Drawing.Size(123, 23);
             this.buttonAll.TabIndex = 34;
             this.buttonAll.Text = "new ALL";
             this.buttonAll.UseVisualStyleBackColor = true;
+            this.buttonAll.Click += new System.EventHandler(this.buttonAll_Click);
             // 
             // dataGridViewIn
             // 
@@ -439,10 +442,10 @@
             this.dataGridViewIn.AllowUserToResizeRows = false;
             this.dataGridViewIn.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridViewIn.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewIn.Location = new System.Drawing.Point(57, 352);
+            this.dataGridViewIn.Location = new System.Drawing.Point(12, 269);
             this.dataGridViewIn.Name = "dataGridViewIn";
             this.dataGridViewIn.ReadOnly = true;
-            this.dataGridViewIn.Size = new System.Drawing.Size(594, 325);
+            this.dataGridViewIn.Size = new System.Drawing.Size(594, 552);
             this.dataGridViewIn.TabIndex = 35;
             // 
             // dataGridViewOut
@@ -454,17 +457,37 @@
             this.dataGridViewOut.AllowUserToResizeRows = false;
             this.dataGridViewOut.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridViewOut.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewOut.Location = new System.Drawing.Point(730, 352);
+            this.dataGridViewOut.Location = new System.Drawing.Point(642, 269);
             this.dataGridViewOut.Name = "dataGridViewOut";
             this.dataGridViewOut.ReadOnly = true;
-            this.dataGridViewOut.Size = new System.Drawing.Size(609, 325);
+            this.dataGridViewOut.Size = new System.Drawing.Size(609, 552);
             this.dataGridViewOut.TabIndex = 36;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(282, 254);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(53, 13);
+            this.label10.TabIndex = 37;
+            this.label10.Text = "PIVOT IN";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(909, 253);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(65, 13);
+            this.label11.TabIndex = 38;
+            this.label11.Text = "PIVOT OUT";
             // 
             // OlahanOptiVault
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1390, 881);
+            this.Controls.Add(this.label11);
+            this.Controls.Add(this.label10);
             this.Controls.Add(this.dataGridViewOut);
             this.Controls.Add(this.dataGridViewIn);
             this.Controls.Add(this.buttonAll);
@@ -549,5 +572,7 @@
         private System.Windows.Forms.Button buttonAll;
         private System.Windows.Forms.DataGridView dataGridViewIn;
         private System.Windows.Forms.DataGridView dataGridViewOut;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label11;
     }
 }

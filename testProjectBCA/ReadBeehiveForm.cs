@@ -26,6 +26,8 @@ namespace testProjectBCA
         public ReadBeehiveForm()
         {
             InitializeComponent();
+
+
         }
 
         private void inputBtn_Click(object sender, EventArgs e)
@@ -507,9 +509,7 @@ namespace testProjectBCA
             {
                 int rowidx = cell.RowIndex;
                 int colidx = cell.ColumnIndex;
-                Console.WriteLine(rowidx + ", " + colidx);
-                Console.WriteLine(dataGridView1.Rows[rowidx].Cells[colidx].Value.ToString().Replace("Rp.", "").Replace(".", ""));
-                if (colidx > 0 && colidx < 4)
+                if (colidx > 0)
                 {
                     dataGridView1.Rows[rowidx].Cells[colidx].Style.Format = "F0";
                 }
@@ -548,7 +548,7 @@ namespace testProjectBCA
             // Select all the cells
             dataGridView1.SelectAll();
             // Copy selected cells to DataObject
-            //for (int a = 4; a < dataGridView1.Columns.Count; a++)
+            //for (int a = 0; a < dataGridView1.Columns.Count; a++)
             //{
             //    dataGridView1.Columns[a].DefaultCellStyle.Format = "";
             //    //for(int b=0;b<dataGridView1.Rows.Count;b++)
