@@ -308,6 +308,7 @@
     <Property Name="kodePktCabang" Type="varchar" MaxLength="10" />
     <Property Name="kodePktATM" Type="varchar" MaxLength="10" />
     <Property Name="kapasitasCPC" Type="bigint" />
+    <Property Name="kodeOpti" Type="varchar" MaxLength="10" />
   </EntityType>
   <EntityType Name="RekapSelisihAmbilSetor">
     <Key>

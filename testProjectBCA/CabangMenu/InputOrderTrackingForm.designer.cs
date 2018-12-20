@@ -42,7 +42,9 @@
             this.button9 = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
             this.buttonShowDetails = new System.Windows.Forms.Button();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.pktComboBox = new System.Windows.Forms.ComboBox();
+            this.RekapSelisihBtn = new System.Windows.Forms.Button();
+            this.showDetailsAskButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.SuspendLayout();
@@ -140,7 +142,7 @@
             this.dataGridView2.Location = new System.Drawing.Point(12, 465);
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.RowHeadersVisible = false;
-            this.dataGridView2.Size = new System.Drawing.Size(442, 52);
+            this.dataGridView2.Size = new System.Drawing.Size(442, 87);
             this.dataGridView2.TabIndex = 8;
             // 
             // button7
@@ -185,28 +187,50 @@
             // 
             // buttonShowDetails
             // 
-            this.buttonShowDetails.Location = new System.Drawing.Point(697, 69);
+            this.buttonShowDetails.Location = new System.Drawing.Point(650, 40);
             this.buttonShowDetails.Name = "buttonShowDetails";
-            this.buttonShowDetails.Size = new System.Drawing.Size(121, 23);
+            this.buttonShowDetails.Size = new System.Drawing.Size(168, 23);
             this.buttonShowDetails.TabIndex = 13;
-            this.buttonShowDetails.Text = "Show Details";
+            this.buttonShowDetails.Text = "Show Details Order Tracking";
             this.buttonShowDetails.UseVisualStyleBackColor = true;
             this.buttonShowDetails.Click += new System.EventHandler(this.buttonShowDetails_Click);
             // 
-            // comboBox1
+            // pktComboBox
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(697, 42);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 21);
-            this.comboBox1.TabIndex = 14;
+            this.pktComboBox.FormattingEnabled = true;
+            this.pktComboBox.Location = new System.Drawing.Point(650, 13);
+            this.pktComboBox.Name = "pktComboBox";
+            this.pktComboBox.Size = new System.Drawing.Size(168, 21);
+            this.pktComboBox.TabIndex = 14;
+            // 
+            // RekapSelisihBtn
+            // 
+            this.RekapSelisihBtn.Location = new System.Drawing.Point(650, 69);
+            this.RekapSelisihBtn.Name = "RekapSelisihBtn";
+            this.RekapSelisihBtn.Size = new System.Drawing.Size(168, 23);
+            this.RekapSelisihBtn.TabIndex = 13;
+            this.RekapSelisihBtn.Text = "Show Details Rekap Selisih Ambil Setor";
+            this.RekapSelisihBtn.UseVisualStyleBackColor = true;
+            this.RekapSelisihBtn.Click += new System.EventHandler(this.rekapSelisihBtn_Click);
+            // 
+            // showDetailsAskButton
+            // 
+            this.showDetailsAskButton.Location = new System.Drawing.Point(460, 523);
+            this.showDetailsAskButton.Name = "showDetailsAskButton";
+            this.showDetailsAskButton.Size = new System.Drawing.Size(358, 23);
+            this.showDetailsAskButton.TabIndex = 15;
+            this.showDetailsAskButton.Text = "Show Details ASK";
+            this.showDetailsAskButton.UseVisualStyleBackColor = true;
+            this.showDetailsAskButton.Click += new System.EventHandler(this.showDetailsAskButton_Click);
             // 
             // InputOrderTrackingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(837, 532);
-            this.Controls.Add(this.comboBox1);
+            this.ClientSize = new System.Drawing.Size(837, 564);
+            this.Controls.Add(this.showDetailsAskButton);
+            this.Controls.Add(this.pktComboBox);
+            this.Controls.Add(this.RekapSelisihBtn);
             this.Controls.Add(this.buttonShowDetails);
             this.Controls.Add(this.button10);
             this.Controls.Add(this.button9);
@@ -246,6 +270,8 @@
         private System.Windows.Forms.Button button9;
         private System.Windows.Forms.Button button10;
         private System.Windows.Forms.Button buttonShowDetails;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox pktComboBox;
+        private System.Windows.Forms.Button RekapSelisihBtn;
+        private System.Windows.Forms.Button showDetailsAskButton;
     }
 }

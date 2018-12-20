@@ -31,6 +31,7 @@ namespace testProjectBCA
         public string kodePktCabang { get; set; }
         public string kodePktATM { get; set; }
         public Nullable<long> kapasitasCPC { get; set; }
+        public string kodeOpti { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<laporanBon> laporanBons { get; set; }

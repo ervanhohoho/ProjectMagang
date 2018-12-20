@@ -19,7 +19,7 @@ namespace testProjectBCA.CabangMenu
             Database1Entities db = new Database1Entities();
             Console.WriteLine("KodePkt: " + kodePkt + "Tanggal: " + tanggal);
             var query = (from x in db.OrderTrackings.AsEnumerable()
-                         where x.kodePkt == kodePkt && ((DateTime)x.tanggal).Date == tanggal.Date
+                         where kodePkt == "CCAS"? x.kodePkt .Contains(kodePkt) : x.kodePkt == kodePkt && ((DateTime)x.tanggal).Date == tanggal.Date
                          select new { x.kodePkt, x.kodeCabang, x.nominalDispute }).ToList();
             dataGridView1.DataSource = query;
             for(int a=0;a<dataGridView1.ColumnCount;a++)

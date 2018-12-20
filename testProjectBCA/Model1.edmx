@@ -313,6 +313,7 @@
           <Property Name="kodePktCabang" Type="varchar" MaxLength="10" />
           <Property Name="kodePktATM" Type="varchar" MaxLength="10" />
           <Property Name="kapasitasCPC" Type="bigint" />
+          <Property Name="kodeOpti" Type="varchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="RekapSelisihAmbilSetor">
           <Key>
@@ -899,6 +900,7 @@
           <NavigationProperty Name="laporanBons" Relationship="Self.FK_laporanBon_Pkt" FromRole="Pkt" ToRole="laporanBon" />
           <NavigationProperty Name="TransaksiAtms" Relationship="Self.FK_TransaksiAtms_Pkt" FromRole="Pkt" ToRole="TransaksiAtms" />
           <Property Name="kapasitasCPC" Type="Int64" />
+          <Property Name="kodeOpti" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="RekapSelisihAmbilSetor">
           <Key>
@@ -1536,6 +1538,7 @@
           <EntitySetMapping Name="Pkts">
             <EntityTypeMapping TypeName="CACModel.Pkt">
               <MappingFragment StoreEntitySet="Pkt">
+                <ScalarProperty Name="kodeOpti" ColumnName="kodeOpti" />
                 <ScalarProperty Name="kapasitasCPC" ColumnName="kapasitasCPC" />
                 <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
                 <ScalarProperty Name="namaPkt" ColumnName="namaPkt" />

@@ -178,6 +178,12 @@
     <Compile Include="ATM\InputDataBankLainForm.Designer.cs">
       <DependentUpon>InputDataBankLainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ATM\ProyeksiATMForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ATM\ProyeksiATMForm.Designer.cs">
+      <DependentUpon>ProyeksiATMForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="BeritaAcara.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -642,6 +648,9 @@
     </Compile>
     <EmbeddedResource Include="ATM\InputDataBankLainForm.resx">
       <DependentUpon>InputDataBankLainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ATM\ProyeksiATMForm.resx">
+      <DependentUpon>ProyeksiATMForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CabangMenu\DailyStockForm.resx">
       <DependentUpon>DailyStockForm.cs</DependentUpon>

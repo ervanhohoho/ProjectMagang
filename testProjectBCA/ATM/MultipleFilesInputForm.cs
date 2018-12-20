@@ -133,7 +133,7 @@ namespace testProjectBCA
                 {
                     if(ds.Tables[a].Columns.Count<12)
                     {
-                        MessageBox.Show(ds.DataSetName + " Sheet " + ds.Tables[a].TableName + " Format excel salah");
+                        MessageBox.Show(temp + " Sheet " + ds.Tables[a].TableName + " Format excel salah");
                         continue;
                     }
                     String sDate = ds.Tables[a].Rows[12][5].ToString();

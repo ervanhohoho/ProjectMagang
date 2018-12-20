@@ -405,7 +405,7 @@
             // 
             // buttonVault
             // 
-            this.buttonVault.Location = new System.Drawing.Point(219, 193);
+            this.buttonVault.Location = new System.Drawing.Point(222, 193);
             this.buttonVault.Name = "buttonVault";
             this.buttonVault.Size = new System.Drawing.Size(186, 39);
             this.buttonVault.TabIndex = 32;
@@ -419,17 +419,17 @@
             this.buttonPerVendor.Name = "buttonPerVendor";
             this.buttonPerVendor.Size = new System.Drawing.Size(184, 39);
             this.buttonPerVendor.TabIndex = 33;
-            this.buttonPerVendor.Text = "generate PER VENDOR";
+            this.buttonPerVendor.Text = "generate CABANG";
             this.buttonPerVendor.UseVisualStyleBackColor = true;
             this.buttonPerVendor.Click += new System.EventHandler(this.buttonPerVendor_Click);
             // 
             // buttonAll
             // 
-            this.buttonAll.Location = new System.Drawing.Point(601, 201);
+            this.buttonAll.Location = new System.Drawing.Point(601, 193);
             this.buttonAll.Name = "buttonAll";
-            this.buttonAll.Size = new System.Drawing.Size(123, 23);
+            this.buttonAll.Size = new System.Drawing.Size(194, 39);
             this.buttonAll.TabIndex = 34;
-            this.buttonAll.Text = "new ALL";
+            this.buttonAll.Text = "generate ALL";
             this.buttonAll.UseVisualStyleBackColor = true;
             this.buttonAll.Click += new System.EventHandler(this.buttonAll_Click);
             // 
@@ -445,8 +445,10 @@
             this.dataGridViewIn.Location = new System.Drawing.Point(12, 269);
             this.dataGridViewIn.Name = "dataGridViewIn";
             this.dataGridViewIn.ReadOnly = true;
-            this.dataGridViewIn.Size = new System.Drawing.Size(594, 552);
+            this.dataGridViewIn.RowHeadersVisible = false;
+            this.dataGridViewIn.Size = new System.Drawing.Size(594, 480);
             this.dataGridViewIn.TabIndex = 35;
+            this.dataGridViewIn.SelectionChanged += new System.EventHandler(this.dataGridViewIn_SelectionChanged);
             // 
             // dataGridViewOut
             // 
@@ -460,8 +462,10 @@
             this.dataGridViewOut.Location = new System.Drawing.Point(642, 269);
             this.dataGridViewOut.Name = "dataGridViewOut";
             this.dataGridViewOut.ReadOnly = true;
-            this.dataGridViewOut.Size = new System.Drawing.Size(609, 552);
+            this.dataGridViewOut.RowHeadersVisible = false;
+            this.dataGridViewOut.Size = new System.Drawing.Size(609, 480);
             this.dataGridViewOut.TabIndex = 36;
+            this.dataGridViewOut.SelectionChanged += new System.EventHandler(this.dataGridViewOut_SelectionChanged);
             // 
             // label10
             // 
@@ -471,6 +475,7 @@
             this.label10.Size = new System.Drawing.Size(53, 13);
             this.label10.TabIndex = 37;
             this.label10.Text = "PIVOT IN";
+            this.label10.Click += new System.EventHandler(this.label10_Click);
             // 
             // label11
             // 

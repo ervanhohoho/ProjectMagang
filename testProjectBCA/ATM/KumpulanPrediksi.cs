@@ -294,7 +294,11 @@ namespace testProjectBCA.ATM
 
             //init
             prediksiIsiAtmOpti = new List<Denom>();
-
+            Database1Entities db = new Database1Entities();
+            String kodePkt = (from x in db.Pkts
+                              where x.kodePkt == this.kodePkt
+                              select x.kodeOpti).FirstOrDefault();
+            Console.WriteLine("Kode Pkt Opti: " + kodePkt); 
             using (SqlConnection sqlConnection1 = new SqlConnection(Variables.connectionString))
             {
                 using (SqlCommand cmd = new SqlCommand())
@@ -318,11 +322,12 @@ namespace testProjectBCA.ATM
                     else
                     {
                         reader.Close();
-                        cmd.CommandText = "SELECT MIN(tanggal), MAX(tanggal) FROM Opti o JOIN Cashpoint c on o.idCashpoint = c.idCashpoint GROUP BY kodePkt ";
+                        cmd.CommandText = "SELECT MIN(tanggal), MAX(tanggal) FROM Opti o JOIN Cashpoint c on o.idCashpoint = c.idCashpoint WHERE kodePkt = '"+kodePkt+"'GROUP BY kodePkt ";
                         reader = cmd.ExecuteReader();
                         reader.Read();
                         DateTime minDate = (DateTime)reader[0];
                         DateTime maxDate = (DateTime)reader[1];
+                        Console.WriteLine("OPTI MAXDATE: " + maxDate);
                         reader.Close();
                         while (minDate <= maxDate)
                         {

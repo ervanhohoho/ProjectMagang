@@ -266,6 +266,7 @@
     <EntitySetMapping Name="Pkts">
       <EntityTypeMapping TypeName="CACModel.Pkt">
         <MappingFragment StoreEntitySet="Pkt">
+          <ScalarProperty Name="kodeOpti" ColumnName="kodeOpti" />
           <ScalarProperty Name="kapasitasCPC" ColumnName="kapasitasCPC" />
           <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
           <ScalarProperty Name="namaPkt" ColumnName="namaPkt" />

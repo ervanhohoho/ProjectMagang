@@ -37,6 +37,7 @@
             this.textBoxSearch = new System.Windows.Forms.TextBox();
             this.buttonSearch = new System.Windows.Forms.Button();
             this.ExportBtn = new System.Windows.Forms.Button();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -51,13 +52,14 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.comboBox1);
             this.groupBox1.Controls.Add(this.comboPkt);
             this.groupBox1.Controls.Add(this.comboVal);
             this.groupBox1.Controls.Add(this.comboSetBon);
             this.groupBox1.Controls.Add(this.dateTimePicker2);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(425, 81);
+            this.groupBox1.Size = new System.Drawing.Size(634, 81);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             // 
@@ -75,7 +77,8 @@
             this.comboVal.FormattingEnabled = true;
             this.comboVal.Items.AddRange(new object[] {
             "Sudah Validasi",
-            "Belum Validasi"});
+            "Belum Validasi",
+            "Sudah & Belum"});
             this.comboVal.Location = new System.Drawing.Point(6, 46);
             this.comboVal.Name = "comboVal";
             this.comboVal.Size = new System.Drawing.Size(207, 21);
@@ -87,7 +90,8 @@
             this.comboSetBon.FormattingEnabled = true;
             this.comboSetBon.Items.AddRange(new object[] {
             "Setoran",
-            "Bon"});
+            "Bon",
+            "Setoran dan Bon"});
             this.comboSetBon.Location = new System.Drawing.Point(6, 19);
             this.comboSetBon.Name = "comboSetBon";
             this.comboSetBon.Size = new System.Drawing.Size(207, 21);
@@ -109,8 +113,9 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.Size = new System.Drawing.Size(576, 517);
+            this.dataGridView1.Size = new System.Drawing.Size(808, 517);
             this.dataGridView1.TabIndex = 4;
+            this.dataGridView1.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_ColumnHeaderMouseClick);
             this.dataGridView1.SelectionChanged += new System.EventHandler(this.dataGridView1_SelectionChanged);
             // 
             // textBoxSearch
@@ -133,19 +138,27 @@
             // 
             // ExportBtn
             // 
-            this.ExportBtn.Location = new System.Drawing.Point(437, 29);
+            this.ExportBtn.Location = new System.Drawing.Point(652, 17);
             this.ExportBtn.Name = "ExportBtn";
-            this.ExportBtn.Size = new System.Drawing.Size(151, 64);
+            this.ExportBtn.Size = new System.Drawing.Size(151, 76);
             this.ExportBtn.TabIndex = 7;
             this.ExportBtn.Text = "Export";
             this.ExportBtn.UseVisualStyleBackColor = true;
             this.ExportBtn.Click += new System.EventHandler(this.ExportBtn_Click);
             // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(425, 46);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(203, 21);
+            this.comboBox1.TabIndex = 7;
+            // 
             // rekonSaldoTrxCabang
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(600, 628);
+            this.ClientSize = new System.Drawing.Size(832, 628);
             this.Controls.Add(this.ExportBtn);
             this.Controls.Add(this.buttonSearch);
             this.Controls.Add(this.textBoxSearch);
@@ -171,5 +184,6 @@
         private System.Windows.Forms.Button buttonSearch;
         private System.Windows.Forms.ComboBox comboPkt;
         private System.Windows.Forms.Button ExportBtn;
+        private System.Windows.Forms.ComboBox comboBox1;
     }
 }

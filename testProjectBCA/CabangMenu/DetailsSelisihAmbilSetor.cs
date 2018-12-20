@@ -20,7 +20,7 @@ namespace testProjectBCA.CabangMenu
             if (!txnPanjang)
             {
                 var query = (from x in db.RekapSelisihAmbilSetors.AsEnumerable()
-                             where x.kodePenerimaDana == kodePkt && ((DateTime)x.tanggalTransaksi).Date == tanggal.Date
+                             where kodePkt == "CCAS" ? x.kodePenerimaDana.Contains(kodePkt) : x.kodePenerimaDana == kodePkt && ((DateTime)x.tanggalTransaksi).Date == tanggal.Date
                              && x.noTxn.Length == 6
                              select new {
                                  x.kodePenerimaDana,
@@ -43,7 +43,7 @@ namespace testProjectBCA.CabangMenu
             else
             {
                 var query = (from x in db.RekapSelisihAmbilSetors.AsEnumerable()
-                             where x.kodePenerimaDana == kodePkt && ((DateTime)x.tanggalTransaksi).Date == tanggal.Date
+                             where  ((DateTime)x.tanggalTransaksi).Date == tanggal.Date
                              && x.noTxn.Length > 6
                              select new{
                                  x.kodePenerimaDana,

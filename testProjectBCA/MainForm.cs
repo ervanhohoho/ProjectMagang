@@ -1110,6 +1110,13 @@ namespace testProjectBCA
             dtv.MdiParent = this;
             dtv.Show();
         }
+
+        private void proyeksiATMToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ProyeksiATMForm paf = new ProyeksiATMForm();
+            paf.MdiParent = this;
+            paf.Show();
+        }
     }
 }
 public static class SqlBulkCopyExtensions

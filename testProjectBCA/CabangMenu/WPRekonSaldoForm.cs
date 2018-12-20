@@ -54,10 +54,10 @@ namespace testProjectBCA.CabangMenu
             KumpulanQueryRekonSaldo kqrs = new KumpulanQueryRekonSaldo(kodePkt, tanggal);
             listReturnBIdanBankLain = kqrs.listReturnBIdanBankLain;
             listSetoranCabang = kqrs.listSetoranCabang;
-            listATMReturn = kqrs.listATMReturn;
+            listATMReturn = kqrs.listReturnBIdanBankLain.Where(x=> !x.fundingSource.Contains("OB") && !x.fundingSource.Contains("BI")).Select(x=>new PivotCPC_ATMR() { dueDate = x.dueDate, fundingSource = x.fundingSource, emergencyReturnNotVal = x.emergencyReturnNotVal, emergencyReturnVal = x.emergencyReturnVal, grandTotal = x.grandTotal, plannedReturnNotVal = x.plannedReturnNotVal, plannedReturnVal = x.plannedReturnVal, realDate = x.realDate, vaultId = x.vaultId}).ToList();
             listDeliveryBIdanBankLain = kqrs.listDeliveryBIdanBankLain;
             listBonCabang = kqrs.listBonCabang;
-            listATMDelivery = kqrs.listATMDelivery;
+            listATMDelivery = kqrs.listATMDelivery.Where(x => !x.fundingSource.Contains("OB") && !x.fundingSource.Contains("BI")).Select(x => new PivotCPC_ATMD() { dueDate = x.dueDate, fundingSource = x.fundingSource, emergencyDeliveryNotVal = x.emergencyDeliveryNotVal, emergencyDeliveryVal = x.emergencyDeliveryNotVal, grandTotal = x.grandTotal, plannedDeliveryNotVal = x.plannedDeliveryNotVal, plannedDeliveryVal = x.plannedDeliveryVal, realDate = x.realDate, vaultId = x.vaultId }).ToList();
             
             //IN
             listSetoranCabang = listSetoranCabang.GroupBy(x => x.vendor).Select(x => new PivotPerVendor_setoran() {
@@ -89,31 +89,31 @@ namespace testProjectBCA.CabangMenu
                 value = validasiOptiSetoran
             });
             //BI Return untuk format sesuai WP
-            listSistem.AddRange(listReturnBIdanBankLain.Where(x => x.fundingSource.ToLower() == "bi").Select(x => new TampilanWPRekonSaldo()
+            listSistem.AddRange(listReturnBIdanBankLain.Where(x => (x.fundingSource == null ? false : x.fundingSource.ToLower() == "bi")).Select(x => new TampilanWPRekonSaldo()
             {
-                in_out = "IN",
+                in_out = "OUT",
                 jenis = "BI Return",
                 validasi = "Belum Validasi",
                 value = x.plannedReturnNotVal + x.emergencyReturnNotVal
             }));
-            listSistem.AddRange(listReturnBIdanBankLain.Where(x => x.fundingSource.ToLower() == "bi").Select(x => new TampilanWPRekonSaldo()
+            listSistem.AddRange(listReturnBIdanBankLain.Where(x => (x.fundingSource == null ? false : x.fundingSource.ToLower() == "bi")).Select(x => new TampilanWPRekonSaldo()
             {
-                in_out = "IN",
+                in_out = "OUT",
                 jenis = "BI Return",
                 validasi = "Validasi",
                 value = x.plannedReturnVal + x.emergencyReturnVal
             }));
             //Bank Lain Return untuk format sesuai WP
-            listSistem.AddRange(listReturnBIdanBankLain.Where(x => x.fundingSource.ToLower() != "bi").Select(x => new TampilanWPRekonSaldo()
+            listSistem.AddRange(listReturnBIdanBankLain.Where(x => (x.fundingSource == null ? false : x.fundingSource.ToLower().Contains("ob"))).Select(x => new TampilanWPRekonSaldo()
             {
-                in_out = "IN",
+                in_out = "OUT",
                 jenis = "Bank Lain Return",
                 validasi = "Belum Validasi",
                 value = x.plannedReturnNotVal + x.emergencyReturnNotVal
             }));
-            listSistem.AddRange(listReturnBIdanBankLain.Where(x => x.fundingSource.ToLower() != "bi").Select(x => new TampilanWPRekonSaldo()
+            listSistem.AddRange(listReturnBIdanBankLain.Where(x => (x.fundingSource == null ? false : x.fundingSource.ToLower().Contains("ob"))).Select(x => new TampilanWPRekonSaldo()
             {
-                in_out = "IN",
+                in_out = "OUT",
                 jenis = "Bank Lain Return",
                 validasi = "Validasi",
                 value = x.plannedReturnVal + x.emergencyReturnVal
@@ -123,7 +123,7 @@ namespace testProjectBCA.CabangMenu
                 .Where(x => !listKodePktCabang.Where(y => y == x.fundingSource).ToList().Any())
                 .Select(x => new TampilanWPRekonSaldo()
                 {
-                    in_out = "IN",
+                    in_out = "OUT",
                     jenis = "ATM Return",
                     validasi = "Belum Validasi",
                     value = x.plannedReturnNotVal + x.emergencyReturnNotVal
@@ -139,7 +139,7 @@ namespace testProjectBCA.CabangMenu
                 .Where(x => !listKodePktCabang.Where(y => y == x.fundingSource).ToList().Any())
                 .Select(x => new TampilanWPRekonSaldo()
                 {
-                    in_out = "IN",
+                    in_out = "OUT",
                     jenis = "ATM Return",
                     validasi = "Validasi",
                     value = x.plannedReturnVal + x.emergencyReturnVal
@@ -185,32 +185,32 @@ namespace testProjectBCA.CabangMenu
                 value = validasiOptiBon
             });
             //BI Return untuk format sesuai WP
-            listSistem.AddRange(listDeliveryBIdanBankLain.Where(x => x.fundingSource.ToLower() == "bi").Select(x => new TampilanWPRekonSaldo()
+            listSistem.AddRange(listDeliveryBIdanBankLain.Where(x => (x.fundingSource == null ? false : x.fundingSource.ToLower() == "bi")).Select(x => new TampilanWPRekonSaldo()
             {
-                in_out = "OUT",
-                jenis = "BI Return",
+                in_out = "IN",
+                jenis = "BI Delivery",
                 validasi = "Belum Validasi",
                 value = x.plannedDeliveryNotVal + x.emergencyDeliveryNotVal
             }));
-            listSistem.AddRange(listDeliveryBIdanBankLain.Where(x => x.fundingSource.ToLower() == "bi").Select(x => new TampilanWPRekonSaldo()
+            listSistem.AddRange(listDeliveryBIdanBankLain.Where(x => (x.fundingSource == null ? false : x.fundingSource.ToLower() == "bi")).Select(x => new TampilanWPRekonSaldo()
             {
-                in_out = "OU",
+                in_out = "IN",
                 jenis = "BI Return",
                 validasi = "Validasi",
                 value = x.plannedDeliveryVal + x.emergencyDeliveryVal
             }));
             //Bank Lain Return untuk format sesuai WP
-            listSistem.AddRange(listDeliveryBIdanBankLain.Where(x => x.fundingSource.ToLower() != "bi").Select(x => new TampilanWPRekonSaldo()
+            listSistem.AddRange(listDeliveryBIdanBankLain.Where(x => (x.fundingSource == null ? false : x.fundingSource.ToLower().Contains("ob"))).Select(x => new TampilanWPRekonSaldo()
             {
-                in_out = "OUT",
-                jenis = "Bank Lain Return",
+                in_out = "IN",
+                jenis = "Bank Lain Delivery",
                 validasi = "Belum Validasi",
                 value = x.plannedDeliveryNotVal + x.emergencyDeliveryNotVal
             }));
-            listSistem.AddRange(listDeliveryBIdanBankLain.Where(x => x.fundingSource.ToLower() != "bi").Select(x => new TampilanWPRekonSaldo()
+            listSistem.AddRange(listDeliveryBIdanBankLain.Where(x => (x.fundingSource == null ? false : x.fundingSource.ToLower().Contains("ob"))).Select(x => new TampilanWPRekonSaldo()
             {
-                in_out = "OUT",
-                jenis = "Bank Lain Return",
+                in_out = "IN",
+                jenis = "Bank Lain Delivery",
                 validasi = "Validasi",
                 value = x.plannedDeliveryNotVal + x.emergencyDeliveryNotVal
             }));
@@ -220,8 +220,8 @@ namespace testProjectBCA.CabangMenu
                 .Where(x => !listKodePktCabang.Where(y => y == x.fundingSource).ToList().Any())
                 .Select(x => new TampilanWPRekonSaldo()
                 {
-                    in_out = "OUT",
-                    jenis = "ATM Return",
+                    in_out = "IN",
+                    jenis = "ATM Delivery",
                     validasi = "Belum Validasi",
                     value = x.plannedDeliveryNotVal + x.emergencyDeliveryNotVal
                 }).GroupBy(x => new { x.in_out, x.jenis, x.validasi })
@@ -237,7 +237,7 @@ namespace testProjectBCA.CabangMenu
                 .Select(x => new TampilanWPRekonSaldo()
                 {
                     in_out = "IN",
-                    jenis = "ATM Return",
+                    jenis = "ATM Delivery",
                     validasi = "Validasi",
                     value = x.plannedDeliveryNotVal + x.emergencyDeliveryNotVal
                 })
@@ -251,7 +251,7 @@ namespace testProjectBCA.CabangMenu
                 }));
 
 
-
+            listSistem = listSistem.GroupBy(x => new { x.in_out, x.jenis, x.validasi }).Select(x => new TampilanWPRekonSaldo() { in_out = x.Key.in_out, jenis = x.Key.jenis, validasi = x.Key.validasi, value = x.Sum(z=>z.value) }).ToList();
             dataSistemGridView.DataSource = listSistem;
             dataSistemGridView.Columns[3].DefaultCellStyle.Format = "C0";
             dataSistemGridView.Columns[3].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");

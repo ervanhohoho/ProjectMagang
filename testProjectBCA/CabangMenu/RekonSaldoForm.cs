@@ -92,32 +92,32 @@ namespace testProjectBCA.CabangMenu
             }
             return tanggalValues;
         }
+
+
         private TampilanRekonSaldo loadDataUntukTampil(DateTime tanggal)
         {
-            //START DARI SISTEM
+            Database1Entities db = new Database1Entities();
+            List<String> listKodePktCabang = db.Pkts.Select(x => x.kodePktCabang.Substring(0, 4) == "CCAS" ? "CCAS" : x.kodePktCabang).Where(x => x.Length > 1).ToList();
+            Int64 validasiOptiSetoran = 0;
+            Int64 belumValidasiOptiSetoran = 0;
+
+            //SISTEM
             KumpulanQueryRekonSaldo kqrs = new KumpulanQueryRekonSaldo(kodePkt, tanggal);
-            List<String> listKodePktCabang = db.Pkts.Select(x => x.kodePktCabang).Where(x => x.Length > 1).ToList();
+
             List<PivotCPC_BIBL> listReturnBIdanBankLain = new List<PivotCPC_BIBL>();
             List<PivotPerVendor_setoran> listSetoranCabang = new List<PivotPerVendor_setoran>();
             List<PivotCPC_ATMR> listATMReturn;
             List<PivotCPC_BIBLD> listDeliveryBIdanBankLain = new List<PivotCPC_BIBLD>();
             List<PivotPerVendor_bon> listBonCabang = new List<PivotPerVendor_bon>();
             List<PivotCPC_ATMD> listATMDelivery;
+
             listReturnBIdanBankLain = kqrs.listReturnBIdanBankLain;
             listSetoranCabang = kqrs.listSetoranCabang;
-            listATMReturn = kqrs.listATMReturn;
+            listATMReturn = kqrs.listReturnBIdanBankLain.Where(x => !x.fundingSource.Contains("OB") && !x.fundingSource.Contains("BI")).Select(x => new PivotCPC_ATMR() { dueDate = x.dueDate, fundingSource = x.fundingSource, emergencyReturnNotVal = x.emergencyReturnNotVal, emergencyReturnVal = x.emergencyReturnVal, grandTotal = x.grandTotal, plannedReturnNotVal = x.plannedReturnNotVal, plannedReturnVal = x.plannedReturnVal, realDate = x.realDate, vaultId = x.vaultId }).ToList();
             listDeliveryBIdanBankLain = kqrs.listDeliveryBIdanBankLain;
             listBonCabang = kqrs.listBonCabang;
-            listATMDelivery = kqrs.listATMDelivery;
+            listATMDelivery = kqrs.listATMDelivery.Where(x => !x.fundingSource.Contains("OB") && !x.fundingSource.Contains("BI")).Select(x => new PivotCPC_ATMD() { dueDate = x.dueDate, fundingSource = x.fundingSource, emergencyDeliveryNotVal = x.emergencyDeliveryNotVal, emergencyDeliveryVal = x.emergencyDeliveryNotVal, grandTotal = x.grandTotal, plannedDeliveryNotVal = x.plannedDeliveryNotVal, plannedDeliveryVal = x.plannedDeliveryVal, realDate = x.realDate, vaultId = x.vaultId }).ToList();
 
-            Int64 inCabang = 0,
-                inAtmCdm = 0,
-                inBi = 0,
-                inBankLain = 0,
-                outCabang = 0,
-                outAtmCdm = 0,
-                outBi = 0,
-                outBankLain = 0;
             
             //IN
             listSetoranCabang = listSetoranCabang.GroupBy(x => x.vendor).Select(x => new PivotPerVendor_setoran()
@@ -127,30 +127,32 @@ namespace testProjectBCA.CabangMenu
                 sudahValidasi = x.Sum(z => z.sudahValidasi),
                 grandTotal = x.Sum(z => z.grandTotal),
             }).ToList();
+
             //SETOR
             if (listSetoranCabang.Any())
-                inCabang = listSetoranCabang[0].sudahValidasi + listSetoranCabang[0].belumValidasi;
-            inBi = listReturnBIdanBankLain.Where(x => x.fundingSource.ToLower() == "bi").GroupBy(x => x).Select(x => x.Sum(y => y.plannedReturnNotVal) + x.Sum(y => y.emergencyReturnNotVal) + x.Sum(y => y.plannedReturnVal) + x.Sum(y => y.emergencyReturnVal)).FirstOrDefault();
-            inBankLain = listReturnBIdanBankLain.Where(x => x.fundingSource.ToLower() != "bi").GroupBy(x => x).Select(x => x.Sum(y => y.plannedReturnNotVal) + x.Sum(y => y.emergencyReturnNotVal) + x.Sum(y => y.plannedReturnVal) + x.Sum(y => y.emergencyReturnVal)).FirstOrDefault();
-            inAtmCdm = listATMReturn.Where(x => !listKodePktCabang.Where(y => y == x.fundingSource).ToList().Any()).GroupBy(x => x).Select(x => x.Sum(y => y.plannedReturnNotVal + y.emergencyReturnNotVal + y.plannedReturnVal + y.emergencyReturnVal)).FirstOrDefault();
+            {
+                validasiOptiSetoran = listSetoranCabang[0].sudahValidasi;
+                belumValidasiOptiSetoran = listSetoranCabang[0].belumValidasi;
+            }
+            //BON
+            Int64 validasiOptiBon = 0;
+            Int64 belumValidasiOptiBon = 0;
 
-            //IN
             listBonCabang = listBonCabang.GroupBy(x => x.vendor).Select(x => new PivotPerVendor_bon()
             {
                 vendor = x.Key,
-                belumValidasi = x.Sum(z => z.belumValidasi),
                 sudahValidasi = x.Sum(z => z.sudahValidasi),
+                belumValidasi = x.Sum(z => z.belumValidasi),
                 grandTotal = x.Sum(z => z.grandTotal),
             }).ToList();
             if (listBonCabang.Any())
-                outCabang = listBonCabang[0].sudahValidasi + listBonCabang[0].belumValidasi;
-
-            outBi = listDeliveryBIdanBankLain.Where(x => x.fundingSource.ToLower() == "bi").GroupBy(x => x).Select(x => x.Sum(y => y.plannedDeliveryNotVal) + x.Sum(y => y.emergencyDeliveryNotVal) + x.Sum(y => y.plannedDeliveryVal) + x.Sum(y => y.emergencyDeliveryVal)).FirstOrDefault();
-            outBankLain = listDeliveryBIdanBankLain.Where(x => x.fundingSource.ToLower() != "bi").GroupBy(x => x).Select(x => x.Sum(y => y.plannedDeliveryNotVal) + x.Sum(y => y.emergencyDeliveryNotVal) + x.Sum(y => y.plannedDeliveryVal) + x.Sum(y => y.emergencyDeliveryVal)).FirstOrDefault();
-            outAtmCdm = listATMDelivery.Where(x => !listKodePktCabang.Where(y => y == x.fundingSource).ToList().Any()).GroupBy(x => x).Select(x => x.Sum(y => y.plannedDeliveryNotVal + y.emergencyDeliveryNotVal + y.plannedDeliveryVal + y.emergencyDeliveryVal)).FirstOrDefault();
-            //END Dari Sistem
+            {
+                validasiOptiBon = listBonCabang[0].sudahValidasi;
+                belumValidasiOptiBon = listBonCabang[0].belumValidasi;
+            }
 
 
+            //USER
             //START INPUTAN USER
             List<String> jenisInputanUser = new List<String>() {
                 "Cabang",
@@ -191,22 +193,22 @@ namespace testProjectBCA.CabangMenu
                 userInCabang = (Int64)temp;
             temp = groupedRekonSaldoInputanUsers.Where(x => x.jenis == jenisInputanUser[1] && x.in_out == "in").Select(x => x.value).FirstOrDefault();
             if (temp != null)
-                userInRetail= (Int64)temp;
+                userInRetail = (Int64)temp;
             temp = groupedRekonSaldoInputanUsers.Where(x => x.jenis == jenisInputanUser[2] && x.in_out == "in").Select(x => x.value).FirstOrDefault();
             if (temp != null)
-                userInCurex= (Int64)temp;
+                userInCurex = (Int64)temp;
             temp = groupedRekonSaldoInputanUsers.Where(x => x.jenis == jenisInputanUser[3] && x.in_out == "in").Select(x => x.value).FirstOrDefault();
             if (temp != null)
-                userInAtmCdm= (Int64)temp;
+                userInAtmCdm = (Int64)temp;
             temp = groupedRekonSaldoInputanUsers.Where(x => x.jenis == jenisInputanUser[4] && x.in_out == "in").Select(x => x.value).FirstOrDefault();
             if (temp != null)
-                userInBi= (Int64)temp;
+                userInBi = (Int64)temp;
             temp = groupedRekonSaldoInputanUsers.Where(x => x.jenis == jenisInputanUser[5] && x.in_out == "in").Select(x => x.value).FirstOrDefault();
             if (temp != null)
                 userInBankLain = (Int64)temp;
             temp = groupedRekonSaldoInputanUsers.Where(x => x.jenis == jenisInputanUser[6] && x.in_out == "in").Select(x => x.value).FirstOrDefault();
             if (temp != null)
-                userInLuarKota= (Int64)temp;
+                userInLuarKota = (Int64)temp;
             temp = groupedRekonSaldoInputanUsers.Where(x => x.jenis == jenisInputanUser[7] && x.in_out == "in").Select(x => x.value).FirstOrDefault();
             if (temp != null)
                 userInAntarCpc = (Int64)temp;
@@ -244,29 +246,212 @@ namespace testProjectBCA.CabangMenu
 
 
 
-            TampilanRekonSaldo ret = new TampilanRekonSaldo() {
+            var ret = new TampilanRekonSaldo()
+            {
                 tanggal = tanggal,
-                inCabang = inCabang + userInCabang,
-                inRetail = userInRetail,
-                inCurex = userInCurex,
-                inAtmCdm = inAtmCdm + userInAtmCdm,
-                inBi =inBi + userInBi,
-                inBankLain = inBankLain + userInBankLain,
-                inLuarKota = userInLuarKota,
+                inAtmCdm = listATMDelivery.Sum(x => x.grandTotal),
+                inBi = listDeliveryBIdanBankLain.Where(x => x.fundingSource.ToLower().Contains("bi")).Sum(x => x.grandTotal),
+                inBankLain = listDeliveryBIdanBankLain.Where(x => x.fundingSource.ToLower().Contains("ob")).Sum(x => x.grandTotal),
+                inCabang = listSetoranCabang.Sum(x => x.grandTotal) + userInCabang,
+                outAtmCdm = listATMReturn.Sum(x => x.grandTotal),
+                outBi = listReturnBIdanBankLain.Where(x => x.fundingSource.ToLower().Contains("bi")).Sum(x => x.grandTotal),
+                outBankLain = listReturnBIdanBankLain.Where(x => x.fundingSource.ToLower().Contains("ob")).Sum(x => x.grandTotal),
+                outCabang = listBonCabang.Sum(x=>x.grandTotal) + userOutCabang,
+
                 inAntarCpc = userInAntarCpc,
+                inCurex = userInCurex,
                 inLainLain = userInLainLain,
-                outCabang = outCabang + userOutCabang,
-                outRetail = userOutRetail,
-                outCurex = userOutCurex,
-                outAtmCdm = outAtmCdm + userOutAtmCdm,
-                outBi = outBi + userOutBi,
-                outBankLain = outBankLain + userOutBankLain,
-                outLuarKota = userOutLuarKota,
+                inLuarKota = userInLuarKota,
+                inRetail = userInRetail,
                 outAntarCpc = userOutAntarCpc,
-                outLainLain = userOutLainLain
+                outCurex = userOutCurex,
+                outLainLain = userOutLainLain,
+                outLuarKota = userOutLuarKota,
+                outRetail = userOutRetail,
+
+                saldoAkhirHitungan = 0,
+                saldoAkhirLaporan = 0,
+                saldoAwal = 0,
             };
             return ret;
         }
+
+        //private TampilanRekonSaldo loadDataUntukTampil(DateTime tanggal)
+        //{
+        //    //START DARI SISTEM
+        //    KumpulanQueryRekonSaldo kqrs = new KumpulanQueryRekonSaldo(kodePkt, tanggal);
+        //    List<String> listKodePktCabang = db.Pkts.Select(x => x.kodePktCabang).Where(x => x.Length > 1).ToList();
+        //    List<PivotCPC_BIBL> listReturnBIdanBankLain = new List<PivotCPC_BIBL>();
+        //    List<PivotPerVendor_setoran> listSetoranCabang = new List<PivotPerVendor_setoran>();
+        //    List<PivotCPC_ATMR> listATMReturn;
+        //    List<PivotCPC_BIBLD> listDeliveryBIdanBankLain = new List<PivotCPC_BIBLD>();
+        //    List<PivotPerVendor_bon> listBonCabang = new List<PivotPerVendor_bon>();
+        //    List<PivotCPC_ATMD> listATMDelivery;
+        //    listReturnBIdanBankLain = kqrs.listReturnBIdanBankLain.Where(x => x.fundingSource.ToLower().Contains("ob")).ToList();
+        //    listSetoranCabang = kqrs.listSetoranCabang;
+        //    listATMReturn = kqrs.listReturnBIdanBankLain.Where(x => !x.fundingSource.Contains("OB") && !x.fundingSource.Contains("BI")).Select(x => new PivotCPC_ATMR() { dueDate = x.dueDate, fundingSource = x.fundingSource, emergencyReturnNotVal = x.emergencyReturnNotVal, emergencyReturnVal = x.emergencyReturnVal, grandTotal = x.grandTotal, plannedReturnNotVal = x.plannedReturnNotVal, plannedReturnVal = x.plannedReturnVal, realDate = x.realDate, vaultId = x.vaultId }).ToList();
+        //    listDeliveryBIdanBankLain = kqrs.listDeliveryBIdanBankLain.Where(x=>x.fundingSource.ToLower().Contains("ob")).ToList();
+        //    listBonCabang = kqrs.listBonCabang;
+        //    listATMDelivery = kqrs.listATMDelivery.Where(x => !x.fundingSource.Contains("OB") && !x.fundingSource.Contains("BI")).Select(x => new PivotCPC_ATMD() { dueDate = x.dueDate, fundingSource = x.fundingSource, emergencyDeliveryNotVal = x.emergencyDeliveryNotVal, emergencyDeliveryVal = x.emergencyDeliveryNotVal, grandTotal = x.grandTotal, plannedDeliveryNotVal = x.plannedDeliveryNotVal, plannedDeliveryVal = x.plannedDeliveryVal, realDate = x.realDate, vaultId = x.vaultId }).ToList();
+
+
+        //    Int64 inCabang = 0,
+        //        inAtmCdm = 0,
+        //        inBi = 0,
+        //        inBankLain = 0,
+        //        outCabang = 0,
+        //        outAtmCdm = 0,
+        //        outBi = 0,
+        //        outBankLain = 0;
+            
+        //    //IN
+        //    listSetoranCabang = listSetoranCabang.GroupBy(x => x.vendor).Select(x => new PivotPerVendor_setoran()
+        //    {
+        //        vendor = x.Key,
+        //        belumValidasi = x.Sum(z => z.belumValidasi),
+        //        sudahValidasi = x.Sum(z => z.sudahValidasi),
+        //        grandTotal = x.Sum(z => z.grandTotal),
+        //    }).ToList();
+        //    //SETOR
+        //    if (listSetoranCabang.Any())
+        //        inCabang = listSetoranCabang[0].sudahValidasi + listSetoranCabang[0].belumValidasi;
+        //    inBi = listReturnBIdanBankLain.Where(x => x.fundingSource.ToLower() == "bi").GroupBy(x => x).Select(x => x.Sum(y => y.plannedReturnNotVal) + x.Sum(y => y.emergencyReturnNotVal) + x.Sum(y => y.plannedReturnVal) + x.Sum(y => y.emergencyReturnVal)).FirstOrDefault();
+        //    inBankLain = listReturnBIdanBankLain.Where(x => x.fundingSource.ToLower() != "bi").GroupBy(x => x).Select(x => x.Sum(y => y.plannedReturnNotVal) + x.Sum(y => y.emergencyReturnNotVal) + x.Sum(y => y.plannedReturnVal) + x.Sum(y => y.emergencyReturnVal)).FirstOrDefault();
+        //    inAtmCdm = listATMReturn.Where(x => !listKodePktCabang.Where(y => y == x.fundingSource).ToList().Any()).GroupBy(x => x).Select(x => x.Sum(y => y.plannedReturnNotVal + y.emergencyReturnNotVal + y.plannedReturnVal + y.emergencyReturnVal)).FirstOrDefault();
+
+        //    //IN
+        //    listBonCabang = listBonCabang.GroupBy(x => x.vendor).Select(x => new PivotPerVendor_bon()
+        //    {
+        //        vendor = x.Key,
+        //        belumValidasi = x.Sum(z => z.belumValidasi),
+        //        sudahValidasi = x.Sum(z => z.sudahValidasi),
+        //        grandTotal = x.Sum(z => z.grandTotal),
+        //    }).ToList();
+        //    if (listBonCabang.Any())
+        //        outCabang = listBonCabang[0].sudahValidasi + listBonCabang[0].belumValidasi;
+
+        //    outBi = listDeliveryBIdanBankLain.Where(x => x.fundingSource.ToLower() == "bi").GroupBy(x => x).Select(x => x.Sum(y => y.plannedDeliveryNotVal) + x.Sum(y => y.emergencyDeliveryNotVal) + x.Sum(y => y.plannedDeliveryVal) + x.Sum(y => y.emergencyDeliveryVal)).FirstOrDefault();
+        //    outBankLain = listDeliveryBIdanBankLain.Where(x => x.fundingSource.ToLower() != "bi").GroupBy(x => x).Select(x => x.Sum(y => y.plannedDeliveryNotVal) + x.Sum(y => y.emergencyDeliveryNotVal) + x.Sum(y => y.plannedDeliveryVal) + x.Sum(y => y.emergencyDeliveryVal)).FirstOrDefault();
+        //    outAtmCdm = listATMDelivery.Where(x => !listKodePktCabang.Where(y => y == x.fundingSource).ToList().Any()).GroupBy(x => x).Select(x => x.Sum(y => y.plannedDeliveryNotVal + y.emergencyDeliveryNotVal + y.plannedDeliveryVal + y.emergencyDeliveryVal)).FirstOrDefault();
+        //    //END Dari Sistem
+
+
+        //    //START INPUTAN USER
+        //    List<String> jenisInputanUser = new List<String>() {
+        //        "Cabang",
+        //        "Retail",
+        //        "Curex",
+        //        "ATM/CDM",
+        //        "BI",
+        //        "Bank Lain",
+        //        "Luar Kota",
+        //        "Antar CPC",
+        //        "Lain Lain"
+        //    };
+        //    List<RekonSaldoInputanUser> rekonSaldoInputanUsers = db.RekonSaldoInputanUsers.Where(x => x.tanggal == tanggal && x.kodePkt.Contains(kodePkt)).ToList();
+        //    var groupedRekonSaldoInputanUsers = rekonSaldoInputanUsers.GroupBy(x => new { x.in_out, x.jenis }).Select(x => new { jenis = x.Key.jenis, in_out = x.Key.in_out, value = x.Sum(y => y.value) }).ToList();
+
+        //    Int64 userInCabang = 0,
+        //        userInRetail = 0,
+        //        userInCurex = 0,
+        //        userInAtmCdm = 0,
+        //        userInBi = 0,
+        //        userInBankLain = 0,
+        //        userInLuarKota = 0,
+        //        userInAntarCpc = 0,
+        //        userInLainLain = 0,
+        //        userOutCabang = 0,
+        //        userOutRetail = 0,
+        //        userOutCurex = 0,
+        //        userOutAtmCdm = 0,
+        //        userOutBi = 0,
+        //        userOutBankLain = 0,
+        //        userOutLuarKota = 0,
+        //        userOutAntarCpc = 0,
+        //        userOutLainLain = 0;
+        //    Int64? temp = 0;
+        //    //IN 
+        //    temp = groupedRekonSaldoInputanUsers.Where(x => x.jenis == jenisInputanUser[0] && x.in_out == "in").Select(x => x.value).FirstOrDefault();
+        //    if (temp != null)
+        //        userInCabang = (Int64)temp;
+        //    temp = groupedRekonSaldoInputanUsers.Where(x => x.jenis == jenisInputanUser[1] && x.in_out == "in").Select(x => x.value).FirstOrDefault();
+        //    if (temp != null)
+        //        userInRetail= (Int64)temp;
+        //    temp = groupedRekonSaldoInputanUsers.Where(x => x.jenis == jenisInputanUser[2] && x.in_out == "in").Select(x => x.value).FirstOrDefault();
+        //    if (temp != null)
+        //        userInCurex= (Int64)temp;
+        //    temp = groupedRekonSaldoInputanUsers.Where(x => x.jenis == jenisInputanUser[3] && x.in_out == "in").Select(x => x.value).FirstOrDefault();
+        //    if (temp != null)
+        //        userInAtmCdm= (Int64)temp;
+        //    temp = groupedRekonSaldoInputanUsers.Where(x => x.jenis == jenisInputanUser[4] && x.in_out == "in").Select(x => x.value).FirstOrDefault();
+        //    if (temp != null)
+        //        userInBi= (Int64)temp;
+        //    temp = groupedRekonSaldoInputanUsers.Where(x => x.jenis == jenisInputanUser[5] && x.in_out == "in").Select(x => x.value).FirstOrDefault();
+        //    if (temp != null)
+        //        userInBankLain = (Int64)temp;
+        //    temp = groupedRekonSaldoInputanUsers.Where(x => x.jenis == jenisInputanUser[6] && x.in_out == "in").Select(x => x.value).FirstOrDefault();
+        //    if (temp != null)
+        //        userInLuarKota= (Int64)temp;
+        //    temp = groupedRekonSaldoInputanUsers.Where(x => x.jenis == jenisInputanUser[7] && x.in_out == "in").Select(x => x.value).FirstOrDefault();
+        //    if (temp != null)
+        //        userInAntarCpc = (Int64)temp;
+        //    temp = groupedRekonSaldoInputanUsers.Where(x => x.jenis == jenisInputanUser[8] && x.in_out == "in").Select(x => x.value).FirstOrDefault();
+        //    if (temp != null)
+        //        userInLainLain = (Int64)temp;
+        //    //OUT
+        //    temp = groupedRekonSaldoInputanUsers.Where(x => x.jenis == jenisInputanUser[0] && x.in_out == "out").Select(x => x.value).FirstOrDefault();
+        //    if (temp != null)
+        //        userOutCabang = (Int64)temp;
+        //    temp = groupedRekonSaldoInputanUsers.Where(x => x.jenis == jenisInputanUser[1] && x.in_out == "out").Select(x => x.value).FirstOrDefault();
+        //    if (temp != null)
+        //        userOutRetail = (Int64)temp;
+        //    temp = groupedRekonSaldoInputanUsers.Where(x => x.jenis == jenisInputanUser[2] && x.in_out == "out").Select(x => x.value).FirstOrDefault();
+        //    if (temp != null)
+        //        userOutCurex = (Int64)temp;
+        //    temp = groupedRekonSaldoInputanUsers.Where(x => x.jenis == jenisInputanUser[3] && x.in_out == "out").Select(x => x.value).FirstOrDefault();
+        //    if (temp != null)
+        //        userOutAtmCdm = (Int64)temp;
+        //    temp = groupedRekonSaldoInputanUsers.Where(x => x.jenis == jenisInputanUser[4] && x.in_out == "out").Select(x => x.value).FirstOrDefault();
+        //    if (temp != null)
+        //        userOutBi = (Int64)temp;
+        //    temp = groupedRekonSaldoInputanUsers.Where(x => x.jenis == jenisInputanUser[5] && x.in_out == "out").Select(x => x.value).FirstOrDefault();
+        //    if (temp != null)
+        //        userOutBankLain = (Int64)temp;
+        //    temp = groupedRekonSaldoInputanUsers.Where(x => x.jenis == jenisInputanUser[6] && x.in_out == "out").Select(x => x.value).FirstOrDefault();
+        //    if (temp != null)
+        //        userOutLuarKota = (Int64)temp;
+        //    temp = groupedRekonSaldoInputanUsers.Where(x => x.jenis == jenisInputanUser[7] && x.in_out == "out").Select(x => x.value).FirstOrDefault();
+        //    if (temp != null)
+        //        userOutAntarCpc = (Int64)temp;
+        //    temp = groupedRekonSaldoInputanUsers.Where(x => x.jenis == jenisInputanUser[8] && x.in_out == "out").Select(x => x.value).FirstOrDefault();
+        //    if (temp != null)
+        //        userOutLainLain = (Int64)temp;
+
+
+
+        //    TampilanRekonSaldo ret = new TampilanRekonSaldo() {
+        //        tanggal = tanggal,
+        //        inCabang = inCabang + userInCabang,
+        //        inRetail = userInRetail,
+        //        inCurex = userInCurex,
+        //        inAtmCdm = inAtmCdm + userInAtmCdm,
+        //        inBi =inBi + userInBi,
+        //        inBankLain = inBankLain + userInBankLain,
+        //        inLuarKota = userInLuarKota,
+        //        inAntarCpc = userInAntarCpc,
+        //        inLainLain = userInLainLain,
+        //        outCabang = outCabang + userOutCabang,
+        //        outRetail = userOutRetail,
+        //        outCurex = userOutCurex,
+        //        outAtmCdm = outAtmCdm + userOutAtmCdm,
+        //        outBi = outBi + userOutBi,
+        //        outBankLain = outBankLain + userOutBankLain,
+        //        outLuarKota = userOutLuarKota,
+        //        outAntarCpc = userOutAntarCpc,
+        //        outLainLain = userOutLainLain
+        //    };
+        //    return ret;
+        //}
         private void loadBtn_Click(object sender, EventArgs e)
         {
             loadForm.ShowSplashScreen();

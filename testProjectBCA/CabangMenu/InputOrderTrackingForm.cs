@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using testProjectBCA.CabangMenu;
 namespace testProjectBCA
 {
     public partial class InputOrderTrackingForm : Form
@@ -18,6 +18,7 @@ namespace testProjectBCA
         public InputOrderTrackingForm()
         {
             InitializeComponent();
+            loadPktCombo();
             button5.Enabled = false;
             button4.Enabled = false;
             button6.Enabled = false;
@@ -25,7 +26,15 @@ namespace testProjectBCA
             button9.Enabled = false;
             button10.Enabled = false;
         }
-
+        void loadPktCombo()
+        {
+            Database1Entities db = new Database1Entities();
+            List<String> listPkt = (from x in db.Pkts
+                                    where x.kanwil.ToLower().Contains("jabo") && x.kodePktCabang.Length > 1
+                                    select x.kodePktCabang.Contains("CCAS") ? "CCAS" : x.kodePktCabang).Distinct().ToList();
+            pktComboBox.DataSource = listPkt;
+            pktComboBox.SelectedIndex = 0;
+        }
         private void button1_Click(object sender, EventArgs e)
         {
             OpenFileDialog of = new OpenFileDialog();
@@ -897,10 +906,7 @@ namespace testProjectBCA
 
         }
 
-        private void buttonShowDetails_Click(object sender, EventArgs e)
-        {
-
-        }
+       
 
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
         {
@@ -927,6 +933,28 @@ namespace testProjectBCA
                     }
                 }
             }
+        }
+        private void buttonShowDetails_Click(object sender, EventArgs e)
+        {
+            String kodePkt = pktComboBox.SelectedItem.ToString();
+            DateTime tanggal = dateTimePicker1.Value.Date;
+            DetailsOrderTracking dot = new DetailsOrderTracking(kodePkt, tanggal);
+            dot.Show();
+        }
+        private void rekapSelisihBtn_Click(object sender, EventArgs e)
+        {
+            String kodePkt = pktComboBox.SelectedItem.ToString();
+            DateTime tanggal = dateTimePicker1.Value.Date;
+            DetailsSelisihAmbilSetor dsas = new DetailsSelisihAmbilSetor(kodePkt, tanggal, false);
+            dsas.Show();
+        }
+
+        private void showDetailsAskButton_Click(object sender, EventArgs e)
+        {
+            String kodePkt = pktComboBox.SelectedItem.ToString();
+            DateTime tanggal = dateTimePicker1.Value.Date;
+            DetailsSelisihAmbilSetor dsas = new DetailsSelisihAmbilSetor(kodePkt, tanggal, true);
+            dsas.Show();
         }
     }
 }

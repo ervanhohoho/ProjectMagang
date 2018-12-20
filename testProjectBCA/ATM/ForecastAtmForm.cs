@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace testProjectBCA
+namespace testProjectBCA.ATM
 {
     public partial class ForecastAtmForm : Form
     {
@@ -71,7 +71,6 @@ namespace testProjectBCA
         {
             Database1Entities db = new Database1Entities();
             List<Denom> list = new List<Denom>();
-          
             DateTime tanggal = startDate;
             DateTime maxTanggal = endDate;
             var q = (from x in db.TransaksiAtms
@@ -80,61 +79,107 @@ namespace testProjectBCA
                         select x).ToList();
 
             var et = (from x in db.EventTanggals select x).ToList();
-            while (tanggal <= maxTanggal)
+            KumpulanPrediksi kumpulanPrediksi = new KumpulanPrediksi(kodePkt, listTanggalHistorisUntukPrediksi, startDate, endDate, metode, metode);
+            List<Denom> prediksiIsiAtm = new List<Denom>(), isiCrm = new List<Denom>(), sislokCrm = new List<Denom>(), sislokCdm = new List<Denom>();
+            List<Rasio> rasioSislokAtm = new List<Rasio>();
+            if (kumpulanPrediksi.success)
             {
+                prediksiIsiAtm = kumpulanPrediksi.prediksiIsiAtm;
+                isiCrm = kumpulanPrediksi.isiCrm2;
+                sislokCrm = kumpulanPrediksi.sislokCrm;
+                rasioSislokAtm = kumpulanPrediksi.rasioSislokAtm;
+                sislokCdm = kumpulanPrediksi.sislokCdm;
 
-                List<TransaksiAtm> query = new List<TransaksiAtm>();
-                var eventT = (from x in et
-                                where x.tanggal == tanggal
-                                select new { x.workDay, x.@event }).FirstOrDefault();
-                Console.WriteLine(tanggal.ToShortDateString() + "Workday: " + eventT.workDay + " Event: " + eventT.@event);
-                foreach (var temp in listTanggalHistorisUntukPrediksi)
+                String eventType = "";
+                foreach (var temp in kumpulanPrediksi.eventType)
                 {
-                    List<TransaksiAtm> q3 = (from x in q
-                                                join y in db.EventTanggals.AsEnumerable() on x.tanggal equals y.tanggal
-                                                where temp.Month == ((DateTime)x.tanggal).Month
-                                                && temp.Year == ((DateTime)x.tanggal).Year
-                                                && eventT.workDay == y.workDay
-                                                && eventT.@event == y.@event
-                                                select x
-                                ).AsEnumerable().Where(x => x.tanggal.DayOfWeek == tanggal.DayOfWeek).ToList();
-                    query.AddRange(q3);
+                    eventType += temp + "\n";
                 }
-                if(query.Count == 0)
-                {
-                    Console.WriteLine(tanggal + " Masuk Event2");
-                    foreach (var temp in listTanggalHistorisUntukPrediksi)
-                    {
-                        List<TransaksiAtm> q3 = (from x in q
-                                                 join y in db.EventTanggals.AsEnumerable() on x.tanggal equals y.tanggal
-                                                 where temp.Month == ((DateTime)x.tanggal).Month
-                                                 && temp.Year == ((DateTime)x.tanggal).Year
-                                                 && eventT.workDay == y.workDay
-                                                 && eventT.@event == y.@event
-                                                 select x
-                              ).ToList();
-                        Console.WriteLine(temp.ToShortDateString() + " " + q3.Count);
-                        query.AddRange(q3);
-                    }
-                }
-                Console.WriteLine(tanggal + " Query: " + query.Count);
+                MessageBox.Show(eventType);
+                Console.WriteLine("Prediksi isi atm count: " + prediksiIsiAtm.Count);
+                Console.WriteLine("Isi crm count: " + isiCrm.Count);
+                Console.WriteLine("Sislok crm count: " + sislokCrm.Count);
+                Console.WriteLine("Rasio Sislok ATM count: " + rasioSislokAtm.Count);
+                Console.WriteLine("Sislok cdm count: " + sislokCdm.Count);
 
-                if (jenis.ToUpper() == "SISLOK CDM")
-                    list.Add(new Denom() { tgl = tanggal, d100 = (Int64)Math.Round((Double)query.Average(x => x.sislokCDM100), 0), d50 = (Int64)Math.Round((Double)query.Average(x => x.sislokCDM50), 0), d20 = (Int64)Math.Round((Double)query.Average(x => x.sislokCDM20), 0) });
-                else if(jenis.ToUpper() == "SISLOK CRM")
-                    list.Add(new Denom() { tgl = tanggal, d100 = (Int64)Math.Round((Double)query.Average(x => x.sislokCRM100), 0), d50 = (Int64)Math.Round((Double)query.Average(x => x.sislokCRM50), 0), d20 = (Int64)Math.Round((Double)query.Average(x => x.sislokCRM20), 0) });
-                else if (jenis.ToUpper() == "ISI ATM")
-                    list.Add(new Denom() { tgl = tanggal, d100 = (Int64)Math.Round((Double)query.Average(x => x.isiATM100), 0), d50 = (Int64)Math.Round((Double)query.Average(x => x.isiATM50), 0), d20 = (Int64)Math.Round((Double)query.Average(x => x.isiATM20), 0) });
-                else if (jenis.ToUpper() == "ISI CRM")
-                    list.Add(new Denom() { tgl = tanggal, d100 = (Int64)Math.Round((Double)query.Average(x => x.isiCRM100), 0), d50 = (Int64)Math.Round((Double)query.Average(x => x.isiCRM50), 0), d20 = (Int64)Math.Round((Double)query.Average(x => x.isiCRM20), 0) });
-                else if (jenis.ToUpper() == "SISLOK ATM")
-                {
-                    Int64 d100 = (Int64)Math.Round((Double)query.Average(x => x.sislokATM100), 0);
-                    Console.WriteLine("D100 : " + d100);
-                    list.Add(new Denom() { tgl = tanggal, d100 = (Int64)Math.Round((Double)query.Average(x => x.sislokATM100), 0), d50 = (Int64)Math.Round((Double)query.Average(x => x.sislokATM50), 0), d20 = (Int64)Math.Round((Double)query.Average(x => x.sislokATM20), 0) });
-                }
-                tanggal = tanggal.AddDays(1);
             }
+            Console.WriteLine("JENIS: " + jenis);
+            Console.WriteLine("COUNT: " + sislokCrm.Count);
+            if (jenis.ToUpper() == "SISLOK CDM")
+                list = sislokCdm;
+            if (jenis.ToUpper() == "SISLOK CRM")
+                list = sislokCrm;
+            if(jenis.ToUpper() == "SISLOK ATM")
+            {
+                list = (from x in prediksiIsiAtm
+                        join y in rasioSislokAtm on x.tgl equals y.tgl
+                        select new Denom() {
+                            tgl = x.tgl,
+                            d100 = (Int64) Math.Round(x.d100 * y.d100),
+                            d50 = (Int64)Math.Round(x.d50 * y.d50),
+                            d20 = (Int64)Math.Round(x.d20 * y.d20),
+                        }).ToList();
+            }
+            if (jenis.ToUpper() == "ISI CRM")
+                list = isiCrm;
+            if (jenis.ToUpper() == "ISI ATM")
+                list = prediksiIsiAtm;
+            //while (tanggal <= maxTanggal)
+            //{
+
+            //    List<TransaksiAtm> query = new List<TransaksiAtm>();
+            //    var eventT = (from x in et
+            //                    where x.tanggal == tanggal
+            //                    select new { x.workDay, x.@event }).FirstOrDefault();
+            //    Console.WriteLine(tanggal.ToShortDateString() + "Workday: " + eventT.workDay + " Event: " + eventT.@event);
+            //    foreach (var temp in listTanggalHistorisUntukPrediksi)
+            //    {
+            //        List<TransaksiAtm> q3 = (from x in q
+            //                                    join y in db.EventTanggals.AsEnumerable() on x.tanggal equals y.tanggal
+            //                                    where temp.Month == ((DateTime)x.tanggal).Month
+            //                                    && temp.Year == ((DateTime)x.tanggal).Year
+            //                                    && eventT.workDay == y.workDay
+            //                                    && eventT.@event == y.@event
+            //                                    select x
+            //                    ).AsEnumerable().Where(x => x.tanggal.DayOfWeek == tanggal.DayOfWeek).ToList();
+            //        query.AddRange(q3);
+            //    }
+            //    if(query.Count == 0)
+            //    {
+            //        Console.WriteLine(tanggal + " Masuk Event2");
+            //        foreach (var temp in listTanggalHistorisUntukPrediksi)
+            //        {
+            //            List<TransaksiAtm> q3 = (from x in q
+            //                                     join y in db.EventTanggals.AsEnumerable() on x.tanggal equals y.tanggal
+            //                                     where temp.Month == ((DateTime)x.tanggal).Month
+            //                                     && temp.Year == ((DateTime)x.tanggal).Year
+            //                                     && eventT.workDay == y.workDay
+            //                                     && eventT.@event == y.@event
+            //                                     select x
+            //                  ).ToList();
+            //            Console.WriteLine(temp.ToShortDateString() + " " + q3.Count);
+            //            query.AddRange(q3);
+            //        }
+            //    }
+            //    Console.WriteLine(tanggal + " Query: " + query.Count);
+
+            //    if (jenis.ToUpper() == "SISLOK CDM")
+            //        list.Add(new Denom() { tgl = tanggal, d100 = (Int64)Math.Round((Double)query.Average(x => x.sislokCDM100), 0), d50 = (Int64)Math.Round((Double)query.Average(x => x.sislokCDM50), 0), d20 = (Int64)Math.Round((Double)query.Average(x => x.sislokCDM20), 0) });
+            //    else if(jenis.ToUpper() == "SISLOK CRM")
+            //        list.Add(new Denom() { tgl = tanggal, d100 = (Int64)Math.Round((Double)query.Average(x => x.sislokCRM100), 0), d50 = (Int64)Math.Round((Double)query.Average(x => x.sislokCRM50), 0), d20 = (Int64)Math.Round((Double)query.Average(x => x.sislokCRM20), 0) });
+            //    else if (jenis.ToUpper() == "ISI ATM")
+            //        list.Add(new Denom() { tgl = tanggal, d100 = (Int64)Math.Round((Double)query.Average(x => x.isiATM100), 0), d50 = (Int64)Math.Round((Double)query.Average(x => x.isiATM50), 0), d20 = (Int64)Math.Round((Double)query.Average(x => x.isiATM20), 0) });
+            //    else if (jenis.ToUpper() == "ISI CRM")
+            //        list.Add(new Denom() { tgl = tanggal, d100 = (Int64)Math.Round((Double)query.Average(x => x.isiCRM100), 0), d50 = (Int64)Math.Round((Double)query.Average(x => x.isiCRM50), 0), d20 = (Int64)Math.Round((Double)query.Average(x => x.isiCRM20), 0) });
+            //    else if (jenis.ToUpper() == "SISLOK ATM")
+            //    {
+            //        Int64 d100 = (Int64)Math.Round((Double)query.Average(x => x.sislokATM100), 0);
+            //        Console.WriteLine("D100 : " + d100);
+            //        list.Add(new Denom() { tgl = tanggal, d100 = (Int64)Math.Round((Double)query.Average(x => x.sislokATM100), 0), d50 = (Int64)Math.Round((Double)query.Average(x => x.sislokATM50), 0), d20 = (Int64)Math.Round((Double)query.Average(x => x.sislokATM20), 0) });
+            //    }
+            //    tanggal = tanggal.AddDays(1);
+            //}
+            Console.WriteLine("LIST COUNT IN FUNC: " + list.Count);
             return list;
         }
 
@@ -183,6 +228,8 @@ namespace testProjectBCA
             Console.WriteLine(yangDilihat);
             Console.WriteLine(metode);
             List<Denom> list = loadForecastValue(yangDilihat, startDate, endDate, metode, loadTanggalHistorisUntukPrediksi(), kodePkt);
+
+            Console.WriteLine("LIST FORECAST COUNT: " + list.Count);
             List<TransaksiAtm> dataRealisasi = loadDataRealisasi(startDate, endDate, kodePkt);
             List<Denom> listRealisasi = new List<Denom>();
             if (yangDilihat.ToLower() == "sislok atm")

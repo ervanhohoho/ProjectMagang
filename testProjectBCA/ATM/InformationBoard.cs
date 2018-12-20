@@ -61,6 +61,9 @@ namespace testProjectBCA.ATM
             pktComboBox.MouseWheel += new MouseEventHandler(pktComboBox_MouseWheel);
             pktIndex = 0;
             loadComboBox();
+            MetodeHitungLainnyaComboBox.DataSource = Variables.listMetodeNonATM;
+            MetodePrediksiComboBox.DataSource = Variables.listMetodeATM;
+
             //Load Tree
             using (SqlConnection sql = new SqlConnection(Variables.connectionString))
             {
@@ -3312,7 +3315,7 @@ namespace testProjectBCA.ATM
             isiAtmGridView.Columns["100"].DefaultCellStyle.Format = "n0";
             isiAtmGridView.Columns["50"].DefaultCellStyle.Format = "n0";
             isiAtmGridView.Columns["20"].DefaultCellStyle.Format = "n0";
-            isiAtmGridView.Rows[isiCrmGridView.Rows.Count - 1].DefaultCellStyle.BackColor = Color.PapayaWhip;
+            isiAtmGridView.Rows[isiAtmGridView.Rows.Count - 1].DefaultCellStyle.BackColor = Color.PapayaWhip;
         }
         void loadTableSislokCRM()
         {
@@ -3358,7 +3361,7 @@ namespace testProjectBCA.ATM
             sislokCrmGridView.Columns["50"].DefaultCellStyle.Format = "n0";
             sislokCrmGridView.Columns["20"].DefaultCellStyle.Format = "n0";
                  
-            sislokCrmGridView.Rows[sislokAtmGridView.Rows.Count - 1].DefaultCellStyle.BackColor = Color.PapayaWhip;
+            sislokCrmGridView.Rows[sislokCrmGridView.Rows.Count - 1].DefaultCellStyle.BackColor = Color.PapayaWhip;
 
         }
         void loadTableSislokATM()

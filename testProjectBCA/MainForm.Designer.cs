@@ -62,9 +62,9 @@
             this.inputDataKanwilCabangToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dailyStockToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rekonSaldoToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.rekonSaldoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cabangToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.transaksiVaultToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.rekonSaldoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rekonSaldoToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.rekonSaldoToolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.sLAProsesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -100,6 +100,7 @@
             this.cRMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setoranCRMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inputDataCashpointToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.proyeksiATMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -132,6 +133,7 @@
             this.rasioApprovalToolStripMenuItem,
             this.toolStripSeparator2,
             this.forecastATMToolStripMenuItem,
+            this.proyeksiATMToolStripMenuItem,
             this.perbandinganSaldoAwalToolStripMenuItem,
             this.toolStripSeparator3,
             this.initTransaksiToolStripMenuItem,
@@ -377,6 +379,13 @@
             this.rekonSaldoToolStripMenuItem1.Text = "Rekon Saldo";
             this.rekonSaldoToolStripMenuItem1.Click += new System.EventHandler(this.rekonSaldoToolStripMenuItem1_Click);
             // 
+            // rekonSaldoToolStripMenuItem
+            // 
+            this.rekonSaldoToolStripMenuItem.Name = "rekonSaldoToolStripMenuItem";
+            this.rekonSaldoToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.rekonSaldoToolStripMenuItem.Text = "Olahan Opti";
+            this.rekonSaldoToolStripMenuItem.Click += new System.EventHandler(this.rekonSaldoToolStripMenuItem_Click_1);
+            // 
             // cabangToolStripMenuItem1
             // 
             this.cabangToolStripMenuItem1.Name = "cabangToolStripMenuItem1";
@@ -390,13 +399,6 @@
             this.transaksiVaultToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
             this.transaksiVaultToolStripMenuItem.Text = "Detail Transaksi Vault";
             this.transaksiVaultToolStripMenuItem.Click += new System.EventHandler(this.transaksiVaultToolStripMenuItem_Click);
-            // 
-            // rekonSaldoToolStripMenuItem
-            // 
-            this.rekonSaldoToolStripMenuItem.Name = "rekonSaldoToolStripMenuItem";
-            this.rekonSaldoToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
-            this.rekonSaldoToolStripMenuItem.Text = "Olahan Opti";
-            this.rekonSaldoToolStripMenuItem.Click += new System.EventHandler(this.rekonSaldoToolStripMenuItem_Click_1);
             // 
             // rekonSaldoToolStripMenuItem2
             // 
@@ -468,7 +470,7 @@
             this.masterNasabahToolStripMenuItem,
             this.inputDataSubsidiToolStripMenuItem});
             this.inputDataToolStripMenuItem.Name = "inputDataToolStripMenuItem";
-            this.inputDataToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.inputDataToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.inputDataToolStripMenuItem.Text = "Input Data";
             // 
             // abacasToolStripMenuItem1
@@ -509,21 +511,21 @@
             // rekonNasabahToolStripMenuItem
             // 
             this.rekonNasabahToolStripMenuItem.Name = "rekonNasabahToolStripMenuItem";
-            this.rekonNasabahToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.rekonNasabahToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.rekonNasabahToolStripMenuItem.Text = "Rekon Nasabah";
             this.rekonNasabahToolStripMenuItem.Click += new System.EventHandler(this.rekonNasabahToolStripMenuItem_Click);
             // 
             // invoiceToolStripMenuItem
             // 
             this.invoiceToolStripMenuItem.Name = "invoiceToolStripMenuItem";
-            this.invoiceToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.invoiceToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.invoiceToolStripMenuItem.Text = "Invoice";
             this.invoiceToolStripMenuItem.Click += new System.EventHandler(this.invoiceToolStripMenuItem_Click);
             // 
             // exportAbacasToolStripMenuItem
             // 
             this.exportAbacasToolStripMenuItem.Name = "exportAbacasToolStripMenuItem";
-            this.exportAbacasToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exportAbacasToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.exportAbacasToolStripMenuItem.Text = "Export Abacas";
             this.exportAbacasToolStripMenuItem.Click += new System.EventHandler(this.exportAbacasToolStripMenuItem_Click);
             // 
@@ -669,6 +671,13 @@
             this.inputDataCashpointToolStripMenuItem1.Text = "Input Data Cashpoint";
             this.inputDataCashpointToolStripMenuItem1.Click += new System.EventHandler(this.inputDataCashpointToolStripMenuItem1_Click);
             // 
+            // proyeksiATMToolStripMenuItem
+            // 
+            this.proyeksiATMToolStripMenuItem.Name = "proyeksiATMToolStripMenuItem";
+            this.proyeksiATMToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
+            this.proyeksiATMToolStripMenuItem.Text = "Proyeksi ATM";
+            this.proyeksiATMToolStripMenuItem.Click += new System.EventHandler(this.proyeksiATMToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -765,5 +774,6 @@
         private System.Windows.Forms.ToolStripMenuItem rekonSaldoToolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem exportAbacasToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem transaksiVaultToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem proyeksiATMToolStripMenuItem;
     }
 }

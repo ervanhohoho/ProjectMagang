@@ -44,8 +44,9 @@
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.AllowUserToResizeRows = false;
-            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(12, 100);
@@ -54,6 +55,7 @@
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.Size = new System.Drawing.Size(575, 484);
             this.dataGridView1.TabIndex = 8;
+            this.dataGridView1.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_ColumnHeaderMouseClick);
             this.dataGridView1.SelectionChanged += new System.EventHandler(this.dataGridView1_SelectionChanged);
             // 
             // groupBox1
@@ -82,7 +84,8 @@
             this.comboVal.FormattingEnabled = true;
             this.comboVal.Items.AddRange(new object[] {
             "Sudah Validasi",
-            "Belum Validasi"});
+            "Belum Validasi",
+            "All"});
             this.comboVal.Location = new System.Drawing.Point(6, 46);
             this.comboVal.Name = "comboVal";
             this.comboVal.Size = new System.Drawing.Size(207, 21);
@@ -94,7 +97,8 @@
             this.comboSetBon.FormattingEnabled = true;
             this.comboSetBon.Items.AddRange(new object[] {
             "Out",
-            "In"});
+            "In",
+            "All"});
             this.comboSetBon.Location = new System.Drawing.Point(6, 19);
             this.comboSetBon.Name = "comboSetBon";
             this.comboSetBon.Size = new System.Drawing.Size(207, 21);

@@ -264,6 +264,7 @@
     <NavigationProperty Name="laporanBons" Relationship="Self.FK_laporanBon_Pkt" FromRole="Pkt" ToRole="laporanBon" />
     <NavigationProperty Name="TransaksiAtms" Relationship="Self.FK_TransaksiAtms_Pkt" FromRole="Pkt" ToRole="TransaksiAtms" />
     <Property Name="kapasitasCPC" Type="Int64" />
+    <Property Name="kodeOpti" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="RekapSelisihAmbilSetor">
     <Key>

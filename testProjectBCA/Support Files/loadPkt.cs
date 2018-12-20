@@ -92,6 +92,8 @@ namespace testProjectBCA
                             toEdit.kodePktATM = "";
                         else
                             toEdit.kodePktATM = row[2].ToString();
+
+                        toEdit.kodeOpti = row[12] == null || String.IsNullOrWhiteSpace(row[12].ToString()) ? "" : row[12].ToString();
                         counter++;
                     }
                     else
@@ -110,6 +112,7 @@ namespace testProjectBCA
                         newPkt.sentralisasi = row[8].ToString().Replace(" -", "");
                         Console.WriteLine(row[8].ToString());
                         newPkt.vendor = row[10].ToString();
+
                         Int64 buf, kapasitasCPC = 0;
                         if (Int64.TryParse(row[11].ToString(), out buf) && !String.IsNullOrWhiteSpace(row[11].ToString()))
                             kapasitasCPC = buf;
@@ -123,6 +126,7 @@ namespace testProjectBCA
                             newPkt.kodePktATM = "";
                         else
                             newPkt.kodePktATM = row[2].ToString();
+                        newPkt.kodeOpti = row[12] == null || String.IsNullOrWhiteSpace(row[12].ToString())? "" : row[12].ToString();
                         db.Pkts.Add(newPkt);
                         counter++;
                     }
