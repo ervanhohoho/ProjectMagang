@@ -116,6 +116,7 @@ namespace testProjectBCA.ATM
                 MessageBox.Show("Data Laporan Belum Ada Yang Approved");
 
             pktIndex = 0;
+            String kodePkt = KodePkt[pktIndex];
             loadE2E();
             MetodePrediksiComboBox.SelectedIndex = 0;
             MetodeHitungLainnyaComboBox.SelectedIndex = 0;
@@ -127,8 +128,10 @@ namespace testProjectBCA.ATM
             tanggalPrediksiMaxPicker.MinDate = ((DateTime)(from x in db.Approvals
                                                 join y in db.DetailApprovals on x.idApproval equals y.idApproval
                                                 where (DateTime)x.tanggal<Variables.todayDate
+                                                && x.kodePkt == kodePkt
                                                 && y.bon100 == -1
                                                 select y).Max(x=>x.tanggal)).AddDays(1);
+            tanggalPrediksiMaxPicker.Value = tanggalPrediksiMaxPicker.MinDate;
         }
         void loadComboBox()
         {
@@ -4232,9 +4235,18 @@ namespace testProjectBCA.ATM
 
         private void pktComboBox_SelectedValueChanged(object sender, EventArgs e)
         {
+            Database1Entities db = new Database1Entities();
             int idx = KodePkt.IndexOf(pktComboBox.SelectedValue.ToString());
             pktIndex = idx;
             labelKodePkt.Text = KodePkt[pktIndex];
+            String kodePkt = KodePkt[pktIndex];
+            tanggalPrediksiMaxPicker.MinDate = ((DateTime)(from x in db.Approvals
+                                                           join y in db.DetailApprovals on x.idApproval equals y.idApproval
+                                                           where (DateTime)x.tanggal < Variables.todayDate
+                                                           && x.kodePkt == kodePkt
+                                                           && y.bon100 == -1
+                                                           select y).Max(x => x.tanggal)).AddDays(1);
+            tanggalPrediksiMaxPicker.Value = tanggalPrediksiMaxPicker.MinDate;
             loadE2E();
         }
 

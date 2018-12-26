@@ -45,9 +45,9 @@
             // 
             // LoadBtn
             // 
-            this.LoadBtn.Location = new System.Drawing.Point(141, 109);
+            this.LoadBtn.Location = new System.Drawing.Point(129, 109);
             this.LoadBtn.Name = "LoadBtn";
-            this.LoadBtn.Size = new System.Drawing.Size(242, 23);
+            this.LoadBtn.Size = new System.Drawing.Size(336, 23);
             this.LoadBtn.TabIndex = 0;
             this.LoadBtn.Text = "Load";
             this.LoadBtn.UseVisualStyleBackColor = true;

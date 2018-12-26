@@ -37,14 +37,14 @@
             this.textBoxSearch = new System.Windows.Forms.TextBox();
             this.buttonSearch = new System.Windows.Forms.Button();
             this.ExportBtn = new System.Windows.Forms.Button();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.comboCabang = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // dateTimePicker2
             // 
-            this.dateTimePicker2.Location = new System.Drawing.Point(219, 20);
+            this.dateTimePicker2.Location = new System.Drawing.Point(425, 31);
             this.dateTimePicker2.Name = "dateTimePicker2";
             this.dateTimePicker2.Size = new System.Drawing.Size(200, 20);
             this.dateTimePicker2.TabIndex = 1;
@@ -52,7 +52,7 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.comboBox1);
+            this.groupBox1.Controls.Add(this.comboCabang);
             this.groupBox1.Controls.Add(this.comboPkt);
             this.groupBox1.Controls.Add(this.comboVal);
             this.groupBox1.Controls.Add(this.comboSetBon);
@@ -66,7 +66,7 @@
             // comboPkt
             // 
             this.comboPkt.FormattingEnabled = true;
-            this.comboPkt.Location = new System.Drawing.Point(219, 46);
+            this.comboPkt.Location = new System.Drawing.Point(219, 19);
             this.comboPkt.Name = "comboPkt";
             this.comboPkt.Size = new System.Drawing.Size(200, 21);
             this.comboPkt.TabIndex = 6;
@@ -146,13 +146,14 @@
             this.ExportBtn.UseVisualStyleBackColor = true;
             this.ExportBtn.Click += new System.EventHandler(this.ExportBtn_Click);
             // 
-            // comboBox1
+            // comboCabang
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(425, 46);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(203, 21);
-            this.comboBox1.TabIndex = 7;
+            this.comboCabang.FormattingEnabled = true;
+            this.comboCabang.Location = new System.Drawing.Point(219, 46);
+            this.comboCabang.Name = "comboCabang";
+            this.comboCabang.Size = new System.Drawing.Size(200, 21);
+            this.comboCabang.TabIndex = 7;
+            this.comboCabang.SelectionChangeCommitted += new System.EventHandler(this.comboCabang_SelectionChangeCommitted);
             // 
             // rekonSaldoTrxCabang
             // 
@@ -184,6 +185,6 @@
         private System.Windows.Forms.Button buttonSearch;
         private System.Windows.Forms.ComboBox comboPkt;
         private System.Windows.Forms.Button ExportBtn;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox comboCabang;
     }
 }

@@ -47,6 +47,7 @@ namespace testProjectBCA
         {
             InitializeComponent();
             loadBulanPrediksiTreeView();
+            metodePrediksiComboBox.DataSource = Variables.listMetodeNonATM;
             metodePrediksiComboBox.SelectedIndex = 0;
             tanggalMaxPrediksiPicker.MinDate = DateTime.Today.AddDays(1);
             outBITukabDateTimePicker.MinDate = Variables.todayDate.AddDays(1);
@@ -2686,6 +2687,7 @@ namespace testProjectBCA
         {
             loadForm.ShowSplashScreen();
             List<DateTime> listTanggal = loadTanggalHistorisUntukPrediksi();
+
 
             prediksiInCabang100 = loadPrediksiInCabang100();
             prediksiInCabang50 = loadPrediksiInCabang50();

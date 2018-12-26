@@ -155,7 +155,8 @@ namespace testProjectBCA.CabangMenu
                 total = x.total,
                 regular = x.regular,
                 inout = actionRekon.ToLower() == "delivery" ? "In" : "Out",
-                validasi = validated ? "Validasi" : "Belum Validasi"
+                validasi = validated ? "Validasi" : "Belum Validasi",
+                koordinator = (from y in en.Pkts where y.kodePktCabang == x.vaultId select y.koordinator).Distinct().FirstOrDefault()
             }).ToList();
             return ret;
         }
@@ -449,6 +450,7 @@ namespace testProjectBCA.CabangMenu
         {
            
             public String vaultId { set; get; }
+            public String koordinator { set; get; }
             public DateTime? dueDate { set; get; }
             public DateTime? timeStampRekon { set; get; }
             public String fundingSource { set; get; }
@@ -457,6 +459,7 @@ namespace testProjectBCA.CabangMenu
             public Int64? total { set; get; }
             public String inout { set; get; }
             public String validasi { set; get; }
+
 
         }
 

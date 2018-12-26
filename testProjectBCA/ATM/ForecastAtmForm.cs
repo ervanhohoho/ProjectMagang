@@ -33,7 +33,7 @@ namespace testProjectBCA.ATM
         }
         void loadPkt()
         {
-            var temp = (from x in db.Pkts select x.kodePkt).OrderBy(x=>x).ToList();
+            List<String> temp = (from x in db.Pkts where x.kodePktATM.Length>1 select x.kodePktATM).Distinct().ToList();
             pktComboBox.DataSource = temp;
         }
 

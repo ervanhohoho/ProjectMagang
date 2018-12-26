@@ -21,6 +21,7 @@ namespace testProjectBCA
         {
             InitializeComponent();
             reloadComboPkt();
+            reloadComboCabang();
             //dateTimePicker1.Visible = false;
             buttonSearch.Visible = false;
             textBoxSearch.Visible = false;
@@ -47,6 +48,26 @@ namespace testProjectBCA
             comboPkt.DataSource = vendor;
         }
 
+        public void reloadComboCabang()
+        {
+            List<String> cabang = new List<String>();
+            cabang.Add("ALL CABANG");
+            var query = (from x in en.Cabangs
+                         where ((x.kodePkt != null) && (comboPkt.SelectedValue.ToString() == "ALL VENDOR" ? true : x.kodePkt == comboPkt.SelectedValue.ToString()))
+                         select x.kodeCabang).Distinct().ToList();
+
+            foreach (var item in query)
+            {
+                if (!String.IsNullOrEmpty(item))
+                {
+                    cabang.Add("B" + item.ToString());
+                }
+            }
+
+            comboCabang.DataSource = cabang;
+
+        }
+
         public List<ViewRekonSaldoTrxCabang> reloadSetoranBelum()
         {
             Console.WriteLine("ini dia: " + comboPkt.SelectedValue.ToString());
@@ -54,7 +75,8 @@ namespace testProjectBCA
             var prequery = (
               from x in en.RekonSaldoPerVendors.AsEnumerable()
               join y in en.Pkts on x.vendor.Substring(0, 4) equals y.kodePktCabang == "CCASA" ? "CCAS" : y.kodePktCabang
-              where (comboPkt.SelectedValue.ToString() == "ALL VENDOR" ? true : (comboPkt.SelectedValue.ToString() == "CCAS" ? x.vendor.Contains(comboPkt.SelectedValue.ToString()) : x.vendor == comboPkt.SelectedValue.ToString()))
+              join z in en.Cabangs on x.cashPointtId.TrimStart('B') equals z.kodeCabang
+              where ((comboCabang.SelectedValue.ToString() == "ALL CABANG" ? true : (z.kodeCabang == comboCabang.SelectedValue.ToString().TrimStart('B'))) && ((comboPkt.SelectedValue.ToString() == "ALL VENDOR" ? true : (comboPkt.SelectedValue.ToString() == "CCAS" ? x.vendor.Contains(comboPkt.SelectedValue.ToString()) : x.vendor == comboPkt.SelectedValue.ToString()))))
               select x
             ).ToList();
 
@@ -132,11 +154,11 @@ namespace testProjectBCA
             var prepare = prepareL.Union(prepareR);
 
             var query = (from x in prepare
+                         join y in en.Cabangs on x.cashPointtId.TrimStart('B') equals y.kodeCabang
                          where x.actionRekon.Contains("Return") && x.validation.Equals("NOT VALIDATED") && x.statusRekon.Equals("In Transit")
-                         group x by new { x.dueDate, x.cashPointtId, x.blogTime, x.vendor } into z
-                         select new { vendor = z.Key.vendor, dueDate = z.Key.dueDate, blogTime = z.Key.blogTime, cashPointId = z.Key.cashPointtId, regular = z.Sum(x => x.regular), emergency = z.Sum(x => x.emergency), total = z.Sum(x => x.emergency + x.regular) }).ToList();
+                         group x by new { x.dueDate, x.cashPointtId, x.blogTime, x.vendor, y.namaCabang } into z
+                         select new { cabang = z.Key.namaCabang, vendor = z.Key.vendor, dueDate = z.Key.dueDate, blogTime = z.Key.blogTime, cashPointId = z.Key.cashPointtId, regular = z.Sum(x => x.regular), emergency = z.Sum(x => x.emergency), total = z.Sum(x => x.emergency + x.regular) }).ToList();
 
-            dataGridView1.DataSource = query;
             viewRekonSaldoTrxCabangs = query.Select(x => new ViewRekonSaldoTrxCabang()
             {
                 vendor = x.vendor,
@@ -144,11 +166,13 @@ namespace testProjectBCA
                 emergency = x.emergency,
                 blogTime = x.blogTime,
                 cashpointId = x.cashPointId,
+                cabang = x.cabang,
                 total = x.total,
                 regular = x.regular,
                 SetoranBon = "SETORAN",
                 Validasi = "BELUM VALIDASI"
             }).ToList();
+            dataGridView1.DataSource = viewRekonSaldoTrxCabangs;
             formatting();
             return viewRekonSaldoTrxCabangs;
 
@@ -160,7 +184,8 @@ namespace testProjectBCA
             var prequery = (
               from x in en.RekonSaldoPerVendors.AsEnumerable()
               join y in en.Pkts on x.vendor.Substring(0, 4) equals y.kodePktCabang == "CCASA" ? "CCAS" : y.kodePktCabang
-              where (comboPkt.SelectedValue.ToString() == "ALL VENDOR" ? true : (comboPkt.SelectedValue.ToString() == "CCAS" ? x.vendor.Contains(comboPkt.SelectedValue.ToString()) : x.vendor == comboPkt.SelectedValue.ToString()))
+              join z in en.Cabangs on x.cashPointtId.TrimStart('B') equals z.kodeCabang
+              where ((comboCabang.SelectedValue.ToString() == "ALL CABANG" ? true : (z.kodeCabang == comboCabang.SelectedValue.ToString().TrimStart('B'))) && (comboPkt.SelectedValue.ToString() == "ALL VENDOR" ? true : (comboPkt.SelectedValue.ToString() == "CCAS" ? x.vendor.Contains(comboPkt.SelectedValue.ToString()) : x.vendor == comboPkt.SelectedValue.ToString())))
               select x
             ).ToList();
             if (prequery == null)
@@ -241,11 +266,12 @@ namespace testProjectBCA
             var prepare = prepareL.Union(prepareR);
 
             var query = (from x in prepare
+                         join y in en.Cabangs on x.cashPointtId.TrimStart('B') equals y.kodeCabang
                          where x.actionRekon.Contains("Return") && x.validation.Equals("VALIDATED") && x.statusRekon.Equals("In Transit")
-                         group x by new { x.vendor, x.dueDate, x.cashPointtId, x.blogTime } into z
-                         select new { vendor = z.Key.vendor, dueDate = z.Key.dueDate, blogTime = z.Key.blogTime, cashPointId = z.Key.cashPointtId, regular = z.Sum(x => x.regular), emergency = z.Sum(x => x.emergency), total = z.Sum(x => x.emergency + x.regular) }).ToList();
+                         group x by new { x.vendor, x.dueDate, x.cashPointtId, x.blogTime, y.namaCabang } into z
+                         select new { cabang = z.Key.namaCabang, vendor = z.Key.vendor, dueDate = z.Key.dueDate, blogTime = z.Key.blogTime, cashPointId = z.Key.cashPointtId, regular = z.Sum(x => x.regular), emergency = z.Sum(x => x.emergency), total = z.Sum(x => x.emergency + x.regular) }).ToList();
 
-            dataGridView1.DataSource = query;
+
             viewRekonSaldoTrxCabangs = query.Select(x => new ViewRekonSaldoTrxCabang()
             {
                 vendor = x.vendor,
@@ -253,11 +279,13 @@ namespace testProjectBCA
                 emergency = x.emergency,
                 blogTime = x.blogTime,
                 cashpointId = x.cashPointId,
+                cabang = x.cabang,
                 total = x.total,
                 regular = x.regular,
                 SetoranBon = "SETORAN",
                 Validasi = "SUDAH VALIDASI"
             }).ToList();
+            dataGridView1.DataSource = viewRekonSaldoTrxCabangs;
             formatting();
             return viewRekonSaldoTrxCabangs;
 
@@ -269,7 +297,8 @@ namespace testProjectBCA
             var prequery = (
               from x in en.RekonSaldoPerVendors.AsEnumerable()
               join y in en.Pkts on x.vendor.Substring(0, 4) equals y.kodePktCabang == "CCASA" ? "CCAS" : y.kodePktCabang
-              where (comboPkt.SelectedValue.ToString() == "ALL VENDOR" ? true : (comboPkt.SelectedValue.ToString() == "CCAS" ? x.vendor.Contains(comboPkt.SelectedValue.ToString()) : x.vendor == comboPkt.SelectedValue.ToString()))
+              join z in en.Cabangs on x.cashPointtId.TrimStart('B') equals z.kodeCabang
+              where ((comboCabang.SelectedValue.ToString() == "ALL CABANG" ? true : (z.kodeCabang == comboCabang.SelectedValue.ToString().TrimStart('B'))) && (comboPkt.SelectedValue.ToString() == "ALL VENDOR" ? true : (comboPkt.SelectedValue.ToString() == "CCAS" ? x.vendor.Contains(comboPkt.SelectedValue.ToString()) : x.vendor == comboPkt.SelectedValue.ToString())))
               select x
             ).ToList();
             if (prequery == null)
@@ -350,23 +379,26 @@ namespace testProjectBCA
             var prepare = prepareL.Union(prepareR);
 
             var query = (from x in prepare
+                         join y in en.Cabangs on x.cashPointtId.TrimStart('B') equals y.kodeCabang
                          where x.actionRekon.Contains("Delivery") && x.validation.Equals("VALIDATED") && x.statusRekon.Equals("Confirmed")
-                         group x by new { x.vendor, x.dueDate, x.cashPointtId, x.blogTime } into z
-                         select new { vendor = z.Key.vendor, dueDate = z.Key.dueDate, blogTime = z.Key.blogTime, cashPointId = z.Key.cashPointtId, regular = z.Sum(x => x.regular), emergency = z.Sum(x => x.emergency), total = z.Sum(x => x.emergency + x.regular) }).ToList();
+                         group x by new { x.vendor, x.dueDate, x.cashPointtId, x.blogTime, y.namaCabang } into z
+                         select new { cabang = z.Key.namaCabang, vendor = z.Key.vendor, dueDate = z.Key.dueDate, blogTime = z.Key.blogTime, cashPointId = z.Key.cashPointtId, regular = z.Sum(x => x.regular), emergency = z.Sum(x => x.emergency), total = z.Sum(x => x.emergency + x.regular) }).ToList();
 
-            dataGridView1.DataSource = query;
+
             viewRekonSaldoTrxCabangs = query.Select(x => new ViewRekonSaldoTrxCabang()
             {
                 vendor = x.vendor,
                 dueDate = x.dueDate,
                 emergency = x.emergency,
                 blogTime = x.blogTime,
+                cabang = x.cabang,
                 cashpointId = x.cashPointId,
                 total = x.total,
                 regular = x.regular,
                 SetoranBon = "BON",
                 Validasi = "SUDAH VALIDASI"
             }).ToList();
+            dataGridView1.DataSource = viewRekonSaldoTrxCabangs;
             formatting();
             return viewRekonSaldoTrxCabangs;
 
@@ -378,7 +410,8 @@ namespace testProjectBCA
             var prequery = (
               from x in en.RekonSaldoPerVendors.AsEnumerable()
               join y in en.Pkts on x.vendor.Substring(0, 4) equals y.kodePktCabang == "CCASA" ? "CCAS" : y.kodePktCabang
-              where (comboPkt.SelectedValue.ToString() == "ALL VENDOR" ? true : (comboPkt.SelectedValue.ToString() == "CCAS" ? x.vendor.Contains(comboPkt.SelectedValue.ToString()) : x.vendor == comboPkt.SelectedValue.ToString()))
+              join z in en.Cabangs on x.cashPointtId.TrimStart('B') equals z.kodeCabang
+              where ((comboCabang.SelectedValue.ToString() == "ALL CABANG" ? true : (z.kodeCabang == comboCabang.SelectedValue.ToString().TrimStart('B'))) && (comboPkt.SelectedValue.ToString() == "ALL VENDOR" ? true : (comboPkt.SelectedValue.ToString() == "CCAS" ? x.vendor.Contains(comboPkt.SelectedValue.ToString()) : x.vendor == comboPkt.SelectedValue.ToString())))
               select x
             ).ToList();
             if (prequery == null)
@@ -460,17 +493,18 @@ namespace testProjectBCA
 
 
             var query = (from x in prepare
+                         join y in en.Cabangs on x.cashPointtId.TrimStart('B') equals y.kodeCabang
                          where x.actionRekon.Contains("Delivery") && x.validation.Equals("NOT VALIDATED") && x.statusRekon.Equals("Confirmed")
-                         group x by new { x.vendor, x.dueDate, x.cashPointtId, x.blogTime } into z
-                         select new { z.Key.vendor, dueDate = z.Key.dueDate, blogTime = z.Key.blogTime, cashPointId = z.Key.cashPointtId, regular = z.Sum(x => x.regular), emergency = z.Sum(x => x.emergency), total = z.Sum(x => x.emergency + x.regular) }).ToList();
+                         group x by new { y.namaCabang, x.vendor, x.dueDate, x.cashPointtId, x.blogTime } into z
+                         select new { cabang = z.Key.namaCabang, z.Key.vendor, dueDate = z.Key.dueDate, blogTime = z.Key.blogTime, cashPointId = z.Key.cashPointtId, regular = z.Sum(x => x.regular), emergency = z.Sum(x => x.emergency), total = z.Sum(x => x.emergency + x.regular) }).ToList();
 
-            dataGridView1.DataSource = query;
             viewRekonSaldoTrxCabangs = query.Select(x => new ViewRekonSaldoTrxCabang()
             {
                 vendor = x.vendor,
                 dueDate = x.dueDate,
                 emergency = x.emergency,
                 blogTime = x.blogTime,
+                cabang = x.cabang,
                 cashpointId = x.cashPointId,
                 total = x.total,
                 regular = x.regular,
@@ -478,6 +512,7 @@ namespace testProjectBCA
                 Validasi = "BELUM VALIDASI"
 
             }).ToList();
+            dataGridView1.DataSource = viewRekonSaldoTrxCabangs;
             formatting();
             return viewRekonSaldoTrxCabangs;
 
@@ -591,6 +626,7 @@ namespace testProjectBCA
 
         private void comboPkt_SelectionChangeCommitted(object sender, EventArgs e)
         {
+            reloadComboCabang();
             if (comboSetBon.SelectedIndex == 0 && comboVal.SelectedIndex == 0)
             {
                 reloadSetoranSudah();
@@ -760,6 +796,7 @@ namespace testProjectBCA
             public DateTime? dueDate { set; get; }
             public DateTime? blogTime { set; get; }
             public String cashpointId { set; get; }
+            public String cabang { set; get; }
             public Int64? regular { set; get; }
             public Int64? emergency { set; get; }
             public String SetoranBon { set; get; }
@@ -834,6 +871,46 @@ namespace testProjectBCA
                     dataGridView1.DataSource = viewRekonSaldoTrxCabangs.OrderByDescending(x => x.total).ToList();
             }
             Console.WriteLine(props[e.ColumnIndex].Name);
+        }
+
+        private void comboCabang_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (comboSetBon.SelectedIndex == 0 && comboVal.SelectedIndex == 0)
+            {
+                reloadSetoranSudah();
+            }
+            if (comboSetBon.SelectedIndex == 0 && comboVal.SelectedIndex == 1)
+            {
+                reloadSetoranBelum();
+            }
+            if (comboSetBon.SelectedIndex == 0 && comboVal.SelectedIndex == 2)
+            {
+                reloadSudBelSetoran();
+            }
+            if (comboSetBon.SelectedIndex == 1 && comboVal.SelectedIndex == 0)
+            {
+                reloadBonSudah();
+            }
+            if (comboSetBon.SelectedIndex == 1 && comboVal.SelectedIndex == 1)
+            {
+                reloadBonBelum();
+            }
+            if (comboSetBon.SelectedIndex == 1 && comboVal.SelectedIndex == 2)
+            {
+                reloadSudBelBon();
+            }
+            if (comboSetBon.SelectedIndex == 2 && comboVal.SelectedIndex == 0)
+            {
+                reloadSetBonSudah();
+            }
+            if (comboSetBon.SelectedIndex == 2 && comboVal.SelectedIndex == 1)
+            {
+                reloadSetBonBelum();
+            }
+            if (comboSetBon.SelectedIndex == 2 && comboVal.SelectedIndex == 2)
+            {
+                reloadAll();
+            }
         }
     }
 }
