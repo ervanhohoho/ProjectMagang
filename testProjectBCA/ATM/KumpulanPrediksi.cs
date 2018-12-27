@@ -10,17 +10,17 @@ namespace testProjectBCA.ATM
 {
     public class KumpulanPrediksi
     {
-        public List<Denom> sislokCrm { set; get; }
-        public List<Denom> sislokCrmDenganStdDeviasi { set; get; }
-        public List<Denom> sislokCdm { set; get; }
-        public List<Denom> sislokCdmDenganStdDeviasi { set; get; }
-        public List<Rasio> rasioSislokAtm { set; get; } 
-        public List<Rasio> rasioSislokATMDenganStdDeviasi { set; get; }
-        public List<Denom> isiCrm2 { set; get; }
-        public List<Denom> isiCrmDenganStdDeviasi { set; get; }
-        public List<Denom> prediksiIsiAtmOpti { set; get; }
-        public List<Denom> prediksiIsiAtm { set; get; }//dalem class denom ada 100,50,20
-        public List<Denom> prediksiIsiAtmDenganStdDeviasi { set; get; }
+        public List<PktDenom> sislokCrm { set; get; }
+        public List<PktDenom> sislokCrmDenganStdDeviasi { set; get; }
+        public List<PktDenom> sislokCdm { set; get; }
+        public List<PktDenom> sislokCdmDenganStdDeviasi { set; get; }
+        public List<PktRasio> rasioSislokAtm { set; get; } 
+        public List<PktRasio> rasioSislokATMDenganStdDeviasi { set; get; }
+        public List<PktDenom> isiCrm2 { set; get; }
+        public List<PktDenom> isiCrmDenganStdDeviasi { set; get; }
+        public List<PktDenom> prediksiIsiAtmOpti { set; get; }
+        public List<PktDenom> prediksiIsiAtm { set; get; }//dalem class denom ada 100,50,20
+        public List<PktDenom> prediksiIsiAtmDenganStdDeviasi { set; get; }
 
         public List<DateTime> kumpulanTanggal { set; get; }
         public String kodePkt { set; get; }
@@ -42,16 +42,16 @@ namespace testProjectBCA.ATM
             this.jenisPrediksiIsiATM = jenisPrediksiIsiATM;
             this.jenisPrediksiLainnya = jenisPrediksiLainnya;
             this.eventType = new List<string>();
-            sislokCrm = new List<Denom>();
-            sislokCrmDenganStdDeviasi = new List<Denom>();
-            sislokCdm = new List<Denom>();
-            sislokCdmDenganStdDeviasi = new List<Denom>();
-            rasioSislokATMDenganStdDeviasi = new List<Rasio>();
-            rasioSislokAtm = new List<Rasio>();
-            isiCrm2 = new List<Denom>();
-            isiCrmDenganStdDeviasi = new List<Denom>();
-            prediksiIsiAtm = new List<Denom>();
-            prediksiIsiAtmDenganStdDeviasi = new List<Denom>();
+            sislokCrm = new List<PktDenom>();
+            sislokCrmDenganStdDeviasi = new List<PktDenom>();
+            sislokCdm = new List<PktDenom>();
+            sislokCdmDenganStdDeviasi = new List<PktDenom>();
+            rasioSislokATMDenganStdDeviasi = new List<PktRasio>();
+            rasioSislokAtm = new List<PktRasio>();
+            isiCrm2 = new List<PktDenom>();
+            isiCrmDenganStdDeviasi = new List<PktDenom>();
+            prediksiIsiAtm = new List<PktDenom>();
+            prediksiIsiAtmDenganStdDeviasi = new List<PktDenom>();
 
             success = true;
 
@@ -59,7 +59,7 @@ namespace testProjectBCA.ATM
             if (kodePkt.ToLower().Contains("kanwil") || kodePkt.ToLower().Contains("jabo"))
                 pktCondition = "kanwil = '" + kodePkt + "'";
             if (kodePkt.ToLower() == "all")
-                pktCondition = "true";
+                pktCondition = "1=1";
 
 
             loadPrediksiOpti();
@@ -83,6 +83,12 @@ namespace testProjectBCA.ATM
                     prediksiIsiAtm[a].d20 = (prediksiIsiAtm[a].d20 + prediksiIsiAtmOpti[a].d20) / 2;
                 }
             }
+            if (jenisPrediksiIsiATM == "Std Deviasi")
+            {
+                loadIsiAtmHistoris();
+                loadIsiAtmHistorisDenganStandarDeviasi();
+                prediksiIsiAtm = prediksiIsiAtmDenganStdDeviasi;
+            }
             if (jenisPrediksiIsiATM == "Historis + Std Deviasi")
             {
                 loadIsiAtmHistoris();
@@ -104,7 +110,7 @@ namespace testProjectBCA.ATM
 
             loadSislokCdm();
             loadRasioSislokAtm();
-            loadRasioSislokAtmDenganStdDeviasi();
+            //loadRasioSislokAtmDenganStdDeviasi();
             loadSislokCrm();
             loadIsiCrm();
             if (jenisPrediksiLainnya == "Std Deviasi")
@@ -291,13 +297,13 @@ namespace testProjectBCA.ATM
             }
             return new EventAndCondition();
         }
-        List<Denom> loadPrediksiHistoris(String jenis)
+        List<PktDenom> loadPrediksiHistoris(String jenis)
         {
 
             DateTime startDate = tanggalOptiMin;//Convert.ToDateTime(dataGridView1.Rows[0].Cells[0].Value);
             DateTime endDate = tanggalOptiMax;//Convert.ToDateTime(dataGridView1.Rows[rowCount - 1].Cells[0].Value);
             DateTime tempDate = startDate;
-            List<Denom> ret = new List<Denom>();
+            List<PktDenom> ret = new List<PktDenom>();
             using (SqlConnection sql = new SqlConnection(Variables.connectionString))
             {
                 using (SqlCommand cmd = new SqlCommand())
@@ -308,27 +314,30 @@ namespace testProjectBCA.ATM
                     {
                         //SislokCrm
                         SqlDataReader reader;
-                        Denom tempIsiAtm = new Denom();
-                        String cText = "SELECT AVG(" + jenis + "100), AVG(" + jenis + "50), AVG(" + jenis + "20) FROM ViewTransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE "+pktCondition+" AND DATENAME(WEEKDAY, TA.Tanggal) = '" + tempDate.DayOfWeek.ToString() + "'";
+                        PktDenom tempIsiAtm = new PktDenom();
+                        String cText = "SELECT AVG(" + jenis + "100), AVG(" + jenis + "50), AVG(" + jenis + "20), kodePkt FROM ViewTransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE "+pktCondition+" AND DATENAME(WEEKDAY, TA.Tanggal) = '" + tempDate.DayOfWeek.ToString() + "'";
                         EventAndCondition eac = loadEventWhereCondition(tempDate);
 
                         if (eac.eventType != "Event 1" && eac.eventType != "Event 4")
-                            cText = "SELECT AVG(" + jenis + "100), AVG(" + jenis + "50), AVG(" + jenis + "20) FROM ViewTransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE " + pktCondition;
+                            cText = "SELECT AVG(" + jenis + "100), AVG(" + jenis + "50), AVG(" + jenis + "20), kodePkt FROM ViewTransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE " + pktCondition;
 
                         cText += eac.whereCondition;
                         if (eac.eventType != "Event 4")
                             cText += ")";
+                        cText += "\nGROUP BY kodePkt";
                         cmd.CommandText = cText;
                         reader = cmd.ExecuteReader();
-                        if (reader.Read())
+                        while (reader.Read())
                         {
+                            tempIsiAtm = new PktDenom();
                             tempIsiAtm.d50 = (Int64)reader[1];
                             tempIsiAtm.d20 = (Int64)reader[2];
-                            tempIsiAtm.tgl = tempDate;
+                            tempIsiAtm.tanggal = tempDate;
                             tempIsiAtm.d100 = (Int64)reader[0];
-                            reader.Close();
+                            tempIsiAtm.kodePkt = reader[3].ToString();
+                            ret.Add(tempIsiAtm);
                         }
-                        ret.Add(tempIsiAtm);
+                        reader.Close();
                         tempDate = tempDate.AddDays(1);
                     }
 
@@ -337,7 +346,7 @@ namespace testProjectBCA.ATM
             }
             return ret;
         }
-        List<Denom> loadPrediksiStdDeviasi(String jenis)
+        List<PktDenom> loadPrediksiStdDeviasi(String jenis)
         {
             int rowcount = prediksiIsiAtmOpti.Count;//dataGridView1.Rows.Count;
             DateTime startDate = tanggalOptiMin;//Convert.ToDateTime(dataGridView1.Rows[0].Cells[0].Value);
@@ -345,7 +354,7 @@ namespace testProjectBCA.ATM
             DateTime tempDate = startDate;
 
             //Load Std Deviasi
-            List<Rasio> stdDeviasi = new List<Rasio>();
+            List<PktRasio> stdDeviasi = new List<PktRasio>();
             using (SqlConnection sql = new SqlConnection(Variables.connectionString))
             {
                 using (SqlCommand cmd = new SqlCommand())
@@ -356,7 +365,7 @@ namespace testProjectBCA.ATM
                     {
                         //SislokAtm
                         SqlDataReader reader;
-                        Rasio tempStdDeviasi = new Rasio();
+                        PktRasio tempStdDeviasi = new PktRasio();
 
                         String kondisi = " WHERE " + pktCondition + " AND DATENAME(WEEKDAY, TA.Tanggal) = '" + tempDate.DayOfWeek.ToString() + "'";
                         int count = 0;
@@ -364,14 +373,15 @@ namespace testProjectBCA.ATM
                         EventAndCondition eac = loadEventWhereCondition(tempDate);
                         if (eac.eventType != "Event 1" && eac.eventType != "Event 4")
                         {
-                            kondisi = " WHERE kodePkt = '" + kodePkt + "' ";
+                            kondisi = " WHERE " + pktCondition;
                         }
                         kondisi += eac.whereCondition;
                         if (eac.eventType != "Event 4")
                             kondisi += ")";
 
-                        String subqueryTblAverage = "(SELECT ISNULL(AVG(" + jenis + "100),0) AS Average100 , ISNULL(AVG(" + jenis + "50),0) AS Average50 , ISNULL(AVG(" + jenis + "20),0) AS Average20 FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal";
+                        String subqueryTblAverage = "(SELECT ISNULL(AVG(" + jenis + "100),0) AS Average100 , ISNULL(AVG(" + jenis + "50),0) AS Average50 , ISNULL(AVG(" + jenis + "20),0) AS Average20, kodePkt FROM ViewTransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal";
                         subqueryTblAverage += kondisi;
+                        subqueryTblAverage += " GROUP BY kodePkt";
                         subqueryTblAverage += ") avt";
 
                         String query = "";
@@ -380,37 +390,40 @@ namespace testProjectBCA.ATM
                            query = "SELECT "
                                     + "[AverageStdDeviasi100] = AVG(CAST((" + jenis + "100 - [Average100]) AS FLOAT) / (CASE WHEN [Average100] = 0 THEN 1 ELSE [Average100] END)), "
                                     + "[AverageStdDeviasi50] = AVG(CAST((" + jenis + "50 - [Average50])AS FLOAT) / (CASE WHEN [Average50] = 0 THEN 1 ELSE [Average50] END)), "
-                                    + "[AverageStdDeviasi20] = AVG(CAST((" + jenis + "20 - [Average20])AS FLOAT) / (CASE WHEN [Average20] = 0 THEN 1 ELSE [Average20] END)) "
-                                    + "FROM ViewTransaksiAtms TA JOIN EventTanggal ET ON Ta.tanggal = ET.tanggal, " + subqueryTblAverage + kondisi;
+                                    + "[AverageStdDeviasi20] = AVG(CAST((" + jenis + "20 - [Average20])AS FLOAT) / (CASE WHEN [Average20] = 0 THEN 1 ELSE [Average20] END)), "
+                                    + "TA.kodePkt "
+                                    + "FROM ViewTransaksiAtms TA JOIN EventTanggal ET ON Ta.tanggal = ET.tanggal JOIN " + subqueryTblAverage + " ON avt.kodePkt = TA.kodePkt " + kondisi;
                         }
                         else
                         {
                             query = "SELECT "
                                     + "[AverageStdDeviasi100] = AVG(CAST(ABS(" + jenis + "100 - [Average100]) AS FLOAT) / (CASE WHEN [Average100] = 0 THEN 1 ELSE [Average100] END)), "
                                     + "[AverageStdDeviasi50] = AVG(CAST(ABS(" + jenis + "50 - [Average50])AS FLOAT) / (CASE WHEN [Average50] = 0 THEN 1 ELSE [Average50] END)), "
-                                    + "[AverageStdDeviasi20] = AVG(CAST(ABS(" + jenis + "20 - [Average20])AS FLOAT) / (CASE WHEN [Average20] = 0 THEN 1 ELSE [Average20] END)) "
-                                    + "FROM ViewTransaksiAtms TA JOIN EventTanggal ET ON Ta.tanggal = ET.tanggal, " + subqueryTblAverage + kondisi;
+                                    + "[AverageStdDeviasi20] = AVG(CAST(ABS(" + jenis + "20 - [Average20])AS FLOAT) / (CASE WHEN [Average20] = 0 THEN 1 ELSE [Average20] END)), "
+                                    + "TA.kodePkt "
+                                    + "FROM ViewTransaksiAtms TA JOIN EventTanggal ET ON Ta.tanggal = ET.tanggal JOIN " + subqueryTblAverage + " ON avt.kodePkt = TA.kodePkt " + kondisi;
 
                         }
-
+                        query += " GROUP BY TA.kodePkt";
                         cmd.CommandText = query;
                         reader = cmd.ExecuteReader();
-                        if (reader.Read())
+                        while (reader.Read())
                         {
-
+                            tempStdDeviasi = new PktRasio();
                             tempStdDeviasi.d100 = (Double)reader[0];
                             tempStdDeviasi.d50 = (Double)reader[1];
                             tempStdDeviasi.d20 = (Double)reader[2];
-                            tempStdDeviasi.tgl = tempDate;
-                            reader.Close();
+                            tempStdDeviasi.tanggal = tempDate;
+                            tempStdDeviasi.kodePkt = reader[3].ToString();
+                            stdDeviasi.Add(tempStdDeviasi);
                         }
-                        stdDeviasi.Add(tempStdDeviasi);
+                        reader.Close();
                         tempDate = tempDate.AddDays(1);
                     }
                 }
                 sql.Close();
             }
-            List<Denom> multiplier = new List<Denom>();
+            List<PktDenom> multiplier = new List<PktDenom>();
             if (jenis.ToLower() == "isiatm")
             {
                 multiplier = prediksiIsiAtm;
@@ -427,14 +440,15 @@ namespace testProjectBCA.ATM
             {
                 multiplier = sislokCrm;
             }
-            List<Denom> ret = new List<Denom>();
+            List<PktDenom> ret = new List<PktDenom>();
             for (int a = 0; a < prediksiIsiAtm.Count; a++)
             {
-                Denom temp = new Denom();
-                temp.d100 = multiplier[a].d100 + (Int64)Math.Round(stdDeviasi[a].d100 * multiplier[a].d100);
-                temp.d50 = multiplier[a].d50 + (Int64)Math.Round(stdDeviasi[a].d50 * multiplier[a].d50);
-                temp.d20 = multiplier[a].d20 + (Int64)Math.Round(stdDeviasi[a].d20 * multiplier[a].d20);
-                temp.tgl = multiplier[a].tgl;
+                PktDenom temp = new PktDenom();
+                temp.d100 = multiplier[a].d100 + (Int64)Math.Round(stdDeviasi.Where(x=>x.kodePkt == multiplier[a].kodePkt).Select(x=>x.d100).FirstOrDefault() * multiplier[a].d100);
+                temp.d50 = multiplier[a].d50 + (Int64)Math.Round(stdDeviasi.Where(x => x.kodePkt == multiplier[a].kodePkt).Select(x => x.d50).FirstOrDefault() * multiplier[a].d50);
+                temp.d20 = multiplier[a].d20 + (Int64)Math.Round(stdDeviasi.Where(x => x.kodePkt == multiplier[a].kodePkt).Select(x => x.d20).FirstOrDefault() * multiplier[a].d20);
+                temp.kodePkt = stdDeviasi[a].kodePkt;
+                temp.tanggal= multiplier[a].tanggal;
                 ret.Add(temp);
             }
             return ret;
@@ -445,7 +459,7 @@ namespace testProjectBCA.ATM
             //dataGridView1.Refresh();
 
             //init
-            prediksiIsiAtmOpti = new List<Denom>();
+            prediksiIsiAtmOpti = new List<PktDenom>();
             Database1Entities db = new Database1Entities();
             String kodePkt = (from x in db.Pkts
                               where x.kodePkt == this.kodePkt
@@ -482,8 +496,8 @@ namespace testProjectBCA.ATM
                         while (minDate <= maxDate)
                         {
 
-                            Denom tempPrediksi = new Denom();
-                            tempPrediksi.tgl = minDate;
+                            PktDenom tempPrediksi = new PktDenom();
+                            tempPrediksi.tanggal = minDate;
                             //Denom 100
                             cmd.CommandText = "SELECT SUM(prediksi) " +
                                               "FROM Opti o " +
@@ -516,6 +530,7 @@ namespace testProjectBCA.ATM
                             if (reader.Read())
                             { tempPrediksi.d20 = ((Int64)reader[0]); }
 
+                            tempPrediksi.kodePkt = kodePkt;
                             prediksiIsiAtmOpti.Add(tempPrediksi);
                             reader.Close();
 
@@ -531,42 +546,44 @@ namespace testProjectBCA.ATM
         }
         void loadIsiAtmHistoris()
         {
-            prediksiIsiAtm = new List<Denom>();
+            Console.WriteLine("Load Isi ATM");
+            prediksiIsiAtm = new List<PktDenom>();
             prediksiIsiAtm = loadPrediksiHistoris("isiATM");
         }
         void loadIsiAtmHistorisDenganStandarDeviasi()
         {
-            prediksiIsiAtmDenganStdDeviasi = new List<Denom>();
+            prediksiIsiAtmDenganStdDeviasi = new List<PktDenom>();
             prediksiIsiAtmDenganStdDeviasi = loadPrediksiStdDeviasi("isiAtm");
+            Console.WriteLine("prediksiIsiAtmDenganStdDeviasi Count: " + prediksiIsiAtm.Count);
         }
         void loadIsiCrm()
         {
-            isiCrm2 = new List<Denom>();
+            isiCrm2 = new List<PktDenom>();
             isiCrm2 = loadPrediksiHistoris("isiCrm");
         }
         void loadIsiCrmDenganStdDeviasi()
         {
-            isiCrmDenganStdDeviasi = new List<Denom>();
+            isiCrmDenganStdDeviasi = new List<PktDenom>();
             isiCrmDenganStdDeviasi = loadPrediksiStdDeviasi("isiCrm");
         }
         void loadSislokCrm()
         {
-            sislokCrm = new List<Denom>();
+            sislokCrm = new List<PktDenom>();
             sislokCrm = loadPrediksiHistoris("sislokCRM");
         }
         void loadSislokCrmDenganStdDeviasi()
         {
-            sislokCrmDenganStdDeviasi = new List<Denom>();
+            sislokCrmDenganStdDeviasi = new List<PktDenom>();
             sislokCrmDenganStdDeviasi = loadPrediksiStdDeviasi("sislokCrm");
         }
         void loadSislokCdm()
         {
-            sislokCdm = new List<Denom>();
+            sislokCdm = new List<PktDenom>();
             sislokCdm = loadPrediksiHistoris("sislokCdm");
         }
         void loadSislokCdmDenganStdDeviasi()
         {
-            sislokCdmDenganStdDeviasi = new List<Denom>();
+            sislokCdmDenganStdDeviasi = new List<PktDenom>();
             sislokCdmDenganStdDeviasi = loadPrediksiStdDeviasi("sislokCdm");
         }
         void loadRasioSislokAtm()
@@ -574,7 +591,7 @@ namespace testProjectBCA.ATM
             Console.WriteLine();
             Console.WriteLine("Load rasio sislok atm");
             Console.WriteLine("======================");
-            rasioSislokAtm = new List<Rasio>();
+            rasioSislokAtm = new List<PktRasio>();
             int rowcount = prediksiIsiAtmOpti.Count; //dataGridView1.Rows.Count;
             //dataGridView1.Hide();
             DateTime startDate = tanggalOptiMin;//Convert.ToDateTime(dataGridView1.Rows[0].Cells[0].Value);
@@ -593,28 +610,32 @@ namespace testProjectBCA.ATM
                     {
                         //SislokCdm
                         SqlDataReader reader;
-                        Rasio tempSislokAtm = new Rasio();
-                        String cText = "SELECT ISNULL(AVG(CAST(sislokAtm100 AS FLOAT)/NULLIF(isiAtm100,0)),0), ISNULL(AVG(CAST(sislokAtm50 AS FLOAT)/NULLIF(isiAtm50,0)),0), ISNULL(AVG(CAST(sislokAtm20 AS FLOAT)/NULLIF(isiAtm20,0)),0) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + kodePkt + "' AND DATENAME(WEEKDAY, TA.Tanggal) = '" + tempDate.DayOfWeek.ToString() + "'";
+                        PktRasio tempSislokAtm = new PktRasio();
+                        String cText = "SELECT ISNULL(AVG(CAST(sislokAtm100 AS FLOAT)/NULLIF(isiAtm100,0)),0), ISNULL(AVG(CAST(sislokAtm50 AS FLOAT)/NULLIF(isiAtm50,0)),0), ISNULL(AVG(CAST(sislokAtm20 AS FLOAT)/NULLIF(isiAtm20,0)),0), kodePkt FROM ViewTransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE "+pktCondition+" AND DATENAME(WEEKDAY, TA.Tanggal) = '" + tempDate.DayOfWeek.ToString() + "'";
 
                         EventAndCondition eac = loadEventWhereCondition(tempDate);
                         if(eac.eventType != "Event 1")
                         {
-                            cText = "SELECT ISNULL(AVG(CAST(sislokAtm100 AS FLOAT)/NULLIF(isiAtm100,0)),0), ISNULL(AVG(CAST(sislokAtm50 AS FLOAT)/NULLIF(isiAtm50,0)),0), ISNULL(AVG(CAST(sislokAtm20 AS FLOAT)/NULLIF(isiAtm20,0)),0) FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE kodePkt = '" + kodePkt + "'";
+                            cText = "SELECT ISNULL(AVG(CAST(sislokAtm100 AS FLOAT)/NULLIF(isiAtm100,0)),0), ISNULL(AVG(CAST(sislokAtm50 AS FLOAT)/NULLIF(isiAtm50,0)),0), ISNULL(AVG(CAST(sislokAtm20 AS FLOAT)/NULLIF(isiAtm20,0)),0), kodePkt FROM ViewTransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal WHERE " + pktCondition;
                         }
                         cText += eac.whereCondition;
                         if (eac.eventType != "Event 4")
                             cText += ")";
+
+                        cText += "\nGROUP BY kodePkt";
                         cmd.CommandText = cText;
                         reader = cmd.ExecuteReader();
-                        if (reader.Read())
+                        while(reader.Read())
                         {
+                            tempSislokAtm = new PktRasio();
                             tempSislokAtm.d100 = Convert.ToDouble(reader[0].ToString());
                             tempSislokAtm.d50 = Convert.ToDouble(reader[1].ToString());
                             tempSislokAtm.d20 = Convert.ToDouble(reader[2].ToString());
-                            tempSislokAtm.tgl = tempDate;
-                            reader.Close();
+                            tempSislokAtm.kodePkt = reader[3].ToString();
+                            tempSislokAtm.tanggal = tempDate;
+                            rasioSislokAtm.Add(tempSislokAtm);
                         }
-                        rasioSislokAtm.Add(tempSislokAtm);
+                        reader.Close();
                         tempDate = tempDate.AddDays(1);
                     }
                 }
@@ -622,7 +643,7 @@ namespace testProjectBCA.ATM
                 Console.WriteLine("Rasio ATM");
                 foreach (var temp in rasioSislokAtm)
                 {
-                    Console.WriteLine(temp.tgl + " " + temp.d100 + " " + temp.d20 + " " + temp.d50);
+                    Console.WriteLine(temp.tanggal + " " + temp.d100 + " " + temp.d20 + " " + temp.d50);
                 }
             }
         }
@@ -642,7 +663,7 @@ namespace testProjectBCA.ATM
             Console.WriteLine(endDate);
 
             //Load Std Deviasi
-            List<Rasio> stdDeviasi = new List<Rasio>();
+            List<PktRasio> stdDeviasi = new List<PktRasio>();
             using (SqlConnection sql = new SqlConnection(Variables.connectionString))
             {
                 using (SqlCommand cmd = new SqlCommand())
@@ -653,47 +674,47 @@ namespace testProjectBCA.ATM
                     {
                         //SislokATM
                         SqlDataReader reader;
-                        Rasio tempStdDeviasi = new Rasio();
+                        PktRasio tempStdDeviasi = new PktRasio();
 
-                        String kondisi = " WHERE kodePkt = '" + kodePkt + "' AND DATENAME(WEEKDAY, TA.Tanggal) = '" + tempDate.DayOfWeek.ToString() + "'";
+                        String kondisi = " WHERE "+pktCondition+" AND DATENAME(WEEKDAY, TA.Tanggal) = '" + tempDate.DayOfWeek.ToString() + "'";
                         int count = 0;
 
                         EventAndCondition eac = loadEventWhereCondition(tempDate);
                         if(eac.eventType != "Event 1")
                         {
-                            kondisi = " WHERE kodePkt = '" + kodePkt + "' ";
+                            kondisi = " WHERE " + pktCondition;
                         }
                         kondisi += eac.whereCondition;
                         if(eac.eventType != "Event 4")
                             kondisi += ")";
 
-                        String subqueryTblAverage = "(SELECT AVG(CAST(sislokAtm100 AS FLOAT)/NULLIF(isiAtm100,0)) AS Average100 ,AVG(CAST(sislokAtm50 AS FLOAT)/NULLIF(isiAtm50,0)) AS Average50 , AVG(CAST(sislokAtm20 AS FLOAT)/NULLIF(isiAtm20,0)) AS Average20 FROM TransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal";
+                        String subqueryTblAverage = "(SELECT AVG(CAST(sislokAtm100 AS FLOAT)/NULLIF(isiAtm100,0)) AS Average100 ,AVG(CAST(sislokAtm50 AS FLOAT)/NULLIF(isiAtm50,0)) AS Average50 , AVG(CAST(sislokAtm20 AS FLOAT)/NULLIF(isiAtm20,0)) AS Average20, kodePkt FROM ViewTransaksiAtms TA JOIN EventTanggal ET ON TA.tanggal = ET.tanggal";
                         subqueryTblAverage += kondisi;
+                        subqueryTblAverage += " GROUP BY kodePkt";
                         subqueryTblAverage += ") avt";
 
                         String query = "SELECT "
-                                    + "[AverageStdDeviasi100] = AVG(CAST((CAST(sislokAtm100 AS FLOAT)/NULLIF(isiAtm100,0) - [Average100]) AS FLOAT) / (CASE WHEN [Average100] = 0 THEN 1 ELSE [Average100] END)), "
-                                    + "[AverageStdDeviasi50] = AVG(CAST((CAST(sislokAtm50 AS FLOAT)/NULLIF(isiAtm50,0) - [Average50])AS FLOAT) / (CASE WHEN [Average50] = 0 THEN 1 ELSE [Average50] END)), "
-                                    + "[AverageStdDeviasi20] = AVG(CAST((CAST(sislokAtm20 AS FLOAT)/NULLIF(isiAtm20,0) - [Average20])AS FLOAT) / (CASE WHEN [Average20] = 0 THEN 1 ELSE [Average20] END)) "
-                                    + "FROM TransaksiAtms TA JOIN EventTanggal ET ON Ta.tanggal = ET.tanggal, " + subqueryTblAverage + kondisi;
+                                    + "\n[AverageStdDeviasi100] = AVG(CAST((CAST(sislokAtm100 AS FLOAT)/NULLIF(isiAtm100,0) - [Average100]) AS FLOAT) / (CASE WHEN [Average100] = 0 THEN 1 ELSE [Average100] END)), "
+                                    + "\n[AverageStdDeviasi50] = AVG(CAST((CAST(sislokAtm50 AS FLOAT)/NULLIF(isiAtm50,0) - [Average50])AS FLOAT) / (CASE WHEN [Average50] = 0 THEN 1 ELSE [Average50] END)), "
+                                    + "\n[AverageStdDeviasi20] = AVG(CAST((CAST(sislokAtm20 AS FLOAT)/NULLIF(isiAtm20,0) - [Average20])AS FLOAT) / (CASE WHEN [Average20] = 0 THEN 1 ELSE [Average20] END)), "
+                                    + "\nTA.kodePkt"
+                                    + "\nFROM ViewTransaksiAtms TA JOIN EventTanggal ET ON Ta.tanggal = ET.tanggal " 
+                                    + "\nJOIN "+ subqueryTblAverage +" ON avt.kodePkt = TA.kodePkt"+ kondisi;
 
+                        query += "\nGROUP BY TA.kodePkt";
                         cmd.CommandText = query;
                         reader = cmd.ExecuteReader();
-                        bool event1 = true;
-                        if (reader.Read())
+                        while (reader.Read())
                         {
-                            if (String.IsNullOrEmpty(reader[0].ToString()) || String.IsNullOrEmpty(reader[1].ToString()) || String.IsNullOrEmpty(reader[2].ToString()))
-                                event1 = false;
-                            else
-                            {
-                                tempStdDeviasi.d100 = (Double)reader[0];
-                                tempStdDeviasi.d50 = (Double)reader[1];
-                                tempStdDeviasi.d20 = (Double)reader[2];
-                                tempStdDeviasi.tgl = tempDate;
-                            }
-                            reader.Close();
+                            tempStdDeviasi = new PktRasio();
+                            tempStdDeviasi.d100 = reader[0] == null ? 0 : (Double)reader[0];
+                            tempStdDeviasi.d50 = reader[1] == null ? 0 : (Double)reader[1];
+                            tempStdDeviasi.d20 = String.IsNullOrEmpty(reader[2].ToString()) ? 0 : (Double)reader[2];
+                            tempStdDeviasi.kodePkt = reader[3].ToString();
+                            tempStdDeviasi.tanggal = tempDate;
+                            stdDeviasi.Add(tempStdDeviasi);
                         }
-                        stdDeviasi.Add(tempStdDeviasi);
+                        reader.Close();
                         tempDate = tempDate.AddDays(1);
                     }
                 }
@@ -702,17 +723,19 @@ namespace testProjectBCA.ATM
                 Console.WriteLine(rasioSislokATMDenganStdDeviasi.Count);
                 foreach (var temp in stdDeviasi)
                 {
-                    Console.WriteLine(temp.tgl + " " + temp.d100 + " " + temp.d50 + " " + temp.d20 + " ");
+                    Console.WriteLine(temp.tanggal + " " + temp.d100 + " " + temp.d50 + " " + temp.d20 + " ");
                 }
             }
-            rasioSislokATMDenganStdDeviasi = new List<Rasio>();
+            rasioSislokATMDenganStdDeviasi = new List<PktRasio>();
+            Console.WriteLine("stdDeviasi Count: " + stdDeviasi.Count + "rasioSislokAtm Count: " + rasioSislokAtm.Count);
             for (int a = 0; a < rasioSislokAtm.Count; a++)
             {
-                Rasio temp = new Rasio();
-                temp.d100 = rasioSislokAtm[a].d100 + (Int64)Math.Round(stdDeviasi[a].d100 * rasioSislokAtm[a].d100);
-                temp.d50 = rasioSislokAtm[a].d50 + (Int64)Math.Round(stdDeviasi[a].d50 * rasioSislokAtm[a].d50);
-                temp.d20 = rasioSislokAtm[a].d20 + (Int64)Math.Round(stdDeviasi[a].d20 * rasioSislokAtm[a].d20);
-                temp.tgl = rasioSislokAtm[a].tgl;
+                PktRasio temp = new PktRasio();
+                temp.d100 = rasioSislokAtm[a].d100 + (Int64)Math.Round(stdDeviasi.Where(x=>x.kodePkt == rasioSislokAtm[a].kodePkt).Select(x=>x.d100).FirstOrDefault() * rasioSislokAtm[a].d100);
+                temp.d50 = rasioSislokAtm[a].d50 + (Int64)Math.Round(stdDeviasi.Where(x => x.kodePkt == rasioSislokAtm[a].kodePkt).Select(x => x.d50).FirstOrDefault() * rasioSislokAtm[a].d50);
+                temp.d20 = rasioSislokAtm[a].d20 + (Int64)Math.Round(stdDeviasi.Where(x => x.kodePkt == rasioSislokAtm[a].kodePkt).Select(x => x.d20).FirstOrDefault() * rasioSislokAtm[a].d20);
+                temp.kodePkt = rasioSislokAtm[a].kodePkt;
+                temp.tanggal = rasioSislokAtm[a].tanggal;
                 rasioSislokATMDenganStdDeviasi.Add(temp);
             }
 
@@ -720,7 +743,7 @@ namespace testProjectBCA.ATM
             Console.WriteLine("===========================");
             foreach (var temp in rasioSislokATMDenganStdDeviasi)
             {
-                Console.WriteLine(temp.tgl.ToShortDateString() + " " + temp.d100 + " " + temp.d50 + " " + temp.d20);
+                Console.WriteLine(temp.tanggal.ToShortDateString() + " " + temp.d100 + " " + temp.d50 + " " + temp.d20);
             }
         }
     }

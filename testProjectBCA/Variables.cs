@@ -18,7 +18,9 @@ namespace testProjectBCA
         public static string txtFilter = "TXT | *.txt";
         public static string connectionString = "Data Source=MSI;Initial Catalog=CAC;Persist Security Info=True;User ID=TEST;Password=1234;";
         public static List<String> listMetodeNonATM = new List<string>() { "Historis", "Std Deviasi", "Historis + Std Deviasi" };
-        public static List<String> listMetodeATM = new List<String>() { "Opti", "Historis", "Opti + Historis", "Historis + Std Deviasi", "Opti + Historis + Std Deviasi" };
+        public static List<String> listMetodeATM = new List<String>() { "Opti", "Historis", "Opti + Historis", "Std Deviasi", "Historis + Std Deviasi", "Opti + Historis + Std Deviasi" };
+        public static String filePktAlsut = "config\\listPktCPCAlsut.txt";
+        public static String fileKodePktYangDiubah = "config\\listKodePktYangDiubah.txt";
         /**Bekas SLA Proses
         //var allDenomIn = (from x in listData
         //                  where ((DateTime)x.tanggal).Day == tgl + 1

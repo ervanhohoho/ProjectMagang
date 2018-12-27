@@ -54,7 +54,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(780, 431);
+            this.ClientSize = new System.Drawing.Size(258, 58);
             this.Controls.Add(this.ExportBtn);
             this.Controls.Add(this.kanwilComboBox);
             this.Name = "ExportOpti";

@@ -268,6 +268,11 @@ namespace testProjectBCA
                     {
                         conn.Open();
 
+
+                        command.CommandText = "DELETE FROM Cashpoint";
+                        command.ExecuteNonQuery();
+                           
+
                         //Creating temp table on database
                         command.CommandText = "CREATE TABLE #TempTable(idCashpoint VARCHAR(255), kodePkt VARCHAR(255))";
                         command.ExecuteNonQuery();
@@ -289,7 +294,7 @@ namespace testProjectBCA
                         //Delete data yang dikelola CPC diganti dengan yang dikelola oleh pkt langsung (yang belakangnya ada 2nya)
                         try
                         {
-                            String fromFile = File.ReadAllText(@"listPktCPCAlsut.txt");
+                            String fromFile = File.ReadAllText(Variables.filePktAlsut);
                             String[] listYangDikelolaCPCAlsut = fromFile.Split('\n');
                             foreach (String pkt in listYangDikelolaCPCAlsut)
                             {
@@ -304,12 +309,12 @@ namespace testProjectBCA
                                 command.ExecuteNonQuery();
                             }
                         }
-                        catch (Exception EX) { }
+                        catch (Exception EX) { Console.WriteLine("File List PKT CPC Alsut not found!"); }
 
                         //Ganti kode pkt yang gak sesuai dengan data di table PKT
                         try
                         {
-                            String fromFile = File.ReadAllText(@"listKodePktYangDiubah.txt");
+                            String fromFile = File.ReadAllText(Variables.fileKodePktYangDiubah);
                             String[] listKodePktYangDiubah = fromFile.Split('\n');
                             foreach(var temp in listKodePktYangDiubah)
                             {
@@ -321,7 +326,8 @@ namespace testProjectBCA
                                 command.ExecuteNonQuery();
                             }
                         }
-                        catch (Exception EX) { }
+                        catch (Exception EX) { Console.WriteLine("File List PKT Yang Diubah not found!"); }
+
                         //Ini DELETE yang TAGT sama AMRT, yang dipake TAGT2 dan AMRT2, ini karena CPC Alsut
                         //command.CommandText = "DELETE FROM #TempTable WHERE kodePkt = 'AMRT' OR kodePkt = 'TAGT'";
                         //command.ExecuteNonQuery();

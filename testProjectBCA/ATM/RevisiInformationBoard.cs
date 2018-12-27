@@ -3641,11 +3641,41 @@ namespace testProjectBCA.ATM
 
                 if (kumpulanPrediksi.success)
                 {
-                    prediksiIsiAtm = kumpulanPrediksi.prediksiIsiAtm;
-                    isiCrm = kumpulanPrediksi.isiCrm2;
-                    sislokCrm = kumpulanPrediksi.sislokCrm;
-                    rasioSislokAtm = kumpulanPrediksi.rasioSislokAtm;
-                    sislokCdm = kumpulanPrediksi.sislokCdm;
+                    prediksiIsiAtm = kumpulanPrediksi.prediksiIsiAtm.GroupBy(x => x.tanggal).Select(x => new Denom()
+                    {
+                        tgl = x.Key,
+                        d100 = x.Sum(y => y.d100),
+                        d50 = x.Sum(y => y.d50),
+                        d20 = x.Sum(y => y.d20),
+                    }).ToList(); ;
+                    isiCrm = kumpulanPrediksi.isiCrm2.GroupBy(x => x.tanggal).Select(x => new Denom()
+                    {
+                        tgl = x.Key,
+                        d100 = x.Sum(y => y.d100),
+                        d50 = x.Sum(y => y.d50),
+                        d20 = x.Sum(y => y.d20),
+                    }).ToList(); ;
+                    sislokCrm = kumpulanPrediksi.sislokCrm.GroupBy(x => x.tanggal).Select(x => new Denom()
+                    {
+                        tgl = x.Key,
+                        d100 = x.Sum(y => y.d100),
+                        d50 = x.Sum(y => y.d50),
+                        d20 = x.Sum(y => y.d20),
+                    }).ToList(); ;
+                    rasioSislokAtm = kumpulanPrediksi.rasioSislokAtm.GroupBy(x => x.tanggal).Select(x => new Rasio()
+                    {
+                        tgl = x.Key,
+                        d100 = x.Sum(y => y.d100),
+                        d50 = x.Sum(y => y.d50),
+                        d20 = x.Sum(y => y.d20),
+                    }).ToList(); ;
+                    sislokCdm = kumpulanPrediksi.sislokCdm.GroupBy(x => x.tanggal).Select(x => new Denom()
+                    {
+                        tgl = x.Key,
+                        d100 = x.Sum(y => y.d100),
+                        d50 = x.Sum(y => y.d50),
+                        d20 = x.Sum(y => y.d20),
+                    }).ToList(); ;
 
                     String eventType = "";
                     foreach (var temp in kumpulanPrediksi.eventType)
@@ -3802,6 +3832,10 @@ namespace testProjectBCA.ATM
                                     where x.kodePkt == KodePkt[pktIndex]
                                     && x.tanggal == DateTime.Today.Date
                                     select x).ToList();
+                int lastIdApproval = (from x in db.Approvals.AsEnumerable()
+                                      where x.kodePkt == KodePkt[pktIndex]
+                                      && x.tanggal == DateTime.Today.Date
+                                      select x.idApproval).Max(x=>x);
                 DateTime tempTanggal = DateTime.Today.Date;
                 int count = 0;
                 int jumlahBon = 0;
@@ -3858,13 +3892,16 @@ namespace testProjectBCA.ATM
                     jumlahBon++;
                     count++;
                 }
+                Console.WriteLine("Last ID Approval: " + lastIdApproval);
                 for (int i = 0; i <= bonYangDisetujui.Count; i++)
                 {
                     DetailApproval newDetailA = (from x in db.DetailApprovals.AsEnumerable()
-                                                 where x.idApproval == lastApproval[lastApproval.Count - 1].idApproval
+                                                 where x.idApproval == lastIdApproval
                                                  && x.tanggal == tempTanggal
                                                  select x).FirstOrDefault();
-                    newDetailA.idApproval = lastApproval[lastApproval.Count - 1].idApproval;
+                    if (newDetailA == null)
+                        break;
+                    newDetailA.idApproval = lastIdApproval;
                     newDetailA.tanggal = tempTanggal;
 
                     if (tanggalSetorLama == tempTanggal && tanggalSetorLama.Date != tglSetor.Value.Date)

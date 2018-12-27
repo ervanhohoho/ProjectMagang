@@ -49,6 +49,7 @@ namespace testProjectBCA
                          join z in db.Pkts on y.kodePkt equals z.kodePkt
                          select new { kodePkt = z.kodePkt, tanggal = x.tanggal,z.koordinator, y.denom, x.prediksi }).ToList();
                 }
+                q = q.GroupBy(x=> new { x.kodePkt,x.tanggal, x.denom , x.koordinator}).Select(x=>new { x.Key.kodePkt, x.Key.tanggal, x.Key.koordinator, x.Key.denom, prediksi = x.Sum(y=>y.prediksi)}).ToList();
 
                 String csv = ServiceStack.Text.CsvSerializer.SerializeToCsv(q);
 

@@ -156,7 +156,7 @@ namespace testProjectBCA.CabangMenu
                 regular = x.regular,
                 inout = actionRekon.ToLower() == "delivery" ? "In" : "Out",
                 validasi = validated ? "Validasi" : "Belum Validasi",
-                koordinator = (from y in en.Pkts where y.kodePktCabang == x.vaultId select y.koordinator).Distinct().FirstOrDefault()
+                koordinator = (from y in en.Pkts where (y.kodePktCabang.Substring(0,4) == "CCAS" ? "CCASA": y.kodePktCabang )== x.vaultId select y.koordinator).Distinct().FirstOrDefault()
             }).ToList();
             return ret;
         }
