@@ -27,8 +27,10 @@ namespace testProjectBCA
             of.Filter = Variables.excelFilter;
             if(of.ShowDialog() == DialogResult.OK)
             {
-                loadForm.ShowSplashScreen();
                 DataSet ds = Util.openExcel(of.FileName);
+                if (ds.Tables.Count == 0)
+                    return;
+                loadForm.ShowSplashScreen();
                 DataTable dt = ds.Tables[0];
 
                 dt.Rows.RemoveAt(0);
@@ -36,7 +38,7 @@ namespace testProjectBCA
                 dt.Rows.RemoveAt(0);
 
 
-                DataRow[] toRemove = dt.Select("Column2 IS NULL");
+                DataRow[] toRemove = dt.Select("Column2 IS NULL AND Column3 IS NULL");
                 foreach (var rem in toRemove)
                     dt.Rows.Remove(rem);
                 foreach (DataRow drOutput in dt.Rows)
@@ -48,7 +50,9 @@ namespace testProjectBCA
                 }
                 Console.WriteLine(dt.Rows[4][1].GetType());
                 dataGridView1.DataSource = dt;
-
+                bool tempFormat = false;
+                if (dt.Columns.Count > 6)
+                    tempFormat = true;
                 var allAbacas = (from x in db.Abacas
                                  select x).ToList();
                 List<Abaca> toInput = new List<Abaca>();
@@ -60,9 +64,17 @@ namespace testProjectBCA
                         String kodeNasabah = (String)dt.Rows[i + 2][2];
                         String namaNasabah = (String)dt.Rows[i + 1][2];
                         int counter = 4;
-                        while (dt.Rows[i + counter][0].ToString() != "Total Amount")
+                        while (!dt.Rows[i + counter][0].ToString().Contains("Total Amount"))
                         {
-
+                            if (tempFormat)
+                            {
+                                if (dt.Rows[i + counter][6].ToString().ToLower().Contains("delivery"))
+                                {
+                                    counter++;
+                                    continue;
+                                }
+                            }
+                            Console.WriteLine("Tanggal [" + (i + counter) + "]: " + dt.Rows[i + counter][1].ToString());
                             DateTime tanggal = DateTime.ParseExact(dt.Rows[i + counter][1].ToString(), "d/M/yyyy", CultureInfo.InvariantCulture);
                             String vendorCardNo = dt.Rows[i + counter][2].ToString();
                             String vendorName = dt.Rows[i + counter][3].ToString();
@@ -71,7 +83,7 @@ namespace testProjectBCA
                             if (String.IsNullOrEmpty(dt.Rows[i + counter][5].ToString()) || dt.Rows[i + counter][5].ToString().Trim() == "-")
                                 totalAmount = 0;
                             else
-                                totalAmount = (Int64) Double.Parse(dt.Rows[i + counter][5].ToString());
+                                totalAmount = (Int64)Double.Parse(dt.Rows[i + counter][5].ToString());
 
                             var checkData = allAbacas.Where(x => x.jobId == jobId && x.tanggal == tanggal).FirstOrDefault();
                             if (checkData != null)
@@ -93,7 +105,7 @@ namespace testProjectBCA
                             toInput.Add(newItem);
                             counter++;
                         }
-                        
+
                         i += counter;
                     }
                 }

@@ -21,7 +21,489 @@ namespace testProjectBCA.ATM
         public List<PktDenom> prediksiIsiAtmOpti { set; get; }
         public List<PktDenom> prediksiIsiAtm { set; get; }//dalem class denom ada 100,50,20
         public List<PktDenom> prediksiIsiAtmDenganStdDeviasi { set; get; }
+        List<PktDenom> loadSaldoAwal()
+        {
+            List<PktDenom> saldoAwal = new List<PktDenom>();
+            using (SqlConnection sql = new SqlConnection(Variables.connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = sql;
+                    cmd.CommandText = "SELECT saldoAkhir100, saldoAkhir50, saldoAkhir20,kodePkt FROM ViewTransaksiAtms WHERE " + pktCondition + " AND tanggal >= '" + tanggalOptiMin.AddDays(-1).ToShortDateString() + "'";
+                    sql.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        saldoAwal.Add(new PktDenom() {
+                            d100 = (Int64)reader[0],
+                            d50 = (Int64)reader[1],
+                            d20 = (Int64)reader[2],
+                            kodePkt = reader[3].ToString()
+                        });
+                    }
+                }
+            }
+            return saldoAwal;
+        }
+        List<PktDenom> loadSetor()
+        {
+            Database1Entities db = new Database1Entities();
+            List<PktDenom>setor = new List<PktDenom>();
+            DateTime today = DateTime.Today.Date;
+            PktDenom temp = new PktDenom();
+            var q2 = (from x in db.ApprovalViews
+                      where 
+                      (
+                        kodePkt == "All" ? 
+                        true : 
+                        (
+                            kodePkt.ToLower().Contains("jabo") || kodePkt.ToLower().Contains("kanwil") ? 
+                            x.kanwil == kodePkt : 
+                            x.kodePkt == kodePkt
+                        )
+                      ) 
+                      && (x.tanggal >= tanggalOptiMin) 
+                      && ((DateTime)x.tanggalApproval) < today
+                      select x).ToList();
+            var idApprovals = (from x in db.ApprovalViews
+                               where
+                               (
+                                    kodePkt == "All" ?
+                                    true :
+                                    (
+                                        kodePkt.ToLower().Contains("jabo") || kodePkt.ToLower().Contains("kanwil") ?
+                                        x.kanwil == kodePkt :
+                                        x.kodePkt == kodePkt
+                                    )
+                               )
+                               group x by x.kodePkt into g
+                               select new {kodePkt = g.Key, idApproval = g.Max(y=>y.idApproval)}
+                            ).ToList();
+            q2 = (from x in q2
+                  join y in idApprovals on new { x.idApproval, x.kodePkt } equals new {y.idApproval, y.kodePkt}
+                  select x).ToList();
 
+            setor = q2.Select(x => new PktDenom() {
+                d100 = x.setor100 == null ? 0 : (Int64) x.setor100,
+                d50 = x.setor50 == null ? 0 : (Int64) x.setor50,
+                d20 = x.setor20 == null ? 0 : (Int64) x.setor20,
+                tanggal = x.tanggal,
+                kodePkt = x.kodePkt
+            }).ToList();
+            return setor;
+        }
+        List<PktDenom> loadBon()
+        {
+            List<PktDenom> bon = new List<PktDenom>();
+            int jumlahBonLaporan = 0;
+            Database1Entities db = new Database1Entities();
+
+            var query = (from a in db.ApprovalViews
+                         where
+                          (
+                            kodePkt == "All" ?
+                            true :
+                            (
+                                kodePkt.ToLower().Contains("jabo") || kodePkt.ToLower().Contains("kanwil") ?
+                                a.kanwil == kodePkt :
+                                a.kodePkt == kodePkt
+                            )
+                          )
+                          && a.tanggalApproval < Variables.todayDate
+                         select a).ToList();
+            var idApprovals = (from x in db.ApprovalViews
+                               where
+                               (
+                                    kodePkt == "All" ?
+                                    true :
+                                    (
+                                        kodePkt.ToLower().Contains("jabo") || kodePkt.ToLower().Contains("kanwil") ?
+                                        x.kanwil == kodePkt :
+                                        x.kodePkt == kodePkt
+                                    )
+                               )
+                               group x by x.kodePkt into g
+                               select new { kodePkt = g.Key, idApproval = g.Max(y => y.idApproval) }
+                            ).ToList();
+            query = (from x in query
+                  join y in idApprovals on new { x.idApproval, x.kodePkt } equals new { y.idApproval, y.kodePkt }
+                  select x).ToList();
+            if (!query.Any())
+            {
+                if(kodePkt.ToLower().Contains("jabo") || kodePkt.ToLower().Contains("kanwil"))
+                {
+                    bon = (from x in db.Pkts
+                           where x.kanwil == kodePkt
+                           select new PktDenom() {
+                               tanggal = Variables.todayDate,
+                               d100 = 0,
+                               d20 = 0,
+                               d50 = 0,
+                               kodePkt = x.kodePkt
+                           }).ToList();
+                }
+                if (kodePkt.ToLower() == "all")
+                {
+                    bon = (from x in db.Pkts
+                           select new PktDenom()
+                           {
+                               tanggal = Variables.todayDate,
+                               d100 = 0,
+                               d20 = 0,
+                               d50 = 0,
+                               kodePkt = x.kodePkt
+                           }).ToList();
+                }
+                else
+                {
+                    bon.Add(new PktDenom() { tanggal = Variables.todayDate, d100 = 0, d20 = 0, d50 = 0, kodePkt = kodePkt });
+                }
+                return bon;
+            }
+            int maxIdApproval = query.Max(x => x.idApproval);
+            Console.WriteLine("Max Id Approval = " + maxIdApproval);
+            query = query.Where(x => x.idApproval == maxIdApproval).ToList();
+            if (query.Any())
+            {
+                bon = (from x in query
+                       where x.tanggal >= tanggalOptiMin
+                       && x.bon100 != -1
+                       select new PktDenom()
+                       {
+                           kodePkt = x.kodePkt,
+                           tanggal = (DateTime)x.tanggal,
+                           d100 = (Int64)x.bon100,
+                           d50 = (Int64)x.bon50,
+                           d20 = (Int64)x.bon20,
+                       }).ToList();
+                if (!bon.Any())
+                {
+                    if (kodePkt.ToLower().Contains("jabo") || kodePkt.ToLower().Contains("kanwil"))
+                    {
+                        bon = (from x in db.Pkts
+                               where x.kanwil == kodePkt
+                               select new PktDenom()
+                               {
+                                   tanggal = Variables.todayDate,
+                                   d100 = 0,
+                                   d20 = 0,
+                                   d50 = 0,
+                                   kodePkt = x.kodePkt
+                               }).ToList();
+                    }
+                    if (kodePkt.ToLower() == "all")
+                    {
+                        bon = (from x in db.Pkts
+                               select new PktDenom()
+                               {
+                                   tanggal = Variables.todayDate,
+                                   d100 = 0,
+                                   d20 = 0,
+                                   d50 = 0,
+                                   kodePkt = x.kodePkt
+                               }).ToList();
+                    }
+                    else
+                    {
+                        bon.Add(new PktDenom() { tanggal = Variables.todayDate, d100 = 0, d20 = 0, d50 = 0, kodePkt = kodePkt });
+                    }
+                }
+                jumlahBonLaporan = bon.Count;
+            }
+            if (!bon.Any())
+            {
+                if (kodePkt.ToLower().Contains("jabo") || kodePkt.ToLower().Contains("kanwil"))
+                {
+                    bon = (from x in db.Pkts
+                           where x.kanwil == kodePkt
+                           select new PktDenom()
+                           {
+                               tanggal = Variables.todayDate,
+                               d100 = 0,
+                               d20 = 0,
+                               d50 = 0,
+                               kodePkt = x.kodePkt
+                           }).ToList();
+                }
+                if (kodePkt.ToLower() == "all")
+                {
+                    bon = (from x in db.Pkts
+                           select new PktDenom()
+                           {
+                               tanggal = Variables.todayDate,
+                               d100 = 0,
+                               d20 = 0,
+                               d50 = 0,
+                               kodePkt = x.kodePkt
+                           }).ToList();
+                }
+                else
+                {
+                    bon.Add(new PktDenom() { tanggal = Variables.todayDate, d100 = 0, d20 = 0, d50 = 0, kodePkt = kodePkt });
+                }
+            }
+            return bon;
+        }
+        public List<PktDenom>loadRekomendasiBonNonE2E(float targetRasio100, float targetRasio50, float targetRasio20)
+        {
+            int counter = 0;
+            int setorCounter = 0;
+            //Disini hari h dianggap hari terakhir ada laporan bon
+            List<PktDenom> rekomendasiBon = new List<PktDenom>();
+            List<PktDenom> saldoAwalIdeal = new List<PktDenom>();
+            List<PktDenom> saldoAkhirH = new List<PktDenom>();
+            List<PktDenom> saldoAwal = loadSaldoAwal();
+            List<PktDenom> setor = loadSetor();
+            List<PktDenom> bon = loadBon();
+            int jumlahBonLaporan = bon.Count;
+            saldoAkhirH = (from sa in saldoAwal
+                           join ia in prediksiIsiAtm on new { sa.kodePkt, sa.tanggal } equals new { ia.kodePkt, ia.tanggal }
+                           join ic in isiCrm2 on new { sa.kodePkt, sa.tanggal } equals new { ic.kodePkt, ic.tanggal }
+                           join scdm in sislokCdm on new { sa.kodePkt, sa.tanggal } equals new { scdm.kodePkt, scdm.tanggal }
+                           join scrm in sislokCrm on new { sa.kodePkt, sa.tanggal } equals new { scrm.kodePkt, scrm.tanggal }
+                           join rsa in rasioSislokAtm on new { sa.kodePkt, sa.tanggal } equals new { rsa.kodePkt, rsa.tanggal }
+                           join b in bon on new { sa.kodePkt, sa.tanggal } equals new { b.kodePkt, b.tanggal }
+                           join s in setor on new { sa.kodePkt, sa.tanggal } equals new { s.kodePkt, s.tanggal }
+                           select new PktDenom()
+                           {
+                               d100 = sa.d100 + ((Int64)Math.Round(rsa.d100 * ia.d100)) + scdm.d100 + scrm.d100 - ia.d100 - ic.d100 + b.d100 - s.d100,
+                               d50 = sa.d50 + ((Int64)Math.Round(rsa.d50 * ia.d50)) + scdm.d50 + scrm.d50 - ia.d50 - ic.d50 + b.d50 - s.d50,
+                               d20 = sa.d20 + ((Int64)Math.Round(rsa.d20 * ia.d20)) + scdm.d20 + scrm.d20 - ia.d20 - ic.d20 + b.d20 - s.d20,
+                               kodePkt = sa.kodePkt,
+                               tanggal = sa.tanggal
+                           }
+                           ).ToList();
+
+            ////Hitung saldo akhir hari h untuk jadi saldo awal h+1
+            //saldoAkhirH.d100 = saldoAwal.d100 + (Int64)Math.Round((rasioSislokAtm[0].d100 * prediksiIsiAtm[0].d100)) + sislokCdm[0].d100 + sislokCrm[0].d100 - prediksiIsiAtm[0].d100 - isiCrm[0].d100 + bon[0].d100;
+            //saldoAkhirH.d50 = saldoAwal.d50 + (Int64)Math.Round((rasioSislokAtm[0].d50 * prediksiIsiAtm[0].d50)) + sislokCdm[0].d50 + sislokCrm[0].d50 - prediksiIsiAtm[0].d50 - isiCrm[0].d50 + bon[0].d50;
+            //saldoAkhirH.d20 = saldoAwal.d20 + (Int64)Math.Round((rasioSislokAtm[0].d20 * prediksiIsiAtm[0].d20)) + sislokCdm[0].d20 + sislokCrm[0].d20 - prediksiIsiAtm[0].d20 - isiCrm[0].d20 + bon[0].d20;
+            //saldoAkhirH.tanggal = tanggalOptiMin;
+
+            //if (setorCounter < setor.Count && saldoAkhirH.tanggal == setor[setorCounter].tgl)
+            //{
+            //    saldoAkhirH.d100 -= setor[setorCounter].d100;
+            //    saldoAkhirH.d50 -= setor[setorCounter].d50;
+            //    saldoAkhirH.d20 -= setor[setorCounter++].d20;
+            //}
+
+
+            ////Kalau ternyata di laporan bonnya lebih dari 1 hitung sampe hari terakhir ada bon yang disetujui
+            //for (int a = 1; a < jumlahBonLaporan; a++)
+            //{
+            //    //Hitung saldo akhir hari h
+            //    saldoAkhirH.tgl = tanggalOptiMin.AddDays(a);
+            //    saldoAkhirH.d100 = saldoAkhirH.d100 + (Int64)Math.Round((rasioSislokAtm[a].d100 * prediksiIsiAtm[a].d100)) + sislokCdm[a].d100 + sislokCrm[a].d100 - prediksiIsiAtm[a].d100 - isiCrm[a].d100 + bon[a].d100;
+            //    saldoAkhirH.d50 = saldoAkhirH.d50 + (Int64)Math.Round((rasioSislokAtm[a].d50 * prediksiIsiAtm[a].d50)) + sislokCdm[a].d50 + sislokCrm[a].d50 - prediksiIsiAtm[a].d50 - isiCrm[a].d50 + bon[a].d50;
+            //    saldoAkhirH.d20 = saldoAkhirH.d20 + (Int64)Math.Round((rasioSislokAtm[a].d20 * prediksiIsiAtm[a].d20)) + sislokCdm[a].d20 + sislokCrm[a].d20 - prediksiIsiAtm[a].d20 - isiCrm[a].d20 + bon[a].d20;
+
+            //    if (setorCounter < setor.Count && saldoAkhirH.tgl == setor[setorCounter].tgl)
+            //    {
+            //        saldoAkhirH.d100 -= setor[setorCounter].d100;
+            //        saldoAkhirH.d50 -= setor[setorCounter].d50;
+            //        saldoAkhirH.d20 -= setor[setorCounter++].d20;
+            //    }
+            //}
+
+            while (saldoAkhirH.Max(x => x.tanggal) < bon.Max(x => x.tanggal))
+            {
+                DateTime tempTgl = saldoAkhirH.Max(x => x.tanggal);
+                saldoAkhirH.AddRange(
+                    (from sa in saldoAkhirH
+                     join ia in prediksiIsiAtm on new { sa.kodePkt, sa.tanggal } equals new { ia.kodePkt, ia.tanggal }
+                     join ic in isiCrm2 on new { sa.kodePkt, sa.tanggal } equals new { ic.kodePkt, ic.tanggal }
+                     join scdm in sislokCdm on new { sa.kodePkt, sa.tanggal } equals new { scdm.kodePkt, scdm.tanggal }
+                     join scrm in sislokCrm on new { sa.kodePkt, sa.tanggal } equals new { scrm.kodePkt, scrm.tanggal }
+                     join rsa in rasioSislokAtm on new { sa.kodePkt, sa.tanggal } equals new { rsa.kodePkt, rsa.tanggal }
+                     where sa.tanggal == tempTgl
+                     select new PktDenom()
+                     {
+                         tanggal = tempTgl.AddDays(1),
+                         d100 = sa.d100 + ((Int64)Math.Round(rsa.d100 * ia.d100)) + scdm.d100 + scrm.d100 - ia.d100 - ic.d100 + bon.Where(x => x.tanggal == tempTgl && x.kodePkt == sa.kodePkt).Select(x => x.d100).FirstOrDefault() - setor.Where(x => x.tanggal == tempTgl && x.kodePkt == sa.kodePkt).Select(x => x.d100).FirstOrDefault(),
+                         d50 = sa.d50 + ((Int64)Math.Round(rsa.d50 * ia.d50)) + scdm.d50 + scrm.d50 - ia.d50 - ic.d50 + bon.Where(x => x.tanggal == tempTgl && x.kodePkt == sa.kodePkt).Select(x => x.d100).FirstOrDefault() - setor.Where(x => x.tanggal == tempTgl && x.kodePkt == sa.kodePkt).Select(x => x.d100).FirstOrDefault(),
+                         d20 = sa.d20 + ((Int64)Math.Round(rsa.d20 * ia.d20)) + scdm.d20 + scrm.d20 - ia.d20 - ic.d20 + bon.Where(x => x.tanggal == tempTgl && x.kodePkt == sa.kodePkt).Select(x => x.d100).FirstOrDefault() - setor.Where(x => x.tanggal == tempTgl && x.kodePkt == sa.kodePkt).Select(x => x.d100).FirstOrDefault(),
+                     }).ToList()
+                );
+            }
+
+
+
+            ////Hitung saldo ideal h+2, h+3, ..
+            //for (int a = 1 + jumlahBonLaporan; a < prediksiIsiAtm.Count; a++)
+            //{
+            //    Denom temp = new Denom();
+            //    temp.d100 = (Int64)Math.Round(((Double)prediksiIsiAtm[a].d100 + (Double)isiCrm[a].d100) * targetRasio100);
+            //    temp.d50 = (Int64)Math.Round(((Double)prediksiIsiAtm[a].d50 + (Double)isiCrm[a].d50) * targetRasio50);
+            //    temp.d20 = (Int64)Math.Round(((Double)prediksiIsiAtm[a].d20 + (Double)isiCrm[a].d20) * targetRasio20);
+            //    temp.tgl = prediksiIsiAtm[a].tgl;
+            //    saldoAwalIdeal.Add(temp);
+            //}
+            DateTime tanggalSaldoAkhirH = saldoAkhirH.Max(x => x.tanggal).AddDays(1);
+            DateTime tanggalSaldoAwalIdeal = tanggalSaldoAkhirH;
+            while (tanggalSaldoAwalIdeal < prediksiIsiAtm.Max(x => x.tanggal))
+            {
+                saldoAwalIdeal.AddRange(
+                    (from sa in prediksiIsiAtm
+                     join ic in isiCrm2 on new { sa.kodePkt, sa.tanggal } equals new { ic.kodePkt, ic.tanggal }
+                     where sa.tanggal == tanggalSaldoAwalIdeal
+                     select new PktDenom()
+                     {
+                         tanggal = tanggalSaldoAwalIdeal,
+                         d100 = (Int64) Math.Round((sa.d100 + ic.d100) * targetRasio100),
+                         d50 = (Int64)Math.Round((sa.d50 + ic.d50) * targetRasio50),
+                         d20 = (Int64)Math.Round((sa.d20 + ic.d20) * targetRasio20),
+                         kodePkt = sa.kodePkt
+                     }).ToList()
+                );
+                tanggalSaldoAwalIdeal = tanggalSaldoAwalIdeal.AddDays(1);
+            }
+
+            //MessageBox.Show("Jumlah Bon Laporan: " + jumlahBonLaporan);
+
+            //Ambil saldo akhir ideal h+1 dari saldo awal ideal h+2
+            //MessageBox.Show("Jumlah Bon Laporan: "+jumlahBonLaporan);
+            List<PktDenom> saldoAkhirH1Ideal = new List<PktDenom>();
+            //saldoAkhirH1Ideal.d100 = saldoAwalIdeal[0].d100;
+            //saldoAkhirH1Ideal.d50 = saldoAwalIdeal[0].d50;
+            //saldoAkhirH1Ideal.d20 = saldoAwalIdeal[0].d20;
+
+            saldoAkhirH1Ideal = (from x in saldoAwalIdeal
+                                 where x.tanggal == saldoAwalIdeal.Min(y => y.tanggal)
+                                 select new PktDenom() {
+                                     kodePkt = x.kodePkt,
+                                     tanggal = x.tanggal,
+                                     d100 = x.d100,
+                                     d20 = x.d20,
+                                     d50 = x.d50
+                                 }).ToList();
+
+            
+            //Hitung rekomendasiBon untuk h+1 (Belom ada setor dan adhoc)
+            List<PktDenom> tempRekomendasiBon = new List<PktDenom>();
+
+            List<String> listPkt = saldoAkhirH.Select(x => x.kodePkt).Distinct().ToList();
+
+            tempRekomendasiBon = (from sah in saldoAkhirH1Ideal
+                                  join sh in saldoAkhirH on new { sah.tanggal, sah.kodePkt } equals new { tanggal = sh.tanggal.AddDays(1), sh.kodePkt }
+                                  join rsa in rasioSislokAtm on new { sah.tanggal, sah.kodePkt } equals new { rsa.tanggal, rsa.kodePkt }
+                                  join scrm in sislokCrm on new { sah.tanggal, sah.kodePkt } equals new { scrm.tanggal, scrm.kodePkt }
+                                  join scdm in sislokCdm on new { sah.tanggal, sah.kodePkt } equals new { scdm.tanggal, scdm.kodePkt }
+                                  join ia in prediksiIsiAtm on new { sah.tanggal, sah.kodePkt } equals new { ia.tanggal, ia.kodePkt }
+                                  join ic in isiCrm2 on new { sah.tanggal, sah.kodePkt } equals new { ic.tanggal, ic.kodePkt }
+                                  from s in setor.Where(x=>x.tanggal == sah.tanggal && x.kodePkt == sah.kodePkt).DefaultIfEmpty()
+                                  where sah.tanggal == tanggalSaldoAkhirH
+                                  select new PktDenom()
+                                  {
+                                      kodePkt = sah.kodePkt,
+                                      tanggal = sah.tanggal,
+                                      d100 = sah.d100 - sh.d100 - ((Int64) Math.Round(rsa.d100 * ia.d100)) - scrm.d100 - scdm.d100 + ia.d100 + ic.d100 + s.d100,
+                                      d50 = sah.d50 - sh.d50 - ((Int64) Math.Round(rsa.d50 * ia.d50)) - scrm.d50 - scdm.d50 + ia.d50 + ic.d50 + s.d50,
+                                      d20 = sah.d20 - sh.d20 - ((Int64) Math.Round(rsa.d20 * ia.d20)) - scrm.d20 - scdm.d20 + ia.d20 + ic.d20 + s.d20,
+                                  }
+                                  ).ToList();
+
+            ////Ini untuk hitung rekomendasi bon H+2 (rekomendasi pertama)
+            //tempRekomendasiBon.d100 = saldoAkhirH1Ideal.d100
+            //    - saldoAkhirH.d100                                                      //Ambil saldo akhir di hari h (jadi saldo awal h+1)
+            //    - (Int64)Math.Round((rasioSislokAtm[jumlahBonLaporan].d100 * prediksiIsiAtm[jumlahBonLaporan].d100))
+            //    - sislokCrm[jumlahBonLaporan].d100
+            //    - sislokCdm[jumlahBonLaporan].d100
+            //    + prediksiIsiAtm[jumlahBonLaporan].d100
+            //    + isiCrm[jumlahBonLaporan].d100;
+
+            //tempRekomendasiBon.d50 = saldoAkhirH1Ideal.d50
+            //    - saldoAkhirH.d50
+            //    - (Int64)Math.Round((rasioSislokAtm[jumlahBonLaporan].d50 * prediksiIsiAtm[jumlahBonLaporan].d50))
+            //    - sislokCrm[jumlahBonLaporan].d50
+            //    - sislokCdm[jumlahBonLaporan].d50
+            //    + prediksiIsiAtm[jumlahBonLaporan].d50
+            //    + isiCrm[jumlahBonLaporan].d50;
+
+            //tempRekomendasiBon.d20 = saldoAkhirH1Ideal.d20
+            //    - saldoAkhirH.d20
+            //    - (Int64)Math.Round((rasioSislokAtm[jumlahBonLaporan].d20 * prediksiIsiAtm[jumlahBonLaporan].d20))
+            //    - sislokCrm[jumlahBonLaporan].d20
+            //    - sislokCdm[jumlahBonLaporan].d20
+            //    + prediksiIsiAtm[jumlahBonLaporan].d20
+            //    + isiCrm[jumlahBonLaporan].d20;
+
+            //tempRekomendasiBon.tgl = tanggalOptiMin.AddDays(jumlahBonLaporan);
+
+
+            //if (setorCounter < setor.Count && tempRekomendasiBon.tgl == setor[setorCounter].tgl)
+            //{
+            //    tempRekomendasiBon.d100 += setor[setorCounter].d100;
+            //    tempRekomendasiBon.d50 += setor[setorCounter].d50;
+            //    tempRekomendasiBon.d20 += setor[setorCounter++].d20;
+            //}
+
+            rekomendasiBon.AddRange(tempRekomendasiBon);
+
+            counter = jumlahBonLaporan + 1;
+            //Hitung rekomendasiBon h+3 keatas
+            for (int a = 1; a < saldoAwalIdeal.Count - 1; a++)
+            {
+                tempRekomendasiBon = new List<PktDenom>();
+
+                tempRekomendasiBon = (from sah in saldoAwalIdeal
+                                      join sh in saldoAwalIdeal on new { tanggal = sah.tanggal.AddDays(1), sah.kodePkt } equals new { tanggal = sh.tanggal, sh.kodePkt }
+                                      join rsa in rasioSislokAtm on new { sah.tanggal, sah.kodePkt } equals new { rsa.tanggal, rsa.kodePkt }
+                                      join scrm in sislokCrm on new { sah.tanggal, sah.kodePkt } equals new { scrm.tanggal, scrm.kodePkt }
+                                      join scdm in sislokCdm on new { sah.tanggal, sah.kodePkt } equals new { scdm.tanggal, scdm.kodePkt }
+                                      join ia in prediksiIsiAtm on new { sah.tanggal, sah.kodePkt } equals new { ia.tanggal, ia.kodePkt }
+                                      join ic in isiCrm2 on new { sah.tanggal, sah.kodePkt } equals new { ic.tanggal, ic.kodePkt }
+                                      from s in setor.Where(x => x.tanggal == sah.tanggal && x.kodePkt == sah.kodePkt).DefaultIfEmpty()
+                                      where sah.tanggal == tanggalSaldoAkhirH.AddDays(a)
+                                      select new PktDenom()
+                                      {
+                                          kodePkt = sah.kodePkt,
+                                          tanggal = sah.tanggal,
+                                          d100 = sah.d100 - sh.d100 - ((Int64)Math.Round(rsa.d100 * ia.d100)) - scrm.d100 - scdm.d100 + ia.d100 + ic.d100 + s.d100,
+                                          d50 = sah.d50 - sh.d50 - ((Int64)Math.Round(rsa.d50 * ia.d50)) - scrm.d50 - scdm.d50 + ia.d50 + ic.d50 + s.d50,
+                                          d20 = sah.d20 - sh.d20 - ((Int64)Math.Round(rsa.d20 * ia.d20)) - scrm.d20 - scdm.d20 + ia.d20 + ic.d20 + s.d20,
+                                      }
+                                  ).ToList();
+
+
+
+                //Denom saldoAkhirIdeal = saldoAwalIdeal[a + 1];
+                ////Denom saldoSementara = new Denom();`
+                ////saldoSementara.d100 = saldoAwalIdeal[a].d100 - isiCrm[counter].d100;
+                //tempRekomendasiBon.d100 = saldoAwalIdeal[a + 1].d100                                 //Saldo akhir h+1 
+                //    - saldoAwalIdeal[a].d100                                                      //saldo awal hari h
+                //    - (Int64)Math.Round((rasioSislokAtm[counter + a].d100 * prediksiIsiAtm[counter + a].d100))
+                //    - sislokCrm[counter + a].d100
+                //    - sislokCdm[counter + a].d100
+                //    + prediksiIsiAtm[counter + a].d100
+                //    + isiCrm[counter + a].d100;
+                //tempRekomendasiBon.d50 = saldoAwalIdeal[a + 1].d50                                 //Saldo akhir h+1 
+                //    - saldoAwalIdeal[a].d50                                                      //saldo awal hari h
+                //    - (Int64)Math.Round((rasioSislokAtm[counter + a].d50 * prediksiIsiAtm[counter + a].d50))
+                //    - sislokCrm[counter + a].d50
+                //    - sislokCdm[counter + a].d50
+                //    + prediksiIsiAtm[counter + a].d50
+                //    + isiCrm[counter + a].d50;
+                //tempRekomendasiBon.d20 = saldoAwalIdeal[a + 1].d20                                 //Saldo akhir h+1 
+                //    - saldoAwalIdeal[a].d20                                                      //saldo awal hari h
+                //    - (Int64)Math.Round((rasioSislokAtm[counter + a].d20 * prediksiIsiAtm[counter + a].d20))
+                //    - sislokCrm[counter + a].d20
+                //    - sislokCdm[counter + a].d20
+                //    + prediksiIsiAtm[counter + a].d20
+                //    + isiCrm[counter + a].d20;
+                //tempRekomendasiBon.tgl = tanggalOptiMin.AddDays(counter + a);
+
+                //if (setorCounter < setor.Count && tempRekomendasiBon.tgl == setor[setorCounter].tgl)
+                //{
+                //    tempRekomendasiBon.d100 += setor[setorCounter].d100;
+                //    tempRekomendasiBon.d50 += setor[setorCounter].d50;
+                //    tempRekomendasiBon.d20 += setor[setorCounter++].d20;
+                //}
+
+                rekomendasiBon.AddRange(tempRekomendasiBon);
+                //counter++;
+            }
+            return rekomendasiBon;
+        }
         public List<DateTime> kumpulanTanggal { set; get; }
         public String kodePkt { set; get; }
         public DateTime tanggalOptiMin { set; get; }
@@ -55,9 +537,9 @@ namespace testProjectBCA.ATM
 
             success = true;
 
-            pktCondition = "kodePkt = '" + kodePkt + "'";
+            pktCondition = "TA.kodePkt = '" + kodePkt + "'";
             if (kodePkt.ToLower().Contains("kanwil") || kodePkt.ToLower().Contains("jabo"))
-                pktCondition = "kanwil = '" + kodePkt + "'";
+                pktCondition = "TA.kanwil = '" + kodePkt + "'";
             if (kodePkt.ToLower() == "all")
                 pktCondition = "1=1";
 

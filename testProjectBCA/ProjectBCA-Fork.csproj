@@ -169,6 +169,9 @@
     <Compile Include="ApprovalPembagianSaldo.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="ApprovalView.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="AsuransiLayanan.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -211,6 +214,18 @@
     </Compile>
     <Compile Include="CabangMenu\RekonSaldoForm.Designer.cs">
       <DependentUpon>RekonSaldoForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CabangMenu\ReportRekonSaldo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CabangMenu\ReportRekonSaldo.designer.cs">
+      <DependentUpon>ReportRekonSaldo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CabangMenu\SummaryTransaksiCabang.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CabangMenu\SummaryTransaksiCabang.designer.cs">
+      <DependentUpon>SummaryTransaksiCabang.cs</DependentUpon>
     </Compile>
     <Compile Include="CabangMenu\WPRekonSaldoForm.cs">
       <SubType>Form</SubType>
@@ -648,6 +663,9 @@
     <Compile Include="VaultOrderBlogHistory.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="ViewTransaksiAtm.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="ATM\InputDataBankLainForm.resx">
       <DependentUpon>InputDataBankLainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -668,6 +686,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CabangMenu\RekonSaldoForm.resx">
       <DependentUpon>RekonSaldoForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CabangMenu\ReportRekonSaldo.resx">
+      <DependentUpon>ReportRekonSaldo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CabangMenu\SummaryTransaksiCabang.resx">
+      <DependentUpon>SummaryTransaksiCabang.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CabangMenu\WPRekonSaldoForm.resx">
       <DependentUpon>WPRekonSaldoForm.cs</DependentUpon>

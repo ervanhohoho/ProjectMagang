@@ -123,3 +123,5 @@ C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\te
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.pdb
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\ProjectBCA-Fork.csprojAssemblyReference.cache
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.ATM.ProyeksiATMForm.resources
+C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.CabangMenu.ReportRekonSaldo.resources
+C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.CabangMenu.SummaryTransaksiCabang.resources

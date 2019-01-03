@@ -557,6 +557,105 @@
     <Property Name="userName" Type="varchar" MaxLength="50" />
     <Property Name="currencyAmmount" Type="bigint" />
   </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'CAC.dbo.ApprovalView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="ApprovalView">
+    <Key>
+      <PropertyRef Name="idApproval" />
+      <PropertyRef Name="tanggal" />
+      <PropertyRef Name="kodePkt" />
+      <PropertyRef Name="idDetailApproval" />
+      <PropertyRef Name="tanggalApproval" />
+    </Key>
+    <Property Name="idApproval" Type="int" Nullable="false" />
+    <Property Name="tanggal" Type="date" Nullable="false" />
+    <Property Name="kodePkt" Type="varchar" MaxLength="7" Nullable="false" />
+    <Property Name="inputOpr" Type="varchar" MaxLength="50" />
+    <Property Name="inputSpv" Type="varchar" MaxLength="50" />
+    <Property Name="inputNoTxn" Type="varchar" MaxLength="20" />
+    <Property Name="validasiOpr" Type="varchar" MaxLength="50" />
+    <Property Name="validasiSpv" Type="varchar" MaxLength="50" />
+    <Property Name="validasiNoTxn" Type="varchar" MaxLength="20" />
+    <Property Name="koordinator" Type="varchar" MaxLength="50" />
+    <Property Name="kanwil" Type="varchar" MaxLength="50" />
+    <Property Name="idDetailApproval" Type="int" Nullable="false" />
+    <Property Name="Expr1" Type="date" />
+    <Property Name="saldoAwal20" Type="bigint" />
+    <Property Name="saldoAwal50" Type="bigint" />
+    <Property Name="saldoAwal100" Type="bigint" />
+    <Property Name="sislokCRM20" Type="bigint" />
+    <Property Name="sislokCRM50" Type="bigint" />
+    <Property Name="sislokCRM100" Type="bigint" />
+    <Property Name="sislokCDM20" Type="bigint" />
+    <Property Name="sislokCDM50" Type="bigint" />
+    <Property Name="sislokCDM100" Type="bigint" />
+    <Property Name="sislokATM20" Type="bigint" />
+    <Property Name="sislokATM100" Type="bigint" />
+    <Property Name="sislokATM50" Type="bigint" />
+    <Property Name="isiATM20" Type="bigint" />
+    <Property Name="isiATM100" Type="bigint" />
+    <Property Name="isiATM50" Type="bigint" />
+    <Property Name="isiCRM20" Type="bigint" />
+    <Property Name="isiCRM50" Type="bigint" />
+    <Property Name="bon20" Type="bigint" />
+    <Property Name="isiCRM100" Type="bigint" />
+    <Property Name="bon50" Type="bigint" />
+    <Property Name="bon100" Type="bigint" />
+    <Property Name="adhoc20" Type="bigint" />
+    <Property Name="adhoc50" Type="bigint" />
+    <Property Name="adhoc100" Type="bigint" />
+    <Property Name="setor20" Type="bigint" />
+    <Property Name="setor50" Type="bigint" />
+    <Property Name="setor100" Type="bigint" />
+    <Property Name="setorAdhoc100" Type="bigint" />
+    <Property Name="setorAdhoc50" Type="bigint" />
+    <Property Name="setorAdhoc20" Type="bigint" />
+    <Property Name="tanggalApproval" Type="date" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'CAC.dbo.ViewTransaksiAtms' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="ViewTransaksiAtms">
+    <Key>
+      <PropertyRef Name="idTransaksi" />
+      <PropertyRef Name="tanggal" />
+      <PropertyRef Name="kodePkt" />
+    </Key>
+    <Property Name="idTransaksi" Type="int" Nullable="false" />
+    <Property Name="tanggal" Type="date" Nullable="false" />
+    <Property Name="kodePkt" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="saldoAwal20" Type="bigint" />
+    <Property Name="saldoAwal50" Type="bigint" />
+    <Property Name="saldoAwal100" Type="bigint" />
+    <Property Name="sislokATM20" Type="bigint" />
+    <Property Name="sislokATM50" Type="bigint" />
+    <Property Name="sislokATM100" Type="bigint" />
+    <Property Name="sislokCRM20" Type="bigint" />
+    <Property Name="sislokCRM50" Type="bigint" />
+    <Property Name="sislokCRM100" Type="bigint" />
+    <Property Name="sislokCDM20" Type="bigint" />
+    <Property Name="sislokCDM50" Type="bigint" />
+    <Property Name="sislokCDM100" Type="bigint" />
+    <Property Name="isiATM20" Type="bigint" />
+    <Property Name="isiATM50" Type="bigint" />
+    <Property Name="isiATM100" Type="bigint" />
+    <Property Name="isiCRM20" Type="bigint" />
+    <Property Name="isiCRM50" Type="bigint" />
+    <Property Name="isiCRM100" Type="bigint" />
+    <Property Name="bon20" Type="bigint" />
+    <Property Name="bon50" Type="bigint" />
+    <Property Name="bon100" Type="bigint" />
+    <Property Name="adhoc20" Type="bigint" />
+    <Property Name="adhoc50" Type="bigint" />
+    <Property Name="adhoc100" Type="bigint" />
+    <Property Name="setor20" Type="bigint" />
+    <Property Name="setor50" Type="bigint" />
+    <Property Name="setor100" Type="bigint" />
+    <Property Name="saldoAkhir20" Type="bigint" />
+    <Property Name="saldoAkhir50" Type="bigint" />
+    <Property Name="saldoAkhir100" Type="bigint" />
+    <Property Name="kanwil" Type="varchar" MaxLength="50" />
+    <Property Name="koordinator" Type="varchar" MaxLength="50" />
+  </EntityType>
   <Association Name="FK_laporanBon_Pkt">
     <End Role="Pkt" Type="Self.Pkt" Multiplicity="0..1" />
     <End Role="laporanBon" Type="Self.laporanBon" Multiplicity="*" />
@@ -618,6 +717,93 @@
     <EntitySet Name="TabelTarikanSetoranCRM" EntityType="Self.TabelTarikanSetoranCRM" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TransaksiAtms" EntityType="Self.TransaksiAtms" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="VaultOrderBlogHistory" EntityType="Self.VaultOrderBlogHistory" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ApprovalView" EntityType="Self.ApprovalView" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [ApprovalView].[idApproval] AS [idApproval], 
+    [ApprovalView].[tanggal] AS [tanggal], 
+    [ApprovalView].[kodePkt] AS [kodePkt], 
+    [ApprovalView].[inputOpr] AS [inputOpr], 
+    [ApprovalView].[inputSpv] AS [inputSpv], 
+    [ApprovalView].[inputNoTxn] AS [inputNoTxn], 
+    [ApprovalView].[validasiOpr] AS [validasiOpr], 
+    [ApprovalView].[validasiSpv] AS [validasiSpv], 
+    [ApprovalView].[validasiNoTxn] AS [validasiNoTxn], 
+    [ApprovalView].[koordinator] AS [koordinator], 
+    [ApprovalView].[kanwil] AS [kanwil], 
+    [ApprovalView].[idDetailApproval] AS [idDetailApproval], 
+    [ApprovalView].[Expr1] AS [Expr1], 
+    [ApprovalView].[saldoAwal20] AS [saldoAwal20], 
+    [ApprovalView].[saldoAwal50] AS [saldoAwal50], 
+    [ApprovalView].[saldoAwal100] AS [saldoAwal100], 
+    [ApprovalView].[sislokCRM20] AS [sislokCRM20], 
+    [ApprovalView].[sislokCRM50] AS [sislokCRM50], 
+    [ApprovalView].[sislokCRM100] AS [sislokCRM100], 
+    [ApprovalView].[sislokCDM20] AS [sislokCDM20], 
+    [ApprovalView].[sislokCDM50] AS [sislokCDM50], 
+    [ApprovalView].[sislokCDM100] AS [sislokCDM100], 
+    [ApprovalView].[sislokATM20] AS [sislokATM20], 
+    [ApprovalView].[sislokATM100] AS [sislokATM100], 
+    [ApprovalView].[sislokATM50] AS [sislokATM50], 
+    [ApprovalView].[isiATM20] AS [isiATM20], 
+    [ApprovalView].[isiATM100] AS [isiATM100], 
+    [ApprovalView].[isiATM50] AS [isiATM50], 
+    [ApprovalView].[isiCRM20] AS [isiCRM20], 
+    [ApprovalView].[isiCRM50] AS [isiCRM50], 
+    [ApprovalView].[bon20] AS [bon20], 
+    [ApprovalView].[isiCRM100] AS [isiCRM100], 
+    [ApprovalView].[bon50] AS [bon50], 
+    [ApprovalView].[bon100] AS [bon100], 
+    [ApprovalView].[adhoc20] AS [adhoc20], 
+    [ApprovalView].[adhoc50] AS [adhoc50], 
+    [ApprovalView].[adhoc100] AS [adhoc100], 
+    [ApprovalView].[setor20] AS [setor20], 
+    [ApprovalView].[setor50] AS [setor50], 
+    [ApprovalView].[setor100] AS [setor100], 
+    [ApprovalView].[setorAdhoc100] AS [setorAdhoc100], 
+    [ApprovalView].[setorAdhoc50] AS [setorAdhoc50], 
+    [ApprovalView].[setorAdhoc20] AS [setorAdhoc20], 
+    [ApprovalView].[tanggalApproval] AS [tanggalApproval]
+    FROM [dbo].[ApprovalView] AS [ApprovalView]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="ViewTransaksiAtms" EntityType="Self.ViewTransaksiAtms" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [ViewTransaksiAtms].[idTransaksi] AS [idTransaksi], 
+    [ViewTransaksiAtms].[tanggal] AS [tanggal], 
+    [ViewTransaksiAtms].[kodePkt] AS [kodePkt], 
+    [ViewTransaksiAtms].[saldoAwal20] AS [saldoAwal20], 
+    [ViewTransaksiAtms].[saldoAwal50] AS [saldoAwal50], 
+    [ViewTransaksiAtms].[saldoAwal100] AS [saldoAwal100], 
+    [ViewTransaksiAtms].[sislokATM20] AS [sislokATM20], 
+    [ViewTransaksiAtms].[sislokATM50] AS [sislokATM50], 
+    [ViewTransaksiAtms].[sislokATM100] AS [sislokATM100], 
+    [ViewTransaksiAtms].[sislokCRM20] AS [sislokCRM20], 
+    [ViewTransaksiAtms].[sislokCRM50] AS [sislokCRM50], 
+    [ViewTransaksiAtms].[sislokCRM100] AS [sislokCRM100], 
+    [ViewTransaksiAtms].[sislokCDM20] AS [sislokCDM20], 
+    [ViewTransaksiAtms].[sislokCDM50] AS [sislokCDM50], 
+    [ViewTransaksiAtms].[sislokCDM100] AS [sislokCDM100], 
+    [ViewTransaksiAtms].[isiATM20] AS [isiATM20], 
+    [ViewTransaksiAtms].[isiATM50] AS [isiATM50], 
+    [ViewTransaksiAtms].[isiATM100] AS [isiATM100], 
+    [ViewTransaksiAtms].[isiCRM20] AS [isiCRM20], 
+    [ViewTransaksiAtms].[isiCRM50] AS [isiCRM50], 
+    [ViewTransaksiAtms].[isiCRM100] AS [isiCRM100], 
+    [ViewTransaksiAtms].[bon20] AS [bon20], 
+    [ViewTransaksiAtms].[bon50] AS [bon50], 
+    [ViewTransaksiAtms].[bon100] AS [bon100], 
+    [ViewTransaksiAtms].[adhoc20] AS [adhoc20], 
+    [ViewTransaksiAtms].[adhoc50] AS [adhoc50], 
+    [ViewTransaksiAtms].[adhoc100] AS [adhoc100], 
+    [ViewTransaksiAtms].[setor20] AS [setor20], 
+    [ViewTransaksiAtms].[setor50] AS [setor50], 
+    [ViewTransaksiAtms].[setor100] AS [setor100], 
+    [ViewTransaksiAtms].[saldoAkhir20] AS [saldoAkhir20], 
+    [ViewTransaksiAtms].[saldoAkhir50] AS [saldoAkhir50], 
+    [ViewTransaksiAtms].[saldoAkhir100] AS [saldoAkhir100], 
+    [ViewTransaksiAtms].[kanwil] AS [kanwil], 
+    [ViewTransaksiAtms].[koordinator] AS [koordinator]
+    FROM [dbo].[ViewTransaksiAtms] AS [ViewTransaksiAtms]</DefiningQuery>
+    </EntitySet>
     <AssociationSet Name="FK_laporanBon_Pkt" Association="Self.FK_laporanBon_Pkt">
       <End Role="Pkt" EntitySet="Pkt" />
       <End Role="laporanBon" EntitySet="laporanBon" />

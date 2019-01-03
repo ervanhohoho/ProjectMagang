@@ -39,10 +39,12 @@ namespace testProjectBCA.CabangMenu
             DataSet ds = Util.openExcel(path);
 
             foreach (DataTable temp in ds.Tables)
-                processTable(temp, path);
+                if(!processTable(temp, path))
+                    MessageBox.Show(path + " Sheet " + temp.TableName + " tidak benar");
+
 
         }
-        void processTable(DataTable table, String path)
+        bool processTable(DataTable table, String path)
         {
             GC.Collect();
             int ROWSTARTKERTAS = 12,
@@ -87,7 +89,7 @@ namespace testProjectBCA.CabangMenu
                 namaPkt = table.Rows[5]['L' - 'A'].ToString();
             }catch(Exception p)
             {
-                MessageBox.Show(path + " Sheet " + table.TableName + " tidak benar");
+                return false;
             }
             String tanggalS = table.Rows[8]['B' - 'A'].ToString();
 
@@ -636,10 +638,11 @@ namespace testProjectBCA.CabangMenu
                 }
                 db.SaveChanges();
                 db.Dispose();
+                return true;
             }
             else
             {
-                return;
+                return true;
             }
         }
     }

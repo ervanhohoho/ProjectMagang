@@ -31,6 +31,7 @@
             this.pieChart1 = new LiveCharts.WinForms.PieChart();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.dateTimePicker3 = new System.Windows.Forms.DateTimePicker();
+            this.comboKanwil = new System.Windows.Forms.ComboBox();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -47,6 +48,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.comboKanwil);
             this.groupBox2.Controls.Add(this.dateTimePicker3);
             this.groupBox2.Controls.Add(this.pieChart1);
             this.groupBox2.Location = new System.Drawing.Point(12, 12);
@@ -63,6 +65,16 @@
             this.dateTimePicker3.Size = new System.Drawing.Size(200, 20);
             this.dateTimePicker3.TabIndex = 8;
             this.dateTimePicker3.ValueChanged += new System.EventHandler(this.dateTimePicker3_ValueChanged);
+            // 
+            // comboKanwil
+            // 
+            this.comboKanwil.FormattingEnabled = true;
+            this.comboKanwil.Location = new System.Drawing.Point(359, 25);
+            this.comboKanwil.Name = "comboKanwil";
+            this.comboKanwil.Size = new System.Drawing.Size(121, 21);
+            this.comboKanwil.TabIndex = 9;
+            this.comboKanwil.SelectionChangeCommitted += new System.EventHandler(this.comboKanwil_SelectionChangeCommitted);
+            this.comboKanwil.SelectedValueChanged += new System.EventHandler(this.comboKanwil_SelectedValueChanged);
             // 
             // dashboardCojExtension
             // 
@@ -81,5 +93,6 @@
         private LiveCharts.WinForms.PieChart pieChart1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.DateTimePicker dateTimePicker3;
+        private System.Windows.Forms.ComboBox comboKanwil;
     }
 }

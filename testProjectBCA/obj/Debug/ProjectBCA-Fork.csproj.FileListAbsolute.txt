@@ -55,7 +55,6 @@ C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\bin\Debug\Lume
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\bin\Debug\MoreLinq.xml
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\bin\Debug\ServiceStack.Text.xml
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\bin\Debug\System.ValueTuple.xml
-C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\ProjectBCA-Fork.csprojAssemblyReference.cache
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.ATM.InputDataBankLainForm.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.ATM.ProyeksiATMForm.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.DailyStockForm.resources
@@ -123,3 +122,6 @@ C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\test
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\ProjectBCA-Fork.csproj.CopyComplete
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.exe
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.pdb
+C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\ProjectBCA-Fork.csprojAssemblyReference.cache
+C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.CabangMenu.ReportRekonSaldo.resources
+C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.CabangMenu.SummaryTransaksiCabang.resources

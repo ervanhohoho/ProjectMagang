@@ -46,6 +46,7 @@
             this.rasioApprovalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.forecastATMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.proyeksiATMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.perbandinganSaldoAwalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.initTransaksiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -67,6 +68,9 @@
             this.transaksiVaultToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rekonSaldoToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.rekonSaldoToolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.reportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.telatValidasiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.transaksiSetorTarikCabangToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sLAProsesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.proyeksiLikuiditaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.orderTrackingToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -100,7 +104,6 @@
             this.cRMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setoranCRMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inputDataCashpointToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.proyeksiATMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -249,6 +252,13 @@
             this.forecastATMToolStripMenuItem.Text = "Forecast ATM";
             this.forecastATMToolStripMenuItem.Click += new System.EventHandler(this.forecastATMToolStripMenuItem_Click);
             // 
+            // proyeksiATMToolStripMenuItem
+            // 
+            this.proyeksiATMToolStripMenuItem.Name = "proyeksiATMToolStripMenuItem";
+            this.proyeksiATMToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
+            this.proyeksiATMToolStripMenuItem.Text = "Proyeksi ATM";
+            this.proyeksiATMToolStripMenuItem.Click += new System.EventHandler(this.proyeksiATMToolStripMenuItem_Click);
+            // 
             // perbandinganSaldoAwalToolStripMenuItem
             // 
             this.perbandinganSaldoAwalToolStripMenuItem.Name = "perbandinganSaldoAwalToolStripMenuItem";
@@ -373,7 +383,8 @@
             this.cabangToolStripMenuItem1,
             this.transaksiVaultToolStripMenuItem,
             this.rekonSaldoToolStripMenuItem2,
-            this.rekonSaldoToolStripMenuItem3});
+            this.rekonSaldoToolStripMenuItem3,
+            this.reportToolStripMenuItem});
             this.rekonSaldoToolStripMenuItem1.Name = "rekonSaldoToolStripMenuItem1";
             this.rekonSaldoToolStripMenuItem1.Size = new System.Drawing.Size(185, 22);
             this.rekonSaldoToolStripMenuItem1.Text = "Rekon Saldo";
@@ -413,6 +424,29 @@
             this.rekonSaldoToolStripMenuItem3.Size = new System.Drawing.Size(199, 22);
             this.rekonSaldoToolStripMenuItem3.Text = "Rekon Saldo";
             this.rekonSaldoToolStripMenuItem3.Click += new System.EventHandler(this.rekonSaldoToolStripMenuItem3_Click);
+            // 
+            // reportToolStripMenuItem
+            // 
+            this.reportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.telatValidasiToolStripMenuItem,
+            this.transaksiSetorTarikCabangToolStripMenuItem});
+            this.reportToolStripMenuItem.Name = "reportToolStripMenuItem";
+            this.reportToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.reportToolStripMenuItem.Text = "Report";
+            // 
+            // telatValidasiToolStripMenuItem
+            // 
+            this.telatValidasiToolStripMenuItem.Name = "telatValidasiToolStripMenuItem";
+            this.telatValidasiToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
+            this.telatValidasiToolStripMenuItem.Text = "Telat Validasi";
+            this.telatValidasiToolStripMenuItem.Click += new System.EventHandler(this.telatValidasiToolStripMenuItem_Click);
+            // 
+            // transaksiSetorTarikCabangToolStripMenuItem
+            // 
+            this.transaksiSetorTarikCabangToolStripMenuItem.Name = "transaksiSetorTarikCabangToolStripMenuItem";
+            this.transaksiSetorTarikCabangToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
+            this.transaksiSetorTarikCabangToolStripMenuItem.Text = "Transaksi Setor/Tarik Cabang";
+            this.transaksiSetorTarikCabangToolStripMenuItem.Click += new System.EventHandler(this.transaksiSetorTarikCabangToolStripMenuItem_Click);
             // 
             // sLAProsesToolStripMenuItem
             // 
@@ -671,13 +705,6 @@
             this.inputDataCashpointToolStripMenuItem1.Text = "Input Data Cashpoint";
             this.inputDataCashpointToolStripMenuItem1.Click += new System.EventHandler(this.inputDataCashpointToolStripMenuItem1_Click);
             // 
-            // proyeksiATMToolStripMenuItem
-            // 
-            this.proyeksiATMToolStripMenuItem.Name = "proyeksiATMToolStripMenuItem";
-            this.proyeksiATMToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
-            this.proyeksiATMToolStripMenuItem.Text = "Proyeksi ATM";
-            this.proyeksiATMToolStripMenuItem.Click += new System.EventHandler(this.proyeksiATMToolStripMenuItem_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -775,5 +802,8 @@
         private System.Windows.Forms.ToolStripMenuItem exportAbacasToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem transaksiVaultToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem proyeksiATMToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem reportToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem telatValidasiToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem transaksiSetorTarikCabangToolStripMenuItem;
     }
 }

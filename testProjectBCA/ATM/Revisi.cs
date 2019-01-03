@@ -195,8 +195,25 @@ namespace testProjectBCA
             List<transaksiPkt> list = new List<transaksiPkt>();
             for (int x = 0; x < data.Tables.Count; x++)
             {
-
                 var table = data.Tables[x];
+                if (data.Tables[x].Columns.Count < 12)
+                {
+                    MessageBox.Show(" Sheet " + data.Tables[x].TableName + " Format excel salah\nSheet berikutnya tetap diproses.");
+                    continue;
+                }
+                String sDate = data.Tables[x].Rows[12][5].ToString();
+                if (x == 0)
+                {
+                    try
+                    {
+                        DateTime tempDate = Convert.ToDateTime(sDate);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(" Sheet: " + data.Tables[x].TableName + " Format excel salah\nSheet berikutnya tetap diproses.");
+                    }
+                }
+
                 try
                 {
                     table.Rows[5][5].ToString();

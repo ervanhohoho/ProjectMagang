@@ -38,7 +38,7 @@ namespace testProjectBCA.ATM
         private void LoadBtn_Click(object sender, EventArgs e)
         {
             loadForm.ShowSplashScreen();
-            DateTime startDate = StartDatePicker.Value.Date,
+            DateTime startDate = Variables.todayDate.Date,
                 endDate = EndDatePicker.Value.Date,
                 currDate = startDate;
             String kodePkt = KodePktCombo.SelectedItem.ToString(),
@@ -53,99 +53,7 @@ namespace testProjectBCA.ATM
 
 
 
-            //if (kodePkt == "All")
-            //{
-            //    List<String> listKodePkt = (from x in db.Pkts
-            //                                where !String.IsNullOrEmpty(x.kodePktATM) && x.kodePkt.Length > 1
-            //                                select x.kodePktATM).Distinct().ToList();
-            //    foreach (var temp in listKodePkt)
-            //    {
-            //        KumpulanPrediksi prediksi = new KumpulanPrediksi(temp, loadKumpulanTanggalUntukPrediksi(), startDate, endDate, metode, metode);
-            //        List<String> eventType = prediksi.eventType;
-            //        List<JenisEvent> listEvent = new List<JenisEvent>();
-
-            //        for (int a = 0; a < eventType.Count; a++)
-            //        {
-            //            listEvent.Add(new JenisEvent() { tgl = startDate.AddDays(a), eventType = eventType[a].Split(' ')[3] + eventType[a].Split(' ')[4] });
-            //        }
-
-            //        hasil.AddRange((from isiATM in prediksi.prediksiIsiAtm
-            //                        join isiCRM in prediksi.isiCrm2 on isiATM.tgl equals isiCRM.tgl
-            //                        join sislokATM in prediksi.rasioSislokAtm on isiATM.tgl equals sislokATM.tgl
-            //                        join sislokCRM in prediksi.sislokCrm on isiATM.tgl equals sislokCRM.tgl
-            //                        join sislokCDM in prediksi.sislokCdm on isiATM.tgl equals sislokCDM.tgl
-            //                        join events in listEvent on isiATM.tgl equals events.tgl
-            //                        select new ViewProyeksiAtm()
-            //                        {
-            //                            tanggal = isiATM.tgl,
-            //                            isiATM100 = isiATM.d100,
-            //                            isiATM50 = isiATM.d50,
-            //                            isiATM20 = isiATM.d20,
-            //                            isiCRM100 = isiCRM.d100,
-            //                            isiCRM50 = isiCRM.d50,
-            //                            isiCRM20 = isiCRM.d20,
-            //                            sislokATM100 = (Int64)Math.Round(sislokATM.d100 * isiATM.d100),
-            //                            sislokATM50 = (Int64)Math.Round(sislokATM.d50 * isiATM.d50),
-            //                            sislokATM20 = (Int64)Math.Round(sislokATM.d20 * isiATM.d20),
-            //                            sislokCRM100 = sislokCRM.d100,
-            //                            sislokCRM50 = sislokCRM.d50,
-            //                            sislokCRM20 = sislokCRM.d20,
-            //                            sislokCDM100 = sislokCDM.d100,
-            //                            sislokCDM50 = sislokCDM.d50,
-            //                            sislokCDM20 = sislokCDM.d20,
-            //                            eventType = events.eventType,
-            //                            kodePkt = temp
-            //                        }).ToList());
-            //    }
-            //}
-            //else if (kodePkt.ToLower().Contains("jabo") || kodePkt.ToLower().Contains("kanwil"))
-            //{
-            //    List<String> listKodePkt = (from x in db.Pkts
-            //                                where !String.IsNullOrEmpty(x.kodePktATM) && x.kanwil == kodePkt && x.kodePkt.Length > 1
-            //                                select x.kodePktATM).Distinct().ToList();
-            //    foreach(var temp in listKodePkt)
-            //    {
-            //        KumpulanPrediksi prediksi = new KumpulanPrediksi(temp, loadKumpulanTanggalUntukPrediksi(), startDate, endDate, metode, metode);
-            //        List<String> eventType = prediksi.eventType;
-            //        List<JenisEvent> listEvent = new List<JenisEvent>();
-
-            //        for (int a = 0; a < eventType.Count; a++)
-            //        {
-            //            listEvent.Add(new JenisEvent() { tgl = startDate.AddDays(a), eventType = eventType[a].Split(' ')[3] + eventType[a].Split(' ')[4] });
-            //        }
-
-            //        hasil.AddRange((from isiATM in prediksi.prediksiIsiAtm
-            //                        join isiCRM in prediksi.isiCrm2 on isiATM.tgl equals isiCRM.tgl
-            //                        join sislokATM in prediksi.rasioSislokAtm on isiATM.tgl equals sislokATM.tgl
-            //                        join sislokCRM in prediksi.sislokCrm on isiATM.tgl equals sislokCRM.tgl
-            //                        join sislokCDM in prediksi.sislokCdm on isiATM.tgl equals sislokCDM.tgl
-            //                        join events in listEvent on isiATM.tgl equals events.tgl
-            //                        select new ViewProyeksiAtm()
-            //                        {
-            //                            tanggal = isiATM.tgl,
-            //                            isiATM100 = isiATM.d100,
-            //                            isiATM50 = isiATM.d50,
-            //                            isiATM20 = isiATM.d20,
-            //                            isiCRM100 = isiCRM.d100,
-            //                            isiCRM50 = isiCRM.d50,
-            //                            isiCRM20 = isiCRM.d20,
-            //                            sislokATM100 = (Int64)Math.Round(sislokATM.d100 * isiATM.d100),
-            //                            sislokATM50 = (Int64)Math.Round(sislokATM.d50 * isiATM.d50),
-            //                            sislokATM20 = (Int64)Math.Round(sislokATM.d20 * isiATM.d20),
-            //                            sislokCRM100 = sislokCRM.d100,
-            //                            sislokCRM50 = sislokCRM.d50,
-            //                            sislokCRM20 = sislokCRM.d20,
-            //                            sislokCDM100 = sislokCDM.d100,
-            //                            sislokCDM50 = sislokCDM.d50,
-            //                            sislokCDM20 = sislokCDM.d20,
-            //                            eventType = events.eventType,
-            //                            kodePkt = temp
-            //                        }).ToList());
-            //    }
-
-            //}
-            //else
-            //{
+           
             KumpulanPrediksi prediksi = new KumpulanPrediksi(kodePkt, loadKumpulanTanggalUntukPrediksi(), startDate, endDate, metode, metode);
             List<String> eventType = prediksi.eventType;
             List<JenisEvent> listEvent = new List<JenisEvent>();
@@ -186,17 +94,18 @@ namespace testProjectBCA.ATM
                                 eventType = events.eventType,
                                 kodePkt = isiATM.kodePkt
                             }).ToList());
-            //}
 
-            dataGridView1.DataSource = hasil;
-            for(int a=0;a<dataGridView1.ColumnCount;a++)
-            {
-                if (dataGridView1.Columns[a].ValueType == typeof(Int64))
-                {
-                    dataGridView1.Columns[a].DefaultCellStyle.Format = "C0";
-                    dataGridView1.Columns[a].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
-                }
-            }
+            //dataGridView1.DataSource = hasil;
+            //for(int a=0;a<dataGridView1.ColumnCount;a++)
+            //{
+            //    if (dataGridView1.Columns[a].ValueType == typeof(Int64))
+            //    {
+            //        dataGridView1.Columns[a].DefaultCellStyle.Format = "C0";
+            //        dataGridView1.Columns[a].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
+            //    }
+            //}
+            List<PktDenom> hasilPrediksi = prediksi.loadRekomendasiBonNonE2E(1, 1, 1);
+            dataGridView1.DataSource = hasilPrediksi;
             loadForm.CloseForm();
         }
         void loadTreeView()
@@ -289,6 +198,9 @@ namespace testProjectBCA.ATM
         {
             public DateTime tanggal { set; get; }
             public String kodePkt { set; get; }
+            public Int64 bon100 { set; get; }
+            public Int64 bon50 { set; get; }
+            public Int64 bon20 { set; get; }
             public Int64 isiATM100 { set; get; }
             public Int64 isiATM50 { set; get; }
             public Int64 isiATM20 { set; get; }

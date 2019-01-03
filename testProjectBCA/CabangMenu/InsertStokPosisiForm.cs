@@ -105,16 +105,35 @@ namespace testProjectBCA
             foreach (DataTable temp in ds.Tables)
             {
                 Console.WriteLine(temp);
-                processTable(temp);
+                if (!processTable(temp))
+                {
+                    MessageBox.Show(path.Substring(path.LastIndexOf('\\'), path.Length - path.LastIndexOf('\\') + 1) + " Sheet " + temp.TableName + " Tidak sesuai format.\nData stop dimasukkan");
+                    break;
+                }
             }
         }
         bool processTable(DataTable table)
         {
             
             Console.WriteLine("Ganti Table: " + table.TableName);
-            
-            String namaPkt = table.Rows[5][alphabetToNumber('L')].ToString();
-            String tanggalS = table.Rows[8][alphabetToNumber('B')].ToString();
+
+            String namaPkt; 
+            String tanggalS;
+
+            try
+            {
+                namaPkt = table.Rows[5][alphabetToNumber('L')].ToString();
+                tanggalS = table.Rows[8][alphabetToNumber('B')].ToString();
+            }
+            catch
+            {
+                return false;
+            }
+
+
+            DateTime testDate;
+            if (!DateTime.TryParse(tanggalS, out testDate) || namaPkt == null)
+                return false;
 
             DateTime buf, tanggal = new DateTime(1,1,1);
 
@@ -145,7 +164,7 @@ namespace testProjectBCA
                                            select x).ToList();
                 if (dataDb.Any())
                 {
-                    return false;
+                    return true;
                 }
                 else
                 {

@@ -21,6 +21,7 @@ namespace testProjectBCA.ATM
             loadTreeViewBulanPrediksi();
             loadPkt();
             yangDilihatComboBox.SelectedIndex = 0;
+            metodePenghitunganComboBox.DataSource = Variables.listMetodeNonATM;
             metodePenghitunganComboBox.SelectedIndex = 0;
             DateTime maxDate = (from x in db.TransaksiAtms
                                 select x.tanggal).Max(x => x),

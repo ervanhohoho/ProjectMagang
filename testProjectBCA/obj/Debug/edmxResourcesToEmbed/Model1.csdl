@@ -551,6 +551,8 @@
     <EntitySet Name="BeritaAcaras" EntityType="CACModel.BeritaAcara" />
     <EntitySet Name="RekonSaldoInputanUsers" EntityType="CACModel.RekonSaldoInputanUser" />
     <EntitySet Name="SaldoAwalRekonSaldoes" EntityType="CACModel.SaldoAwalRekonSaldo" />
+    <EntitySet Name="ApprovalViews" EntityType="CACModel.ApprovalView" />
+    <EntitySet Name="ViewTransaksiAtms" EntityType="CACModel.ViewTransaksiAtm" />
   </EntityContainer>
   <EntityType Name="TabelTarikanSetoranCRM">
     <Key>
@@ -630,5 +632,100 @@
     <Property Name="tanggal" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="kodePkt" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
     <Property Name="value" Type="Int64" />
+  </EntityType>
+  <EntityType Name="ApprovalView">
+    <Key>
+      <PropertyRef Name="idApproval" />
+      <PropertyRef Name="tanggal" />
+      <PropertyRef Name="kodePkt" />
+      <PropertyRef Name="idDetailApproval" />
+      <PropertyRef Name="tanggalApproval" />
+    </Key>
+    <Property Name="idApproval" Type="Int32" Nullable="false" />
+    <Property Name="tanggal" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="kodePkt" Type="String" Nullable="false" MaxLength="7" FixedLength="false" Unicode="false" />
+    <Property Name="inputOpr" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="inputSpv" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="inputNoTxn" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="validasiOpr" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="validasiSpv" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="validasiNoTxn" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="koordinator" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="kanwil" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="idDetailApproval" Type="Int32" Nullable="false" />
+    <Property Name="Expr1" Type="DateTime" Precision="0" />
+    <Property Name="saldoAwal20" Type="Int64" />
+    <Property Name="saldoAwal50" Type="Int64" />
+    <Property Name="saldoAwal100" Type="Int64" />
+    <Property Name="sislokCRM20" Type="Int64" />
+    <Property Name="sislokCRM50" Type="Int64" />
+    <Property Name="sislokCRM100" Type="Int64" />
+    <Property Name="sislokCDM20" Type="Int64" />
+    <Property Name="sislokCDM50" Type="Int64" />
+    <Property Name="sislokCDM100" Type="Int64" />
+    <Property Name="sislokATM20" Type="Int64" />
+    <Property Name="sislokATM100" Type="Int64" />
+    <Property Name="sislokATM50" Type="Int64" />
+    <Property Name="isiATM20" Type="Int64" />
+    <Property Name="isiATM100" Type="Int64" />
+    <Property Name="isiATM50" Type="Int64" />
+    <Property Name="isiCRM20" Type="Int64" />
+    <Property Name="isiCRM50" Type="Int64" />
+    <Property Name="bon20" Type="Int64" />
+    <Property Name="isiCRM100" Type="Int64" />
+    <Property Name="bon50" Type="Int64" />
+    <Property Name="bon100" Type="Int64" />
+    <Property Name="adhoc20" Type="Int64" />
+    <Property Name="adhoc50" Type="Int64" />
+    <Property Name="adhoc100" Type="Int64" />
+    <Property Name="setor20" Type="Int64" />
+    <Property Name="setor50" Type="Int64" />
+    <Property Name="setor100" Type="Int64" />
+    <Property Name="setorAdhoc100" Type="Int64" />
+    <Property Name="setorAdhoc50" Type="Int64" />
+    <Property Name="setorAdhoc20" Type="Int64" />
+    <Property Name="tanggalApproval" Type="DateTime" Nullable="false" Precision="0" />
+  </EntityType>
+  <EntityType Name="ViewTransaksiAtm">
+    <Key>
+      <PropertyRef Name="idTransaksi" />
+      <PropertyRef Name="tanggal" />
+      <PropertyRef Name="kodePkt" />
+    </Key>
+    <Property Name="idTransaksi" Type="Int32" Nullable="false" />
+    <Property Name="tanggal" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="kodePkt" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="saldoAwal20" Type="Int64" />
+    <Property Name="saldoAwal50" Type="Int64" />
+    <Property Name="saldoAwal100" Type="Int64" />
+    <Property Name="sislokATM20" Type="Int64" />
+    <Property Name="sislokATM50" Type="Int64" />
+    <Property Name="sislokATM100" Type="Int64" />
+    <Property Name="sislokCRM20" Type="Int64" />
+    <Property Name="sislokCRM50" Type="Int64" />
+    <Property Name="sislokCRM100" Type="Int64" />
+    <Property Name="sislokCDM20" Type="Int64" />
+    <Property Name="sislokCDM50" Type="Int64" />
+    <Property Name="sislokCDM100" Type="Int64" />
+    <Property Name="isiATM20" Type="Int64" />
+    <Property Name="isiATM50" Type="Int64" />
+    <Property Name="isiATM100" Type="Int64" />
+    <Property Name="isiCRM20" Type="Int64" />
+    <Property Name="isiCRM50" Type="Int64" />
+    <Property Name="isiCRM100" Type="Int64" />
+    <Property Name="bon20" Type="Int64" />
+    <Property Name="bon50" Type="Int64" />
+    <Property Name="bon100" Type="Int64" />
+    <Property Name="adhoc20" Type="Int64" />
+    <Property Name="adhoc50" Type="Int64" />
+    <Property Name="adhoc100" Type="Int64" />
+    <Property Name="setor20" Type="Int64" />
+    <Property Name="setor50" Type="Int64" />
+    <Property Name="setor100" Type="Int64" />
+    <Property Name="saldoAkhir20" Type="Int64" />
+    <Property Name="saldoAkhir50" Type="Int64" />
+    <Property Name="saldoAkhir100" Type="Int64" />
+    <Property Name="kanwil" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="koordinator" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
   </EntityType>
 </Schema>

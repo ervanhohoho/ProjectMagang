@@ -120,7 +120,7 @@ namespace testProjectBCA.CabangMenu
                                 x.dueDate,
                                 x.fundingSoure,
                                 x.regular,
-                                emergency = y == null ? 0 : y.emergency,
+                                emergency = (Int64?) 0,
                                 validation = x.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(x.timeStampRekon.ToString()).Hour < 21 ? x.timeStampRekon : DateTime.Parse(x.timeStampRekon.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(dateTimePicker2.Value.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
                             }).ToList();
             var prepareR = (from x in emergency
@@ -135,7 +135,7 @@ namespace testProjectBCA.CabangMenu
                                 x.blogMessage,
                                 x.dueDate,
                                 x.fundingSoure,
-                                regular = y == null ? 0 : y.regular,
+                                regular = (Int64?)0,
                                 x.emergency,
                                 validation = x.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(x.timeStampRekon.ToString()).Hour < 21 ? x.timeStampRekon : DateTime.Parse(x.timeStampRekon.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(dateTimePicker2.Value.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
                             }).ToList();
@@ -156,7 +156,7 @@ namespace testProjectBCA.CabangMenu
                 regular = x.regular,
                 inout = actionRekon.ToLower() == "delivery" ? "In" : "Out",
                 validasi = validated ? "Validasi" : "Belum Validasi",
-                koordinator = (from y in en.Pkts where (y.kodePktCabang.Substring(0,4) == "CCAS" ? "CCASA": y.kodePktCabang )== x.vaultId select y.koordinator).Distinct().FirstOrDefault()
+                koordinator = (from y in en.Pkts where y.kodePktCabang == (x.vaultId.Substring(0, 4) == "CCAS" ? "CCASA" : x.vaultId) select y.koordinator).Distinct().FirstOrDefault()
             }).ToList();
             return ret;
         }

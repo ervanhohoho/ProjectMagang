@@ -20,66 +20,17 @@ namespace testProjectBCA
         public dashboardCojExtension()
         {
             InitializeComponent();
-            //reloadArea();
-            //reloadnasional();
+            reloadComboKanwil();
             reloadPieChartSaldoPerGroup();
-            
         }
-   
-        //public void reloadnasional()
-        //{
-        //    using (SqlConnection sql = new SqlConnection(Variables.connectionString))
-        //    {
-        //        using (SqlCommand cmd = new SqlCommand())
-        //        {
-        //            List<TotalNasional> total = new List<TotalNasional>();
 
-        //            cmd.Connection = sql;
-        //            sql.Open();
-        //            cmd.CommandText = "select sum(unprocessed + newBaru + newLama+ fitBaru+ fitLama+ passThrough+ unfitBaru+ unfitLama+ unfitNKRI+ RRMBaru + RRMLama + RupiahRusakMayor + cekLaporan ),namaPkt"
-        //                              +" from stokposisi where tanggal between '"+dateTimePicker1.Value.ToShortDateString()+"' and '"+dateTimePicker2.Value.ToShortDateString()+"'"
-        //                              +" group by namaPkt";
-        //            SqlDataReader reader = cmd.ExecuteReader();
-        //            while (reader.Read())
-        //            {
-        //                total.Add(new TotalNasional
-        //                {
-        //                    pkt = reader[1].ToString(),
-        //                    nominalTotal = Int64.Parse(reader[0].ToString())
-        //                });
-        //            }
+        public void reloadComboKanwil()
+        {
+            var query = (from x in en.Pkts
+                         select x.kanwil).Distinct().ToList();
 
-        //            dataGridView1.DataSource = total;
-        //        }
-        //    }
-        //}
-        //public void reloadNonJabo()
-        //{
-        //    using (SqlConnection sql = new SqlConnection(Variables.connectionString))
-        //    {
-        //        using (SqlCommand cmd = new SqlCommand())
-        //        {
-        //            List<TotalNonJabo> total = new List<TotalNonJabo>();
-
-        //            cmd.Connection = sql;
-        //            sql.Open();
-        //            cmd.CommandText = "select sum(unprocessed + newBaru + newLama+ fitBaru+ fitLama+ passThrough+ unfitBaru+ unfitLama+ unfitNKRI+ RRMBaru + RRMLama + RupiahRusakMayor + cekLaporan ),namaPkt"
-        //                              + " from stokposisi where tanggal between '" + dateTimePicker1.Value.ToShortDateString() + "' and '" + dateTimePicker2.Value.ToShortDateString() + "'"
-        //                              + " group by namaPkt ";
-        //            SqlDataReader reader = cmd.ExecuteReader();
-        //            while (reader.Read())
-        //            {
-        //                total.Add(new TotalNonJabo
-        //                {
-        //                    pkt = reader[1].ToString(),
-        //                    nominalTotal = Int64.Parse(reader[0].ToString())
-        //                });
-        //            }
-
-        //            dataGridView1.DataSource = total;
-        //        }
-        //    }
-        //}
+            comboKanwil.DataSource = query;
+        }
 
         public void reloadPieChartSaldoPerGroup()
         {
@@ -93,7 +44,7 @@ namespace testProjectBCA
                     cmd.Connection = sql;
                     sql.Open();
                     cmd.CommandText = "select sum(unprocessed + newBaru + newLama+ fitBaru+ fitLama+ passThrough+ unfitBaru+ unfitLama+ unfitNKRI+ RRMBaru + RRMLama + RupiahRusakMayor + cekLaporan ), p.vendor"
-                                      +" from stokposisi s join pkt p on s.namapkt = p.namapkt where tanggal = '"+dateTimePicker3.Value.ToString() +"'"
+                                      +" from stokposisi s join pkt p on s.namapkt = p.namapkt where tanggal = '"+dateTimePicker3.Value.ToString() +"' and kanwil like '"+comboKanwil.SelectedValue.ToString()+"'"
                                       +" group by  p.vendor order by p.vendor";
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
@@ -131,31 +82,6 @@ namespace testProjectBCA
             }
         }
 
-        //public void reloadArea()
-        //{
-        //    List<String> area = new List<String>();
-        //    using (SqlConnection sql = new SqlConnection(Variables.connectionString))
-        //    {
-        //        using (SqlCommand cmd = new SqlCommand())
-        //        {
-                    
-
-        //            area.Add("Nasional");
-        //            area.Add("Non-Jabo");
-
-        //            cmd.Connection = sql;
-        //            sql.Open();
-        //            cmd.CommandText = "select distinct kanwil from pkt";
-        //            SqlDataReader reader = cmd.ExecuteReader();
-        //            while (reader.Read())
-        //            {
-        //                area.Add(reader[0].ToString());
-        //            }
-                    
-        //        }
-        //    }
-        //    comboBox1.DataSource = area;
-        //}
         class TotalNasional
         {
             public String pkt { set; get; }
@@ -174,23 +100,22 @@ namespace testProjectBCA
             public Int64 nominalTotal { set; get; }
         }
 
-        //private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
-        //{
-        //    reloadnasional();
-
-        //}
-
-        //private void dateTimePicker2_ValueChanged(object sender, EventArgs e)
-        //{
-        //    reloadnasional();
-        //}
-
         private void dateTimePicker3_ValueChanged(object sender, EventArgs e)
         {
             reloadPieChartSaldoPerGroup();
         }
 
         private void dateTimePicker4_ValueChanged(object sender, EventArgs e)
+        {
+            reloadPieChartSaldoPerGroup();
+        }
+
+        private void comboKanwil_SelectedValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboKanwil_SelectionChangeCommitted(object sender, EventArgs e)
         {
             reloadPieChartSaldoPerGroup();
         }

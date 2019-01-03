@@ -16,12 +16,14 @@ namespace testProjectBCA
 {
     public partial class DashboardCOJForm : Form
     {
+        Database1Entities en = new Database1Entities();
         public DashboardCOJForm()
         {
             InitializeComponent();
             reloadTahun();
             reloadBulan();
             reloadTanggal();
+            reloadKanwil();
             reloadUbVsUk();
             reloadStokSaldoCoj();
             reloadSebaranSaldoCoj();
@@ -67,7 +69,7 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "select distinct month(tanggal) from StokPosisi  where year(tanggal) = "+ comboTahun.SelectedValue.ToString()+" order by month(tanggal) desc";
+                    cmd.CommandText = "select distinct month(tanggal) from StokPosisi  where year(tanggal) = " + comboTahun.SelectedValue.ToString() + " order by month(tanggal) desc";
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     while (reader.Read())
@@ -89,7 +91,7 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "select distinct day(tanggal) from StokPosisi where year(tanggal) = "+comboTahun.SelectedValue.ToString()+" and month(tanggal) = "+comboBulan.SelectedValue.ToString()+" order by day(tanggal) desc";
+                    cmd.CommandText = "select distinct day(tanggal) from StokPosisi where year(tanggal) = " + comboTahun.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " order by day(tanggal) desc";
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     while (reader.Read())
@@ -99,6 +101,14 @@ namespace testProjectBCA
                 }
             }
             comboTanggal.DataSource = tanggal;
+        }
+
+        public void reloadKanwil()
+        {
+            var query = (from x in en.Pkts
+                         select x.kanwil).Distinct().ToList();
+
+            comboKanwil.DataSource = query;
         }
 
         public void reloadStokSaldoCoj()
@@ -122,17 +132,43 @@ namespace testProjectBCA
                                       " unfit = sum(unfitBaru+unfitLama+unfitNKRI), " +
                                       " [mayor minor] = sum(RRMBaru + RRMLama + RRMNKRI + RupiahRusakMayor)," +
                                       " gress = sum(newBaru + newLama) " +
-                                      " from StokPosisi " +
-                                      " where month(tanggal) = "+comboBulan.SelectedValue.ToString()+" and year(tanggal) = "+comboTahun.SelectedValue.ToString()+" and day(tanggal) = "+comboTanggal.SelectedValue.ToString()+" ";
+                                      " from StokPosisi s join Pkt p on s.namaPkt = p.namaPkt" +
+                                      " where month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and kanwil like '" + comboKanwil.SelectedValue.ToString() + "'";
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     while (reader.Read())
                     {
-                        unprocessed = Int64.Parse(reader[0].ToString());
-                        fit = Int64.Parse(reader[1].ToString());
-                        unfit = Int64.Parse(reader[2].ToString());
-                        mayorminor = Int64.Parse(reader[3].ToString());
-                        gress = (Int64.Parse(reader[4].ToString()));
+                        Double buffer = 0;
+                        if (Double.TryParse(reader[0].ToString(), out buffer))
+                        {
+                            unprocessed = (Int64)buffer;
+                            buffer = 0;
+                        }
+                        if (Double.TryParse(reader[1].ToString(), out buffer))
+                        {
+                            fit = (Int64)buffer;
+                            buffer = 0;
+                        }
+                        if (Double.TryParse(reader[2].ToString(), out buffer))
+                        {
+                            unfit = (Int64)buffer;
+                            buffer = 0;
+                        }
+                        if (Double.TryParse(reader[3].ToString(), out buffer))
+                        {
+                            mayorminor = (Int64)buffer;
+                            buffer = 0;
+                        }
+                        if (Double.TryParse(reader[4].ToString(), out buffer))
+                        {
+                            gress = (Int64)buffer;
+                            buffer = 0;
+                        }
+                        // unprocessed = Int64.Parse(reader[0].ToString());
+                        // fit = Int64.Parse(reader[1].ToString());
+                        //unfit = Int64.Parse(reader[2].ToString());
+                        //mayorminor = Int64.Parse(reader[3].ToString());
+                        //gress = (Int64.Parse(reader[4].ToString()));
                     }
 
                     Func<ChartPoint, string> labelPoint = chartPoint =>
@@ -149,7 +185,7 @@ namespace testProjectBCA
                             },
                             DataLabels = true,
                             LabelPoint =  p=>(Math.Round((p.Y/1000000000),0)).ToString() + " M",
-                            
+
                         },
                         new PieSeries
                         {
@@ -210,17 +246,23 @@ namespace testProjectBCA
 
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "select sum(unprocessed + newBaru + newLama + fitBaru + fitLama + passThrough + unfitBaru + unfitNKRI + unfitLama + RRMBaru + RRMNKRI + RRMLama + RupiahRusakMayor) from stokposisi"
-                        + " where day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + "";
+                    cmd.CommandText = "select sum(unprocessed + newBaru + newLama + fitBaru + fitLama + passThrough + unfitBaru + unfitNKRI + unfitLama + RRMBaru + RRMNKRI + RRMLama + RupiahRusakMayor) from stokposisi s join Pkt p on s.namaPkt = p.namaPkt"
+                        + " where day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " and kanwil like '" + comboKanwil.SelectedValue.ToString() + "'";
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
-                        a = Int64.Parse(reader[0].ToString());
+                        Double buffer = 0;
+                        if (Double.TryParse(reader[0].ToString(), out buffer))
+                        {
+                            a = (Int64)buffer;
+                            buffer = 0;
+                        }
+                        // a = Int64.Parse(reader[0].ToString());
                     }
-                    label36.Text = Math.Round((a/1000000000),0).ToString() + " M";
+                    label36.Text = Math.Round((a / 1000000000), 0).ToString() + " M";
                 }
             }
-            
+
         }
 
         public void reloadUbVsUk()
@@ -240,18 +282,28 @@ namespace testProjectBCA
                     cmd.CommandText = "select[uangbesar],[uangkecil]"
                                      + " from"
                                      + " (select[uangbesar] = sum(unprocessed + newBaru + newLama + fitBaru + fitLama + passThrough + unfitBaru + unfitNKRI + unfitLama + RRMBaru + RRMNKRI + RRMLama + RupiahRusakMayor)"
-                                     + " from StokPosisi"
-                                     + " where (denom = 100000 or denom = 50000) and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " )a, "
+                                     + " from StokPosisi s join Pkt p on s.namaPkt = p.namaPkt "
+                                     + " where (denom = 100000 or denom = 50000) and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " and kanwil like '" + comboKanwil.SelectedValue.ToString() + "')a, "
                                      + " (select[uangkecil] = sum(unprocessed + newBaru + newLama + fitBaru + fitLama + passThrough + unfitBaru + unfitNKRI +  unfitLama + RRMBaru+ RRMNKRI + RRMLama + RupiahRusakMayor)"
-                                     + " from StokPosisi"
-                                     + " where(denom != 100000 AND denom != 50000) and day(tanggal) = "+comboTanggal.SelectedValue.ToString()+" and month(tanggal) = "+comboBulan.SelectedValue.ToString()+" and year(tanggal) = "+comboTahun.SelectedValue.ToString()+" )b";
+                                     + " from StokPosisi s join Pkt p on s.namaPkt = p.namaPkt"
+                                     + " where(denom != 100000 AND denom != 50000) and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " and kanwil like '" + comboKanwil.SelectedValue.ToString() + "')b";
 
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     while (reader.Read())
                     {
-                        ub = Int64.Parse(reader[0].ToString());
-                        uk = Int64.Parse(reader[1].ToString());
+                        Double buffer = 0;
+                        if (Double.TryParse(reader[0].ToString(), out buffer))
+                        {
+                            ub = (Int64)buffer;
+                            buffer = 0;
+                        }
+                        if (Double.TryParse(reader[1].ToString(), out buffer))
+                        {
+                            uk = (Int64)buffer;
+                            buffer = 0;
+                        }
+
                     }
 
                     Func<ChartPoint, string> labelPoint = chartPoint =>
@@ -304,7 +356,7 @@ namespace testProjectBCA
                     cmd.CommandText = " select[kodepkt], sum([total]) from"
                                     + " (select[kodepkt] = case when p.kodePkt like '%CCAS%' then 'CCAS' else p.kodePkt end, [total] = sum(unprocessed + newBaru + newLama + fitBaru + fitLama + passThrough + unfitBaru + unfitNKRI + unfitLama + RRMBaru + RRMNKRI + RRMLama + RupiahRusakMayor)"
                                     + " from StokPosisi s join Pkt p on s.namaPkt = p.namaPkt"
-                                    + " where month(tanggal) = "+comboBulan.SelectedValue.ToString()+" and year(tanggal) = "+comboTahun.SelectedValue.ToString()+" and day(tanggal) = "+comboTanggal.SelectedValue.ToString()+""
+                                    + " where month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and kanwil like '" + comboKanwil.SelectedValue.ToString() + "'"
                                     + " group by p.kodePkt"
                                     + " ) as a"
                                     + " group by a.kodepkt"
@@ -334,8 +386,8 @@ namespace testProjectBCA
                             DataLabels = true,
                             LabelPoint = p=>(Math.Round((p.Y/1000000000),0)).ToString() + " M"
                         }
-                       
-                        
+
+
                     };
 
                     cartesianChartSebaranSaldoCoj.AxisX.Add(new Axis
@@ -345,7 +397,7 @@ namespace testProjectBCA
                         Separator = new Separator
                         {
                             Step = 1
-                        }                        
+                        }
 
                     });
 
@@ -381,12 +433,12 @@ namespace testProjectBCA
                     cmd.CommandText = "select * from("
                                        + " select[uangbesar] = sum(unprocessed + newBaru + newLama + fitBaru + fitLama + passThrough + unfitBaru + unfitNKRI + unfitLama + RRMBaru + RRMNKRI + RRMLama + RupiahRusakMayor), [KodePkt] = case when kodePkt like '%CCAS%' then 'CCAS' else kodePkt end, [tipe] = 'BESAR'"
                                        + " from StokPosisi s join Pkt p on s.namaPkt = p.namaPkt"
-                                       + " where (denom = 100000 or denom = 50000) and day(tanggal) = "+comboTanggal.SelectedValue.ToString()+" and month(tanggal) = "+comboBulan.SelectedValue.ToString()+" and year(tanggal) = "+comboTahun.SelectedValue.ToString()+""
+                                       + " where (denom = 100000 or denom = 50000) and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " and kanwil like '" + comboKanwil.SelectedValue.ToString() + "'"
                                        + " group by p.kodePkt"
                                        + " union"
                                        + " select[uangkecil] = sum(unprocessed + newBaru + newLama + fitBaru + fitLama + passThrough + unfitBaru + unfitNKRI +  unfitLama + RRMBaru+ RRMNKRI + RRMLama + RupiahRusakMayor), [KodePkt] = case when kodePkt like '%CCAS%' then 'CCAS' else kodePkt end, [tipe] = 'KECIL'"
                                        + " from StokPosisi s join Pkt p on s.namaPkt = p.namaPkt"
-                                       + " where(denom != 100000 AND denom != 50000) and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + ""
+                                       + " where(denom != 100000 AND denom != 50000) and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " and kanwil like '" + comboKanwil.SelectedValue.ToString() + "'"
                                        + " group by p.kodePkt)a"
                                        + " pivot(sum(uangbesar) for [tipe] in ([BESAR],[KECIL])) as asd";
 
@@ -454,7 +506,7 @@ namespace testProjectBCA
                         Title = "Persen",
                         LabelFormatter = value => value.ToString() + " %",
                         MinValue = 0,
-                        
+
                     });
 
                     cartesianChartKomposisiUbVsUk.LegendLocation = LegendLocation.Bottom;
@@ -482,7 +534,7 @@ namespace testProjectBCA
                     cmd.CommandText = "select sum([unfitmayorminor]), sum([gress]), [kodepkt] from"
                                      + " (select[unfitmayorminor] = sum(unfitBaru + unfitLama + unfitNKRI + RRMBaru + RRMLama + RRMNKRI + RupiahRusakMayor), [gress] = sum(newBaru + newLama), [kodepkt] = case when p.kodePkt like '%CCAS%' then 'CCAS' else p.kodePkt end"
                                      + " from StokPosisi s join Pkt p on s.namaPkt = p.namaPkt"
-                                     + " where (denom = 100000 or denom = 50000) and day(tanggal) = "+comboTanggal.SelectedValue.ToString()+" and month(tanggal) = "+comboBulan.SelectedValue.ToString()+" and year(tanggal) = "+comboTahun.SelectedValue.ToString()+""
+                                     + " where (denom = 100000 or denom = 50000) and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " and kanwil like '" + comboKanwil.SelectedValue.ToString() + "'"
                                      + " group by kodePkt) as a"
                                      + " group by[kodepkt]";
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -538,7 +590,7 @@ namespace testProjectBCA
                             Step = 1
                         }
                     });
-                    
+
 
                     cartesianChartUangBesar.AxisY.Add(new Axis
                     {
@@ -573,7 +625,7 @@ namespace testProjectBCA
 
                                     + " (select[unprocessed] = sum(unprocessed), [unfitmayorminor] = sum(unfitBaru + unfitLama + unfitNKRI + RRMBaru + RRMLama + RRMNKRI + RupiahRusakMayor),[gress] = sum(newBaru + newLama),[kodepkt] = case when p.kodePkt like '%CCAS%' then 'CCAS' else p.kodePkt end"
                                     + " from StokPosisi s join Pkt p on s.namaPkt = p.namaPkt"
-                                    + " where (denom != 100000 AND denom != 50000) and day(tanggal) = "+comboTanggal.SelectedValue.ToString()+" and month(tanggal) = "+comboBulan.SelectedValue.ToString()+" and year(tanggal) = "+comboTahun.SelectedValue.ToString()+""
+                                    + " where (denom != 100000 AND denom != 50000) and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " and kanwil like '" + comboKanwil.SelectedValue.ToString() + "'"
                                     + " group by kodePkt) as a"
                                     + " group by kodepkt";
 
@@ -669,18 +721,23 @@ namespace testProjectBCA
                     cmd.Connection = sql;
                     sql.Open();
                     cmd.CommandText = "select "
-                                     +" [tobedivide] = sum(unfitBaru + unfitLama + unfitNKRI + RRMBaru + RRMLama + RRMNKRI + RupiahRusakMayor)"
-                                     +" from"
-                                     +" StokPosisi"
-                                     +" where"
-                                     +" (denom = 100000 or denom = 50000) and day(tanggal) = "+comboTanggal.SelectedValue.ToString()+" and month(tanggal) = "+comboBulan.SelectedValue.ToString()+" and year(tanggal) = "+comboTahun.SelectedValue.ToString()+"";
+                                     + " [tobedivide] = sum(unfitBaru + unfitLama + unfitNKRI + RRMBaru + RRMLama + RRMNKRI + RupiahRusakMayor)"
+                                     + " from"
+                                     + " StokPosisi s join Pkt p on s.namaPkt = p.namaPkt"
+                                     + " where"
+                                     + " (denom = 100000 or denom = 50000) and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " and kanwil like '" + comboKanwil.SelectedValue.ToString() + "'";
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     while (reader.Read())
                     {
-                        tampugan = Double.Parse(reader[0].ToString());
+                        Double buffer = 0;
+                        if (Double.TryParse(reader[0].ToString(), out buffer))
+                        {
+                            tampugan = buffer;
+                        }
+                        // tampugan = Double.Parse(reader[0].ToString());
                     }
-                    
+
                 }
             }
             return tampugan;
@@ -717,7 +774,7 @@ namespace testProjectBCA
                     cmd.CommandText = "select sum(total), kodepkt from"
                                        + " (select top 6[total] = sum(unfitBaru + unfitLama + unfitNKRI + RRMBaru + RRMLama + RRMNKRI + RupiahRusakMayor),[kodepkt] = case when p.kodePkt like '%CCAS%' then 'CCAS' else p.kodePkt end"
                                        + " from StokPosisi s join Pkt p on s.namaPkt = p.namaPkt"
-                                       + " where (denom = 100000 or denom = 50000) and day(tanggal) = "+comboTanggal.SelectedValue.ToString()+" and month(tanggal) = "+comboBulan.SelectedValue.ToString()+" and year(tanggal) = "+comboTahun.SelectedValue.ToString()+""
+                                       + " where (denom = 100000 or denom = 50000) and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " and kanwil like '" + comboKanwil.SelectedValue.ToString() + "'"
                                        + " group by kodePkt"
                                        + " order by[total] desc) as a"
                                        + " group by kodepkt order by sum(total)desc";
@@ -748,59 +805,21 @@ namespace testProjectBCA
                     persen.Add(label50);
                     persen.Add(label51);
 
-                    for (int i = 0; i < kodepkt.Count && i<asd.Count; i++)
+                    for (int i = 0; i < kodepkt.Count && i < asd.Count; i++)
                     {
                         asd[i].Visible = true;
                         asd[i].Text = kodepkt[i];
                     }
-                    for (int i = 0; i < gress.Count && i<dsa.Count; i++)
+                    for (int i = 0; i < gress.Count && i < dsa.Count; i++)
                     {
                         dsa[i].Visible = true;
-                        dsa[i].Text = (Math.Round(gress[i]/1000000000)).ToString() + " M";
+                        dsa[i].Text = (Math.Round(gress[i] / 1000000000)).ToString() + " M";
                     }
-                    for (int i = 0; i < gress.Count && i<persen.Count; i++)
+                    for (int i = 0; i < gress.Count && i < persen.Count; i++)
                     {
                         persen[i].Visible = true;
-                        persen[i].Text = (Math.Round(((Double)gress[i] / reloadToDivideUangBesar()),2) * 100).ToString() + " %";
+                        persen[i].Text = (Math.Round(((Double)gress[i] / reloadToDivideUangBesar()), 2) * 100).ToString() + " %";
                     }
-                    //if (kodepkt[0].ToString() == null || kodepkt[0].ToString() == "")
-                    //{
-                        
-                    //}
-                    //else
-                    //{
-                    //    label3.Visible = true;
-                    //    label3.Text = kodepkt[0];
-
-                    //    if (kodepkt[1].ToString() != null || kodepkt[1].ToString() != "")
-                    //    {
-                    //        label4.Visible = true;
-                    //        label4.Text = kodepkt[1];
-                    //    }
-                    //    if (kodepkt[2].ToString() != null || kodepkt[2].ToString() != "")
-                    //    {
-                    //        label5.Visible = true;
-                    //        label5.Text = kodepkt[2];
-                    //    }
-                    //    if (kodepkt[3].ToString() != null || kodepkt[3].ToString() != "")
-                    //    {
-                    //        label6.Visible = true;
-                    //        label6.Text = kodepkt[3];
-                    //    }
-                    //    if (kodepkt[4].ToString() != null || kodepkt[4].ToString() != "")
-                    //    {
-                    //        label7.Visible = true;
-                    //        label7.Text = kodepkt[4];
-                    //    }
-                    //}
-                    
-                  
-
-                    //label3.Text = kodepkt[0];
-                    //label4.Text = kodepkt[1];
-                    //label5.Text = kodepkt[2];
-                    //label6.Text = kodepkt[3];
-                    //label7.Text = kodepkt[4];
 
                 }
             }
@@ -823,20 +842,31 @@ namespace testProjectBCA
                     sql.Open();
                     cmd.CommandText = "select [umm] =  sum(unfitBaru + unfitLama + unfitNKRI + RRMBaru + RRMLama + RRMNKRI + RupiahRusakMayor) , [gress] = sum(newBaru + newLama) "
                                       + " from StokPosisi s join Pkt p on s.namaPkt = p.namaPkt"
-                                      + " where (denom = 100000 or denom = 50000)  and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " ";
+                                      + " where (denom = 100000 or denom = 50000)  and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " and kanwil like '" + comboKanwil.SelectedValue.ToString() + "'";
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     while (reader.Read())
                     {
-                        umm = (Int64.Parse(reader[0].ToString()));
-                        gress = (Int64.Parse(reader[1].ToString()));
+                        Double buffer = 0;
+                        if (Double.TryParse(reader[0].ToString(), out buffer))
+                        {
+                            umm = (Int64)buffer;
+                            buffer = 0;
+                        }
+                        if (Double.TryParse(reader[1].ToString(), out buffer))
+                        {
+                            gress = (Int64)buffer;
+                            buffer = 0;
+                        }
+                        //umm = (Int64.Parse(reader[0].ToString()));
+                        //gress = (Int64.Parse(reader[1].ToString()));
 
                     }
 
                     if (umm != 0)
                     {
                         label15.Visible = true;
-                        label15.Text = umm.ToString("C",CultureInfo.GetCultureInfo("id-ID"));
+                        label15.Text = umm.ToString("C", CultureInfo.GetCultureInfo("id-ID"));
                     }
                     if (gress != 0)
                     {
@@ -862,9 +892,9 @@ namespace testProjectBCA
                     cmd.CommandText = "select "
                                      + " [tobedivide] = sum(unprocessed)"
                                      + " from"
-                                     + " StokPosisi"
+                                     + " StokPosisi s join pkt p on s.namaPkt = p.namaPkt"
                                      + " where"
-                                     + " (denom != 100000 and denom != 50000) and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + "";
+                                     + " (denom != 100000 and denom != 50000) and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " and kanwil like '" + comboKanwil.SelectedValue.ToString() + "'";
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     while (reader.Read())
@@ -877,7 +907,7 @@ namespace testProjectBCA
             Console.WriteLine(tampugan);
             return tampugan;
 
-            
+
         }
 
         public void reloadTop5UangKecil()
@@ -910,7 +940,7 @@ namespace testProjectBCA
                     cmd.CommandText = "select sum(total), kodepkt from"
                                     + " (select top 5[total] = sum(unprocessed),[kodepkt] = case when p.kodePkt like '%CCAS%' then 'CCAS' else p.kodePkt end"
                                     + " from StokPosisi s join Pkt p on s.namaPkt = p.namaPkt"
-                                    + " where (denom != 100000 AND denom != 50000) and day(tanggal) = "+comboTanggal.SelectedValue.ToString()+" and month(tanggal) = "+comboBulan.SelectedValue.ToString()+" and year(tanggal) = "+comboTahun.SelectedValue.ToString()+""
+                                    + " where (denom != 100000 AND denom != 50000) and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " and kanwil like '" + comboKanwil.SelectedValue.ToString() + "'"
                                     + " group by kodePkt"
                                     + " order by[total] desc) as a"
                                     + " group by kodepkt order by sum(total)desc";
@@ -945,7 +975,7 @@ namespace testProjectBCA
                     for (int i = 0; i < gress.Count; i++)
                     {
                         dsa[i].Visible = true;
-                        dsa[i].Text = (Math.Round(gress[i]/1000000000)).ToString() + " M";
+                        dsa[i].Text = (Math.Round(gress[i] / 1000000000)).ToString() + " M";
                     }
 
                     List<Label> persen = new List<Label>();
@@ -960,45 +990,6 @@ namespace testProjectBCA
                         persen[i].Visible = true;
                         persen[i].Text = (Math.Round(((Double)gress[i] / reloadToDivideUangKecil()), 2) * 100).ToString() + " %";
                     }
-
-                    //if (kodepkt[0].ToString() == null || kodepkt[0].ToString() == "")
-                    //{
-
-                    //}
-                    //else
-                    //{
-                    //    label3.Visible = true;
-                    //    label3.Text = kodepkt[0];
-
-                    //    if (kodepkt[1].ToString() != null || kodepkt[1].ToString() != "")
-                    //    {
-                    //        label4.Visible = true;
-                    //        label4.Text = kodepkt[1];
-                    //    }
-                    //    if (kodepkt[2].ToString() != null || kodepkt[2].ToString() != "")
-                    //    {
-                    //        label5.Visible = true;
-                    //        label5.Text = kodepkt[2];
-                    //    }
-                    //    if (kodepkt[3].ToString() != null || kodepkt[3].ToString() != "")
-                    //    {
-                    //        label6.Visible = true;
-                    //        label6.Text = kodepkt[3];
-                    //    }
-                    //    if (kodepkt[4].ToString() != null || kodepkt[4].ToString() != "")
-                    //    {
-                    //        label7.Visible = true;
-                    //        label7.Text = kodepkt[4];
-                    //    }
-                    //}
-
-
-
-                    //label3.Text = kodepkt[0];
-                    //label4.Text = kodepkt[1];
-                    //label5.Text = kodepkt[2];
-                    //label6.Text = kodepkt[3];
-                    //label7.Text = kodepkt[4];
 
                 }
             }
@@ -1022,14 +1013,31 @@ namespace testProjectBCA
                     sql.Open();
                     cmd.CommandText = "select [umm] =  sum(unfitBaru + unfitLama + unfitNKRI + RRMBaru + RRMLama + RRMNKRI + RupiahRusakMayor) , [gress] = sum(newBaru + newLama), [unproc] = sum(unprocessed) "
                                       + " from StokPosisi s join Pkt p on s.namaPkt = p.namaPkt"
-                                      + " where (denom != 100000 AND denom != 50000)  and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " ";
+                                      + " where (denom != 100000 AND denom != 50000)  and day(tanggal) = " + comboTanggal.SelectedValue.ToString() + " and month(tanggal) = " + comboBulan.SelectedValue.ToString() + " and year(tanggal) = " + comboTahun.SelectedValue.ToString() + " and kanwil like '" + comboKanwil.SelectedValue.ToString() + "'";
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     while (reader.Read())
                     {
-                        umm = (Int64.Parse(reader[0].ToString()));
-                        gress = (Int64.Parse(reader[1].ToString()));
-                        unproc = (Int64.Parse(reader[2].ToString()));
+                        Double buffer = 0;
+                        if (Double.TryParse(reader[0].ToString(), out buffer))
+                        {
+                            umm = (Int64)buffer;
+                            buffer = 0;
+                        }
+                        if (Double.TryParse(reader[1].ToString(), out buffer))
+                        {
+                            gress = (Int64)buffer;
+                            buffer = 0;
+                        }
+
+                        if (Double.TryParse(reader[2].ToString(), out buffer))
+                        {
+                            unproc = (Int64)buffer;
+                            buffer = 0;
+                        }
+                        //umm = (Int64.Parse(reader[0].ToString()));
+                        //gress = (Int64.Parse(reader[1].ToString()));
+                        //unproc = (Int64.Parse(reader[2].ToString()));
 
                     }
 
@@ -1131,6 +1139,21 @@ namespace testProjectBCA
         private void label28_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void comboKanwil_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            reloadUbVsUk();
+            reloadStokSaldoCoj();
+            reloadSebaranSaldoCoj();
+            reloadKomposisiUbVsUk();
+            reloadUangBesar();
+            reloadUangKecil();
+            reloadTop5UangBesar();
+            reloadUangBesarSum();
+            reloadTop5UangKecil();
+            reloadUangKecilSum();
+            reloadLabelTotalCoj();
         }
     }
 }

@@ -587,5 +587,95 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="ApprovalViews">
+      <EntityTypeMapping TypeName="CACModel.ApprovalView">
+        <MappingFragment StoreEntitySet="ApprovalView">
+          <ScalarProperty Name="setorAdhoc20" ColumnName="setorAdhoc20" />
+          <ScalarProperty Name="setorAdhoc50" ColumnName="setorAdhoc50" />
+          <ScalarProperty Name="setorAdhoc100" ColumnName="setorAdhoc100" />
+          <ScalarProperty Name="setor100" ColumnName="setor100" />
+          <ScalarProperty Name="setor50" ColumnName="setor50" />
+          <ScalarProperty Name="setor20" ColumnName="setor20" />
+          <ScalarProperty Name="adhoc100" ColumnName="adhoc100" />
+          <ScalarProperty Name="adhoc50" ColumnName="adhoc50" />
+          <ScalarProperty Name="adhoc20" ColumnName="adhoc20" />
+          <ScalarProperty Name="bon100" ColumnName="bon100" />
+          <ScalarProperty Name="bon50" ColumnName="bon50" />
+          <ScalarProperty Name="isiCRM100" ColumnName="isiCRM100" />
+          <ScalarProperty Name="bon20" ColumnName="bon20" />
+          <ScalarProperty Name="isiCRM50" ColumnName="isiCRM50" />
+          <ScalarProperty Name="isiCRM20" ColumnName="isiCRM20" />
+          <ScalarProperty Name="isiATM50" ColumnName="isiATM50" />
+          <ScalarProperty Name="isiATM100" ColumnName="isiATM100" />
+          <ScalarProperty Name="isiATM20" ColumnName="isiATM20" />
+          <ScalarProperty Name="sislokATM50" ColumnName="sislokATM50" />
+          <ScalarProperty Name="sislokATM100" ColumnName="sislokATM100" />
+          <ScalarProperty Name="sislokATM20" ColumnName="sislokATM20" />
+          <ScalarProperty Name="sislokCDM100" ColumnName="sislokCDM100" />
+          <ScalarProperty Name="sislokCDM50" ColumnName="sislokCDM50" />
+          <ScalarProperty Name="sislokCDM20" ColumnName="sislokCDM20" />
+          <ScalarProperty Name="sislokCRM100" ColumnName="sislokCRM100" />
+          <ScalarProperty Name="sislokCRM50" ColumnName="sislokCRM50" />
+          <ScalarProperty Name="sislokCRM20" ColumnName="sislokCRM20" />
+          <ScalarProperty Name="saldoAwal100" ColumnName="saldoAwal100" />
+          <ScalarProperty Name="saldoAwal50" ColumnName="saldoAwal50" />
+          <ScalarProperty Name="saldoAwal20" ColumnName="saldoAwal20" />
+          <ScalarProperty Name="Expr1" ColumnName="Expr1" />
+          <ScalarProperty Name="idDetailApproval" ColumnName="idDetailApproval" />
+          <ScalarProperty Name="kanwil" ColumnName="kanwil" />
+          <ScalarProperty Name="koordinator" ColumnName="koordinator" />
+          <ScalarProperty Name="validasiNoTxn" ColumnName="validasiNoTxn" />
+          <ScalarProperty Name="validasiSpv" ColumnName="validasiSpv" />
+          <ScalarProperty Name="validasiOpr" ColumnName="validasiOpr" />
+          <ScalarProperty Name="inputNoTxn" ColumnName="inputNoTxn" />
+          <ScalarProperty Name="inputSpv" ColumnName="inputSpv" />
+          <ScalarProperty Name="inputOpr" ColumnName="inputOpr" />
+          <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
+          <ScalarProperty Name="tanggal" ColumnName="tanggal" />
+          <ScalarProperty Name="idApproval" ColumnName="idApproval" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ViewTransaksiAtms">
+      <EntityTypeMapping TypeName="CACModel.ViewTransaksiAtm">
+        <MappingFragment StoreEntitySet="ViewTransaksiAtms">
+          <ScalarProperty Name="koordinator" ColumnName="koordinator" />
+          <ScalarProperty Name="kanwil" ColumnName="kanwil" />
+          <ScalarProperty Name="saldoAkhir100" ColumnName="saldoAkhir100" />
+          <ScalarProperty Name="saldoAkhir50" ColumnName="saldoAkhir50" />
+          <ScalarProperty Name="saldoAkhir20" ColumnName="saldoAkhir20" />
+          <ScalarProperty Name="setor100" ColumnName="setor100" />
+          <ScalarProperty Name="setor50" ColumnName="setor50" />
+          <ScalarProperty Name="setor20" ColumnName="setor20" />
+          <ScalarProperty Name="adhoc100" ColumnName="adhoc100" />
+          <ScalarProperty Name="adhoc50" ColumnName="adhoc50" />
+          <ScalarProperty Name="adhoc20" ColumnName="adhoc20" />
+          <ScalarProperty Name="bon100" ColumnName="bon100" />
+          <ScalarProperty Name="bon50" ColumnName="bon50" />
+          <ScalarProperty Name="bon20" ColumnName="bon20" />
+          <ScalarProperty Name="isiCRM100" ColumnName="isiCRM100" />
+          <ScalarProperty Name="isiCRM50" ColumnName="isiCRM50" />
+          <ScalarProperty Name="isiCRM20" ColumnName="isiCRM20" />
+          <ScalarProperty Name="isiATM100" ColumnName="isiATM100" />
+          <ScalarProperty Name="isiATM50" ColumnName="isiATM50" />
+          <ScalarProperty Name="isiATM20" ColumnName="isiATM20" />
+          <ScalarProperty Name="sislokCDM100" ColumnName="sislokCDM100" />
+          <ScalarProperty Name="sislokCDM50" ColumnName="sislokCDM50" />
+          <ScalarProperty Name="sislokCDM20" ColumnName="sislokCDM20" />
+          <ScalarProperty Name="sislokCRM100" ColumnName="sislokCRM100" />
+          <ScalarProperty Name="sislokCRM50" ColumnName="sislokCRM50" />
+          <ScalarProperty Name="sislokCRM20" ColumnName="sislokCRM20" />
+          <ScalarProperty Name="sislokATM100" ColumnName="sislokATM100" />
+          <ScalarProperty Name="sislokATM50" ColumnName="sislokATM50" />
+          <ScalarProperty Name="sislokATM20" ColumnName="sislokATM20" />
+          <ScalarProperty Name="saldoAwal100" ColumnName="saldoAwal100" />
+          <ScalarProperty Name="saldoAwal50" ColumnName="saldoAwal50" />
+          <ScalarProperty Name="saldoAwal20" ColumnName="saldoAwal20" />
+          <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
+          <ScalarProperty Name="tanggal" ColumnName="tanggal" />
+          <ScalarProperty Name="idTransaksi" ColumnName="idTransaksi" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

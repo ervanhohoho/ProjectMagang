@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using testProjectBCA.ATM;
 
 namespace testProjectBCA
 {
@@ -788,6 +789,7 @@ namespace testProjectBCA
                 sislokCrm100 = new List<tanggalValue>(),
                 saldo100 = new List<tanggalValue>();
             List<tanggalRasio> sislokAtm100 = new List<tanggalRasio>();
+            String jenis = metodePrediksiComboBox.SelectedItem.ToString();
             Double targetRasio100;
 
             Double buf;
@@ -795,6 +797,17 @@ namespace testProjectBCA
                 targetRasio100 = buf;
             else
                 targetRasio100 = 0;
+
+            DateTime tanggal = DateTime.Today;
+            DateTime maxTanggal = tanggalMaxPrediksiPicker.Value;
+            KumpulanPrediksi prediksi = new KumpulanPrediksi("Jabotabek", listTanggalHistorisUntukPrediksi, tanggal, maxTanggal, jenis, jenis);
+
+            isiAtm100.AddRange(prediksi.prediksiIsiAtm.GroupBy(x => x.tanggal).Select(x => new tanggalValue() { tanggal = x.Key, value = x.Sum(y => y.d100) }).ToList());
+            isiCrm100.AddRange(prediksi.isiCrm2.GroupBy(x => x.tanggal).Select(x => new tanggalValue() { tanggal = x.Key, value = x.Sum(y => y.d100) }).ToList());
+            sislokAtm100.AddRange(prediksi.rasioSislokAtm.GroupBy(x => x.tanggal).Select(x => new tanggalRasio() { tanggal = x.Key, value = x.Average(y => y.d100) }).ToList());
+            sislokCdm100.AddRange(prediksi.sislokCdm.GroupBy(x => x.tanggal).Select(x => new tanggalValue() { tanggal = x.Key, value = x.Sum(y => y.d100) }).ToList());
+            sislokCrm100.AddRange(prediksi.sislokCrm.GroupBy(x => x.tanggal).Select(x => new tanggalValue() { tanggal = x.Key, value = x.Sum(y => y.d100) }).ToList());
+
 
             //Load semua in Cabang 100
             var q = (from x in db.TransaksiAtms
@@ -805,8 +818,6 @@ namespace testProjectBCA
             var et = (from x in db.EventTanggals select x).ToList();
 
 
-            DateTime tanggal = DateTime.Today;
-            DateTime maxTanggal = tanggalMaxPrediksiPicker.Value;
 
 
             while (tanggal <= maxTanggal.AddDays(1))
@@ -832,7 +843,7 @@ namespace testProjectBCA
                     query.AddRange(q3);
 
                 }
-                if(!query.Any())
+                if (!query.Any())
                 {
                     foreach (var temp in listTanggalHistorisUntukPrediksi)
                     {
@@ -887,19 +898,19 @@ namespace testProjectBCA
 
                 if (!query.Any())
                 {
-                    isiAtm100.Add(new tanggalValue() { tanggal = tanggal, value = 0 });
-                    isiCrm100.Add(new tanggalValue() { tanggal = tanggal, value = 0 });
-                    sislokAtm100.Add(new tanggalRasio() { tanggal = tanggal, value = 0 });
-                    sislokCrm100.Add(new tanggalValue() { tanggal = tanggal, value = 0 });
-                    sislokCdm100.Add(new tanggalValue() { tanggal = tanggal, value = 0 });
+                    //isiAtm100.Add(new tanggalValue() { tanggal = tanggal, value = 0 });
+                    //isiCrm100.Add(new tanggalValue() { tanggal = tanggal, value = 0 });
+                    //sislokAtm100.Add(new tanggalRasio() { tanggal = tanggal, value = 0 });
+                    //sislokCrm100.Add(new tanggalValue() { tanggal = tanggal, value = 0 });
+                    //sislokCdm100.Add(new tanggalValue() { tanggal = tanggal, value = 0 });
                 }
                 else
                 {
-                    isiAtm100.Add(new tanggalValue() { tanggal = tanggal, value = (Int64)Math.Round((Double)query2.Average(x => x.isiATM100), 0) });
-                    isiCrm100.Add(new tanggalValue() { tanggal = tanggal, value = (Int64)Math.Round((Double)query2.Average(x => x.isiCRM100), 0) });
-                    sislokAtm100.Add(new tanggalRasio() { tanggal = tanggal, value = Math.Round((Double)query2.Average(x => x.RasioSislokAtm100), 2) });
-                    sislokCrm100.Add(new tanggalValue() { tanggal = tanggal, value = (Int64)Math.Round((Double)query2.Average(x => x.sislokCRM100), 0) });
-                    sislokCdm100.Add(new tanggalValue() { tanggal = tanggal, value = (Int64)Math.Round((Double)query2.Average(x => x.sislokCDM100), 0) });
+                    //isiAtm100.Add(new tanggalValue() { tanggal = tanggal, value = (Int64)Math.Round((Double)query2.Average(x => x.isiATM100), 0) });
+                    //isiCrm100.Add(new tanggalValue() { tanggal = tanggal, value = (Int64)Math.Round((Double)query2.Average(x => x.isiCRM100), 0) });
+                    //sislokAtm100.Add(new tanggalRasio() { tanggal = tanggal, value = Math.Round((Double)query2.Average(x => x.RasioSislokAtm100), 2) });
+                    //sislokCrm100.Add(new tanggalValue() { tanggal = tanggal, value = (Int64)Math.Round((Double)query2.Average(x => x.sislokCRM100), 0) });
+                    //sislokCdm100.Add(new tanggalValue() { tanggal = tanggal, value = (Int64)Math.Round((Double)query2.Average(x => x.sislokCDM100), 0) });
                 }
                 tanggal = tanggal.AddDays(1);
             }
@@ -1164,7 +1175,18 @@ namespace testProjectBCA
 
             DateTime tanggal = DateTime.Today;
             DateTime maxTanggal = tanggalMaxPrediksiPicker.Value;
+            String jenis = metodePrediksiComboBox.SelectedIndex.ToString();
+            KumpulanPrediksi prediksi = new KumpulanPrediksi("Jabotabek", listTanggalHistorisUntukPrediksi, tanggal, maxTanggal, jenis, jenis);
 
+            isiAtm50.AddRange(prediksi.prediksiIsiAtm.GroupBy(x => x.tanggal).Select(x => new tanggalValue() { tanggal = x.Key, value = x.Sum(y => y.d50) }).ToList());
+            isiCrm50.AddRange(prediksi.isiCrm2.GroupBy(x => x.tanggal).Select(x => new tanggalValue() { tanggal = x.Key, value = x.Sum(y => y.d50) }).ToList());
+            sislokAtm50.AddRange(prediksi.rasioSislokAtm.GroupBy(x => x.tanggal).Select(x => new tanggalRasio() { tanggal = x.Key, value = x.Average(y => y.d50) }).ToList());
+            sislokCdm50.AddRange(prediksi.sislokCdm.GroupBy(x => x.tanggal).Select(x => new tanggalValue() { tanggal = x.Key, value = x.Sum(y => y.d50) }).ToList());
+            sislokCrm50.AddRange(prediksi.sislokCrm.GroupBy(x => x.tanggal).Select(x => new tanggalValue() { tanggal = x.Key, value = x.Sum(y => y.d50) }).ToList());
+
+
+
+            //
             Console.WriteLine(saldo50.Count);
             while (tanggal <= maxTanggal.AddDays(1))
             {
@@ -1244,19 +1266,19 @@ namespace testProjectBCA
                               });
                 if (!query.Any())
                 {
-                    isiAtm50.Add(new tanggalValue() { tanggal = tanggal, value = 0 });
-                    isiCrm50.Add(new tanggalValue() { tanggal = tanggal, value = 0 });
-                    sislokAtm50.Add(new tanggalRasio() { tanggal = tanggal, value = 0 });
-                    sislokCrm50.Add(new tanggalValue() { tanggal = tanggal, value = 0 });
-                    sislokCdm50.Add(new tanggalValue() { tanggal = tanggal, value = 0 });
+                    //isiAtm50.Add(new tanggalValue() { tanggal = tanggal, value = 0 });
+                    //isiCrm50.Add(new tanggalValue() { tanggal = tanggal, value = 0 });
+                    //sislokAtm50.Add(new tanggalRasio() { tanggal = tanggal, value = 0 });
+                    //sislokCrm50.Add(new tanggalValue() { tanggal = tanggal, value = 0 });
+                    //sislokCdm50.Add(new tanggalValue() { tanggal = tanggal, value = 0 });
                 }
                 else
                 {
-                    isiAtm50.Add(new tanggalValue() { tanggal = tanggal, value = (Int64)Math.Round((Double)query2.Average(x => x.isiATM50), 0) });
-                    isiCrm50.Add(new tanggalValue() { tanggal = tanggal, value = (Int64)Math.Round((Double)query2.Average(x => x.isiCRM50), 0) });
-                    sislokAtm50.Add(new tanggalRasio() { tanggal = tanggal, value = Math.Round((Double)query2.Average(x => x.RasioSislokAtm50), 2) });
-                    sislokCrm50.Add(new tanggalValue() { tanggal = tanggal, value = (Int64)Math.Round((Double)query2.Average(x => x.sislokCRM50), 0) });
-                    sislokCdm50.Add(new tanggalValue() { tanggal = tanggal, value = (Int64)Math.Round((Double)query2.Average(x => x.sislokCDM50), 0) });
+                    //isiAtm50.Add(new tanggalValue() { tanggal = tanggal, value = (Int64)Math.Round((Double)query2.Average(x => x.isiATM50), 0) });
+                    //isiCrm50.Add(new tanggalValue() { tanggal = tanggal, value = (Int64)Math.Round((Double)query2.Average(x => x.isiCRM50), 0) });
+                    //sislokAtm50.Add(new tanggalRasio() { tanggal = tanggal, value = Math.Round((Double)query2.Average(x => x.RasioSislokAtm50), 2) });
+                    //sislokCrm50.Add(new tanggalValue() { tanggal = tanggal, value = (Int64)Math.Round((Double)query2.Average(x => x.sislokCRM50), 0) });
+                    //sislokCdm50.Add(new tanggalValue() { tanggal = tanggal, value = (Int64)Math.Round((Double)query2.Average(x => x.sislokCDM50), 0) });
                 }
                 tanggal = tanggal.AddDays(1);
             }

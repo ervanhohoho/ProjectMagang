@@ -1123,6 +1123,20 @@ namespace testProjectBCA
             paf.MdiParent = this;
             paf.Show();
         }
+
+        private void telatValidasiToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ReportRekonSaldo rrs = new ReportRekonSaldo();
+            rrs.MdiParent = this;
+            rrs.Show();
+        }
+
+        private void transaksiSetorTarikCabangToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SummaryTransaksiCabang stc = new SummaryTransaksiCabang();
+            stc.MdiParent = this;
+            stc.Show();
+        }
     }
 }
 public static class SqlBulkCopyExtensions

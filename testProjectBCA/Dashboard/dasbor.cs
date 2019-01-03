@@ -795,12 +795,13 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "select [bulan] = month(tanggal),[persen] = cast(sum(adhoc100+adhoc50+adhoc20)as float)/ cast(sum(adhoc100+adhoc50+adhoc20+bon100+bon50+bon20) as float) from TransaksiAtms ta join Pkt p on ta.kodePkt = p.kodePkt where year(tanggal) = " + comboTahun2.SelectedValue.ToString() + areaChoose(comboArea.SelectedValue.ToString()) + " group by MONTH(tanggal) order by[bulan]";
+                    cmd.CommandText = "select [bulan] = month(tanggal),[persen] = cast(sum(adhoc100+adhoc50+adhoc20)as float)/ cast(NULLIF(sum(adhoc100+adhoc50+adhoc20+bon100+bon50+bon20),0) as float) from TransaksiAtms ta join Pkt p on ta.kodePkt = p.kodePkt where year(tanggal) = " + comboTahun2.SelectedValue.ToString() + areaChoose(comboArea.SelectedValue.ToString()) + " group by MONTH(tanggal) order by[bulan]";
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
                         bulan.Add(reader[0].ToString());
-                        persen.Add((Double)reader[1]);
+                        Console.WriteLine("Persen: " + reader[1].ToString());
+                        persen.Add(String.IsNullOrEmpty(reader[1].ToString()) ? 0 : (Double)reader[1]);
 
                     }
                     ChartValues<Double> cv = new ChartValues<Double>();
@@ -1062,13 +1063,13 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "SELECT [Bulan] = MONTH(tanggal),[Rasio] = CAST(SUM(saldoAwal100 + saldoAwal50 + saldoAwal20) AS FLOAT)/(SUM(isiATM100+isiATM50+isiATM20+isiCRM100+isiCRM50+isiCRM20)),[persen] = cast(sum(adhoc100+adhoc50+adhoc20)as float)/ cast(sum(adhoc100+adhoc50+adhoc20+bon100+bon50+bon20) as float) FROM TransaksiAtms ta join Pkt p on ta.kodePkt = p.kodePkt WHERE YEAR(tanggal) = " + comboTahun5.SelectedValue.ToString() + kanwilChoose(comboKanwil5.SelectedValue.ToString()) + " GROUP BY MONTH(tanggal), YEAR(tanggal) ORDER BY Bulan";
+                    cmd.CommandText = "SELECT [Bulan] = MONTH(tanggal),[Rasio] = CAST(SUM(saldoAwal100 + saldoAwal50 + saldoAwal20) AS FLOAT)/(NULLIF(SUM(isiATM100+isiATM50+isiATM20+isiCRM100+isiCRM50+isiCRM20),0)),[persen] = cast(sum(adhoc100+adhoc50+adhoc20)as float)/ cast(NULLIF(sum(adhoc100+adhoc50+adhoc20+bon100+bon50+bon20),0) as float) FROM TransaksiAtms ta join Pkt p on ta.kodePkt = p.kodePkt WHERE YEAR(tanggal) = " + comboTahun5.SelectedValue.ToString() + kanwilChoose(comboKanwil5.SelectedValue.ToString()) + " GROUP BY MONTH(tanggal), YEAR(tanggal) ORDER BY Bulan";
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
                         bulan.Add(reader[0].ToString());
-                        rasio.Add((Double)reader[1]);
-                        persen.Add((Double)reader[2]);
+                        rasio.Add(String.IsNullOrEmpty(reader[1].ToString()) ? 0 : (Double)reader[1]);
+                        persen.Add(String.IsNullOrEmpty(reader[2].ToString()) ? 0 : (Double)reader[2]);
 
                     }
                     ChartValues<Double> cv = new ChartValues<Double>();
