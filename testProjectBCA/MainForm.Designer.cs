@@ -104,6 +104,9 @@
             this.cRMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setoranCRMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inputDataCashpointToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.testMenusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.inputSaldoATMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.inputSaldoCRMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -115,7 +118,8 @@
             this.nasabahToolStripMenuItem,
             this.dashboardToolStripMenuItem1,
             this.adminToolsToolStripMenuItem,
-            this.insertDataTarikanToolStripMenuItem});
+            this.insertDataTarikanToolStripMenuItem,
+            this.testMenusToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1004, 24);
@@ -705,6 +709,29 @@
             this.inputDataCashpointToolStripMenuItem1.Text = "Input Data Cashpoint";
             this.inputDataCashpointToolStripMenuItem1.Click += new System.EventHandler(this.inputDataCashpointToolStripMenuItem1_Click);
             // 
+            // testMenusToolStripMenuItem
+            // 
+            this.testMenusToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.inputSaldoATMToolStripMenuItem,
+            this.inputSaldoCRMToolStripMenuItem});
+            this.testMenusToolStripMenuItem.Name = "testMenusToolStripMenuItem";
+            this.testMenusToolStripMenuItem.Size = new System.Drawing.Size(79, 20);
+            this.testMenusToolStripMenuItem.Text = "Test Menus";
+            // 
+            // inputSaldoATMToolStripMenuItem
+            // 
+            this.inputSaldoATMToolStripMenuItem.Name = "inputSaldoATMToolStripMenuItem";
+            this.inputSaldoATMToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.inputSaldoATMToolStripMenuItem.Text = "Input Saldo ATM";
+            this.inputSaldoATMToolStripMenuItem.Click += new System.EventHandler(this.inputSaldoATMToolStripMenuItem_Click);
+            // 
+            // inputSaldoCRMToolStripMenuItem
+            // 
+            this.inputSaldoCRMToolStripMenuItem.Name = "inputSaldoCRMToolStripMenuItem";
+            this.inputSaldoCRMToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.inputSaldoCRMToolStripMenuItem.Text = "Input Saldo CRM";
+            this.inputSaldoCRMToolStripMenuItem.Click += new System.EventHandler(this.inputSaldoCRMToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -805,5 +832,8 @@
         private System.Windows.Forms.ToolStripMenuItem reportToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem telatValidasiToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem transaksiSetorTarikCabangToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem testMenusToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem inputSaldoATMToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem inputSaldoCRMToolStripMenuItem;
     }
 }

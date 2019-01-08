@@ -389,6 +389,22 @@
           <Property Name="kodePkt" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="value" Type="bigint" />
         </EntityType>
+        <EntityType Name="SaldoMesin">
+          <Key>
+            <PropertyRef Name="tanggal" />
+            <PropertyRef Name="wsid" />
+          </Key>
+          <Property Name="tanggal" Type="date" Nullable="false" />
+          <Property Name="wsid" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="kodeLaporan" Type="varchar" MaxLength="50" />
+          <Property Name="cabang" Type="varchar" MaxLength="50" />
+          <Property Name="standarPengisianCartridge" Type="bigint" />
+          <Property Name="totalPengeluaran" Type="bigint" />
+          <Property Name="totalPemasukan" Type="bigint" />
+          <Property Name="saldoH" Type="bigint" />
+          <Property Name="saldoHariSebelumnya" Type="bigint" />
+          <Property Name="jenisMesin" Type="varchar" MaxLength="10" />
+        </EntityType>
         <EntityType Name="SaveAsk">
           <Key>
             <PropertyRef Name="id" />
@@ -584,7 +600,7 @@ warning 6002: The table/view 'CAC.dbo.ApprovalView' does not have a primary key 
           <Property Name="koordinator" Type="varchar" MaxLength="50" />
           <Property Name="kanwil" Type="varchar" MaxLength="50" />
           <Property Name="idDetailApproval" Type="int" Nullable="false" />
-          <Property Name="Expr1" Type="date" />
+          <Property Name="tanggalDetailApproval" Type="date" />
           <Property Name="saldoAwal20" Type="bigint" />
           <Property Name="saldoAwal50" Type="bigint" />
           <Property Name="saldoAwal100" Type="bigint" />
@@ -713,6 +729,7 @@ warning 6002: The table/view 'CAC.dbo.ViewTransaksiAtms' does not have a primary
           <EntitySet Name="RekonSaldoPerVendor" EntityType="Self.RekonSaldoPerVendor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RekonSaldoVault" EntityType="Self.RekonSaldoVault" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SaldoAwalRekonSaldo" EntityType="Self.SaldoAwalRekonSaldo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SaldoMesin" EntityType="Self.SaldoMesin" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SaveAsk" EntityType="Self.SaveAsk" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="saveBeeHive" EntityType="Self.saveBeeHive" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="saveMcs" EntityType="Self.saveMcs" Schema="dbo" store:Type="Tables" />
@@ -736,7 +753,7 @@ warning 6002: The table/view 'CAC.dbo.ViewTransaksiAtms' does not have a primary
     [ApprovalView].[koordinator] AS [koordinator], 
     [ApprovalView].[kanwil] AS [kanwil], 
     [ApprovalView].[idDetailApproval] AS [idDetailApproval], 
-    [ApprovalView].[Expr1] AS [Expr1], 
+    [ApprovalView].[tanggalDetailApproval] AS [tanggalDetailApproval], 
     [ApprovalView].[saldoAwal20] AS [saldoAwal20], 
     [ApprovalView].[saldoAwal50] AS [saldoAwal50], 
     [ApprovalView].[saldoAwal100] AS [saldoAwal100], 
@@ -1375,6 +1392,7 @@ warning 6002: The table/view 'CAC.dbo.ViewTransaksiAtms' does not have a primary
           <EntitySet Name="SaldoAwalRekonSaldoes" EntityType="CACModel.SaldoAwalRekonSaldo" />
           <EntitySet Name="ApprovalViews" EntityType="CACModel.ApprovalView" />
           <EntitySet Name="ViewTransaksiAtms" EntityType="CACModel.ViewTransaksiAtm" />
+          <EntitySet Name="SaldoMesins" EntityType="CACModel.SaldoMesin" />
         </EntityContainer>
         <EntityType Name="TabelTarikanSetoranCRM">
           <Key>
@@ -1475,7 +1493,6 @@ warning 6002: The table/view 'CAC.dbo.ViewTransaksiAtms' does not have a primary
           <Property Name="koordinator" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="kanwil" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="idDetailApproval" Type="Int32" Nullable="false" />
-          <Property Name="Expr1" Type="DateTime" Precision="0" />
           <Property Name="saldoAwal20" Type="Int64" />
           <Property Name="saldoAwal50" Type="Int64" />
           <Property Name="saldoAwal100" Type="Int64" />
@@ -1507,6 +1524,7 @@ warning 6002: The table/view 'CAC.dbo.ViewTransaksiAtms' does not have a primary
           <Property Name="setorAdhoc50" Type="Int64" />
           <Property Name="setorAdhoc20" Type="Int64" />
           <Property Name="tanggalApproval" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="tanggalDetailApproval" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="ViewTransaksiAtm">
           <Key>
@@ -1549,6 +1567,22 @@ warning 6002: The table/view 'CAC.dbo.ViewTransaksiAtms' does not have a primary
           <Property Name="saldoAkhir100" Type="Int64" />
           <Property Name="kanwil" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="koordinator" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="SaldoMesin">
+          <Key>
+            <PropertyRef Name="tanggal" />
+            <PropertyRef Name="wsid" />
+          </Key>
+          <Property Name="tanggal" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="wsid" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="kodeLaporan" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cabang" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="standarPengisianCartridge" Type="Int64" />
+          <Property Name="totalPengeluaran" Type="Int64" />
+          <Property Name="totalPemasukan" Type="Int64" />
+          <Property Name="saldoH" Type="Int64" />
+          <Property Name="saldoHariSebelumnya" Type="Int64" />
+          <Property Name="jenisMesin" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -2145,6 +2179,7 @@ warning 6002: The table/view 'CAC.dbo.ViewTransaksiAtms' does not have a primary
           <EntitySetMapping Name="ApprovalViews">
             <EntityTypeMapping TypeName="CACModel.ApprovalView">
               <MappingFragment StoreEntitySet="ApprovalView">
+                <ScalarProperty Name="tanggalDetailApproval" ColumnName="tanggalDetailApproval" />
                 <ScalarProperty Name="tanggalApproval" ColumnName="tanggalApproval" />
                 <ScalarProperty Name="setorAdhoc20" ColumnName="setorAdhoc20" />
                 <ScalarProperty Name="setorAdhoc50" ColumnName="setorAdhoc50" />
@@ -2176,7 +2211,6 @@ warning 6002: The table/view 'CAC.dbo.ViewTransaksiAtms' does not have a primary
                 <ScalarProperty Name="saldoAwal100" ColumnName="saldoAwal100" />
                 <ScalarProperty Name="saldoAwal50" ColumnName="saldoAwal50" />
                 <ScalarProperty Name="saldoAwal20" ColumnName="saldoAwal20" />
-                <ScalarProperty Name="Expr1" ColumnName="Expr1" />
                 <ScalarProperty Name="idDetailApproval" ColumnName="idDetailApproval" />
                 <ScalarProperty Name="kanwil" ColumnName="kanwil" />
                 <ScalarProperty Name="koordinator" ColumnName="koordinator" />
@@ -2230,6 +2264,22 @@ warning 6002: The table/view 'CAC.dbo.ViewTransaksiAtms' does not have a primary
                 <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
                 <ScalarProperty Name="tanggal" ColumnName="tanggal" />
                 <ScalarProperty Name="idTransaksi" ColumnName="idTransaksi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SaldoMesins">
+            <EntityTypeMapping TypeName="CACModel.SaldoMesin">
+              <MappingFragment StoreEntitySet="SaldoMesin">
+                <ScalarProperty Name="jenisMesin" ColumnName="jenisMesin" />
+                <ScalarProperty Name="saldoHariSebelumnya" ColumnName="saldoHariSebelumnya" />
+                <ScalarProperty Name="saldoH" ColumnName="saldoH" />
+                <ScalarProperty Name="totalPemasukan" ColumnName="totalPemasukan" />
+                <ScalarProperty Name="totalPengeluaran" ColumnName="totalPengeluaran" />
+                <ScalarProperty Name="standarPengisianCartridge" ColumnName="standarPengisianCartridge" />
+                <ScalarProperty Name="cabang" ColumnName="cabang" />
+                <ScalarProperty Name="kodeLaporan" ColumnName="kodeLaporan" />
+                <ScalarProperty Name="wsid" ColumnName="wsid" />
+                <ScalarProperty Name="tanggal" ColumnName="tanggal" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

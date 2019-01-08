@@ -590,6 +590,8 @@
     <EntitySetMapping Name="ApprovalViews">
       <EntityTypeMapping TypeName="CACModel.ApprovalView">
         <MappingFragment StoreEntitySet="ApprovalView">
+          <ScalarProperty Name="tanggalDetailApproval" ColumnName="tanggalDetailApproval" />
+          <ScalarProperty Name="tanggalApproval" ColumnName="tanggalApproval" />
           <ScalarProperty Name="setorAdhoc20" ColumnName="setorAdhoc20" />
           <ScalarProperty Name="setorAdhoc50" ColumnName="setorAdhoc50" />
           <ScalarProperty Name="setorAdhoc100" ColumnName="setorAdhoc100" />
@@ -620,7 +622,6 @@
           <ScalarProperty Name="saldoAwal100" ColumnName="saldoAwal100" />
           <ScalarProperty Name="saldoAwal50" ColumnName="saldoAwal50" />
           <ScalarProperty Name="saldoAwal20" ColumnName="saldoAwal20" />
-          <ScalarProperty Name="Expr1" ColumnName="Expr1" />
           <ScalarProperty Name="idDetailApproval" ColumnName="idDetailApproval" />
           <ScalarProperty Name="kanwil" ColumnName="kanwil" />
           <ScalarProperty Name="koordinator" ColumnName="koordinator" />
@@ -674,6 +675,22 @@
           <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
           <ScalarProperty Name="tanggal" ColumnName="tanggal" />
           <ScalarProperty Name="idTransaksi" ColumnName="idTransaksi" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SaldoMesins">
+      <EntityTypeMapping TypeName="CACModel.SaldoMesin">
+        <MappingFragment StoreEntitySet="SaldoMesin">
+          <ScalarProperty Name="jenisMesin" ColumnName="jenisMesin" />
+          <ScalarProperty Name="saldoHariSebelumnya" ColumnName="saldoHariSebelumnya" />
+          <ScalarProperty Name="saldoH" ColumnName="saldoH" />
+          <ScalarProperty Name="totalPemasukan" ColumnName="totalPemasukan" />
+          <ScalarProperty Name="totalPengeluaran" ColumnName="totalPengeluaran" />
+          <ScalarProperty Name="standarPengisianCartridge" ColumnName="standarPengisianCartridge" />
+          <ScalarProperty Name="cabang" ColumnName="cabang" />
+          <ScalarProperty Name="kodeLaporan" ColumnName="kodeLaporan" />
+          <ScalarProperty Name="wsid" ColumnName="wsid" />
+          <ScalarProperty Name="tanggal" ColumnName="tanggal" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

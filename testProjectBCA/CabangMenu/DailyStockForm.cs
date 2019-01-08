@@ -847,6 +847,7 @@ namespace testProjectBCA
                 if (comboPkt.SelectedIndex == jumlahvendor)
                 {
                     loadAllin();
+
                 }
                 else
                 {
@@ -879,14 +880,11 @@ namespace testProjectBCA
                 }
 
             }
-
-
-
             if (comboOption.SelectedIndex == 1)
             {
                 foreach (var temp in listTb)
                 {
-                    temp.BN100K /= 1000000;
+                    temp.BN100K /= 100000;
                     temp.BN50K /= 50000;
                     temp.BN20K /= 20000;
                     temp.BN10K /= 10000;
@@ -905,6 +903,14 @@ namespace testProjectBCA
                 }
 
             }
+            //BN CN TOTAL
+            for (int i = 0; i < listTb.Count; i++)
+            {
+                listTb[i].JumlahBN = listTb[i].BN100 + listTb[i].BN100K + listTb[i].BN10K + listTb[i].BN1K + listTb[i].BN200 + listTb[i].BN20K + listTb[i].BN2K + listTb[i].BN500 + listTb[i].BN50K + listTb[i].BN5K;
+                listTb[i].JumlahCN = listTb[i].CN100 + listTb[i].CN1K + listTb[i].CN200 + listTb[i].CN25 + listTb[i].CN50 + listTb[i].CN50 + listTb[i].CN500;
+                listTb[i].totalBNCN = listTb[i].JumlahBN + listTb[i].JumlahCN;
+            }
+
             loadTable();
             if (comboOption.SelectedIndex == 0)
             {
@@ -937,30 +943,23 @@ namespace testProjectBCA
 
         void SaveDataGridViewToCSV(string filename)
         {
-            // Choose whether to write header. Use EnableWithoutHeaderText instead to omit header.
+
             dataGridView1.ClipboardCopyMode = DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText;
-            // Select all the cells
+
             dataGridView1.SelectAll();
-            // Copy selected cells to DataObject
+
             for (int a = 4; a < dataGridView1.Columns.Count; a++)
             {
                 dataGridView1.Columns[a].DefaultCellStyle.Format = "";
-                //for(int b=0;b<dataGridView1.Rows.Count;b++)
-                //{
-                //    dataGridView1.Rows[b].Cells[a].Value = (Int64)dataGridView1.Rows[b].Cells[a].Value;
-                //}
+
             }
 
             DataObject dataObject = dataGridView1.GetClipboardContent();
-            // Get the text of the DataObject, and serialize it to a file
             File.WriteAllText(filename, dataObject.GetText(TextDataFormat.CommaSeparatedValue));
             for (int a = 4; a < dataGridView1.Columns.Count; a++)
             {
                 dataGridView1.Columns[a].DefaultCellStyle.Format = "C";
-                //for(int b=0;b<dataGridView1.Rows.Count;b++)
-                //{
-                //    dataGridView1.Rows[b].Cells[a].Value = (Int64)dataGridView1.Rows[b].Cells[a].Value;
-                //}
+
             }
         }
 
@@ -1004,5 +1003,8 @@ class DailyStockDisplay
     public Int64 CN100 { get; set; }
     public Int64 CN50 { get; set; }
     public Int64 CN25 { get; set; }
+    public Int64 JumlahBN { set; get; }
+    public Int64 JumlahCN { set; get; }
+    public Int64 totalBNCN { set; get; }
 
 }

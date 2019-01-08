@@ -39,14 +39,14 @@ namespace testProjectBCA
                 String kanwil = kanwilComboBox.SelectedItem.ToString();
                 var q = (from x in db.Optis
                          join y in db.Cashpoints on x.idCashpoint equals y.idCashpoint
-                         join z in db.Pkts on y.kodePkt equals z.kodePkt
+                         join z in db.Pkts on y.kodePkt equals z.kodeOpti
                          where z.kanwil == kanwil
                          select new { kodePkt = z.kodePkt, tanggal = x.tanggal, z.koordinator, y.denom, x.prediksi}).ToList();
                 if(kanwil == "ALL VENDOR")
                 {
                     q = (from x in db.Optis
                          join y in db.Cashpoints on x.idCashpoint equals y.idCashpoint
-                         join z in db.Pkts on y.kodePkt equals z.kodePkt
+                         join z in db.Pkts on y.kodePkt equals z.kodeOpti
                          select new { kodePkt = z.kodePkt, tanggal = x.tanggal,z.koordinator, y.denom, x.prediksi }).ToList();
                 }
                 q = q.GroupBy(x=> new { x.kodePkt,x.tanggal, x.denom , x.koordinator}).Select(x=>new { x.Key.kodePkt, x.Key.tanggal, x.Key.koordinator, x.Key.denom, prediksi = x.Sum(y=>y.prediksi)}).ToList();

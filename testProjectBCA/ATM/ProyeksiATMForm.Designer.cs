@@ -193,6 +193,7 @@
             // 
             // rasio100Num
             // 
+            this.rasio100Num.DecimalPlaces = 2;
             this.rasio100Num.Location = new System.Drawing.Point(581, 54);
             this.rasio100Num.Name = "rasio100Num";
             this.rasio100Num.Size = new System.Drawing.Size(120, 20);
@@ -200,6 +201,7 @@
             // 
             // rasio50Num
             // 
+            this.rasio50Num.DecimalPlaces = 2;
             this.rasio50Num.Location = new System.Drawing.Point(581, 83);
             this.rasio50Num.Name = "rasio50Num";
             this.rasio50Num.Size = new System.Drawing.Size(120, 20);
@@ -207,6 +209,7 @@
             // 
             // rasio20Num
             // 
+            this.rasio20Num.DecimalPlaces = 2;
             this.rasio20Num.Location = new System.Drawing.Point(581, 112);
             this.rasio20Num.Name = "rasio20Num";
             this.rasio20Num.Size = new System.Drawing.Size(120, 20);

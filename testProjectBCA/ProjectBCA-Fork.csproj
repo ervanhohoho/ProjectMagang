@@ -116,12 +116,6 @@
     <Reference Include="LumenWorks.Framework.IO, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5ad3ea2f85776344, processorArchitecture=MSIL">
       <HintPath>..\packages\LumenWorksCsvReader.4.0.0\lib\net45\LumenWorks.Framework.IO.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Office.Interop.Excel, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="Microsoft.Office.Interop.Word, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
     <Reference Include="MoreLinq, Version=3.0.0.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
       <HintPath>..\packages\morelinq.3.0.0\lib\net451\MoreLinq.dll</HintPath>
     </Reference>
@@ -383,6 +377,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="SaldoAwalRekonSaldo.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SaldoMesin.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Support Files\InputPromptForm.cs">
@@ -648,6 +645,18 @@
     <Compile Include="TestForm.Designer.cs">
       <DependentUpon>TestForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Test\InputSaldoCRM.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Test\InputSaldoCRM.Designer.cs">
+      <DependentUpon>InputSaldoCRM.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Test\InputSaldoATM.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Test\InputSaldoATM.Designer.cs">
+      <DependentUpon>InputSaldoATM.cs</DependentUpon>
+    </Compile>
     <Compile Include="TransaksiAtm.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -858,6 +867,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CabangMenu\UpdateStokPosisiForm.resx">
       <DependentUpon>UpdateStokPosisiForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Test\InputSaldoCRM.resx">
+      <DependentUpon>InputSaldoCRM.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Test\InputSaldoATM.resx">
+      <DependentUpon>InputSaldoATM.cs</DependentUpon>
     </EmbeddedResource>
     <EntityDeploy Include="Model1.edmx">
       <Generator>EntityModelCodeGenerator</Generator>

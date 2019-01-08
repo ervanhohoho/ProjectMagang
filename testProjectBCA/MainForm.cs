@@ -12,6 +12,8 @@ using testProjectBCA.ATM;
 using testProjectBCA.Dashboard;
 using testProjectBCA.CabangMenu;
 using testProjectBCA.NasabahMenu;
+using testProjectBCA.Test;
+
 namespace testProjectBCA
 {
     public partial class MainForm : Form
@@ -1136,6 +1138,20 @@ namespace testProjectBCA
             SummaryTransaksiCabang stc = new SummaryTransaksiCabang();
             stc.MdiParent = this;
             stc.Show();
+        }
+
+        private void inputSaldoATMToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            InputSaldoATM isa = new InputSaldoATM();
+            isa.MdiParent = this;
+            isa.Show();
+        }
+
+        private void inputSaldoCRMToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            InputSaldoCRM isc = new InputSaldoCRM();
+            isc.MdiParent = this;
+            isc.Show();
         }
     }
 }

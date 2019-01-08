@@ -30,6 +30,7 @@
         {
             this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.comboCabang = new System.Windows.Forms.ComboBox();
             this.comboPkt = new System.Windows.Forms.ComboBox();
             this.comboVal = new System.Windows.Forms.ComboBox();
             this.comboSetBon = new System.Windows.Forms.ComboBox();
@@ -37,7 +38,6 @@
             this.textBoxSearch = new System.Windows.Forms.TextBox();
             this.buttonSearch = new System.Windows.Forms.Button();
             this.ExportBtn = new System.Windows.Forms.Button();
-            this.comboCabang = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -62,6 +62,15 @@
             this.groupBox1.Size = new System.Drawing.Size(634, 81);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
+            // 
+            // comboCabang
+            // 
+            this.comboCabang.FormattingEnabled = true;
+            this.comboCabang.Location = new System.Drawing.Point(219, 46);
+            this.comboCabang.Name = "comboCabang";
+            this.comboCabang.Size = new System.Drawing.Size(200, 21);
+            this.comboCabang.TabIndex = 7;
+            this.comboCabang.SelectionChangeCommitted += new System.EventHandler(this.comboCabang_SelectionChangeCommitted);
             // 
             // comboPkt
             // 
@@ -109,7 +118,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(12, 99);
+            this.dataGridView1.Location = new System.Drawing.Point(18, 99);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersVisible = false;
@@ -145,15 +154,6 @@
             this.ExportBtn.Text = "Export";
             this.ExportBtn.UseVisualStyleBackColor = true;
             this.ExportBtn.Click += new System.EventHandler(this.ExportBtn_Click);
-            // 
-            // comboCabang
-            // 
-            this.comboCabang.FormattingEnabled = true;
-            this.comboCabang.Location = new System.Drawing.Point(219, 46);
-            this.comboCabang.Name = "comboCabang";
-            this.comboCabang.Size = new System.Drawing.Size(200, 21);
-            this.comboCabang.TabIndex = 7;
-            this.comboCabang.SelectionChangeCommitted += new System.EventHandler(this.comboCabang_SelectionChangeCommitted);
             // 
             // rekonSaldoTrxCabang
             // 

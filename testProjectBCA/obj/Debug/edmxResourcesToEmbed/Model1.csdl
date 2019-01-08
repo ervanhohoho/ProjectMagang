@@ -553,6 +553,7 @@
     <EntitySet Name="SaldoAwalRekonSaldoes" EntityType="CACModel.SaldoAwalRekonSaldo" />
     <EntitySet Name="ApprovalViews" EntityType="CACModel.ApprovalView" />
     <EntitySet Name="ViewTransaksiAtms" EntityType="CACModel.ViewTransaksiAtm" />
+    <EntitySet Name="SaldoMesins" EntityType="CACModel.SaldoMesin" />
   </EntityContainer>
   <EntityType Name="TabelTarikanSetoranCRM">
     <Key>
@@ -653,7 +654,6 @@
     <Property Name="koordinator" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="kanwil" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="idDetailApproval" Type="Int32" Nullable="false" />
-    <Property Name="Expr1" Type="DateTime" Precision="0" />
     <Property Name="saldoAwal20" Type="Int64" />
     <Property Name="saldoAwal50" Type="Int64" />
     <Property Name="saldoAwal100" Type="Int64" />
@@ -685,6 +685,7 @@
     <Property Name="setorAdhoc50" Type="Int64" />
     <Property Name="setorAdhoc20" Type="Int64" />
     <Property Name="tanggalApproval" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="tanggalDetailApproval" Type="DateTime" Precision="0" />
   </EntityType>
   <EntityType Name="ViewTransaksiAtm">
     <Key>
@@ -727,5 +728,21 @@
     <Property Name="saldoAkhir100" Type="Int64" />
     <Property Name="kanwil" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="koordinator" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="SaldoMesin">
+    <Key>
+      <PropertyRef Name="tanggal" />
+      <PropertyRef Name="wsid" />
+    </Key>
+    <Property Name="tanggal" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="wsid" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="kodeLaporan" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="cabang" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="standarPengisianCartridge" Type="Int64" />
+    <Property Name="totalPengeluaran" Type="Int64" />
+    <Property Name="totalPemasukan" Type="Int64" />
+    <Property Name="saldoH" Type="Int64" />
+    <Property Name="saldoHariSebelumnya" Type="Int64" />
+    <Property Name="jenisMesin" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
   </EntityType>
 </Schema>

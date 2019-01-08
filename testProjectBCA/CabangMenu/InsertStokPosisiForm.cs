@@ -107,7 +107,7 @@ namespace testProjectBCA
                 Console.WriteLine(temp);
                 if (!processTable(temp))
                 {
-                    MessageBox.Show(path.Substring(path.LastIndexOf('\\'), path.Length - path.LastIndexOf('\\') + 1) + " Sheet " + temp.TableName + " Tidak sesuai format.\nData stop dimasukkan");
+                    MessageBox.Show("FILE\t: " + path.Substring(path.LastIndexOf('\\') + 1, path.Length - path.LastIndexOf('\\') - 1) + "\nSHEET\t: " + temp.TableName + " Tidak sesuai format.\nData stop dimasukkan");
                     break;
                 }
             }
@@ -132,7 +132,7 @@ namespace testProjectBCA
 
 
             DateTime testDate;
-            if (!DateTime.TryParse(tanggalS, out testDate) || namaPkt == null)
+            if (!DateTime.TryParse(tanggalS, out testDate) || String.IsNullOrEmpty(namaPkt))
                 return false;
 
             DateTime buf, tanggal = new DateTime(1,1,1);

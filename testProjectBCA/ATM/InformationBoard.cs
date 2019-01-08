@@ -3693,6 +3693,8 @@ namespace testProjectBCA.ATM
                 Console.WriteLine("Jumlah Bon Laporan: " + jumlahBonLaporan);
                 Console.WriteLine("Jumlah Prediksi isi ATM: " + prediksiIsiAtm.Count);
 
+
+
                 if (jumlahBonLaporan + 1 < prediksiIsiAtm.Count)
                 {
                     if (e2eComboBox.SelectedIndex == 1)

@@ -26,7 +26,6 @@ namespace testProjectBCA
         public string koordinator { get; set; }
         public string kanwil { get; set; }
         public int idDetailApproval { get; set; }
-        public Nullable<System.DateTime> Expr1 { get; set; }
         public Nullable<long> saldoAwal20 { get; set; }
         public Nullable<long> saldoAwal50 { get; set; }
         public Nullable<long> saldoAwal100 { get; set; }
@@ -58,5 +57,6 @@ namespace testProjectBCA
         public Nullable<long> setorAdhoc50 { get; set; }
         public Nullable<long> setorAdhoc20 { get; set; }
         public System.DateTime tanggalApproval { get; set; }
+        public Nullable<System.DateTime> tanggalDetailApproval { get; set; }
     }
 }

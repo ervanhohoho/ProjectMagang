@@ -384,6 +384,22 @@
     <Property Name="kodePkt" Type="varchar" MaxLength="255" Nullable="false" />
     <Property Name="value" Type="bigint" />
   </EntityType>
+  <EntityType Name="SaldoMesin">
+    <Key>
+      <PropertyRef Name="tanggal" />
+      <PropertyRef Name="wsid" />
+    </Key>
+    <Property Name="tanggal" Type="date" Nullable="false" />
+    <Property Name="wsid" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="kodeLaporan" Type="varchar" MaxLength="50" />
+    <Property Name="cabang" Type="varchar" MaxLength="50" />
+    <Property Name="standarPengisianCartridge" Type="bigint" />
+    <Property Name="totalPengeluaran" Type="bigint" />
+    <Property Name="totalPemasukan" Type="bigint" />
+    <Property Name="saldoH" Type="bigint" />
+    <Property Name="saldoHariSebelumnya" Type="bigint" />
+    <Property Name="jenisMesin" Type="varchar" MaxLength="10" />
+  </EntityType>
   <EntityType Name="SaveAsk">
     <Key>
       <PropertyRef Name="id" />
@@ -579,7 +595,7 @@ warning 6002: The table/view 'CAC.dbo.ApprovalView' does not have a primary key 
     <Property Name="koordinator" Type="varchar" MaxLength="50" />
     <Property Name="kanwil" Type="varchar" MaxLength="50" />
     <Property Name="idDetailApproval" Type="int" Nullable="false" />
-    <Property Name="Expr1" Type="date" />
+    <Property Name="tanggalDetailApproval" Type="date" />
     <Property Name="saldoAwal20" Type="bigint" />
     <Property Name="saldoAwal50" Type="bigint" />
     <Property Name="saldoAwal100" Type="bigint" />
@@ -708,6 +724,7 @@ warning 6002: The table/view 'CAC.dbo.ViewTransaksiAtms' does not have a primary
     <EntitySet Name="RekonSaldoPerVendor" EntityType="Self.RekonSaldoPerVendor" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RekonSaldoVault" EntityType="Self.RekonSaldoVault" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SaldoAwalRekonSaldo" EntityType="Self.SaldoAwalRekonSaldo" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SaldoMesin" EntityType="Self.SaldoMesin" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SaveAsk" EntityType="Self.SaveAsk" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="saveBeeHive" EntityType="Self.saveBeeHive" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="saveMcs" EntityType="Self.saveMcs" Schema="dbo" store:Type="Tables" />
@@ -731,7 +748,7 @@ warning 6002: The table/view 'CAC.dbo.ViewTransaksiAtms' does not have a primary
     [ApprovalView].[koordinator] AS [koordinator], 
     [ApprovalView].[kanwil] AS [kanwil], 
     [ApprovalView].[idDetailApproval] AS [idDetailApproval], 
-    [ApprovalView].[Expr1] AS [Expr1], 
+    [ApprovalView].[tanggalDetailApproval] AS [tanggalDetailApproval], 
     [ApprovalView].[saldoAwal20] AS [saldoAwal20], 
     [ApprovalView].[saldoAwal50] AS [saldoAwal50], 
     [ApprovalView].[saldoAwal100] AS [saldoAwal100], 

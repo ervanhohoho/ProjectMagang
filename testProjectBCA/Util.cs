@@ -12,6 +12,7 @@ namespace testProjectBCA
 {
     static class Util
     {
+        
         public static FileStream stream;
         static IExcelDataReader reader;
         public static int GetIso8601WeekOfYear(DateTime time)

@@ -130,7 +130,7 @@ namespace testProjectBCA
                                 dueDate = x.dueDate,
                                 cashPointtId = x.cashPointtId,
                                 regular = x.regular,
-                                emergency = (Int64?) 0,
+                                emergency = (Int64?)0,
                                 //x.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(x.blogTime.ToString()).Hour < 21 ? x.blogTime : DateTime.Parse(x.blogTime.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(x.dueDate.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
                                 validation = x.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(x.blogTime.ToString()).Hour < 21 ? x.blogTime : DateTime.Parse(x.blogTime.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(dateTimePicker2.Value.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
                             }).ToList();
@@ -146,7 +146,7 @@ namespace testProjectBCA
                                 blogMessage = x.blogMessage,
                                 dueDate = x.dueDate,
                                 cashPointtId = x.cashPointtId,
-                                regular = (Int64?) 0,
+                                regular = (Int64?)0,
                                 emergency = x.emergency,
                                 //x.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(x.blogTime.ToString()).Hour < 21 ? x.blogTime : DateTime.Parse(x.blogTime.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(x.dueDate.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
                                 validation = x.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(x.blogTime.ToString()).Hour < 21 ? x.blogTime : DateTime.Parse(x.blogTime.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(dateTimePicker2.Value.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
@@ -242,7 +242,7 @@ namespace testProjectBCA
                                 dueDate = x.dueDate,
                                 cashPointtId = x.cashPointtId,
                                 regular = x.regular,
-                                emergency = (Int64?) 0,
+                                emergency = (Int64?)0,
                                 //x.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(x.blogTime.ToString()).Hour < 21 ? x.blogTime : DateTime.Parse(x.blogTime.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(x.dueDate.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
                                 validation = x.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(x.blogTime.ToString()).Hour < 21 ? x.blogTime : DateTime.Parse(x.blogTime.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(dateTimePicker2.Value.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
                             }).ToList();
@@ -258,7 +258,7 @@ namespace testProjectBCA
                                 blogMessage = x.blogMessage,
                                 dueDate = x.dueDate,
                                 cashPointtId = x.cashPointtId,
-                                regular = (Int64?) 0,
+                                regular = (Int64?)0,
                                 emergency = x.emergency,
                                 //x.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(x.blogTime.ToString()).Hour < 21 ? x.blogTime : DateTime.Parse(x.blogTime.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(x.dueDate.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
                                 validation = x.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(x.blogTime.ToString()).Hour < 21 ? x.blogTime : DateTime.Parse(x.blogTime.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(dateTimePicker2.Value.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
@@ -355,7 +355,7 @@ namespace testProjectBCA
                                 dueDate = x.dueDate,
                                 cashPointtId = x.cashPointtId,
                                 regular = x.regular,
-                                emergency = (Int64?) 0,
+                                emergency = (Int64?)0,
                                 //x.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(x.blogTime.ToString()).Hour < 21 ? x.blogTime : DateTime.Parse(x.blogTime.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(x.dueDate.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
                                 validation = x.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(x.blogTime.ToString()).Hour < 21 ? x.blogTime : DateTime.Parse(x.blogTime.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(dateTimePicker2.Value.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
                             }).ToList();
@@ -371,7 +371,7 @@ namespace testProjectBCA
                                 blogMessage = x.blogMessage,
                                 dueDate = x.dueDate,
                                 cashPointtId = x.cashPointtId,
-                                regular = (Int64?) 0,
+                                regular = (Int64?)0,
                                 emergency = x.emergency,
                                 //x.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(x.blogTime.ToString()).Hour < 21 ? x.blogTime : DateTime.Parse(x.blogTime.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(x.dueDate.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
                                 validation = x.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(x.blogTime.ToString()).Hour < 21 ? x.blogTime : DateTime.Parse(x.blogTime.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(dateTimePicker2.Value.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
@@ -468,7 +468,7 @@ namespace testProjectBCA
                                 dueDate = x.dueDate,
                                 cashPointtId = x.cashPointtId,
                                 regular = x.regular,
-                                emergency = (Int64?) 0,
+                                emergency = (Int64?)0,
                                 //x.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(x.blogTime.ToString()).Hour < 21 ? x.blogTime : DateTime.Parse(x.blogTime.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(x.dueDate.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
                                 validation = x.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(x.blogTime.ToString()).Hour < 21 ? x.blogTime : DateTime.Parse(x.blogTime.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(dateTimePicker2.Value.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
                             }).ToList();
@@ -484,7 +484,7 @@ namespace testProjectBCA
                                 blogMessage = x.blogMessage,
                                 dueDate = x.dueDate,
                                 cashPointtId = x.cashPointtId,
-                                regular = (Int64?) 0,
+                                regular = (Int64?)0,
                                 emergency = x.emergency,
                                 //x.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(x.blogTime.ToString()).Hour < 21 ? x.blogTime : DateTime.Parse(x.blogTime.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(x.dueDate.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
                                 validation = x.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(x.blogTime.ToString()).Hour < 21 ? x.blogTime : DateTime.Parse(x.blogTime.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(dateTimePicker2.Value.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
@@ -519,39 +519,45 @@ namespace testProjectBCA
 
         }
 
-        public void reloadSetBonSudah()
+        public List<ViewRekonSaldoTrxCabang> reloadSetBonSudah()
         {
             List<ViewRekonSaldoTrxCabang> reloadSetBonSudah = reloadSetoranSudah();
             reloadSetBonSudah.AddRange(reloadBonSudah());
             dataGridView1.DataSource = reloadSetBonSudah;
             formatting();
+            return reloadSetBonSudah;
         }
 
-        public void reloadSetBonBelum()
+        public List<ViewRekonSaldoTrxCabang> reloadSetBonBelum()
         {
             List<ViewRekonSaldoTrxCabang> reloadSetBonBelum = reloadSetoranBelum();
             reloadSetBonBelum.AddRange(reloadBonBelum());
             dataGridView1.DataSource = reloadSetBonBelum;
             formatting();
+            return reloadSetBonBelum;
         }
 
-        public void reloadSudBelBon()
+        public List<ViewRekonSaldoTrxCabang> reloadSudBelBon()
         {
             List<ViewRekonSaldoTrxCabang> reloadSudBelBon = reloadBonBelum();
             reloadSudBelBon.AddRange(reloadBonSudah());
+            viewRekonSaldoTrxCabangs.AddRange(reloadBonSudah());
             dataGridView1.DataSource = reloadSudBelBon;
             formatting();
+            return reloadSudBelBon;
         }
 
-        public void reloadSudBelSetoran()
+        public List<ViewRekonSaldoTrxCabang> reloadSudBelSetoran()
         {
             List<ViewRekonSaldoTrxCabang> reloadSudBelSetoran = reloadSetoranSudah();
             reloadSudBelSetoran.AddRange(reloadSetoranBelum());
+            viewRekonSaldoTrxCabangs.AddRange(reloadSetoranBelum());
             dataGridView1.DataSource = reloadSudBelSetoran;
             formatting();
+            return reloadSudBelSetoran;
         }
 
-        public void reloadAll()
+        public List<ViewRekonSaldoTrxCabang> reloadAll()
         {
             List<ViewRekonSaldoTrxCabang> reloadSemua = reloadSetoranBelum();
             reloadSemua.AddRange(reloadSetoranSudah());
@@ -559,6 +565,7 @@ namespace testProjectBCA
             reloadSemua.AddRange(reloadBonSudah());
             dataGridView1.DataSource = reloadSemua;
             formatting();
+            return reloadSemua;
         }
 
 
@@ -812,10 +819,101 @@ namespace testProjectBCA
             sv.Filter = Variables.csvFilter;
             if (sv.ShowDialog() == DialogResult.OK)
             {
-                String csv = ServiceStack.Text.CsvSerializer.SerializeToCsv(viewRekonSaldoTrxCabangs);
-                File.WriteAllText(sv.FileName, csv);
+                if (comboSetBon.SelectedIndex == 0 && comboVal.SelectedIndex == 0)
+                {
+                    String csv = ServiceStack.Text.CsvSerializer.SerializeToCsv(reloadSetoranSudah());
+                    File.WriteAllText(sv.FileName, csv);
+                }
+                if (comboSetBon.SelectedIndex == 0 && comboVal.SelectedIndex == 1)
+                {
+                    String csv = ServiceStack.Text.CsvSerializer.SerializeToCsv(reloadSetoranBelum());
+                    File.WriteAllText(sv.FileName, csv);
+                }
+                if (comboSetBon.SelectedIndex == 0 && comboVal.SelectedIndex == 2)
+                {
+                    String csv = ServiceStack.Text.CsvSerializer.SerializeToCsv(reloadSudBelSetoran());
+                    File.WriteAllText(sv.FileName, csv);
+                }
+                if (comboSetBon.SelectedIndex == 1 && comboVal.SelectedIndex == 0)
+                {
+                    String csv = ServiceStack.Text.CsvSerializer.SerializeToCsv(reloadBonSudah());
+                    File.WriteAllText(sv.FileName, csv);
+                }
+                if (comboSetBon.SelectedIndex == 1 && comboVal.SelectedIndex == 1)
+                {
+                    String csv = ServiceStack.Text.CsvSerializer.SerializeToCsv(reloadBonBelum());
+                    File.WriteAllText(sv.FileName, csv);
+                }
+                if (comboSetBon.SelectedIndex == 1 && comboVal.SelectedIndex == 2)
+                {
+                    String csv = ServiceStack.Text.CsvSerializer.SerializeToCsv(reloadSudBelBon());
+                    File.WriteAllText(sv.FileName, csv);
+                }
+                if (comboSetBon.SelectedIndex == 2 && comboVal.SelectedIndex == 0)
+                {
+                    String csv = ServiceStack.Text.CsvSerializer.SerializeToCsv(reloadSetBonSudah());
+                    File.WriteAllText(sv.FileName, csv);
+                }
+                if (comboSetBon.SelectedIndex == 2 && comboVal.SelectedIndex == 1)
+                {
+                    String csv = ServiceStack.Text.CsvSerializer.SerializeToCsv(reloadSetBonBelum());
+                    File.WriteAllText(sv.FileName, csv);
+                }
+                if (comboSetBon.SelectedIndex == 2 && comboVal.SelectedIndex == 2)
+                {
+                    String csv = ServiceStack.Text.CsvSerializer.SerializeToCsv(reloadAll());
+                    File.WriteAllText(sv.FileName, csv);
+                }
+
             }
+
+            //SaveFileDialog sv = new SaveFileDialog();
+            //sv.Filter = Variables.csvFilter;
+            //if (sv.ShowDialog() == DialogResult.OK)
+            //{
+            //    loadForm.ShowSplashScreen();
+            //    SaveDataGridViewToCSV(sv.FileName);
+            //    loadForm.CloseForm();
+            //}
         }
+
+        //void SaveDataGridViewToCSV(string filename)
+        //{
+
+        //    dataGridView1.ClipboardCopyMode = DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText;
+
+        //    dataGridView1.SelectAll();
+
+        //    for (int a = 0; a < dataGridView1.Columns.Count; a++)
+        //    {
+        //        try
+        //        {
+        //            dataGridView1.Columns[a].DefaultCellStyle.Format = "";
+        //        }
+        //        catch (Exception)
+        //        {
+
+        //            throw;
+        //        }
+        //    }
+
+        //    DataObject dataObject = dataGridView1.GetClipboardContent();
+        //    File.WriteAllText(filename, dataObject.GetText(TextDataFormat.CommaSeparatedValue));
+        //    for (int a = 0; a < dataGridView1.Columns.Count; a++)
+        //    {
+        //        try
+        //        {
+        //            dataGridView1.Columns[a].DefaultCellStyle.Format = "C";
+        //        }
+        //        catch (Exception)
+        //        {
+
+        //        }
+
+
+        //    }
+        //}
+
         int sortColIdx = 0;
         bool asc = true;
         private void dataGridView1_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)

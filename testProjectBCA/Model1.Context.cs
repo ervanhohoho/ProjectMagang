@@ -63,5 +63,6 @@ namespace testProjectBCA
         public virtual DbSet<SaldoAwalRekonSaldo> SaldoAwalRekonSaldoes { get; set; }
         public virtual DbSet<ApprovalView> ApprovalViews { get; set; }
         public virtual DbSet<ViewTransaksiAtm> ViewTransaksiAtms { get; set; }
+        public virtual DbSet<SaldoMesin> SaldoMesins { get; set; }
     }
 }

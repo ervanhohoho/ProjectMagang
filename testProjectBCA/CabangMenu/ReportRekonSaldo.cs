@@ -42,6 +42,8 @@ namespace testProjectBCA.CabangMenu
                          where ((DateTime)x.dueDate).Date.ToString() != ((DateTime)x.blogTime).Date.ToString()
                          && ((DateTime)x.dueDate).Month.ToString() == comboBulan.SelectedValue.ToString()
                          && ((DateTime)x.dueDate).Year.ToString() == comboTahun.SelectedValue.ToString()
+                         && (x.actionRekon.Contains("Delivery") && x.statusRekon.Contains("Confirmed")
+                            || x.actionRekon.Contains("Return") && x.statusRekon.Contains("Transit"))
                          group x by new { x.cashPointtId, x.vendor, y.namaCabang } into z
                          select new
                          {
