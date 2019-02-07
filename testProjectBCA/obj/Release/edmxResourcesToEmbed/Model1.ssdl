@@ -169,6 +169,12 @@
     <Property Name="setorAdhoc100" Type="bigint" />
     <Property Name="setorAdhoc50" Type="bigint" />
     <Property Name="setorAdhoc20" Type="bigint" />
+    <Property Name="inputOpr" Type="varchar" MaxLength="50" />
+    <Property Name="inputSpv" Type="varchar" MaxLength="50" />
+    <Property Name="inputNoTxn" Type="varchar" MaxLength="20" />
+    <Property Name="validasiOpr" Type="varchar" MaxLength="50" />
+    <Property Name="validasiSpv" Type="varchar" MaxLength="50" />
+    <Property Name="validasiNoTxn" Type="varchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="EventTanggal">
     <Key>
@@ -309,6 +315,7 @@
     <Property Name="kodePktATM" Type="varchar" MaxLength="10" />
     <Property Name="kapasitasCPC" Type="bigint" />
     <Property Name="kodeOpti" Type="varchar" MaxLength="10" />
+    <Property Name="vaultBankLain" Type="varchar" MaxLength="255" />
   </EntityType>
   <EntityType Name="RekapSelisihAmbilSetor">
     <Key>
@@ -388,10 +395,11 @@
     <Key>
       <PropertyRef Name="tanggal" />
       <PropertyRef Name="wsid" />
+      <PropertyRef Name="kodeLaporan" />
     </Key>
     <Property Name="tanggal" Type="date" Nullable="false" />
     <Property Name="wsid" Type="varchar" MaxLength="10" Nullable="false" />
-    <Property Name="kodeLaporan" Type="varchar" MaxLength="50" />
+    <Property Name="kodeLaporan" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="cabang" Type="varchar" MaxLength="50" />
     <Property Name="standarPengisianCartridge" Type="bigint" />
     <Property Name="totalPengeluaran" Type="bigint" />
@@ -440,6 +448,12 @@
     <Property Name="d1k" Type="bigint" />
     <Property Name="amountCoin" Type="bigint" />
     <Property Name="time" Type="time" Precision="7" />
+    <Property Name="cn1k" Type="bigint" />
+    <Property Name="cn500" Type="bigint" />
+    <Property Name="cn200" Type="bigint" />
+    <Property Name="cn100" Type="bigint" />
+    <Property Name="cn50" Type="bigint" />
+    <Property Name="cn25" Type="bigint" />
   </EntityType>
   <EntityType Name="SaveRekap">
     <Key>

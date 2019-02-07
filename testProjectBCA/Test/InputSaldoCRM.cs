@@ -39,7 +39,7 @@ namespace testProjectBCA.Test
                     DateTime tanggal = new DateTime(1, 1, 1);
                     String prefixKodeLaporan = "LAPORAN    : ",
                         prefixCabang = "CABANG     : ",
-                        prefixTanggal = "TANGGAL     : ";
+                        prefixTanggal = "TANGGAL : ";
                     for (int a = 0; a < txtSplit.Length; a++)
                     {
                         String tempStr = txtSplit[a];
@@ -66,7 +66,7 @@ namespace testProjectBCA.Test
                                 totalPengeluaranS = tempStr.Substring(41, 36).Trim().Replace(",", ""),
                                 totalPemasukanS = tempStr.Substring(77, 19).Trim().Replace(",", ""),
                                 saldoHS = tempStr.Substring(96, 19).Trim().Replace(",", ""),
-                                saldoHariSebelumnyaS = tempStr.Length > 114 ? tempStr.Substring(115, 18).Trim().Replace(",", "") : "0";
+                                saldoHariSebelumnyaS = tempStr.Length >= 133 ? tempStr.Substring(115, 18).Trim().Replace(",", "") : "0";
                             Int64 standarPengisianCartridge = 0,
                                 totalPengeluaran = 0,
                                 totalPemasukan = 0,
@@ -84,21 +84,42 @@ namespace testProjectBCA.Test
                             if (Int64.TryParse(saldoHariSebelumnyaS, out buf))
                                 saldoHariSebelumnya = buf;
 
-                            saldoATMs.Add(new SaldoMesin()
+                            var search = saldoATMs.Where(x => x.kodeLaporan == kodeLaporan && x.tanggal == tanggal && x.wsid == tempStr.Substring(1, 4)).FirstOrDefault();
+
+                            if (search == null)
                             {
-                                tanggal = tanggal,
-                                wsid = tempStr.Substring(1, 4),
-                                kodeLaporan = kodeLaporan,
-                                cabang = cabang,
-                                standarPengisianCartridge = standarPengisianCartridge,
-                                totalPengeluaran = totalPengeluaran,
-                                totalPemasukan = totalPemasukan,
-                                saldoH = saldoH,
-                                saldoHariSebelumnya = saldoHariSebelumnya,
-                                jenisMesin = "CRM"
-                            });
+                                saldoATMs.Add(new SaldoMesin()
+                                {
+                                    tanggal = tanggal,
+                                    wsid = tempStr.Substring(1, 4),
+                                    kodeLaporan = kodeLaporan,
+                                    cabang = cabang,
+                                    standarPengisianCartridge = standarPengisianCartridge,
+                                    totalPengeluaran = totalPengeluaran,
+                                    totalPemasukan = totalPemasukan,
+                                    saldoH = saldoH,
+                                    saldoHariSebelumnya = saldoHariSebelumnya,
+                                    jenisMesin = "CRM"
+                                });
+                            }else
+                            {
+
+                            }
                         }
                     }
+                    saldoATMs = saldoATMs.GroupBy(x => new { x.tanggal, x.wsid, x.kodeLaporan, x.cabang }).Select(x => new SaldoMesin()
+                    {
+                        tanggal = x.Key.tanggal,
+                        wsid = x.Key.wsid,
+                        kodeLaporan = x.Key.kodeLaporan,
+                        cabang = x.Key.cabang,
+                        standarPengisianCartridge = x.Sum(y => y.standarPengisianCartridge),
+                        jenisMesin = "ATM",
+                        saldoH = x.Sum(y => y.saldoH),
+                        saldoHariSebelumnya = x.Sum(y => y.saldoHariSebelumnya),
+                        totalPemasukan = x.Sum(y => y.totalPemasukan),
+                        totalPengeluaran = x.Sum(y => y.totalPengeluaran)
+                    }).ToList();
                     dataGridView1.DataSource = saldoATMs;
                     db.SaldoMesins.AddRange(saldoATMs);
                     db.SaveChanges();

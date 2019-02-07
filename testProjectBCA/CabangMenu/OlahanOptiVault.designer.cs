@@ -65,6 +65,10 @@
             this.dataGridViewOut = new System.Windows.Forms.DataGridView();
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
+            this.buttonATM = new System.Windows.Forms.Button();
+            this.buttonBI = new System.Windows.Forms.Button();
+            this.buttonBankLain = new System.Windows.Forms.Button();
+            this.buttonCabangATM = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).BeginInit();
@@ -284,7 +288,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(176, 254);
+            this.label4.Location = new System.Drawing.Point(180, 254);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(130, 13);
             this.label4.TabIndex = 18;
@@ -337,14 +341,14 @@
             // 
             // dateTimePicker1
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(928, 178);
+            this.dateTimePicker1.Location = new System.Drawing.Point(1125, 349);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
             this.dateTimePicker1.TabIndex = 24;
             // 
             // dateTimePicker2
             // 
-            this.dateTimePicker2.Location = new System.Drawing.Point(13, 200);
+            this.dateTimePicker2.Location = new System.Drawing.Point(973, 157);
             this.dateTimePicker2.Name = "dateTimePicker2";
             this.dateTimePicker2.Size = new System.Drawing.Size(200, 20);
             this.dateTimePicker2.TabIndex = 25;
@@ -362,9 +366,9 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(928, 37);
+            this.dataGridView1.Location = new System.Drawing.Point(1130, 331);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(450, 172);
+            this.dataGridView1.Size = new System.Drawing.Size(234, 52);
             this.dataGridView1.TabIndex = 28;
             // 
             // button1
@@ -405,7 +409,7 @@
             // 
             // buttonVault
             // 
-            this.buttonVault.Location = new System.Drawing.Point(222, 193);
+            this.buttonVault.Location = new System.Drawing.Point(848, 254);
             this.buttonVault.Name = "buttonVault";
             this.buttonVault.Size = new System.Drawing.Size(186, 39);
             this.buttonVault.TabIndex = 32;
@@ -415,9 +419,9 @@
             // 
             // buttonPerVendor
             // 
-            this.buttonPerVendor.Location = new System.Drawing.Point(411, 193);
+            this.buttonPerVendor.Location = new System.Drawing.Point(877, 57);
             this.buttonPerVendor.Name = "buttonPerVendor";
-            this.buttonPerVendor.Size = new System.Drawing.Size(184, 39);
+            this.buttonPerVendor.Size = new System.Drawing.Size(194, 39);
             this.buttonPerVendor.TabIndex = 33;
             this.buttonPerVendor.Text = "generate CABANG";
             this.buttonPerVendor.UseVisualStyleBackColor = true;
@@ -425,9 +429,9 @@
             // 
             // buttonAll
             // 
-            this.buttonAll.Location = new System.Drawing.Point(601, 193);
+            this.buttonAll.Location = new System.Drawing.Point(1058, 241);
             this.buttonAll.Name = "buttonAll";
-            this.buttonAll.Size = new System.Drawing.Size(194, 39);
+            this.buttonAll.Size = new System.Drawing.Size(184, 39);
             this.buttonAll.TabIndex = 34;
             this.buttonAll.Text = "generate ALL";
             this.buttonAll.UseVisualStyleBackColor = true;
@@ -442,7 +446,7 @@
             this.dataGridViewIn.AllowUserToResizeRows = false;
             this.dataGridViewIn.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridViewIn.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewIn.Location = new System.Drawing.Point(12, 269);
+            this.dataGridViewIn.Location = new System.Drawing.Point(13, 232);
             this.dataGridViewIn.Name = "dataGridViewIn";
             this.dataGridViewIn.ReadOnly = true;
             this.dataGridViewIn.RowHeadersVisible = false;
@@ -459,7 +463,7 @@
             this.dataGridViewOut.AllowUserToResizeRows = false;
             this.dataGridViewOut.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridViewOut.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewOut.Location = new System.Drawing.Point(642, 269);
+            this.dataGridViewOut.Location = new System.Drawing.Point(644, 232);
             this.dataGridViewOut.Name = "dataGridViewOut";
             this.dataGridViewOut.ReadOnly = true;
             this.dataGridViewOut.RowHeadersVisible = false;
@@ -470,7 +474,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(282, 254);
+            this.label10.Location = new System.Drawing.Point(280, 213);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(53, 13);
             this.label10.TabIndex = 37;
@@ -480,22 +484,66 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(909, 253);
+            this.label11.Location = new System.Drawing.Point(911, 216);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(65, 13);
             this.label11.TabIndex = 38;
             this.label11.Text = "PIVOT OUT";
+            // 
+            // buttonATM
+            // 
+            this.buttonATM.Location = new System.Drawing.Point(877, 12);
+            this.buttonATM.Name = "buttonATM";
+            this.buttonATM.Size = new System.Drawing.Size(194, 39);
+            this.buttonATM.TabIndex = 39;
+            this.buttonATM.Text = "generate ATM";
+            this.buttonATM.UseVisualStyleBackColor = true;
+            this.buttonATM.Click += new System.EventHandler(this.buttonATM_Click);
+            // 
+            // buttonBI
+            // 
+            this.buttonBI.Location = new System.Drawing.Point(877, 102);
+            this.buttonBI.Name = "buttonBI";
+            this.buttonBI.Size = new System.Drawing.Size(194, 39);
+            this.buttonBI.TabIndex = 40;
+            this.buttonBI.Text = "generate BI";
+            this.buttonBI.UseVisualStyleBackColor = true;
+            this.buttonBI.Click += new System.EventHandler(this.buttonBI_Click);
+            // 
+            // buttonBankLain
+            // 
+            this.buttonBankLain.Location = new System.Drawing.Point(1077, 12);
+            this.buttonBankLain.Name = "buttonBankLain";
+            this.buttonBankLain.Size = new System.Drawing.Size(194, 39);
+            this.buttonBankLain.TabIndex = 41;
+            this.buttonBankLain.Text = "generate Bank Lain";
+            this.buttonBankLain.UseVisualStyleBackColor = true;
+            this.buttonBankLain.Click += new System.EventHandler(this.buttonBankLain_Click);
+            // 
+            // buttonCabangATM
+            // 
+            this.buttonCabangATM.Location = new System.Drawing.Point(1077, 57);
+            this.buttonCabangATM.Name = "buttonCabangATM";
+            this.buttonCabangATM.Size = new System.Drawing.Size(194, 39);
+            this.buttonCabangATM.TabIndex = 42;
+            this.buttonCabangATM.Text = "generate Cabang + ATM";
+            this.buttonCabangATM.UseVisualStyleBackColor = true;
+            this.buttonCabangATM.Click += new System.EventHandler(this.buttonCabangATM_Click);
             // 
             // OlahanOptiVault
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1390, 881);
+            this.Controls.Add(this.buttonCabangATM);
+            this.Controls.Add(this.buttonBankLain);
+            this.Controls.Add(this.buttonBI);
+            this.Controls.Add(this.buttonAll);
+            this.Controls.Add(this.buttonATM);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.dataGridViewOut);
             this.Controls.Add(this.dataGridViewIn);
-            this.Controls.Add(this.buttonAll);
             this.Controls.Add(this.buttonPerVendor);
             this.Controls.Add(this.buttonVault);
             this.Controls.Add(this.groupBox2);
@@ -579,5 +627,9 @@
         private System.Windows.Forms.DataGridView dataGridViewOut;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Button buttonATM;
+        private System.Windows.Forms.Button buttonBI;
+        private System.Windows.Forms.Button buttonBankLain;
+        private System.Windows.Forms.Button buttonCabangATM;
     }
 }

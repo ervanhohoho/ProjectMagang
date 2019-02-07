@@ -122,6 +122,12 @@
     <Property Name="setorAdhoc100" Type="Int64" />
     <Property Name="setorAdhoc50" Type="Int64" />
     <Property Name="setorAdhoc20" Type="Int64" />
+    <Property Name="inputOpr" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="inputSpv" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="inputNoTxn" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="validasiOpr" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="validasiSpv" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="validasiNoTxn" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="EventTanggal">
     <Key>
@@ -265,6 +271,7 @@
     <NavigationProperty Name="TransaksiAtms" Relationship="Self.FK_TransaksiAtms_Pkt" FromRole="Pkt" ToRole="TransaksiAtms" />
     <Property Name="kapasitasCPC" Type="Int64" />
     <Property Name="kodeOpti" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="vaultBankLain" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="RekapSelisihAmbilSetor">
     <Key>
@@ -359,6 +366,12 @@
     <Property Name="d1k" Type="Int64" />
     <Property Name="amountCoin" Type="Int64" />
     <Property Name="time" Type="Time" Precision="7" />
+    <Property Name="cn1k" Type="Int64" />
+    <Property Name="cn500" Type="Int64" />
+    <Property Name="cn200" Type="Int64" />
+    <Property Name="cn100" Type="Int64" />
+    <Property Name="cn50" Type="Int64" />
+    <Property Name="cn25" Type="Int64" />
   </EntityType>
   <EntityType Name="SaveRekap">
     <Key>
@@ -733,10 +746,11 @@
     <Key>
       <PropertyRef Name="tanggal" />
       <PropertyRef Name="wsid" />
+      <PropertyRef Name="kodeLaporan" />
     </Key>
     <Property Name="tanggal" Type="DateTime" Nullable="false" Precision="0" />
     <Property Name="wsid" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
-    <Property Name="kodeLaporan" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="kodeLaporan" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="cabang" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="standarPengisianCartridge" Type="Int64" />
     <Property Name="totalPengeluaran" Type="Int64" />

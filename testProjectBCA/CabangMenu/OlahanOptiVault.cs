@@ -34,7 +34,11 @@ namespace testProjectBCA
             label5.Visible = false;
             label6.Visible = false;
             label7.Visible = false;
- 
+            buttonGeneratePivot.Visible = false;
+            buttonGeneratePivotPerVendor.Visible = false;
+            buttonAll.Visible = false;
+            buttonVault.Visible = false;
+
 
 
 
@@ -60,6 +64,8 @@ namespace testProjectBCA
         List<PivotPerVendor_In> pivotPerVendor_In;
         List<PivotVault_In> pivotVault_In;
         List<PivotVault_Out> pivotVault_Out;
+        List<PivotATM_In> pivotAtm_In;
+        List<PivotATM_Out> pivotAtm_Out;
 
 
         private void buttonUploadVaultOrderBlogHistory_Click(object sender, EventArgs e)
@@ -492,7 +498,7 @@ namespace testProjectBCA
                           where !String.IsNullOrEmpty(x.fundingSoure) && y.kanwil.Like("Jabotabek")
                           select x).ToList();
             queryd = (from x in queryd
-                      where (x.fundingSoure.Substring(0,2) == "BI" || x.fundingSoure.Substring(0, 2) == "OB") && (((DateTime)x.dueDate).Date == dateTimePicker2.Value.Date || ((DateTime)x.realDate).Date == dateTimePicker2.Value.Date)
+                      where (x.fundingSoure.Substring(0, 2) == "BI" || x.fundingSoure.Substring(0, 2) == "OB") && (((DateTime)x.dueDate).Date == dateTimePicker2.Value.Date || ((DateTime)x.realDate).Date == dateTimePicker2.Value.Date)
                       select x).ToList();
 
             pc = new List<PivotCPC>();
@@ -569,7 +575,7 @@ namespace testProjectBCA
                            where !String.IsNullOrEmpty(x.fundingSoure) && y.kanwil.Like("Jabotabek")
                            select x).ToList();
             queryad = (from x in queryad
-                       where (x.fundingSoure.Substring(0,2) != "BI" && !x.fundingSoure.Substring(0,2).Contains("OB")) && (((DateTime)x.dueDate).Date == dateTimePicker2.Value.Date || ((DateTime)x.realDate).Date == dateTimePicker2.Value.Date)
+                       where (x.fundingSoure.Substring(0, 2) != "BI" && !x.fundingSoure.Substring(0, 2).Contains("OB")) && (((DateTime)x.dueDate).Date == dateTimePicker2.Value.Date || ((DateTime)x.realDate).Date == dateTimePicker2.Value.Date)
                        select x).ToList();
 
             pc = new List<PivotCPC>();
@@ -646,7 +652,7 @@ namespace testProjectBCA
                            where !String.IsNullOrEmpty(x.fundingSoure) && y.kanwil.Like("Jabotabek")
                            select x).ToList();
             queryar = (from x in queryar
-                       where (x.fundingSoure.Substring(0,2) != "BI" && !x.fundingSoure.Substring(0,2).Contains("OB")) && (((DateTime)x.dueDate).Date == dateTimePicker2.Value.Date || ((DateTime)x.realDate).Date == dateTimePicker2.Value.Date)
+                       where (x.fundingSoure.Substring(0, 2) != "BI" && !x.fundingSoure.Substring(0, 2).Contains("OB")) && (((DateTime)x.dueDate).Date == dateTimePicker2.Value.Date || ((DateTime)x.realDate).Date == dateTimePicker2.Value.Date)
                        select x).ToList();
 
             pc = new List<PivotCPC>();
@@ -1233,6 +1239,320 @@ namespace testProjectBCA
             loadForm.CloseForm();
         }
 
+        public void pivotATM()
+        {
+            //area for atm
+            var queryVaultATM = (from x in en.RekonSaldoVaults.AsEnumerable()
+                                 join y in en.Pkts.AsEnumerable() on x.vaultId.Substring(0, 4) equals y.kodePktCabang == "CCASA" ? "CCAS" : y.kodePktCabang
+                                 where !String.IsNullOrEmpty(x.fundingSoure) && y.kanwil.Contains("Jabo")
+                                 select x).ToList();
+
+
+            //QUERY VAULT IN ATM - BUFFER
+            var queryInATMBuffer = (from x in queryVaultATM
+                                    where (x.fundingSoure.Substring(0, 2) != "BI" && !x.fundingSoure.Substring(0, 2).Contains("OB")) && (((DateTime)x.dueDate).Date == dateTimePicker2.Value.Date || ((DateTime)x.realDate).Date == dateTimePicker2.Value.Date)
+                                    select x).ToList();
+
+            List<PivotCPC> pc2 = new List<PivotCPC>();
+            foreach (var item in queryInATMBuffer)
+            {
+                pc2.Add(new PivotCPC
+                {
+                    vaultId = item.vaultId,
+                    confId = item.confId,
+                    action = item.actionRekon,
+                    status = item.statusRekon,
+                    blogMessage = item.blogMessage,
+                    orderDate = ((DateTime)item.orderDate).Date,
+                    dueDate = ((DateTime)item.dueDate).Date,
+                    timeStamp = (DateTime)item.timeStampRekon,
+                    currencyAmmount = Int64.Parse(item.currencyAmmount.ToString()),
+                    fundingSource = item.fundingSoure,
+                    realDate = ((DateTime)item.timeStampRekon).Hour < 21 ? ((DateTime)item.timeStampRekon).Date : ((DateTime)item.timeStampRekon).AddDays(1).Date,
+                    validation = item.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(item.timeStampRekon.ToString()).Hour < 21 ? item.timeStampRekon : DateTime.Parse(item.timeStampRekon.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(dateTimePicker2.Value.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
+                });
+
+            }
+
+            //PREPARING PIVOT VAULT IN ATM - BUFFER // catatan: pake vaultid // 
+            var pivotInAtmBuffer = pc2.GroupBy(c => new { c.vaultId, }).Select(g => new
+            {
+                vaultID = g.Key.vaultId,
+                sudahValidasi = g.Where(c => c.validation == "VALIDATED" && c.action.ToLower().Contains("delivery")).Sum(c => c.currencyAmmount),
+                belumValidasi = g.Where(c => c.validation == "NOT VALIDATED" && c.action.ToLower().Contains("delivery")).Sum(c => c.currencyAmmount),
+                total = g.Where(c => c.validation == "NOT VALIDATED" && c.action.ToLower().Contains("delivery")).Sum(c => c.currencyAmmount) + g.Where(c => c.validation == "VALIDATED" && c.action.ToLower().Contains("delivery")).Sum(c => c.currencyAmmount)
+
+            }).ToList();
+
+            var pivotInAtmBufferReady = (from x in pivotInAtmBuffer
+                                         select new { vaultID = x.vaultID.Substring(0, 4), x.sudahValidasi, x.belumValidasi, x.total }).ToList();
+
+            dataGridViewIn.DataSource = pivotInAtmBufferReady;
+
+            pivotAtm_In = new List<PivotATM_In>();
+
+            foreach (var item in pivotInAtmBufferReady)
+            {
+                pivotAtm_In.Add(new PivotATM_In
+                {
+                    vendor = item.vaultID,
+                    belumValidasi = item.belumValidasi,
+                    sudahValidasi = item.sudahValidasi,
+                    total = item.total
+                });
+            }
+            //END OF IN ATM
+
+            //QUERY VAULT OUT ATM - BUFFER
+            var queryOutAtmBuffer = (from x in queryVaultATM
+                                     where (x.fundingSoure.Substring(0, 2) != "BI" && !x.fundingSoure.Substring(0, 2).Contains("OB")) && (((DateTime)x.dueDate).Date == dateTimePicker2.Value.Date || ((DateTime)x.realDate).Date == dateTimePicker2.Value.Date)
+                                     select x).ToList();
+
+            List<PivotCPC> cp2 = new List<PivotCPC>();
+
+            foreach (var item in queryOutAtmBuffer)
+            {
+                cp2.Add(new PivotCPC
+                {
+                    vaultId = item.vaultId,
+                    confId = item.confId,
+                    action = item.actionRekon,
+                    status = item.statusRekon,
+                    blogMessage = item.blogMessage,
+                    orderDate = ((DateTime)item.orderDate).Date,
+                    dueDate = ((DateTime)item.dueDate).Date,
+                    timeStamp = (DateTime)item.timeStampRekon,
+                    currencyAmmount = Int64.Parse(item.currencyAmmount.ToString()),
+                    fundingSource = item.fundingSoure,
+                    realDate = ((DateTime)item.timeStampRekon).Hour < 21 ? ((DateTime)item.timeStampRekon).Date : ((DateTime)item.timeStampRekon).AddDays(1).Date,
+                    validation = item.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(item.timeStampRekon.ToString()).Hour < 21 ? item.timeStampRekon : DateTime.Parse(item.timeStampRekon.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(dateTimePicker2.Value.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
+                });
+
+            }
+
+            //PREPARING PIVOT VAULT OUT ATM - BUFFER // catatan: pake vaultid // 
+            var pivotOutAtmBuffer = cp2.GroupBy(c => new { c.vaultId, }).Select(g => new
+            {
+                vaultID = g.Key.vaultId,
+                sudahValidasi = g.Where(c => c.validation == "VALIDATED" && c.action.ToLower().Contains("return")).Sum(c => c.currencyAmmount),
+                belumValidasi = g.Where(c => c.validation == "NOT VALIDATED" && c.action.ToLower().Contains("return")).Sum(c => c.currencyAmmount),
+                total = g.Where(c => c.validation == "VALIDATED" && c.action.ToLower().Contains("return")).Sum(c => c.currencyAmmount) + g.Where(c => c.validation == "NOT VALIDATED" && c.action.ToLower().Contains("return")).Sum(c => c.currencyAmmount)
+
+            }).ToList();
+
+            var pivotOutAtmBufferReady = (from x in pivotOutAtmBuffer
+                                          select new { vaultID = x.vaultID.Substring(0, 4), x.sudahValidasi, x.belumValidasi, x.total }).ToList();
+
+            dataGridViewOut.DataSource = pivotOutAtmBufferReady;
+
+            pivotAtm_Out = new List<PivotATM_Out>();
+
+            foreach (var item in pivotOutAtmBufferReady)
+            {
+                pivotAtm_Out.Add(new PivotATM_Out
+                {
+                    vendor = item.vaultID,
+                    belumValidasi = item.belumValidasi,
+                    sudahValidasi = item.sudahValidasi,
+                    total = item.total
+                });
+            }
+            // END OF OUT ATM
+
+        }
+
+        public void pivotBI()
+        {
+            //area for BI
+            var queryVaultBI = (from x in en.RekonSaldoVaults.AsEnumerable()
+                                join y in en.Pkts.AsEnumerable() on x.vaultId.Substring(0, 4) equals y.kodePktCabang == "CCASA" ? "CCAS" : y.kodePktCabang
+                                where !String.IsNullOrEmpty(x.fundingSoure)
+                                select x).ToList();
+
+
+            //QUERY VAULT IN BI- BUFFER
+            var queryInBIBuffer = (from x in queryVaultBI
+                                   where (x.fundingSoure.Substring(0, 2) == "BI") && (((DateTime)x.dueDate).Date == dateTimePicker2.Value.Date || ((DateTime)x.realDate).Date == dateTimePicker2.Value.Date)
+                                   select x).ToList();
+
+            List<PivotCPC> pc = new List<PivotCPC>();
+
+            foreach (var item in queryInBIBuffer)
+            {
+                pc.Add(new PivotCPC
+                {
+                    vaultId = item.vaultId,
+                    confId = item.confId,
+                    action = item.actionRekon,
+                    status = item.statusRekon,
+                    blogMessage = item.blogMessage,
+                    orderDate = ((DateTime)item.orderDate).Date,
+                    dueDate = ((DateTime)item.dueDate).Date,
+                    timeStamp = (DateTime)item.timeStampRekon,
+                    currencyAmmount = Int64.Parse(item.currencyAmmount.ToString()),
+                    fundingSource = item.fundingSoure,
+                    realDate = ((DateTime)item.timeStampRekon).Hour < 21 ? ((DateTime)item.timeStampRekon).Date : ((DateTime)item.timeStampRekon).AddDays(1).Date,
+                    validation = item.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(item.timeStampRekon.ToString()).Hour < 21 ? item.timeStampRekon : DateTime.Parse(item.timeStampRekon.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(dateTimePicker2.Value.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
+                });
+
+            }
+
+            //PREPARING PIVOT VAULT IN BI - BUFFER // catatan: pake vaultid // 
+            var pivotInBiBuffer = pc.GroupBy(c => new { c.vaultId }).Select(g => new
+            {
+                vaultID = g.Key.vaultId,
+                sudahValidasi = g.Where(c => c.validation == "VALIDATED" && c.action.ToLower().Contains("delivery")).Sum(c => c.currencyAmmount),
+                belumValidasi = g.Where(c => c.validation == "NOT VALIDATED" && c.action.ToLower().Contains("delivery")).Sum(c => c.currencyAmmount),
+                total = g.Where(c => c.validation == "NOT VALIDATED" && c.action.ToLower().Contains("delivery")).Sum(c => c.currencyAmmount) + g.Where(c => c.validation == "VALIDATED" && c.action.ToLower().Contains("delivery")).Sum(c => c.currencyAmmount)
+
+            }).ToList();
+
+            var pivotInBiBufferReady = (from x in pivotInBiBuffer
+                                        select new { vaultID = x.vaultID.Substring(0, 4), x.sudahValidasi, x.belumValidasi, x.total }).ToList();
+
+            dataGridViewIn.DataSource = pivotInBiBufferReady;
+            //END OF IN
+
+            //QUERY VAULT OUT BI- BUFFER
+            var queryOutBIBuffer = (from x in queryVaultBI
+                                    where (x.fundingSoure.Substring(0, 2) == "BI") && (((DateTime)x.dueDate).Date == dateTimePicker2.Value.Date || ((DateTime)x.realDate).Date == dateTimePicker2.Value.Date)
+                                    select x).ToList();
+
+            List<PivotCPC> cp = new List<PivotCPC>();
+
+            foreach (var item in queryOutBIBuffer)
+            {
+                cp.Add(new PivotCPC
+                {
+                    vaultId = item.vaultId,
+                    confId = item.confId,
+                    action = item.actionRekon,
+                    status = item.statusRekon,
+                    blogMessage = item.blogMessage,
+                    orderDate = ((DateTime)item.orderDate).Date,
+                    dueDate = ((DateTime)item.dueDate).Date,
+                    timeStamp = (DateTime)item.timeStampRekon,
+                    currencyAmmount = Int64.Parse(item.currencyAmmount.ToString()),
+                    fundingSource = item.fundingSoure,
+                    realDate = ((DateTime)item.timeStampRekon).Hour < 21 ? ((DateTime)item.timeStampRekon).Date : ((DateTime)item.timeStampRekon).AddDays(1).Date,
+                    validation = item.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(item.timeStampRekon.ToString()).Hour < 21 ? item.timeStampRekon : DateTime.Parse(item.timeStampRekon.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(dateTimePicker2.Value.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
+                });
+
+            }
+
+            //PREPARING PIVOT VAULT OUT BI - BUFFER // catatan: pake vaultid // 
+            var pivotOutBiBuffer = cp.GroupBy(c => new { c.vaultId }).Select(g => new
+            {
+                vaultID = g.Key.vaultId,
+                sudahValidasi = g.Where(c => c.validation == "VALIDATED" && c.action.ToLower().Contains("return")).Sum(c => c.currencyAmmount),
+                belumValidasi = g.Where(c => c.validation == "NOT VALIDATED" && c.action.ToLower().Contains("return")).Sum(c => c.currencyAmmount),
+                total = g.Where(c => c.validation == "VALIDATED" && c.action.ToLower().Contains("return")).Sum(c => c.currencyAmmount) + g.Where(c => c.validation == "NOT VALIDATED" && c.action.ToLower().Contains("return")).Sum(c => c.currencyAmmount)
+
+            }).ToList();
+
+            var pivotOutBiBufferReady = (from x in pivotOutBiBuffer
+                                         select new { vaultID = x.vaultID.Substring(0, 4), x.sudahValidasi, x.belumValidasi, x.total }).ToList();
+
+            dataGridViewOut.DataSource = pivotOutBiBufferReady;
+            //END OF OUT
+        }
+
+        public void pivotBankLain()
+        {
+            //area for BI
+            var queryVaultBI = (from x in en.RekonSaldoVaults.AsEnumerable()
+                                join y in en.Pkts.AsEnumerable() on x.vaultId.Substring(0, 4) equals y.kodePktCabang == "CCASA" ? "CCAS" : y.kodePktCabang
+                                where !String.IsNullOrEmpty(x.fundingSoure)
+                                select x).ToList();
+
+
+            //QUERY VAULT IN BI- BUFFER
+            var queryInBIBuffer = (from x in queryVaultBI
+                                   where (x.fundingSoure.Substring(0, 2).Contains("OB")) && (((DateTime)x.dueDate).Date == dateTimePicker2.Value.Date || ((DateTime)x.realDate).Date == dateTimePicker2.Value.Date)
+                                   select x).ToList();
+
+            List<PivotCPC> pc = new List<PivotCPC>();
+
+            foreach (var item in queryInBIBuffer)
+            {
+                pc.Add(new PivotCPC
+                {
+                    vaultId = item.vaultId,
+                    confId = item.confId,
+                    action = item.actionRekon,
+                    status = item.statusRekon,
+                    blogMessage = item.blogMessage,
+                    orderDate = ((DateTime)item.orderDate).Date,
+                    dueDate = ((DateTime)item.dueDate).Date,
+                    timeStamp = (DateTime)item.timeStampRekon,
+                    currencyAmmount = Int64.Parse(item.currencyAmmount.ToString()),
+                    fundingSource = item.fundingSoure,
+                    realDate = ((DateTime)item.timeStampRekon).Hour < 21 ? ((DateTime)item.timeStampRekon).Date : ((DateTime)item.timeStampRekon).AddDays(1).Date,
+                    validation = item.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(item.timeStampRekon.ToString()).Hour < 21 ? item.timeStampRekon : DateTime.Parse(item.timeStampRekon.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(dateTimePicker2.Value.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
+                });
+
+            }
+
+            //PREPARING PIVOT VAULT IN BI - BUFFER // catatan: pake vaultid // 
+            var pivotInBiBuffer = pc.GroupBy(c => new { c.vaultId }).Select(g => new
+            {
+                vaultID = g.Key.vaultId,
+                sudahValidasi = g.Where(c => c.validation == "VALIDATED" && c.action.ToLower().Contains("delivery")).Sum(c => c.currencyAmmount),
+                belumValidasi = g.Where(c => c.validation == "NOT VALIDATED" && c.action.ToLower().Contains("delivery")).Sum(c => c.currencyAmmount),
+                total = g.Where(c => c.validation == "NOT VALIDATED" && c.action.ToLower().Contains("delivery")).Sum(c => c.currencyAmmount) + g.Where(c => c.validation == "VALIDATED" && c.action.ToLower().Contains("delivery")).Sum(c => c.currencyAmmount)
+
+            }).ToList();
+
+            var pivotInBiBufferReady = (from x in pivotInBiBuffer
+                                        select new { vaultID = x.vaultID.Substring(0, 4), x.sudahValidasi, x.belumValidasi, x.total }).ToList();
+
+            dataGridViewIn.DataSource = pivotInBiBufferReady;
+            //END OF IN
+
+            //QUERY VAULT OUT BI- BUFFER
+            var queryOutBIBuffer = (from x in queryVaultBI
+                                    where (x.fundingSoure.Substring(0, 2).Contains("OB")) && (((DateTime)x.dueDate).Date == dateTimePicker2.Value.Date || ((DateTime)x.realDate).Date == dateTimePicker2.Value.Date)
+                                    select x).ToList();
+
+            List<PivotCPC> cp = new List<PivotCPC>();
+
+            foreach (var item in queryOutBIBuffer)
+            {
+                cp.Add(new PivotCPC
+                {
+                    vaultId = item.vaultId,
+                    confId = item.confId,
+                    action = item.actionRekon,
+                    status = item.statusRekon,
+                    blogMessage = item.blogMessage,
+                    orderDate = ((DateTime)item.orderDate).Date,
+                    dueDate = ((DateTime)item.dueDate).Date,
+                    timeStamp = (DateTime)item.timeStampRekon,
+                    currencyAmmount = Int64.Parse(item.currencyAmmount.ToString()),
+                    fundingSource = item.fundingSoure,
+                    realDate = ((DateTime)item.timeStampRekon).Hour < 21 ? ((DateTime)item.timeStampRekon).Date : ((DateTime)item.timeStampRekon).AddDays(1).Date,
+                    validation = item.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(item.timeStampRekon.ToString()).Hour < 21 ? item.timeStampRekon : DateTime.Parse(item.timeStampRekon.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(dateTimePicker2.Value.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
+                });
+
+            }
+
+            //PREPARING PIVOT VAULT OUT BI - BUFFER // catatan: pake vaultid // 
+            var pivotOutBiBuffer = cp.GroupBy(c => new { c.vaultId }).Select(g => new
+            {
+                vaultID = g.Key.vaultId,
+                sudahValidasi = g.Where(c => c.validation == "VALIDATED" && c.action.ToLower().Contains("return")).Sum(c => c.currencyAmmount),
+                belumValidasi = g.Where(c => c.validation == "NOT VALIDATED" && c.action.ToLower().Contains("return")).Sum(c => c.currencyAmmount),
+                total = g.Where(c => c.validation == "VALIDATED" && c.action.ToLower().Contains("return")).Sum(c => c.currencyAmmount) + g.Where(c => c.validation == "NOT VALIDATED" && c.action.ToLower().Contains("return")).Sum(c => c.currencyAmmount)
+
+            }).ToList();
+
+            var pivotOutBiBufferReady = (from x in pivotOutBiBuffer
+                                         select new { vaultID = x.vaultID.Substring(0, 4), x.sudahValidasi, x.belumValidasi, x.total }).ToList();
+
+            dataGridViewOut.DataSource = pivotOutBiBufferReady;
+            //END OF OUT
+        }
+
         public void pivotVault()
         {
             //area for BI
@@ -1251,7 +1571,7 @@ namespace testProjectBCA
 
             //QUERY VAULT IN BI- BUFFER
             var queryInBIBuffer = (from x in queryVaultBI
-                                   where (x.fundingSoure.Substring(0,2) == "BI" || x.fundingSoure.Substring(0,2).Contains("OB")) && (((DateTime)x.dueDate).Date == dateTimePicker2.Value.Date || ((DateTime)x.realDate).Date == dateTimePicker2.Value.Date)
+                                   where (x.fundingSoure.Substring(0, 2) == "BI" || x.fundingSoure.Substring(0, 2).Contains("OB")) && (((DateTime)x.dueDate).Date == dateTimePicker2.Value.Date || ((DateTime)x.realDate).Date == dateTimePicker2.Value.Date)
                                    select x).ToList();
 
             List<PivotCPC> pc = new List<PivotCPC>();
@@ -1293,7 +1613,7 @@ namespace testProjectBCA
 
             //QUERY VAULT IN ATM - BUFFER
             var queryInATMBuffer = (from x in queryVaultATM
-                                    where (x.fundingSoure.Substring(0,2) != "BI" && !x.fundingSoure.Substring(0,2).Contains("OB")) && (((DateTime)x.dueDate).Date == dateTimePicker2.Value.Date || ((DateTime)x.realDate).Date == dateTimePicker2.Value.Date)
+                                    where (x.fundingSoure.Substring(0, 2) != "BI" && !x.fundingSoure.Substring(0, 2).Contains("OB")) && (((DateTime)x.dueDate).Date == dateTimePicker2.Value.Date || ((DateTime)x.realDate).Date == dateTimePicker2.Value.Date)
                                     select x).ToList();
 
             List<PivotCPC> pc2 = new List<PivotCPC>();
@@ -1362,7 +1682,7 @@ namespace testProjectBCA
 
             //QUERY VAULT OUT BI- BUFFER
             var queryOutBIBuffer = (from x in queryVaultBI
-                                    where (x.fundingSoure.Substring(0,2) == "BI" || x.fundingSoure.Substring(0,2).Contains("OB")) && (((DateTime)x.dueDate).Date == dateTimePicker2.Value.Date || ((DateTime)x.realDate).Date == dateTimePicker2.Value.Date)
+                                    where (x.fundingSoure.Substring(0, 2) == "BI" || x.fundingSoure.Substring(0, 2).Contains("OB")) && (((DateTime)x.dueDate).Date == dateTimePicker2.Value.Date || ((DateTime)x.realDate).Date == dateTimePicker2.Value.Date)
                                     select x).ToList();
 
             List<PivotCPC> cp = new List<PivotCPC>();
@@ -1403,7 +1723,7 @@ namespace testProjectBCA
 
             //QUERY VAULT OUT ATM - BUFFER
             var queryOutAtmBuffer = (from x in queryVaultATM
-                                     where (x.fundingSoure.Substring(0,2) != "BI" && !x.fundingSoure.Substring(0,2).Contains("OB")) && (((DateTime)x.dueDate).Date == dateTimePicker2.Value.Date || ((DateTime)x.realDate).Date == dateTimePicker2.Value.Date)
+                                     where (x.fundingSoure.Substring(0, 2) != "BI" && !x.fundingSoure.Substring(0, 2).Contains("OB")) && (((DateTime)x.dueDate).Date == dateTimePicker2.Value.Date || ((DateTime)x.realDate).Date == dateTimePicker2.Value.Date)
                                      select x).ToList();
 
             List<PivotCPC> cp2 = new List<PivotCPC>();
@@ -1646,22 +1966,22 @@ namespace testProjectBCA
             dataGridViewIn.DataSource = pivotAllIn;
 
             var penggabunganOutVault = (from x in pivotVault_Out
-                                       select new
-                                       {
-                                           vendor = x.vendor,
-                                           belumValidasi = x.belumValidasi,
-                                           sudahValidasi = x.sudahValidasi,
-                                           total = x.total
-                                       }).ToList();
+                                        select new
+                                        {
+                                            vendor = x.vendor,
+                                            belumValidasi = x.belumValidasi,
+                                            sudahValidasi = x.sudahValidasi,
+                                            total = x.total
+                                        }).ToList();
 
             var penggabunganOutPerVendor = (from x in pivotPerVendor_Out
-                                           select new
-                                           {
-                                               vendor = x.vendor,
-                                               belumValidasi = x.belumValidasi,
-                                               sudahValidasi = x.sudahValidasi,
-                                               total = x.total
-                                           }).ToList();
+                                            select new
+                                            {
+                                                vendor = x.vendor,
+                                                belumValidasi = x.belumValidasi,
+                                                sudahValidasi = x.sudahValidasi,
+                                                total = x.total
+                                            }).ToList();
             var unionOut = penggabunganOutVault.Union(penggabunganOutPerVendor);
             var pivotAllOut = unionOut.GroupBy(x => new { x.vendor }).Select(g => new
             {
@@ -1752,230 +2072,390 @@ namespace testProjectBCA
                 }
             }
         }
+
+        private void buttonATM_Click(object sender, EventArgs e)
+        {
+            pivotATM();
+            if (dataGridViewIn.Rows.Count > 0)
+            {
+                for (int i = 1; i < dataGridViewIn.Columns.Count; i++)
+                {
+                    dataGridViewIn.Columns[i].DefaultCellStyle.Format = "c";
+                    dataGridViewIn.Columns[i].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("ID-id");
+                }
+            }
+            if (dataGridViewOut.Rows.Count > 0)
+            {
+                for (int i = 1; i < dataGridViewOut.Columns.Count; i++)
+                {
+                    dataGridViewOut.Columns[i].DefaultCellStyle.Format = "c";
+                    dataGridViewOut.Columns[i].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("ID-id");
+                }
+            }
+        }
+
+        private void buttonBI_Click(object sender, EventArgs e)
+        {
+            pivotBI();
+            if (dataGridViewIn.Rows.Count > 0)
+            {
+                for (int i = 1; i < dataGridViewIn.Columns.Count; i++)
+                {
+                    dataGridViewIn.Columns[i].DefaultCellStyle.Format = "c";
+                    dataGridViewIn.Columns[i].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("ID-id");
+                }
+            }
+            if (dataGridViewOut.Rows.Count > 0)
+            {
+                for (int i = 1; i < dataGridViewOut.Columns.Count; i++)
+                {
+                    dataGridViewOut.Columns[i].DefaultCellStyle.Format = "c";
+                    dataGridViewOut.Columns[i].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("ID-id");
+                }
+            }
+        }
+
+        private void buttonBankLain_Click(object sender, EventArgs e)
+        {
+            pivotBankLain();
+            if (dataGridViewIn.Rows.Count > 0)
+            {
+                for (int i = 1; i < dataGridViewIn.Columns.Count; i++)
+                {
+                    dataGridViewIn.Columns[i].DefaultCellStyle.Format = "c";
+                    dataGridViewIn.Columns[i].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("ID-id");
+                }
+            }
+            if (dataGridViewOut.Rows.Count > 0)
+            {
+                for (int i = 1; i < dataGridViewOut.Columns.Count; i++)
+                {
+                    dataGridViewOut.Columns[i].DefaultCellStyle.Format = "c";
+                    dataGridViewOut.Columns[i].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("ID-id");
+                }
+            }
+        }
+
+        private void buttonCabangATM_Click(object sender, EventArgs e)
+        {
+            pivotATM();
+            pivotPerVendor();
+            var penggabunganInAtm = (from x in pivotAtm_In
+                                       select new
+                                       {
+                                           vendor = x.vendor,
+                                           belumValidasi = x.belumValidasi,
+                                           sudahValidasi = x.sudahValidasi,
+                                           total = x.total
+                                       }).ToList();
+
+            var penggabunganInPerVendor = (from x in pivotPerVendor_In
+                                           select new
+                                           {
+                                               vendor = x.vendor,
+                                               belumValidasi = x.belumValidasi,
+                                               sudahValidasi = x.sudahValidasi,
+                                               total = x.total
+                                           }).ToList();
+
+            var unionIn = penggabunganInAtm.Union(penggabunganInPerVendor);
+            var pivotAllIn = unionIn.GroupBy(x => new { x.vendor }).Select(g => new
+            {
+                vendor = g.Key.vendor,
+                sudahValidasi = g.Sum(x => x.sudahValidasi),
+                belumValidasi = g.Sum(x => x.belumValidasi),
+                total = g.Sum(x => x.total)
+
+            }).ToList();
+
+            dataGridViewIn.DataSource = pivotAllIn;
+
+            var penggabunganOutAtm = (from x in pivotAtm_Out
+                                        select new
+                                        {
+                                            vendor = x.vendor,
+                                            belumValidasi = x.belumValidasi,
+                                            sudahValidasi = x.sudahValidasi,
+                                            total = x.total
+                                        }).ToList();
+
+            var penggabunganOutPerVendor = (from x in pivotPerVendor_Out
+                                            select new
+                                            {
+                                                vendor = x.vendor,
+                                                belumValidasi = x.belumValidasi,
+                                                sudahValidasi = x.sudahValidasi,
+                                                total = x.total
+                                            }).ToList();
+            var unionOut = penggabunganOutAtm.Union(penggabunganOutPerVendor);
+            var pivotAllOut = unionOut.GroupBy(x => new { x.vendor }).Select(g => new
+            {
+                vendor = g.Key.vendor,
+                sudahValidasi = g.Sum(x => x.sudahValidasi),
+                belumValidasi = g.Sum(x => x.belumValidasi),
+                total = g.Sum(x => x.total)
+
+            }).ToList();
+
+            dataGridViewOut.DataSource = pivotAllOut;
+
+            if (dataGridViewIn.Rows.Count > 0)
+            {
+                for (int i = 1; i < dataGridViewIn.Columns.Count; i++)
+                {
+                    dataGridViewIn.Columns[i].DefaultCellStyle.Format = "c";
+                    dataGridViewIn.Columns[i].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("ID-id");
+                }
+            }
+            if (dataGridViewOut.Rows.Count > 0)
+            {
+                for (int i = 1; i < dataGridViewOut.Columns.Count; i++)
+                {
+                    dataGridViewOut.Columns[i].DefaultCellStyle.Format = "c";
+                    dataGridViewOut.Columns[i].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("ID-id");
+                }
+            }
+        }
     }
+}
 
 
 
 
-    class VOBH //vault order blog history
-    {
-        public String vaultId { set; get; }
-        public String confId { set; get; }
-        public DateTime orderDate { set; get; }
-        public DateTime dueDate { set; get; }
-        public DateTime timeStamp { set; get; }
-        public String blogMessage { set; get; }
-        public String action { set; get; }
-        public String status { set; get; }
-        public Int64 currencyAmmount { set; get; }
-    }
+class VOBH //vault order blog history
+{
+    public String vaultId { set; get; }
+    public String confId { set; get; }
+    public DateTime orderDate { set; get; }
+    public DateTime dueDate { set; get; }
+    public DateTime timeStamp { set; get; }
+    public String blogMessage { set; get; }
+    public String action { set; get; }
+    public String status { set; get; }
+    public Int64 currencyAmmount { set; get; }
+}
 
-    class VO //vault order
-    {
-        public String vaultId { set; get; }
-        public String confId { set; get; }
-        public String fundingSource { set; get; }
-        public DateTime orderDate { set; get; }
-        public DateTime dueDate { set; get; }
-        public String action { set; get; }
-        public String status { set; get; }
-        public Int64 currencyAmmount { set; get; }
-    }
+class VO //vault order
+{
+    public String vaultId { set; get; }
+    public String confId { set; get; }
+    public String fundingSource { set; get; }
+    public DateTime orderDate { set; get; }
+    public DateTime dueDate { set; get; }
+    public String action { set; get; }
+    public String status { set; get; }
+    public Int64 currencyAmmount { set; get; }
+}
 
-    class VaultProcessed //class menampung proses vault 
-    {
-        public String vaultId { set; get; }
-        public String confId { set; get; }
-        public String fundingSource { set; get; }
-        public String action { set; get; }
-        public String status { set; get; }
-        public DateTime orderDate { set; get; }
-        public DateTime dueDate { set; get; }
-        public DateTime timeStamp { set; get; }
-        public String blogMessage { set; get; }
-        public Int64 currencyAmmount { set; get; }
-        public DateTime realDate { set; get; }
-        public String validation { set; get; }
+class VaultProcessed //class menampung proses vault 
+{
+    public String vaultId { set; get; }
+    public String confId { set; get; }
+    public String fundingSource { set; get; }
+    public String action { set; get; }
+    public String status { set; get; }
+    public DateTime orderDate { set; get; }
+    public DateTime dueDate { set; get; }
+    public DateTime timeStamp { set; get; }
+    public String blogMessage { set; get; }
+    public Int64 currencyAmmount { set; get; }
+    public DateTime realDate { set; get; }
+    public String validation { set; get; }
 
-    }
+}
 
-    class SetoranCPC //class menampung setoran cpc (vaultprocessed yang sudah di proses)
-    {
-        public String vaultId { set; get; }
-        public String confId { set; get; }
-        public String fundingSource { set; get; }
-        public String action { set; get; }
-        public String status { set; get; }
-        public DateTime orderDate { set; get; }
-        public DateTime dueDate { set; get; }
-        public DateTime timeStamp { set; get; }
-        public String blogMessage { set; get; }
-        public Int64 currencyAmmount { set; get; }
-        public DateTime realDate { set; get; }
-        public String validation { set; get; }
+class SetoranCPC //class menampung setoran cpc (vaultprocessed yang sudah di proses)
+{
+    public String vaultId { set; get; }
+    public String confId { set; get; }
+    public String fundingSource { set; get; }
+    public String action { set; get; }
+    public String status { set; get; }
+    public DateTime orderDate { set; get; }
+    public DateTime dueDate { set; get; }
+    public DateTime timeStamp { set; get; }
+    public String blogMessage { set; get; }
+    public Int64 currencyAmmount { set; get; }
+    public DateTime realDate { set; get; }
+    public String validation { set; get; }
 
-    }
+}
 
-    class OBH //order blog history 
-    {
-        public String cashpointId { set; get; }
-        public String confId { set; get; }
-        public DateTime orderDate { set; get; }
-        public DateTime dueDate { set; get; }
-        public DateTime blogTime { set; get; }
-        public String action { set; get; }
-        public String status { set; get; }
-        public Int64 currencyAmmount { set; get; }
-        public String blogMessage { set; get; }
-    }
+class OBH //order blog history 
+{
+    public String cashpointId { set; get; }
+    public String confId { set; get; }
+    public DateTime orderDate { set; get; }
+    public DateTime dueDate { set; get; }
+    public DateTime blogTime { set; get; }
+    public String action { set; get; }
+    public String status { set; get; }
+    public Int64 currencyAmmount { set; get; }
+    public String blogMessage { set; get; }
+}
 
-    class OBHProcessed //obh yang di proses
-    {
-        public String cashpointId { set; get; }
-        public String vendor { set; get; }
-        public String confId { set; get; }
-        public DateTime orderDate { set; get; }
-        public DateTime dueDate { set; get; }
-        public DateTime blogTime { set; get; }
-        public String blogMessage { set; get; }
-        public String action { set; get; }
-        public String status { set; get; }
-        public Int64 currencyAmmount { set; get; }
-        public DateTime realDate { set; get; }
-        public String validation { set; get; }
-    }
+class OBHProcessed //obh yang di proses
+{
+    public String cashpointId { set; get; }
+    public String vendor { set; get; }
+    public String confId { set; get; }
+    public DateTime orderDate { set; get; }
+    public DateTime dueDate { set; get; }
+    public DateTime blogTime { set; get; }
+    public String blogMessage { set; get; }
+    public String action { set; get; }
+    public String status { set; get; }
+    public Int64 currencyAmmount { set; get; }
+    public DateTime realDate { set; get; }
+    public String validation { set; get; }
+}
 
-    class PivotCPC //class pivotCPC (canvas for detailed pivot)
-    {
-        public String vaultId { set; get; }
-        public String confId { set; get; }
-        public String fundingSource { set; get; }
-        public String action { set; get; }
-        public String status { set; get; }
-        public DateTime orderDate { set; get; }
-        public DateTime dueDate { set; get; }
-        public DateTime timeStamp { set; get; }
-        public String blogMessage { set; get; }
-        public Int64 currencyAmmount { set; get; }
-        public DateTime realDate { set; get; }
-        public String validation { set; get; }
+class PivotCPC //class pivotCPC (canvas for detailed pivot)
+{
+    public String vaultId { set; get; }
+    public String confId { set; get; }
+    public String fundingSource { set; get; }
+    public String action { set; get; }
+    public String status { set; get; }
+    public DateTime orderDate { set; get; }
+    public DateTime dueDate { set; get; }
+    public DateTime timeStamp { set; get; }
+    public String blogMessage { set; get; }
+    public Int64 currencyAmmount { set; get; }
+    public DateTime realDate { set; get; }
+    public String validation { set; get; }
 
-    }
+}
 
-    class PivotCPC_BIBL //pivotCPC - BI dan BankLain return
-    {
-        public DateTime dueDate { set; get; }
-        public DateTime realDate { set; get; }
-        public String vaultId { set; get; }
-        public String fundingSource { set; get; }
-        // public Int64 plannedReturn { set; get; }
-        public Int64 plannedReturnVal { set; get; }
-        public Int64 plannedReturnNotVal { set; get; }
-        // public Int64 emergencyReturn { set; get; }
-        public Int64 emergencyReturnVal { set; get; }
-        public Int64 emergencyReturnNotVal { set; get; }
-        public Int64 grandTotal { set; get; }
+class PivotCPC_BIBL //pivotCPC - BI dan BankLain return
+{
+    public DateTime dueDate { set; get; }
+    public DateTime realDate { set; get; }
+    public String vaultId { set; get; }
+    public String fundingSource { set; get; }
+    // public Int64 plannedReturn { set; get; }
+    public Int64 plannedReturnVal { set; get; }
+    public Int64 plannedReturnNotVal { set; get; }
+    // public Int64 emergencyReturn { set; get; }
+    public Int64 emergencyReturnVal { set; get; }
+    public Int64 emergencyReturnNotVal { set; get; }
+    public Int64 grandTotal { set; get; }
 
-    }
+}
 
-    class PivotCPC_BIBLD//pivotCPC - BI dan BankLain delivery
-    {
-        public DateTime dueDate { set; get; }
-        public DateTime realDate { set; get; }
-        public String vaultId { set; get; }
-        public String fundingSource { set; get; }
-        // public Int64 plannedDelivery { set; get; }
-        public Int64 plannedDeliveryVal { set; get; }
-        public Int64 plannedDeliveryNotVal { set; get; }
-        // public Int64 emergencyDelivery { set; get; }
-        public Int64 emergencyDeliveryVal { set; get; }
-        public Int64 emergencyDeliveryNotVal { set; get; }
-        public Int64 grandTotal { set; get; }
+class PivotCPC_BIBLD//pivotCPC - BI dan BankLain delivery
+{
+    public DateTime dueDate { set; get; }
+    public DateTime realDate { set; get; }
+    public String vaultId { set; get; }
+    public String fundingSource { set; get; }
+    // public Int64 plannedDelivery { set; get; }
+    public Int64 plannedDeliveryVal { set; get; }
+    public Int64 plannedDeliveryNotVal { set; get; }
+    // public Int64 emergencyDelivery { set; get; }
+    public Int64 emergencyDeliveryVal { set; get; }
+    public Int64 emergencyDeliveryNotVal { set; get; }
+    public Int64 grandTotal { set; get; }
 
-    }
+}
 
-    class PivotCPC_ATMD //pivotcpc - atm delivery
-    {
-        public DateTime dueDate { set; get; }
-        public DateTime realDate { set; get; }
-        public String vaultId { set; get; }
-        public String fundingSource { set; get; }
-        // public Int64 plannedDelivery { set; get; }
-        public Int64 plannedDeliveryVal { set; get; }
-        public Int64 plannedDeliveryNotVal { set; get; }
-        //  public Int64 emergencyDelivery { set; get; }
-        public Int64 emergencyDeliveryVal { set; get; }
-        public Int64 emergencyDeliveryNotVal { set; get; }
-        public Int64 grandTotal { set; get; }
+class PivotCPC_ATMD //pivotcpc - atm delivery
+{
+    public DateTime dueDate { set; get; }
+    public DateTime realDate { set; get; }
+    public String vaultId { set; get; }
+    public String fundingSource { set; get; }
+    // public Int64 plannedDelivery { set; get; }
+    public Int64 plannedDeliveryVal { set; get; }
+    public Int64 plannedDeliveryNotVal { set; get; }
+    //  public Int64 emergencyDelivery { set; get; }
+    public Int64 emergencyDeliveryVal { set; get; }
+    public Int64 emergencyDeliveryNotVal { set; get; }
+    public Int64 grandTotal { set; get; }
 
-    }
+}
 
-    class PivotCPC_ATMR //pivotcpc - atm return
-    {
-        public DateTime dueDate { set; get; }
-        public DateTime realDate { set; get; }
-        public String vaultId { set; get; }
-        public String fundingSource { set; get; }
-        //public Int64 plannedReturn { set; get; }
-        public Int64 plannedReturnVal { set; get; }
-        public Int64 plannedReturnNotVal { set; get; }
-        //public Int64 emergencyReturn { set; get; }
-        public Int64 emergencyReturnVal { set; get; }
-        public Int64 emergencyReturnNotVal { set; get; }
-        public Int64 grandTotal { set; get; }
+class PivotCPC_ATMR //pivotcpc - atm return
+{
+    public DateTime dueDate { set; get; }
+    public DateTime realDate { set; get; }
+    public String vaultId { set; get; }
+    public String fundingSource { set; get; }
+    //public Int64 plannedReturn { set; get; }
+    public Int64 plannedReturnVal { set; get; }
+    public Int64 plannedReturnNotVal { set; get; }
+    //public Int64 emergencyReturn { set; get; }
+    public Int64 emergencyReturnVal { set; get; }
+    public Int64 emergencyReturnNotVal { set; get; }
+    public Int64 grandTotal { set; get; }
 
-    }
+}
 
-    class PivotPerVendor_bon
-    {
-        public DateTime dueDate { set; get; }
-        public DateTime valDate { set; get; }
-        public String vendor { set; get; }
-        public Int64 belumValidasi { set; get; }
-        public Int64 sudahValidasi { set; get; }
-        public Int64 grandTotal { set; get; }
+class PivotPerVendor_bon
+{
+    public DateTime dueDate { set; get; }
+    public DateTime valDate { set; get; }
+    public String vendor { set; get; }
+    public Int64 belumValidasi { set; get; }
+    public Int64 sudahValidasi { set; get; }
+    public Int64 grandTotal { set; get; }
 
-    }
+}
 
-    class PivotPerVendor_setoran
-    {
-        public DateTime dueDate { set; get; }
-        public DateTime valDate { set; get; }
-        public String vendor { set; get; }
-        public Int64 belumValidasi { set; get; }
-        public Int64 sudahValidasi { set; get; }
-        public Int64 grandTotal { set; get; }
+class PivotPerVendor_setoran
+{
+    public DateTime dueDate { set; get; }
+    public DateTime valDate { set; get; }
+    public String vendor { set; get; }
+    public Int64 belumValidasi { set; get; }
+    public Int64 sudahValidasi { set; get; }
+    public Int64 grandTotal { set; get; }
 
-    }
+}
 
-    class PivotPerVendor_In
-    {
-        public String vendor { set; get; }
-        public Int64 belumValidasi { set; get; }
-        public Int64 sudahValidasi { set; get; }
-        public Int64 total { set; get; }
-    }
+class PivotPerVendor_In
+{
+    public String vendor { set; get; }
+    public Int64 belumValidasi { set; get; }
+    public Int64 sudahValidasi { set; get; }
+    public Int64 total { set; get; }
+}
 
-    class PivotPerVendor_Out
-    {
-        public String vendor { set; get; }
-        public Int64 belumValidasi { set; get; }
-        public Int64 sudahValidasi { set; get; }
-        public Int64 total { set; get; }
-    }
+class PivotPerVendor_Out
+{
+    public String vendor { set; get; }
+    public Int64 belumValidasi { set; get; }
+    public Int64 sudahValidasi { set; get; }
+    public Int64 total { set; get; }
+}
 
-    class PivotVault_In
-    {
-        public String vendor { set; get; }
-        public Int64 belumValidasi { set; get; }
-        public Int64 sudahValidasi { set; get; }
-        public Int64 total { set; get; }
-    }
-    class PivotVault_Out
-    {
-        public String vendor { set; get; }
-        public Int64 belumValidasi { set; get; }
-        public Int64 sudahValidasi { set; get; }
-        public Int64 total { set; get; }
-    }
+class PivotATM_In
+{
+    public String vendor { set; get; }
+    public Int64 belumValidasi { set; get; }
+    public Int64 sudahValidasi { set; get; }
+    public Int64 total { set; get; }
+}
+
+class PivotATM_Out
+{
+    public String vendor { set; get; }
+    public Int64 belumValidasi { set; get; }
+    public Int64 sudahValidasi { set; get; }
+    public Int64 total { set; get; }
+}
+
+class PivotVault_In
+{
+    public String vendor { set; get; }
+    public Int64 belumValidasi { set; get; }
+    public Int64 sudahValidasi { set; get; }
+    public Int64 total { set; get; }
+}
+class PivotVault_Out
+{
+    public String vendor { set; get; }
+    public Int64 belumValidasi { set; get; }
+    public Int64 sudahValidasi { set; get; }
+    public Int64 total { set; get; }
 }

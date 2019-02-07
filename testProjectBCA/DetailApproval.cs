@@ -47,5 +47,11 @@ namespace testProjectBCA
         public Nullable<long> setorAdhoc100 { get; set; }
         public Nullable<long> setorAdhoc50 { get; set; }
         public Nullable<long> setorAdhoc20 { get; set; }
+        public string inputOpr { get; set; }
+        public string inputSpv { get; set; }
+        public string inputNoTxn { get; set; }
+        public string validasiOpr { get; set; }
+        public string validasiSpv { get; set; }
+        public string validasiNoTxn { get; set; }
     }
 }

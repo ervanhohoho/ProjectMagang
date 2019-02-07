@@ -48,6 +48,8 @@
             this.slaCabangKecilNum = new System.Windows.Forms.NumericUpDown();
             this.label7 = new System.Windows.Forms.Label();
             this.slaComboBox = new System.Windows.Forms.ComboBox();
+            this.tampilanUangComboBox = new System.Windows.Forms.ComboBox();
+            this.label8 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.slaRetailBesarNum)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.slaRetailKecilNum)).BeginInit();
@@ -66,13 +68,13 @@
             this.dataGridView1.Location = new System.Drawing.Point(12, 79);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.Size = new System.Drawing.Size(1110, 532);
+            this.dataGridView1.Size = new System.Drawing.Size(1176, 532);
             this.dataGridView1.TabIndex = 0;
             // 
             // comboBulan1
             // 
             this.comboBulan1.FormattingEnabled = true;
-            this.comboBulan1.Location = new System.Drawing.Point(12, 44);
+            this.comboBulan1.Location = new System.Drawing.Point(139, 47);
             this.comboBulan1.Name = "comboBulan1";
             this.comboBulan1.Size = new System.Drawing.Size(121, 21);
             this.comboBulan1.TabIndex = 1;
@@ -80,7 +82,7 @@
             // comboTahun1
             // 
             this.comboTahun1.FormattingEnabled = true;
-            this.comboTahun1.Location = new System.Drawing.Point(139, 44);
+            this.comboTahun1.Location = new System.Drawing.Point(12, 47);
             this.comboTahun1.Name = "comboTahun1";
             this.comboTahun1.Size = new System.Drawing.Size(121, 21);
             this.comboTahun1.TabIndex = 2;
@@ -89,7 +91,7 @@
             // comboBulan2
             // 
             this.comboBulan2.FormattingEnabled = true;
-            this.comboBulan2.Location = new System.Drawing.Point(332, 44);
+            this.comboBulan2.Location = new System.Drawing.Point(456, 47);
             this.comboBulan2.Name = "comboBulan2";
             this.comboBulan2.Size = new System.Drawing.Size(121, 21);
             this.comboBulan2.TabIndex = 3;
@@ -97,7 +99,7 @@
             // comboTahun2
             // 
             this.comboTahun2.FormattingEnabled = true;
-            this.comboTahun2.Location = new System.Drawing.Point(459, 44);
+            this.comboTahun2.Location = new System.Drawing.Point(329, 47);
             this.comboTahun2.Name = "comboTahun2";
             this.comboTahun2.Size = new System.Drawing.Size(121, 21);
             this.comboTahun2.TabIndex = 4;
@@ -105,7 +107,7 @@
             // 
             // buttonRefresh
             // 
-            this.buttonRefresh.Location = new System.Drawing.Point(645, 44);
+            this.buttonRefresh.Location = new System.Drawing.Point(919, 45);
             this.buttonRefresh.Name = "buttonRefresh";
             this.buttonRefresh.Size = new System.Drawing.Size(75, 23);
             this.buttonRefresh.TabIndex = 5;
@@ -126,7 +128,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(740, 44);
+            this.button1.Location = new System.Drawing.Point(1014, 45);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 7;
@@ -138,7 +140,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.LightGreen;
-            this.label1.Location = new System.Drawing.Point(1005, 52);
+            this.label1.Location = new System.Drawing.Point(1122, 56);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(31, 13);
             this.label1.TabIndex = 8;
@@ -148,7 +150,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.BackColor = System.Drawing.Color.LightSkyBlue;
-            this.label2.Location = new System.Drawing.Point(1079, 52);
+            this.label2.Location = new System.Drawing.Point(1159, 56);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(29, 13);
             this.label2.TabIndex = 9;
@@ -258,11 +260,33 @@
             this.slaComboBox.TabIndex = 13;
             this.slaComboBox.SelectedValueChanged += new System.EventHandler(this.slaComboBox_SelectedValueChanged);
             // 
+            // tampilanUangComboBox
+            // 
+            this.tampilanUangComboBox.FormattingEnabled = true;
+            this.tampilanUangComboBox.Items.AddRange(new object[] {
+            "Pcs",
+            "Nominal"});
+            this.tampilanUangComboBox.Location = new System.Drawing.Point(778, 45);
+            this.tampilanUangComboBox.Name = "tampilanUangComboBox";
+            this.tampilanUangComboBox.Size = new System.Drawing.Size(104, 21);
+            this.tampilanUangComboBox.TabIndex = 14;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(693, 50);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(79, 13);
+            this.label8.TabIndex = 15;
+            this.label8.Text = "Tampilan Uang";
+            // 
             // SLAProsesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1134, 623);
+            this.ClientSize = new System.Drawing.Size(1200, 623);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.tampilanUangComboBox);
             this.Controls.Add(this.slaComboBox);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.slaCabangKecilNum);
@@ -317,5 +341,7 @@
         private System.Windows.Forms.NumericUpDown slaCabangKecilNum;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.ComboBox slaComboBox;
+        private System.Windows.Forms.ComboBox tampilanUangComboBox;
+        private System.Windows.Forms.Label label8;
     }
 }

@@ -1153,6 +1153,63 @@ namespace testProjectBCA
             isc.MdiParent = this;
             isc.Show();
         }
+
+        private void transaksiVaultToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            SummaryTransaksiVault stv = new SummaryTransaksiVault();
+            stv.MdiParent = this;
+            stv.Show();
+        }
+
+        private void loadDataVaultToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog of = new OpenFileDialog();
+            of.Filter = Variables.excelFilter;
+            if (of.ShowDialog() == DialogResult.OK)
+            {
+                loadForm.ShowSplashScreen();
+                String path = of.FileName;
+                DataSet ds = Util.openExcel(path);
+                if (ds.Tables.Count == 0)
+                {
+                    loadForm.CloseForm();
+                    return;
+                }
+                DataTable dt = ds.Tables[0];
+                dt.Rows.RemoveAt(0);
+                var data = (from DataRow dr in dt.Rows
+                            select new
+                            {
+                                namaPkt = dr[0].ToString(),
+                                bankLain = dr[1].ToString()
+                            }).ToList();
+                data = data.GroupBy(x => x.namaPkt).Select(x => new { namaPkt = x.Key, bankLain = String.Join(",",x.Select(y=>y.bankLain))}).ToList();
+                Database1Entities db = new Database1Entities();
+                foreach (var temp in data)
+                {
+                    Console.WriteLine(temp.namaPkt + " " + temp.bankLain);
+                    var toEdit = db.Pkts.Where(x => x.namaPkt.Contains(temp.namaPkt)).FirstOrDefault();
+                    if (toEdit != null)
+                    {
+                        Console.WriteLine("TO EDIT: " + toEdit.namaPkt + " " + toEdit.kodePkt);
+                        toEdit.vaultBankLain = temp.bankLain;
+                    }
+                    else
+                    {
+                        Console.WriteLine(temp.namaPkt);
+                    }
+                }
+                db.SaveChanges();
+                loadForm.CloseForm();
+            }
+        }
+
+        private void prosesWPToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ProsesWPForm prosesWPForm = new ProsesWPForm();
+            prosesWPForm.MdiParent = this;
+            prosesWPForm.Show();
+        }
     }
 }
 public static class SqlBulkCopyExtensions

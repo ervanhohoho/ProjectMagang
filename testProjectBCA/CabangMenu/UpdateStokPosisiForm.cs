@@ -327,52 +327,52 @@ namespace testProjectBCA.CabangMenu
                     }
                     else
                     {
-                        if (firstUpdateIN)
-                        {
-                            MessageBox.Show("Data tanggal " + tanggal.AddDays(-1).Date.ToShortDateString() + " " + namaPkt + " Denom: " + denomS + " tidak ada");
-                            firstUpdateIN = false;
-                        }
-                        db.StokPosisis.Add(new StokPosisi()
-                        {
-                            tanggal = tanggal.AddDays(-1),
-                            namaPkt = namaPkt,
-                            denom = denomS,
-                            jenis = "Kertas",
-                            cekLaporan = 0,
-                            fitBaru = 0,
-                            fitLama = 0,
-                            fitNKRI = 0,
-                            newBaru = 0,
-                            newLama = 0,
-                            passThrough = 0,
-                            RRMBaru = 0,
-                            RRMLama = 0,
-                            RRMNKRI = 0,
-                            RupiahRusakMayor = 0,
-                            unfitBaru = 0,
-                            unfitLama = 0,
-                            unfitNKRI = 0,
-                            unprocessed = 0,
-                            openBalance = openBalance,
-                            //in
-                            inCabang = inCabang,
-                            inRetail = inRetail,
-                            inBI = inBI,
-                            inTUKAB = inTUKAB,
-                            inOtherCPC = inOtherCPC,
-                            inVaultATM = inVaultATM,
-                            inTukaran = inTukaran,
-                            //out
-                            outCabang = outCabang,
-                            outRetail = outRetail,
-                            outBIULE = outBIULE,
-                            outBIUTLE = outBIUTLE,
-                            outTUKAB = outTUKAB,
-                            outOtherCPC = outOtherCPC,
-                            outVaultATM = outVaultATM,
-                            outTukaran = outTukaran,
-                        });
-                        db.SaveChanges();
+                        //if (firstUpdateIN)
+                        //{
+                        //    MessageBox.Show("Data tanggal " + tanggal.AddDays(-1).Date.ToShortDateString() + " " + namaPkt + " tidak ada\nData akan dimasukkan!");
+                        //    firstUpdateIN = false;
+                        //}
+                        //db.StokPosisis.Add(new StokPosisi()
+                        //{
+                        //    tanggal = tanggal.AddDays(-1),
+                        //    namaPkt = namaPkt,
+                        //    denom = denomS,
+                        //    jenis = "Kertas",
+                        //    cekLaporan = -1,
+                        //    fitBaru = -1,
+                        //    fitLama = -1,
+                        //    fitNKRI = -1,
+                        //    newBaru = -1,
+                        //    newLama = -1,
+                        //    passThrough = -1,
+                        //    RRMBaru = -1,
+                        //    RRMLama = -1,
+                        //    RRMNKRI = -1,
+                        //    RupiahRusakMayor = -1,
+                        //    unfitBaru = -1,
+                        //    unfitLama = -1,
+                        //    unfitNKRI = -1,
+                        //    unprocessed = -1,
+                        //    openBalance = openBalance,
+                        //    //in
+                        //    inCabang = inCabang,
+                        //    inRetail = inRetail,
+                        //    inBI = inBI,
+                        //    inTUKAB = inTUKAB,
+                        //    inOtherCPC = inOtherCPC,
+                        //    inVaultATM = inVaultATM,
+                        //    inTukaran = inTukaran,
+                        //    //out
+                        //    outCabang = outCabang,
+                        //    outRetail = outRetail,
+                        //    outBIULE = outBIULE,
+                        //    outBIUTLE = outBIUTLE,
+                        //    outTUKAB = outTUKAB,
+                        //    outOtherCPC = outOtherCPC,
+                        //    outVaultATM = outVaultATM,
+                        //    outTukaran = outTukaran,
+                        //});
+                        //db.SaveChanges();
                     }
                 }
                 for (int a = ROWSTARTKOIN; a <= ROWENDKOIN; a++)
@@ -593,47 +593,47 @@ namespace testProjectBCA.CabangMenu
                     }
                     else
                     {
-                        db.StokPosisis.Add(new StokPosisi()
-                        {
-                            tanggal = tanggal.AddDays(-1),
-                            namaPkt = namaPkt,
-                            denom = denomS,
-                            jenis = "Koin",
-                            cekLaporan = 0,
-                            fitBaru = 0,
-                            fitLama = 0,
-                            fitNKRI = 0,
-                            newBaru = 0,
-                            newLama = 0,
-                            passThrough = 0,
-                            RRMBaru = 0,
-                            RRMLama = 0,
-                            RRMNKRI = 0,
-                            RupiahRusakMayor = 0,
-                            unfitBaru = 0,
-                            unfitLama = 0,
-                            unfitNKRI = 0,
-                            unprocessed = 0,
-                            openBalance = openBalance,
-                            //in
-                            inCabang = inCabang,
-                            inRetail = inRetail,
-                            inBI = inBI,
-                            inTUKAB = inTUKAB,
-                            inOtherCPC = inOtherCPC,
-                            inVaultATM = inVaultATM,
-                            inTukaran = inTukaran,
-                            //out
-                            outCabang = outCabang,
-                            outRetail = outRetail,
-                            outBIULE = outBIULE,
-                            outBIUTLE = outBIUTLE,
-                            outTUKAB = outTUKAB,
-                            outOtherCPC = outOtherCPC,
-                            outVaultATM = outVaultATM,
-                            outTukaran = outTukaran,
-                        });
-                        db.SaveChanges();
+                        //db.StokPosisis.Add(new StokPosisi()
+                        //{
+                        //    tanggal = tanggal.AddDays(-1),
+                        //    namaPkt = namaPkt,
+                        //    denom = denomS,
+                        //    jenis = "Koin",
+                        //    cekLaporan = -1,
+                        //    fitBaru = -1,
+                        //    fitLama = -1,
+                        //    fitNKRI = -1,
+                        //    newBaru = -1,
+                        //    newLama = -1,
+                        //    passThrough = -1,
+                        //    RRMBaru = -1,
+                        //    RRMLama = -1,
+                        //    RRMNKRI = -1,
+                        //    RupiahRusakMayor = -1,
+                        //    unfitBaru = -1,
+                        //    unfitLama = -1,
+                        //    unfitNKRI = -1,
+                        //    unprocessed = -1,
+                        //    openBalance = openBalance,
+                        //    //in
+                        //    inCabang = inCabang,
+                        //    inRetail = inRetail,
+                        //    inBI = inBI,
+                        //    inTUKAB = inTUKAB,
+                        //    inOtherCPC = inOtherCPC,
+                        //    inVaultATM = inVaultATM,
+                        //    inTukaran = inTukaran,
+                        //    //out
+                        //    outCabang = outCabang,
+                        //    outRetail = outRetail,
+                        //    outBIULE = outBIULE,
+                        //    outBIUTLE = outBIUTLE,
+                        //    outTUKAB = outTUKAB,
+                        //    outOtherCPC = outOtherCPC,
+                        //    outVaultATM = outVaultATM,
+                        //    outTukaran = outTukaran,
+                        //});
+                        //db.SaveChanges();
                     }
                 }
                 db.SaveChanges();

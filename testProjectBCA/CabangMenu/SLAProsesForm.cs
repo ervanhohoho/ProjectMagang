@@ -23,9 +23,11 @@ namespace testProjectBCA
         List<String> tahun2 = new List<String>();
         int jumlahPkt;
         String koordinator;
+        String jenisTampilan;
         public SLAProsesForm()
         {
             InitializeComponent();
+            tampilanUangComboBox.SelectedIndex = 0;
             //dataGridView1.AutoGenerateColumns = false;
             if (loadComboSLA())
             {
@@ -174,7 +176,7 @@ namespace testProjectBCA
                         bulan1.Add(reader[0].ToString());
                     }
 
-                    bulan1 = bulan1.OrderByDescending(x=>x).ToList();
+                    bulan1 = bulan1.OrderByDescending(x=>Int32.Parse(x)).ToList();
                     comboBulan1.DataSource = bulan1;
 
                 }
@@ -215,7 +217,7 @@ namespace testProjectBCA
                         bulan2.Add(reader[0].ToString());
                     }
                     bulan2 = (from x in bulan2
-                              orderby x descending
+                              orderby Int32.Parse(x) descending
                               select x).ToList();
                     comboBulan2.DataSource = bulan2;
                 }
@@ -224,6 +226,7 @@ namespace testProjectBCA
         bool loadComboSLA()
         {
             List<String> listSLA = (from x in db.Pkts select x.koordinator).Distinct().ToList();
+            listSLA.AddRange((from x in db.Pkts select x.vendor).Distinct().ToList());
             if (listSLA.Any())
             {
                 slaComboBox.DataSource = listSLA;
@@ -239,13 +242,14 @@ namespace testProjectBCA
         void loadComboPkt()
         {
             String koordinator = slaComboBox.SelectedItem.ToString();
-            List<String>listPkt = (from x in db.Pkts where x.koordinator == koordinator && x.kodePktCabang != "" select x.namaPkt).ToList();
+
+            List<String>listPkt = (from x in db.Pkts where (x.koordinator == koordinator || x.vendor == koordinator) && x.kodePktCabang != "" select x.namaPkt).ToList();
             listPkt = listPkt.Select(x => x.ToUpper().Contains("CASH PROCESSING CENTER ALAM SUTERA") ? "CASH PROCESSING CENTER ALAM SUTERA" : x).Distinct().ToList();
 
             jumlahPkt = listPkt.Count;
 
-            listPkt.Add("All Vendor ("+sla+")");
-            listPkt.Add("All Vendor (" + sla + ")" + " Detail");
+            listPkt.Add("All Vendor ("+ koordinator +")");
+            listPkt.Add("All Vendor (" + koordinator + ")" + " Detail");
             comboNamaPkt.DataSource = listPkt;
         }
         public void reloadData()
@@ -315,7 +319,7 @@ namespace testProjectBCA
                                                       && ((DateTime)x.tanggal).Year == thn
                                                       && x.jenisTransaksi.Like("%Collection Retail%")
                                                       select x.BN20K / 20000 + x.BN10K / 10000 + x.BN5K / 5000 + x.BN2K / 2000 + x.BN1K / 1000 + x.BN500 / 500 + x.BN200 / 200 + x.BN100 / 100 + x.CN1K / 1000 + x.CN500 / 500 + x.CN200 / 200 + x.CN100 / 100 + x.CN50 / 50 + x.CN25 / 25).Sum();
-                        Console.WriteLine(thn + " " + bln + " " + tgl);
+                        //Console.WriteLine(thn + " " + bln + " " + tgl);
                         sla.Add(new slaProsesDisplay()
                         {
                             tanggal = new DateTime(thn, bln, tgl),
@@ -417,23 +421,85 @@ namespace testProjectBCA
             if (comboNamaPkt.SelectedIndex < jumlahPkt)
             {
                 loadDataPerPKTStokPosisi();
+                String jenisTampilan = tampilanUangComboBox.SelectedItem.ToString();
+                if(jenisTampilan == "Nominal")
+                {
+                    sla = sla.Select(x => new slaProsesDisplay()
+                    {
+                        inCabangUangBesar = x.inCabangUangBesar,
+                        inCabangUangKecil = x.inCabangUangKecil,
+                        inRetailUangBesar = x.inRetailUangBesar,
+                        inRetailUangKecil = x.inRetailUangKecil,
+                        slaGabung = 0,
+                        slaProsesBesar = 0,
+                        slaProsesKecil = 0,
+                        tanggal = x.tanggal,
+                        totalProsesUangBesar = x.totalProsesUangBesar,
+                        totalProsesUangKecil = x.totalProsesUangKecil, 
+                        unprocUangBesar = x.unprocUangBesar,
+                        unprocUangKecil = x.unprocUangKecil
+                    }).ToList();
+                    dataGridView1.DataSource = sla;
+                }
             }
             else if (comboNamaPkt.SelectedIndex == jumlahPkt)
             {
-                loadDataAllVendorStokPosisi();
+                var res = loadDataAllVendorStokPosisi();
+                if (jenisTampilan == "Nominal")
+                {
+                    res = res.Select(x => new slaProsesDisplayAllVendor()
+                    {
+                        namaPkt = x.namaPkt,
+                        inCabangUangBesar = x.inCabangUangBesar,
+                        inCabangUangKecil = x.inCabangUangKecil,
+                        inRetailUangBesar = x.inRetailUangBesar,
+                        inRetailUangKecil = x.inRetailUangKecil,
+                        slaGabung = 0,
+                        slaProsesBesar = 0,
+                        slaProsesKecil = 0,
+                        tanggal = x.tanggal,
+                        totalProsesUangBesar = x.totalProsesUangBesar,
+                        totalProsesUangKecil = x.totalProsesUangKecil,
+                        unprocUangBesar = x.unprocUangBesar,
+                        unprocUangKecil = x.unprocUangKecil
+                    }).ToList();
+                    dataGridView1.DataSource = res;
+                    dataGridView1.Rows[dataGridView1.Rows.Count - 1].DefaultCellStyle.BackColor = Color.LightSkyBlue;
+                    dataGridView1.Rows[dataGridView1.Rows.Count - 2].DefaultCellStyle.BackColor = Color.LightGreen;
+                }
             }
             else
             {
-                loadDataAllVendorDetailStokPosisi();
+                var res = loadDataAllVendorDetailStokPosisi();
+                if (jenisTampilan == "Nominal")
+                {
+                    res = res.Select(x => new Result()
+                    {
+                        namaPkt = x.namaPkt,
+                        InCabangBesar = x.InCabangBesar,
+                        InCabangKecil = x.InCabangKecil,
+                        InRetailBesar = x.InRetailBesar,
+                        InRetailKecil = x.InRetailKecil,
+                        slaGabung = 0,
+                        slaBesar = 0,
+                        slaKecil = 0,
+                        tanggal = x.tanggal,
+                        UnprocessedBesar = x.UnprocessedBesar,
+                        UnprocessedKecil = x.UnprocessedKecil,
+                        TotalProcessUangBesar = x.TotalProcessUangBesar,
+                        TotalProcessUangKecil = x.TotalProcessUangKecil
+                    }).ToList();
+                    dataGridView1.DataSource = res;
+                }
             }
         }
-        public void loadDataAllVendorStokPosisi()
+        public List<slaProsesDisplayAllVendor> loadDataAllVendorStokPosisi()
         {
             slapav = new List<slaProsesDisplayAllVendor>();
 
             var listAllStokPosisiData = (from x in db.StokPosisis
                                          join z in db.Pkts on x.namaPkt equals z.namaPkt
-                                         where z.koordinator == koordinator
+                                         where (z.koordinator == koordinator || z.vendor == koordinator)
                                          select x).ToList();
             var toChange = listAllStokPosisiData.Where(x => x.namaPkt.Contains("CASH PROCESSING CENTER ALAM SUTERA")).ToList();
             foreach (var temp in toChange)
@@ -460,47 +526,47 @@ namespace testProjectBCA
                                                 group x by new { x.namaPkt, x.denom, x.tanggal } into g
                                                 where g.Key.denom == "100000"
                                                 || g.Key.denom == "50000"
-                                                select new { namapkt = g.Key.namaPkt, value = hitungPcs((Int64)g.Sum(x => x.unprocessed), g.Key.denom), tanggal = g.Key.tanggal }).GroupBy(x => new { x.namapkt, x.tanggal }).Select(x => new { namapkt = x.Key.namapkt, tanggal = x.Key.tanggal, value = x.Sum(y => y.value) }).ToList();
+                                                select new { namapkt = g.Key.namaPkt, value = tampilanUang((Int64)g.Sum(x => x.unprocessed), g.Key.denom, jenisTampilan), tanggal = g.Key.tanggal }).GroupBy(x => new { x.namapkt, x.tanggal }).Select(x => new { namapkt = x.Key.namapkt, tanggal = x.Key.tanggal, value = x.Sum(y => y.value) }).ToList();
 
                         var unprocessedKecil = (from x in allDenom
                                                 group x by new { x.namaPkt, x.denom, x.tanggal } into g
                                                 where !(g.Key.denom == "100000"
                                                         || g.Key.denom == "50000")
-                                                select new { namapkt = g.Key.namaPkt, value = hitungPcs((Int64)g.Sum(x => x.unprocessed), g.Key.denom), tanggal = g.Key.tanggal }).GroupBy(x => new { x.namapkt, x.tanggal }).Select(x => new { namapkt = x.Key.namapkt, tanggal = x.Key.tanggal, value = x.Sum(y => y.value) }).ToList();
+                                                select new { namapkt = g.Key.namaPkt, value = tampilanUang((Int64)g.Sum(x => x.unprocessed), g.Key.denom, jenisTampilan), tanggal = g.Key.tanggal }).GroupBy(x => new { x.namapkt, x.tanggal }).Select(x => new { namapkt = x.Key.namapkt, tanggal = x.Key.tanggal, value = x.Sum(y => y.value) }).ToList();
 
                         var inCabangBesar = (from x in allDenom
                                              group x by new { x.namaPkt, x.denom, x.tanggal } into g
                                              where g.Key.denom == "100000"
                                                      || g.Key.denom == "50000"
-                                             select new { namapkt = g.Key.namaPkt, value = hitungPcs((Int64)g.Sum(x => x.inCabang), g.Key.denom), tanggal = g.Key.tanggal }).GroupBy(x => new { x.namapkt, x.tanggal }).Select(x => new { namapkt = x.Key.namapkt, tanggal = x.Key.tanggal, value = x.Sum(y => y.value) }).ToList();
+                                             select new { namapkt = g.Key.namaPkt, value = tampilanUang((Int64)g.Sum(x => x.inCabang), g.Key.denom, jenisTampilan), tanggal = g.Key.tanggal }).GroupBy(x => new { x.namapkt, x.tanggal }).Select(x => new { namapkt = x.Key.namapkt, tanggal = x.Key.tanggal, value = x.Sum(y => y.value) }).ToList();
 
                         var inCabangKecil = (from x in allDenom
                                              group x by new { x.namaPkt, x.denom, x.tanggal } into g
                                              where !(g.Key.denom == "100000" || g.Key.denom == "50000")
-                                             select new { namapkt = g.Key.namaPkt, value = hitungPcs((Int64)g.Sum(x => x.inCabang), g.Key.denom), tanggal = g.Key.tanggal }).GroupBy(x => new { x.namapkt, x.tanggal }).Select(x => new { namapkt = x.Key.namapkt, tanggal = x.Key.tanggal, value = x.Sum(y => y.value) }).ToList();
+                                             select new { namapkt = g.Key.namaPkt, value = tampilanUang((Int64)g.Sum(x => x.inCabang), g.Key.denom, jenisTampilan), tanggal = g.Key.tanggal }).GroupBy(x => new { x.namapkt, x.tanggal }).Select(x => new { namapkt = x.Key.namapkt, tanggal = x.Key.tanggal, value = x.Sum(y => y.value) }).ToList();
                         var inRetailBesar = (from x in allDenom
                                              group x by new { x.namaPkt, x.denom, x.tanggal } into g
                                              where g.Key.denom == "100000"
                                                      || g.Key.denom == "50000"
-                                             select new { namapkt = g.Key.namaPkt, value = hitungPcs((Int64)g.Sum(x => x.inRetail), g.Key.denom), tanggal = g.Key.tanggal }).GroupBy(x => new { x.namapkt, x.tanggal }).Select(x => new { namapkt = x.Key.namapkt, tanggal = x.Key.tanggal, value = x.Sum(y => y.value) }).ToList();
+                                             select new { namapkt = g.Key.namaPkt, value = tampilanUang((Int64)g.Sum(x => x.inRetail), g.Key.denom, jenisTampilan), tanggal = g.Key.tanggal }).GroupBy(x => new { x.namapkt, x.tanggal }).Select(x => new { namapkt = x.Key.namapkt, tanggal = x.Key.tanggal, value = x.Sum(y => y.value) }).ToList();
 
                         var inRetailKecil = (from x in allDenom
                                              group x by new { x.namaPkt, x.denom,x.tanggal } into g
                                              where !(g.Key.denom == "100000"
                                                      || g.Key.denom == "50000")
-                                             select new { namapkt = g.Key.namaPkt, value = hitungPcs((Int64)g.Sum(x => x.inRetail), g.Key.denom), tanggal = g.Key.tanggal }).GroupBy(x => new { x.namapkt, x.tanggal }).Select(x => new { namapkt = x.Key.namapkt, tanggal = x.Key.tanggal, value = x.Sum(y => y.value) }).ToList();
+                                             select new { namapkt = g.Key.namaPkt, value = tampilanUang((Int64)g.Sum(x => x.inRetail), g.Key.denom, jenisTampilan), tanggal = g.Key.tanggal }).GroupBy(x => new { x.namapkt, x.tanggal }).Select(x => new { namapkt = x.Key.namapkt, tanggal = x.Key.tanggal, value = x.Sum(y => y.value) }).ToList();
 
 
                         DateTime date = new DateTime(thn, bln, tgl);
                         var unprocessedBesarH1 = (from x in listAllStokPosisiData.AsEnumerable()
                                                   where x.tanggal == date.AddDays(1)
                                                   && (x.denom == "100000" || x.denom == "50000")
-                                                  select new { namapkt = x.namaPkt, value = hitungPcs((Int64) x.unprocessed, x.denom), x.tanggal }).GroupBy(x=>new { x.tanggal, x.namapkt }).Select(x=> new { namapkt = x.Key.namapkt, value = x.Sum(y => y.value) }).ToList();
+                                                  select new { namapkt = x.namaPkt, value = tampilanUang((Int64) x.unprocessed, x.denom, jenisTampilan), x.tanggal }).GroupBy(x=>new { x.tanggal, x.namapkt }).Select(x=> new { namapkt = x.Key.namapkt, value = x.Sum(y => y.value) }).ToList();
 
                         var unprocessedKecilH1 = (from x in listAllStokPosisiData.AsEnumerable()
                                                   where x.tanggal == date.AddDays(1)
                                                   && !(x.denom == "100000" || x.denom == "50000")
-                                                  select new { namapkt = x.namaPkt, value = hitungPcs((Int64)x.unprocessed, x.denom), x.tanggal }).GroupBy(x => new { x.tanggal, x.namapkt }).Select(x => new { namapkt = x.Key.namapkt, value = x.Sum(y => y.value) }).ToList();
+                                                  select new { namapkt = x.namaPkt, value = tampilanUang((Int64)x.unprocessed, x.denom, jenisTampilan), x.tanggal }).GroupBy(x => new { x.tanggal, x.namapkt }).Select(x => new { namapkt = x.Key.namapkt, value = x.Sum(y => y.value) }).ToList();
 
 
                         var q = (from ub in unprocessedBesar
@@ -532,92 +598,95 @@ namespace testProjectBCA
             }
             Double buf;
 
+            int slaBesarNonNANCount = slapav.Where(x => !Double.IsNaN(x.slaProsesBesar)).ToList().Count,
+                slaKecilNonNANCount = slapav.Where(x => !Double.IsNaN(x.slaProsesKecil)).ToList().Count;
+
             var tempSlaBesar = (from x in slapav
-                                where !Double.IsNaN(x.slaProsesBesar)
                                 group x by x.namaPkt into g
-                                select new { namaPkt = g.Key, slaBesar = g.Average(x => x.slaProsesBesar) }).ToList();
+                                select new { namaPkt = g.Key, slaBesar = (g.Where(x => !Double.IsNaN(x.slaProsesBesar)).ToList().Count > 0 ? g.Where(x => !Double.IsNaN(x.slaProsesBesar)).Average(x => x.slaProsesBesar) : Double.NaN) }).ToList();
             var tempSlaKecil = (from x in slapav
-                                where !Double.IsNaN(x.slaProsesKecil)
                                 group x by x.namaPkt into g
-                                select new { namaPkt = g.Key, slaKecil = g.Average(x => x.slaProsesKecil) }).ToList();
+                                select new { namaPkt = g.Key, slaKecil = (g.Where(x => !Double.IsNaN(x.slaProsesKecil)).ToList().Count > 0 ? g.Where(x => !Double.IsNaN(x.slaProsesKecil)).Average(x => x.slaProsesKecil) : Double.NaN) }).ToList();
             var tempSlaGabung = (from x in slapav
-                                where !Double.IsNaN(x.slaGabung)
                                 group x by x.namaPkt into g
-                                select new { namaPkt = g.Key, slaGabung = g.Average(x => x.slaGabung) }).ToList();
+                                select new { namaPkt = g.Key, slaGabung = g.Where(x => !Double.IsNaN(x.slaGabung)).Average(x => x.slaGabung) }).ToList();
 
             var qt = (from x in slapav
                       group x by x.namaPkt into g
                       join y in tempSlaBesar on g.Key equals y.namaPkt
                       join z in tempSlaKecil on g.Key equals z.namaPkt
                       join zz in tempSlaGabung on g.Key equals zz.namaPkt
-                      select new {
+                      select new slaProsesDisplayAllVendor()
+                      {
                           namaPkt = g.Key,
-                          UnprocessedBesar = g.Average(x=>x.unprocUangBesar),
-                          UnprocessedKecil = g.Average(x=>x.unprocUangKecil),
-                          InRetailBesar = g.Average(x=>x.inRetailUangBesar),
-                          InRetailKecil = g.Average(x=>x.inRetailUangKecil),
-                          InCabangBesar = g.Average(x=>x.inCabangUangBesar),
-                          InCabangKecil = g.Average(x=>x.inCabangUangKecil),
-                          TotalProcessUangBesar = g.Average(x => x.unprocUangBesar) + g.Average(x => x.inRetailUangBesar) + g.Average(x => x.inCabangUangBesar),
-                          TotalProcessUangKecil = g.Average(x => x.unprocUangKecil) + g.Average(x => x.inRetailUangKecil) + g.Average(x => x.inCabangUangKecil),
-                          slaBesar = y.slaBesar,
-                          slaKecil = z.slaKecil,
+                          unprocUangBesar = (Int64)g.Average(x=>x.unprocUangBesar),
+                          unprocUangKecil = (Int64)g.Average(x=>x.unprocUangKecil),
+                          inRetailUangBesar = (Int64)g.Average(x=>x.inRetailUangBesar),
+                          inRetailUangKecil = (Int64)g.Average(x=>x.inRetailUangKecil),
+                          inCabangUangBesar= (Int64)g.Average(x=>x.inCabangUangBesar),
+                          inCabangUangKecil = (Int64)g.Average(x=>x.inCabangUangKecil),
+                          totalProsesUangBesar = (Int64)(g.Average(x => x.unprocUangBesar) + g.Average(x => x.inRetailUangBesar) + g.Average(x => x.inCabangUangBesar)),
+                          totalProsesUangKecil = (Int64)(g.Average(x => x.unprocUangKecil) + g.Average(x => x.inRetailUangKecil) + g.Average(x => x.inCabangUangKecil)),
+                          slaProsesBesar = y.slaBesar,
+                          slaProsesKecil = z.slaKecil,
                           slaGabung = zz.slaGabung
                       }).ToList();
+            Console.WriteLine("QT COUNT: " + qt.Count);
             var avg = (from x in qt
                        group x by true into g
-                       select new
+                       select new slaProsesDisplayAllVendor()
                        {
                            namaPkt = "",
-                           UnprocessedBesar = g.Average(x => x.UnprocessedBesar),
-                           UnprocessedKecil = g.Average(x => x.UnprocessedKecil),
-                           InRetailBesar = g.Average(x => x.InRetailBesar),
-                           InRetailKecil = g.Average(x => x.InRetailKecil),
-                           InCabangBesar = g.Average(x => x.InCabangBesar),
-                           InCabangKecil = g.Average(x => x.InCabangKecil),
-                           TotalProcessUangBesar = g.Average(x => x.TotalProcessUangBesar),
-                           TotalProcessUangKecil = g.Average(x => x.TotalProcessUangKecil),
-                           slaBesar = g.Average(x => x.slaBesar),
-                           slaKecil = g.Average(x => x.slaKecil),
+                           unprocUangBesar = (Int64)g.Average(x => x.unprocUangBesar),
+                           unprocUangKecil = (Int64)g.Average(x => x.unprocUangKecil),
+                           inRetailUangBesar = (Int64)g.Average(x => x.inRetailUangBesar),
+                           inRetailUangKecil = (Int64)g.Average(x => x.inRetailUangKecil),
+                           inCabangUangBesar = (Int64)g.Average(x => x.inCabangUangBesar),
+                           inCabangUangKecil = (Int64)g.Average(x => x.inCabangUangKecil),
+                           totalProsesUangBesar = (Int64)g.Average(x => x.totalProsesUangBesar),
+                           totalProsesUangKecil = (Int64)g.Average(x => x.totalProsesUangKecil),
+                           slaProsesBesar = g.Average(x => x.slaProsesBesar),
+                           slaProsesKecil = g.Average(x => x.slaProsesKecil),
                            slaGabung = g.Average(x => x.slaGabung)
                        }).First();
             var sum = (from x in qt
                        group x by true into g
-                       select new
+                       select new slaProsesDisplayAllVendor()
                        {
                            namaPkt = "",
-                           UnprocessedBesar = g.Sum(x => x.UnprocessedBesar),
-                           UnprocessedKecil = g.Sum(x => x.UnprocessedKecil),
-                           InRetailBesar = g.Sum(x => x.InRetailBesar),
-                           InRetailKecil = g.Sum(x => x.InRetailKecil),
-                           InCabangBesar = g.Sum(x => x.InCabangBesar),
-                           InCabangKecil = g.Sum(x => x.InCabangKecil),
-                           TotalProcessUangBesar = g.Sum(x => x.TotalProcessUangBesar),
-                           TotalProcessUangKecil = g.Sum(x => x.TotalProcessUangKecil),
-                           slaBesar = (Double)0,
-                           slaKecil = (Double)0,
-                           slaGabung = (Double)0
+                           //unprocUangBesar = (Int64)g.Sum(x => x.unprocUangBesar),
+                           //unprocUangKecil = (Int64)g.Sum(x => x.unprocUangKecil),
+                           //inRetailUangBesar = (Int64)g.Sum(x => x.inRetailUangBesar),
+                           //inRetailUangKecil = (Int64)g.Sum(x => x.inRetailUangKecil),
+                           //inCabangUangBesar = (Int64)g.Sum(x => x.inCabangUangBesar),
+                           //inCabangUangKecil = (Int64)g.Sum(x => x.inCabangUangKecil),
+                           //totalProsesUangBesar = (Int64)g.Sum(x => x.totalProsesUangBesar),
+                           //totalProsesUangKecil = (Int64)g.Sum(x => x.totalProsesUangKecil),
+                           //slaProsesBesar = (Double)0,
+                           //slaProsesKecil = (Double)0,
+                           //slaGabung = (Double)0
                        }).First();
             qt.Add(sum);
             qt.Add(avg);
             dataGridView1.DataSource = qt;
             for(int a=1;a<dataGridView1.Columns.Count;a++)
             {
-                if(a >=9 && a<=11)
+                if(a >=10 && a<=12)
                     dataGridView1.Columns[a].DefaultCellStyle.Format = "P";
                 else
                     dataGridView1.Columns[a].DefaultCellStyle.Format = "N2";
             }
             dataGridView1.Rows[dataGridView1.Rows.Count - 1].DefaultCellStyle.BackColor = Color.LightSkyBlue;
             dataGridView1.Rows[dataGridView1.Rows.Count - 2].DefaultCellStyle.BackColor = Color.LightGreen;
+            return qt;
         }
-        public void loadDataAllVendorDetailStokPosisi()
+        public List<Result> loadDataAllVendorDetailStokPosisi()
         {
             slapav = new List<slaProsesDisplayAllVendor>();
 
             var listAllStokPosisiData = (from x in db.StokPosisis
                                          join z in db.Pkts on x.namaPkt equals z.namaPkt
-                                         where z.koordinator == koordinator
+                                         where (z.koordinator == koordinator || z.vendor == koordinator)
                                          select x).ToList();
             var toChange = listAllStokPosisiData.Where(x => x.namaPkt.Contains("CASH PROCESSING CENTER ALAM SUTERA")).ToList();
             foreach (var temp in toChange)
@@ -644,47 +713,47 @@ namespace testProjectBCA
                                                 group x by new { x.namaPkt, x.denom, x.tanggal } into g
                                                 where g.Key.denom == "100000"
                                                 || g.Key.denom == "50000"
-                                                select new { namapkt = g.Key.namaPkt, value = hitungPcs((Int64)g.Sum(x => x.unprocessed), g.Key.denom), tanggal = g.Key.tanggal }).GroupBy(x => new { x.namapkt, x.tanggal }).Select(x => new { namapkt = x.Key.namapkt, tanggal = x.Key.tanggal, value = x.Sum(y => y.value) }).ToList();
+                                                select new { namapkt = g.Key.namaPkt, value = tampilanUang((Int64)g.Sum(x => x.unprocessed), g.Key.denom, jenisTampilan), tanggal = g.Key.tanggal }).GroupBy(x => new { x.namapkt, x.tanggal }).Select(x => new { namapkt = x.Key.namapkt, tanggal = x.Key.tanggal, value = x.Sum(y => y.value) }).ToList();
 
                         var unprocessedKecil = (from x in allDenom
                                                 group x by new { x.namaPkt, x.denom, x.tanggal } into g
                                                 where !(g.Key.denom == "100000"
                                                         || g.Key.denom == "50000")
-                                                select new { namapkt = g.Key.namaPkt, value = hitungPcs((Int64)g.Sum(x => x.unprocessed), g.Key.denom), tanggal = g.Key.tanggal }).GroupBy(x => new { x.namapkt, x.tanggal }).Select(x => new { namapkt = x.Key.namapkt, tanggal = x.Key.tanggal, value = x.Sum(y => y.value) }).ToList();
+                                                select new { namapkt = g.Key.namaPkt, value = tampilanUang((Int64)g.Sum(x => x.unprocessed), g.Key.denom, jenisTampilan), tanggal = g.Key.tanggal }).GroupBy(x => new { x.namapkt, x.tanggal }).Select(x => new { namapkt = x.Key.namapkt, tanggal = x.Key.tanggal, value = x.Sum(y => y.value) }).ToList();
 
                         var inCabangBesar = (from x in allDenom
                                              group x by new { x.namaPkt, x.denom, x.tanggal } into g
                                              where g.Key.denom == "100000"
                                                      || g.Key.denom == "50000"
-                                             select new { namapkt = g.Key.namaPkt, value = hitungPcs((Int64)g.Sum(x => x.inCabang), g.Key.denom), tanggal = g.Key.tanggal }).GroupBy(x => new { x.namapkt, x.tanggal }).Select(x => new { namapkt = x.Key.namapkt, tanggal = x.Key.tanggal, value = x.Sum(y => y.value) }).ToList();
+                                             select new { namapkt = g.Key.namaPkt, value = tampilanUang((Int64)g.Sum(x => x.inCabang), g.Key.denom, jenisTampilan), tanggal = g.Key.tanggal }).GroupBy(x => new { x.namapkt, x.tanggal }).Select(x => new { namapkt = x.Key.namapkt, tanggal = x.Key.tanggal, value = x.Sum(y => y.value) }).ToList();
 
                         var inCabangKecil = (from x in allDenom
                                              group x by new { x.namaPkt, x.denom, x.tanggal } into g
                                              where !(g.Key.denom == "100000" || g.Key.denom == "50000")
-                                             select new { namapkt = g.Key.namaPkt, value = hitungPcs((Int64)g.Sum(x => x.inCabang), g.Key.denom), tanggal = g.Key.tanggal }).GroupBy(x => new { x.namapkt, x.tanggal }).Select(x => new { namapkt = x.Key.namapkt, tanggal = x.Key.tanggal, value = x.Sum(y => y.value) }).ToList();
+                                             select new { namapkt = g.Key.namaPkt, value = tampilanUang((Int64)g.Sum(x => x.inCabang), g.Key.denom, jenisTampilan), tanggal = g.Key.tanggal }).GroupBy(x => new { x.namapkt, x.tanggal }).Select(x => new { namapkt = x.Key.namapkt, tanggal = x.Key.tanggal, value = x.Sum(y => y.value) }).ToList();
                         var inRetailBesar = (from x in allDenom
                                              group x by new { x.namaPkt, x.denom, x.tanggal } into g
                                              where g.Key.denom == "100000"
                                                      || g.Key.denom == "50000"
-                                             select new { namapkt = g.Key.namaPkt, value = hitungPcs((Int64)g.Sum(x => x.inRetail), g.Key.denom), tanggal = g.Key.tanggal }).GroupBy(x => new { x.namapkt, x.tanggal }).Select(x => new { namapkt = x.Key.namapkt, tanggal = x.Key.tanggal, value = x.Sum(y => y.value) }).ToList();
+                                             select new { namapkt = g.Key.namaPkt, value = tampilanUang((Int64)g.Sum(x => x.inRetail), g.Key.denom, jenisTampilan), tanggal = g.Key.tanggal }).GroupBy(x => new { x.namapkt, x.tanggal }).Select(x => new { namapkt = x.Key.namapkt, tanggal = x.Key.tanggal, value = x.Sum(y => y.value) }).ToList();
 
                         var inRetailKecil = (from x in allDenom
                                              group x by new { x.namaPkt, x.denom, x.tanggal } into g
                                              where !(g.Key.denom == "100000"
                                                      || g.Key.denom == "50000")
-                                             select new { namapkt = g.Key.namaPkt, value = hitungPcs((Int64)g.Sum(x => x.inRetail), g.Key.denom), tanggal = g.Key.tanggal }).GroupBy(x => new { x.namapkt, x.tanggal }).Select(x => new { namapkt = x.Key.namapkt, tanggal = x.Key.tanggal, value = x.Sum(y => y.value) }).ToList();
+                                             select new { namapkt = g.Key.namaPkt, value = tampilanUang((Int64)g.Sum(x => x.inRetail), g.Key.denom, jenisTampilan), tanggal = g.Key.tanggal }).GroupBy(x => new { x.namapkt, x.tanggal }).Select(x => new { namapkt = x.Key.namapkt, tanggal = x.Key.tanggal, value = x.Sum(y => y.value) }).ToList();
 
 
                         DateTime date = new DateTime(thn, bln, tgl);
                         var unprocessedBesarH1 = (from x in listAllStokPosisiData.AsEnumerable()
                                                   where x.tanggal == date.AddDays(1)
                                                   && (x.denom == "100000" || x.denom == "50000")
-                                                  select new { namapkt = x.namaPkt, value = hitungPcs((Int64)x.unprocessed, x.denom), x.tanggal }).GroupBy(x => new { x.tanggal, x.namapkt }).Select(x => new { namapkt = x.Key.namapkt, value = x.Sum(y => y.value), tanggal = x.Key.tanggal }).ToList();
+                                                  select new { namapkt = x.namaPkt, value = tampilanUang((Int64)x.unprocessed, x.denom, jenisTampilan), x.tanggal }).GroupBy(x => new { x.tanggal, x.namapkt }).Select(x => new { namapkt = x.Key.namapkt, value = x.Sum(y => y.value), tanggal = x.Key.tanggal }).ToList();
 
                         var unprocessedKecilH1 = (from x in listAllStokPosisiData.AsEnumerable()
                                                   where x.tanggal == date.AddDays(1)
                                                   && !(x.denom == "100000" || x.denom == "50000")
-                                                  select new { namapkt = x.namaPkt, value = hitungPcs((Int64)x.unprocessed, x.denom), x.tanggal }).GroupBy(x => new { x.tanggal, x.namapkt }).Select(x => new { namapkt = x.Key.namapkt, value = x.Sum(y => y.value), tanggal = x.Key.tanggal }).ToList();
+                                                  select new { namapkt = x.namaPkt, value = tampilanUang((Int64)x.unprocessed, x.denom, jenisTampilan), x.tanggal }).GroupBy(x => new { x.tanggal, x.namapkt }).Select(x => new { namapkt = x.Key.namapkt, value = x.Sum(y => y.value), tanggal = x.Key.tanggal }).ToList();
 
 
                         var q = (from ub in unprocessedBesar
@@ -769,6 +838,10 @@ namespace testProjectBCA
                       slaKecil = x.slaKecil,
                       slaGabung = x.slaGabung
                   }).ToList();
+
+            int SLABesarNonNANCount = qt.Where(x => !Double.IsNaN(x.slaBesar)).ToList().Count,
+                SLAKecilNonNANCount = qt.Where(x => !Double.IsNaN(x.slaKecil)).ToList().Count;
+
             var avg = (from x in qt
                        group x by true into g
                        select new Result()
@@ -783,9 +856,9 @@ namespace testProjectBCA
                            InRetailKecil = g.Average(x => x.InRetailKecil),
                            TotalProcessUangBesar = g.Average(x => x.TotalProcessUangBesar),
                            TotalProcessUangKecil = g.Average(x => x.TotalProcessUangKecil),
-                           slaBesar = g.Average(x => x.slaBesar),
-                           slaKecil = g.Average(x => x.slaKecil),
-                           slaGabung = g.Average(x => x.slaGabung)
+                           slaBesar = SLABesarNonNANCount > 0 ? g.Where(x => !Double.IsNaN(x.slaBesar)).Average(x => x.slaBesar) : Double.NaN,
+                           slaKecil = SLAKecilNonNANCount > 0 ? g.Where(x => !Double.IsNaN(x.slaKecil)).Average(x => x.slaKecil) : Double.NaN,
+                           slaGabung = g.Where(x => !Double.IsNaN(x.slaGabung)).Average(x => x.slaGabung)
                        }).First();
             var sum = (from x in qt
                        group x by true into g
@@ -817,16 +890,18 @@ namespace testProjectBCA
             }
             dataGridView1.Rows[dataGridView1.Rows.Count - 1].DefaultCellStyle.BackColor = Color.LightSkyBlue;
             dataGridView1.Rows[dataGridView1.Rows.Count - 2].DefaultCellStyle.BackColor = Color.LightGreen;
+            return qt;
         }
         public void loadDataPerPKTStokPosisi()
         {
             sla = new List<slaProsesDisplay>();
+            String namaPkt = comboNamaPkt.SelectedItem.ToString();
             var listData = (from x in db.StokPosisis.AsEnumerable()
                         where ((DateTime)x.tanggal).Month >= Int32.Parse(comboBulan1.SelectedValue.ToString())
                         && ((DateTime)x.tanggal).Year >= Int32.Parse(comboTahun1.SelectedValue.ToString())
                         && ((DateTime)x.tanggal).Month <= Int32.Parse(comboBulan2.SelectedValue.ToString())
                         && ((DateTime)x.tanggal).Year <= Int32.Parse(comboTahun2.SelectedValue.ToString())
-                        && x.namaPkt.Contains(comboNamaPkt.SelectedValue.ToString())
+                        && x.namaPkt.Contains(namaPkt)
                         select x).ToList();
             int slaRetailBesar = (int)slaRetailBesarNum.Value,
                 slaRetailKecil = (int)slaRetailKecilNum.Value,
@@ -834,7 +909,6 @@ namespace testProjectBCA
                 slaCabangKecil = (int)slaCabangKecilNum.Value,
                 slaUnprocBesar = (int)slaCabangBesarNum.Value - 1,
                 slaUnprocKecil = (int)slaCabangKecilNum.Value - 1;
-
 
             if (slaUnprocBesar <= 1)
                 slaUnprocBesar = 1;
@@ -851,12 +925,13 @@ namespace testProjectBCA
                                         && ((DateTime)x.tanggal).Month == bln
                                         && ((DateTime)x.tanggal).Year == thn
                                         select x).ToList();
-
+                        if (!allDenom.Any())
+                            continue;
 
                         Int64 unprocessedBesar = (Int64)(from x in allDenom
                                                          where x.denom == "100000"
                                                          || x.denom == "50000"
-                                                         select new { value = hitungPcs((Int64)x.unprocessed, x.denom) }).Sum(x => x.value);
+                                                         select new { value = tampilanUang((Int64)x.unprocessed, x.denom, jenisTampilan) }).Sum(x => x.value);
 
                         Int64 unprocessedKecil = (Int64)(from x in allDenom
                                                          where x.denom == "20000"
@@ -869,20 +944,20 @@ namespace testProjectBCA
                                                          || x.denom == "100"
                                                          || x.denom == "50"
                                                          || x.denom == "25"
-                                                         select new { value = hitungPcs((Int64)x.unprocessed, x.denom) }).Sum(x => x.value);
+                                                         select new { value = tampilanUang((Int64)x.unprocessed, x.denom, jenisTampilan) }).Sum(x => x.value);
 
                         Int64 inCabangBesar = (Int64)(from x in allDenom
                                                       where x.denom == "100000"
                                                       || x.denom == "50000"
-                                                      select new { value = hitungPcs(x.inCabang == null ? 0: (Int64)x.inCabang, x.denom) }).Sum(x => x.value);
+                                                      select new { value = tampilanUang(x.inCabang == null ? 0 : (Int64)x.inCabang, x.denom, jenisTampilan) }).Sum(x => x.value);
 
                         Int64 inCabangKecil = (Int64)(from x in allDenom
                                                       where !(x.denom == "100000" || x.denom == "50000")
-                                                      select new { value = hitungPcs(x.inCabang == null ? 0 : (Int64)x.inCabang, x.denom) }).Sum(x => x.value);
+                                                      select new { value = tampilanUang(x.inCabang == null ? 0 : (Int64)x.inCabang, x.denom, jenisTampilan) }).Sum(x => x.value);
                         Int64 inRetailBesar = (Int64)(from x in allDenom
                                                       where x.denom == "100000"
                                                       || x.denom == "50000"
-                                                      select new { value = hitungPcs(x.inRetail == null ? 0 : (Int64) x.inRetail, x.denom) }).Sum(x => x.value);
+                                                      select new { value = tampilanUang(x.inRetail == null ? 0 : (Int64) x.inRetail, x.denom, jenisTampilan) }).Sum(x => x.value);
 
                         Int64 inRetailKecil = (Int64)(from x in allDenom
                                                       where x.denom == "20000"
@@ -895,7 +970,7 @@ namespace testProjectBCA
                                                       || x.denom == "100"
                                                       || x.denom == "50"
                                                       || x.denom == "25"
-                                                      select new { value = hitungPcs(x.inRetail == null ? 0 : (Int64)x.inRetail, x.denom) }).Sum(x => x.value);
+                                                      select new { value = tampilanUang((x.inRetail == null ? 0 : (Int64)x.inRetail), x.denom, jenisTampilan) }).Sum(x => x.value);
                         Console.WriteLine(thn + " " + bln + " " + tgl);
                         sla.Add(new slaProsesDisplay()
                         {
@@ -914,60 +989,83 @@ namespace testProjectBCA
                     }
                 }
             }
+            List<int> toDelete = new List<int>();
             for (int i = 0; i < sla.Count; i++)
             {
                 if (i == sla.Count - 1)
                 {
                     //Mesti diganti
-                    DateTime tgl = sla[i].tanggal.AddDays(1);
-                    Int64 UnprocUangBesar = (from x in db.StokPosisis.AsEnumerable()
-                                             where (x.denom == "100000"
-                                             || x.denom == "50000")
-                                             && x.tanggal == tgl
-                                             && x.namaPkt.Contains(comboNamaPkt.SelectedValue.ToString())
-                                             select new { value = hitungPcs((Int64)x.unprocessed, x.denom) }
-                             ).Sum(x => x.value);
-                    Int64 UnprocUangKecil = (from x in db.StokPosisis.AsEnumerable()
-                                             where !(x.denom == "100000"
-                                             || x.denom == "50000")
-                                             && x.tanggal == tgl
-                                             && x.namaPkt.Contains(comboNamaPkt.SelectedValue.ToString())
-                                             select new { value = hitungPcs((Int64)x.unprocessed, x.denom) }
-                             ).Sum(x => x.value);
+                    DateTime tglSLA = sla[i].tanggal;
+                    var UnprocUangBesar = (from x in db.StokPosisis.AsEnumerable()
+                                           where (x.denom == "100000"
+                                           || x.denom == "50000")
+                                           && x.tanggal == tglSLA.AddDays(1)
+                                           && x.namaPkt.Contains(comboNamaPkt.SelectedValue.ToString())
+                                           select new { value = tampilanUang((Int64)x.unprocessed, x.denom, jenisTampilan) }
+                                 ).ToList();
+                    var UnprocUangKecil = (from x in db.StokPosisis.AsEnumerable()
+                                           where !(x.denom == "100000"
+                                           || x.denom == "50000")
+                                           && x.tanggal == tglSLA.AddDays(1)
+                                           && x.namaPkt.Contains(comboNamaPkt.SelectedValue.ToString())
+                                           select new { value = tampilanUang((Int64)x.unprocessed, x.denom, jenisTampilan) }
+                             ).ToList();
 
 
+                    if (UnprocUangBesar.Any())
+                    {
+                        Console.WriteLine("UNPROC UANG BESAR ADA: " + UnprocUangBesar.Count);
+                        sla[i].totalProsesUangBesar = sla[i].unprocUangBesar + sla[i].inCabangUangBesar + sla[i].inRetailUangBesar - UnprocUangBesar.Sum(x => x.value);
+                    }
+                    else
+                    {
+                        Console.WriteLine("UNPROC UANG BESAR TIDAK ADA");
+                        sla[i].totalProsesUangBesar = double.NaN;
 
-                    sla[i].totalProsesUangBesar = sla[i].unprocUangBesar + sla[i].inCabangUangBesar + sla[i].inRetailUangBesar;
-                    sla[i].totalProsesUangKecil = sla[i].unprocUangKecil + sla[i].inCabangUangKecil + sla[i].inRetailUangKecil;
+                    }
+                    if (UnprocUangKecil.Any())
+                        sla[i].totalProsesUangKecil = sla[i].unprocUangKecil + sla[i].inCabangUangKecil + sla[i].inRetailUangKecil - UnprocUangKecil.Sum(x => x.value);
+                    else
+                        sla[i].totalProsesUangKecil = double.NaN;
 
-                    sla[i].totalProsesUangBesar -= UnprocUangBesar;
-                    sla[i].totalProsesUangKecil -= UnprocUangKecil;
                 }
                 else
                 {
-                    sla[i].totalProsesUangBesar = sla[i].unprocUangBesar + sla[i].inCabangUangBesar + sla[i].inRetailUangBesar - sla[i + 1].unprocUangBesar;
-                    sla[i].totalProsesUangKecil = sla[i].unprocUangKecil + sla[i].inCabangUangKecil + sla[i].inRetailUangKecil - sla[i + 1].unprocUangKecil;
+                    DateTime tglSLA = sla[i].tanggal;
+                    DateTime tglNextDay = sla[i + 1].tanggal;
+                    if (tglNextDay == tglSLA.AddDays(1))
+                    {
+                    
+                        sla[i].totalProsesUangBesar = sla[i].unprocUangBesar + sla[i].inCabangUangBesar + sla[i].inRetailUangBesar - sla[i + 1].unprocUangBesar;
+                        sla[i].totalProsesUangKecil = sla[i].unprocUangKecil + sla[i].inCabangUangKecil + sla[i].inRetailUangKecil - sla[i + 1].unprocUangKecil;
+                    }
+                    else
+                    {
+                        sla[i].totalProsesUangBesar = Double.NaN;
+                        sla[i].totalProsesUangKecil = Double.NaN;
+                    }
                 }
 
-                //if (sla[i].unprocUangBesar + sla[i].inCabangUangBesar + sla[i].inRetailUangBesar != 0)
-                //{
-                sla[i].slaProsesBesar = (Double)sla[i].totalProsesUangBesar / (sla[i].unprocUangBesar / (slaUnprocBesar) + sla[i].inCabangUangBesar / slaCabangBesar + sla[i].inRetailUangBesar/slaRetailBesar);
-                //}
-                //if (sla[i].unprocUangKecil + sla[i].inCabangUangKecil + sla[i].inRetailUangKecil != 0)
-                //{
-                sla[i].slaProsesKecil = (Double)sla[i].totalProsesUangKecil / (sla[i].unprocUangKecil / (slaUnprocKecil) + (sla[i].inCabangUangKecil / slaCabangKecil) + sla[i].inRetailUangKecil/slaRetailKecil);
-                //}
-                //if (sla[i].unprocUangBesar + sla[i].inCabangUangBesar + sla[i].inRetailUangBesar + sla[i].unprocUangKecil + sla[i].inCabangUangKecil + sla[i].inRetailUangKecil != 0)
-                //{
+
+                if (Double.IsNaN(sla[i].totalProsesUangBesar))
+                    sla[i].slaProsesBesar = Double.NaN;
+                else
+                    sla[i].slaProsesBesar = (Double)sla[i].totalProsesUangBesar / (sla[i].unprocUangBesar / (slaUnprocBesar) + sla[i].inCabangUangBesar / slaCabangBesar + sla[i].inRetailUangBesar / slaRetailBesar);
+
+                if (Double.IsNaN(sla[i].totalProsesUangKecil))
+                    sla[i].slaProsesKecil = Double.NaN;
+                else
+                    sla[i].slaProsesKecil = (Double)sla[i].totalProsesUangKecil / (sla[i].unprocUangKecil / (slaUnprocKecil) + (sla[i].inCabangUangKecil / slaCabangKecil) + sla[i].inRetailUangKecil / slaRetailKecil);
+
+
                 if (!Double.IsNaN(sla[i].slaProsesBesar) && !Double.IsNaN(sla[i].slaProsesKecil))
-                    sla[i].slaGabung = ((Double)sla[i].totalProsesUangBesar + (Double)sla[i].totalProsesUangKecil) / (sla[i].unprocUangBesar / (slaUnprocBesar) + sla[i].inCabangUangBesar/slaCabangBesar + sla[i].inRetailUangBesar/slaRetailBesar + sla[i].unprocUangKecil / (slaUnprocKecil) + (sla[i].inCabangUangKecil / slaCabangKecil) + sla[i].inRetailUangKecil/slaRetailKecil);
+                    sla[i].slaGabung = ((Double)sla[i].totalProsesUangBesar + (Double)sla[i].totalProsesUangKecil) / (sla[i].unprocUangBesar / (slaUnprocBesar) + sla[i].inCabangUangBesar / slaCabangBesar + sla[i].inRetailUangBesar / slaRetailBesar + sla[i].unprocUangKecil / (slaUnprocKecil) + (sla[i].inCabangUangKecil / slaCabangKecil) + sla[i].inRetailUangKecil / slaRetailKecil);
                 else if (!Double.IsNaN(sla[i].slaProsesBesar))
                     sla[i].slaGabung = sla[i].slaProsesBesar;
                 else if (!Double.IsNaN(sla[i].slaProsesKecil))
                     sla[i].slaGabung = sla[i].slaProsesKecil;
                 else
                     sla[i].slaGabung = Double.NaN;
-                //}
 
 
                 if (!Double.IsNaN(sla[i].slaProsesBesar))
@@ -992,15 +1090,21 @@ namespace testProjectBCA
                         sla[i].slaGabung = 0;
                 }
             }
+            foreach (var temp in toDelete)
+            {
+                Console.WriteLine("To Delete Idx: " + temp);
+                sla.RemoveAt(temp);
+            }
             Double buf;
 
-            List<slaProsesDisplay> testq = (from x in sla
-                                            where !Double.IsNaN(x.slaProsesBesar)
-                                            select x).ToList();
-            foreach (var temp in testq)
-            {
-                Console.WriteLine(temp.slaProsesBesar);
-            }
+            sla = sla.Where(x => !Double.IsNaN(x.slaProsesBesar) || !Double.IsNaN(x.slaProsesKecil)).ToList();
+
+            int slaProsesBesarNonNANCount = sla.Where(x => !Double.IsNaN(x.slaProsesBesar)).ToList().Count,
+                slaProsesKecilNonNANCount = sla.Where(x => !Double.IsNaN(x.slaProsesKecil)).ToList().Count,
+                slaProsesGabungNonNANCount = sla.Where(x => !Double.IsNaN(x.slaGabung)).ToList().Count;
+
+            Console.WriteLine("SLA COUNT: " + sla.Count);
+
             slaProsesDisplay avg = new slaProsesDisplay()
             {
                 tanggal = new DateTime(1, 1, 1),
@@ -1010,11 +1114,11 @@ namespace testProjectBCA
                 inRetailUangKecil = (Int64)Math.Round(sla.Average(x => x.inRetailUangKecil), 0),
                 unprocUangBesar = (Int64)Math.Round(sla.Average(x => x.unprocUangBesar), 0),
                 unprocUangKecil = (Int64)Math.Round(sla.Average(x => x.unprocUangKecil), 0),
-                totalProsesUangBesar = (Int64)Math.Round(sla.Average(x => x.totalProsesUangBesar), 0),
-                totalProsesUangKecil = (Int64)Math.Round(sla.Average(x => x.totalProsesUangKecil), 0),
-                slaProsesBesar = sla.Where(x => !Double.IsNaN(x.slaProsesBesar)).Average(x => x.slaProsesBesar),
-                slaProsesKecil = sla.Where(x => !Double.IsNaN(x.slaProsesKecil)).Average(x => x.slaProsesKecil),
-                slaGabung = sla.Where(x => !Double.IsNaN(x.slaGabung)).Average(x => x.slaGabung)
+                totalProsesUangBesar = (Int64)Math.Round(sla.Where(x => !Double.IsNaN(x.totalProsesUangBesar)).Average(x => x.totalProsesUangBesar), 0),
+                totalProsesUangKecil = (Int64)Math.Round(sla.Where(x => !Double.IsNaN(x.totalProsesUangKecil)).Average(x => x.totalProsesUangKecil), 0),
+                slaProsesBesar = slaProsesBesarNonNANCount > 0 ? sla.Where(x => !Double.IsNaN(x.slaProsesBesar)).Average(x => x.slaProsesBesar) : 0,
+                slaProsesKecil = slaProsesKecilNonNANCount > 0 ? sla.Where(x => !Double.IsNaN(x.slaProsesKecil)).Average(x => x.slaProsesKecil) : 0,
+                slaGabung = slaProsesGabungNonNANCount > 0 ? sla.Where(x => !Double.IsNaN(x.slaGabung)).Average(x => x.slaGabung) : 0
             };
             slaProsesDisplay sum = new slaProsesDisplay()
             {
@@ -1025,8 +1129,8 @@ namespace testProjectBCA
                 inRetailUangKecil = (Int64)sla.Sum(x => x.inRetailUangKecil),
                 unprocUangBesar = (Int64)sla.Sum(x => x.unprocUangBesar),
                 unprocUangKecil = (Int64)sla.Sum(x => x.unprocUangKecil),
-                totalProsesUangBesar = (Int64)sla.Sum(x => x.totalProsesUangBesar),
-                totalProsesUangKecil = (Int64)sla.Sum(x => x.totalProsesUangKecil),
+                totalProsesUangBesar = (Int64)sla.Where(x => !Double.IsNaN(x.totalProsesUangBesar)).Sum(x => x.totalProsesUangBesar),
+                totalProsesUangKecil = (Int64)sla.Where(x => !Double.IsNaN(x.totalProsesUangKecil)).Sum(x => x.totalProsesUangKecil),
                 slaProsesBesar = 0,
                 slaProsesKecil = 0
             };
@@ -1061,11 +1165,11 @@ namespace testProjectBCA
             {
                 if(bk == "Besar")
                 {
-                    return totalProses - (Double) query.Where(x => x.denom == "100000" || x.denom == "50000").Select(x => new { unprocessesed = hitungPcs((Int64) x.unprocessed,x.denom) }).Select(x=>x.unprocessesed).Sum();
+                    return totalProses - (Double) query.Where(x => x.denom == "100000" || x.denom == "50000").Select(x => new { unprocessesed = tampilanUang((Int64) x.unprocessed,x.denom, jenisTampilan) }).Select(x=>x.unprocessesed).Sum();
                 }
                 else
                 {
-                    return totalProses - (Double)query.Where(x => !(x.denom == "100000" || x.denom == "50000")).Select(x => new { unprocessesed = hitungPcs((Int64)x.unprocessed, x.denom) }).Select(x => x.unprocessesed).Sum();
+                    return totalProses - (Double)query.Where(x => !(x.denom == "100000" || x.denom == "50000")).Select(x => new { unprocessesed = tampilanUang((Int64)x.unprocessed, x.denom, jenisTampilan) }).Select(x => x.unprocessesed).Sum();
                 }
             }
             else
@@ -1139,9 +1243,12 @@ namespace testProjectBCA
             }
             return returndata < 0 ? 0 : returndata > 1 ? 1 : returndata;
         }
-        public Int64 hitungPcs(Int64 value, String denom)
+        public Int64 tampilanUang(Double value, String denom, String jenisTampilan)
         {
-            return value / Int32.Parse(denom);
+            if (jenisTampilan.ToLower() == "pcs")
+                return (Int64) value / Int32.Parse(denom);
+            else
+                return (Int64) value;
         }
         class slaProsesDisplay
         {
@@ -1152,13 +1259,13 @@ namespace testProjectBCA
             public Int64 inCabangUangKecil { set; get; }
             public Int64 inRetailUangBesar { set; get; }
             public Int64 inRetailUangKecil { set; get; }
-            public Int64 totalProsesUangBesar { set; get; }
-            public Int64 totalProsesUangKecil { set; get; }
+            public Double totalProsesUangBesar { set; get; }
+            public Double totalProsesUangKecil { set; get; }
             public Double slaProsesBesar { set; get; }
             public Double slaProsesKecil { set; get; }
             public Double slaGabung { set; get; }
         }
-        class slaProsesDisplayAllVendor
+        public class slaProsesDisplayAllVendor
         {
             public DateTime tanggal { set; get; }
             public String namaPkt { set; get; }
@@ -1190,6 +1297,7 @@ namespace testProjectBCA
         {
             //reloadData();
             dataGridView1.DataSource = null;
+            jenisTampilan = tampilanUangComboBox.SelectedItem.ToString();
             reloadDataFromStokPosisi();
         }
 
@@ -1210,18 +1318,18 @@ namespace testProjectBCA
                     csv = ServiceStack.Text.CsvSerializer.SerializeToString(sla);
                 else if(comboNamaPkt.SelectedIndex == jumlahPkt)
                 {
+                    int slaBesarNonNANCount = slapav.Where(x => !Double.IsNaN(x.slaProsesBesar)).ToList().Count,
+                slaKecilNonNANCount = slapav.Where(x => !Double.IsNaN(x.slaProsesKecil)).ToList().Count;
                     var tempSlaBesar = (from x in slapav
-                                        where !Double.IsNaN(x.slaProsesBesar)
                                         group x by x.namaPkt into g
-                                        select new { namaPkt = g.Key, slaBesar = g.Average(x => x.slaProsesBesar) }).ToList();
+                                        select new { namaPkt = g.Key, slaBesar = (slaBesarNonNANCount > 0 ? g.Where(x => !Double.IsNaN(x.slaProsesBesar)).Average(x => x.slaProsesBesar) : Double.NaN) }).ToList();
                     var tempSlaKecil = (from x in slapav
-                                        where !Double.IsNaN(x.slaProsesKecil)
                                         group x by x.namaPkt into g
-                                        select new { namaPkt = g.Key, slaKecil = g.Average(x => x.slaProsesKecil) }).ToList();
+                                        select new { namaPkt = g.Key, slaKecil = (slaKecilNonNANCount > 0 ? g.Where(x => !Double.IsNaN(x.slaProsesKecil)).Average(x => x.slaProsesKecil) : Double.NaN) }).ToList();
                     var tempSlaGabung = (from x in slapav
-                                         where !Double.IsNaN(x.slaGabung)
                                          group x by x.namaPkt into g
-                                         select new { namaPkt = g.Key, slaGabung = g.Average(x => x.slaGabung) }).ToList();
+                                         select new { namaPkt = g.Key, slaGabung = g.Where(x => !Double.IsNaN(x.slaGabung)).Average(x => x.slaGabung) }).ToList();
+
                     var qt = (from x in slapav
                               group x by x.namaPkt into g
                               join y in tempSlaBesar on g.Key equals y.namaPkt

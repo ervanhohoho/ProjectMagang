@@ -131,7 +131,8 @@ namespace testProjectBCA
                 DateTime tempDate = new DateTime(1,1,1);
                 for(int a=0;a<ds.Tables.Count;a++)
                 {
-                    if(ds.Tables[a].Columns.Count<12)
+                    Console.WriteLine("ROW COUNT: " + ds.Tables[a].Rows.Count);
+                    if(ds.Tables[a].Columns.Count<12 || !ds.Tables[a].Rows[53][1].ToString().Contains("Approval") )
                     {
                         MessageBox.Show(temp + " Sheet " + ds.Tables[a].TableName + " Format excel salah\nSheet berikutnya tetap diproses.");
                         continue;

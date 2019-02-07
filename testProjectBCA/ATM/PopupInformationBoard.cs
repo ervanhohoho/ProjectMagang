@@ -142,8 +142,8 @@ namespace testProjectBCA
 
         private void tahunCombo_SelectionChangeCommitted(object sender, EventArgs e)
         {
-           
             year = Int32.Parse(tahunCombo.SelectedItem.ToString());
+            loadBulanCombo();
             Console.WriteLine("Year: " + year);
         }
 

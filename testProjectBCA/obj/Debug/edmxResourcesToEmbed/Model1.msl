@@ -94,6 +94,12 @@
     <EntitySetMapping Name="DetailApprovals">
       <EntityTypeMapping TypeName="CACModel.DetailApproval">
         <MappingFragment StoreEntitySet="DetailApprovals">
+          <ScalarProperty Name="validasiNoTxn" ColumnName="validasiNoTxn" />
+          <ScalarProperty Name="validasiSpv" ColumnName="validasiSpv" />
+          <ScalarProperty Name="validasiOpr" ColumnName="validasiOpr" />
+          <ScalarProperty Name="inputNoTxn" ColumnName="inputNoTxn" />
+          <ScalarProperty Name="inputSpv" ColumnName="inputSpv" />
+          <ScalarProperty Name="inputOpr" ColumnName="inputOpr" />
           <ScalarProperty Name="idDetailApproval" ColumnName="idDetailApproval" />
           <ScalarProperty Name="idApproval" ColumnName="idApproval" />
           <ScalarProperty Name="tanggal" ColumnName="tanggal" />
@@ -266,6 +272,7 @@
     <EntitySetMapping Name="Pkts">
       <EntityTypeMapping TypeName="CACModel.Pkt">
         <MappingFragment StoreEntitySet="Pkt">
+          <ScalarProperty Name="vaultBankLain" ColumnName="vaultBankLain" />
           <ScalarProperty Name="kodeOpti" ColumnName="kodeOpti" />
           <ScalarProperty Name="kapasitasCPC" ColumnName="kapasitasCPC" />
           <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
@@ -363,6 +370,12 @@
     <EntitySetMapping Name="saveMcs">
       <EntityTypeMapping TypeName="CACModel.saveMc">
         <MappingFragment StoreEntitySet="saveMcs">
+          <ScalarProperty Name="cn25" ColumnName="cn25" />
+          <ScalarProperty Name="cn50" ColumnName="cn50" />
+          <ScalarProperty Name="cn100" ColumnName="cn100" />
+          <ScalarProperty Name="cn200" ColumnName="cn200" />
+          <ScalarProperty Name="cn500" ColumnName="cn500" />
+          <ScalarProperty Name="cn1k" ColumnName="cn1k" />
           <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="tanggal" ColumnName="tanggal" />
           <ScalarProperty Name="realDate" ColumnName="realDate" />

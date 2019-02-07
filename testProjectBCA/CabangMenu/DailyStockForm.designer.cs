@@ -41,6 +41,7 @@
             this.comboJenisTampilan = new System.Windows.Forms.ComboBox();
             this.buttonShow = new System.Windows.Forms.Button();
             this.buttonExport = new System.Windows.Forms.Button();
+            this.checkBoxAll = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -184,11 +185,23 @@
             this.buttonExport.UseVisualStyleBackColor = true;
             this.buttonExport.Click += new System.EventHandler(this.buttonExport_Click);
             // 
+            // checkBoxAll
+            // 
+            this.checkBoxAll.AutoSize = true;
+            this.checkBoxAll.Location = new System.Drawing.Point(475, 386);
+            this.checkBoxAll.Name = "checkBoxAll";
+            this.checkBoxAll.Size = new System.Drawing.Size(70, 17);
+            this.checkBoxAll.TabIndex = 12;
+            this.checkBoxAll.Text = "Select All";
+            this.checkBoxAll.UseVisualStyleBackColor = true;
+            this.checkBoxAll.CheckedChanged += new System.EventHandler(this.checkBoxAll_CheckedChanged);
+            // 
             // DailyStockForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(976, 591);
+            this.Controls.Add(this.checkBoxAll);
             this.Controls.Add(this.buttonExport);
             this.Controls.Add(this.buttonShow);
             this.Controls.Add(this.comboJenisTampilan);
@@ -224,6 +237,7 @@
         private System.Windows.Forms.ComboBox comboJenisTampilan;
         private System.Windows.Forms.Button buttonShow;
         private System.Windows.Forms.Button buttonExport;
+        private System.Windows.Forms.CheckBox checkBoxAll;
     }
     #region Windows Form Designer generated code
 

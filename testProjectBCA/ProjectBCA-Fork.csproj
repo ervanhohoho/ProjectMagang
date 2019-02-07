@@ -203,6 +203,12 @@
       <DependentUpon>DetailTransaksiVault.cs</DependentUpon>
     </Compile>
     <Compile Include="CabangMenu\KumpulanQueryRekonSaldo.cs" />
+    <Compile Include="CabangMenu\ProsesWPForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CabangMenu\ProsesWPForm.Designer.cs">
+      <DependentUpon>ProsesWPForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="CabangMenu\RekonSaldoForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -220,6 +226,12 @@
     </Compile>
     <Compile Include="CabangMenu\SummaryTransaksiCabang.designer.cs">
       <DependentUpon>SummaryTransaksiCabang.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CabangMenu\SummaryTransaksiVault.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CabangMenu\SummaryTransaksiVault.Designer.cs">
+      <DependentUpon>SummaryTransaksiVault.cs</DependentUpon>
     </Compile>
     <Compile Include="CabangMenu\WPRekonSaldoForm.cs">
       <SubType>Form</SubType>
@@ -693,6 +705,9 @@
     <EmbeddedResource Include="CabangMenu\DetailTransaksiVault.resx">
       <DependentUpon>DetailTransaksiVault.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="CabangMenu\ProsesWPForm.resx">
+      <DependentUpon>ProsesWPForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CabangMenu\RekonSaldoForm.resx">
       <DependentUpon>RekonSaldoForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -701,6 +716,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CabangMenu\SummaryTransaksiCabang.resx">
       <DependentUpon>SummaryTransaksiCabang.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CabangMenu\SummaryTransaksiVault.resx">
+      <DependentUpon>SummaryTransaksiVault.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CabangMenu\WPRekonSaldoForm.resx">
       <DependentUpon>WPRekonSaldoForm.cs</DependentUpon>

@@ -22,6 +22,7 @@ namespace testProjectBCA.ATM
             loadComboPkt();
             loadTreeView();
             e2eComboBox.SelectedIndex = 0;
+            EndDatePicker.MinDate = Variables.todayDate.AddDays(3);
         }
         private void loadComboPkt()
         {

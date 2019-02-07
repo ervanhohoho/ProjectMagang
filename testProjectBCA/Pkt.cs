@@ -32,6 +32,7 @@ namespace testProjectBCA
         public string kodePktATM { get; set; }
         public Nullable<long> kapasitasCPC { get; set; }
         public string kodeOpti { get; set; }
+        public string vaultBankLain { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<laporanBon> laporanBons { get; set; }

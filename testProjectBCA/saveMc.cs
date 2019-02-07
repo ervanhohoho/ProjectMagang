@@ -28,5 +28,11 @@ namespace testProjectBCA
         public Nullable<long> d1k { get; set; }
         public Nullable<long> amountCoin { get; set; }
         public Nullable<System.TimeSpan> time { get; set; }
+        public Nullable<long> cn1k { get; set; }
+        public Nullable<long> cn500 { get; set; }
+        public Nullable<long> cn200 { get; set; }
+        public Nullable<long> cn100 { get; set; }
+        public Nullable<long> cn50 { get; set; }
+        public Nullable<long> cn25 { get; set; }
     }
 }

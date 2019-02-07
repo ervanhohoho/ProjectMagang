@@ -127,3 +127,5 @@ C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\te
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.pdb
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\ProjectBCA-Fork.csprojAssemblyReference.cache
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.Test.InputSaldoCRM.resources
+C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.CabangMenu.SummaryTransaksiVault.resources
+C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.CabangMenu.ProsesWPForm.resources

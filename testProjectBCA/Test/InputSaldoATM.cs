@@ -1,7 +1,9 @@
-﻿using System;
+﻿using FastMember;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -40,11 +42,11 @@ namespace testProjectBCA.Test
                     DateTime tanggal = new DateTime(1, 1, 1);
                     String prefixKodeLaporan = "LAPORAN    : ",
                         prefixCabang = "CABANG     : ",
-                        prefixTanggal = "TANGGAL     : ";
+                        prefixTanggal = "TANGGAL : ";
                     for (int a = 0; a < txtSplit.Length; a++)
                     {
                         String tempStr = txtSplit[a];
-                        Console.WriteLine(tempStr);
+                        //Console.WriteLine(tempStr);
                         if (tempStr.Trim() == "TOTAL")
                             break;
                         else if (tempStr.Contains("1RETENSI"))
@@ -57,12 +59,12 @@ namespace testProjectBCA.Test
                             tanggalS = barisPlus1.Substring(barisPlus1.LastIndexOf(prefixTanggal) + prefixTanggal.Length, 8);
                             tanggal = DateTime.ParseExact(tanggalS, "dd-M-yy", System.Globalization.CultureInfo.InvariantCulture);
                             a += 5;
-                            Console.WriteLine(a);
+                            //Console.WriteLine(a);
                             continue;
                         }
                         else if (tempStr.Length > 1 && !tempStr.Contains("--"))
                         {
-                            Console.WriteLine("Length: " + tempStr.Length);
+                            //Console.WriteLine("Length: " + tempStr.Length);
                             String standarPengisianCartridgeS = tempStr.Substring(15, 26).Trim().Replace(",", ""),
                                 totalPengeluaranPemasukanS = tempStr.Substring(41, 46).Trim().Replace(",", ""),
                                 saldoHS = tempStr.Substring(87, 26).Trim().Replace(",", ""),
@@ -81,22 +83,41 @@ namespace testProjectBCA.Test
                             if (Int64.TryParse(saldoHariSebelumnyaS, out buf))
                                 saldoHariSebelumnya = buf;
 
-                            saldoATMs.Add(new SaldoMesin()
+                            var saldoatm = db.SaldoMesins.Where(x => x.tanggal == tanggal && x.wsid == tempStr.Substring(1, 4) && x.kodeLaporan == kodeLaporan).FirstOrDefault();
+                            if (saldoatm == null)
                             {
-                                tanggal = tanggal,
-                                wsid = tempStr.Substring(1, 4),
-                                kodeLaporan = kodeLaporan,
-                                cabang = cabang,
-                                standarPengisianCartridge = standarPengisianCartridge,
-                                totalPengeluaran = totalPengeluaranPemasukan,
-                                totalPemasukan = 0,
-                                saldoH = saldoH,
-                                saldoHariSebelumnya = saldoHariSebelumnya,
-                                jenisMesin = "ATM"
-                            });
+                                saldoATMs.Add(new SaldoMesin()
+                                {
+                                    tanggal = tanggal,
+                                    wsid = tempStr.Substring(1, 4),
+                                    kodeLaporan = kodeLaporan,
+                                    cabang = cabang,
+                                    standarPengisianCartridge = standarPengisianCartridge,
+                                    totalPengeluaran = totalPengeluaranPemasukan,
+                                    totalPemasukan = 0,
+                                    saldoH = saldoH,
+                                    saldoHariSebelumnya = saldoHariSebelumnya,
+                                    jenisMesin = "ATM"
+                                });
+                            }
                         }
                     }
+                    saldoATMs = saldoATMs.GroupBy(x => new { x.tanggal, x.wsid, x.kodeLaporan, x.cabang }).Select(x => new SaldoMesin() {
+                        tanggal = x.Key.tanggal,
+                        wsid = x.Key.wsid,
+                        kodeLaporan = x.Key.kodeLaporan,
+                        cabang = x.Key.cabang,
+                        standarPengisianCartridge = x.Sum(y=>y.standarPengisianCartridge),
+                        jenisMesin = "ATM",
+                        saldoH = x.Sum(y=>y.saldoH),
+                        saldoHariSebelumnya = x.Sum(y=>y.saldoHariSebelumnya),
+                        totalPemasukan = x.Sum(y=>y.totalPemasukan),
+                        totalPengeluaran = x.Sum(y=>y.totalPengeluaran)
+                    }).ToList();
                     dataGridView1.DataSource = saldoATMs;
+
+                    Console.WriteLine("INSERT");
+
                     db.SaldoMesins.AddRange(saldoATMs);
                     db.SaveChanges();
                 }

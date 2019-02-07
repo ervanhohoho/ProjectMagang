@@ -174,6 +174,12 @@
           <Property Name="setorAdhoc100" Type="bigint" />
           <Property Name="setorAdhoc50" Type="bigint" />
           <Property Name="setorAdhoc20" Type="bigint" />
+          <Property Name="inputOpr" Type="varchar" MaxLength="50" />
+          <Property Name="inputSpv" Type="varchar" MaxLength="50" />
+          <Property Name="inputNoTxn" Type="varchar" MaxLength="20" />
+          <Property Name="validasiOpr" Type="varchar" MaxLength="50" />
+          <Property Name="validasiSpv" Type="varchar" MaxLength="50" />
+          <Property Name="validasiNoTxn" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="EventTanggal">
           <Key>
@@ -314,6 +320,7 @@
           <Property Name="kodePktATM" Type="varchar" MaxLength="10" />
           <Property Name="kapasitasCPC" Type="bigint" />
           <Property Name="kodeOpti" Type="varchar" MaxLength="10" />
+          <Property Name="vaultBankLain" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="RekapSelisihAmbilSetor">
           <Key>
@@ -393,10 +400,11 @@
           <Key>
             <PropertyRef Name="tanggal" />
             <PropertyRef Name="wsid" />
+            <PropertyRef Name="kodeLaporan" />
           </Key>
           <Property Name="tanggal" Type="date" Nullable="false" />
           <Property Name="wsid" Type="varchar" MaxLength="10" Nullable="false" />
-          <Property Name="kodeLaporan" Type="varchar" MaxLength="50" />
+          <Property Name="kodeLaporan" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="cabang" Type="varchar" MaxLength="50" />
           <Property Name="standarPengisianCartridge" Type="bigint" />
           <Property Name="totalPengeluaran" Type="bigint" />
@@ -445,6 +453,12 @@
           <Property Name="d1k" Type="bigint" />
           <Property Name="amountCoin" Type="bigint" />
           <Property Name="time" Type="time" Precision="7" />
+          <Property Name="cn1k" Type="bigint" />
+          <Property Name="cn500" Type="bigint" />
+          <Property Name="cn200" Type="bigint" />
+          <Property Name="cn100" Type="bigint" />
+          <Property Name="cn50" Type="bigint" />
+          <Property Name="cn25" Type="bigint" />
         </EntityType>
         <EntityType Name="SaveRekap">
           <Key>
@@ -961,6 +975,12 @@ warning 6002: The table/view 'CAC.dbo.ViewTransaksiAtms' does not have a primary
           <Property Name="setorAdhoc100" Type="Int64" />
           <Property Name="setorAdhoc50" Type="Int64" />
           <Property Name="setorAdhoc20" Type="Int64" />
+          <Property Name="inputOpr" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="inputSpv" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="inputNoTxn" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="validasiOpr" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="validasiSpv" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="validasiNoTxn" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="EventTanggal">
           <Key>
@@ -1104,6 +1124,7 @@ warning 6002: The table/view 'CAC.dbo.ViewTransaksiAtms' does not have a primary
           <NavigationProperty Name="TransaksiAtms" Relationship="Self.FK_TransaksiAtms_Pkt" FromRole="Pkt" ToRole="TransaksiAtms" />
           <Property Name="kapasitasCPC" Type="Int64" />
           <Property Name="kodeOpti" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="vaultBankLain" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="RekapSelisihAmbilSetor">
           <Key>
@@ -1198,6 +1219,12 @@ warning 6002: The table/view 'CAC.dbo.ViewTransaksiAtms' does not have a primary
           <Property Name="d1k" Type="Int64" />
           <Property Name="amountCoin" Type="Int64" />
           <Property Name="time" Type="Time" Precision="7" />
+          <Property Name="cn1k" Type="Int64" />
+          <Property Name="cn500" Type="Int64" />
+          <Property Name="cn200" Type="Int64" />
+          <Property Name="cn100" Type="Int64" />
+          <Property Name="cn50" Type="Int64" />
+          <Property Name="cn25" Type="Int64" />
         </EntityType>
         <EntityType Name="SaveRekap">
           <Key>
@@ -1572,10 +1599,11 @@ warning 6002: The table/view 'CAC.dbo.ViewTransaksiAtms' does not have a primary
           <Key>
             <PropertyRef Name="tanggal" />
             <PropertyRef Name="wsid" />
+            <PropertyRef Name="kodeLaporan" />
           </Key>
           <Property Name="tanggal" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="wsid" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="kodeLaporan" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="kodeLaporan" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="cabang" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="standarPengisianCartridge" Type="Int64" />
           <Property Name="totalPengeluaran" Type="Int64" />
@@ -1683,6 +1711,12 @@ warning 6002: The table/view 'CAC.dbo.ViewTransaksiAtms' does not have a primary
           <EntitySetMapping Name="DetailApprovals">
             <EntityTypeMapping TypeName="CACModel.DetailApproval">
               <MappingFragment StoreEntitySet="DetailApprovals">
+                <ScalarProperty Name="validasiNoTxn" ColumnName="validasiNoTxn" />
+                <ScalarProperty Name="validasiSpv" ColumnName="validasiSpv" />
+                <ScalarProperty Name="validasiOpr" ColumnName="validasiOpr" />
+                <ScalarProperty Name="inputNoTxn" ColumnName="inputNoTxn" />
+                <ScalarProperty Name="inputSpv" ColumnName="inputSpv" />
+                <ScalarProperty Name="inputOpr" ColumnName="inputOpr" />
                 <ScalarProperty Name="idDetailApproval" ColumnName="idDetailApproval" />
                 <ScalarProperty Name="idApproval" ColumnName="idApproval" />
                 <ScalarProperty Name="tanggal" ColumnName="tanggal" />
@@ -1855,6 +1889,7 @@ warning 6002: The table/view 'CAC.dbo.ViewTransaksiAtms' does not have a primary
           <EntitySetMapping Name="Pkts">
             <EntityTypeMapping TypeName="CACModel.Pkt">
               <MappingFragment StoreEntitySet="Pkt">
+                <ScalarProperty Name="vaultBankLain" ColumnName="vaultBankLain" />
                 <ScalarProperty Name="kodeOpti" ColumnName="kodeOpti" />
                 <ScalarProperty Name="kapasitasCPC" ColumnName="kapasitasCPC" />
                 <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
@@ -1952,6 +1987,12 @@ warning 6002: The table/view 'CAC.dbo.ViewTransaksiAtms' does not have a primary
           <EntitySetMapping Name="saveMcs">
             <EntityTypeMapping TypeName="CACModel.saveMc">
               <MappingFragment StoreEntitySet="saveMcs">
+                <ScalarProperty Name="cn25" ColumnName="cn25" />
+                <ScalarProperty Name="cn50" ColumnName="cn50" />
+                <ScalarProperty Name="cn100" ColumnName="cn100" />
+                <ScalarProperty Name="cn200" ColumnName="cn200" />
+                <ScalarProperty Name="cn500" ColumnName="cn500" />
+                <ScalarProperty Name="cn1k" ColumnName="cn1k" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="tanggal" ColumnName="tanggal" />
                 <ScalarProperty Name="realDate" ColumnName="realDate" />

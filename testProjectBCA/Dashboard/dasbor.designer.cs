@@ -52,6 +52,7 @@
             this.comboMode7 = new System.Windows.Forms.ComboBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.cartesianChart2 = new LiveCharts.WinForms.CartesianChart();
@@ -78,24 +79,23 @@
             this.buttonRefresh4 = new System.Windows.Forms.Button();
             this.comboArea = new System.Windows.Forms.ComboBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
             this.groupBox6.SuspendLayout();
             this.groupBox7.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
             this.groupBox8.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
-            this.groupBox9.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
-            this.tableLayoutPanel2.SuspendLayout();
+            this.groupBox9.SuspendLayout();
             this.SuspendLayout();
             // 
             // cartesianChart5
@@ -104,7 +104,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cartesianChart5.Location = new System.Drawing.Point(12, 23);
             this.cartesianChart5.Name = "cartesianChart5";
-            this.cartesianChart5.Size = new System.Drawing.Size(1073, 318);
+            this.cartesianChart5.Size = new System.Drawing.Size(1056, 318);
             this.cartesianChart5.TabIndex = 22;
             this.cartesianChart5.Text = "cartesianChart5";
             // 
@@ -152,7 +152,7 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.Size = new System.Drawing.Size(152, 433);
+            this.dataGridView1.Size = new System.Drawing.Size(143, 433);
             this.dataGridView1.TabIndex = 26;
             this.dataGridView1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.dataGridView1_Scroll);
             // 
@@ -166,11 +166,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView2.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Location = new System.Drawing.Point(161, 79);
+            this.dataGridView2.Location = new System.Drawing.Point(152, 79);
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.ReadOnly = true;
             this.dataGridView2.RowHeadersVisible = false;
-            this.dataGridView2.Size = new System.Drawing.Size(162, 433);
+            this.dataGridView2.Size = new System.Drawing.Size(153, 433);
             this.dataGridView2.TabIndex = 27;
             this.dataGridView2.Scroll += new System.Windows.Forms.ScrollEventHandler(this.dataGridView2_Scroll);
             // 
@@ -184,11 +184,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView3.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView3.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView3.Location = new System.Drawing.Point(329, 79);
+            this.dataGridView3.Location = new System.Drawing.Point(311, 79);
             this.dataGridView3.Name = "dataGridView3";
             this.dataGridView3.ReadOnly = true;
             this.dataGridView3.RowHeadersVisible = false;
-            this.dataGridView3.Size = new System.Drawing.Size(749, 433);
+            this.dataGridView3.Size = new System.Drawing.Size(750, 433);
             this.dataGridView3.TabIndex = 28;
             this.dataGridView3.Scroll += new System.Windows.Forms.ScrollEventHandler(this.dataGridView3_Scroll);
             // 
@@ -199,7 +199,7 @@
             this.comboKanwil6.FormattingEnabled = true;
             this.comboKanwil6.Location = new System.Drawing.Point(3, 52);
             this.comboKanwil6.Name = "comboKanwil6";
-            this.comboKanwil6.Size = new System.Drawing.Size(152, 21);
+            this.comboKanwil6.Size = new System.Drawing.Size(143, 21);
             this.comboKanwil6.TabIndex = 29;
             this.comboKanwil6.Text = "Kanwil";
             this.comboKanwil6.SelectionChangeCommitted += new System.EventHandler(this.comboKanwil6_SelectionChangeCommitted);
@@ -209,9 +209,9 @@
             this.comboTahun6_2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.comboTahun6_2.FormattingEnabled = true;
-            this.comboTahun6_2.Location = new System.Drawing.Point(329, 52);
+            this.comboTahun6_2.Location = new System.Drawing.Point(311, 52);
             this.comboTahun6_2.Name = "comboTahun6_2";
-            this.comboTahun6_2.Size = new System.Drawing.Size(749, 21);
+            this.comboTahun6_2.Size = new System.Drawing.Size(750, 21);
             this.comboTahun6_2.TabIndex = 30;
             this.comboTahun6_2.Text = "Tahun";
             this.comboTahun6_2.SelectionChangeCommitted += new System.EventHandler(this.comboTahun6_2_SelectionChangeCommitted);
@@ -221,9 +221,9 @@
             this.comboTahun6_1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.comboTahun6_1.FormattingEnabled = true;
-            this.comboTahun6_1.Location = new System.Drawing.Point(161, 52);
+            this.comboTahun6_1.Location = new System.Drawing.Point(152, 52);
             this.comboTahun6_1.Name = "comboTahun6_1";
-            this.comboTahun6_1.Size = new System.Drawing.Size(162, 21);
+            this.comboTahun6_1.Size = new System.Drawing.Size(153, 21);
             this.comboTahun6_1.TabIndex = 31;
             this.comboTahun6_1.Text = "Tahun";
             this.comboTahun6_1.SelectedIndexChanged += new System.EventHandler(this.comboTahun6_1_SelectedIndexChanged);
@@ -235,7 +235,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cartesianChart6.Location = new System.Drawing.Point(6, 21);
             this.cartesianChart6.Name = "cartesianChart6";
-            this.cartesianChart6.Size = new System.Drawing.Size(1085, 326);
+            this.cartesianChart6.Size = new System.Drawing.Size(1068, 326);
             this.cartesianChart6.TabIndex = 33;
             this.cartesianChart6.Text = "cartesianChart6";
             // 
@@ -303,7 +303,7 @@
             this.cartesianChart7.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.cartesianChart7.Location = new System.Drawing.Point(6, 63);
             this.cartesianChart7.Name = "cartesianChart7";
-            this.cartesianChart7.Size = new System.Drawing.Size(1085, 326);
+            this.cartesianChart7.Size = new System.Drawing.Size(1068, 326);
             this.cartesianChart7.TabIndex = 40;
             this.cartesianChart7.Text = "cartesianChart7";
             // 
@@ -342,7 +342,7 @@
             // 
             this.comboMode7.Dock = System.Windows.Forms.DockStyle.Right;
             this.comboMode7.FormattingEnabled = true;
-            this.comboMode7.Location = new System.Drawing.Point(957, 3);
+            this.comboMode7.Location = new System.Drawing.Point(940, 3);
             this.comboMode7.Name = "comboMode7";
             this.comboMode7.Size = new System.Drawing.Size(121, 21);
             this.comboMode7.TabIndex = 45;
@@ -359,7 +359,7 @@
             this.groupBox6.Controls.Add(this.buttonRefresh5);
             this.groupBox6.Location = new System.Drawing.Point(15, 1242);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(1097, 386);
+            this.groupBox6.Size = new System.Drawing.Size(1080, 386);
             this.groupBox6.TabIndex = 53;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Rasio Pengebonan vs. Persentase Adhoc";
@@ -371,10 +371,34 @@
             this.groupBox7.Controls.Add(this.tableLayoutPanel2);
             this.groupBox7.Location = new System.Drawing.Point(15, 1634);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(1097, 540);
+            this.groupBox7.Size = new System.Drawing.Size(1080, 540);
             this.groupBox7.TabIndex = 55;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Frekuensi Adhoc";
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel2.ColumnCount = 3;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 48.46626F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 51.53374F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 755F));
+            this.tableLayoutPanel2.Controls.Add(this.comboMode7, 2, 0);
+            this.tableLayoutPanel2.Controls.Add(this.dataGridView3, 2, 2);
+            this.tableLayoutPanel2.Controls.Add(this.dataGridView2, 1, 2);
+            this.tableLayoutPanel2.Controls.Add(this.dataGridView1, 0, 2);
+            this.tableLayoutPanel2.Controls.Add(this.comboTahun6_1, 1, 1);
+            this.tableLayoutPanel2.Controls.Add(this.comboTahun6_2, 2, 1);
+            this.tableLayoutPanel2.Controls.Add(this.comboKanwil6, 0, 1);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(10, 19);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 3;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.09352F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 66.90647F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 438F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1064, 515);
+            this.tableLayoutPanel2.TabIndex = 46;
             // 
             // groupBox8
             // 
@@ -389,7 +413,7 @@
             this.groupBox8.Controls.Add(this.buttonRefresh7);
             this.groupBox8.Location = new System.Drawing.Point(15, 2180);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(1097, 401);
+            this.groupBox8.Size = new System.Drawing.Size(1080, 401);
             this.groupBox8.TabIndex = 56;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Rasio";
@@ -404,7 +428,7 @@
             this.groupBox2.Controls.Add(this.buttonTambah2);
             this.groupBox2.Location = new System.Drawing.Point(3, 3);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(534, 361);
+            this.groupBox2.Size = new System.Drawing.Size(525, 361);
             this.groupBox2.TabIndex = 49;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Persentase Adhoc";
@@ -415,7 +439,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cartesianChart2.Location = new System.Drawing.Point(6, 19);
             this.cartesianChart2.Name = "cartesianChart2";
-            this.cartesianChart2.Size = new System.Drawing.Size(479, 269);
+            this.cartesianChart2.Size = new System.Drawing.Size(470, 269);
             this.cartesianChart2.TabIndex = 7;
             this.cartesianChart2.Text = "cartesianChart2";
             // 
@@ -458,7 +482,7 @@
             this.groupBox3.Controls.Add(this.buttonRefresh3);
             this.groupBox3.Location = new System.Drawing.Point(6, 425);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(1086, 378);
+            this.groupBox3.Size = new System.Drawing.Size(1069, 378);
             this.groupBox3.TabIndex = 50;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Saldo ATM";
@@ -469,7 +493,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cartesianChart3.Location = new System.Drawing.Point(8, 19);
             this.cartesianChart3.Name = "cartesianChart3";
-            this.cartesianChart3.Size = new System.Drawing.Size(1072, 316);
+            this.cartesianChart3.Size = new System.Drawing.Size(1055, 316);
             this.cartesianChart3.TabIndex = 13;
             this.cartesianChart3.Text = "cartesianChart3";
             // 
@@ -514,9 +538,9 @@
             this.groupBox1.Controls.Add(this.comboTahun1);
             this.groupBox1.Controls.Add(this.buttonTambah1);
             this.groupBox1.Controls.Add(this.checkAvg1);
-            this.groupBox1.Location = new System.Drawing.Point(543, 3);
+            this.groupBox1.Location = new System.Drawing.Point(534, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(534, 367);
+            this.groupBox1.Size = new System.Drawing.Size(526, 367);
             this.groupBox1.TabIndex = 48;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Rasio Bulanan";
@@ -538,7 +562,7 @@
             this.cartesianChart1.BackColor = System.Drawing.SystemColors.Window;
             this.cartesianChart1.Location = new System.Drawing.Point(6, 19);
             this.cartesianChart1.Name = "cartesianChart1";
-            this.cartesianChart1.Size = new System.Drawing.Size(522, 269);
+            this.cartesianChart1.Size = new System.Drawing.Size(514, 269);
             this.cartesianChart1.TabIndex = 0;
             this.cartesianChart1.Text = "cartesianChart1";
             // 
@@ -602,7 +626,7 @@
             this.groupBox4.Controls.Add(this.buttonRefresh4);
             this.groupBox4.Location = new System.Drawing.Point(6, 803);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(1085, 399);
+            this.groupBox4.Size = new System.Drawing.Size(1068, 399);
             this.groupBox4.TabIndex = 51;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Rasio Harian";
@@ -613,7 +637,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cartesianChart4.Location = new System.Drawing.Point(8, 19);
             this.cartesianChart4.Name = "cartesianChart4";
-            this.cartesianChart4.Size = new System.Drawing.Size(1071, 324);
+            this.cartesianChart4.Size = new System.Drawing.Size(1054, 324);
             this.cartesianChart4.TabIndex = 18;
             this.cartesianChart4.Text = "cartesianChart4";
             // 
@@ -667,10 +691,27 @@
             this.groupBox5.Controls.Add(this.groupBox3);
             this.groupBox5.Location = new System.Drawing.Point(12, 12);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(1099, 1221);
+            this.groupBox5.Size = new System.Drawing.Size(1082, 1221);
             this.groupBox5.TabIndex = 52;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Area";
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Controls.Add(this.groupBox1, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.groupBox2, 0, 0);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(13, 46);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 1;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1063, 373);
+            this.tableLayoutPanel1.TabIndex = 53;
             // 
             // groupBox9
             // 
@@ -683,7 +724,7 @@
             this.groupBox9.Controls.Add(this.cartesianChart7);
             this.groupBox9.Location = new System.Drawing.Point(15, 2595);
             this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(1097, 389);
+            this.groupBox9.Size = new System.Drawing.Size(1080, 389);
             this.groupBox9.TabIndex = 57;
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "Jumlah Adhoc";
@@ -702,47 +743,6 @@
             this.comboBox1.Text = "area";
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             this.comboBox1.SelectionChangeCommitted += new System.EventHandler(this.comboTahun8_SelectionChangeCommitted);
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Controls.Add(this.groupBox1, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.groupBox2, 0, 0);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(13, 46);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 1;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1080, 373);
-            this.tableLayoutPanel1.TabIndex = 53;
-            // 
-            // tableLayoutPanel2
-            // 
-            this.tableLayoutPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel2.ColumnCount = 3;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 48.46626F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 51.53374F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 754F));
-            this.tableLayoutPanel2.Controls.Add(this.comboMode7, 2, 0);
-            this.tableLayoutPanel2.Controls.Add(this.dataGridView3, 2, 2);
-            this.tableLayoutPanel2.Controls.Add(this.dataGridView2, 1, 2);
-            this.tableLayoutPanel2.Controls.Add(this.dataGridView1, 0, 2);
-            this.tableLayoutPanel2.Controls.Add(this.comboTahun6_1, 1, 1);
-            this.tableLayoutPanel2.Controls.Add(this.comboTahun6_2, 2, 1);
-            this.tableLayoutPanel2.Controls.Add(this.comboKanwil6, 0, 1);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(10, 19);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 3;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.09352F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 66.90647F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 438F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1081, 515);
-            this.tableLayoutPanel2.TabIndex = 46;
             // 
             // dasbor
             // 
@@ -764,6 +764,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).EndInit();
             this.groupBox6.ResumeLayout(false);
             this.groupBox7.ResumeLayout(false);
+            this.tableLayoutPanel2.ResumeLayout(false);
             this.groupBox8.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
@@ -771,9 +772,8 @@
             this.groupBox1.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);
-            this.groupBox9.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel2.ResumeLayout(false);
+            this.groupBox9.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

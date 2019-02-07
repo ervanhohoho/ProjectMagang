@@ -27,6 +27,7 @@ namespace testProjectBCA
             InitializeComponent();
             checkedListBox1.Visible = false;
             checkedListBox2.Visible = false;
+            checkBoxAll.Visible = false;
             loadComboPkt();
             loadComboTahun();
             loadComboBulan();
@@ -816,6 +817,7 @@ namespace testProjectBCA
             {
                 checkedListBox1.Visible = true;
                 checkedListBox2.Visible = true;
+                checkBoxAll.Visible = true;
 
             }
             else
@@ -836,6 +838,7 @@ namespace testProjectBCA
                 }
                 checkedListBox1.Visible = false;
                 checkedListBox2.Visible = false;
+                checkBoxAll.Visible = false;
             }
 
         }
@@ -977,6 +980,44 @@ namespace testProjectBCA
                 loadForm.ShowSplashScreen();
                 SaveDataGridViewToCSV(sv.FileName);
                 loadForm.CloseForm();
+            }
+        }
+
+        private void checkBoxAll_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!checkBoxAll.Checked)
+            {
+                for (int i = 0; i < checkedListBox1.Items.Count; i++)
+
+                {
+
+                    checkedListBox1.SetItemChecked(i, false);
+
+                }
+                for (int i = 0; i < checkedListBox2.Items.Count; i++)
+
+                {
+
+                    checkedListBox2.SetItemChecked(i, false);
+
+                }
+            }
+            else
+            {
+                for (int i = 0; i < checkedListBox1.Items.Count; i++)
+
+                {
+
+                    checkedListBox1.SetItemChecked(i, true);
+
+                }
+                for (int i = 0; i < checkedListBox2.Items.Count; i++)
+
+                {
+
+                    checkedListBox2.SetItemChecked(i, true);
+
+                }
             }
         }
     }

@@ -48,12 +48,19 @@ namespace testProjectBCA
             COL_RRM_LAMA = 39,
             COL_RUPIAH_RUSAK_MAYOR = 40,
             COL_CEK_LAPORAN = 41;
+
+        private void monthCalendar1_DateSelected(object sender, DateRangeEventArgs e)
+        {
+            treeView1.Nodes.Clear();
+            loadDataYangSudahAda();
+        }
+
         public InsertStokPosisiForm()
         {
             Database1Entities db = new Database1Entities();
             InitializeComponent();
             DateTime maxTanggal = ((DateTime)db.StokPosisis.Select(x => x.tanggal).Max());
-            label1.Text = "Tanggal Terakhir " + maxTanggal.ToShortDateString();
+            monthCalendar1.MaxDate = maxTanggal;
             List<String> listYangAda = (from x in db.StokPosisis
                                         where x.tanggal == maxTanggal
                                         select x.namaPkt).Distinct().ToList();
@@ -80,6 +87,32 @@ namespace testProjectBCA
         }
         DateTime lastDate;
         bool first;
+        void loadDataYangSudahAda() {
+            Database1Entities db = new Database1Entities();
+            DateTime tanggal = monthCalendar1.SelectionEnd.Date;
+            Console.WriteLine("Tanggal: " + tanggal);
+            List<String> listYangAda = (from x in db.StokPosisis
+                                        where x.tanggal == tanggal
+                                        select x.namaPkt).Distinct().ToList();
+            List<Pkt> semuaNamaPkt = db.Pkts.Where(x => x.kodePktCabang.Length > 2).ToList();
+            foreach (var temp in listYangAda)
+            {
+                var toRemove = semuaNamaPkt.Where(x => x.namaPkt == temp).FirstOrDefault();
+                semuaNamaPkt.Remove(toRemove);
+            }
+            List<String> listKanwil = semuaNamaPkt.Select(x => x.kanwil).Distinct().ToList();
+            foreach (var temp in listKanwil)
+                treeView1.Nodes.Add(temp);
+            for (int a = 0; a < treeView1.Nodes.Count; a++)
+            {
+                var node = treeView1.Nodes[a];
+                var toAdd = semuaNamaPkt.Where(x => x.kanwil == node.Text).Select(x => x.namaPkt);
+                foreach (var add in toAdd)
+                {
+                    node.Nodes.Add(add);
+                }
+            }
+        }
         private void selectButton_Click(object sender, EventArgs e)
         {
             OpenFileDialog of = new OpenFileDialog();
@@ -105,7 +138,15 @@ namespace testProjectBCA
             foreach (DataTable temp in ds.Tables)
             {
                 Console.WriteLine(temp);
-                if (!processTable(temp))
+                try
+                {
+                    if (!processTable(temp))
+                    {
+                        MessageBox.Show("FILE\t: " + path.Substring(path.LastIndexOf('\\') + 1, path.Length - path.LastIndexOf('\\') - 1) + "\nSHEET\t: " + temp.TableName + " Tidak sesuai format.\nData stop dimasukkan");
+                        break;
+                    }
+                }
+                catch
                 {
                     MessageBox.Show("FILE\t: " + path.Substring(path.LastIndexOf('\\') + 1, path.Length - path.LastIndexOf('\\') - 1) + "\nSHEET\t: " + temp.TableName + " Tidak sesuai format.\nData stop dimasukkan");
                     break;
@@ -119,6 +160,8 @@ namespace testProjectBCA
 
             String namaPkt; 
             String tanggalS;
+
+            Console.WriteLine("Column Count: " + table.Columns.Count);
 
             try
             {

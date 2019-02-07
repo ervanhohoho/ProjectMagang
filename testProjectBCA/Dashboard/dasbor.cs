@@ -708,11 +708,12 @@ namespace testProjectBCA
                 {
                     cmd.Connection = sql;
                     sql.Open();
-                    cmd.CommandText = "SELECT KodePkt FROM Pkt WHERE Vendor like '" + comboVendor7.SelectedValue.ToString() + "' ";
+                    cmd.CommandText = "SELECT KodePktAtm FROM Pkt WHERE Vendor like '" + comboVendor7.SelectedValue.ToString() + "' ";
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
-                        combo16.Add(reader[0].ToString());
+                        if (!String.IsNullOrWhiteSpace(reader[0].ToString()))
+                            combo16.Add(reader[0].ToString());
                     }
                     comboPkt7.DataSource = combo16;
                 }

@@ -162,44 +162,110 @@ namespace testProjectBCA
                 {
                     dtCloned.Rows.Remove(item);
                 }
-                //dataGridView1.DataSource = dtCloned;
 
-                for (int i = 0; i < dtCloned.Rows.Count; i++)
+                if (dtCloned.Columns.Count > 23)
                 {
-                    if (dtCloned.Rows[i][0].ToString() == "Transaction Date")
+                    for (int i = 0; i < dtCloned.Rows.Count; i++)
                     {
-                        tanggal = dtCloned.Rows[i][2].ToString().Trim(':').Trim(' ');
-                        Console.WriteLine(tanggal);
-                    }
-                    if (dtCloned.Rows[i][0].ToString() == "Vendor Code")
-                    {
-                        kodePkt = dtCloned.Rows[i][2].ToString().Trim(':').Trim(' ');
-                        Console.WriteLine(kodePkt);
-                    }
-                    if (Int64.TryParse(dtCloned.Rows[i][0].ToString(), out temp))
-                    {
-                        Console.WriteLine(temp);
-                        mcs.Add(new Mcs
+                        // maret
+                        Console.WriteLine("masuk maret");
+                        if (dtCloned.Rows[i][0].ToString() == "Transaction Date")
                         {
-                            tanggal = DateTime.ParseExact(tanggal, "dd/MM/yyyy", CultureInfo.InvariantCulture),
-                            kodePkt = kodePkt,
-                            time = DateTime.Parse(dtCloned.Rows[i][1].ToString()).TimeOfDay,
-                            realDate = DateTime.Parse(dtCloned.Rows[i][1].ToString()).Hour >= 17 ? DateTime.ParseExact(tanggal, "dd/MM/yyyy", CultureInfo.InvariantCulture).AddDays(1).Date : DateTime.ParseExact(tanggal, "dd/MM/yyyy", CultureInfo.InvariantCulture).Date,
-                            customerCode = dtCloned.Rows[i][3].ToString().Trim('\''),
-                            amountTotal = Int64.Parse(dtCloned.Rows[i][5].ToString()),
-                            d100k = Int64.Parse(dtCloned.Rows[i][6].ToString()),
-                            d50k = Int64.Parse(dtCloned.Rows[i][7].ToString()),
-                            d20k = Int64.Parse(dtCloned.Rows[i][8].ToString()),
-                            d10k = Int64.Parse(dtCloned.Rows[i][9].ToString()),
-                            d5k = Int64.Parse(dtCloned.Rows[i][10].ToString()),
-                            d2k = Int64.Parse(dtCloned.Rows[i][11].ToString()),
-                            d1k = Int64.Parse(dtCloned.Rows[i][12].ToString()),
-                            amountCoin = Int64.Parse(dtCloned.Rows[i][13].ToString())
-                        });
+                            tanggal = dtCloned.Rows[i][2].ToString().Trim(':').Trim(' ');
+                            Console.WriteLine(tanggal);
+                        }
+                        if (dtCloned.Rows[i][0].ToString() == "Vendor Code")
+                        {
+                            kodePkt = dtCloned.Rows[i][2].ToString().Trim(':').Trim(' ');
+                            Console.WriteLine(kodePkt);
+                        }
+                        if (Int64.TryParse(dtCloned.Rows[i][0].ToString(), out temp))
+                        {
+                            if (dtCloned.Rows[i][7].ToString() == "Cash Pickup")
+                            {
+                                Console.WriteLine(temp);
+                                mcs.Add(new Mcs
+                                {
+                                    tanggal = DateTime.ParseExact(tanggal, "dd/MM/yyyy", CultureInfo.InvariantCulture),
+                                    kodePkt = kodePkt,
+                                    time = DateTime.Parse(dtCloned.Rows[i][1].ToString()).TimeOfDay,
+                                    realDate = DateTime.Parse(dtCloned.Rows[i][1].ToString()).Hour >= 17 ? DateTime.ParseExact(tanggal, "dd/MM/yyyy", CultureInfo.InvariantCulture).AddDays(1).Date : DateTime.ParseExact(tanggal, "dd/MM/yyyy", CultureInfo.InvariantCulture).Date,
+                                    customerCode = dtCloned.Rows[i][3].ToString().Trim('\''),
+                                    amountTotal = Int64.Parse(dtCloned.Rows[i][5].ToString()),
+                                    scheduled = dtCloned.Rows[i][6].ToString(),
+                                    d100k = Int64.Parse(dtCloned.Rows[i][8].ToString()),
+                                    d50k = Int64.Parse(dtCloned.Rows[i][9].ToString()),
+                                    d20k = Int64.Parse(dtCloned.Rows[i][10].ToString()),
+                                    d10k = Int64.Parse(dtCloned.Rows[i][11].ToString()),
+                                    d5k = Int64.Parse(dtCloned.Rows[i][12].ToString()),
+                                    d2k = Int64.Parse(dtCloned.Rows[i][13].ToString()),
+                                    d1k = Int64.Parse(dtCloned.Rows[i][14].ToString()),
+                                    amountCoin = Int64.Parse(dtCloned.Rows[i][15].ToString()),
+                                    cn1k = String.IsNullOrEmpty(dtCloned.Rows[i][16].ToString()) ? 0 : Int64.Parse(dtCloned.Rows[i][16].ToString()),
+                                    cn500 = String.IsNullOrEmpty(dtCloned.Rows[i][17].ToString()) ? 0 : Int64.Parse(dtCloned.Rows[i][17].ToString()),
+                                    cn200 = String.IsNullOrEmpty(dtCloned.Rows[i][18].ToString()) ? 0 : Int64.Parse(dtCloned.Rows[i][18].ToString()),
+                                    cn100 = String.IsNullOrEmpty(dtCloned.Rows[i][19].ToString()) ? 0 : Int64.Parse(dtCloned.Rows[i][19].ToString()),
+                                    cn50 = String.IsNullOrEmpty(dtCloned.Rows[i][20].ToString()) ? 0 : Int64.Parse(dtCloned.Rows[i][20].ToString()),
+                                    cn25 = String.IsNullOrEmpty(dtCloned.Rows[i][21].ToString()) ? 0 : Int64.Parse(dtCloned.Rows[i][21].ToString()),
+                                });
+                            }
+                        }
                     }
+                }
+
+                else
+                {
+                    for (int i = 0; i < dtCloned.Rows.Count; i++)
+                    {
+                        // sebelon maret
+                        Console.WriteLine("masuk maret");
+                        if (dtCloned.Rows[i][0].ToString() == "Transaction Date")
+                        {
+                            Console.WriteLine("dapet date");
+                            tanggal = dtCloned.Rows[i][2].ToString().Trim(':').Trim(' ');
+                            Console.WriteLine(tanggal);
+                        }
+                        if (dtCloned.Rows[i][0].ToString() == "Vendor Code")
+                        {
+                            Console.WriteLine("dapet vendor code");
+                            kodePkt = dtCloned.Rows[i][2].ToString().Trim(':').Trim(' ');
+                            Console.WriteLine(kodePkt);
+                        }
+                        if (Int64.TryParse(dtCloned.Rows[i][0].ToString(), out temp))
+                        {
+                            if (dtCloned.Rows[i][6].ToString() == "Cash Pickup")
+                            {
+                                Console.WriteLine("masuk cashpickup");
+                                Console.WriteLine(temp);
+                                mcs.Add(new Mcs
+                                {
+                                    tanggal = DateTime.ParseExact(tanggal, "dd/MM/yyyy", CultureInfo.InvariantCulture),
+                                    kodePkt = kodePkt,
+                                    time = DateTime.Parse(dtCloned.Rows[i][1].ToString()).TimeOfDay,
+                                    realDate = DateTime.Parse(dtCloned.Rows[i][1].ToString()).Hour >= 17 ? DateTime.ParseExact(tanggal, "dd/MM/yyyy", CultureInfo.InvariantCulture).AddDays(1).Date : DateTime.ParseExact(tanggal, "dd/MM/yyyy", CultureInfo.InvariantCulture).Date,
+                                    customerCode = dtCloned.Rows[i][3].ToString().Trim('\''),
+                                    amountTotal = Int64.Parse(dtCloned.Rows[i][5].ToString()),
+                                    d100k = Int64.Parse(dtCloned.Rows[i][7].ToString()),
+                                    d50k = Int64.Parse(dtCloned.Rows[i][8].ToString()),
+                                    d20k = Int64.Parse(dtCloned.Rows[i][9].ToString()),
+                                    d10k = Int64.Parse(dtCloned.Rows[i][10].ToString()),
+                                    d5k = Int64.Parse(dtCloned.Rows[i][11].ToString()),
+                                    d2k = Int64.Parse(dtCloned.Rows[i][12].ToString()),
+                                    d1k = Int64.Parse(dtCloned.Rows[i][13].ToString()),
+                                    amountCoin = Int64.Parse(dtCloned.Rows[i][14].ToString()),
+                                    cn1k = String.IsNullOrEmpty(dtCloned.Rows[i][15].ToString()) ? 0 : Int64.Parse(dtCloned.Rows[i][15].ToString()),
+                                    cn500 = String.IsNullOrEmpty(dtCloned.Rows[i][16].ToString()) ? 0 : Int64.Parse(dtCloned.Rows[i][16].ToString()),
+                                    cn200 = String.IsNullOrEmpty(dtCloned.Rows[i][17].ToString()) ? 0 : Int64.Parse(dtCloned.Rows[i][17].ToString()),
+                                    cn100 = String.IsNullOrEmpty(dtCloned.Rows[i][18].ToString()) ? 0 : Int64.Parse(dtCloned.Rows[i][18].ToString()),
+                                    cn50 = String.IsNullOrEmpty(dtCloned.Rows[i][19].ToString()) ? 0 : Int64.Parse(dtCloned.Rows[i][19].ToString()),
+                                    cn25 = String.IsNullOrEmpty(dtCloned.Rows[i][20].ToString()) ? 0 : Int64.Parse(dtCloned.Rows[i][20].ToString()),
+                                });
+                            }
+                        }
+                    }
+
 
                 }
-                //dataGridView2.DataSource = mcs;
                 loadForm.CloseForm();
                 MessageBox.Show("ok!");
             }
@@ -404,7 +470,13 @@ namespace testProjectBCA
                                        d2k = x.d2k,
                                        d50k = x.d50k,
                                        d5k = x.d5k,
-                                       time = x.time
+                                       time = x.time,
+                                       cn100 = x.cn100,
+                                       cn1k = x.cn1k,
+                                       cn200 = x.cn200,
+                                       cn25 = x.cn25,
+                                       cn50 = x.cn50,
+                                       cn500 = x.cn500
                                    }).ToList();
 
             DateTime maxdate = saveMc.Max(x => (DateTime)x.tanggal);
@@ -435,6 +507,12 @@ namespace testProjectBCA
                     query2.d2k = item.d2k;
                     query2.d50k = item.d50k;
                     query2.d5k = item.d5k;
+                    query2.cn1k = item.cn1k;
+                    query2.cn500 = item.cn500;
+                    query2.cn200 = item.cn200;
+                    query2.cn100 = item.cn100;
+                    query2.cn50 = item.cn50;
+                    query2.cn25 = item.cn25;
                     en.SaveChanges();
                     mcsToRemove.Add(item);
                 }
@@ -609,6 +687,7 @@ namespace testProjectBCA
         public String jenisFile { set; get; }
     }
 
+
     public class Mcs
     {
         public DateTime tanggal { set; get; }
@@ -616,6 +695,8 @@ namespace testProjectBCA
         public String kodePkt { set; get; }
         public TimeSpan time { set; get; }
         public String customerCode { set; get; }
+        public String scheduled { set; get; }
+        public String serviceType { set; get; }
         public Int64 amountTotal { set; get; }
         public Int64 d100k { set; get; }
         public Int64 d50k { set; get; }
@@ -625,7 +706,12 @@ namespace testProjectBCA
         public Int64 d2k { set; get; }
         public Int64 d1k { set; get; }
         public Int64 amountCoin { set; get; }
-
+        public Int64 cn1k { set; get; }
+        public Int64 cn500 { set; get; }
+        public Int64 cn200 { set; get; }
+        public Int64 cn100 { set; get; }
+        public Int64 cn50 { set; get; }
+        public Int64 cn25 { set; get; }
     }
 
     public class HasilProcessed

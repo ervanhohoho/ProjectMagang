@@ -42,7 +42,7 @@ namespace testProjectBCA
             }
             DateTime tanggal = TanggalPicker.Value.Date;
             DateTime tanggalMin = tanggalMinPicker.Value.Date;
-            String query = "SELECT [Tanggal Proses] = A.tanggal, [Tanggal Order] = DA.tanggal, [KodePkt] = A.kodePkt, [Bon 100] = bon100, [Bon 50] = bon50, [Bon 20] = bon20, ISNULL(inputOpr,''), ISNULL(inputSpv,''), ISNULL(inputNoTxn,''), ISNULL(validasiOpr,''), ISNULL(validasiSpv,''), ISNULL(validasiNoTxn,''), A.idApproval, DA.idDetailApproval, kanwil, koordinator"
+            String query = "SELECT [Tanggal Proses] = A.tanggal, [Tanggal Order] = DA.tanggal, [KodePkt] = A.kodePkt, [Bon 100] = bon100, [Bon 50] = bon50, [Bon 20] = bon20, ISNULL(DA.inputOpr,''), ISNULL(DA.inputSpv,''), ISNULL(DA.inputNoTxn,''), ISNULL(DA.validasiOpr,''), ISNULL(DA.validasiSpv,''), ISNULL(DA.validasiNoTxn,''), A.idApproval, DA.idDetailApproval, kanwil, koordinator"
                     + " FROM Approvals A JOIN DetailApprovals DA ON A.idApproval = DA.idApproval JOIN Pkt P ON A.kodePkt = P.kodePkt"
                     + " WHERE A.tanggal = '" +tanggal.ToShortDateString()+"' AND DA.tanggal >= '"+tanggalMin+"' AND bon100 != -1";
             using (SqlConnection sql = new SqlConnection(Variables.connectionString))
@@ -79,7 +79,7 @@ namespace testProjectBCA
                 }
                 reader.Close();
 
-                query = "SELECT [Tanggal Proses] = A.tanggal, [Tanggal Order] = DA.tanggal, [KodePkt] = A.kodePkt, [Bon 100] = ISNULL(adhoc100,0), [Bon 50] = ISNULL(adhoc50,0), [Bon 20] = ISNULL(adhoc20,0), ISNULL(inputOpr,''), ISNULL(inputSpv,''), ISNULL(inputNoTxn,''), ISNULL(validasiOpr,''), ISNULL(validasiSpv,''), ISNULL(validasiNoTxn,''), A.idApproval, DA.idDetailApproval, kanwil, koordinator"
+                query = "SELECT [Tanggal Proses] = A.tanggal, [Tanggal Order] = DA.tanggal, [KodePkt] = A.kodePkt, [Bon 100] = ISNULL(adhoc100,0), [Bon 50] = ISNULL(adhoc50,0), [Bon 20] = ISNULL(adhoc20,0), ISNULL(DA.inputOpr,''), ISNULL(DA.inputSpv,''), ISNULL(DA.inputNoTxn,''), ISNULL(DA.validasiOpr,''), ISNULL(DA.validasiSpv,''), ISNULL(DA.validasiNoTxn,''), A.idApproval, DA.idDetailApproval, kanwil, koordinator"
                     + " FROM Approvals A JOIN DetailApprovals DA ON A.idApproval = DA.idApproval JOIN Pkt P ON A.kodePkt = P.kodePkt"
                     + " WHERE A.tanggal = '" + tanggal.ToShortDateString() + "' AND (ISNULL(adhoc100,0)!= 0 OR ISNULL(adhoc50,0)!= 0 OR ISNULL(adhoc20,0)!= 0)";
                 cmd.CommandText = query;
@@ -109,7 +109,7 @@ namespace testProjectBCA
                     });
                 }
                 reader.Close();
-                query = "SELECT [Tanggal Proses] = A.tanggal, [Tanggal Order] = DA.tanggal, [KodePkt] = A.kodePkt, [Setor 100] = ISNULL(setor100,0), [Setor 50] = ISNULL(setor50,0), [Setor 20] = ISNULL(setor20,0), ISNULL(inputOpr,''), ISNULL(inputSpv,''), ISNULL(inputNoTxn,''), ISNULL(validasiOpr,''), ISNULL(validasiSpv,''), ISNULL(validasiNoTxn,''), A.idApproval, DA.idDetailApproval, kanwil, koordinator"
+                query = "SELECT [Tanggal Proses] = A.tanggal, [Tanggal Order] = DA.tanggal, [KodePkt] = A.kodePkt, [Setor 100] = ISNULL(setor100,0), [Setor 50] = ISNULL(setor50,0), [Setor 20] = ISNULL(setor20,0), ISNULL(DA.inputOpr,''), ISNULL(DA.inputSpv,''), ISNULL(DA.inputNoTxn,''), ISNULL(DA.validasiOpr,''), ISNULL(DA.validasiSpv,''), ISNULL(DA.validasiNoTxn,''), A.idApproval, DA.idDetailApproval, kanwil, koordinator"
                     + " FROM Approvals A JOIN DetailApprovals DA ON A.idApproval = DA.idApproval JOIN Pkt P ON A.kodePkt = P.kodePkt"
                     + " WHERE A.tanggal = '" + tanggal.ToShortDateString() + "' AND (ISNULL(setor100,0) != 0 OR ISNULL(setor50,0) != 0 OR ISNULL(setor20,0) != 0)  AND DA.tanggal >= '" + tanggalMin + "'";
                 cmd.CommandText = query;
@@ -139,7 +139,7 @@ namespace testProjectBCA
                     });
                 }
                 reader.Close();
-                query = "SELECT [Tanggal Proses] = A.tanggal, [Tanggal Order] = DA.tanggal, [KodePkt] = A.kodePkt, [Setor 100] = ISNULL(setorAdhoc100,0), [Setor 50] = ISNULL(setorAdhoc50,0), [Setor 20] = ISNULL(setorAdhoc20,0), ISNULL(inputOpr,''), ISNULL(inputSpv,''), ISNULL(inputNoTxn,''), ISNULL(validasiOpr,''), ISNULL(validasiSpv,''), ISNULL(validasiNoTxn,''), A.idApproval, DA.idDetailApproval, kanwil, koordinator"
+                query = "SELECT [Tanggal Proses] = A.tanggal, [Tanggal Order] = DA.tanggal, [KodePkt] = A.kodePkt, [Setor 100] = ISNULL(setorAdhoc100,0), [Setor 50] = ISNULL(setorAdhoc50,0), [Setor 20] = ISNULL(setorAdhoc20,0), ISNULL(DA.inputOpr,''), ISNULL(DA.inputSpv,''), ISNULL(DA.inputNoTxn,''), ISNULL(DA.validasiOpr,''), ISNULL(DA.validasiSpv,''), ISNULL(DA.validasiNoTxn,''), A.idApproval, DA.idDetailApproval, kanwil, koordinator"
                     + " FROM Approvals A JOIN DetailApprovals DA ON A.idApproval = DA.idApproval JOIN Pkt P ON A.kodePkt = P.kodePkt"
                     + " WHERE A.tanggal = '" + tanggal.ToShortDateString() + "' AND (ISNULL(setorAdhoc100,0) != 0 OR ISNULL(setorAdhoc50,0)!= 0 OR ISNULL(setorAdhoc20,0) != 0)";
                 cmd.CommandText = query;
@@ -227,19 +227,26 @@ namespace testProjectBCA
                     foreach (var temp in listRekapApproval)
                     {
                         Approval ap = (from x in db.Approvals where x.idApproval == temp.id select x).FirstOrDefault();
-                        ap.inputOpr = temp.inputOpr;
-                        ap.inputSpv = temp.inputSpv;
-                        ap.inputNoTxn = temp.inputNoTxn;
-                        ap.validasiOpr = temp.validasiOpr;
-                        ap.validasiSpv = temp.validasiSpv;
-                        ap.validasiNoTxn = temp.validasiNoTxn;
+                        //ap.inputOpr = temp.inputOpr;
+                        //ap.inputSpv = temp.inputSpv;
+                        //ap.inputNoTxn = temp.inputNoTxn;
+                        //ap.validasiOpr = temp.validasiOpr;
+                        //ap.validasiSpv = temp.validasiSpv;
+                        //ap.validasiNoTxn = temp.validasiNoTxn;
 
 
                         DetailApproval da = (from x in db.DetailApprovals where x.idApproval == temp.id && x.idDetailApproval == temp.idDetailApproval select x).FirstOrDefault();
+                        da.inputOpr = temp.inputOpr;
+                        da.inputSpv = temp.inputSpv;
+                        da.inputNoTxn = temp.inputNoTxn;
+                        da.validasiOpr = temp.validasiOpr;
+                        da.validasiSpv = temp.validasiSpv;
+                        da.validasiNoTxn = temp.validasiNoTxn;
                         if (temp.order.ToLower() == "setor")
                         {
                             if (temp.orderType.ToLower() == "adhoc")
                             {
+
                                 Int64 selisih100 = (Int64)da.setorAdhoc100 - temp.d100,
                                     selisih50 = (Int64)da.setorAdhoc50 - temp.d50,
                                     selisih20 = (Int64)da.setorAdhoc20 - temp.d20;
@@ -353,12 +360,16 @@ namespace testProjectBCA
             {
                 if (listRekapApproval[row].id == listRekapApproval[a].id)
                 {
-                    listRekapApproval[a].inputOpr = listRekapApproval[row].inputOpr;
-                    listRekapApproval[a].inputSpv = listRekapApproval[row].inputSpv;
-                    listRekapApproval[a].inputNoTxn = listRekapApproval[row].inputNoTxn;
-                    listRekapApproval[a].validasiOpr = listRekapApproval[row].validasiOpr;
-                    listRekapApproval[a].validasiSpv = listRekapApproval[row].validasiSpv;
-                    listRekapApproval[a].validasiNoTxn = listRekapApproval[row].validasiNoTxn;
+                    if(String.IsNullOrWhiteSpace(listRekapApproval[a].inputOpr))
+                        listRekapApproval[a].inputOpr = listRekapApproval[row].inputOpr;
+                    if (String.IsNullOrWhiteSpace(listRekapApproval[a].inputSpv))
+                        listRekapApproval[a].inputSpv = listRekapApproval[row].inputSpv;
+                    //listRekapApproval[a].inputNoTxn = listRekapApproval[row].inputNoTxn;
+                    if (String.IsNullOrWhiteSpace(listRekapApproval[a].validasiOpr))
+                        listRekapApproval[a].validasiOpr = listRekapApproval[row].validasiOpr;
+                    if (String.IsNullOrWhiteSpace(listRekapApproval[a].validasiSpv))
+                        listRekapApproval[a].validasiSpv = listRekapApproval[row].validasiSpv;
+                    //listRekapApproval[a].validasiNoTxn = listRekapApproval[row].validasiNoTxn;
                 }
             }
             InputGridView.Refresh();

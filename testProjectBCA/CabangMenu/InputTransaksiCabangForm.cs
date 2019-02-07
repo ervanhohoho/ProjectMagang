@@ -15,14 +15,14 @@ namespace testProjectBCA
     {
         Database1Entities db = new Database1Entities();
         String kodePkt = "";
-        int SHEET_COL_CABANG,
-            SHEET_COL_RETAIL,
-            SHEET_COL_LAINNYA,
-            SHEET_DEL_CABANG,
-            SHEET_DEL_RETAIL,
-            SHEET_DEL_LAINNYA,
-            SHEET_DAILYSTOCK,
-            SHEET_BA;
+        int SHEET_COL_CABANG = -1,
+            SHEET_COL_RETAIL = -1,
+            SHEET_COL_LAINNYA = -1,
+            SHEET_DEL_CABANG = -1,
+            SHEET_DEL_RETAIL = -1,
+            SHEET_DEL_LAINNYA = -1,
+            SHEET_DAILYSTOCK = -1,
+            SHEET_BA = -1;
         const String SHEET_NAME_COL_CABANG = "collection cabang",
             SHEET_NAME_COL_RETAIL = "collection retail",
             SHEET_NAME_COL_LAINNYA = "collection lainnya (in)",
@@ -31,7 +31,7 @@ namespace testProjectBCA
             SHEET_NAME_DEL_LAINNYA = "delivery lainnya (out)",
             SHEET_NAME_DAILYSTOCK = "dailystock",
             SHEET_NAME_BA = "rincian ba";
-
+        String currentFileName = "";
         DataTable collectionLainnya;
         DataTable collectionCabang;
         DataTable collectionRetail;
@@ -62,11 +62,29 @@ namespace testProjectBCA
                
                 foreach (String filename in filenames)
                 {
+                    currentFileName = filename;
                     //List<Pkt> listPkt = (from x in db.Pkts select x).ToList(); 
-                    
-                   
-                    
-                   //Console.WriteLine(kodePkt);
+
+                    collectionCabang = new DataTable();
+                    collectionRetail = new DataTable();
+                    collectionLainnya = new DataTable();
+                    deliveryCabang = new DataTable();
+                    deliveryRetail = new DataTable();
+                    deliveryLainnya = new DataTable();
+                    dailystock = new DataTable();
+                    ba = new DataTable();
+
+
+                    SHEET_COL_CABANG = -1;
+                    SHEET_COL_RETAIL = -1;
+                    SHEET_COL_LAINNYA = -1;
+                    SHEET_DEL_CABANG = -1;
+                    SHEET_DEL_RETAIL = -1;
+                    SHEET_DEL_LAINNYA = -1;
+                    SHEET_DAILYSTOCK = -1;
+                    SHEET_BA = -1;
+
+                    //Console.WriteLine(kodePkt);
                     DataSet ds = Util.openExcel(filename);
 
                     if (ds.Tables.Count == 0)
@@ -105,27 +123,183 @@ namespace testProjectBCA
                     }
                     //DateTime date = (DateTime)ds.Tables[0].Rows[2][0];
                     //deleteFromDB(date, kodePkt);
-                    collectionCabang = ds.Tables[SHEET_COL_CABANG];
-                    collectionRetail = ds.Tables[SHEET_COL_RETAIL];
-                    collectionLainnya = ds.Tables[SHEET_COL_LAINNYA];
-                    deliveryCabang = ds.Tables[SHEET_DEL_CABANG];
-                    deliveryRetail = ds.Tables[SHEET_DEL_RETAIL];
-                    deliveryLainnya = ds.Tables[SHEET_DEL_LAINNYA];
-                    dailystock = ds.Tables[SHEET_DAILYSTOCK];
-                    ba = ds.Tables[SHEET_BA];
 
+                    bool flagCollectionCabang = false,
+                        flagCollectionRetail = false,
+                        flagCollectionLainnya = false,
+                        flagDeliveryCabang = false,
+                        flagDeliveryRetail = false,
+                        flagDeliveryLainnya = false,
+                        flagDailystock = false,
+                        flagBA = false;
+
+
+                    if (SHEET_COL_CABANG != -1)
+                    {
+                        collectionCabang = ds.Tables[SHEET_COL_CABANG];
+                        flagCollectionCabang = true;
+                    }
+                    if (SHEET_COL_RETAIL != -1)
+                    {
+                        collectionRetail = ds.Tables[SHEET_COL_RETAIL];
+                        flagCollectionRetail = true;
+                    }
+                    if (SHEET_COL_LAINNYA != -1)
+                    {
+                        collectionLainnya = ds.Tables[SHEET_COL_LAINNYA];
+                        flagCollectionLainnya = true;
+                    }
+                    if (SHEET_DEL_CABANG != -1)
+                    {
+                        deliveryCabang = ds.Tables[SHEET_DEL_CABANG];
+                        flagDeliveryCabang = true;
+                    }
+                    if (SHEET_DEL_RETAIL != -1)
+                    {
+                        deliveryRetail = ds.Tables[SHEET_DEL_RETAIL];
+                        flagDeliveryRetail = true;
+                    }
+                    if (SHEET_DEL_LAINNYA != -1)
+                    {
+                        deliveryLainnya = ds.Tables[SHEET_DEL_LAINNYA];
+                        flagDeliveryLainnya = true;
+                    }
+                    if (SHEET_DAILYSTOCK != -1)
+                    {
+                        dailystock = ds.Tables[SHEET_DAILYSTOCK];
+                        flagDailystock = true;
+                    }
+                    if (SHEET_BA != -1)
+                    {
+                        ba = ds.Tables[SHEET_BA];
+                        flagBA = true;
+                    }
                     Console.WriteLine(filename);
-                    readCollectionCabang();
-                    readCollectionRetail();
-                    readCollectionLainnya();
-                    readDeliveryCabang();
-                    readDeliveryRetail();
-                    readDeliveryLainnya();
-                    readDailyStock();
-                    readBA();
+                    if (flagCollectionCabang)
+                    {
+                        //try
+                        //{
+                            readCollectionCabang();
+                        //}
+                        //catch (Exception ee)
+                        //{
+                        //    MessageBox.Show("File\t: " + filename + "\nSheet\t: " + collectionCabang.TableName + "\nError. Data sheet ini tidak dimasukkan. Data sheet lain tetap diproses");
+                        //}
+                    }
+                    else
+                    {
+                        MessageBox.Show("File\t: " + filename + " Tidak memiliki sheet " + SHEET_NAME_COL_CABANG);
+                    }
+                    if (flagCollectionRetail)
+                    {
+                        try
+                        {
+                            readCollectionRetail();
+                        }
+                        catch
+                        {
+                            MessageBox.Show("File\t: " + filename + "\nSheet\t: " + collectionRetail.TableName + "\nError. Data sheet ini tidak dimasukkan. Data sheet lain tetap diproses");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("File\t: " + filename + " Tidak memiliki sheet " + SHEET_NAME_COL_RETAIL);
+                    }
+                    if (flagCollectionLainnya)
+                    {
+                        try
+                        {
+                            readCollectionLainnya();
+                        }
+                        catch
+                        {
+                            MessageBox.Show("File\t: " + filename + "\nSheet\t: " + collectionLainnya.TableName + "\nError. Data sheet ini tidak dimasukkan. Data sheet lain tetap diproses");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("File\t: " + filename + " Tidak memiliki sheet " + SHEET_NAME_COL_LAINNYA);
+                    }
+                    if (flagDeliveryCabang)
+                    {
+                        try
+                        {
+                            readDeliveryCabang();
+                        }
+                        catch
+                        {
+                            MessageBox.Show("File\t: " + filename + "\nSheet\t: " + deliveryCabang.TableName + "\nError. Data sheet ini tidak dimasukkan. Data sheet lain tetap diproses");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("File\t: " + filename + " Tidak memiliki sheet " + SHEET_NAME_DEL_CABANG);
+                    }
+                    if (flagDeliveryRetail)
+                    {
+                        try
+                        {
+                            readDeliveryRetail();
+                        }
+                        catch
+                        {
+                            MessageBox.Show("File\t: " + filename + "\nSheet\t: " + deliveryRetail.TableName + "\nError. Data sheet ini tidak dimasukkan. Data sheet lain tetap diproses");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("File\t: " + filename + " Tidak memiliki sheet " + SHEET_NAME_DEL_RETAIL);
+                    }
+                    if (flagDeliveryLainnya)
+                    {
+                        try
+                        {
+                            readDeliveryLainnya();
+                        }
+                        catch
+                        {
+                            MessageBox.Show("File\t: " + filename + "\nSheet\t: " + deliveryLainnya.TableName + "\nError. Data sheet ini tidak dimasukkan. Data sheet lain tetap diproses");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("File\t: " + filename + " Tidak memiliki sheet " + SHEET_NAME_DEL_LAINNYA);
+                    }
+                    if (flagDailystock)
+                    {
+                        try
+                        {
+                            readDailyStock();
+                        }
+                        catch
+                        {
+                            MessageBox.Show("File\t: " + filename + "\nSheet\t: " + dailystock.TableName + "\nError. Data sheet ini tidak dimasukkan. Data sheet lain tetap diproses");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("File\t: " + filename + " Tidak memiliki sheet " + SHEET_NAME_DAILYSTOCK);
+                    }
+                    if (flagBA)
+                    {
+                        try
+                        {
+                            readBA();
+                        }
+                        catch
+                        {
+                            MessageBox.Show("File\t: " + filename + "\nSheet\t: " + ba.TableName + "\nError. Data sheet ini tidak dimasukkan. Data sheet lain tetap diproses");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("File\t: " + filename + " Tidak memiliki sheet " + SHEET_NAME_BA);
+
+                    }
                 }
                 hilangkanNull();
                 loadForm.CloseForm();
+                MessageBox.Show("Done!");
             }
         }
         private void deleteFromDB(DateTime date, string kodePkt)
@@ -187,7 +361,7 @@ namespace testProjectBCA
                 }
             }
         }
-        private void readCollectionCabang()
+        private bool readCollectionCabang()
         {
             DataTable dt = collectionCabang;
             //Ambil Nama PKT
@@ -329,6 +503,13 @@ namespace testProjectBCA
                     if (Int64.TryParse(SC25, out buf))
                         C25 = buf;
 
+                DateTime dateBuf;
+                if(!DateTime.TryParse(row[0].ToString(), out dateBuf))
+                {
+                    MessageBox.Show("Format tanggal file " + currentFileName + " Sheet " + SHEET_NAME_COL_CABANG + " Format tanggal salah!");
+                    return false;
+                }
+
                 listCollectionCabangDariExcel.Add(new DailyStock() {
                     kode = row[2].ToString(),
                     nama = row[3].ToString(),
@@ -356,13 +537,38 @@ namespace testProjectBCA
                     BN200 = 0,
                 });
             }
-
+            listCollectionCabangDariExcel = listCollectionCabangDariExcel.GroupBy(x => new { x.tanggal, x.kodePkt, x.kode, x.nama, x.jenisTransaksi }).Select(x => new DailyStock()
+            {
+                tanggal = x.Key.tanggal,
+                kode = x.Key.kode,
+                kodePkt = x.Key.kodePkt,
+                nama = x.Key.nama,
+                jenisTransaksi = x.Key.jenisTransaksi,
+                keterangan = x.Select(y => y.keterangan).First(),
+                in_out = x.Select(y => y.in_out).First(),
+                BN100K = x.Sum(y => y.BN100K),
+                BN50K = x.Sum(y => y.BN50K),
+                BN20K = x.Sum(y => y.BN20K),
+                BN10K = x.Sum(y => y.BN10K),
+                BN5K = x.Sum(y => y.BN5K),
+                BN2K = x.Sum(y => y.BN2K),
+                BN1K = x.Sum(y => y.BN1K),
+                BN500 = x.Sum(y => y.BN500),
+                BN200 = x.Sum(y => y.BN200),
+                BN100 = x.Sum(y => y.BN100),
+                CN1K = x.Sum(y => y.CN1K),
+                CN500 = x.Sum(y => y.CN500),
+                CN200 = x.Sum(y => y.CN200),
+                CN100 = x.Sum(y => y.CN100),
+                CN50 = x.Sum(y => y.CN50),
+                CN25 = x.Sum(y => y.CN25),
+            }).ToList();
             List<DailyStock> listDataDb = db.DailyStocks.Where(x => x.kodePkt == kodePkt).ToList();
             List<DailyStock> toInput = new List<DailyStock>();
             foreach(DailyStock checkUpdate in listCollectionCabangDariExcel)
             {
                 var toUpdate = listDataDb.Where(x => x.kode == checkUpdate.kode && x.tanggal == checkUpdate.tanggal && x.jenisTransaksi == checkUpdate.jenisTransaksi).FirstOrDefault();
-                if (toUpdate!=null)
+                if (toUpdate != null)
                 {
                     toUpdate.BN100K = checkUpdate.BN100K;
                     toUpdate.BN50K = checkUpdate.BN50K;
@@ -386,9 +592,14 @@ namespace testProjectBCA
                 }
             }
             db.DailyStocks.AddRange(toInput);
+
+            Console.WriteLine("Print collection cabang\n=========================");
+            foreach (var temp in listCollectionCabangDariExcel)
+                Console.WriteLine(temp.tanggal + " " + temp.kodePkt + " " + temp.jenisTransaksi + " " + temp.BN100K);
             db.SaveChanges();
+            return true;
         }
-        private void readCollectionRetail()
+        private bool readCollectionRetail()
         {
             DataTable dt = collectionRetail;
             dt.Rows.RemoveAt(0);
@@ -529,7 +740,12 @@ namespace testProjectBCA
                 if (!String.IsNullOrEmpty(SC25))
                     if (Int64.TryParse(SC25, out buf))
                         C25 = buf;
-
+                DateTime dateBuf;
+                if (!DateTime.TryParse(row[0].ToString(), out dateBuf))
+                {
+                    MessageBox.Show("Format tanggal file " + currentFileName + " Sheet " + SHEET_NAME_COL_RETAIL + " Format tanggal salah!");
+                    return false;
+                }
                 listCollectionRetailDariExcel.Add(new DailyStock()
                 {
                     kode = row[1].ToString(),
@@ -558,7 +774,32 @@ namespace testProjectBCA
                     BN200 = 0,
                 });
             }
-
+            listCollectionRetailDariExcel = listCollectionRetailDariExcel.GroupBy(x => new { x.tanggal, x.kodePkt, x.kode, x.nama, x.jenisTransaksi }).Select(x => new DailyStock()
+            {
+                tanggal = x.Key.tanggal,
+                kode = x.Key.kode,
+                kodePkt = x.Key.kodePkt,
+                nama = x.Key.nama,
+                jenisTransaksi = x.Key.jenisTransaksi,
+                keterangan = x.Select(y => y.keterangan).First(),
+                in_out = x.Select(y => y.in_out).First(),
+                BN100K = x.Sum(y => y.BN100K),
+                BN50K = x.Sum(y => y.BN50K),
+                BN20K = x.Sum(y => y.BN20K),
+                BN10K = x.Sum(y => y.BN10K),
+                BN5K = x.Sum(y => y.BN5K),
+                BN2K = x.Sum(y => y.BN2K),
+                BN1K = x.Sum(y => y.BN1K),
+                BN500 = x.Sum(y => y.BN500),
+                BN200 = x.Sum(y => y.BN200),
+                BN100 = x.Sum(y => y.BN100),
+                CN1K = x.Sum(y => y.CN1K),
+                CN500 = x.Sum(y => y.CN500),
+                CN200 = x.Sum(y => y.CN200),
+                CN100 = x.Sum(y => y.CN100),
+                CN50 = x.Sum(y => y.CN50),
+                CN25 = x.Sum(y => y.CN25),
+            }).ToList();
             List<DailyStock> listDataDb = db.DailyStocks.Where(x => x.kodePkt == kodePkt).ToList();
             List<DailyStock> toInput = new List<DailyStock>();
             foreach (DailyStock checkUpdate in listCollectionRetailDariExcel)
@@ -589,8 +830,9 @@ namespace testProjectBCA
             }
             db.DailyStocks.AddRange(toInput);
             db.SaveChanges();
+            return true;
         }
-        private void readCollectionLainnya()
+        private bool readCollectionLainnya()
         {
             DataTable dt = collectionLainnya;
             dt.Rows.RemoveAt(0);
@@ -729,7 +971,12 @@ namespace testProjectBCA
                 if (!String.IsNullOrEmpty(SC25))
                     if (Int64.TryParse(SC25, out buf))
                         C25 = buf;
-
+                DateTime dateBuf;
+                if (!DateTime.TryParse(row[0].ToString(), out dateBuf))
+                {
+                    MessageBox.Show("Format tanggal file " + currentFileName + " Sheet " + SHEET_NAME_COL_LAINNYA + " Format tanggal salah!");
+                    return false;
+                }
                 listCollectionLainnyaDariExcel.Add(new DailyStock()
                 {
                     kode = "",
@@ -758,7 +1005,32 @@ namespace testProjectBCA
                     BN200 = 0,
                 });
             }
-
+            listCollectionLainnyaDariExcel = listCollectionLainnyaDariExcel.GroupBy(x => new { x.tanggal, x.kodePkt, x.kode, x.nama, x.jenisTransaksi }).Select(x => new DailyStock()
+            {
+                tanggal = x.Key.tanggal,
+                kode = x.Key.kode,
+                kodePkt = x.Key.kodePkt,
+                nama = x.Key.nama,
+                jenisTransaksi = x.Key.jenisTransaksi,
+                keterangan = x.Select(y => y.keterangan).First(),
+                in_out = x.Select(y => y.in_out).First(),
+                BN100K = x.Sum(y => y.BN100K),
+                BN50K = x.Sum(y => y.BN50K),
+                BN20K = x.Sum(y => y.BN20K),
+                BN10K = x.Sum(y => y.BN10K),
+                BN5K = x.Sum(y => y.BN5K),
+                BN2K = x.Sum(y => y.BN2K),
+                BN1K = x.Sum(y => y.BN1K),
+                BN500 = x.Sum(y => y.BN500),
+                BN200 = x.Sum(y => y.BN200),
+                BN100 = x.Sum(y => y.BN100),
+                CN1K = x.Sum(y => y.CN1K),
+                CN500 = x.Sum(y => y.CN500),
+                CN200 = x.Sum(y => y.CN200),
+                CN100 = x.Sum(y => y.CN100),
+                CN50 = x.Sum(y => y.CN50),
+                CN25 = x.Sum(y => y.CN25),
+            }).ToList();
             List<DailyStock> listDataDb = db.DailyStocks.Where(x => x.kodePkt == kodePkt).ToList();
             List<DailyStock> toInput = new List<DailyStock>();
             foreach (DailyStock checkUpdate in listCollectionLainnyaDariExcel)
@@ -789,8 +1061,9 @@ namespace testProjectBCA
             }
             db.DailyStocks.AddRange(toInput);
             db.SaveChanges();
+            return true;
         }
-        private void readDeliveryCabang()
+        private bool readDeliveryCabang()
         {
             DataTable dt = deliveryCabang;
             dt.Rows.RemoveAt(0);
@@ -922,7 +1195,12 @@ namespace testProjectBCA
                 if (!String.IsNullOrEmpty(SC25))
                     if (Int64.TryParse(SC25, out buf))
                         C25 = buf;
-
+                DateTime dateBuf;
+                if (!DateTime.TryParse(row[0].ToString(), out dateBuf))
+                {
+                    MessageBox.Show("Format tanggal file " + currentFileName + " Sheet " + SHEET_NAME_DEL_CABANG + " Format tanggal salah!");
+                    return false;
+                }
                 listDeliveryCabangDariExcel.Add(new DailyStock()
                 {
                     kode = row[2].ToString(),
@@ -951,6 +1229,32 @@ namespace testProjectBCA
                     BN200 = 0,
                 });
             }
+            listDeliveryCabangDariExcel = listDeliveryCabangDariExcel.GroupBy(x => new { x.tanggal, x.kodePkt, x.kode, x.nama, x.jenisTransaksi }).Select(x => new DailyStock() {
+                tanggal = x.Key.tanggal,
+                kode = x.Key.kode,
+                kodePkt = x.Key.kodePkt,
+                nama = x.Key.nama,
+                jenisTransaksi = x.Key.jenisTransaksi,
+                keterangan = x.Select(y=>y.keterangan).First(),
+                in_out = x.Select(y=>y.in_out).First(),
+                BN100K = x.Sum(y=>y.BN100K),
+                BN50K = x.Sum(y=>y.BN50K),
+                BN20K = x.Sum(y=>y.BN20K),
+                BN10K = x.Sum(y=>y.BN10K),
+                BN5K = x.Sum(y=>y.BN5K),
+                BN2K = x.Sum(y=>y.BN2K),
+                BN1K = x.Sum(y=>y.BN1K),
+                BN500 = x.Sum(y=>y.BN500),
+                BN200 = x.Sum(y=>y.BN200),
+                BN100 = x.Sum(y=>y.BN100),
+                CN1K = x.Sum(y=>y.CN1K),
+                CN500 = x.Sum(y=>y.CN500),
+                CN200 = x.Sum(y=>y.CN200),
+                CN100 = x.Sum(y=>y.CN100),
+                CN50 = x.Sum(y=>y.CN50),
+                CN25 = x.Sum(y=>y.CN25),
+            }).ToList();
+
             List<DailyStock> listDataDb = db.DailyStocks.Where(x => x.kodePkt == kodePkt).ToList();
             List<DailyStock> toInput = new List<DailyStock>();
             foreach (DailyStock checkUpdate in listDeliveryCabangDariExcel)
@@ -981,8 +1285,9 @@ namespace testProjectBCA
             }
             db.DailyStocks.AddRange(toInput);
             db.SaveChanges();
+            return true;
         }
-        private void readDeliveryRetail()
+        private bool readDeliveryRetail()
         {
             DataTable dt = deliveryRetail;
 
@@ -1124,7 +1429,12 @@ namespace testProjectBCA
                 if (!String.IsNullOrEmpty(SC25))
                     if (Int64.TryParse(SC25, out buf))
                         C25 = buf;
-
+                DateTime dateBuf;
+                if (!DateTime.TryParse(row[0].ToString(), out dateBuf))
+                {
+                    MessageBox.Show("Format tanggal file " + currentFileName + " Sheet " + SHEET_NAME_DEL_RETAIL + " Format tanggal salah!");
+                    return false;
+                }
                 listDeliveryRetailDariExcel.Add(new DailyStock()
                 {
                     kode = row[1].ToString(),
@@ -1153,6 +1463,33 @@ namespace testProjectBCA
                     BN200 = 0,
                 });
             }
+
+            listDeliveryRetailDariExcel = listDeliveryRetailDariExcel.GroupBy(x => new { x.tanggal, x.kodePkt, x.kode, x.nama, x.jenisTransaksi }).Select(x => new DailyStock()
+            {
+                tanggal = x.Key.tanggal,
+                kode = x.Key.kode,
+                kodePkt = x.Key.kodePkt,
+                nama = x.Key.nama,
+                jenisTransaksi = x.Key.jenisTransaksi,
+                keterangan = x.Select(y => y.keterangan).First(),
+                in_out = x.Select(y => y.in_out).First(),
+                BN100K = x.Sum(y => y.BN100K),
+                BN50K = x.Sum(y => y.BN50K),
+                BN20K = x.Sum(y => y.BN20K),
+                BN10K = x.Sum(y => y.BN10K),
+                BN5K = x.Sum(y => y.BN5K),
+                BN2K = x.Sum(y => y.BN2K),
+                BN1K = x.Sum(y => y.BN1K),
+                BN500 = x.Sum(y => y.BN500),
+                BN200 = x.Sum(y => y.BN200),
+                BN100 = x.Sum(y => y.BN100),
+                CN1K = x.Sum(y => y.CN1K),
+                CN500 = x.Sum(y => y.CN500),
+                CN200 = x.Sum(y => y.CN200),
+                CN100 = x.Sum(y => y.CN100),
+                CN50 = x.Sum(y => y.CN50),
+                CN25 = x.Sum(y => y.CN25),
+            }).ToList();
 
             List<DailyStock> listDataDb = db.DailyStocks.Where(x => x.kodePkt == kodePkt).ToList();
             List<DailyStock> toInput = new List<DailyStock>();
@@ -1184,8 +1521,9 @@ namespace testProjectBCA
             }
             db.DailyStocks.AddRange(toInput);
             db.SaveChanges();
+            return true;
         }
-        private void readDeliveryLainnya()
+        private bool readDeliveryLainnya()
         {
             DataTable dt = deliveryLainnya;
             dt.Rows.RemoveAt(0);
@@ -1325,7 +1663,12 @@ namespace testProjectBCA
                 if (!String.IsNullOrEmpty(SC25))
                     if (Int64.TryParse(SC25, out buf))
                         C25 = buf;
-
+                DateTime dateBuf;
+                if (!DateTime.TryParse(row[0].ToString(), out dateBuf))
+                {
+                    MessageBox.Show("Format tanggal file " + currentFileName + " Sheet " + SHEET_NAME_COL_RETAIL + " Format tanggal salah!");
+                    return false;
+                }
                 listDeliveryLainnyaDariExcel.Add(new DailyStock()
                 {
                     kode = "",
@@ -1354,7 +1697,32 @@ namespace testProjectBCA
                     BN200 = 0,
                 });
             }
-
+            listDeliveryLainnyaDariExcel = listDeliveryLainnyaDariExcel.GroupBy(x => new { x.tanggal, x.kodePkt, x.kode, x.nama, x.jenisTransaksi }).Select(x => new DailyStock()
+            {
+                tanggal = x.Key.tanggal,
+                kode = x.Key.kode,
+                kodePkt = x.Key.kodePkt,
+                nama = x.Key.nama,
+                jenisTransaksi = x.Key.jenisTransaksi,
+                keterangan = x.Select(y => y.keterangan).First(),
+                in_out = x.Select(y => y.in_out).First(),
+                BN100K = x.Sum(y => y.BN100K),
+                BN50K = x.Sum(y => y.BN50K),
+                BN20K = x.Sum(y => y.BN20K),
+                BN10K = x.Sum(y => y.BN10K),
+                BN5K = x.Sum(y => y.BN5K),
+                BN2K = x.Sum(y => y.BN2K),
+                BN1K = x.Sum(y => y.BN1K),
+                BN500 = x.Sum(y => y.BN500),
+                BN200 = x.Sum(y => y.BN200),
+                BN100 = x.Sum(y => y.BN100),
+                CN1K = x.Sum(y => y.CN1K),
+                CN500 = x.Sum(y => y.CN500),
+                CN200 = x.Sum(y => y.CN200),
+                CN100 = x.Sum(y => y.CN100),
+                CN50 = x.Sum(y => y.CN50),
+                CN25 = x.Sum(y => y.CN25),
+            }).ToList();
             List<DailyStock> listDataDb = db.DailyStocks.Where(x => x.kodePkt == kodePkt).ToList();
             List<DailyStock> toInput = new List<DailyStock>();
             foreach (DailyStock checkUpdate in listDeliveryLainnyaDariExcel)
@@ -1385,9 +1753,9 @@ namespace testProjectBCA
             }
             db.DailyStocks.AddRange(toInput);
             db.SaveChanges();
-
+            return true;
         }
-        private void readDailyStock()
+        private bool readDailyStock()
         {
             int COL_NAMA_PKT = 'N' - 'A',
                 COL_TANGGAL = 'C'-'A',
@@ -1411,41 +1779,48 @@ namespace testProjectBCA
                 ROW_C100 = 21,
                 ROW_C50 = 22,
                 ROW_C25 = 23;
-
+            Int64 buf;
             DataTable dt = dailystock;
             String namaPkt = dt.Rows[ROW_NAMA_PKT][COL_NAMA_PKT].ToString();
-            DateTime tanggal = DateTime.Parse(dt.Rows[ROW_TANGGAL][COL_TANGGAL].ToString());
-            kodePkt = db.Pkts.Where(x => x.namaPkt == namaPkt).Select(x => x.kodePktCabang).FirstOrDefault();
-            Int64 OpenBN100k = Int64.Parse(dt.Rows[ROW_BN100K][COL_OPEN_BALANCE].ToString()),
-                OpenBN50k = Int64.Parse(dt.Rows[ROW_BN50K][COL_OPEN_BALANCE].ToString()),
-                OpenBN20k = Int64.Parse(dt.Rows[ROW_BN20K][COL_OPEN_BALANCE].ToString()),
-                OpenBN10k = Int64.Parse(dt.Rows[ROW_BN10K][COL_OPEN_BALANCE].ToString()),
-                OpenBN5k = Int64.Parse(dt.Rows[ROW_BN5K][COL_OPEN_BALANCE].ToString()),
-                OpenBN2k = Int64.Parse(dt.Rows[ROW_BN2K][COL_OPEN_BALANCE].ToString()),
-                OpenBN1k = Int64.Parse(dt.Rows[ROW_BN1K][COL_OPEN_BALANCE].ToString()),
-                OpenBN500 = Int64.Parse(dt.Rows[ROW_BN500][COL_OPEN_BALANCE].ToString()),
-                OpenBN100 = Int64.Parse(dt.Rows[ROW_BN100][COL_OPEN_BALANCE].ToString()),
-                OpenC1000 = Int64.Parse(dt.Rows[ROW_C1000][COL_OPEN_BALANCE].ToString()),
-                OpenC500 = Int64.Parse(dt.Rows[ROW_C500][COL_OPEN_BALANCE].ToString()),
-                OpenC200 = Int64.Parse(dt.Rows[ROW_C200][COL_OPEN_BALANCE].ToString()),
-                OpenC100 = Int64.Parse(dt.Rows[ROW_C100][COL_OPEN_BALANCE].ToString()),
-                OpenC50 = Int64.Parse(dt.Rows[ROW_C50][COL_OPEN_BALANCE].ToString()),
-                OpenC25 = Int64.Parse(dt.Rows[ROW_C25][COL_OPEN_BALANCE].ToString()),
-                EndingBN100k = Int64.Parse(dt.Rows[ROW_BN100K][COL_ENDING_BALANCE].ToString()),
-                EndingBN50k = Int64.Parse(dt.Rows[ROW_BN50K][COL_ENDING_BALANCE].ToString()),
-                EndingBN20k = Int64.Parse(dt.Rows[ROW_BN20K][COL_ENDING_BALANCE].ToString()),
-                EndingBN10k = Int64.Parse(dt.Rows[ROW_BN10K][COL_ENDING_BALANCE].ToString()),
-                EndingBN5k = Int64.Parse(dt.Rows[ROW_BN5K][COL_ENDING_BALANCE].ToString()),
-                EndingBN2k = Int64.Parse(dt.Rows[ROW_BN2K][COL_ENDING_BALANCE].ToString()),
-                EndingBN1k = Int64.Parse(dt.Rows[ROW_BN1K][COL_ENDING_BALANCE].ToString()),
-                EndingBN500 = Int64.Parse(dt.Rows[ROW_BN500][COL_ENDING_BALANCE].ToString()),
-                EndingBN100 = Int64.Parse(dt.Rows[ROW_BN100][COL_ENDING_BALANCE].ToString()),
-                EndingC1000 = Int64.Parse(dt.Rows[ROW_C1000][COL_ENDING_BALANCE].ToString()),
-                EndingC500 = Int64.Parse(dt.Rows[ROW_C500][COL_ENDING_BALANCE].ToString()),
-                EndingC200 = Int64.Parse(dt.Rows[ROW_C200][COL_ENDING_BALANCE].ToString()),
-                EndingC100 = Int64.Parse(dt.Rows[ROW_C100][COL_ENDING_BALANCE].ToString()),
-                EndingC50 = Int64.Parse(dt.Rows[ROW_C50][COL_ENDING_BALANCE].ToString()),
-                EndingC25 = Int64.Parse(dt.Rows[ROW_C25][COL_ENDING_BALANCE].ToString());
+
+            DateTime bufDate, tanggal;
+            if (!DateTime.TryParse(dt.Rows[ROW_TANGGAL][COL_TANGGAL].ToString(), out bufDate))
+            {
+                MessageBox.Show("Format tanggal file " + currentFileName + " Sheet " + SHEET_NAME_DAILYSTOCK + " Format tanggal salah!");
+                return false;
+            }
+            tanggal = DateTime.Parse(dt.Rows[ROW_TANGGAL][COL_TANGGAL].ToString());
+            //kodePkt = db.Pkts.Where(x => x.namaPkt == namaPkt).Select(x => x.kodePktCabang).FirstOrDefault();
+            Int64 OpenBN100k = Int64.TryParse(dt.Rows[ROW_BN100K][COL_OPEN_BALANCE].ToString(), out buf) ? buf : 0,
+                OpenBN50k = Int64.TryParse(dt.Rows[ROW_BN50K][COL_OPEN_BALANCE].ToString(), out buf) ? buf : 0,
+                OpenBN20k = Int64.TryParse(dt.Rows[ROW_BN20K][COL_OPEN_BALANCE].ToString(), out buf) ? buf : 0,
+                OpenBN10k = Int64.TryParse(dt.Rows[ROW_BN10K][COL_OPEN_BALANCE].ToString(), out buf) ? buf : 0,
+                OpenBN5k = Int64.TryParse(dt.Rows[ROW_BN5K][COL_OPEN_BALANCE].ToString(), out buf) ? buf : 0,
+                OpenBN2k = Int64.TryParse(dt.Rows[ROW_BN2K][COL_OPEN_BALANCE].ToString(), out buf) ? buf : 0,
+                OpenBN1k = Int64.TryParse(dt.Rows[ROW_BN1K][COL_OPEN_BALANCE].ToString(), out buf) ? buf : 0,
+                OpenBN500 = Int64.TryParse(dt.Rows[ROW_BN500][COL_OPEN_BALANCE].ToString(), out buf) ? buf : 0,
+                OpenBN100 = Int64.TryParse(dt.Rows[ROW_BN100][COL_OPEN_BALANCE].ToString(), out buf) ? buf : 0,
+                OpenC1000 = Int64.TryParse(dt.Rows[ROW_C1000][COL_OPEN_BALANCE].ToString(), out buf) ? buf : 0,
+                OpenC500 = Int64.TryParse(dt.Rows[ROW_C500][COL_OPEN_BALANCE].ToString(), out buf) ? buf : 0,
+                OpenC200 = Int64.TryParse(dt.Rows[ROW_C200][COL_OPEN_BALANCE].ToString(), out buf) ? buf : 0,
+                OpenC100 = Int64.TryParse(dt.Rows[ROW_C100][COL_OPEN_BALANCE].ToString(), out buf) ? buf : 0,
+                OpenC50 = Int64.TryParse(dt.Rows[ROW_C50][COL_OPEN_BALANCE].ToString(), out buf) ? buf : 0,
+                OpenC25 = Int64.TryParse(dt.Rows[ROW_C25][COL_OPEN_BALANCE].ToString(), out buf) ? buf : 0,
+                EndingBN100k = Int64.TryParse(dt.Rows[ROW_BN100K][COL_ENDING_BALANCE].ToString(), out buf) ? buf : 0,
+                EndingBN50k = Int64.TryParse(dt.Rows[ROW_BN50K][COL_ENDING_BALANCE].ToString(), out buf) ? buf : 0,
+                EndingBN20k = Int64.TryParse(dt.Rows[ROW_BN20K][COL_ENDING_BALANCE].ToString(), out buf) ? buf : 0,
+                EndingBN10k = Int64.TryParse(dt.Rows[ROW_BN10K][COL_ENDING_BALANCE].ToString(), out buf) ? buf : 0,
+                EndingBN5k = Int64.TryParse(dt.Rows[ROW_BN5K][COL_ENDING_BALANCE].ToString(), out buf) ? buf : 0,
+                EndingBN2k = Int64.TryParse(dt.Rows[ROW_BN2K][COL_ENDING_BALANCE].ToString(), out buf) ? buf : 0,
+                EndingBN1k = Int64.TryParse(dt.Rows[ROW_BN1K][COL_ENDING_BALANCE].ToString(), out buf) ? buf : 0,
+                EndingBN500 = Int64.TryParse(dt.Rows[ROW_BN500][COL_ENDING_BALANCE].ToString(), out buf) ? buf : 0,
+                EndingBN100 = Int64.TryParse(dt.Rows[ROW_BN100][COL_ENDING_BALANCE].ToString(), out buf) ? buf : 0,
+                EndingC1000 = Int64.TryParse(dt.Rows[ROW_C1000][COL_ENDING_BALANCE].ToString(), out buf) ? buf : 0,
+                EndingC500 = Int64.TryParse(dt.Rows[ROW_C500][COL_ENDING_BALANCE].ToString(), out buf) ? buf : 0,
+                EndingC200 = Int64.TryParse(dt.Rows[ROW_C200][COL_ENDING_BALANCE].ToString(), out buf) ? buf : 0,
+                EndingC100 = Int64.TryParse(dt.Rows[ROW_C100][COL_ENDING_BALANCE].ToString(), out buf) ? buf : 0,
+                EndingC50 = Int64.TryParse(dt.Rows[ROW_C50][COL_ENDING_BALANCE].ToString(), out buf) ? buf : 0,
+                EndingC25 = Int64.TryParse(dt.Rows[ROW_C25][COL_ENDING_BALANCE].ToString(), out buf) ? buf : 0;
             DailyStock openBalance = new DailyStock()
             {
                 kodePkt = kodePkt,
@@ -1552,11 +1927,12 @@ namespace testProjectBCA
                 db.DailyStocks.Add(endingBalance);
             }
             db.SaveChanges();
+            return true;
         }
-        private void readBA()
+        private bool readBA()
         {
             DataTable dt = ba;
-            DataRow[] toDelete = dt.Select("Column2 is null");
+            DataRow[] toDelete = dt.Select("Column2 is null OR Column0 is null OR Column1 is null");
             foreach (DataRow row in toDelete)
                 dt.Rows.Remove(row);
             int COL_TANGGAL_BA = Util.ExcelColumnNameToNumber("A"),
@@ -1635,8 +2011,18 @@ namespace testProjectBCA
 
                 if (DateTime.TryParse(row[COL_TANGGAL_BA].ToString(), out bufTgl))
                     tanggalBA = bufTgl;
+                else
+                {
+                    MessageBox.Show("Format tanggal file " + currentFileName + " Sheet " + SHEET_NAME_BA + " Format tanggal BA salah!");
+                    return false;
+                }
                 if (DateTime.TryParse(row[COL_TANGGAL_SETORAN].ToString(), out bufTgl))
                     tanggalSetor = bufTgl;
+                else
+                {
+                    MessageBox.Show("Format tanggal file " + currentFileName + " Sheet " + SHEET_NAME_BA + " Format tanggal setor salah!");
+                    return false;
+                }
 
                 BeritaAcara beritaAcara = new BeritaAcara()
                 {
@@ -1725,6 +2111,7 @@ namespace testProjectBCA
                     db.BeritaAcaras.Add(toInsertOrUpdate);
                 db.SaveChanges();
             }
+            return true;
         }
         private void InputButton_Click(object sender, EventArgs e)
         {

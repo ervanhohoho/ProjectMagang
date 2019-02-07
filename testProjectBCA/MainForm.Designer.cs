@@ -71,11 +71,13 @@
             this.reportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.telatValidasiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.transaksiSetorTarikCabangToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.transaksiVaultToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.sLAProsesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.proyeksiLikuiditaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.orderTrackingToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.inputDataBankLainToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.viewDataStokPosisiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.prosesWPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.nasabahToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inputDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.abacasToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -99,6 +101,7 @@
             this.adminToolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inputDataKalenderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadMasterPKTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadDataVaultToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.insertDataTarikanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aTMToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.cRMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -314,7 +317,8 @@
             this.proyeksiLikuiditaToolStripMenuItem,
             this.orderTrackingToolStripMenuItem1,
             this.inputDataBankLainToolStripMenuItem1,
-            this.viewDataStokPosisiToolStripMenuItem});
+            this.viewDataStokPosisiToolStripMenuItem,
+            this.prosesWPToolStripMenuItem});
             this.cabangToolStripMenuItem.Name = "cabangToolStripMenuItem";
             this.cabangToolStripMenuItem.Size = new System.Drawing.Size(60, 20);
             this.cabangToolStripMenuItem.Text = "Cabang";
@@ -433,7 +437,8 @@
             // 
             this.reportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.telatValidasiToolStripMenuItem,
-            this.transaksiSetorTarikCabangToolStripMenuItem});
+            this.transaksiSetorTarikCabangToolStripMenuItem,
+            this.transaksiVaultToolStripMenuItem1});
             this.reportToolStripMenuItem.Name = "reportToolStripMenuItem";
             this.reportToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
             this.reportToolStripMenuItem.Text = "Report";
@@ -451,6 +456,13 @@
             this.transaksiSetorTarikCabangToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.transaksiSetorTarikCabangToolStripMenuItem.Text = "Transaksi Setor/Tarik Cabang";
             this.transaksiSetorTarikCabangToolStripMenuItem.Click += new System.EventHandler(this.transaksiSetorTarikCabangToolStripMenuItem_Click);
+            // 
+            // transaksiVaultToolStripMenuItem1
+            // 
+            this.transaksiVaultToolStripMenuItem1.Name = "transaksiVaultToolStripMenuItem1";
+            this.transaksiVaultToolStripMenuItem1.Size = new System.Drawing.Size(226, 22);
+            this.transaksiVaultToolStripMenuItem1.Text = "Transaksi Vault";
+            this.transaksiVaultToolStripMenuItem1.Click += new System.EventHandler(this.transaksiVaultToolStripMenuItem1_Click);
             // 
             // sLAProsesToolStripMenuItem
             // 
@@ -486,6 +498,13 @@
             this.viewDataStokPosisiToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
             this.viewDataStokPosisiToolStripMenuItem.Text = "View Data Stok Posisi";
             this.viewDataStokPosisiToolStripMenuItem.Click += new System.EventHandler(this.viewDataStokPosisiToolStripMenuItem_Click);
+            // 
+            // prosesWPToolStripMenuItem
+            // 
+            this.prosesWPToolStripMenuItem.Name = "prosesWPToolStripMenuItem";
+            this.prosesWPToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.prosesWPToolStripMenuItem.Text = "Proses WP";
+            this.prosesWPToolStripMenuItem.Click += new System.EventHandler(this.prosesWPToolStripMenuItem_Click);
             // 
             // nasabahToolStripMenuItem
             // 
@@ -650,7 +669,8 @@
             // 
             this.adminToolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.inputDataKalenderToolStripMenuItem,
-            this.loadMasterPKTToolStripMenuItem});
+            this.loadMasterPKTToolStripMenuItem,
+            this.loadDataVaultToolStripMenuItem});
             this.adminToolsToolStripMenuItem.Name = "adminToolsToolStripMenuItem";
             this.adminToolsToolStripMenuItem.Size = new System.Drawing.Size(87, 20);
             this.adminToolsToolStripMenuItem.Text = "Support Files";
@@ -669,6 +689,13 @@
             this.loadMasterPKTToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.loadMasterPKTToolStripMenuItem.Text = "Load Master PKT";
             this.loadMasterPKTToolStripMenuItem.Click += new System.EventHandler(this.loadMasterPKTToolStripMenuItem_Click);
+            // 
+            // loadDataVaultToolStripMenuItem
+            // 
+            this.loadDataVaultToolStripMenuItem.Name = "loadDataVaultToolStripMenuItem";
+            this.loadDataVaultToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.loadDataVaultToolStripMenuItem.Text = "Load Data Vault";
+            this.loadDataVaultToolStripMenuItem.Click += new System.EventHandler(this.loadDataVaultToolStripMenuItem_Click);
             // 
             // insertDataTarikanToolStripMenuItem
             // 
@@ -835,5 +862,8 @@
         private System.Windows.Forms.ToolStripMenuItem testMenusToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem inputSaldoATMToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem inputSaldoCRMToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem transaksiVaultToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem loadDataVaultToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem prosesWPToolStripMenuItem;
     }
 }
