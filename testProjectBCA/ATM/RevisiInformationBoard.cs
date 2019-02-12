@@ -92,10 +92,8 @@ namespace testProjectBCA.ATM
                                 monthCounter = 1;
                             while (tempTanggal <= maxTanggal && monthCounter <= 12)
                             {
-                                Console.WriteLine(monthCounter);
                                 treeView1.Nodes[counter].Nodes.Add((monthCounter++).ToString());
                                 tempTanggal = tempTanggal.AddMonths(1);
-                                Console.WriteLine("Temp Tanggal: " + tempTanggal.ToShortDateString());
                             }
                             counter++;
                         }
@@ -250,7 +248,6 @@ namespace testProjectBCA.ATM
                             reader.Close();
 
                             minDate = minDate.AddDays(1);
-                            Console.WriteLine(minDate);
                             //dataGridView1.Rows.Add(row);
                         }
                     }
@@ -353,8 +350,6 @@ namespace testProjectBCA.ATM
                         saldoAwal.tgl = Convert.ToDateTime(reader[3].ToString());
                     }
                     saldoAwal.tgl = saldoAwal.tgl.AddDays(1);
-                    Console.WriteLine("Saldo Awal");
-                    Console.WriteLine(saldoAwal.d100 + " " + saldoAwal.d50 + " " + saldoAwal.d20);
                 }
             }
 
@@ -369,8 +364,6 @@ namespace testProjectBCA.ATM
             DateTime startDate = tanggalOptiMin;//Convert.ToDateTime(dataGridView1.Rows[0].Cells[0].Value);
             DateTime endDate = tanggalOptiMax;//Convert.ToDateTime(dataGridView1.Rows[rowCount - 1].Cells[0].Value);
             DateTime tempDate = startDate;
-            Console.WriteLine(startDate.DayOfWeek.ToString());
-            Console.WriteLine(endDate);
 
             prediksiIsiAtm = new List<Denom>();
             using (SqlConnection sql = new SqlConnection(Variables.connectionString))
@@ -509,8 +502,7 @@ namespace testProjectBCA.ATM
 
                 }
                 sql.Close();
-                Console.WriteLine("Isi ATM");
-                Console.WriteLine(prediksiIsiAtm.Count);
+                Console.WriteLine("Isi ATM\n=======================");
                 foreach (var temp in prediksiIsiAtm)
                 {
                     Console.WriteLine(temp.tgl + " " + temp.d100 + " " + temp.d50 + " " + temp.d20 + " ");
@@ -530,8 +522,6 @@ namespace testProjectBCA.ATM
             DateTime startDate = tanggalOptiMin;//Convert.ToDateTime(dataGridView1.Rows[0].Cells[0].Value);
             DateTime endDate = tanggalOptiMax;
             DateTime tempDate = startDate;
-            Console.WriteLine(startDate.DayOfWeek.ToString());
-            Console.WriteLine(endDate);
 
             //Load Std Deviasi
             List<Rasio> stdDeviasi = new List<Rasio>();
@@ -692,7 +682,7 @@ namespace testProjectBCA.ATM
                     }
                 }
                 sql.Close();
-                Console.WriteLine("Deviasi Atm");
+                Console.WriteLine("Deviasi Atm\n==========================");
                 foreach (var temp in stdDeviasi)
                 {
                     Console.WriteLine(temp.tgl + " " + temp.d100 + " " + temp.d50 + " " + temp.d20 + " ");
@@ -2417,7 +2407,7 @@ namespace testProjectBCA.ATM
             int setorCounter = 0;
             Console.WriteLine();
             Console.WriteLine("Load rekomendasi bon");
-            Console.WriteLine("======================");
+            Console.WriteLine("==================================================");
             List<Denom> rekomendasiBonNonE2E = new List<Denom>();
             saldoAwalIdeal = new List<Denom>();
             rekomendasiAdhoc = new Denom();
@@ -2445,6 +2435,13 @@ namespace testProjectBCA.ATM
             /**********************************************/
             /*********START OF ITUNGAN BON NON E2E*********/
             /**********************************************/
+            Console.WriteLine("Sislok ATM 100: " + (rasioSislokAtm[0].d100 * prediksiIsiAtm[0].d100));
+            Console.WriteLine("Sislok CDM 100: " + (sislokCdm[0].d100));
+            Console.WriteLine("Sislok CRM 100: " + (sislokCrm[0].d100));
+            Console.WriteLine("Isi ATM 100: " + (prediksiIsiAtm[0].d100));
+            Console.WriteLine("Isi CRM 100: " + (isiCrm[0].d100));
+            Console.WriteLine("Bon 100: " + (bon[0].d100));
+
 
             //Hitung saldo akhir hari h untuk jadi saldo awal h+1
             saldoAkhirH.d100 = saldoAwal.d100 + (Int64)Math.Round((rasioSislokAtm[0].d100 * prediksiIsiAtm[0].d100)) + sislokCdm[0].d100 + sislokCrm[0].d100 - prediksiIsiAtm[0].d100 - isiCrm[0].d100 + bon[0].d100;
@@ -3683,12 +3680,8 @@ namespace testProjectBCA.ATM
                         eventType += temp + "\n";
                     }
                     MessageBox.Show(eventType);
-                    Console.WriteLine("Prediksi isi atm count: " + prediksiIsiAtm.Count);
-                    Console.WriteLine("Isi crm count: " + isiCrm.Count);
-                    Console.WriteLine("Sislok crm count: " + sislokCrm.Count);
-                    Console.WriteLine("Rasio Sislok ATM count: " + rasioSislokAtm.Count);
-                    Console.WriteLine("Sislok cdm count: " + sislokCdm.Count);
-
+                    Console.WriteLine("SISLOK CDM\n===================");
+                    Console.WriteLine("SISLOK CDM 100: " + sislokCdm[0].d100);
                 }
                 loadSaldoAwal();
                 loadBon();

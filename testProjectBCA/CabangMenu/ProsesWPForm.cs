@@ -182,6 +182,9 @@ namespace testProjectBCA.CabangMenu
                                 kodeTujuan = kodeTujuan.Split('-')[1].Trim();
                             String vendorSumber = allPkt.Where(x => x.kodePktCabang == kodeSumber).Select(x => x.vendor).FirstOrDefault(),
                                 vendorTujuan = allPkt.Where(x => x.kodePktCabang == kodeTujuan).Select(x => x.vendor).FirstOrDefault();
+                            String namaSumber = allPkt.Where(x => x.kodePktCabang == kodeSumber).Select(x => x.namaPkt).FirstOrDefault(),
+                                namaTujuan = allPkt.Where(x => x.kodePktCabang == kodeTujuan).Select(x => x.namaPkt).FirstOrDefault();
+
                             Console.WriteLine("Vendor Sumber: " + kodeSumber + " " + vendorSumber);
                             Console.WriteLine("Vendor Tujuan: " + kodeTujuan + " " + vendorTujuan);
                             Console.WriteLine("Value 100: " + temp2.d100);
@@ -193,8 +196,10 @@ namespace testProjectBCA.CabangMenu
                             else if (vendorSumber == allPkt.Where(x => x.kodePkt == "ADJK").Select(x => x.vendor).First())
                             {
                                 DataProses tempResult = new DataProses();
-                                tempResult.sumberDana = vendorSumber;
+                                tempResult.vendorSumber = vendorSumber;
+                                tempResult.sumberDana = namaSumber;
                                 tempResult.tujuan = namaBank;
+                                tempResult.namaTujuan = namaTujuan;
                                 tempResult.denom100 = (Int64)temp2.d100;
                                 tempResult.denom50 = (Int64)temp2.d50;
                                 tempResult.denom20 = (Int64)temp2.d20;
@@ -215,8 +220,10 @@ namespace testProjectBCA.CabangMenu
                             else if (vendorSumber == vendorTujuan)
                             {
                                 DataProses tempResult = new DataProses();
-                                tempResult.sumberDana = vendorSumber;
+                                tempResult.vendorSumber = vendorSumber;
+                                tempResult.sumberDana = namaSumber;
                                 tempResult.tujuan = namaBank;
+                                tempResult.namaTujuan = namaTujuan;
                                 tempResult.keterangan = keteranganGeserVault;
                                 tempResult.denom100 = (Int64)temp2.d100;
                                 tempResult.denom50 = (Int64)temp2.d50;
@@ -234,8 +241,24 @@ namespace testProjectBCA.CabangMenu
                             }
                         }
                     }
-                    dataGridView1.DataSource = result;
-                    String csv = ServiceStack.Text.CsvSerializer.SerializeToCsv(result);
+                    int counter = 1;
+                    var resultGrouped = (from x in result
+                                     group x by new { Gabung = (x.keterangan.ToLower() == "geser vault" ? 0 : counter++), x.tujuan, x.vendorSumber } into g
+                                     select new
+                                     {
+                                         sumberDana = (g.ToList().Count > 1 ? g.Select(y => y.namaTujuan).First() : g.Select(y => y.sumberDana).First()),
+                                         tujuan = g.Select(y => y.tujuan).First(),
+                                         denom100 = g.Sum(y => y.denom100),
+                                         denom50 = g.Sum(y => y.denom50),
+                                         denom20 = g.Sum(y => y.denom20),
+                                         denom10 = g.Sum(y => y.denom10),
+                                         denom5 = g.Sum(y => y.denom5),
+                                         denom2 = g.Sum(y => y.denom2),
+                                         total = g.Sum(y => y.total),
+                                         keterangan = g.Select(y => y.keterangan).First(),
+                                     }).ToList();
+                    dataGridView1.DataSource = resultGrouped;
+                    String csv = ServiceStack.Text.CsvSerializer.SerializeToCsv(resultGrouped);
                     File.WriteAllText(sv.FileName, csv);
                     loadForm.CloseForm();
                     MessageBox.Show("DONE!");
@@ -262,13 +285,20 @@ namespace testProjectBCA.CabangMenu
 
             Console.WriteLine("Masuk Proses Row");
             //Console.WriteLine(sumber.sumberDana);
-            String sumberDana = allPkt.Where(x=>x.kodePktCabang == sumber.sumberDana.Split('-')[1].Trim()).Select(x=>x.namaPkt).FirstOrDefault();
-            //Console.WriteLine(sumberDana);
+            String kodePktCabangSumber = sumber.sumberDana.Split('-')[1].Trim();
+            String sumberDana = allPkt.Where(x=>x.kodePktCabang == kodePktCabangSumber).Select(x=>x.namaPkt).FirstOrDefault(),
+                vendorSumber = allPkt.Where(x=>x.kodePkt == kodePktCabangSumber).Select(x=>x.vendor).FirstOrDefault(),
+                kodeTujuan = sumber.kodeTujuan.Trim();
+            if (kodeTujuan.Contains("-"))
+                kodeTujuan = kodeTujuan.Split('-')[1].Trim();
 
+            String namaTujuan = allPkt.Where(x => x.kodePktCabang == kodeTujuan).Select(x => x.namaPkt).FirstOrDefault();
+            //Console.WriteLine(sumberDana);
+            tempResult.namaTujuan = namaTujuan;
             tempResult.sumberDana = sumberDana;
             tempResult.tujuan = vault;
             tempResult.keterangan = keterangan;
-            
+            tempResult.vendorSumber = vendorSumber;
             Int64 sisa = limitDelivery;
 
             //100K
@@ -418,7 +448,9 @@ namespace testProjectBCA.CabangMenu
         public class DataProses
         {
             public String sumberDana { set; get; }
+            public String vendorSumber { set; get; }
             public String tujuan { set; get; }
+            public String namaTujuan { set; get; }
             public Int64 denom100 { set; get; }
             public Int64 denom50 { set; get; }
             public Int64 denom20 { set; get; }
@@ -432,6 +464,7 @@ namespace testProjectBCA.CabangMenu
             public String inputSPV { set; get; }
             public String validasiOPR { set; get; }
             public String validasiSPV { set; get; }
+            
 
         }
     }

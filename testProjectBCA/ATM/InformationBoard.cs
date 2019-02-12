@@ -96,10 +96,8 @@ namespace testProjectBCA.ATM
                                 monthCounter = 1;
                             while(tempTanggal<=maxTanggal && monthCounter <= 12)
                             {
-                                Console.WriteLine(monthCounter);
                                 treeView1.Nodes[counter].Nodes.Add((monthCounter++).ToString());
                                 tempTanggal = tempTanggal.AddMonths(1);
-                                Console.WriteLine("Temp Tanggal: " + tempTanggal.ToShortDateString());
                             }
                             counter++;
                         }

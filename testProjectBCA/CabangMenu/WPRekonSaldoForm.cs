@@ -14,14 +14,16 @@ namespace testProjectBCA.CabangMenu
     public partial class WPRekonSaldoForm : Form
     {
         String kodePkt;
+        DateTime tanggal;
         List<PivotCPC_BIBL> listReturnBIdanBankLain = new List<PivotCPC_BIBL>();
         List<PivotPerVendor_setoran> listSetoranCabang = new List<PivotPerVendor_setoran>();
         List<PivotCPC_ATMR> listATMReturn;
         List<PivotCPC_BIBLD> listDeliveryBIdanBankLain = new List<PivotCPC_BIBLD>();
         List<PivotPerVendor_bon> listBonCabang = new List<PivotPerVendor_bon>();
         List<PivotCPC_ATMD> listATMDelivery;
+        List<RekonSaldoInputanUser> rekonSaldoInputanUsers = new List<RekonSaldoInputanUser>();
         List<TampilanWPRekonSaldo> listSistem;
-        
+        List<ImportDataTambahan> listImport;
         public WPRekonSaldoForm()
         {
             InitializeComponent();
@@ -38,8 +40,11 @@ namespace testProjectBCA.CabangMenu
         {
             Database1Entities db = new Database1Entities();
             loadForm.ShowSplashScreen();
+            tanggal = dateTimePicker1.Value.Date;
+            ImportDataTambahanBtn.Enabled = true;
             loadTableSistem();
             loadTableInputan();
+            listImport = new List<ImportDataTambahan>();
             loadForm.CloseForm();
         }
 
@@ -331,13 +336,11 @@ namespace testProjectBCA.CabangMenu
         {
             kodePkt = pktComboBox.SelectedItem.ToString();
         }
-
-        private void saveBtn_Click(object sender, EventArgs e)
+        private void loadDataInputanUser()
         {
-            Database1Entities db = new Database1Entities();
             DateTime tanggal = dateTimePicker1.Value.Date;
-            List<RekonSaldoInputanUser> rekonSaldoInputanUsers = new List<RekonSaldoInputanUser>();
-            for(int a=0;a<dataTambahanGridView.Rows.Count - 1 ;a++)
+            rekonSaldoInputanUsers = new List<RekonSaldoInputanUser>();
+            for (int a = 0; a < dataTambahanGridView.Rows.Count - 1; a++)
             {
                 DataGridViewRow temp = dataTambahanGridView.Rows[a];
                 String id = temp.Cells["id"].Value == null ? "-1" : temp.Cells["id"].Value.ToString(),
@@ -346,9 +349,10 @@ namespace testProjectBCA.CabangMenu
                     value = temp.Cells["value"].Value.ToString(),
                     keterangan = temp.Cells["keterangan"].Value == null ? "" : temp.Cells["keterangan"].Value.ToString();
                 Console.WriteLine(id + " " + in_out + " " + jenis + " " + value);
-                rekonSaldoInputanUsers.Add(new RekonSaldoInputanUser() {
+                rekonSaldoInputanUsers.Add(new RekonSaldoInputanUser()
+                {
                     Id = Int32.Parse(id),
-                    in_out = in_out,
+                    in_out = in_out.ToUpper(),
                     jenis = jenis,
                     tanggal = tanggal,
                     kodePkt = kodePkt,
@@ -356,6 +360,11 @@ namespace testProjectBCA.CabangMenu
                     value = Int64.Parse(value)
                 });
             }
+        }
+        private void saveBtn_Click(object sender, EventArgs e)
+        {
+            Database1Entities db = new Database1Entities();
+            loadDataInputanUser();
             var toInputs = rekonSaldoInputanUsers.Where(x => x.Id == -1).ToList();
             db.RekonSaldoInputanUsers.AddRange(toInputs);
             var toUpdates = rekonSaldoInputanUsers.Where(x => x.Id != -1).ToList();
@@ -369,6 +378,85 @@ namespace testProjectBCA.CabangMenu
             }
             db.SaveChanges();
         }
+        
+
+        private void ImportDataTambahanBtn_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog of = new OpenFileDialog();
+            of.Filter = Variables.excelFilter;
+            if(of.ShowDialog() == DialogResult.OK)
+            {
+                listImport = new List<ImportDataTambahan>();
+                Int64 buf;
+                DataSet ds = Util.openExcel(of.FileName);
+                if (ds.Tables.Count == 0)
+                    return;
+                DataTable dt = ds.Tables[0];
+                var toDelete = dt.Select("Column0 is null OR Column1 is null OR Column2 is null OR Column3 is null");
+                foreach (var temp in toDelete)
+                    dt.Rows.Remove(temp);
+                for (int a = 1; a < dt.Rows.Count; a++)
+                {
+                    DataRow row = dt.Rows[a];
+                    listImport.Add(new ImportDataTambahan() {
+                        in_out = row[0].ToString(),
+                        jenis = row[1].ToString(),
+                        keterangan = row[2].ToString(),
+                        value = (Int64.TryParse(row[3].ToString(), out buf) ? buf : 0)
+                    });
+                }
+                foreach (var temp in listImport)
+                {
+                    DataGridViewRow dr = (DataGridViewRow)dataTambahanGridView.Rows[0].Clone();
+                    dr.Cells[1].Value = temp.in_out;
+                    dr.Cells[2].Value = temp.jenis;
+                    dr.Cells[3].Value = temp.value;
+                    dr.Cells[4].Value = temp.keterangan;
+                    dr.ReadOnly = true;
+                    dataTambahanGridView.Rows.Add(dr);
+                }
+            }
+        }
+        private void loadPerbandinganButton_Click(object sender, EventArgs e)
+        {
+            Database1Entities db = new Database1Entities();
+            loadDataInputanUser();
+            Dictionary<string, string> mapOpti = new Dictionary<string, string>();
+            mapOpti.Add("Setoran Cabang", "Cabang");
+            mapOpti.Add("BI Return", "BI");
+            mapOpti.Add("Bank Lain Return", "Bank Lain");
+            mapOpti.Add("ATM Return", "ATM");
+            mapOpti.Add("Bon Cabang", "Cabang");
+            mapOpti.Add("BI Delivery", "BI");
+            mapOpti.Add("Bank Lain Delivery", "Bank Lain");
+            mapOpti.Add("ATM Delivery", "ATM");
+
+
+            String bufString;
+            var allDataOpti = listSistem.GroupBy(x => new { x.in_out, jenis = (mapOpti.TryGetValue(x.jenis, out bufString) ? bufString : "")}).Select(x => new { x.Key.in_out, x.Key.jenis, value = x.Sum(y => y.value) }).ToList();
+
+            allDataOpti.AddRange(rekonSaldoInputanUsers.GroupBy(x => new { x.in_out, x.jenis }).Select(x => new { x.Key.in_out, x.Key.jenis, value = (Int64)x.Sum(y => y.value) }).ToList());
+            allDataOpti = allDataOpti.GroupBy(x => new { x.in_out, x.jenis }).Select(x => new { x.Key.in_out, x.Key.jenis, value = (Int64)x.Sum(y => y.value) }).ToList();
+
+
+            Dictionary<string, string> mapDailystock = new Dictionary<string, string>();
+            mapDailystock.Add("Collection Cabang", "Cabang");
+            mapDailystock.Add("Delivery BI", "BI");
+            mapDailystock.Add("Tukaran", "Tukaran");
+            mapDailystock.Add("ATM", "ATM");
+            mapDailystock.Add("Delivery Cabang", "Cabang");
+            mapDailystock.Add("Collection BI", "BI");
+
+            var dailyStocks = db.DailyStocks.Where(x => x.kodePkt == kodePkt && x.tanggal == tanggal).Select(x=> new {
+                in_out = x.in_out,
+                jenis = (mapDailystock.Where(y=>x.jenisTransaksi.Contains(y.Key)).Select(y=>y.Value).FirstOrDefault() == null ? "" : mapDailystock.Where(y => x.jenisTransaksi.Contains(y.Key)).Select(y => y.Value).FirstOrDefault()),
+                value = x.BN100K + x.BN50K + x.BN20K + x.BN10K + x.BN5K + x.BN2K + x.BN1K + x.BN500 + x.BN200 + x.CN1K + x.CN500 + x.CN200 + x.CN100 + x.CN50 + x.CN25 
+            }).ToList();
+
+            dailyStocks = dailyStocks.GroupBy(x => new { x.in_out, x.jenis }).Select(x => new { x.Key.in_out, x.Key.jenis, value = x.Sum(y => y.value) }).ToList();
+
+            dataGridView1.DataSource = allDataOpti;
+        }
         class TampilanWPRekonSaldo
         {
             public String in_out { set; get; }
@@ -376,6 +464,15 @@ namespace testProjectBCA.CabangMenu
             public String validasi { set; get; }
             public Int64 value { set; get; }
         }
+        public class ImportDataTambahan
+        {
+            public String in_out { set; get; }
+            public String jenis { set; get; }
+            public String keterangan { set; get; }
+            public Int64 value { set; get; }
+        }
+
+        
     }
    
 }

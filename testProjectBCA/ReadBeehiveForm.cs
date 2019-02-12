@@ -533,7 +533,7 @@ namespace testProjectBCA
         {
             var query = (from x in en.saveBeeHives
                          join y in en.saveMcs on x.kodePerusahaan equals y.customerCode
-                         join z in en.DailyStocks on y.customerCode equals "0" + z.kode
+                         join z in en.DailyStocks on y.customerCode equals z.kode.Length == 8 ? z.kode : "0" + z.kode
                          where x.tanggalTransaksi == dateTimePicker1.Value.Date && y.tanggal == dateTimePicker1.Value.Date && z.tanggal == dateTimePicker1.Value.Date && x.namaFile == ""
                          select new
                          {

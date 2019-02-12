@@ -51,7 +51,7 @@ namespace testProjectBCA.CabangMenu
             var prequery = (
                 from x in en.RekonSaldoVaults.AsEnumerable()
                 join y in en.Pkts on x.vaultId.Substring(0, 4) equals y.kodePktCabang == "CCASA" ? "CCAS" : y.kodePktCabang
-                where (x.fundingSoure != null ? (!y.kanwil.ToLower().Contains("jabo") ? x.fundingSoure.ToLower().Substring(0, 2) == "ob" || x.fundingSoure.ToLower().Substring(0, 2) == "bi" : true) : false)
+                where (!String.IsNullOrWhiteSpace(x.fundingSoure)? (!y.kanwil.ToLower().Contains("jabo") ? x.fundingSoure.ToLower().Substring(0, 2) == "ob" || x.fundingSoure.ToLower().Substring(0, 2) == "bi" : true) : false)
                 select x
             ).ToList();
             if (fundingSource != "All")

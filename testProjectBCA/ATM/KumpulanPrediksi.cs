@@ -151,18 +151,6 @@ namespace testProjectBCA.ATM
             List<Denom> sislokCdm = this.sislokCdm.Where(x => x.kodePkt == kodepkt).Select(x => new Denom() { tgl = x.tanggal, d100 = x.d100, d50 = x.d50, d20 = x.d20 }).ToList();
             List<Denom> sislokCrm = this.sislokCrm.Where(x => x.kodePkt == kodepkt).Select(x => new Denom() { tgl = x.tanggal, d100 = x.d100, d50 = x.d50, d20 = x.d20 }).ToList();
 
-            Console.WriteLine("isiAtm count: " + prediksiIsiAtm.Count);
-            Console.WriteLine("rasioSislok count: " + rasioSislokAtm.Count);
-            Console.WriteLine("isiCrm count: " + isiCrm.Count);
-            Console.WriteLine("sislokCdm count: " + sislokCdm.Count);
-            Console.WriteLine("sislokCrm count: " + sislokCrm.Count);
-
-            Console.WriteLine("class isiAtm count: " + this.prediksiIsiAtm.Count);
-            Console.WriteLine("class rasioSislok count: " + this.rasioSislokAtm.Count);
-            Console.WriteLine("class isiCrm count: " + this.isiCrm2.Count);
-            Console.WriteLine("class sislokCdm count: " + this.sislokCdm.Count);
-            Console.WriteLine("class sislokCrm count: " + this.sislokCrm.Count);
-
             Console.WriteLine("Target Rasio 100: " + targetRasio100);
             Console.WriteLine("Target Rasio 50: " + targetRasio50);
             Console.WriteLine("Target Rasio 20: " + targetRasio20);
@@ -371,6 +359,13 @@ namespace testProjectBCA.ATM
             /*********START OF ITUNGAN BON NON E2E*********/
             /**********************************************/
 
+            Console.WriteLine("Sislok ATM 100: " + (rasioSislokAtm[0].d100 * prediksiIsiAtm[0].d100));
+            Console.WriteLine("Sislok CDM 100: " + (sislokCdm[0].d100));
+            Console.WriteLine("Sislok CRM 100: " + (sislokCrm[0].d100));
+            Console.WriteLine("Isi ATM 100: " + (prediksiIsiAtm[0].d100));
+            Console.WriteLine("Isi CRM 100: " + (isiCrm[0].d100));
+            Console.WriteLine("Bon 100: " + (bon[0].d100));
+
             //Hitung saldo akhir hari h untuk jadi saldo awal h+1
             saldoAkhirH.d100 = saldoAwal.d100 + (Int64)Math.Round((rasioSislokAtm[0].d100 * prediksiIsiAtm[0].d100)) + sislokCdm[0].d100 + sislokCrm[0].d100 - prediksiIsiAtm[0].d100 - isiCrm[0].d100 + bon[0].d100;
             saldoAkhirH.d50 = saldoAwal.d50 + (Int64)Math.Round((rasioSislokAtm[0].d50 * prediksiIsiAtm[0].d50)) + sislokCdm[0].d50 + sislokCrm[0].d50 - prediksiIsiAtm[0].d50 - isiCrm[0].d50 + bon[0].d50;
@@ -384,8 +379,6 @@ namespace testProjectBCA.ATM
                 saldoAkhirH.d50 -= setor[setorCounter].d50;
                 saldoAkhirH.d20 -= setor[setorCounter++].d20;
             }
-
-            
 
             //Kalau ternyata di laporan bonnya lebih dari 1 hitung sampe hari terakhir ada bon yang disetujui
             for (int a = 1; a < jumlahBonLaporan; a++)
@@ -876,7 +869,12 @@ namespace testProjectBCA.ATM
                 loadIsiCrmDenganStdDeviasi();
                 loadSislokCrmDenganStdDeviasi();
                 loadRasioSislokAtmDenganStdDeviasi();
+
+                Console.WriteLine("SISLOK CDM 100 SEBELUM: " + sislokCdm[0].d100);
+
                 sislokCdm = sislokCdmDenganStdDeviasi;
+                Console.WriteLine("SISLOK CDM 100 SESUDAH: " + sislokCdm[0].d100);
+
                 isiCrm2 = isiCrmDenganStdDeviasi;
                 sislokCrm = sislokCrmDenganStdDeviasi;
                 rasioSislokAtm = rasioSislokATMDenganStdDeviasi;
@@ -1195,7 +1193,7 @@ namespace testProjectBCA.ATM
             }
             if (jenis.ToLower() == "sislokcdm")
             {
-                multiplier = sislokCrm;
+                multiplier = sislokCdm;
             }
             List<PktDenom> ret = new List<PktDenom>();
             for (int a = 0; a < prediksiIsiAtm.Count; a++)
@@ -1342,6 +1340,8 @@ namespace testProjectBCA.ATM
         {
             sislokCdmDenganStdDeviasi = new List<PktDenom>();
             sislokCdmDenganStdDeviasi = loadPrediksiStdDeviasi("sislokCdm");
+
+            Console.WriteLine("SISLOK CDM DENGAN STD DEV 100: " + sislokCdmDenganStdDeviasi[0].d100);
         }
         void loadRasioSislokAtm()
         {

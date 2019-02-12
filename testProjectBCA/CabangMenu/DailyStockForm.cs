@@ -910,7 +910,7 @@ namespace testProjectBCA
             for (int i = 0; i < listTb.Count; i++)
             {
                 listTb[i].JumlahBN = listTb[i].BN100 + listTb[i].BN100K + listTb[i].BN10K + listTb[i].BN1K + listTb[i].BN200 + listTb[i].BN20K + listTb[i].BN2K + listTb[i].BN500 + listTb[i].BN50K + listTb[i].BN5K;
-                listTb[i].JumlahCN = listTb[i].CN100 + listTb[i].CN1K + listTb[i].CN200 + listTb[i].CN25 + listTb[i].CN50 + listTb[i].CN50 + listTb[i].CN500;
+                listTb[i].JumlahCN =  listTb[i].CN1K + listTb[i].CN500 + listTb[i].CN200 + listTb[i].CN100 + listTb[i].CN50 + listTb[i].CN25;
                 listTb[i].totalBNCN = listTb[i].JumlahBN + listTb[i].JumlahCN;
             }
 
