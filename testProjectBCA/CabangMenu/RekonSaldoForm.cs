@@ -111,12 +111,14 @@ namespace testProjectBCA.CabangMenu
             List<PivotPerVendor_bon> listBonCabang = new List<PivotPerVendor_bon>();
             List<PivotCPC_ATMD> listATMDelivery;
 
+            
+
             listReturnBIdanBankLain = kqrs.listReturnBIdanBankLain;
             listSetoranCabang = kqrs.listSetoranCabang;
-            listATMReturn = kqrs.listReturnBIdanBankLain.Where(x => !x.fundingSource.Contains("OB") && !x.fundingSource.Contains("BI")).Select(x => new PivotCPC_ATMR() { dueDate = x.dueDate, fundingSource = x.fundingSource, emergencyReturnNotVal = x.emergencyReturnNotVal, emergencyReturnVal = x.emergencyReturnVal, grandTotal = x.grandTotal, plannedReturnNotVal = x.plannedReturnNotVal, plannedReturnVal = x.plannedReturnVal, realDate = x.realDate, vaultId = x.vaultId }).ToList();
+            listATMReturn = kqrs.listReturnBIdanBankLain.Where(x => !x.fundingSource.Contains("OB") && !x.fundingSource.Contains("BI") && !listKodePktCabang.Contains(x.fundingSource)).Select(x => new PivotCPC_ATMR() { dueDate = x.dueDate, fundingSource = x.fundingSource, emergencyReturnNotVal = x.emergencyReturnNotVal, emergencyReturnVal = x.emergencyReturnVal, grandTotal = x.grandTotal, plannedReturnNotVal = x.plannedReturnNotVal, plannedReturnVal = x.plannedReturnVal, realDate = x.realDate, vaultId = x.vaultId }).ToList();
             listDeliveryBIdanBankLain = kqrs.listDeliveryBIdanBankLain;
             listBonCabang = kqrs.listBonCabang;
-            listATMDelivery = kqrs.listATMDelivery.Where(x => !x.fundingSource.Contains("OB") && !x.fundingSource.Contains("BI")).Select(x => new PivotCPC_ATMD() { dueDate = x.dueDate, fundingSource = x.fundingSource, emergencyDeliveryNotVal = x.emergencyDeliveryNotVal, emergencyDeliveryVal = x.emergencyDeliveryNotVal, grandTotal = x.grandTotal, plannedDeliveryNotVal = x.plannedDeliveryNotVal, plannedDeliveryVal = x.plannedDeliveryVal, realDate = x.realDate, vaultId = x.vaultId }).ToList();
+            listATMDelivery = kqrs.listATMDelivery.Where(x => !x.fundingSource.Contains("OB") && !x.fundingSource.Contains("BI") && !listKodePktCabang.Contains(x.fundingSource)).Select(x => new PivotCPC_ATMD() { dueDate = x.dueDate, fundingSource = x.fundingSource, emergencyDeliveryNotVal = x.emergencyDeliveryNotVal, emergencyDeliveryVal = x.emergencyDeliveryNotVal, grandTotal = x.grandTotal, plannedDeliveryNotVal = x.plannedDeliveryNotVal, plannedDeliveryVal = x.plannedDeliveryVal, realDate = x.realDate, vaultId = x.vaultId }).ToList();
 
             
             //IN

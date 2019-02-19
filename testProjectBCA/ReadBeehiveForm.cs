@@ -36,7 +36,7 @@ namespace testProjectBCA
             of.Filter = Variables.txtFilter;
             if (of.ShowDialog() == DialogResult.OK)
             {
-                loadForm.ShowSplashScreen();
+
                 listDataString = new List<String>();
                 using (StreamReader sr = File.OpenText(of.FileName))
                 {
@@ -53,7 +53,7 @@ namespace testProjectBCA
                     }
                 }
                 listDataString.Remove("");
-                loadForm.CloseForm();
+
                 MessageBox.Show("ok!");
             }
             prosesString();
@@ -218,7 +218,7 @@ namespace testProjectBCA
                     for (int i = 0; i < dtCloned.Rows.Count; i++)
                     {
                         // sebelon maret
-                        Console.WriteLine("masuk maret");
+                        Console.WriteLine("masuk sebelon maret");
                         if (dtCloned.Rows[i][0].ToString() == "Transaction Date")
                         {
                             Console.WriteLine("dapet date");
@@ -533,8 +533,10 @@ namespace testProjectBCA
         {
             var query = (from x in en.saveBeeHives
                          join y in en.saveMcs on x.kodePerusahaan equals y.customerCode
-                         join z in en.DailyStocks on y.customerCode equals z.kode.Length == 8 ? z.kode : "0" + z.kode
-                         where x.tanggalTransaksi == dateTimePicker1.Value.Date && y.tanggal == dateTimePicker1.Value.Date && z.tanggal == dateTimePicker1.Value.Date && x.namaFile == ""
+                         join z in en.DailyStocks on y.customerCode equals (z.kode.Length == 7 ? "0" + z.kode : z.kode)
+                         //join z in en.DailyStocks on y.customerCode equals  "0" + z.kode 
+                         //join z in en.DailyStocks on y.customerCode equals (z.kode.Length < 8 ? "0" + z.kode : z.kode)
+                         where x.tanggalTransaksi == dateTimePicker1.Value.Date && y.tanggal == dateTimePicker1.Value.Date && z.tanggal == dateTimePicker1.Value.Date && x.namaFile == "" && z.jenisTransaksi == "Collection Retail"
                          select new
                          {
                              tanggalTransaksi = y.tanggal,
@@ -549,7 +551,30 @@ namespace testProjectBCA
                              )
                          }).ToList();
 
-            dataGridView1.DataSource = query;
+            var query2 = query.GroupBy(x => new { x.tanggalTransaksi, x.kodeNasabah }).Select(z => new
+            {
+                tanggalTransaksi = z.Key.tanggalTransaksi,
+                kodeNasabah = z.Key.kodeNasabah,
+                nominalBeehive = z.Sum(x => x.nominalBeeHive),
+                nominalMcs = z.Sum(x => x.nominalMcs),
+                nominalDailyStock = z.Sum(x => x.nominalDailyStock),
+                selisihBeeHiveMcs = z.Sum(x => x.selisihBeeHiveMcs),
+                selisihBeeHiveDailyStock = z.Sum(x => x.selisihBeeHiveDailyStock)
+            }).ToList();
+
+            var query3 = query2.Select(z => new
+            {
+                tanggalTransaksi = z.tanggalTransaksi,
+                kodeNasabah = z.kodeNasabah,
+                nominalBeehive = z.nominalBeehive,
+                nominalMcs = z.nominalMcs,
+                nominalDailyStock = z.nominalDailyStock,
+                selisihBeehiveMcs = z.selisihBeeHiveMcs,
+                selisihBeehiveDailystock = z.selisihBeeHiveDailyStock,
+                keterangan = z.nominalBeehive == z.nominalMcs && z.nominalMcs == z.nominalDailyStock ? "SAMA" : "TIDAK SAMA"
+            }).ToList();
+
+            dataGridView1.DataSource = query3;
             if (dataGridView1.Rows.Count > 0)
             {
                 for (int i = 2; i < 7; i++)

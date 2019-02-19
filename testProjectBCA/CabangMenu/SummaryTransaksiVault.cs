@@ -155,6 +155,11 @@ namespace testProjectBCA.CabangMenu
                 File.WriteAllText(sv.FileName, csv);
             }
         }
+
+        private void comboTahun_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            reloadBulan();
+        }
     }
   
 }

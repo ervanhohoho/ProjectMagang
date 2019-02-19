@@ -157,6 +157,41 @@ namespace testProjectBCA.CabangMenu
                     validasi = x.Key.validasi,
                     value = x.Sum(y => y.value)
                 }));
+            
+            //Antar CPC untuk format sesuai WP
+            listSistem.AddRange(listATMReturn
+                .Where(x => listKodePktCabang.Where(y => y == x.fundingSource).ToList().Any())
+                .Select(x => new TampilanWPRekonSaldo()
+                {
+                    in_out = "OUT",
+                    jenis = "Antar CPC",
+                    validasi = "Belum Validasi",
+                    value = x.plannedReturnNotVal + x.emergencyReturnNotVal
+                }).GroupBy(x => new { x.in_out, x.jenis, x.validasi })
+                .Select(x => new TampilanWPRekonSaldo()
+                {
+                    in_out = x.Key.in_out,
+                    jenis = x.Key.jenis,
+                    validasi = x.Key.validasi,
+                    value = x.Sum(y => y.value)
+                }));
+            listSistem.AddRange(listATMReturn
+                .Where(x => listKodePktCabang.Where(y => y == x.fundingSource).ToList().Any())
+                .Select(x => new TampilanWPRekonSaldo()
+                {
+                    in_out = "OUT",
+                    jenis = "Antar CPC",
+                    validasi = "Validasi",
+                    value = x.plannedReturnVal + x.emergencyReturnVal
+                })
+                .GroupBy(x => new { x.in_out, x.jenis, x.validasi })
+                .Select(x => new TampilanWPRekonSaldo()
+                {
+                    in_out = x.Key.in_out,
+                    jenis = x.Key.jenis,
+                    validasi = x.Key.validasi,
+                    value = x.Sum(y => y.value)
+                }));
 
 
             //BON
@@ -255,6 +290,40 @@ namespace testProjectBCA.CabangMenu
                     value = x.Sum(y => y.value)
                 }));
 
+            //Antar CPC Out
+            listSistem.AddRange(listATMDelivery
+                .Where(x => listKodePktCabang.Where(y => y == x.fundingSource).ToList().Any())
+                .Select(x => new TampilanWPRekonSaldo()
+                {
+                    in_out = "IN",
+                    jenis = "Antar CPC",
+                    validasi = "Belum Validasi",
+                    value = x.plannedDeliveryNotVal + x.emergencyDeliveryNotVal
+                }).GroupBy(x => new { x.in_out, x.jenis, x.validasi })
+                .Select(x => new TampilanWPRekonSaldo()
+                {
+                    in_out = x.Key.in_out,
+                    jenis = x.Key.jenis,
+                    validasi = x.Key.validasi,
+                    value = x.Sum(y => y.value)
+                }));
+            listSistem.AddRange(listATMDelivery
+                .Where(x => listKodePktCabang.Where(y => y == x.fundingSource).ToList().Any())
+                .Select(x => new TampilanWPRekonSaldo()
+                {
+                    in_out = "OUT",
+                    jenis = "Antar CPC",
+                    validasi = "Validasi",
+                    value = x.plannedDeliveryNotVal + x.emergencyDeliveryNotVal
+                })
+                .GroupBy(x => new { x.in_out, x.jenis, x.validasi })
+                .Select(x => new TampilanWPRekonSaldo()
+                {
+                    in_out = x.Key.in_out,
+                    jenis = x.Key.jenis,
+                    validasi = x.Key.validasi,
+                    value = x.Sum(y => y.value)
+                }));
 
             listSistem = listSistem.GroupBy(x => new { x.in_out, x.jenis, x.validasi }).Select(x => new TampilanWPRekonSaldo() { in_out = x.Key.in_out, jenis = x.Key.jenis, validasi = x.Key.validasi, value = x.Sum(z=>z.value) }).ToList();
             dataSistemGridView.DataSource = listSistem;
@@ -430,7 +499,7 @@ namespace testProjectBCA.CabangMenu
             mapOpti.Add("BI Delivery", "BI");
             mapOpti.Add("Bank Lain Delivery", "Bank Lain");
             mapOpti.Add("ATM Delivery", "ATM");
-
+            mapOpti.Add("Antar CPC", "Antar CPC");
 
             String bufString;
             var allDataOpti = listSistem.GroupBy(x => new { x.in_out, jenis = (mapOpti.TryGetValue(x.jenis, out bufString) ? bufString : "")}).Select(x => new { x.Key.in_out, x.Key.jenis, value = x.Sum(y => y.value) }).ToList();
@@ -446,16 +515,60 @@ namespace testProjectBCA.CabangMenu
             mapDailystock.Add("ATM", "ATM");
             mapDailystock.Add("Delivery Cabang", "Cabang");
             mapDailystock.Add("Collection BI", "BI");
+            mapDailystock.Add("Antar CPC", "Antar CPC");
 
-            var dailyStocks = db.DailyStocks.Where(x => x.kodePkt == kodePkt && x.tanggal == tanggal).Select(x=> new {
-                in_out = x.in_out,
+            var dailyStocks = db.DailyStocks.AsEnumerable().Where(x => x.kodePkt == kodePkt && x.tanggal == tanggal && !String.IsNullOrWhiteSpace(x.in_out)).Select(x=> new {
+                x.in_out,
                 jenis = (mapDailystock.Where(y=>x.jenisTransaksi.Contains(y.Key)).Select(y=>y.Value).FirstOrDefault() == null ? "" : mapDailystock.Where(y => x.jenisTransaksi.Contains(y.Key)).Select(y => y.Value).FirstOrDefault()),
                 value = x.BN100K + x.BN50K + x.BN20K + x.BN10K + x.BN5K + x.BN2K + x.BN1K + x.BN500 + x.BN200 + x.CN1K + x.CN500 + x.CN200 + x.CN100 + x.CN50 + x.CN25 
             }).ToList();
 
             dailyStocks = dailyStocks.GroupBy(x => new { x.in_out, x.jenis }).Select(x => new { x.Key.in_out, x.Key.jenis, value = x.Sum(y => y.value) }).ToList();
 
-            dataGridView1.DataSource = allDataOpti;
+            var perbandingan = (from x in allDataOpti
+                                 join y in dailyStocks on new { x.in_out, x.jenis } equals new { y.in_out, y.jenis } into b
+                                 from y in b.DefaultIfEmpty()
+                                 select new
+                                 {
+                                     x.in_out,
+                                     x.jenis,
+                                     optiDanInputan = x.value,
+                                     dailyStock = y == null ? 0 : y.value
+                                 }).ToList();
+
+            perbandingan.AddRange(
+                (from x in dailyStocks
+                 join y in allDataOpti on new { x.in_out, x.jenis } equals new { y.in_out, y.jenis } into b
+                 from y in b.DefaultIfEmpty()
+                 select new
+                 {
+                     x.in_out,
+                     x.jenis,
+                     optiDanInputan = y == null ? 0 : y.value,
+                     dailyStock = x.value,
+                 }).ToList()
+                );
+
+            perbandingan = perbandingan.Distinct().ToList();
+
+            var toView = perbandingan.Select(x => new
+            {
+                x.in_out,
+                x.jenis,
+                x.optiDanInputan,
+                x.dailyStock,
+                selisih = x.optiDanInputan - x.dailyStock
+            }).ToList();
+            dataGridView1.DataSource = toView;
+
+            for(int a=0;a<dataGridView1.ColumnCount;a++)
+            {
+                if(dataGridView1.Columns[a].ValueType == typeof(Int64?))
+                {
+                    dataGridView1.Columns[a].DefaultCellStyle.Format = "C0";
+                    dataGridView1.Columns[a].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
+                }
+            }
         }
         class TampilanWPRekonSaldo
         {

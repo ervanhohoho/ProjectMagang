@@ -91,6 +91,7 @@
             this.comboTahun.Name = "comboTahun";
             this.comboTahun.Size = new System.Drawing.Size(121, 21);
             this.comboTahun.TabIndex = 7;
+            this.comboTahun.SelectionChangeCommitted += new System.EventHandler(this.comboTahun_SelectionChangeCommitted);
             // 
             // comboBulan
             // 

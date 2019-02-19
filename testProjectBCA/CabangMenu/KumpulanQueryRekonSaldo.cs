@@ -553,7 +553,7 @@ namespace testProjectBCA.CabangMenu
             var prequery = (
                 from x in db.RekonSaldoVaults.AsEnumerable()
                 join y in db.Pkts on x.vaultId.Substring(0, 4) equals y.kodePktCabang == "CCASA" ? "CCAS" : y.kodePktCabang
-                where (kodePkt == "CCAS" ? x.vaultId.Contains(kodePkt) : x.vaultId == kodePkt)
+                where ((kodePkt == "CCAS" ? x.vaultId.Contains(kodePkt) : x.vaultId == kodePkt) || (kodePkt == "CCAS" ? x.fundingSoure.Contains(kodePkt) && x.actionRekon == "Planned Return" : x.fundingSoure == kodePkt && x.actionRekon == "Planned Return"))
                 && (!y.kanwil.ToLower().Contains("jabo") ? (x.fundingSoure != null ? x.fundingSoure.ToLower().Contains("OB") || x.fundingSoure.ToLower().Contains("BI") : false) : true)
                 select x
             ).ToList();
@@ -656,7 +656,7 @@ namespace testProjectBCA.CabangMenu
             var prequery = (
                 from x in db.RekonSaldoVaults.AsEnumerable()
                 join y in db.Pkts on x.vaultId.Substring(0, 4) equals y.kodePktCabang == "CCASA" ? "CCAS" : y.kodePktCabang
-                where (kodePkt == "CCAS" ? x.vaultId.Contains(kodePkt) : x.vaultId == kodePkt)
+                where ((kodePkt == "CCAS" ? x.vaultId.Contains(kodePkt) : x.vaultId == kodePkt) || (kodePkt == "CCAS" ? x.fundingSoure.Contains(kodePkt) && x.actionRekon == "Planned Return" : x.fundingSoure == kodePkt && x.actionRekon == "Planned Return"))
                 && (!y.kanwil.ToLower().Contains("jabo") ? (x.fundingSoure != null ? x.fundingSoure.ToLower().Contains("OB") || x.fundingSoure.ToLower().Contains("BI") : false) : true)
                 select x
             ).ToList();
@@ -757,7 +757,7 @@ namespace testProjectBCA.CabangMenu
             var prequery = (
                 from x in db.RekonSaldoVaults.AsEnumerable()
                 join y in db.Pkts on x.vaultId.Substring(0, 4) equals y.kodePktCabang == "CCASA" ? "CCAS" : y.kodePktCabang
-                where (kodePkt == "CCAS" ? x.vaultId.Contains(kodePkt) : x.vaultId == kodePkt)
+                where ((kodePkt == "CCAS" ? x.vaultId.Contains(kodePkt) : x.vaultId == kodePkt) || (kodePkt == "CCAS" ? x.fundingSoure.Contains(kodePkt) && x.actionRekon == "Planned Return" : x.fundingSoure == kodePkt && x.actionRekon == "Planned Return"))
                 && (!y.kanwil.ToLower().Contains("jabo") ? (x.fundingSoure != null ? x.fundingSoure.ToLower().Contains("OB") || x.fundingSoure.ToLower().Contains("BI") : false) : true)
                 select x
             ).ToList();
@@ -1116,6 +1116,7 @@ namespace testProjectBCA.CabangMenu
             var queryad = (from x in db.RekonSaldoVaults.AsEnumerable()
                            join y in db.Pkts.AsEnumerable() on x.vaultId equals y.kodePktCabang == "CCASA" ? "CCAS" : y.kodePktCabang 
                            where !String.IsNullOrEmpty(x.fundingSoure) && y.kanwil.Like("Jabotabek")
+                           && ((kodePkt == "CCAS" ? x.vaultId.Contains(kodePkt) : x.vaultId == kodePkt) || (kodePkt == "CCAS" ? x.fundingSoure.Contains(kodePkt) && x.actionRekon == "Planned Return" : x.fundingSoure == kodePkt && x.actionRekon == "Planned Return"))
                            select x).ToList();
             queryad = (from x in queryad
                        where (x.fundingSoure != "BI" && !x.fundingSoure.Contains("OB")) && (((DateTime)x.dueDate).Date == tanggal || ((DateTime)x.realDate).Date == tanggal)

@@ -35,6 +35,7 @@ namespace testProjectBCA
                 {
                     foreach (transaksiPkt pkt in list)
                     {
+                        db = new Database1Entities();
                         var q = (from x in db.TransaksiAtms where x.kodePkt == pkt.kodePkt && x.tanggal == pkt.tanggalPengajuan select x).FirstOrDefault();
                         if (q != null)
                         {
@@ -63,6 +64,10 @@ namespace testProjectBCA
                             q.sislokCRM50 = pkt.bongkaranCrm[1];
                             q.sislokCRM20 = pkt.bongkaranCrm[2];
 
+
+                            Console.WriteLine("Saldo Akhir Hitungan 100: " + pkt.saldoAkhirHitungan[0]);
+                            Console.WriteLine("Saldo Akhir Hitungan 50: " + pkt.saldoAkhirHitungan[1]);
+                            Console.WriteLine("Saldo Akhir Hitungan 20: " + pkt.saldoAkhirHitungan[2]);
                             Int64 selisih100 = pkt.saldoAkhirHitungan[0] - (Int64)q.saldoAkhir100;
                             Int64 selisih50 = pkt.saldoAkhirHitungan[1] - (Int64)q.saldoAkhir50;
                             Int64 selisih20 = pkt.saldoAkhirHitungan[2] - (Int64)q.saldoAkhir20;

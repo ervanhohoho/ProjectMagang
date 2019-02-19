@@ -40,7 +40,7 @@ namespace testProjectBCA.CabangMenu
             //{
             //    vaultId.Add(item.ToString());
             //}
-            List<String> fundingSource = new List<string>() {"BI","Bank Lain","ATM", "All"};
+            List<String> fundingSource = new List<string>() {"BI","Bank Lain","ATM", "Cabang", "All"};
             comboPkt.DataSource = fundingSource;
         }
         public List<RekonSaldoVault> loadPrequery()
@@ -63,6 +63,18 @@ namespace testProjectBCA.CabangMenu
                         x.fundingSoure.ToLower().Substring(0, 2) != "bi" && x.fundingSoure.ToLower().Substring(0, 2) != "ob"
                     ) :
                     false)).ToList();
+                if(fundingSource == "ATM")
+                {
+                    Database1Entities db = new Database1Entities();
+                    List<String> listKodePktATM = db.Pkts.AsEnumerable().Where(x => !String.IsNullOrWhiteSpace(x.kodeOpti)).Select(x => x.kodeOpti).Distinct().ToList();
+                    prequery = prequery.Where(x => listKodePktATM.Contains(x.fundingSoure)).ToList();
+                }
+                else if(fundingSource == "Cabang")
+                {
+                    Database1Entities db = new Database1Entities();
+                    List<String> listKodePktCabang = db.Pkts.AsEnumerable().Where(x=>!String.IsNullOrWhiteSpace(x.kodePktCabang)).Select(x => x.kodePktCabang).Distinct().ToList();
+                    prequery = prequery.Where(x => listKodePktCabang.Contains(x.fundingSoure)).ToList();
+                }
             }
             else
                 Console.WriteLine("ALL");
