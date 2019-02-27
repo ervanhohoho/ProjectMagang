@@ -1210,6 +1210,13 @@ namespace testProjectBCA
             prosesWPForm.MdiParent = this;
             prosesWPForm.Show();
         }
+
+        private void jurnalSelisihToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            JurnalSelisihForm jsf = new JurnalSelisihForm();
+            jsf.MdiParent = this;
+            jsf.Show();
+        }
     }
 }
 public static class SqlBulkCopyExtensions

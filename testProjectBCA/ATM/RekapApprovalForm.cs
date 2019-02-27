@@ -879,13 +879,47 @@ namespace testProjectBCA
 
                 var test = (from x in listRekapApproval
                             join y in db.Pkts on x.kodePkt equals y.kodePkt
-                            select new { tanggalProses = x.tanggal, tanggalOrder = x.tanggalOrder, namaPkt = y.namaPkt, kodePkt = x.kodePkt, order = x.order, orderType = x.orderType, d100 = x.d100, d50 = x.d50, d20 = x.d20, kanwil = x.kanwil, koordinator = x.koordinator, x.inputOpr, x.inputSpv, x.inputNoTxn, x.validasiOpr, x.validasiSpv, x.validasiNoTxn }
+                            select new
+                            {
+                                tanggalProses = x.tanggal,
+                                x.tanggalOrder,
+                                x.order,
+                                x.orderType,
+                                x.kodePkt,
+                                x.d100,
+                                x.d50,
+                                x.d20,
+                                x.inputOpr,
+                                x.inputSpv,
+                                x.inputNoTxn,
+                                x.validasiOpr,
+                                x.validasiSpv,
+                                x.validasiNoTxn,
+                                x.kanwil
+                            }
                             ).ToList();
                 if(kanwilYangDilihat.Any())
                 {
                     test = test.Where(x => kanwilYangDilihat.Where(y => y == x.kanwil).FirstOrDefault() != null && x.d100 != -1).ToList();
                 }
-                String csv = ServiceStack.Text.CsvSerializer.SerializeToString(test);
+                var hasil = test.Select(x => new
+                {
+                    x.tanggalProses,
+                    x.tanggalOrder,
+                    x.order,
+                    x.orderType,
+                    x.kodePkt,
+                    x.d100,
+                    x.d50,
+                    x.d20,
+                    x.inputOpr,
+                    x.inputSpv,
+                    x.inputNoTxn,
+                    x.validasiOpr,
+                    x.validasiSpv,
+                    x.validasiNoTxn,
+                }).ToList();
+                String csv = ServiceStack.Text.CsvSerializer.SerializeToString(hasil);
                 File.WriteAllText(sv.FileName, csv);
             }
         }

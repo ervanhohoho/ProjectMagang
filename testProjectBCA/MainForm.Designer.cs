@@ -110,6 +110,7 @@
             this.testMenusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inputSaldoATMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inputSaldoCRMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.jurnalSelisihToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -318,7 +319,8 @@
             this.orderTrackingToolStripMenuItem1,
             this.inputDataBankLainToolStripMenuItem1,
             this.viewDataStokPosisiToolStripMenuItem,
-            this.prosesWPToolStripMenuItem});
+            this.prosesWPToolStripMenuItem,
+            this.jurnalSelisihToolStripMenuItem});
             this.cabangToolStripMenuItem.Name = "cabangToolStripMenuItem";
             this.cabangToolStripMenuItem.Size = new System.Drawing.Size(60, 20);
             this.cabangToolStripMenuItem.Text = "Cabang";
@@ -748,16 +750,23 @@
             // inputSaldoATMToolStripMenuItem
             // 
             this.inputSaldoATMToolStripMenuItem.Name = "inputSaldoATMToolStripMenuItem";
-            this.inputSaldoATMToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.inputSaldoATMToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             this.inputSaldoATMToolStripMenuItem.Text = "Input Saldo ATM";
             this.inputSaldoATMToolStripMenuItem.Click += new System.EventHandler(this.inputSaldoATMToolStripMenuItem_Click);
             // 
             // inputSaldoCRMToolStripMenuItem
             // 
             this.inputSaldoCRMToolStripMenuItem.Name = "inputSaldoCRMToolStripMenuItem";
-            this.inputSaldoCRMToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.inputSaldoCRMToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             this.inputSaldoCRMToolStripMenuItem.Text = "Input Saldo CRM";
             this.inputSaldoCRMToolStripMenuItem.Click += new System.EventHandler(this.inputSaldoCRMToolStripMenuItem_Click);
+            // 
+            // jurnalSelisihToolStripMenuItem
+            // 
+            this.jurnalSelisihToolStripMenuItem.Name = "jurnalSelisihToolStripMenuItem";
+            this.jurnalSelisihToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.jurnalSelisihToolStripMenuItem.Text = "Jurnal Selisih";
+            this.jurnalSelisihToolStripMenuItem.Click += new System.EventHandler(this.jurnalSelisihToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -865,5 +874,6 @@
         private System.Windows.Forms.ToolStripMenuItem transaksiVaultToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem loadDataVaultToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem prosesWPToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem jurnalSelisihToolStripMenuItem;
     }
 }

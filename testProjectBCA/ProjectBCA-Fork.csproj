@@ -202,6 +202,12 @@
     <Compile Include="CabangMenu\DetailTransaksiVault.Designer.cs">
       <DependentUpon>DetailTransaksiVault.cs</DependentUpon>
     </Compile>
+    <Compile Include="CabangMenu\JurnalSelisihForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CabangMenu\JurnalSelisihForm.Designer.cs">
+      <DependentUpon>JurnalSelisihForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="CabangMenu\KumpulanQueryRekonSaldo.cs" />
     <Compile Include="CabangMenu\ProsesWPForm.cs">
       <SubType>Form</SubType>
@@ -707,6 +713,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CabangMenu\DetailTransaksiVault.resx">
       <DependentUpon>DetailTransaksiVault.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CabangMenu\JurnalSelisihForm.resx">
+      <DependentUpon>JurnalSelisihForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CabangMenu\ProsesWPForm.resx">
       <DependentUpon>ProsesWPForm.cs</DependentUpon>

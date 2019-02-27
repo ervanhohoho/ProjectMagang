@@ -106,7 +106,14 @@ namespace testProjectBCA
                                             tanggal = timestamp.AddDays(1).Date;
                                         else
                                             tanggal = timestamp;
-                                        nominalDispute = Int64.Parse(dt.Rows[i][19].ToString().Split(':')[1].Trim('\"'));
+                                        Int64 buf;
+                                        if (Int64.TryParse(dt.Rows[i][19].ToString().Split(':')[1].Trim('\"'), out buf))
+                                            nominalDispute = buf;
+                                        else
+                                        {
+                                            MessageBox.Show("Data ROW " + i + " Nominal dispute tidak bisa di parse, akan diskip!");
+                                            continue;
+                                        }
                                         dueDate = Convert.ToDateTime(dt.Rows[i][4].ToString());
                                         reference_master = dt.Rows[i][7].ToString();
                                         sched_id = dt.Rows[i][8].ToString();
