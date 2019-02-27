@@ -21,6 +21,7 @@ namespace testProjectBCA.CabangMenu
         List<PivotCPC_BIBLD> listDeliveryBIdanBankLain = new List<PivotCPC_BIBLD>();
         List<PivotPerVendor_bon> listBonCabang = new List<PivotPerVendor_bon>();
         List<PivotCPC_ATMD> listATMDelivery;
+        List<PivotCPC_ATMD> listAntarCPCReturn;
         List<RekonSaldoInputanUser> rekonSaldoInputanUsers = new List<RekonSaldoInputanUser>();
         List<TampilanWPRekonSaldo> listSistem;
         List<ImportDataTambahan> listImport;
@@ -40,6 +41,7 @@ namespace testProjectBCA.CabangMenu
         {
             Database1Entities db = new Database1Entities();
             loadForm.ShowSplashScreen();
+            dataGridView1.DataSource = null;
             tanggal = dateTimePicker1.Value.Date;
             ImportDataTambahanBtn.Enabled = true;
             loadTableSistem();
@@ -63,7 +65,7 @@ namespace testProjectBCA.CabangMenu
             listDeliveryBIdanBankLain = kqrs.listDeliveryBIdanBankLain;
             listBonCabang = kqrs.listBonCabang;
             listATMDelivery = kqrs.listATMDelivery.Where(x => !x.fundingSource.Contains("OB") && !x.fundingSource.Contains("BI")).Select(x => new PivotCPC_ATMD() { dueDate = x.dueDate, fundingSource = x.fundingSource, emergencyDeliveryNotVal = x.emergencyDeliveryNotVal, emergencyDeliveryVal = x.emergencyDeliveryNotVal, grandTotal = x.grandTotal, plannedDeliveryNotVal = x.plannedDeliveryNotVal, plannedDeliveryVal = x.plannedDeliveryVal, realDate = x.realDate, vaultId = x.vaultId }).ToList();
-            
+            listAntarCPCReturn = kqrs.listATMDelivery.Where(x => !x.fundingSource.Contains("OB") && !x.fundingSource.Contains("BI")).Select(x => new PivotCPC_ATMD() { dueDate = x.dueDate, fundingSource = x.fundingSource, emergencyDeliveryNotVal = x.emergencyDeliveryNotVal, emergencyDeliveryVal = x.emergencyDeliveryNotVal, grandTotal = x.grandTotal, plannedDeliveryNotVal = x.plannedDeliveryNotVal, plannedDeliveryVal = x.plannedDeliveryVal, realDate = x.realDate, vaultId = x.vaultId }).ToList();
             //IN
             listSetoranCabang = listSetoranCabang.GroupBy(x => x.vendor).Select(x => new PivotPerVendor_setoran() {
                 vendor = x.Key,
@@ -291,7 +293,7 @@ namespace testProjectBCA.CabangMenu
                 }));
 
             //Antar CPC Out
-            listSistem.AddRange(listATMDelivery
+            listSistem.AddRange(listAntarCPCReturn
                 .Where(x => listKodePktCabang.Where(y => y == x.fundingSource).ToList().Any())
                 .Select(x => new TampilanWPRekonSaldo()
                 {
@@ -307,14 +309,14 @@ namespace testProjectBCA.CabangMenu
                     validasi = x.Key.validasi,
                     value = x.Sum(y => y.value)
                 }));
-            listSistem.AddRange(listATMDelivery
+            listSistem.AddRange(listAntarCPCReturn
                 .Where(x => listKodePktCabang.Where(y => y == x.fundingSource).ToList().Any())
                 .Select(x => new TampilanWPRekonSaldo()
                 {
                     in_out = "OUT",
                     jenis = "Antar CPC",
                     validasi = "Validasi",
-                    value = x.plannedDeliveryNotVal + x.emergencyDeliveryNotVal
+                    value = x.plannedDeliveryVal + x.emergencyDeliveryVal
                 })
                 .GroupBy(x => new { x.in_out, x.jenis, x.validasi })
                 .Select(x => new TampilanWPRekonSaldo()
@@ -358,7 +360,7 @@ namespace testProjectBCA.CabangMenu
             {
                 Name = "jenis",
                 HeaderText = "Jenis",
-                DataSource = listJenis
+                DataSource = listJenis,
             };
             DataGridViewComboBoxColumn colIn_out = new DataGridViewComboBoxColumn()
             {
@@ -396,7 +398,9 @@ namespace testProjectBCA.CabangMenu
             foreach (var temp in dataExisting)
             {
                 rows.Add(new DataGridViewRow());
-                rows[rows.Count - 1].CreateCells(dataTambahanGridView, temp.Id, temp.in_out, temp.jenis, temp.value, temp.keterangan);
+                rows[rows.Count - 1].CreateCells(dataTambahanGridView, temp.Id, temp.in_out.ToLower(), temp.jenis, temp.value, temp.keterangan);
+                Console.WriteLine(temp.in_out.ToLower());
+                rows[rows.Count - 1].Cells[1].Value = temp.in_out.ToLower();
                 //dataTambahanGridView.Rows.Add(row);
             }
             dataTambahanGridView.Rows.AddRange(rows.ToArray());
@@ -446,6 +450,7 @@ namespace testProjectBCA.CabangMenu
                 datadb.keterangan = toUpdate.keterangan;
             }
             db.SaveChanges();
+            loadTableInputan();
         }
         
 
@@ -516,6 +521,7 @@ namespace testProjectBCA.CabangMenu
             mapDailystock.Add("Delivery Cabang", "Cabang");
             mapDailystock.Add("Collection BI", "BI");
             mapDailystock.Add("Antar CPC", "Antar CPC");
+            mapDailystock.Add("Retail", "Retail");
 
             var dailyStocks = db.DailyStocks.AsEnumerable().Where(x => x.kodePkt == kodePkt && x.tanggal == tanggal && !String.IsNullOrWhiteSpace(x.in_out)).Select(x=> new {
                 x.in_out,
@@ -563,7 +569,7 @@ namespace testProjectBCA.CabangMenu
 
             for(int a=0;a<dataGridView1.ColumnCount;a++)
             {
-                if(dataGridView1.Columns[a].ValueType == typeof(Int64?))
+                if(dataGridView1.Columns[a].ValueType == typeof(Int64?) || dataGridView1.Columns[a].ValueType == typeof(Int64))
                 {
                     dataGridView1.Columns[a].DefaultCellStyle.Format = "C0";
                     dataGridView1.Columns[a].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("id-ID");
@@ -585,7 +591,10 @@ namespace testProjectBCA.CabangMenu
             public Int64 value { set; get; }
         }
 
-        
+        private void dataTambahanGridView_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+
+        }
     }
    
 }

@@ -50,6 +50,7 @@
             this.InputGridView.Size = new System.Drawing.Size(1326, 563);
             this.InputGridView.TabIndex = 0;
             this.InputGridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.InputGridView_CellEndEdit);
+            this.InputGridView.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.InputGridView_DataError);
             // 
             // TanggalPicker
             // 

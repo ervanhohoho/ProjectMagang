@@ -1241,10 +1241,13 @@ namespace testProjectBCA
 
         public void pivotATM()
         {
+            var queryKodePktCabang = (from x in en.Pkts
+                                      where x.kodePktCabang.Length > 1
+                                      select x.kodePktCabang).ToList();
             //area for atm
             var queryVaultATM = (from x in en.RekonSaldoVaults.AsEnumerable()
                                  join y in en.Pkts.AsEnumerable() on x.vaultId.Substring(0, 4) equals y.kodePktCabang == "CCASA" ? "CCAS" : y.kodePktCabang
-                                 where !String.IsNullOrEmpty(x.fundingSoure) && y.kanwil.Contains("Jabo")
+                                 where !String.IsNullOrEmpty(x.fundingSoure) && y.kanwil.Contains("Jabo") && !queryKodePktCabang.Contains(x.fundingSoure)
                                  select x).ToList();
 
 
@@ -1258,7 +1261,7 @@ namespace testProjectBCA
             {
                 pc2.Add(new PivotCPC
                 {
-                    vaultId = item.vaultId,
+                    vaultId = item.vaultId.Substring(0,4),
                     confId = item.confId,
                     action = item.actionRekon,
                     status = item.statusRekon,
@@ -1314,7 +1317,7 @@ namespace testProjectBCA
             {
                 cp2.Add(new PivotCPC
                 {
-                    vaultId = item.vaultId,
+                    vaultId = item.vaultId.Substring(0, 4),
                     confId = item.confId,
                     action = item.actionRekon,
                     status = item.statusRekon,
@@ -1359,6 +1362,130 @@ namespace testProjectBCA
             }
             // END OF OUT ATM
 
+        }
+
+        //copy of atm
+        public void pivotAntarCPC()
+        {
+            var queryKodePktCabang = (from x in en.Pkts
+                                      where x.kodePktCabang.Length > 1
+                                      select x.kodePktCabang).ToList();
+            //area for atm
+            var queryVaultATM = (from x in en.RekonSaldoVaults.AsEnumerable()
+                                 join y in en.Pkts.AsEnumerable() on x.vaultId.Substring(0, 4) equals y.kodePktCabang == "CCASA" ? "CCAS" : y.kodePktCabang
+                                 where !String.IsNullOrEmpty(x.fundingSoure) && y.kanwil.Contains("Jabo") && queryKodePktCabang.Contains(x.fundingSoure)
+                                 select x).ToList();
+
+
+            //QUERY VAULT IN ATM - BUFFER
+            var queryInATMBuffer = (from x in queryVaultATM
+                                    where (x.fundingSoure.Substring(0, 2) != "BI" && !x.fundingSoure.Substring(0, 2).Contains("OB")) && (((DateTime)x.dueDate).Date == dateTimePicker2.Value.Date || ((DateTime)x.realDate).Date == dateTimePicker2.Value.Date)
+                                    select x).ToList();
+
+            List<PivotCPC> pc2 = new List<PivotCPC>();
+            foreach (var item in queryInATMBuffer)
+            {
+                pc2.Add(new PivotCPC
+                {
+                    vaultId = item.vaultId.Substring(0, 4),
+                    confId = item.confId,
+                    action = item.actionRekon,
+                    status = item.statusRekon,
+                    blogMessage = item.blogMessage,
+                    orderDate = ((DateTime)item.orderDate).Date,
+                    dueDate = ((DateTime)item.dueDate).Date,
+                    timeStamp = (DateTime)item.timeStampRekon,
+                    currencyAmmount = Int64.Parse(item.currencyAmmount.ToString()),
+                    fundingSource = item.fundingSoure,
+                    realDate = ((DateTime)item.timeStampRekon).Hour < 21 ? ((DateTime)item.timeStampRekon).Date : ((DateTime)item.timeStampRekon).AddDays(1).Date,
+                    validation = item.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(item.timeStampRekon.ToString()).Hour < 21 ? item.timeStampRekon : DateTime.Parse(item.timeStampRekon.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(dateTimePicker2.Value.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
+                });
+
+            }
+
+            //PREPARING PIVOT VAULT IN ATM - BUFFER // catatan: pake vaultid // 
+            var pivotInAtmBuffer = pc2.GroupBy(c => new { c.vaultId, }).Select(g => new
+            {
+                vaultID = g.Key.vaultId,
+                sudahValidasi = g.Where(c => c.validation == "VALIDATED" && c.action.ToLower().Contains("delivery")).Sum(c => c.currencyAmmount),
+                belumValidasi = g.Where(c => c.validation == "NOT VALIDATED" && c.action.ToLower().Contains("delivery")).Sum(c => c.currencyAmmount),
+                total = g.Where(c => c.validation == "NOT VALIDATED" && c.action.ToLower().Contains("delivery")).Sum(c => c.currencyAmmount) + g.Where(c => c.validation == "VALIDATED" && c.action.ToLower().Contains("delivery")).Sum(c => c.currencyAmmount)
+
+            }).ToList();
+
+            var pivotInAtmBufferReady = (from x in pivotInAtmBuffer
+                                         select new { vaultID = x.vaultID.Substring(0, 4), x.sudahValidasi, x.belumValidasi, x.total }).ToList();
+
+            dataGridViewIn.DataSource = pivotInAtmBufferReady;
+
+            pivotAtm_In = new List<PivotATM_In>();
+
+            foreach (var item in pivotInAtmBufferReady)
+            {
+                pivotAtm_In.Add(new PivotATM_In
+                {
+                    vendor = item.vaultID,
+                    belumValidasi = item.belumValidasi,
+                    sudahValidasi = item.sudahValidasi,
+                    total = item.total
+                });
+            }
+            //END OF IN ATM
+
+            //QUERY VAULT OUT ATM - BUFFER
+            var queryOutAtmBuffer = (from x in queryVaultATM
+                                     where (x.fundingSoure.Substring(0, 2) != "BI" && !x.fundingSoure.Substring(0, 2).Contains("OB")) && (((DateTime)x.dueDate).Date == dateTimePicker2.Value.Date || ((DateTime)x.realDate).Date == dateTimePicker2.Value.Date)
+                                     select x).ToList();
+
+            List<PivotCPC> cp2 = new List<PivotCPC>();
+
+            foreach (var item in queryOutAtmBuffer)
+            {
+                cp2.Add(new PivotCPC
+                {
+                    vaultId = item.vaultId.Substring(0, 4),
+                    confId = item.confId,
+                    action = item.actionRekon,
+                    status = item.statusRekon,
+                    blogMessage = item.blogMessage,
+                    orderDate = ((DateTime)item.orderDate).Date,
+                    dueDate = ((DateTime)item.dueDate).Date,
+                    timeStamp = (DateTime)item.timeStampRekon,
+                    currencyAmmount = Int64.Parse(item.currencyAmmount.ToString()),
+                    fundingSource = item.fundingSoure,
+                    realDate = ((DateTime)item.timeStampRekon).Hour < 21 ? ((DateTime)item.timeStampRekon).Date : ((DateTime)item.timeStampRekon).AddDays(1).Date,
+                    validation = item.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(item.timeStampRekon.ToString()).Hour < 21 ? item.timeStampRekon : DateTime.Parse(item.timeStampRekon.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(dateTimePicker2.Value.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
+                });
+
+            }
+
+            //PREPARING PIVOT VAULT OUT ATM - BUFFER // catatan: pake vaultid // 
+            var pivotOutAtmBuffer = cp2.GroupBy(c => new { c.vaultId, }).Select(g => new
+            {
+                vaultID = g.Key.vaultId,
+                sudahValidasi = g.Where(c => c.validation == "VALIDATED" && c.action.ToLower().Contains("return")).Sum(c => c.currencyAmmount),
+                belumValidasi = g.Where(c => c.validation == "NOT VALIDATED" && c.action.ToLower().Contains("return")).Sum(c => c.currencyAmmount),
+                total = g.Where(c => c.validation == "VALIDATED" && c.action.ToLower().Contains("return")).Sum(c => c.currencyAmmount) + g.Where(c => c.validation == "NOT VALIDATED" && c.action.ToLower().Contains("return")).Sum(c => c.currencyAmmount)
+
+            }).ToList();
+
+            var pivotOutAtmBufferReady = (from x in pivotOutAtmBuffer
+                                          select new { vaultID = x.vaultID.Substring(0, 4), x.sudahValidasi, x.belumValidasi, x.total }).ToList();
+
+            dataGridViewOut.DataSource = pivotOutAtmBufferReady;
+
+            pivotAtm_Out = new List<PivotATM_Out>();
+
+            foreach (var item in pivotOutAtmBufferReady)
+            {
+                pivotAtm_Out.Add(new PivotATM_Out
+                {
+                    vendor = item.vaultID,
+                    belumValidasi = item.belumValidasi,
+                    sudahValidasi = item.sudahValidasi,
+                    total = item.total
+                });
+            }
         }
 
         public void pivotBI()
@@ -2140,6 +2267,7 @@ namespace testProjectBCA
         {
             pivotATM();
             pivotPerVendor();
+
             var penggabunganInAtm = (from x in pivotAtm_In
                                        select new
                                        {
@@ -2199,6 +2327,27 @@ namespace testProjectBCA
 
             dataGridViewOut.DataSource = pivotAllOut;
 
+            if (dataGridViewIn.Rows.Count > 0)
+            {
+                for (int i = 1; i < dataGridViewIn.Columns.Count; i++)
+                {
+                    dataGridViewIn.Columns[i].DefaultCellStyle.Format = "c";
+                    dataGridViewIn.Columns[i].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("ID-id");
+                }
+            }
+            if (dataGridViewOut.Rows.Count > 0)
+            {
+                for (int i = 1; i < dataGridViewOut.Columns.Count; i++)
+                {
+                    dataGridViewOut.Columns[i].DefaultCellStyle.Format = "c";
+                    dataGridViewOut.Columns[i].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("ID-id");
+                }
+            }
+        }
+
+        private void buttonAntarCPC_Click(object sender, EventArgs e)
+        {
+            pivotAntarCPC();
             if (dataGridViewIn.Rows.Count > 0)
             {
                 for (int i = 1; i < dataGridViewIn.Columns.Count; i++)

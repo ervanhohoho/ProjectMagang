@@ -42,9 +42,9 @@
             this.label3 = new System.Windows.Forms.Label();
             this.dataSistemGridView = new System.Windows.Forms.DataGridView();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.label5 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.loadPerbandinganButton = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
             this.saveBtn = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -151,11 +151,12 @@
             this.dataTambahanGridView.Name = "dataTambahanGridView";
             this.dataTambahanGridView.Size = new System.Drawing.Size(485, 228);
             this.dataTambahanGridView.TabIndex = 1;
+            this.dataTambahanGridView.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dataTambahanGridView_DataError);
             // 
             // ImportDataTambahanBtn
             // 
             this.ImportDataTambahanBtn.Enabled = false;
-            this.ImportDataTambahanBtn.Location = new System.Drawing.Point(135, 3);
+            this.ImportDataTambahanBtn.Location = new System.Drawing.Point(134, 3);
             this.ImportDataTambahanBtn.Name = "ImportDataTambahanBtn";
             this.ImportDataTambahanBtn.Size = new System.Drawing.Size(75, 23);
             this.ImportDataTambahanBtn.TabIndex = 2;
@@ -219,7 +220,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel4.ColumnCount = 2;
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 159F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 253F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 274F));
             this.tableLayoutPanel4.Controls.Add(this.dataGridView1, 0, 1);
             this.tableLayoutPanel4.Controls.Add(this.loadPerbandinganButton, 1, 0);
             this.tableLayoutPanel4.Controls.Add(this.label5, 0, 0);
@@ -231,16 +232,6 @@
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel4.Size = new System.Drawing.Size(433, 532);
             this.tableLayoutPanel4.TabIndex = 1;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(3, 0);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(147, 20);
-            this.label5.TabIndex = 0;
-            this.label5.Text = "Data Perbandingan";
             // 
             // dataGridView1
             // 
@@ -263,6 +254,16 @@
             this.loadPerbandinganButton.Text = "Load Perbandingan";
             this.loadPerbandinganButton.UseVisualStyleBackColor = true;
             this.loadPerbandinganButton.Click += new System.EventHandler(this.loadPerbandinganButton_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(3, 0);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(147, 20);
+            this.label5.TabIndex = 0;
+            this.label5.Text = "Data Perbandingan";
             // 
             // saveBtn
             // 

@@ -124,7 +124,7 @@
     <Property Name="setorAdhoc20" Type="Int64" />
     <Property Name="inputOpr" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="inputSpv" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="inputNoTxn" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="inputNoTxn" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="validasiOpr" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="validasiSpv" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="validasiNoTxn" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
@@ -246,6 +246,12 @@
     <Property Name="kodeCabang" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="tanggal" Type="DateTime" Precision="0" />
     <Property Name="nominalDispute" Type="Int64" />
+    <Property Name="dueDate" Type="DateTime" Precision="0" />
+    <Property Name="timestamp" Type="DateTime" Precision="3" />
+    <Property Name="reference_master" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="sched_id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="actn_id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="state_blog" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="Password">
     <Key>
@@ -567,6 +573,7 @@
     <EntitySet Name="ApprovalViews" EntityType="CACModel.ApprovalView" />
     <EntitySet Name="ViewTransaksiAtms" EntityType="CACModel.ViewTransaksiAtm" />
     <EntitySet Name="SaldoMesins" EntityType="CACModel.SaldoMesin" />
+    <EntitySet Name="Staffs" EntityType="CACModel.Staff" />
   </EntityContainer>
   <EntityType Name="TabelTarikanSetoranCRM">
     <Key>
@@ -758,5 +765,12 @@
     <Property Name="saldoH" Type="Int64" />
     <Property Name="saldoHariSebelumnya" Type="Int64" />
     <Property Name="jenisMesin" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="Staff">
+    <Key>
+      <PropertyRef Name="staffId" />
+    </Key>
+    <Property Name="staffId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="staffName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
   </EntityType>
 </Schema>

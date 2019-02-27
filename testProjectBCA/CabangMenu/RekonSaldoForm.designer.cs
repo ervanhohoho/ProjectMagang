@@ -79,21 +79,23 @@
             // 
             this.pktComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pktComboBox.FormattingEnabled = true;
-            this.pktComboBox.Location = new System.Drawing.Point(608, 13);
+            this.pktComboBox.Location = new System.Drawing.Point(607, 13);
             this.pktComboBox.Name = "pktComboBox";
             this.pktComboBox.Size = new System.Drawing.Size(121, 21);
             this.pktComboBox.TabIndex = 4;
+            this.pktComboBox.SelectedIndexChanged += new System.EventHandler(this.pktComboBox_SelectedIndexChanged);
             this.pktComboBox.SelectedValueChanged += new System.EventHandler(this.pktComboBox_SelectedValueChanged);
             // 
             // label3
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(579, 17);
+            this.label3.Location = new System.Drawing.Point(578, 17);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(23, 13);
             this.label3.TabIndex = 5;
             this.label3.Text = "Pkt";
+            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // dataGridView1
             // 
@@ -110,7 +112,7 @@
             // loadBtn
             // 
             this.loadBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.loadBtn.Location = new System.Drawing.Point(734, 12);
+            this.loadBtn.Location = new System.Drawing.Point(733, 12);
             this.loadBtn.Name = "loadBtn";
             this.loadBtn.Size = new System.Drawing.Size(75, 23);
             this.loadBtn.TabIndex = 7;
@@ -121,7 +123,7 @@
             // ExportBtn
             // 
             this.ExportBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ExportBtn.Location = new System.Drawing.Point(815, 12);
+            this.ExportBtn.Location = new System.Drawing.Point(814, 12);
             this.ExportBtn.Name = "ExportBtn";
             this.ExportBtn.Size = new System.Drawing.Size(75, 23);
             this.ExportBtn.TabIndex = 8;

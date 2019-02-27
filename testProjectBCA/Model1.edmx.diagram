@@ -46,6 +46,7 @@
         <EntityTypeShape EntityType="CACModel.ApprovalView" Width="1.5" PointX="18.75" PointY="14.75" />
         <EntityTypeShape EntityType="CACModel.ViewTransaksiAtm" Width="1.5" PointX="0.75" PointY="19.75" />
         <EntityTypeShape EntityType="CACModel.SaldoMesin" Width="1.5" PointX="11.375" PointY="19.75" />
+        <EntityTypeShape EntityType="CACModel.Staff" Width="1.5" PointX="20.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -394,6 +394,9 @@
     <Compile Include="SaldoMesin.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Staff.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Support Files\InputPromptForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -550,6 +550,25 @@ namespace testProjectBCA.CabangMenu
 
         private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
+            Database1Entities db = new Database1Entities();
+            DateTime earliestDate = this.tampilanRekonSaldos.Select(x => x.tanggal).Min();
+            SaldoAwalRekonSaldo toEdit = db.SaldoAwalRekonSaldoes.Where(x => x.tanggal == earliestDate && x.kodePkt == kodePkt).FirstOrDefault();
+            Int64 saldoAwal = this.tampilanRekonSaldos.Where(x => x.tanggal == earliestDate).Select(x => x.saldoAwal).First();
+            Console.WriteLine("Saldo Awal: " + saldoAwal);
+            if (toEdit == null)
+            {
+                db.SaldoAwalRekonSaldoes.Add(new SaldoAwalRekonSaldo()
+                {
+                    kodePkt = kodePkt,
+                    tanggal = earliestDate,
+                    value = saldoAwal
+                });
+            }
+            else
+            {
+                toEdit.value = saldoAwal;
+            }
+            db.SaveChanges();
             for (int a = 1; a < this.tampilanRekonSaldos.Count; a++)
             {
                 var prev = this.tampilanRekonSaldos[a - 1];
@@ -636,6 +655,16 @@ namespace testProjectBCA.CabangMenu
                 String csv = ServiceStack.Text.CsvSerializer.SerializeToCsv(tampilanRekonSaldos);
                 File.WriteAllText(sv.FileName, csv);
             }
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pktComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
     

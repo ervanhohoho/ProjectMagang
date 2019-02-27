@@ -171,7 +171,7 @@
     <Property Name="setorAdhoc20" Type="bigint" />
     <Property Name="inputOpr" Type="varchar" MaxLength="50" />
     <Property Name="inputSpv" Type="varchar" MaxLength="50" />
-    <Property Name="inputNoTxn" Type="varchar" MaxLength="20" />
+    <Property Name="inputNoTxn" Type="varchar" MaxLength="50" />
     <Property Name="validasiOpr" Type="varchar" MaxLength="50" />
     <Property Name="validasiSpv" Type="varchar" MaxLength="50" />
     <Property Name="validasiNoTxn" Type="varchar" MaxLength="50" />
@@ -292,6 +292,12 @@
     <Property Name="kodeCabang" Type="varchar" MaxLength="50" />
     <Property Name="tanggal" Type="date" />
     <Property Name="nominalDispute" Type="bigint" />
+    <Property Name="dueDate" Type="date" />
+    <Property Name="timestamp" Type="datetime" />
+    <Property Name="reference_master" Type="varchar" MaxLength="50" />
+    <Property Name="sched_id" Type="varchar" MaxLength="50" />
+    <Property Name="actn_id" Type="varchar" MaxLength="50" />
+    <Property Name="state_blog" Type="varchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="Password">
     <Key>
@@ -469,6 +475,13 @@
     <Property Name="komentar" Type="varchar" MaxLength="255" />
     <Property Name="tanggal" Type="datetime" />
     <Property Name="selisih" Type="bigint" />
+  </EntityType>
+  <EntityType Name="Staff">
+    <Key>
+      <PropertyRef Name="staffId" />
+    </Key>
+    <Property Name="staffId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="staffName" Type="varchar" MaxLength="255" />
   </EntityType>
   <EntityType Name="StokPosisi">
     <Key>
@@ -743,6 +756,7 @@ warning 6002: The table/view 'CAC.dbo.ViewTransaksiAtms' does not have a primary
     <EntitySet Name="saveBeeHive" EntityType="Self.saveBeeHive" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="saveMcs" EntityType="Self.saveMcs" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SaveRekap" EntityType="Self.SaveRekap" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Staff" EntityType="Self.Staff" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="StokPosisi" EntityType="Self.StokPosisi" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TabelTarikan" EntityType="Self.TabelTarikan" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TabelTarikanSetoranCRM" EntityType="Self.TabelTarikanSetoranCRM" Schema="dbo" store:Type="Tables" />

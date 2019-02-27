@@ -253,6 +253,12 @@
     <EntitySetMapping Name="OrderTrackings">
       <EntityTypeMapping TypeName="CACModel.OrderTracking">
         <MappingFragment StoreEntitySet="OrderTracking">
+          <ScalarProperty Name="state_blog" ColumnName="state_blog" />
+          <ScalarProperty Name="actn_id" ColumnName="actn_id" />
+          <ScalarProperty Name="sched_id" ColumnName="sched_id" />
+          <ScalarProperty Name="reference_master" ColumnName="reference_master" />
+          <ScalarProperty Name="timestamp" ColumnName="timestamp" />
+          <ScalarProperty Name="dueDate" ColumnName="dueDate" />
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="kodePkt" ColumnName="kodePkt" />
           <ScalarProperty Name="kodeCabang" ColumnName="kodeCabang" />
@@ -704,6 +710,14 @@
           <ScalarProperty Name="kodeLaporan" ColumnName="kodeLaporan" />
           <ScalarProperty Name="wsid" ColumnName="wsid" />
           <ScalarProperty Name="tanggal" ColumnName="tanggal" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Staffs">
+      <EntityTypeMapping TypeName="CACModel.Staff">
+        <MappingFragment StoreEntitySet="Staff">
+          <ScalarProperty Name="staffName" ColumnName="staffName" />
+          <ScalarProperty Name="staffId" ColumnName="staffId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

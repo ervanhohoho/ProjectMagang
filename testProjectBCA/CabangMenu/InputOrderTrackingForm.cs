@@ -37,6 +37,7 @@ namespace testProjectBCA
         }
         private void button1_Click(object sender, EventArgs e)
         {
+            en = new Database1Entities();
             OpenFileDialog of = new OpenFileDialog();
             of.Filter = Variables.excelFilter;
 
@@ -50,10 +51,10 @@ namespace testProjectBCA
                 Console.WriteLine(ds.Tables.Count);
 
 
-                var query = (from x in en.OrderTrackings
-                             where x.tanggal == dateTimePicker1.Value.Date
+                var query = (from x in en.OrderTrackings.AsEnumerable()
+                             where ((DateTime)x.timestamp).Date == dateTimePicker1.Value.Date
                              select x).ToList();
-
+                Console.WriteLine("Query Count: " + query.Count);
                 if (query.Any())
                 {
 
@@ -73,6 +74,12 @@ namespace testProjectBCA
                             String kodeCabang = "";
                             DateTime tanggal = new DateTime(1, 1, 1);
                             Int64 nominalDispute = 0;
+                            DateTime dueDate, timestamp;
+                            String reference_master = "", 
+                                sched_id = "", 
+                                actn_id = "",
+                                state_blog="";
+
                             var rows = dt.Select("");
                             if (dt.Rows[i][13].ToString() == null || dt.Rows[i][13].ToString() == "")
                             {
@@ -89,10 +96,24 @@ namespace testProjectBCA
                                     if (Convert.ToDateTime(dt.Rows[i][10].ToString()).Date == dateTimePicker1.Value.Date && dt.Rows[i][13].ToString() == "CONFIRMED" && dt.Rows[i][9].ToString() == "2")
                                     {
                                         //Console.WriteLine("cus");
+                                        Console.WriteLine("PROCESS ROW [" + i + "]");
+                                        Console.WriteLine("nominalDispute: " + dt.Rows[i][19].ToString().Split(':')[1]);
                                         kodePkt = dt.Rows[i][0].ToString();
                                         kodeCabang = dt.Rows[i][2].ToString();
-                                        tanggal = Convert.ToDateTime(dt.Rows[i][10].ToString()).Date;
+                                        timestamp = Convert.ToDateTime(dt.Rows[i][10].ToString());
+                                        DateTime timeLimit = new DateTime(timestamp.Year, timestamp.Month, timestamp.Day, 21, 0, 0);
+                                        if (timestamp > timeLimit)
+                                            tanggal = timestamp.AddDays(1).Date;
+                                        else
+                                            tanggal = timestamp;
                                         nominalDispute = Int64.Parse(dt.Rows[i][19].ToString().Split(':')[1].Trim('\"'));
+                                        dueDate = Convert.ToDateTime(dt.Rows[i][4].ToString());
+                                        reference_master = dt.Rows[i][7].ToString();
+                                        sched_id = dt.Rows[i][8].ToString();
+                                        actn_id = dt.Rows[i][9].ToString();
+                                        state_blog = dt.Rows[i][14].ToString();
+                                        if (state_blog.Contains("|"))
+                                            state_blog = state_blog.Split('|')[1];
                                     }
                                     else
                                     {
@@ -107,7 +128,13 @@ namespace testProjectBCA
                                         kodePkt = kodePkt,
                                         kodeCabang = kodeCabang,
                                         tanggal = tanggal,
-                                        nominalDispute = nominalDispute
+                                        nominalDispute = nominalDispute,
+                                        dueDate = dueDate,
+                                        timestamp = timestamp,
+                                        reference_master = reference_master,
+                                        sched_id = sched_id,
+                                        actn_id = actn_id,
+                                        state_blog = state_blog
                                     });
                                     en.SaveChanges();
                                 }
@@ -125,6 +152,7 @@ namespace testProjectBCA
                 }
                 else
                 {
+                    Console.WriteLine("ADD NEW");
                     for (int i = 1; i < dt.Rows.Count; i++)
                     {
                         Console.WriteLine(i);
@@ -135,30 +163,60 @@ namespace testProjectBCA
                         String kodeCabang = "";
                         DateTime tanggal = new DateTime(1, 1, 1);
                         Int64 nominalDispute = 0;
+                        DateTime dueDate, timestamp;
+                        String reference_master = "",
+                            sched_id = "",
+                            actn_id = "",
+                            state_blog = "";
                         var rows = dt.Select("");
                         if (dt.Rows[i][13].ToString() == null || dt.Rows[i][13].ToString() == "")
                         {
+                            Console.WriteLine("ROW [" + i + "][13] IS NULL OR EMPTY");
                             continue;
                         }
                         else
                         {
                             if (dt.Rows[i][19].ToString() == null || dt.Rows[i][19].ToString() == "")
                             {
+                                Console.WriteLine("ROW [" + i + "][19] IS NULL OR EMPTY");
                                 continue;
                             }
                             else
                             {
+                                Console.WriteLine(Convert.ToDateTime(dt.Rows[i][10].ToString()).Date);
+                                Console.WriteLine(dateTimePicker1.Value.Date);
                                 if (Convert.ToDateTime(dt.Rows[i][10].ToString()).Date == dateTimePicker1.Value.Date && dt.Rows[i][13].ToString() == "CONFIRMED" && dt.Rows[i][9].ToString() == "2")
                                 {
-                                    Console.WriteLine("cus");
+
+                                    Console.WriteLine("PROCESS ROW ["+i+"]");
+                                    Console.WriteLine("nominalDispute: " + dt.Rows[i][19].ToString().Split(':')[1]);
                                     kodePkt = dt.Rows[i][0].ToString();
                                     kodeCabang = dt.Rows[i][2].ToString();
-                                    tanggal = Convert.ToDateTime(dt.Rows[i][10].ToString()).Date;
-                                    nominalDispute = Int64.Parse(dt.Rows[i][19].ToString().Split(':')[1].Trim('\"'));
+                                    timestamp = Convert.ToDateTime(dt.Rows[i][10].ToString());
+                                    DateTime timeLimit = new DateTime(timestamp.Year, timestamp.Month, timestamp.Day, 21, 0, 0);
+                                    if (timestamp > timeLimit)
+                                        tanggal = timestamp.AddDays(1).Date;
+                                    else
+                                        tanggal = timestamp.Date;
+                                    Int64 buf;
+                                    if(Int64.TryParse(dt.Rows[i][19].ToString().Split(':')[1].Trim('\"'), out buf))
+                                        nominalDispute = buf;
+                                    else
+                                    {
+                                        MessageBox.Show("Data ROW " + i + " Nominal dispute tidak bisa di parse, akan diskip!");
+                                        continue;
+                                    }
+                                    dueDate = Convert.ToDateTime(dt.Rows[i][4].ToString());
+                                    reference_master = dt.Rows[i][7].ToString();
+                                    sched_id = dt.Rows[i][8].ToString();
+                                    actn_id = dt.Rows[i][9].ToString();
+                                    state_blog = dt.Rows[i][14].ToString();
+                                    if (state_blog.Contains("|"))
+                                        state_blog = state_blog.Split('|')[1];
                                 }
                                 else
                                 {
-                                    Console.WriteLine("sor");
+                                    Console.WriteLine("DATE ROW [" + i + "][10] Tidak Sama");
                                     continue;
                                 }
                                 en.OrderTrackings.Add(new OrderTracking()
@@ -166,17 +224,19 @@ namespace testProjectBCA
                                     kodePkt = kodePkt,
                                     kodeCabang = kodeCabang,
                                     tanggal = tanggal,
-                                    nominalDispute = nominalDispute
+                                    nominalDispute = nominalDispute,
+                                    dueDate = dueDate,
+                                    timestamp = timestamp,
+                                    reference_master = reference_master,
+                                    sched_id = sched_id,
+                                    actn_id = actn_id,
+                                    state_blog = state_blog
                                 });
                                 en.SaveChanges();
                             }
-
                         }
-
-
                     }
                 }
-
                 loadForm.CloseForm();
             }
         }
@@ -755,7 +815,7 @@ namespace testProjectBCA
 
         private void button6_Click(object sender, EventArgs e)
         {
-            loadForm.ShowSplashScreen();
+            //loadForm.ShowSplashScreen();
             List<SaveRekap> sr = new List<SaveRekap>();
 
             for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
@@ -815,7 +875,7 @@ namespace testProjectBCA
             }
             en.SaveRekaps.AddRange(sr);
             en.SaveChanges();
-            loadForm.CloseForm();
+            //loadForm.CloseForm();
         }
 
         private void button7_Click(object sender, EventArgs e)

@@ -197,13 +197,9 @@ namespace testProjectBCA.CabangMenu
                             Console.WriteLine("Value 100: " + temp2.d100);
                             Console.WriteLine("Value 50: " + temp2.d50);
                             Console.WriteLine("Value 20: " + temp2.d20);
-
-                            if (String.IsNullOrEmpty(kodeTujuan) && vendorSumber != allPkt.Where(x => x.kodePkt == "ADJK").Select(x => x.vendor).First())
+                            if(vault.Trim().ToLower() == "ambil")
                             {
-                                prosesRow(temp2, keteranganKirim.Replace("%BANK%", namaBank));
-                            }
-                            else if (vendorSumber == allPkt.Where(x => x.kodePkt == "ADJK").Select(x => x.vendor).First())
-                            {
+                                String namaPkt = allPkt.Where(x => x.kodePkt == "ADVJ").Select(x => x.namaPkt).First();
                                 DataProses tempResult = new DataProses();
                                 tempResult.vendorSumber = vendorSumber;
                                 tempResult.sumberDana = namaSumber;
@@ -216,15 +212,49 @@ namespace testProjectBCA.CabangMenu
                                 tempResult.denom5 = (Int64)temp2.d5;
                                 tempResult.denom2 = (Int64)temp2.d2;
                                 tempResult.total = tempResult.denom100 + tempResult.denom50 + tempResult.denom20 + tempResult.denom10 + tempResult.denom5 + tempResult.denom2;
-
-                                if (String.IsNullOrEmpty(kodeTujuan))
-                                    tempResult.keterangan = keteranganKirim.Replace("%BANK%", namaBank);
-                                else
+                                tempResult.keterangan = namaBank + " Ambil Ke " + namaPkt;
+                                result.Add(tempResult);
+                            }
+                            if (String.IsNullOrEmpty(kodeTujuan) && vendorSumber != allPkt.Where(x => x.kodePkt == "ADJK").Select(x => x.vendor).First() && vault.ToLower().Contains("kirim"))
+                            {
+                                prosesRow(temp2, keteranganKirim.Replace("%BANK%", namaBank));
+                            }
+                            else if (vendorSumber == allPkt.Where(x => x.kodePkt == "ADJK").Select(x => x.vendor).First())
+                            {
+                                if (!allPkt.Select(x => x.kodePktCabang).ToList().Contains(vault.Trim()))
                                 {
                                     String namaPktTujuan = allPkt.Where(x => x.kodePktCabang == kodeTujuan).Select(x => x.namaPkt).FirstOrDefault();
-                                    tempResult.keterangan = keteranganKirimVault.Replace("%BANK%", namaBank).Replace("%NAMAPKT%", namaPktTujuan);
+                                    prosesRow(temp2, keteranganKirimVault.Replace("%BANK%", namaBank).Replace("%NAMAPKT%", vault.Trim()));
                                 }
-                                result.Add(tempResult);
+                                else
+                                {
+                                    DataProses tempResult = new DataProses();
+                                    tempResult.vendorSumber = vendorSumber;
+                                    tempResult.sumberDana = namaSumber;
+                                    tempResult.tujuan = namaBank.Trim();
+                                    tempResult.namaTujuan = namaTujuan.Trim();
+                                    tempResult.denom100 = (Int64)temp2.d100;
+                                    tempResult.denom50 = (Int64)temp2.d50;
+                                    tempResult.denom20 = (Int64)temp2.d20;
+                                    tempResult.denom10 = (Int64)temp2.d10;
+                                    tempResult.denom5 = (Int64)temp2.d5;
+                                    tempResult.denom2 = (Int64)temp2.d2;
+                                    tempResult.total = tempResult.denom100 + tempResult.denom50 + tempResult.denom20 + tempResult.denom10 + tempResult.denom5 + tempResult.denom2;
+
+                                    if (String.IsNullOrEmpty(kodeTujuan))
+                                        tempResult.keterangan = keteranganKirim.Replace("%BANK%", namaBank);
+                                    else
+                                    {
+                                        String namaPktTujuan = allPkt.Where(x => x.kodePktCabang == kodeTujuan).Select(x => x.namaPkt).FirstOrDefault();
+                                        tempResult.keterangan = keteranganKirimVault.Replace("%BANK%", namaBank).Replace("%NAMAPKT%", namaPktTujuan);
+                                    }
+                                    result.Add(tempResult);
+                                }
+                            }
+                            else if(!allPkt.Select(x=>x.kodePktCabang).ToList().Contains(vault.Trim()))
+                            {
+                                String namaPktTujuan = allPkt.Where(x => x.kodePktCabang == kodeTujuan).Select(x => x.namaPkt).FirstOrDefault();
+                                prosesRow(temp2, keteranganKirimVault.Replace("%BANK%", namaBank).Replace("%NAMAPKT%", vault.Trim()));
                             }
                             else if (vendorSumber == vendorTujuan)
                             {

@@ -19,5 +19,11 @@ namespace testProjectBCA
         public string kodeCabang { get; set; }
         public Nullable<System.DateTime> tanggal { get; set; }
         public Nullable<long> nominalDispute { get; set; }
+        public Nullable<System.DateTime> dueDate { get; set; }
+        public Nullable<System.DateTime> timestamp { get; set; }
+        public string reference_master { get; set; }
+        public string sched_id { get; set; }
+        public string actn_id { get; set; }
+        public string state_blog { get; set; }
     }
 }

@@ -64,5 +64,6 @@ namespace testProjectBCA
         public virtual DbSet<ApprovalView> ApprovalViews { get; set; }
         public virtual DbSet<ViewTransaksiAtm> ViewTransaksiAtms { get; set; }
         public virtual DbSet<SaldoMesin> SaldoMesins { get; set; }
+        public virtual DbSet<Staff> Staffs { get; set; }
     }
 }

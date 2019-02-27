@@ -19,6 +19,7 @@ namespace testProjectBCA
         Database1Entities db = new Database1Entities();
         List<slaProsesDisplay> sla;
         List<slaProsesDisplayAllVendor> slapav;
+        List<slaProsesDisplayAllVendor> resultAllVendor;
         List<String> tahun1 = new List<String>();
         List<String> tahun2 = new List<String>();
         int jumlahPkt;
@@ -445,9 +446,10 @@ namespace testProjectBCA
             else if (comboNamaPkt.SelectedIndex == jumlahPkt)
             {
                 var res = loadDataAllVendorStokPosisi();
+                resultAllVendor = res;
                 if (jenisTampilan == "Nominal")
                 {
-                    res = res.Select(x => new slaProsesDisplayAllVendor()
+                    resultAllVendor = res.Select(x => new slaProsesDisplayAllVendor()
                     {
                         namaPkt = x.namaPkt,
                         inCabangUangBesar = x.inCabangUangBesar,
@@ -1090,14 +1092,9 @@ namespace testProjectBCA
                         sla[i].slaGabung = 0;
                 }
             }
-            foreach (var temp in toDelete)
-            {
-                Console.WriteLine("To Delete Idx: " + temp);
-                sla.RemoveAt(temp);
-            }
             Double buf;
 
-            sla = sla.Where(x => !Double.IsNaN(x.slaProsesBesar) || !Double.IsNaN(x.slaProsesKecil)).ToList();
+            sla = sla.Where(x => !Double.IsNaN(x.slaProsesBesar) && !Double.IsNaN(x.slaProsesKecil)).ToList();
 
             int slaProsesBesarNonNANCount = sla.Where(x => !Double.IsNaN(x.slaProsesBesar)).ToList().Count,
                 slaProsesKecilNonNANCount = sla.Where(x => !Double.IsNaN(x.slaProsesKecil)).ToList().Count,
@@ -1318,39 +1315,57 @@ namespace testProjectBCA
                     csv = ServiceStack.Text.CsvSerializer.SerializeToString(sla);
                 else if(comboNamaPkt.SelectedIndex == jumlahPkt)
                 {
-                    int slaBesarNonNANCount = slapav.Where(x => !Double.IsNaN(x.slaProsesBesar)).ToList().Count,
-                slaKecilNonNANCount = slapav.Where(x => !Double.IsNaN(x.slaProsesKecil)).ToList().Count;
-                    var tempSlaBesar = (from x in slapav
-                                        group x by x.namaPkt into g
-                                        select new { namaPkt = g.Key, slaBesar = (slaBesarNonNANCount > 0 ? g.Where(x => !Double.IsNaN(x.slaProsesBesar)).Average(x => x.slaProsesBesar) : Double.NaN) }).ToList();
-                    var tempSlaKecil = (from x in slapav
-                                        group x by x.namaPkt into g
-                                        select new { namaPkt = g.Key, slaKecil = (slaKecilNonNANCount > 0 ? g.Where(x => !Double.IsNaN(x.slaProsesKecil)).Average(x => x.slaProsesKecil) : Double.NaN) }).ToList();
-                    var tempSlaGabung = (from x in slapav
-                                         group x by x.namaPkt into g
-                                         select new { namaPkt = g.Key, slaGabung = g.Where(x => !Double.IsNaN(x.slaGabung)).Average(x => x.slaGabung) }).ToList();
+                    //int slaBesarNonNANCount = slapav.Where(x => !Double.IsNaN(x.slaProsesBesar)).ToList().Count,
+                    //slaKecilNonNANCount = slapav.Where(x => !Double.IsNaN(x.slaProsesKecil)).ToList().Count;
+                    //var tempSlaBesar = (from x in slapav
+                    //                    group x by x.namaPkt into g
+                    //                    select new { namaPkt = g.Key, slaBesar = (slaBesarNonNANCount > 0 ? g.Where(x => !Double.IsNaN(x.slaProsesBesar)).Average(x => x.slaProsesBesar) : Double.NaN) }).ToList();
+                    //var tempSlaKecil = (from x in slapav
+                    //                    group x by x.namaPkt into g
+                    //                    select new { namaPkt = g.Key, slaKecil = (slaKecilNonNANCount > 0 ? g.Where(x => !Double.IsNaN(x.slaProsesKecil)).Average(x => x.slaProsesKecil) : Double.NaN) }).ToList();
+                    //var tempSlaGabung = (from x in slapav
+                    //                     group x by x.namaPkt into g
+                    //                     select new { namaPkt = g.Key, slaGabung = g.Where(x => !Double.IsNaN(x.slaGabung)).Average(x => x.slaGabung) }).ToList();
 
-                    var qt = (from x in slapav
-                              group x by x.namaPkt into g
-                              join y in tempSlaBesar on g.Key equals y.namaPkt
-                              join z in tempSlaKecil on g.Key equals z.namaPkt
-                              join zz in tempSlaGabung on g.Key equals zz.namaPkt
-                              select new
-                              {
-                                  namaPkt = g.Key,
-                                  UnprocessedBesar = g.Average(x => x.unprocUangBesar),
-                                  UnprocessedKecil = g.Average(x => x.unprocUangKecil),
-                                  InRetailBesar = g.Average(x => x.inRetailUangBesar),
-                                  InRetailKecil = g.Average(x => x.inRetailUangKecil),
-                                  InCabangBesar = g.Average(x => x.inCabangUangBesar),
-                                  InCabangKecil = g.Average(x => x.inCabangUangKecil),
-                                  TotalProcessUangBesar = g.Average(x => x.unprocUangBesar) + g.Average(x => x.inRetailUangBesar) + g.Average(x => x.inCabangUangBesar),
-                                  TotalProcessUangKecil = g.Average(x => x.unprocUangKecil) + g.Average(x => x.inRetailUangKecil) + g.Average(x => x.inCabangUangKecil),
-                                  slaBesar = y.slaBesar,
-                                  slaKecil = z.slaKecil,
-                                  slaGabung = zz.slaGabung
-                              }).ToList();
-
+                    //var qt = (from x in slapav
+                    //          group x by x.namaPkt into g
+                    //          join y in tempSlaBesar on g.Key equals y.namaPkt
+                    //          join z in tempSlaKecil on g.Key equals z.namaPkt
+                    //          join zz in tempSlaGabung on g.Key equals zz.namaPkt
+                    //          select new
+                    //          {
+                    //              namaPkt = g.Key,
+                    //              UnprocessedBesar = g.Average(x => x.unprocUangBesar),
+                    //              UnprocessedKecil = g.Average(x => x.unprocUangKecil),
+                    //              InRetailBesar = g.Average(x => x.inRetailUangBesar),
+                    //              InRetailKecil = g.Average(x => x.inRetailUangKecil),
+                    //              InCabangBesar = g.Average(x => x.inCabangUangBesar),
+                    //              InCabangKecil = g.Average(x => x.inCabangUangKecil),
+                    //              TotalProcessUangBesar = g.Average(x => x.unprocUangBesar) + g.Average(x => x.inRetailUangBesar) + g.Average(x => x.inCabangUangBesar),
+                    //              TotalProcessUangKecil = g.Average(x => x.unprocUangKecil) + g.Average(x => x.inRetailUangKecil) + g.Average(x => x.inCabangUangKecil),
+                    //              slaBesar = y.slaBesar,
+                    //              slaKecil = z.slaKecil,
+                    //              slaGabung = zz.slaGabung
+                    //          }).ToList();
+                    var qt = resultAllVendor.Select(x=> new {
+                        namaPkt = x.namaPkt,
+                        UnprocessedBesar = x.unprocUangBesar,
+                        UnprocessedKecil = x.unprocUangKecil,
+                        InRetailBesar = x.inRetailUangBesar,
+                        InRetailKecil = x.inRetailUangKecil,
+                        InCabangBesar = x.inCabangUangBesar,
+                        InCabangKecil = x.inCabangUangKecil,
+                        TotalProcessUangBesar = x.totalProsesUangBesar,
+                        TotalProcessUangKecil = x.totalProsesUangKecil,
+                        slaBesar = x.slaProsesBesar,
+                        slaKecil = x.slaProsesKecil,
+                        slaGabung = x.slaGabung
+                    }).ToList();
+                    if (qt.Count > 2)
+                    {
+                        qt.RemoveAt(qt.Count - 1);
+                        qt.RemoveAt(qt.Count - 1);
+                    }
                     csv = ServiceStack.Text.CsvSerializer.SerializeToString(qt);
                 }
                 else

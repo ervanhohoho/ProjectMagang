@@ -69,6 +69,7 @@
             this.buttonBI = new System.Windows.Forms.Button();
             this.buttonBankLain = new System.Windows.Forms.Button();
             this.buttonCabangATM = new System.Windows.Forms.Button();
+            this.buttonAntarCPC = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).BeginInit();
@@ -530,11 +531,22 @@
             this.buttonCabangATM.UseVisualStyleBackColor = true;
             this.buttonCabangATM.Click += new System.EventHandler(this.buttonCabangATM_Click);
             // 
+            // buttonAntarCPC
+            // 
+            this.buttonAntarCPC.Location = new System.Drawing.Point(1077, 102);
+            this.buttonAntarCPC.Name = "buttonAntarCPC";
+            this.buttonAntarCPC.Size = new System.Drawing.Size(194, 39);
+            this.buttonAntarCPC.TabIndex = 43;
+            this.buttonAntarCPC.Text = "generate Antar CPC";
+            this.buttonAntarCPC.UseVisualStyleBackColor = true;
+            this.buttonAntarCPC.Click += new System.EventHandler(this.buttonAntarCPC_Click);
+            // 
             // OlahanOptiVault
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1390, 881);
+            this.Controls.Add(this.buttonAntarCPC);
             this.Controls.Add(this.buttonCabangATM);
             this.Controls.Add(this.buttonBankLain);
             this.Controls.Add(this.buttonBI);
@@ -631,5 +643,6 @@
         private System.Windows.Forms.Button buttonBI;
         private System.Windows.Forms.Button buttonBankLain;
         private System.Windows.Forms.Button buttonCabangATM;
+        private System.Windows.Forms.Button buttonAntarCPC;
     }
 }

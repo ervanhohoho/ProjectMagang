@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
@@ -351,13 +352,26 @@ namespace testProjectBCA
                 DateTime maxdate = prosesBeeHive.Max(x => (DateTime)x.tanggalTransaksi);
                 DateTime mindate = prosesBeeHive.Min(x => (DateTime)x.tanggalTransaksi);
 
-                var query = (from x in en.saveBeeHives
-                             where x.tanggalTransaksi >= mindate && x.tanggalTransaksi <= maxdate && x.jenisFile == "BEEHIVE"
-                             select x).ToList();
+                List<saveBeeHive> query = (from x in en.saveBeeHives
+                                           where x.tanggalTransaksi >= mindate && x.tanggalTransaksi <= maxdate && x.jenisFile == "BEEHIVE"
+                                           select x).ToList();
 
-                if (query.Count > 0)
+                List<saveBeeHive> toDelete = new List<saveBeeHive>();
+                foreach (var item in prosesBeeHive)
                 {
-                    en.saveBeeHives.RemoveRange(query);
+                    var simpan = query.Where(x => x.jenisFile == item.jenisFile && x.kodePerusahaan == item.kodePerusahaan && x.namaFile == item.namaFile && x.tanggalKredit == item.tanggalKredit && x.tanggalTransaksi == item.tanggalTransaksi && x.totalNominal == item.totalNominal).FirstOrDefault();
+                    if (simpan != null)
+                    {
+                        toDelete.Add(simpan);
+                    }
+
+                }
+
+                Console.WriteLine(toDelete.Count);
+
+                if (toDelete.Any())
+                {
+                    en.saveBeeHives.RemoveRange(toDelete);
                 }
 
                 List<saveBeeHive> saveBee = (from x in prosesBeeHive
@@ -531,50 +545,164 @@ namespace testProjectBCA
 
         private void buttonProses_Click(object sender, EventArgs e)
         {
-            var query = (from x in en.saveBeeHives
-                         join y in en.saveMcs on x.kodePerusahaan equals y.customerCode
-                         join z in en.DailyStocks on y.customerCode equals (z.kode.Length == 7 ? "0" + z.kode : z.kode)
-                         //join z in en.DailyStocks on y.customerCode equals  "0" + z.kode 
-                         //join z in en.DailyStocks on y.customerCode equals (z.kode.Length < 8 ? "0" + z.kode : z.kode)
-                         where x.tanggalTransaksi == dateTimePicker1.Value.Date && y.tanggal == dateTimePicker1.Value.Date && z.tanggal == dateTimePicker1.Value.Date && x.namaFile == "" && z.jenisTransaksi == "Collection Retail"
-                         select new
-                         {
-                             tanggalTransaksi = y.tanggal,
-                             kodeNasabah = y.customerCode,
-                             nominalBeeHive = x.totalNominal,
-                             nominalMcs = y.amountTotal,
-                             nominalDailyStock = z.BN100K + z.BN50K + z.BN20K + z.BN10K + z.BN5K + z.BN2K + z.BN1K + z.BN500 + z.BN200 + z.BN100 + z.CN1K + z.CN500 + z.CN200 + z.CN100 + z.CN50 + z.CN25,
-                             selisihBeeHiveMcs = x.totalNominal - y.amountTotal,
-                             selisihBeeHiveDailyStock = x.totalNominal - (z.BN100K + z.BN50K + z.BN20K + z.BN10K + z.BN5K + z.BN2K + z.BN1K + z.BN500 + z.BN200 + z.CN1K + z.BN100 + z.CN500 + z.CN200 + z.CN100 + z.CN50 + z.CN25),
-                             keterangan = (
-                                x.totalNominal == y.amountTotal && y.amountTotal == z.BN100K + z.BN50K + z.BN20K + z.BN10K + z.BN5K + z.BN2K + z.BN1K + z.BN500 + z.BN200 + z.BN100 + z.CN1K + z.CN500 + z.CN200 + z.CN100 + z.CN50 + z.CN25 ? "SAMA" : "TIDAK SAMA"
-                             )
-                         }).ToList();
+            List<HasilProcessed> hasil = new List<HasilProcessed>();
 
-            var query2 = query.GroupBy(x => new { x.tanggalTransaksi, x.kodeNasabah }).Select(z => new
+            using (SqlConnection sql = new SqlConnection(Variables.connectionString))
             {
-                tanggalTransaksi = z.Key.tanggalTransaksi,
-                kodeNasabah = z.Key.kodeNasabah,
-                nominalBeehive = z.Sum(x => x.nominalBeeHive),
-                nominalMcs = z.Sum(x => x.nominalMcs),
-                nominalDailyStock = z.Sum(x => x.nominalDailyStock),
-                selisihBeeHiveMcs = z.Sum(x => x.selisihBeeHiveMcs),
-                selisihBeeHiveDailyStock = z.Sum(x => x.selisihBeeHiveDailyStock)
-            }).ToList();
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = sql;
+                    sql.Open();
+                    cmd.CommandText = "select  distinct"
+                                     + " [tanggalTransaksi] = ISNULL(ISNULL(sb.tanggalTransaksi, ds.tanggal), sm.tanggal),"
+                                     + " [kodeNasabah] = ISNULL(ISNULL(sb.kodePerusahaan, ds.kode),sm.customerCode),"
+                                     + " [nominalBeeHive] = SUM(ISNULL(sb.totalNominal, 0)),"
+                                     + " [nominalMcs] = SUM(ISNULL(sm.amountTotal, 0)),"
+                                     + " [nominalDailystock] = sum(ISNULL(ds.BN100K + ds.BN50K + ds.BN20K + ds.BN10K + ds.BN5K + ds.BN2K + ds.BN1K + ds.BN500 + ds.BN200 + ds.BN100 + ds.CN1K + ds.CN500 + ds.CN200 + ds.CN100 + ds.CN50 + ds.CN25, 0)),"
+                                     + " [selisihBeehiveMcs] =  sum(ISNULL(sb.totalNominal, 0) - ISNULL(sm.amountTotal, 0)),"
+                                     + " [selisihBeehiveDailystock] = sum(ISNULL(sb.totalNominal, 0) - ISNULL(ds.BN100K + ds.BN50K + ds.BN20K + ds.BN10K + ds.BN5K + ds.BN2K + ds.BN1K + ds.BN500 + ds.BN200 + ds.BN100 + ds.CN1K + ds.CN500 + ds.CN200 + ds.CN100 + ds.CN50 + ds.CN25, 0))"
+                                     + " from("
+                                     + " select tanggalTransaksi, kodePerusahaan, [totalNominal] = sum(totalNominal), jenisFile, tanggalKredit, namaFile"
+                                     + " from saveBeeHive"
+                                     + " where namaFile = '' and tanggalTransaksi = '" + dateTimePicker1.Value.Date + "'"
+                                     + " group by tanggalTransaksi, kodePerusahaan, jenisFile, tanggalKredit, namaFile) as sb"
+                                     + " full outer join("
+                                     + " select tanggal, realDate, customerCode, [amountTotal] = sum(amountTotal)"
+                                     + " from ("
+                                     + " select distinct [tanggal] = tanggal, [realDate] = realDate, [customerCode] = customerCode, [amountTotal] = amountTotal"
+                                     + " from saveMcs"
+                                     + " ) as daleman"
+                                     + " where tanggal = '" + dateTimePicker1.Value.Date + "'"
+                                     + " group by customerCode, tanggal, realDate) as sm on sb.kodePerusahaan = sm.customerCode"
+                                     + " full outer join("
+                                     + " select idTransaksi, tanggal, kodePkt, [in/out], jenisTransaksi, [kode] = case when len(kode) = 7 then '0'+kode else kode end, nama, keterangan,"
+                                     + " BN100K = sum(BN100K), BN50K = sum(BN50K), BN20K = sum(BN20K), BN10K = sum(BN10K), BN5K = sum(BN5K), BN2K = sum(BN2K), BN1K = sum(BN1K), BN500 = sum(BN500), BN200 = sum(BN200),"
+                                     + " BN100 = sum(BN100), CN1K = sum(CN1K), CN500 = sum(CN500), CN200 = sum(CN200), CN100 = sum(CN100), CN50 = sum(CN50), CN25 = sum(CN25)"
+                                     + " from DailyStock"
+                                     + " where jenisTransaksi = 'Collection Retail' and tanggal = '" + dateTimePicker1.Value.Date + "' and len(kode) >= 7"
+                                     + " group by idTransaksi, tanggal, kodePkt, [in/out], jenisTransaksi, case when len(kode) = 7 then '0'+kode else kode end, nama, keterangan"
+                                     + " ) ds on sb.kodePerusahaan = case when len(ds.kode) = 7 then '0'+ds.kode else ds.kode end"
+                                     + " group by ISNULL(ISNULL(sb.tanggalTransaksi, ds.tanggal ),sm.tanggal), ISNULL(ISNULL(sb.kodePerusahaan, ds.kode),sm.customerCode)";
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        hasil.Add(new HasilProcessed
+                        {
+                            tanggalTransaksi = DateTime.Parse(reader[0].ToString()),
+                            kodeNasabah = reader[1].ToString(),
+                            nominalBeeHive = Int64.Parse(reader[2].ToString()),
+                            nominalMCS = Int64.Parse(reader[3].ToString()),
+                            nominalDailystock = Int64.Parse(reader[4].ToString()),
+                            selisihBeehiveMcs = Int64.Parse(reader[5].ToString()),
+                            selisihBeehiveDailystock = Int64.Parse(reader[6].ToString()),
+                            keterangan = Int64.Parse(reader[5].ToString()) == 0 && Int64.Parse(reader[6].ToString()) == 0 ? "SAMA" : "TIDAK SAMA"
+                        });
+                    }
+                    dataGridView1.DataSource = hasil;
+                }
+            }
 
-            var query3 = query2.Select(z => new
-            {
-                tanggalTransaksi = z.tanggalTransaksi,
-                kodeNasabah = z.kodeNasabah,
-                nominalBeehive = z.nominalBeehive,
-                nominalMcs = z.nominalMcs,
-                nominalDailyStock = z.nominalDailyStock,
-                selisihBeehiveMcs = z.selisihBeeHiveMcs,
-                selisihBeehiveDailystock = z.selisihBeeHiveDailyStock,
-                keterangan = z.nominalBeehive == z.nominalMcs && z.nominalMcs == z.nominalDailyStock ? "SAMA" : "TIDAK SAMA"
-            }).ToList();
+            //var join1 = (from left in en.saveBeeHives
+            //             join right in en.saveMcs on left.kodePerusahaan equals right.customerCode into temp
+            //             where left.namaFile == ""
+            //             from right in temp.DefaultIfEmpty()
+            //             select new {
+            //                 tanggalMcs = right.tanggal,
+            //                 tanggalBeeHive = left.tanggalTransaksi,
+            //                 kodeNasabah = right.customerCode,
+            //                 nominalBeehive = left.totalNominal,
+            //                 nominalMcs = right.amountTotal,
+            //                 selisihBeehiveMcs = left.totalNominal - right.amountTotal,
+            //             }).ToList();
+            //var join2 = (from right in en.saveMcs
+            //             join left in en.saveBeeHives on right.customerCode equals left.kodePerusahaan into temp
+            //             from left in temp.Where(x => x.namaFile == "").DefaultIfEmpty()
+            //             select new {
+            //                 tanggalMcs = right.tanggal,
+            //                 tanggalBeeHive = left.tanggalTransaksi,
+            //                 kodeNasabah = left.kodePerusahaan,
+            //                 nominalBeehive = left.totalNominal,
+            //                 nominalMcs = right.amountTotal,
+            //                 selisihBeehiveMcs = left.totalNominal - right.amountTotal,
+            //             }).ToList();
+            //var join12 = join1.Union(join2).Distinct().ToList();
 
-            dataGridView1.DataSource = query3;
+            //var join3 = (from left in join12
+            //             join right in en.DailyStocks on left.kodeNasabah equals (right.kode.Length == 7 ? "0" + right.kode : right.kode) into temp
+            //             from right in temp.Where(x => x.jenisTransaksi == "Collection Retail").DefaultIfEmpty()
+            //             select new
+            //             {
+            //                 tanggalMcs = left?.tanggalMcs,
+            //                 tanggalBeeHive = left?.tanggalBeeHive,
+            //                 tanggalDailystock = right?.tanggal,
+            //                 kodeNasabah = left?.kodeNasabah,
+            //                 nominalBeehive = left?.nominalBeehive,
+            //                 nominalMcs = left?.nominalMcs,
+            //                 nominalDailystock = right?.BN100K + right?.BN50K + right?.BN20K + right?.BN10K + right?.BN5K + right?.BN2K + right?.BN1K + right?.BN500 + right?.BN200 + right?.BN100 + right?.CN1K + right?.CN500 + right?.CN200 + right?.CN100 + right?.CN50 + right?.CN25,
+            //                 selisihBeehiveMcs = left?.selisihBeehiveMcs,
+            //                 selisihBeehiveDailystock = left?.nominalBeehive - (right?.BN100K + right?.BN50K + right?.BN20K + right?.BN10K + right?.BN5K + right?.BN2K + right?.BN1K + right?.BN500 + right?.BN200 + right?.BN100 + right?.CN1K + right?.CN500 + right?.CN200 + right?.CN100 + right?.CN50 + right?.CN25)
+            //             }).ToList();
+
+            //var join4 = (from right in en.DailyStocks
+            //             join left in join12 on (right.kode.Length == 7 ? "0" + right.kode : right.kode) equals left.kodeNasabah into temp
+            //             where right.jenisTransaksi == "Collection Retail"
+            //             from left in temp.DefaultIfEmpty()
+            //             select new
+            //             {
+            //                 tanggalMcs = left.tanggalMcs,
+            //                 tanggalBeeHive = left.tanggalBeeHive,
+            //                 tanggalDailystock = right.tanggal,
+            //                 kodeNasabah = (right.kode.Length == 7 ? "0" + right.kode : right.kode),
+            //                 nominalBeehive = left.nominalBeehive,
+            //                 nominalMcs = left.nominalMcs,
+            //                 nominalDailystock = right.BN100K + right.BN50K + right.BN20K + right.BN10K + right.BN5K + right.BN2K + right.BN1K + right.BN500 + right.BN200 + right.BN100 + right.CN1K + right.CN500 + right.CN200 + right.CN100 + right.CN50 + right.CN25,
+            //                 selisihBeehiveMcs = left.selisihBeehiveMcs,
+            //                 selisihBeehiveDailystock = left.nominalBeehive - (right.BN100K + right.BN50K + right.BN20K + right.BN10K + right.BN5K + right.BN2K + right.BN1K + right.BN500 + right.BN200 + right.BN100 + right.CN1K + right.CN500 + right.CN200 + right.CN100 + right.CN50 + right.CN25)
+            //             }).ToList();
+
+            //var join34 = join3.Union(join4).Distinct().ToList();
+
+
+
+            //var query = (from x in join34
+            //             //join z in en.DailyStocks on y.customerCode equals  "0" + z.kode 
+            //             //join z in en.DailyStocks on y.customerCode equals (z.kode.Length < 8 ? "0" + z.kode : z.kode)
+            //             where x.tanggalMcs == dateTimePicker1.Value.Date && x.tanggalDailystock == dateTimePicker1.Value.Date && x.tanggalBeeHive == dateTimePicker1.Value.Date 
+            //             select new
+            //             {
+            //                 tanggalTransaksi = x.tanggalBeeHive,
+            //                 kodeNasabah = x.kodeNasabah,
+            //                 nominalBeeHive = x.nominalBeehive,
+            //                 nominalMcs = x.nominalMcs,
+            //                 nominalDailyStock = x.nominalDailystock,
+            //                 selisihBeeHiveMcs = x.selisihBeehiveMcs,
+            //                 selisihBeeHiveDailyStock = x.selisihBeehiveDailystock
+            //             }).ToList();
+
+            //var query2 = query.GroupBy(x => new { x.tanggalTransaksi, x.kodeNasabah }).Select(z => new
+            //{
+            //    tanggalTransaksi = z.Key.tanggalTransaksi,
+            //    kodeNasabah = z.Key.kodeNasabah,
+            //    nominalBeehive = z.Sum(x => x.nominalBeeHive),
+            //    nominalMcs = z.Sum(x => x.nominalMcs),
+            //    nominalDailyStock = z.Sum(x => x.nominalDailyStock),
+            //    selisihBeeHiveMcs = z.Sum(x => x.selisihBeeHiveMcs),
+            //    selisihBeeHiveDailyStock = z.Sum(x => x.selisihBeeHiveDailyStock)
+            //}).ToList();
+
+            //var query3 = query2.Select(z => new
+            //{
+            //    tanggalTransaksi = z.tanggalTransaksi,
+            //    kodeNasabah = z.kodeNasabah,
+            //    nominalBeehive = z.nominalBeehive,
+            //    nominalMcs = z.nominalMcs,
+            //    nominalDailyStock = z.nominalDailyStock,
+            //    selisihBeehiveMcs = z.selisihBeeHiveMcs,
+            //    selisihBeehiveDailystock = z.selisihBeeHiveDailyStock,
+            //    keterangan = z.nominalBeehive == z.nominalMcs && z.nominalMcs == z.nominalDailyStock ? "SAMA" : "TIDAK SAMA"
+            //}).ToList();
+
+            //dataGridView1.DataSource = query3;
             if (dataGridView1.Rows.Count > 0)
             {
                 for (int i = 2; i < 7; i++)
@@ -702,6 +830,8 @@ namespace testProjectBCA
         public String jenisFile { set; get; }
 
     }
+
+
     public class ProsesVa
     {
         public DateTime tanggalTransaksi { set; get; }
@@ -741,10 +871,14 @@ namespace testProjectBCA
 
     public class HasilProcessed
     {
-        public DateTime realDate { set; get; }
+        public DateTime tanggalTransaksi { set; get; }
         public String kodeNasabah { set; get; }
         public Int64 nominalBeeHive { set; get; }
         public Int64 nominalMCS { set; get; }
+        public Int64 nominalDailystock { set; get; }
+        public Int64 selisihBeehiveMcs { set; get; }
+        public Int64 selisihBeehiveDailystock { set; get; }
         public String keterangan { set; get; }
+
     }
 }

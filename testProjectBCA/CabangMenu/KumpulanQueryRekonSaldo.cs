@@ -448,119 +448,18 @@ namespace testProjectBCA.CabangMenu
         }
         public List<PivotCPC_BIBL> reloadReturnBIBankLainBelum()
         {
-
             DateTime date2 = tanggal.Date;
             var prequery = (
                 from x in db.RekonSaldoVaults.AsEnumerable()
                 join y in db.Pkts on x.vaultId.Substring(0, 4) equals y.kodePktCabang == "CCASA" ? "CCAS" : y.kodePktCabang
-                where (kodePkt == "CCAS" ? x.vaultId.Contains(kodePkt) : x.vaultId == kodePkt)
-                && y.kanwil.ToLower().Contains("jabo") ? (x.fundingSoure != null ? x.fundingSoure.ToLower().Contains("OB") || x.fundingSoure.ToLower().Contains("BI") : false) : true
-                select x
-            ).ToList();
-            var emergency = (
-                from x in prequery
-                where (x.actionRekon.Contains("Return")) && (DateTime.Parse(x.dueDate.ToString()).Date == tanggal.Date && DateTime.Parse(x.realDate.ToString()) > tanggal.Date) && (kodePkt == "CCAS" ? x.vaultId.Contains(kodePkt) : x.vaultId == kodePkt)
-                && x.actionRekon.ToLower().Contains("emergency")
-                group x by new { x.dueDate, x.fundingSoure, x.timeStampRekon, x.actionRekon, x.statusRekon, x.blogMessage, x.realDate } into z
-                select new
-                {
-                    z.Key.realDate,
-                    timeStampRekon = z.Key.timeStampRekon,
-                    actionRekon = z.Key.actionRekon,
-                    statusRekon = z.Key.statusRekon,
-                    blogMessage = z.Key.blogMessage,
-                    dueDate = z.Key.dueDate,
-                    fundingSoure = z.Key.fundingSoure,
-                    emergency = z.Sum(x => x.currencyAmmount),
-                    //x.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(x.timeStampRekon.ToString()).Hour < 21 ? x.timeStampRekon : DateTime.Parse(x.timeStampRekon.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(x.dueDate.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
-                    validation = z.Key.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(z.Key.timeStampRekon.ToString()).Hour < 21 ? z.Key.timeStampRekon : DateTime.Parse(z.Key.timeStampRekon.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(tanggal.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
-                }).ToList();
-            var regular = (
-                from x in db.RekonSaldoVaults.AsEnumerable()
-                where (x.actionRekon.Contains("Return")) && (DateTime.Parse(x.dueDate.ToString()).Date == tanggal.Date && DateTime.Parse(x.realDate.ToString()) > tanggal.Date) && (kodePkt == "CCAS" ? x.vaultId.Contains(kodePkt) : x.vaultId == kodePkt)
-                && !x.actionRekon.ToLower().Contains("emergency")
-                group x by new { x.dueDate, x.fundingSoure, x.timeStampRekon, x.actionRekon, x.statusRekon, x.blogMessage, x.realDate } into z
-                select new
-                {
-                    z.Key.realDate,
-                    timeStampRekon = z.Key.timeStampRekon,
-                    actionRekon = z.Key.actionRekon,
-                    statusRekon = z.Key.statusRekon,
-                    blogMessage = z.Key.blogMessage,
-                    dueDate = z.Key.dueDate,
-                    fundingSoure = z.Key.fundingSoure,
-                    regular = z.Sum(x => x.currencyAmmount),
-                    //x.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(x.timeStampRekon.ToString()).Hour < 21 ? x.timeStampRekon : DateTime.Parse(x.timeStampRekon.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(x.dueDate.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
-                    validation = z.Key.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(z.Key.timeStampRekon.ToString()).Hour < 21 ? z.Key.timeStampRekon : DateTime.Parse(z.Key.timeStampRekon.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(tanggal.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
-                }).ToList();
-            var prepareL = (from x in regular
-                            join y in emergency on new { x.timeStampRekon, x.dueDate, x.fundingSoure, x.realDate } equals new { y.timeStampRekon, y.dueDate, y.fundingSoure, y.realDate } into temp
-                            from y in temp.DefaultIfEmpty()
-                            select new
-                            {
-                                x.realDate,
-                                timeStampRekon = x.timeStampRekon,
-                                actionRekon = x.actionRekon,
-                                statusRekon = x.statusRekon,
-                                blogMessage = x.blogMessage,
-                                dueDate = x.dueDate,
-                                fundingSoure = x.fundingSoure,
-                                regular = x.regular,
-                                emergency = y == null ? 0 : y.emergency,
-                                //x.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(x.timeStampRekon.ToString()).Hour < 21 ? x.timeStampRekon : DateTime.Parse(x.timeStampRekon.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(x.dueDate.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
-                                validation = x.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(x.timeStampRekon.ToString()).Hour < 21 ? x.timeStampRekon : DateTime.Parse(x.timeStampRekon.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(tanggal.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
-                            }).ToList();
-            var prepareR = (from x in emergency
-                            join y in regular on new { x.timeStampRekon, x.dueDate, x.fundingSoure, x.realDate } equals new { y.timeStampRekon, y.dueDate, y.fundingSoure, y.realDate } into temp
-                            from y in temp.DefaultIfEmpty()
-                            select new
-                            {
-                                x.realDate,
-                                timeStampRekon = x.timeStampRekon,
-                                actionRekon = x.actionRekon,
-                                statusRekon = x.statusRekon,
-                                blogMessage = x.blogMessage,
-                                dueDate = x.dueDate,
-                                fundingSoure = x.fundingSoure,
-                                regular = y == null ? 0 : y.regular,
-                                emergency = x.emergency,
-                                //x.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(x.timeStampRekon.ToString()).Hour < 21 ? x.timeStampRekon : DateTime.Parse(x.timeStampRekon.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(x.dueDate.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
-                                validation = x.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(x.timeStampRekon.ToString()).Hour < 21 ? x.timeStampRekon : DateTime.Parse(x.timeStampRekon.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(tanggal.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
-                            }).ToList();
-            var prepare = prepareL.Union(prepareR);
-            var query = (from x in prepare
-                         where x.actionRekon.Contains("Return") && x.validation.Equals("NOT VALIDATED")
-                         group x by new { x.dueDate, x.fundingSoure, x.timeStampRekon, x.realDate } into z
-                         select new { dueDate = z.Key.dueDate, timeStampRekon = z.Key.timeStampRekon, fundingSource = z.Key.fundingSoure, regular = z.Sum(x => x.regular), emergency = z.Sum(x => x.emergency), total = z.Sum(x => x.emergency + x.regular), z.Key.realDate, vendor = kodePkt }).ToList();
-            List<PivotCPC_BIBL> ret = query
-               .GroupBy(x => new { x.vendor, x.dueDate, x.timeStampRekon, x.realDate, x.fundingSource })
-               .Select(x => new PivotCPC_BIBL()
-               {
-                   fundingSource = x.Key.fundingSource,
-                   plannedReturnNotVal = (Int64)x.Sum(z => z.regular + z.emergency),
-                   plannedReturnVal = 0,
-                   dueDate = (DateTime) x.Key.dueDate,
-                   realDate = (DateTime) x.Key.realDate,
-                   grandTotal = (Int64) x.Sum(z => z.regular + z.emergency),
-                   vaultId = x.Key.vendor,
-               }).ToList();
-            return ret;
-        }
-        public List<PivotCPC_BIBL> reloadReturnBIBankLainSudah()
-        {
-
-            DateTime date2 = tanggal.Date;
-            var prequery = (
-                from x in db.RekonSaldoVaults.AsEnumerable()
-                join y in db.Pkts on x.vaultId.Substring(0, 4) equals y.kodePktCabang == "CCASA" ? "CCAS" : y.kodePktCabang
-                where ((kodePkt == "CCAS" ? x.vaultId.Contains(kodePkt) : x.vaultId == kodePkt) || (kodePkt == "CCAS" ? x.fundingSoure.Contains(kodePkt) && x.actionRekon == "Planned Return" : x.fundingSoure == kodePkt && x.actionRekon == "Planned Return"))
+                where ((kodePkt == "CCAS" ? x.vaultId.Contains(kodePkt) : x.vaultId == kodePkt) || (kodePkt == "CCAS" ? x.fundingSoure.Contains(kodePkt) && x.actionRekon.Contains("Delivery") : x.fundingSoure == kodePkt && x.actionRekon.Contains("Delivery")))
                 && (!y.kanwil.ToLower().Contains("jabo") ? (x.fundingSoure != null ? x.fundingSoure.ToLower().Contains("OB") || x.fundingSoure.ToLower().Contains("BI") : false) : true)
                 select x
             ).ToList();
 
             var emergency = (
                 from x in prequery
-                where (x.actionRekon.Contains("Return"))
+                where ((x.actionRekon.Contains("Return")) || (kodePkt == "CCAS" ? x.fundingSoure.Contains(kodePkt) && x.actionRekon.Contains("Delivery") : x.fundingSoure == kodePkt && x.actionRekon.Contains("Delivery")))
                 && (DateTime.Parse(x.dueDate.ToString()).Date == tanggal.Date || DateTime.Parse(x.realDate.ToString()) == tanggal.Date)
                 && (kodePkt == "CCAS" ? x.vaultId.Contains(kodePkt) : x.vaultId == kodePkt)
                 && x.actionRekon.ToLower().Contains("emergency")
@@ -580,7 +479,8 @@ namespace testProjectBCA.CabangMenu
                 }).ToList();
             var regular = (
                 from x in db.RekonSaldoVaults.AsEnumerable()
-                where (x.actionRekon.Contains("Return")) && (DateTime.Parse(x.dueDate.ToString()).Date == tanggal.Date || DateTime.Parse(x.realDate.ToString()) == tanggal.Date) && (kodePkt == "CCAS" ? x.vaultId.Contains(kodePkt) : x.vaultId == kodePkt)
+                where ((x.actionRekon.Contains("Return")) || (kodePkt == "CCAS" ? x.fundingSoure.Contains(kodePkt) && x.actionRekon.Contains("Delivery") : x.fundingSoure == kodePkt && x.actionRekon.Contains("Delivery")))
+                && (DateTime.Parse(x.dueDate.ToString()).Date == tanggal.Date || DateTime.Parse(x.realDate.ToString()) == tanggal.Date) && (kodePkt == "CCAS" ? x.vaultId.Contains(kodePkt) : x.vaultId == kodePkt)
                 && !x.actionRekon.ToLower().Contains("emergency")
                 group x by new { x.dueDate, x.fundingSoure, x.timeStampRekon, x.actionRekon, x.statusRekon, x.blogMessage, x.realDate } into z
                 select new
@@ -633,7 +533,113 @@ namespace testProjectBCA.CabangMenu
                             }).ToList();
             var prepare = prepareL.Union(prepareR);
             var query = (from x in prepare
-                         where x.actionRekon.Contains("Return") && x.validation.Equals("VALIDATED")
+                         where ((x.actionRekon.Contains("Return")) || (kodePkt == "CCAS" ? x.fundingSoure.Contains(kodePkt) && x.actionRekon.Contains("Delivery") : x.fundingSoure == kodePkt && x.actionRekon.Contains("Delivery")))
+                         && x.validation.Equals("NOT VALIDATED")
+                         group x by new { x.dueDate, x.fundingSoure, x.timeStampRekon, x.realDate } into z
+                         select new { dueDate = z.Key.dueDate, timeStampRekon = z.Key.timeStampRekon, fundingSource = z.Key.fundingSoure, regular = z.Sum(x => x.regular), emergency = z.Sum(x => x.emergency), total = z.Sum(x => x.emergency + x.regular), z.Key.realDate, vendor = kodePkt }).ToList();
+            List<PivotCPC_BIBL> ret = query
+               .GroupBy(x => new { x.vendor, x.dueDate, x.timeStampRekon, x.realDate, x.fundingSource })
+               .Select(x => new PivotCPC_BIBL()
+               {
+                   fundingSource = x.Key.fundingSource,
+                   plannedReturnNotVal = (Int64)x.Sum(z => z.regular + z.emergency),
+                   plannedReturnVal = 0,
+                   dueDate = (DateTime) x.Key.dueDate,
+                   realDate = (DateTime) x.Key.realDate,
+                   grandTotal = (Int64) x.Sum(z => z.regular + z.emergency),
+                   vaultId = x.Key.vendor,
+               }).ToList();
+            return ret;
+        }
+        public List<PivotCPC_BIBL> reloadReturnBIBankLainSudah()
+        {
+            DateTime date2 = tanggal.Date;
+            var prequery = (
+                from x in db.RekonSaldoVaults.AsEnumerable()
+                join y in db.Pkts on x.vaultId.Substring(0, 4) equals y.kodePktCabang == "CCASA" ? "CCAS" : y.kodePktCabang
+                where ((kodePkt == "CCAS" ? x.vaultId.Contains(kodePkt) : x.vaultId == kodePkt) || (kodePkt == "CCAS" ? x.fundingSoure.Contains(kodePkt) && x.actionRekon.Contains("Delivery") : x.fundingSoure == kodePkt && x.actionRekon.Contains("Delivery")))
+                && (!y.kanwil.ToLower().Contains("jabo") ? (x.fundingSoure != null ? x.fundingSoure.ToLower().Contains("OB") || x.fundingSoure.ToLower().Contains("BI") : false) : true)
+                select x
+            ).ToList();
+
+            var emergency = (
+                from x in prequery
+                where ((x.actionRekon.Contains("Return")) || (kodePkt == "CCAS" ? x.fundingSoure.Contains(kodePkt) && x.actionRekon.Contains("Delivery") : x.fundingSoure == kodePkt && x.actionRekon.Contains("Delivery")))
+                && (DateTime.Parse(x.dueDate.ToString()).Date == tanggal.Date || DateTime.Parse(x.realDate.ToString()) == tanggal.Date)
+                && (kodePkt == "CCAS" ? x.vaultId.Contains(kodePkt) : x.vaultId == kodePkt)
+                && x.actionRekon.ToLower().Contains("emergency")
+                group x by new { x.dueDate, x.fundingSoure, x.timeStampRekon, x.actionRekon, x.statusRekon, x.blogMessage, x.realDate } into z
+                select new
+                {
+                    z.Key.realDate,
+                    timeStampRekon = z.Key.timeStampRekon,
+                    actionRekon = z.Key.actionRekon,
+                    statusRekon = z.Key.statusRekon,
+                    blogMessage = z.Key.blogMessage,
+                    dueDate = z.Key.dueDate,
+                    fundingSoure = z.Key.fundingSoure,
+                    emergency = z.Sum(x => x.currencyAmmount),
+                    //x.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(x.timeStampRekon.ToString()).Hour < 21 ? x.timeStampRekon : DateTime.Parse(x.timeStampRekon.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(x.dueDate.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
+                    validation = z.Key.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(z.Key.timeStampRekon.ToString()).Hour < 21 ? z.Key.timeStampRekon : DateTime.Parse(z.Key.timeStampRekon.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(tanggal.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
+                }).ToList();
+            var regular = (
+                from x in db.RekonSaldoVaults.AsEnumerable()
+                where ((x.actionRekon.Contains("Return")) || (kodePkt == "CCAS" ? x.fundingSoure.Contains(kodePkt) && x.actionRekon.Contains("Delivery") : x.fundingSoure == kodePkt && x.actionRekon.Contains("Delivery")))
+                && (DateTime.Parse(x.dueDate.ToString()).Date == tanggal.Date || DateTime.Parse(x.realDate.ToString()) == tanggal.Date) && (kodePkt == "CCAS" ? x.vaultId.Contains(kodePkt) : x.vaultId == kodePkt)
+                && !x.actionRekon.ToLower().Contains("emergency")
+                group x by new { x.dueDate, x.fundingSoure, x.timeStampRekon, x.actionRekon, x.statusRekon, x.blogMessage, x.realDate } into z
+                select new
+                {
+                    z.Key.realDate,
+                    timeStampRekon = z.Key.timeStampRekon,
+                    actionRekon = z.Key.actionRekon,
+                    statusRekon = z.Key.statusRekon,
+                    blogMessage = z.Key.blogMessage,
+                    dueDate = z.Key.dueDate,
+                    fundingSoure = z.Key.fundingSoure,
+                    regular = z.Sum(x => x.currencyAmmount),
+                    //x.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(x.timeStampRekon.ToString()).Hour < 21 ? x.timeStampRekon : DateTime.Parse(x.timeStampRekon.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(x.dueDate.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
+                    validation = z.Key.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(z.Key.timeStampRekon.ToString()).Hour < 21 ? z.Key.timeStampRekon : DateTime.Parse(z.Key.timeStampRekon.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(tanggal.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
+                }).ToList();
+
+            var prepareL = (from x in regular
+                            join y in emergency on new { x.timeStampRekon, x.dueDate, x.fundingSoure, x.realDate } equals new { y.timeStampRekon, y.dueDate, y.fundingSoure, y.realDate } into temp
+                            from y in temp.DefaultIfEmpty()
+                            select new
+                            {
+                                x.realDate,
+                                timeStampRekon = x.timeStampRekon,
+                                actionRekon = x.actionRekon,
+                                statusRekon = x.statusRekon,
+                                blogMessage = x.blogMessage,
+                                dueDate = x.dueDate,
+                                fundingSoure = x.fundingSoure,
+                                regular = x.regular,
+                                emergency = y == null ? 0 : y.emergency,
+                                //x.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(x.timeStampRekon.ToString()).Hour < 21 ? x.timeStampRekon : DateTime.Parse(x.timeStampRekon.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(x.dueDate.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
+                                validation = x.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(x.timeStampRekon.ToString()).Hour < 21 ? x.timeStampRekon : DateTime.Parse(x.timeStampRekon.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(tanggal.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
+                            }).ToList();
+            var prepareR = (from x in emergency
+                            join y in regular on new { x.timeStampRekon, x.dueDate, x.fundingSoure, x.realDate } equals new { y.timeStampRekon, y.dueDate, y.fundingSoure, y.realDate } into temp
+                            from y in temp.DefaultIfEmpty()
+                            select new
+                            {
+                                x.realDate,
+                                timeStampRekon = x.timeStampRekon,
+                                actionRekon = x.actionRekon,
+                                statusRekon = x.statusRekon,
+                                blogMessage = x.blogMessage,
+                                dueDate = x.dueDate,
+                                fundingSoure = x.fundingSoure,
+                                regular = y == null ? 0 : y.regular,
+                                emergency = x.emergency,
+                                //x.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(x.timeStampRekon.ToString()).Hour < 21 ? x.timeStampRekon : DateTime.Parse(x.timeStampRekon.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(x.dueDate.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
+                                validation = x.blogMessage.Contains("GL") ? (DateTime.Parse((DateTime.Parse(x.timeStampRekon.ToString()).Hour < 21 ? x.timeStampRekon : DateTime.Parse(x.timeStampRekon.ToString()).AddDays(1)).ToString()).Date <= DateTime.Parse(tanggal.ToString()).Date ? "VALIDATED" : "NOT VALIDATED") : "NOT VALIDATED"
+                            }).ToList();
+            var prepare = prepareL.Union(prepareR);
+            var query = (from x in prepare
+                         where ((x.actionRekon.Contains("Return")) || (kodePkt == "CCAS" ? x.fundingSoure.Contains(kodePkt) && x.actionRekon.Contains("Delivery") : x.fundingSoure == kodePkt && x.actionRekon.Contains("Delivery")))
+                         && x.validation.Equals("VALIDATED")
                          group x by new { x.dueDate, x.fundingSoure, x.timeStampRekon, x.realDate } into z
                          select new { dueDate = z.Key.dueDate, timeStampRekon = z.Key.timeStampRekon, fundingSource = z.Key.fundingSoure, regular = z.Sum(x => x.regular), emergency = z.Sum(x => x.emergency), total = z.Sum(x => x.emergency + x.regular), z.Key.realDate, vendor = kodePkt }).ToList();
             List<PivotCPC_BIBL> ret = query
@@ -944,11 +950,11 @@ namespace testProjectBCA.CabangMenu
             var queryar = (from x in db.RekonSaldoVaults.AsEnumerable()
                            join y in db.Pkts.AsEnumerable() on x.vaultId equals y.kodePktCabang == "CCASA" ? "CCAS" : y.kodePktCabang
                            where !String.IsNullOrEmpty(x.fundingSoure) && y.kanwil.Like("Jabotabek")
+                           && ((kodePkt == "CCAS" ? x.vaultId.Contains(kodePkt) : x.vaultId == kodePkt) || (kodePkt == "CCAS" ? x.fundingSoure.Contains(kodePkt) && x.actionRekon.Contains("Delivery") : x.fundingSoure == kodePkt && x.actionRekon.Contains("Delivery")))
                            select x).ToList();
             queryar = (from x in queryar
                        where (x.fundingSoure != "BI" && !x.fundingSoure.Contains("OB")) && (((DateTime)x.dueDate).Date == tanggal || ((DateTime)x.realDate).Date == tanggal)
                        select x).ToList();
-
             var pc = new List<PivotCPC>();
 
             String bufferVaultId4 = "";
@@ -1116,7 +1122,7 @@ namespace testProjectBCA.CabangMenu
             var queryad = (from x in db.RekonSaldoVaults.AsEnumerable()
                            join y in db.Pkts.AsEnumerable() on x.vaultId equals y.kodePktCabang == "CCASA" ? "CCAS" : y.kodePktCabang 
                            where !String.IsNullOrEmpty(x.fundingSoure) && y.kanwil.Like("Jabotabek")
-                           && ((kodePkt == "CCAS" ? x.vaultId.Contains(kodePkt) : x.vaultId == kodePkt) || (kodePkt == "CCAS" ? x.fundingSoure.Contains(kodePkt) && x.actionRekon == "Planned Return" : x.fundingSoure == kodePkt && x.actionRekon == "Planned Return"))
+                           && ((kodePkt == "CCAS" ? x.vaultId.Contains(kodePkt) : x.vaultId == kodePkt) || (kodePkt == "CCAS" ? x.fundingSoure.Contains(kodePkt) && x.actionRekon.Contains("Return") : x.fundingSoure == kodePkt && x.actionRekon.Contains("Return")))
                            select x).ToList();
             queryad = (from x in queryad
                        where (x.fundingSoure != "BI" && !x.fundingSoure.Contains("OB")) && (((DateTime)x.dueDate).Date == tanggal || ((DateTime)x.realDate).Date == tanggal)
@@ -1153,12 +1159,24 @@ namespace testProjectBCA.CabangMenu
                 realDate = g.Key.realDate,
                 vaultID = g.Key.vaultId,
                 fundingSource = g.Key.fundingSource,
-                emergencyDelivery = g.Where(c => c.action == "Emergency Delivery").Sum(c => c.currencyAmmount),
-                emergencyDeliveryVal = g.Where(c => c.action == "Emergency Delivery" && c.validation == "VALIDATED").Sum(c => c.currencyAmmount),
-                emergencyDeliveryNotVal = g.Where(c => c.action == "Emergency Delivery" && c.validation == "NOT VALIDATED").Sum(c => c.currencyAmmount),
-                plannedDelivery = g.Where(c => c.action == "Planned Delivery").Sum(c => c.currencyAmmount),
-                plannedDeliveryVal = g.Where(c => c.action == "Planned Delivery" && c.validation == "VALIDATED").Sum(c => c.currencyAmmount),
-                plannedDeliveryNotVal = g.Where(c => c.action == "Planned Delivery" && c.validation == "NOT VALIDATED").Sum(c => c.currencyAmmount)
+                emergencyDelivery = g.Where(c => (c.action == "Emergency Delivery" && c.vaultId == kodePkt) || (c.action == "Emergency Return" && c.fundingSource == kodePkt)).Sum(c => c.currencyAmmount),
+                emergencyDeliveryVal = g.Where(c =>
+                    (c.action == "Emergency Delivery" && c.validation == "VALIDATED" && c.vaultId == kodePkt)
+                    || (c.action == "Emergency Return" && c.validation == "VALIDATED" && c.fundingSource == kodePkt))
+                    .Sum(c => c.currencyAmmount),
+                emergencyDeliveryNotVal = g.Where(c =>
+                    (c.action == "Emergency Delivery" && c.validation == "NOT VALIDATED" && c.vaultId == kodePkt)
+                    || (c.action == "Emergency Return" && c.validation == "NOT VALIDATED" && c.fundingSource == kodePkt))
+        .Sum(c => c.currencyAmmount),
+                plannedDeliveryNotVal = g.Where(c =>
+                    (c.action == "Planned Delivery" && c.validation == "NOT VALIDATED" && c.vaultId == kodePkt)
+                    || (c.action == "Planned Return" && c.validation == "NOT VALIDATED" && c.fundingSource == kodePkt))
+        .Sum(c => c.currencyAmmount),
+                plannedDeliveryVal = g.Where(c =>
+                    (c.action == "Planned Delivery" && c.validation == "VALIDATED" && c.vaultId == kodePkt)
+                    || (c.action == "Planned Return" && c.validation == "VALIDATED" && c.fundingSource == kodePkt)
+    ).Sum(c => c.currencyAmmount),
+                plannedDelivery = g.Where(c => (c.action == "Planned Delivery" && c.vaultId == kodePkt) || (c.action == "Planned Return" && c.fundingSource == kodePkt)).Sum(c => c.currencyAmmount)
             }).ToList();
 
             var pivotad2 = (from x in pivotad
