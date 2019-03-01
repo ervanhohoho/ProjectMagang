@@ -129,3 +129,5 @@ C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\Pr
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.Test.InputSaldoCRM.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.CabangMenu.SummaryTransaksiVault.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.CabangMenu.ProsesWPForm.resources
+C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.CabangMenu.JurnalSelisihForm.resources
+C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Release\testProjectBCA.CabangMenu.OrderTrackingSelisihPopUpForm.resources

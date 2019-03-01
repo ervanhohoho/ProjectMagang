@@ -45,6 +45,7 @@
             this.pktComboBox = new System.Windows.Forms.ComboBox();
             this.RekapSelisihBtn = new System.Windows.Forms.Button();
             this.showDetailsAskButton = new System.Windows.Forms.Button();
+            this.showSelisihBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.SuspendLayout();
@@ -72,12 +73,15 @@
             this.dataGridView1.AllowUserToOrderColumns = true;
             this.dataGridView1.AllowUserToResizeColumns = false;
             this.dataGridView1.AllowUserToResizeRows = false;
+            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(12, 98);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.Size = new System.Drawing.Size(806, 350);
+            this.dataGridView1.Size = new System.Drawing.Size(916, 350);
             this.dataGridView1.TabIndex = 2;
             this.dataGridView1.SelectionChanged += new System.EventHandler(this.dataGridView1_SelectionChanged);
             // 
@@ -137,17 +141,21 @@
             this.dataGridView2.AllowUserToDeleteRows = false;
             this.dataGridView2.AllowUserToResizeColumns = false;
             this.dataGridView2.AllowUserToResizeRows = false;
+            this.dataGridView2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView2.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView2.Location = new System.Drawing.Point(12, 465);
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.RowHeadersVisible = false;
-            this.dataGridView2.Size = new System.Drawing.Size(442, 87);
+            this.dataGridView2.Size = new System.Drawing.Size(552, 87);
             this.dataGridView2.TabIndex = 8;
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(460, 465);
+            this.button7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button7.Location = new System.Drawing.Point(570, 465);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(184, 23);
             this.button7.TabIndex = 9;
@@ -157,7 +165,8 @@
             // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(460, 494);
+            this.button8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button8.Location = new System.Drawing.Point(570, 494);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(184, 23);
             this.button8.TabIndex = 10;
@@ -167,7 +176,8 @@
             // 
             // button9
             // 
-            this.button9.Location = new System.Drawing.Point(650, 465);
+            this.button9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button9.Location = new System.Drawing.Point(760, 465);
             this.button9.Name = "button9";
             this.button9.Size = new System.Drawing.Size(168, 23);
             this.button9.TabIndex = 11;
@@ -177,7 +187,8 @@
             // 
             // button10
             // 
-            this.button10.Location = new System.Drawing.Point(650, 494);
+            this.button10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button10.Location = new System.Drawing.Point(760, 494);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(168, 23);
             this.button10.TabIndex = 12;
@@ -187,7 +198,8 @@
             // 
             // buttonShowDetails
             // 
-            this.buttonShowDetails.Location = new System.Drawing.Point(650, 40);
+            this.buttonShowDetails.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonShowDetails.Location = new System.Drawing.Point(760, 11);
             this.buttonShowDetails.Name = "buttonShowDetails";
             this.buttonShowDetails.Size = new System.Drawing.Size(168, 23);
             this.buttonShowDetails.TabIndex = 13;
@@ -197,15 +209,17 @@
             // 
             // pktComboBox
             // 
+            this.pktComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pktComboBox.FormattingEnabled = true;
-            this.pktComboBox.Location = new System.Drawing.Point(650, 13);
+            this.pktComboBox.Location = new System.Drawing.Point(586, 12);
             this.pktComboBox.Name = "pktComboBox";
             this.pktComboBox.Size = new System.Drawing.Size(168, 21);
             this.pktComboBox.TabIndex = 14;
             // 
             // RekapSelisihBtn
             // 
-            this.RekapSelisihBtn.Location = new System.Drawing.Point(650, 69);
+            this.RekapSelisihBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.RekapSelisihBtn.Location = new System.Drawing.Point(760, 40);
             this.RekapSelisihBtn.Name = "RekapSelisihBtn";
             this.RekapSelisihBtn.Size = new System.Drawing.Size(168, 23);
             this.RekapSelisihBtn.TabIndex = 13;
@@ -215,7 +229,8 @@
             // 
             // showDetailsAskButton
             // 
-            this.showDetailsAskButton.Location = new System.Drawing.Point(460, 523);
+            this.showDetailsAskButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.showDetailsAskButton.Location = new System.Drawing.Point(570, 523);
             this.showDetailsAskButton.Name = "showDetailsAskButton";
             this.showDetailsAskButton.Size = new System.Drawing.Size(358, 23);
             this.showDetailsAskButton.TabIndex = 15;
@@ -223,13 +238,25 @@
             this.showDetailsAskButton.UseVisualStyleBackColor = true;
             this.showDetailsAskButton.Click += new System.EventHandler(this.showDetailsAskButton_Click);
             // 
+            // showSelisihBtn
+            // 
+            this.showSelisihBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.showSelisihBtn.Location = new System.Drawing.Point(760, 69);
+            this.showSelisihBtn.Name = "showSelisihBtn";
+            this.showSelisihBtn.Size = new System.Drawing.Size(168, 23);
+            this.showSelisihBtn.TabIndex = 13;
+            this.showSelisihBtn.Text = "Show Selisih";
+            this.showSelisihBtn.UseVisualStyleBackColor = true;
+            this.showSelisihBtn.Click += new System.EventHandler(this.showSelisihBtn_Click);
+            // 
             // InputOrderTrackingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(837, 564);
+            this.ClientSize = new System.Drawing.Size(940, 564);
             this.Controls.Add(this.showDetailsAskButton);
             this.Controls.Add(this.pktComboBox);
+            this.Controls.Add(this.showSelisihBtn);
             this.Controls.Add(this.RekapSelisihBtn);
             this.Controls.Add(this.buttonShowDetails);
             this.Controls.Add(this.button10);
@@ -273,5 +300,6 @@
         private System.Windows.Forms.ComboBox pktComboBox;
         private System.Windows.Forms.Button RekapSelisihBtn;
         private System.Windows.Forms.Button showDetailsAskButton;
+        private System.Windows.Forms.Button showSelisihBtn;
     }
 }

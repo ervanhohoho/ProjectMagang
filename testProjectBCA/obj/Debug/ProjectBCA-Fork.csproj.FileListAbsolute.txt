@@ -130,3 +130,4 @@ C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\Proj
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.CabangMenu.SummaryTransaksiVault.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.CabangMenu.ProsesWPForm.resources
 C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.CabangMenu.JurnalSelisihForm.resources
+C:\Users\ervan\source\repos\testProjectBCA - FORK1\testProjectBCA\obj\Debug\testProjectBCA.CabangMenu.OrderTrackingSelisihPopUpForm.resources

@@ -47,6 +47,7 @@
             this.bulanComboBox.Name = "bulanComboBox";
             this.bulanComboBox.Size = new System.Drawing.Size(121, 21);
             this.bulanComboBox.TabIndex = 0;
+            this.bulanComboBox.SelectionChangeCommitted += new System.EventHandler(this.bulanComboBox_SelectionChangeCommitted);
             // 
             // tahunComboBox
             // 

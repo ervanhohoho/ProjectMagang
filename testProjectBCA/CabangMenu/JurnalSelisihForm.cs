@@ -30,6 +30,8 @@ namespace testProjectBCA.CabangMenu
         {
             Database1Entities db = new Database1Entities();
             List<String> listPkt = (from x in db.OrderTrackings
+                                    join y in db.Pkts on x.kodePkt equals y.kodePktCabang
+                                    where y.kanwil.ToLower().Contains("jabo")
                                     select x.kodePkt.Contains("CCAS") ? "CCAS" : x.kodePkt).Distinct().ToList();
             pktComboBox.DataSource = listPkt;
             pktComboBox.SelectedIndex = 0;
@@ -74,25 +76,25 @@ namespace testProjectBCA.CabangMenu
             List<DateTime> listDueDate = source.Select(x => (DateTime)x.dueDate).OrderBy(x => x).Distinct().ToList();
             List<DateTime> listTanggal = source.Select(x => (DateTime)x.tanggal).OrderBy(x => x).Distinct().ToList();
             DataTable table = new DataTable();
-            table.Columns.Add("Tanggal");
-            foreach (var temp in listDueDate)
+            table.Columns.Add("Due Date");
+            foreach (var temp in listTanggal)
             {
                 table.Columns.Add(temp.ToString("dd-MMM-yyyy"), typeof(Int64));
             }
-            foreach(var temp in listTanggal)
+            foreach(var temp in listDueDate)
             {
                 Console.WriteLine("Tanggal: " + temp.ToString("dd-MMM-yyyy"));
                 DataRow row = table.NewRow();
                 var tempSrc = source
-                    .Where(x => x.tanggal == temp)
+                    .Where(x => x.dueDate == temp)
                     .GroupBy(x=>new { x.dueDate, x.tanggal })
                     .Select(x=> new { x.Key.tanggal, x.Key.dueDate, nominalDispute = x.Sum(y => y.nominalDispute) })
                     .ToList();
-                row["Tanggal"] = temp.ToString("dd-MMM-yyyy");
-                var listDueDateSrc = tempSrc.Select(x => x.dueDate).Distinct().ToList();
-                foreach (var dueDateSrc in listDueDateSrc)
+                row["Due Date"] = temp.ToString("dd-MMM-yyyy");
+                var listTanggalSrc = tempSrc.Select(x => x.tanggal).Distinct().ToList();
+                foreach (var tanggalSrc in listTanggalSrc)
                 {
-                    row[((DateTime)dueDateSrc).ToString("dd-MMM-yyyy")] = tempSrc.Where(x=>x.dueDate == dueDateSrc).Select(x=>x.nominalDispute).First();
+                    row[((DateTime)tanggalSrc).ToString("dd-MMM-yyyy")] = tempSrc.Where(x=>x.tanggal == tanggalSrc).Select(x=>x.nominalDispute).First();
                 }
                 table.Rows.Add(row);
             }

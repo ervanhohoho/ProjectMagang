@@ -209,6 +209,12 @@
       <DependentUpon>JurnalSelisihForm.cs</DependentUpon>
     </Compile>
     <Compile Include="CabangMenu\KumpulanQueryRekonSaldo.cs" />
+    <Compile Include="CabangMenu\OrderTrackingSelisihPopUpForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CabangMenu\OrderTrackingSelisihPopUpForm.Designer.cs">
+      <DependentUpon>OrderTrackingSelisihPopUpForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="CabangMenu\ProsesWPForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -716,6 +722,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CabangMenu\JurnalSelisihForm.resx">
       <DependentUpon>JurnalSelisihForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CabangMenu\OrderTrackingSelisihPopUpForm.resx">
+      <DependentUpon>OrderTrackingSelisihPopUpForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CabangMenu\ProsesWPForm.resx">
       <DependentUpon>ProsesWPForm.cs</DependentUpon>

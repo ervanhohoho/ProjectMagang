@@ -541,6 +541,7 @@ namespace testProjectBCA.CabangMenu
         private void tahunComboBox_SelectedValueChanged(object sender, EventArgs e)
         {
             loadComboBulan();
+            loadComboPkt();
         }
 
         private void pktComboBox_SelectedValueChanged(object sender, EventArgs e)
@@ -665,6 +666,11 @@ namespace testProjectBCA.CabangMenu
         private void pktComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void bulanComboBox_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            loadComboPkt();
         }
     }
     

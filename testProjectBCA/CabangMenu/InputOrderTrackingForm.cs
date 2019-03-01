@@ -1023,5 +1023,13 @@ namespace testProjectBCA
             DetailsSelisihAmbilSetor dsas = new DetailsSelisihAmbilSetor(kodePkt, tanggal, true);
             dsas.Show();
         }
+
+        private void showSelisihBtn_Click(object sender, EventArgs e)
+        {
+            String kodePkt = pktComboBox.SelectedItem.ToString();
+            DateTime tanggal = dateTimePicker1.Value.Date;
+            OrderTrackingSelisihPopUpForm otspuf = new OrderTrackingSelisihPopUpForm(kodePkt, tanggal);
+            otspuf.Show();
+        }
     }
 }
